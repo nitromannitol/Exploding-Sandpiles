@@ -159,6 +159,18 @@ noncomputable def clusterArrival (η : Site d → ℤ) (y x : Site d) : ℕ∞ :
   sInf {t : ℕ∞ | ∃ n : ℕ, t = (n : ℕ∞) ∧ 1 ≤ n ∧
     ∀ w ∈ penultimateCluster η x, 0 < lastWave η y n w}
 
+/-- A time at which the last wave is positive bounds the arrival time. -/
+theorem lastArrival_le (η : Site d → ℤ) (y x : Site d) (n : ℕ) (hn : 1 ≤ n)
+    (h : 0 < lastWave η y n x) : lastArrival η y x ≤ (n : ℕ∞) :=
+  sInf_le ⟨n, rfl, hn, h⟩
+
+/-- A time at which the last wave is positive on the whole penultimate cluster
+bounds the cluster arrival time. -/
+theorem clusterArrival_le (η : Site d → ℤ) (y x : Site d) (n : ℕ) (hn : 1 ≤ n)
+    (h : ∀ w ∈ penultimateCluster η x, 0 < lastWave η y n w) :
+    clusterArrival η y x ≤ (n : ℕ∞) :=
+  sInf_le ⟨n, rfl, hn, h⟩
+
 /-- The arrival time `T_η(x)` of the exploding sandpile `η + M_η δ₀`, valued in
 `ℕ∞`. -/
 noncomputable def arrival (η : Site d → ℤ) (x : Site d) : ℕ∞ :=

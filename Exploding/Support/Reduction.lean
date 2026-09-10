@@ -18,6 +18,58 @@ variable {d : ℕ}
 /-- The site `(a, 𝐲)` of `ℤ^{d+1}`. -/
 def cons (a : ℤ) (y : Site d) : Site (d + 1) := Fin.cons a y
 
+/-! ### Moving between `ℤ^{d+1}` and `ℤ^d` -/
+
+/-- Translating the tail by a unit vector. -/
+theorem cons_add_unit (a : ℤ) (y : Site d) (j : Fin d) :
+    cons a (y + unit j) = cons a y + unit j.succ := by
+  funext i
+  refine Fin.cases ?_ ?_ i
+  · simp [cons, unit, Fin.succ_ne_zero]
+  · intro k
+    simp [cons, unit, Pi.single_apply, Fin.succ_inj]
+
+/-- Translating the tail by a unit vector, downwards. -/
+theorem cons_sub_unit (a : ℤ) (y : Site d) (j : Fin d) :
+    cons a (y - unit j) = cons a y - unit j.succ := by
+  funext i
+  refine Fin.cases ?_ ?_ i
+  · simp [cons, unit, Fin.succ_ne_zero]
+  · intro k
+    simp [cons, unit, Pi.single_apply, Fin.succ_inj]
+
+/-- Translating the head upwards. -/
+theorem cons_add_unit_zero (a : ℤ) (y : Site d) :
+    cons a y + unit (0 : Fin (d + 1)) = cons (a + 1) y := by
+  funext i
+  refine Fin.cases ?_ ?_ i
+  · simp [cons, unit]
+  · intro k
+    simp [cons, unit]
+
+/-- Translating the head downwards. -/
+theorem cons_sub_unit_zero (a : ℤ) (y : Site d) :
+    cons a y - unit (0 : Fin (d + 1)) = cons (a - 1) y := by
+  funext i
+  refine Fin.cases ?_ ?_ i
+  · simp [cons, unit]
+  · intro k
+    simp [cons, unit]
+
+/-- The neighbour sum at `(a, 𝐲)` splits into the two neighbours in the first
+direction and the `d`-dimensional neighbour sum of the slice. -/
+theorem nbrSumZ_cons (u : Site (d + 1) → ℤ) (a : ℤ) (y : Site d) :
+    nbrSumZ u (cons a y) =
+      (u (cons (a + 1) y) + u (cons (a - 1) y)) + nbrSumZ (fun w => u (cons a w)) y := by
+  simp only [nbrSumZ, Fin.sum_univ_succ]
+  rw [cons_add_unit_zero, cons_sub_unit_zero]
+  congr 1
+  refine Finset.sum_congr rfl fun j _ => ?_
+  rw [← cons_add_unit, ← cons_sub_unit]
+
+
+/-! ### The constrained processes -/
+
 open scoped Classical in
 /-- The `(d+1)`-dimensional constrained frozen odometer `u_t^{(d)}` of `(7.4)`,
 started from `u_0 = 1{x_1 = 0}`. -/

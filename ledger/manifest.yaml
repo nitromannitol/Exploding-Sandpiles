@@ -105,17 +105,6 @@ nodes:
     provider: Exploding.Frozen.finite_exploding
     approved: "2026-09-10"
 
-  - id: lem-last-wave-bound
-    version: 2
-    kind: theorem
-    source: exploding.tex:728-733 (label lemma:last_wave_bound)
-    file: Exploding/Frozen/LastWaveBound.lean
-    export: Exploding.Frozen.last_wave_bound
-    state: DRAFT_SORRY
-    frozen_sha256: 747c9a088fbc2cde832d7fb7842235dd0ba49396ddf1e67a96c5bed6e2872338
-    provider: Exploding.Frozen.last_wave_bound
-    approved: "2026-09-10"
-
   - id: lem-approx-subadditivity
     version: 2
     kind: theorem
@@ -279,5 +268,16 @@ nodes:
     state: FROZEN
     frozen_sha256: 1ef132590c8069beea81e81b996ec77278f3f8614af4224fec242eb74c88e6de
     provider: Exploding.External.SchonmannBootstrap
+    approved: "2026-09-10"
+
+  - id: lem-last-wave-bound
+    version: 3
+    kind: theorem
+    source: exploding.tex:728-733 (label lemma:last_wave_bound)
+    file: Exploding/Frozen/LastWaveBound.lean
+    export: Exploding.Frozen.last_wave_bound
+    state: SEALED
+    frozen_sha256: 747c9a088fbc2cde832d7fb7842235dd0ba49396ddf1e67a96c5bed6e2872338
+    provider: Exploding.Frozen.last_wave_bound
     approved: "2026-09-10"
 

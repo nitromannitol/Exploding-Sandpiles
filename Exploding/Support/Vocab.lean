@@ -127,6 +127,16 @@ theorem waveTerminal_spec (η : Site d → ℤ) (n : ℕ) (z : Site d)
     Nat.sInf_mem ⟨T, hT⟩
   exact hne t ht
 
+/-- The terminal odometer of a stabilizable wave satisfies the wave equation
+away from its centre. -/
+theorem waveTerminal_fixed (η : Site d → ℤ) (n : ℕ) (z : Site d)
+    (hs : WaveStabilizable η n z) {x : Site d} (hx : x ≠ z) :
+    waveTerminal η n z x = (nbrSumZ (waveTerminal η n z) x + η x) / (2 * (d : ℤ)) := by
+  have h1 := waveTerminal_spec η n z hs _ (le_refl _)
+  have h2 := waveTerminal_spec η n z hs _ (Nat.le_succ _)
+  conv_lhs => rw [← h2]
+  rw [wave_of_ne _ _ _ _ _ hx, h1]
+
 /-- The last-wave `u_t^{(z)} = u_t^{(M̂_η(z), z)}`. -/
 noncomputable def lastWave (η : Site d → ℤ) (z : Site d) : ℕ → Site d → ℤ :=
   wave η (waveThreshold η z) z

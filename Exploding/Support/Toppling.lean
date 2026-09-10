@@ -44,6 +44,16 @@ theorem nbrSumZ_mono {u v : Site d → ℤ} (h : ∀ y, u y ≤ v y) (x : Site d
     nbrSumZ u x ≤ nbrSumZ v x :=
   Finset.sum_le_sum fun _ _ => add_le_add (h _) (h _)
 
+theorem nbrSumZ_add_const (u : Site d → ℤ) (c : ℤ) (x : Site d) :
+    nbrSumZ (fun y => c + u y) x = 2 * (d : ℤ) * c + nbrSumZ u x := by
+  simp only [nbrSumZ]
+  rw [show (fun i : Fin d => (c + u (x + unit i)) + (c + u (x - unit i)))
+        = (fun i : Fin d => 2 * c + (u (x + unit i) + u (x - unit i))) from
+      funext fun i => by ring]
+  rw [Finset.sum_add_distrib, Finset.sum_const, Finset.card_univ, Fintype.card_fin]
+  simp
+  ring
+
 theorem nbrSumZ_congr {u v : Site d → ℤ} (h : ∀ y, u y = v y) (x : Site d) :
     nbrSumZ u x = nbrSumZ v x := by
   simp only [nbrSumZ, h]
@@ -178,6 +188,32 @@ theorem wave_nonneg (η : Site d → ℤ) (hη : ∀ y, 0 ≤ η y) (n : ℕ) (z
         intro i _
         exact add_nonneg (ih _) (ih _)
       linarith [hη x]
+
+/-- On a nonnegative background the `n`-wave is nondecreasing in time. -/
+theorem wave_mono_t (η : Site d → ℤ) (hη : ∀ y, 0 ≤ η y) (hd : (0 : ℤ) < 2 * (d : ℤ))
+    (n : ℕ) (z : Site d) (t : ℕ) (x : Site d) :
+    wave η n z t x ≤ wave η n z (t + 1) x := by
+  induction t generalizing x with
+  | zero =>
+    by_cases h : x = z
+    · simp [h]
+    · rw [wave_zero]
+      simp only [if_neg h]
+      exact wave_nonneg η hη n z 1 x
+  | succ t ih =>
+    by_cases h : x = z
+    · simp [h]
+    · rw [wave_of_ne _ _ _ _ _ h, wave_of_ne _ _ _ _ _ h]
+      exact Int.ediv_le_ediv hd (by linarith [nbrSumZ_mono (fun y => ih y) x])
+
+/-- A site at which the wave equation holds is stable there. -/
+theorem lap_le_of_fixed (η : Site d → ℤ) (hd : (0 : ℤ) < 2 * (d : ℤ)) (u : Site d → ℤ)
+    (x : Site d) (h : u x = (nbrSumZ u x + η x) / (2 * (d : ℤ))) :
+    lap u x + η x ≤ 2 * (d : ℤ) - 1 := by
+  have key := Int.lt_ediv_add_one_mul_self (nbrSumZ u x + η x) hd
+  rw [← h] at key
+  simp only [lap]
+  nlinarith [key]
 
 /-- The `n`-wave is *stabilizable* if it is eventually constant. -/
 def WaveStabilizable (η : Site d → ℤ) (n : ℕ) (z : Site d) : Prop :=

@@ -11,8 +11,11 @@ open Exploding LatticeProb
 `(C n^d)`-wave contains `[-n,n]^d`."
 
 The support of a wave is the set of sites its odometer is ever positive at.
-`C` depends only on the dimension, so it is bound before the background and
-before `n`.  Section 3 fixes `η` as in `(1.2)`, so `2d - 2 ≤ η ≤ 2d - 1`. -/
+Because the wave odometer is nondecreasing in time on a nonnegative background,
+that set is the support of the terminal odometer whenever the wave stabilizes,
+and is the right reading when it does not.  `C` depends only on the dimension,
+so it is bound before the background and before `n`.  Section 3 fixes `η` as in
+`(1.2)`, so `2d - 2 ≤ η ≤ 2d - 1`. -/
 -- FROZEN-STATEMENT-BEGIN
 theorem Exploding.Frozen.square_lower_bound (d : ℕ) (hd : 2 ≤ d) :
     ∃ C : ℕ, 0 < C ∧ ∀ η : Site d → ℤ, (∀ x, 2 * (d : ℤ) - 2 ≤ η x) →

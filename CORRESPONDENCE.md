@@ -36,6 +36,8 @@ explicit hypothesis of the nodes whose proofs use it.
 | `prop:dimensional_reduction` | the paper's `d` is written `d + 1` | so that the lower-dimensional lattice is `ℤ^d` rather than `ℤ^{d-1}` |
 | `theorem:limit_shape` | "convex domain" is `Convex ℝ B ∧ IsOpen B ∧ B.Nonempty` | a nonempty open convex set is connected, hence a domain |
 | the floor `⌊·⌋` of `(2.1)`, `(2.4)` and `(3.1)` | integer division `/` on `ℤ` | `/` on `ℤ` is `Int.ediv`, which rounds towards `-∞` |
+| `lemma:square_lower_bound` | "the support of the `(Cn^d)`-wave" is `∃ t, 0 < u_t x` | the wave odometer is nondecreasing in time on a nonnegative background, so this is the support of the terminal odometer when the wave stabilizes, and is the right reading when it does not |
+| every statement of Sections 1 to 4 | carries `2 ≤ d` | the standing hypothesis of "Main results", `Suppose d ≥ 2 and η is drawn from a product measure ...` |
 
 ## Frozen surface
 
@@ -51,7 +53,6 @@ explicit hypothesis of the nodes whose proofs use it.
 | `lem-local-convexity` | `Exploding.Frozen.local_convexity` | `exploding.tex:531-535`, `lemma:local_convexity` | DRAFT_SORRY |
 | `lem-square-lower-bound` | `Exploding.Frozen.square_lower_bound` | `exploding.tex:705-707`, `lemma:square_lower_bound` | DRAFT_SORRY |
 | `lem-finite-exploding` | `Exploding.Frozen.finite_exploding` | `exploding.tex:718-720`, `lemma:finite_exploding` | DRAFT_SORRY |
-| `lem-last-wave-bound` | `Exploding.Frozen.last_wave_bound` | `exploding.tex:728-733`, `lemma:last_wave_bound` | DRAFT_SORRY |
 | `lem-approx-subadditivity` | `Exploding.Frozen.approx_subadditivity` | `exploding.tex:758-763`, `lemma:approx_subadditivity` | DRAFT_SORRY |
 | `lem-penultimate-cluster` | `Exploding.Frozen.last_penultimate_cluster` | `exploding.tex:790-796`, `lemma:last_penultimate_cluster` | DRAFT_SORRY |
 | `lem-penultimate-upper-bound` | `Exploding.Frozen.penultimate_upper_bound` | `exploding.tex:805-810`, `lemma:penultimate_upper_bound` | DRAFT_SORRY |
@@ -67,5 +68,6 @@ explicit hypothesis of the nodes whose proofs use it.
 | `prop-box-crossing` | `Exploding.Frozen.box_crossing` | exploding.tex:1965-1967 (P is box-crossing) | DRAFT_SORRY |
 | `ext-fey-levine-peres` | `Exploding.External.FeyLevinePeresExplosive` | `exploding.tex:238-240`, `prop:fey_levine_peres_explode` | FROZEN |
 | `ext-schonmann-bootstrap` | `Exploding.External.SchonmannBootstrap` | `exploding.tex:1948-1960`, `prop:schonnmann_bootstrap` | FROZEN |
+| `lem-last-wave-bound` | `Exploding.Frozen.last_wave_bound` | `exploding.tex:728-733`, `lemma:last_wave_bound` | SEALED |
 
 <!-- FROZEN-SURFACE-END -->

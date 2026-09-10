@@ -82,6 +82,18 @@ noncomputable def redOdoUp (n : ℕ) (η : Site (d + 1) → ℤ) : ℕ → Site 
       else redOdoUp n η t x +
         (if 2 * ((d : ℤ) + 1) ≤ η x + lap (redOdoUp n η t) x then 1 else 0)
 
+open scoped Classical in
+theorem redOdoUp_succ (n : ℕ) (η : Site (d + 1) → ℤ) (t : ℕ) (x : Site (d + 1)) :
+    redOdoUp n η (t + 1) x =
+      if x ∉ cube (d + 1) n then redOdoUp n η t x
+      else if 1 < x 0 then redOdoUp n η t x
+      else if redOdoUp n η t x = 1 then redOdoUp n η t x
+      else redOdoUp n η t x +
+        (if 2 * ((d : ℤ) + 1) ≤ η x + lap (redOdoUp n η t) x then 1 else 0) := rfl
+
+theorem redOdoUp_zero (n : ℕ) (η : Site (d + 1) → ℤ) (x : Site (d + 1)) :
+    redOdoUp n η 0 x = if x 0 = 0 then 1 else 0 := rfl
+
 /-- The `(d+1)`-dimensional constrained sandpile `s_t^{(d)}`. -/
 noncomputable def redConfUp (n : ℕ) (η : Site (d + 1) → ℤ) (t : ℕ) (x : Site (d + 1)) : ℤ :=
   η x + lap (redOdoUp n η t) x
@@ -97,8 +109,132 @@ noncomputable def redOdoDown (n : ℕ) (η : Site (d + 1) → ℤ) : ℕ → Sit
       else redOdoDown n η t y +
         (if 2 * (d : ℤ) ≤ (η (cons 1 y) - 1) + lap (redOdoDown n η t) y then 1 else 0)
 
+open scoped Classical in
+theorem redOdoDown_succ (n : ℕ) (η : Site (d + 1) → ℤ) (t : ℕ) (y : Site d) :
+    redOdoDown n η (t + 1) y =
+      if y ∉ cube d n then redOdoDown n η t y
+      else if redOdoDown n η t y = 1 then redOdoDown n η t y
+      else redOdoDown n η t y +
+        (if 2 * (d : ℤ) ≤ (η (cons 1 y) - 1) + lap (redOdoDown n η t) y then 1 else 0) := rfl
+
+theorem redOdoDown_zero (n : ℕ) (η : Site (d + 1) → ℤ) (y : Site d) :
+    redOdoDown n η 0 y = 0 := rfl
+
 /-- The `d`-dimensional constrained sandpile `s_t^{(d-1)}`. -/
 noncomputable def redConfDown (n : ℕ) (η : Site (d + 1) → ℤ) (t : ℕ) (y : Site d) : ℤ :=
   (η (cons 1 y) - 1) + lap (redOdoDown n η t) y
+
+/-! ### The reduction -/
+
+section Reduction
+
+variable {n : ℕ} {η : Site (d + 1) → ℤ}
+
+theorem cons_notMem_cube_of_head (a : ℤ) (y : Site d) (h : a = 0) :
+    cons a y ∉ cube (d + 1) n := by
+  intro hc
+  have := (hc 0).1
+  simp [cons, h] at this
+
+theorem redOdoUp_head_zero (t : ℕ) (y : Site d) : redOdoUp n η t (cons 0 y) = 1 := by
+  induction t with
+  | zero => simp [redOdoUp_zero, cons]
+  | succ t ih =>
+    rw [redOdoUp_succ]
+    rw [if_pos (cons_notMem_cube_of_head 0 y rfl)]
+    exact ih
+
+theorem redOdoUp_head_high (t : ℕ) (x : Site (d + 1)) (h : 1 < x 0) :
+    redOdoUp n η t x = redOdoUp n η 0 x := by
+  induction t with
+  | zero => rfl
+  | succ t ih =>
+    rw [redOdoUp_succ]
+    by_cases hc : x ∉ cube (d + 1) n
+    · rw [if_pos hc]; exact ih
+    · rw [if_neg hc, if_pos h]; exact ih
+
+theorem redOdoUp_cons_high (t : ℕ) (y : Site d) (a : ℤ) (ha : 1 < a) :
+    redOdoUp n η t (cons a y) = 0 := by
+  have h : (1 : ℤ) < (cons a y) 0 := by simpa [cons] using ha
+  rw [redOdoUp_head_high t _ h]
+  have hne : ((cons a y) 0) ≠ 0 := by simp only [cons, Fin.cons_zero]; omega
+  simp [redOdoUp_zero, hne]
+
+theorem mem_cube_cons_one (hd : 1 ≤ d) (y : Site d) :
+    cons (1 : ℤ) y ∈ cube (d + 1) n ↔ y ∈ cube d n := by
+  constructor
+  · intro hc j
+    have := hc j.succ
+    simpa [cons] using this
+  · intro hy i
+    refine Fin.cases ?_ ?_ i
+    · refine ⟨by simp [cons], ?_⟩
+      have h0 := hy ⟨0, by omega⟩
+      simp only [cons, Fin.cons_zero]
+      omega
+    · intro k; simpa [cons] using hy k
+
+theorem redOdoDown_zero_or_one (t : ℕ) (y : Site d) :
+    redOdoDown n η t y = 0 ∨ redOdoDown n η t y = 1 := by
+  induction t generalizing y with
+  | zero => left; rfl
+  | succ t ih =>
+    rw [redOdoDown_succ]
+    by_cases hy : y ∉ cube d n
+    · rw [if_pos hy]; exact ih y
+    · rw [if_neg hy]
+      by_cases h1 : redOdoDown n η t y = 1
+      · rw [if_pos h1]; right; exact h1
+      · rw [if_neg h1]
+        have h0 : redOdoDown n η t y = 0 := (ih y).resolve_right h1
+        rw [h0]
+        by_cases hc : 2 * (d : ℤ) ≤ (η (cons 1 y) - 1) + lap (redOdoDown n η t) y
+        · rw [if_pos hc]; right; ring
+        · rw [if_neg hc]; left; ring
+
+theorem lap_redOdoUp_cons_one (t : ℕ) (y : Site d) :
+    lap (redOdoUp n η t) (cons 1 y) =
+      1 + lap (fun w => redOdoUp n η t (cons 1 w)) y
+        - 2 * redOdoUp n η t (cons 1 y) := by
+  simp only [lap, nbrSumZ_cons]
+  norm_num
+  rw [redOdoUp_cons_high t y 2 (by norm_num), redOdoUp_head_zero t y]
+  push_cast
+  ring
+
+theorem redOdo_agree (hd : 1 ≤ d) (t : ℕ) (y : Site d) :
+    redOdoUp n η t (cons 1 y) = redOdoDown n η t y := by
+  induction t generalizing y with
+  | zero => simp [redOdoUp_zero, redOdoDown_zero, cons]
+  | succ t ih =>
+    rw [redOdoUp_succ, redOdoDown_succ]
+    have hmem : (cons (1 : ℤ) y ∉ cube (d + 1) n) ↔ (y ∉ cube d n) := by
+      simp [mem_cube_cons_one hd y]
+    by_cases hy : y ∉ cube d n
+    · rw [if_pos (hmem.mpr hy), if_pos hy]; exact ih y
+    · rw [if_neg (fun hcon => hy (hmem.mp hcon)), if_neg hy]
+      have hhead : ¬ (1 : ℤ) < (cons (1 : ℤ) y) 0 := by simp [cons]
+      rw [if_neg hhead]
+      by_cases h1 : redOdoDown n η t y = 1
+      · rw [if_pos (by rw [ih y]; exact h1), if_pos h1]; exact ih y
+      · rw [if_neg (by rw [ih y]; exact h1), if_neg h1]
+        have h0 : redOdoDown n η t y = 0 := (redOdoDown_zero_or_one t y).resolve_right h1
+        have hup0 : redOdoUp n η t (cons 1 y) = 0 := by rw [ih y]; exact h0
+        have hlapv : lap (fun w => redOdoUp n η t (cons 1 w)) y
+            = lap (redOdoDown n η t) y := by
+          simp only [lap]
+          rw [nbrSumZ_congr (fun w => ih w) y, ih y]
+        have hlap := lap_redOdoUp_cons_one (n := n) (η := η) t y
+        rw [hlapv, hup0] at hlap
+        have hiff : (2 * ((d : ℤ) + 1) ≤ η (cons 1 y) + lap (redOdoUp n η t) (cons 1 y))
+            ↔ (2 * (d : ℤ) ≤ (η (cons 1 y) - 1) + lap (redOdoDown n η t) y) := by
+          rw [hlap]; constructor <;> intro h <;> linarith
+        rw [ih y]
+        by_cases hc : 2 * (d : ℤ) ≤ (η (cons 1 y) - 1) + lap (redOdoDown n η t) y
+        · rw [if_pos (hiff.mpr hc), if_pos hc]
+        · rw [if_neg (fun hcon => hc (hiff.mp hcon)), if_neg hc]
+
+end Reduction
 
 end Exploding

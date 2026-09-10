@@ -63,11 +63,11 @@ explicit hypothesis of the nodes whose proofs use it.
 | `thm-generalized-convergence` | `Exploding.Frozen.generalized_convergence` | exploding.tex:1228-1232 (Convergence of the exploding sandpile) | DRAFT_SORRY |
 | `thm-counterexample` | `Exploding.Frozen.counterexample` | `exploding.tex:1330-1340`, `theorem:counterexample` | DRAFT_SORRY |
 | `prop-explosion-criteria` | `Exploding.Frozen.explosion_criteria` | `exploding.tex:1800-1804`, `prop:explosion_criteria` | DRAFT_SORRY |
-| `prop-dimensional-reduction` | `Exploding.Frozen.dimensional_reduction` | `exploding.tex:1869-1878`, `prop:dimensional_reduction` | DRAFT_SORRY |
 | `prop-recurrence` | `Exploding.Frozen.recurrence` | `exploding.tex:1906-1908`, `prop:recurrence` | DRAFT_SORRY |
 | `prop-box-crossing` | `Exploding.Frozen.box_crossing` | exploding.tex:1965-1967 (P is box-crossing) | DRAFT_SORRY |
 | `ext-fey-levine-peres` | `Exploding.External.FeyLevinePeresExplosive` | `exploding.tex:238-240`, `prop:fey_levine_peres_explode` | FROZEN |
 | `ext-schonmann-bootstrap` | `Exploding.External.SchonmannBootstrap` | `exploding.tex:1948-1960`, `prop:schonnmann_bootstrap` | FROZEN |
 | `lem-last-wave-bound` | `Exploding.Frozen.last_wave_bound` | `exploding.tex:728-733`, `lemma:last_wave_bound` | SEALED |
+| `prop-dimensional-reduction` | `Exploding.Frozen.dimensional_reduction` | `exploding.tex:1869-1878`, `prop:dimensional_reduction` | SEALED |
 
 <!-- FROZEN-SURFACE-END -->

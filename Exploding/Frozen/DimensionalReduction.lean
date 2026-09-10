@@ -6,6 +6,10 @@ import Exploding.Support.Reduction
 
 open Exploding LatticeProb
 
+-- The face membership is part of the statement but not needed: the identity
+-- holds at every `(1, y)`, because both processes are frozen off their cubes and
+-- `cons 1 y` lies in `Q_n^{(d+1)}` exactly when `y` lies in `Q_n^{(d)}`.
+set_option linter.unusedVariables false in
 /-- **Proposition 7.2** (`exploding.tex:1869-1878`, label
 `prop:dimensional_reduction`).
 
@@ -23,4 +27,12 @@ theorem Exploding.Frozen.dimensional_reduction (d n : ℕ) (hd : 1 ≤ d) (η : 
       (redOdoUp n η t (cons 1 y) = 0 →
         redConfUp n η t (cons 1 y) = redConfDown n η t y + 2)
 -- FROZEN-STATEMENT-END
-:= by sorry
+:= by
+  refine ⟨redOdo_agree hd t y, fun h0 => ?_⟩
+  have hlap := lap_redOdoUp_cons_one (n := n) (η := η) t y
+  have hlapv : lap (fun w => redOdoUp n η t (cons 1 w)) y = lap (redOdoDown n η t) y := by
+    simp only [lap]
+    rw [nbrSumZ_congr (fun w => redOdo_agree hd t w) y, redOdo_agree hd t y]
+  rw [hlapv, h0] at hlap
+  simp only [redConfUp, redConfDown, hlap]
+  ring

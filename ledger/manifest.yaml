@@ -1,0 +1,283 @@
+# Frozen-statement manifest for the exploding-sandpile shape theorem.
+#
+# One entry per frozen declaration.  The bytes between the FROZEN-STATEMENT
+# markers are the contract: a proof attempt may fill in the proof after the end
+# marker, never touch the statement.  `frozen_sha256` is the SHA-256 of exactly
+# those bytes.
+#
+# States: FROZEN (a statement with no proof obligation here, such as a cited
+#           result taken as a hypothesis),
+#         DRAFT_SORRY (the statement is frozen, the proof is still open),
+#         SEALED (a proof exists and its axiom closure is clean).
+
+version: 1
+source_pin:
+  file: paper/exploding.tex
+  sha256: c105052eaaa4d4a3534a12076bc2d8feedbe33a20882565ae4926d9290e1fc18
+
+nodes:
+
+  - id: thm-limit-shape
+    version: 2
+    kind: theorem
+    source: exploding.tex:246-254 (label theorem:limit_shape)
+    file: Exploding/Frozen/LimitShape.lean
+    export: Exploding.Frozen.limit_shape
+    state: DRAFT_SORRY
+    frozen_sha256: 4ef3ad9fd513d8856ab4354af4612092fd1c8085bf7ee78356ac87414370a48b
+    provider: Exploding.Frozen.limit_shape
+    approved: "2026-09-10"
+
+  - id: thm-time-constant
+    version: 2
+    kind: theorem
+    source: exploding.tex:259-262 (label theorem:convergence_of_time_constant)
+    file: Exploding/Frozen/TimeConstant.lean
+    export: Exploding.Frozen.convergence_of_time_constant
+    state: DRAFT_SORRY
+    frozen_sha256: f662cd5047f602296d5f6eb191f7cd72ece6c0a2497ca81a98f1fa3120166113
+    provider: Exploding.Frozen.convergence_of_time_constant
+    approved: "2026-09-10"
+
+  - id: thm-explosive
+    version: 2
+    kind: theorem
+    source: exploding.tex:265-268 (label theorem:explosive)
+    file: Exploding/Frozen/Explosive.lean
+    export: Exploding.Frozen.explosive
+    state: DRAFT_SORRY
+    frozen_sha256: 403613a4dc36b6101c8d62adce1214c1e5f5b3a5d32017ab764ef721683fa637
+    provider: Exploding.Frozen.explosive
+    approved: "2026-09-10"
+
+  - id: prop-crossing-time
+    version: 2
+    kind: theorem
+    source: exploding.tex:416-422 (label prop:crossing_time)
+    file: Exploding/Frozen/CrossingTime.lean
+    export: Exploding.Frozen.crossing_time
+    state: DRAFT_SORRY
+    frozen_sha256: 86d88877abf5e6e1dc37f9bf5e1a1552bb04588de3fa050596b1faf4fb3d5e38
+    provider: Exploding.Frozen.crossing_time
+    approved: "2026-09-10"
+
+  - id: prop-renormalization
+    version: 2
+    kind: theorem
+    source: exploding.tex:482-497 (label prop:renormalization_properties)
+    file: Exploding/Frozen/Renormalization.lean
+    export: Exploding.Frozen.renormalization_properties
+    state: DRAFT_SORRY
+    frozen_sha256: 850fa1d4766a239047a1e23a00e2f6ce382214856a63ea0c5f213d078f591a08
+    provider: Exploding.Frozen.renormalization_properties
+    approved: "2026-09-10"
+
+  - id: lem-local-convexity
+    version: 2
+    kind: theorem
+    source: exploding.tex:531-535 (label lemma:local_convexity)
+    file: Exploding/Frozen/LocalConvexity.lean
+    export: Exploding.Frozen.local_convexity
+    state: DRAFT_SORRY
+    frozen_sha256: c265b27336538e776144ad00d8ad3e44a93816312863f9b3cb9dc3d5997e91f4
+    provider: Exploding.Frozen.local_convexity
+    approved: "2026-09-10"
+
+  - id: lem-square-lower-bound
+    version: 2
+    kind: theorem
+    source: exploding.tex:705-707 (label lemma:square_lower_bound)
+    file: Exploding/Frozen/SquareLowerBound.lean
+    export: Exploding.Frozen.square_lower_bound
+    state: DRAFT_SORRY
+    frozen_sha256: 6e53039b02cca5a1d1e713dc17d3e01efe947afc32666db1b5e12a46d9fbdcdd
+    provider: Exploding.Frozen.square_lower_bound
+    approved: "2026-09-10"
+
+  - id: lem-finite-exploding
+    version: 2
+    kind: theorem
+    source: exploding.tex:718-720 (label lemma:finite_exploding)
+    file: Exploding/Frozen/FiniteExploding.lean
+    export: Exploding.Frozen.finite_exploding
+    state: DRAFT_SORRY
+    frozen_sha256: b3d85c0cb61f282d2b3475fe7c80136d8a9116aae0e7a39ebafb60a9132abcf7
+    provider: Exploding.Frozen.finite_exploding
+    approved: "2026-09-10"
+
+  - id: lem-last-wave-bound
+    version: 2
+    kind: theorem
+    source: exploding.tex:728-733 (label lemma:last_wave_bound)
+    file: Exploding/Frozen/LastWaveBound.lean
+    export: Exploding.Frozen.last_wave_bound
+    state: DRAFT_SORRY
+    frozen_sha256: 747c9a088fbc2cde832d7fb7842235dd0ba49396ddf1e67a96c5bed6e2872338
+    provider: Exploding.Frozen.last_wave_bound
+    approved: "2026-09-10"
+
+  - id: lem-approx-subadditivity
+    version: 2
+    kind: theorem
+    source: exploding.tex:758-763 (label lemma:approx_subadditivity)
+    file: Exploding/Frozen/ApproxSubadditivity.lean
+    export: Exploding.Frozen.approx_subadditivity
+    state: DRAFT_SORRY
+    frozen_sha256: cc8f12ca936e4c7004662f4796489012419c44eb5071f5549ea1fa3cf5fc67f5
+    provider: Exploding.Frozen.approx_subadditivity
+    approved: "2026-09-10"
+
+  - id: lem-penultimate-cluster
+    version: 2
+    kind: theorem
+    source: exploding.tex:790-796 (label lemma:last_penultimate_cluster)
+    file: Exploding/Frozen/PenultimateCluster.lean
+    export: Exploding.Frozen.last_penultimate_cluster
+    state: DRAFT_SORRY
+    frozen_sha256: ca1b84a586e3f2b9f4d6691a9a818367cc3ece47b6cb9d3d8f42b563514d417c
+    provider: Exploding.Frozen.last_penultimate_cluster
+    approved: "2026-09-10"
+
+  - id: lem-penultimate-upper-bound
+    version: 2
+    kind: theorem
+    source: exploding.tex:805-810 (label lemma:penultimate_upper_bound)
+    file: Exploding/Frozen/PenultimateUpperBound.lean
+    export: Exploding.Frozen.penultimate_upper_bound
+    state: DRAFT_SORRY
+    frozen_sha256: 47ce5f9ca6a98ccdf8273a20c5f103c59689e56b56edfab7a25b08f34eaac3d9
+    provider: Exploding.Frozen.penultimate_upper_bound
+    approved: "2026-09-10"
+
+  - id: lem-penultimate-close
+    version: 2
+    kind: theorem
+    source: exploding.tex:830-835 (label lemma:last_penultimate_close)
+    file: Exploding/Frozen/PenultimateClose.lean
+    export: Exploding.Frozen.last_penultimate_close
+    state: DRAFT_SORRY
+    frozen_sha256: 74b4e3e32ef1a913f52ac2d81ea9274d0a60ed5838629a8e1e99c2a9a8d3f4d9
+    provider: Exploding.Frozen.last_penultimate_close
+    approved: "2026-09-10"
+
+  - id: prop-last-wave-convergence
+    version: 2
+    kind: theorem
+    source: exploding.tex:844-850 (label prop:convergence_of_the_last_wave)
+    file: Exploding/Frozen/LastWaveConvergence.lean
+    export: Exploding.Frozen.convergence_of_the_last_wave
+    state: DRAFT_SORRY
+    frozen_sha256: 4403f0d16e83ffbef258806e0695f1a9914750ef307f9ab9374c7c2dd9f26273
+    provider: Exploding.Frozen.convergence_of_the_last_wave
+    approved: "2026-09-10"
+
+  - id: prop-approximate-subadditive
+    version: 2
+    kind: theorem
+    source: exploding.tex:878-890 (label prop:approximate_subadditive)
+    file: Exploding/Frozen/ApproximateSubadditive.lean
+    export: Exploding.Frozen.approximate_subadditive
+    state: DRAFT_SORRY
+    frozen_sha256: 4fc1da1c3a19e6f55009e0b74447cf283e5d04d24ece7899dd370e44423fa7a8
+    provider: Exploding.Frozen.approximate_subadditive
+    approved: "2026-09-10"
+
+  - id: prop-generalized-last-wave
+    version: 2
+    kind: theorem
+    source: exploding.tex:1195-1199 (label prop:convergence_of_the_generalized_last_wave)
+    file: Exploding/Frozen/GeneralizedLastWave.lean
+    export: Exploding.Frozen.convergence_of_the_generalized_last_wave
+    state: DRAFT_SORRY
+    frozen_sha256: 5b51cef33c83008f6538122b3c4e0d13f3d4b964dfe97cf30764320e445ee083
+    provider: Exploding.Frozen.convergence_of_the_generalized_last_wave
+    approved: "2026-09-10"
+
+  - id: thm-generalized-convergence
+    version: 2
+    kind: theorem
+    source: exploding.tex:1228-1232 (Convergence of the exploding sandpile)
+    file: Exploding/Frozen/GeneralizedConvergence.lean
+    export: Exploding.Frozen.generalized_convergence
+    state: DRAFT_SORRY
+    frozen_sha256: 70e405e5fb7fdebc17b00a68d245432d19daafeb9424e907d04a6ad3385ce428
+    provider: Exploding.Frozen.generalized_convergence
+    approved: "2026-09-10"
+
+  - id: thm-counterexample
+    version: 2
+    kind: theorem
+    source: exploding.tex:1330-1340 (label theorem:counterexample)
+    file: Exploding/Frozen/Counterexample.lean
+    export: Exploding.Frozen.counterexample
+    state: DRAFT_SORRY
+    frozen_sha256: 7127473181ebe615d04952ddf32f389ca7d0f87d993be7c9577daf7bb154d376
+    provider: Exploding.Frozen.counterexample
+    approved: "2026-09-10"
+
+  - id: prop-explosion-criteria
+    version: 2
+    kind: theorem
+    source: exploding.tex:1800-1804 (label prop:explosion_criteria)
+    file: Exploding/Frozen/ExplosionCriteria.lean
+    export: Exploding.Frozen.explosion_criteria
+    state: DRAFT_SORRY
+    frozen_sha256: 42901f88120e443f35f95c874d2e92fc2ec8b35f0d0879b5521cc9f92f165de6
+    provider: Exploding.Frozen.explosion_criteria
+    approved: "2026-09-10"
+
+  - id: prop-dimensional-reduction
+    version: 2
+    kind: theorem
+    source: exploding.tex:1869-1878 (label prop:dimensional_reduction)
+    file: Exploding/Frozen/DimensionalReduction.lean
+    export: Exploding.Frozen.dimensional_reduction
+    state: DRAFT_SORRY
+    frozen_sha256: 5777a520125b85ceccd832b9191d16da33405025e490edfaa05aa10b546da169
+    provider: Exploding.Frozen.dimensional_reduction
+    approved: "2026-09-10"
+
+  - id: prop-recurrence
+    version: 2
+    kind: theorem
+    source: exploding.tex:1906-1908 (label prop:recurrence)
+    file: Exploding/Frozen/Recurrence.lean
+    export: Exploding.Frozen.recurrence
+    state: DRAFT_SORRY
+    frozen_sha256: fb09b457811848161a746759e6fd31ee024a56bee43df4e23cca58af7ae87fa1
+    provider: Exploding.Frozen.recurrence
+    approved: "2026-09-10"
+
+  - id: prop-box-crossing
+    version: 2
+    kind: theorem
+    source: exploding.tex:1965-1967 (P is box-crossing)
+    file: Exploding/Frozen/BoxCrossing.lean
+    export: Exploding.Frozen.box_crossing
+    state: DRAFT_SORRY
+    frozen_sha256: abeb4f5ea484142a2e67ea0f6c0e28c04eb3b3bb60c0b979a407f79323f52279
+    provider: Exploding.Frozen.box_crossing
+    approved: "2026-09-10"
+
+  - id: ext-fey-levine-peres
+    version: 2
+    kind: definition
+    source: exploding.tex:238-240 (label prop:fey_levine_peres_explode)
+    file: Exploding/External/FeyLevinePeres.lean
+    export: Exploding.External.FeyLevinePeresExplosive
+    state: FROZEN
+    frozen_sha256: 16cbe44911cfe7e8ec9c4369cb757275bcb1d30cc51822c13f68488d34e7ca02
+    provider: Exploding.External.FeyLevinePeresExplosive
+    approved: "2026-09-10"
+
+  - id: ext-schonmann-bootstrap
+    version: 2
+    kind: definition
+    source: exploding.tex:1948-1960 (label prop:schonnmann_bootstrap)
+    file: Exploding/External/Schonmann.lean
+    export: Exploding.External.SchonmannBootstrap
+    state: FROZEN
+    frozen_sha256: 1ef132590c8069beea81e81b996ec77278f3f8614af4224fec242eb74c88e6de
+    provider: Exploding.External.SchonmannBootstrap
+    approved: "2026-09-10"
+

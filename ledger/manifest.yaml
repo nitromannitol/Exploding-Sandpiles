@@ -105,17 +105,6 @@ nodes:
     provider: Exploding.Frozen.finite_exploding
     approved: "2026-09-10"
 
-  - id: lem-approx-subadditivity
-    version: 2
-    kind: theorem
-    source: exploding.tex:758-763 (label lemma:approx_subadditivity)
-    file: Exploding/Frozen/ApproxSubadditivity.lean
-    export: Exploding.Frozen.approx_subadditivity
-    state: DRAFT_SORRY
-    frozen_sha256: cc8f12ca936e4c7004662f4796489012419c44eb5071f5549ea1fa3cf5fc67f5
-    provider: Exploding.Frozen.approx_subadditivity
-    approved: "2026-09-10"
-
   - id: lem-penultimate-cluster
     version: 2
     kind: theorem
@@ -279,5 +268,16 @@ nodes:
     state: SEALED
     frozen_sha256: 5777a520125b85ceccd832b9191d16da33405025e490edfaa05aa10b546da169
     provider: Exploding.Frozen.dimensional_reduction
+    approved: "2026-09-10"
+
+  - id: lem-approx-subadditivity
+    version: 3
+    kind: theorem
+    source: exploding.tex:758-763 (label lemma:approx_subadditivity)
+    file: Exploding/Frozen/ApproxSubadditivity.lean
+    export: Exploding.Frozen.approx_subadditivity
+    state: SEALED
+    frozen_sha256: cc8f12ca936e4c7004662f4796489012419c44eb5071f5549ea1fa3cf5fc67f5
+    provider: Exploding.Frozen.approx_subadditivity
     approved: "2026-09-10"
 

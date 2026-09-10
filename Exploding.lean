@@ -4,6 +4,7 @@ import Exploding.Support.Toppling
 import Exploding.Support.Vocab
 import Exploding.Support.Hypotheses
 import Exploding.Support.Reduction
+import Exploding.Support.Wave
 
 import Exploding.External.FeyLevinePeres
 import Exploding.External.Schonmann

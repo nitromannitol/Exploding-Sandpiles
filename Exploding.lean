@@ -5,6 +5,18 @@ import Exploding.Support.Vocab
 import Exploding.Support.Hypotheses
 import Exploding.Support.Reduction
 import Exploding.Support.Wave
+import Exploding.Support.SubArith
+import Exploding.Support.SubFodo
+import Exploding.Support.SubFConf
+import Exploding.Support.SubNbr
+import Exploding.Support.SubWave
+import Exploding.Support.SubRec
+import Exploding.Support.SubTopple
+import Exploding.Support.SubMax
+import Exploding.Support.SubRecOne
+import Exploding.Support.SubRecSub
+import Exploding.Support.SubRecCard
+import Exploding.Support.SubRecMin
 
 import Exploding.External.FeyLevinePeres
 import Exploding.External.Schonmann

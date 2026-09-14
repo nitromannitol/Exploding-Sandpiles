@@ -204,17 +204,6 @@ nodes:
     provider: Exploding.Frozen.explosion_criteria
     approved: "2026-09-10"
 
-  - id: prop-recurrence
-    version: 2
-    kind: theorem
-    source: exploding.tex:1906-1908 (label prop:recurrence)
-    file: Exploding/Frozen/Recurrence.lean
-    export: Exploding.Frozen.recurrence
-    state: DRAFT_SORRY
-    frozen_sha256: fb09b457811848161a746759e6fd31ee024a56bee43df4e23cca58af7ae87fa1
-    provider: Exploding.Frozen.recurrence
-    approved: "2026-09-10"
-
   - id: prop-box-crossing
     version: 2
     kind: theorem
@@ -280,4 +269,15 @@ nodes:
     frozen_sha256: cc8f12ca936e4c7004662f4796489012419c44eb5071f5549ea1fa3cf5fc67f5
     provider: Exploding.Frozen.approx_subadditivity
     approved: "2026-09-10"
+
+  - id: prop-recurrence
+    version: 3
+    kind: theorem
+    source: exploding.tex:1906-1908 (label prop:recurrence)
+    file: Exploding/Frozen/Recurrence.lean
+    export: Exploding.Frozen.recurrence
+    state: SEALED
+    frozen_sha256: fb09b457811848161a746759e6fd31ee024a56bee43df4e23cca58af7ae87fa1
+    provider: Exploding.Frozen.recurrence
+    approved: "2026-09-13"
 

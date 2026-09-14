@@ -53,7 +53,6 @@ explicit hypothesis of the nodes whose proofs use it.
 | `lem-local-convexity` | `Exploding.Frozen.local_convexity` | `exploding.tex:531-535`, `lemma:local_convexity` | DRAFT_SORRY |
 | `lem-square-lower-bound` | `Exploding.Frozen.square_lower_bound` | `exploding.tex:705-707`, `lemma:square_lower_bound` | DRAFT_SORRY |
 | `lem-finite-exploding` | `Exploding.Frozen.finite_exploding` | `exploding.tex:718-720`, `lemma:finite_exploding` | DRAFT_SORRY |
-| `lem-approx-subadditivity` | `Exploding.Frozen.approx_subadditivity` | `exploding.tex:758-763`, `lemma:approx_subadditivity` | DRAFT_SORRY |
 | `lem-penultimate-cluster` | `Exploding.Frozen.last_penultimate_cluster` | `exploding.tex:790-796`, `lemma:last_penultimate_cluster` | DRAFT_SORRY |
 | `lem-penultimate-upper-bound` | `Exploding.Frozen.penultimate_upper_bound` | `exploding.tex:805-810`, `lemma:penultimate_upper_bound` | DRAFT_SORRY |
 | `lem-penultimate-close` | `Exploding.Frozen.last_penultimate_close` | `exploding.tex:830-835`, `lemma:last_penultimate_close` | DRAFT_SORRY |
@@ -63,11 +62,12 @@ explicit hypothesis of the nodes whose proofs use it.
 | `thm-generalized-convergence` | `Exploding.Frozen.generalized_convergence` | exploding.tex:1228-1232 (Convergence of the exploding sandpile) | DRAFT_SORRY |
 | `thm-counterexample` | `Exploding.Frozen.counterexample` | `exploding.tex:1330-1340`, `theorem:counterexample` | DRAFT_SORRY |
 | `prop-explosion-criteria` | `Exploding.Frozen.explosion_criteria` | `exploding.tex:1800-1804`, `prop:explosion_criteria` | DRAFT_SORRY |
-| `prop-recurrence` | `Exploding.Frozen.recurrence` | `exploding.tex:1906-1908`, `prop:recurrence` | DRAFT_SORRY |
 | `prop-box-crossing` | `Exploding.Frozen.box_crossing` | exploding.tex:1965-1967 (P is box-crossing) | DRAFT_SORRY |
 | `ext-fey-levine-peres` | `Exploding.External.FeyLevinePeresExplosive` | `exploding.tex:238-240`, `prop:fey_levine_peres_explode` | FROZEN |
 | `ext-schonmann-bootstrap` | `Exploding.External.SchonmannBootstrap` | `exploding.tex:1948-1960`, `prop:schonnmann_bootstrap` | FROZEN |
 | `lem-last-wave-bound` | `Exploding.Frozen.last_wave_bound` | `exploding.tex:728-733`, `lemma:last_wave_bound` | SEALED |
 | `prop-dimensional-reduction` | `Exploding.Frozen.dimensional_reduction` | `exploding.tex:1869-1878`, `prop:dimensional_reduction` | SEALED |
+| `lem-approx-subadditivity` | `Exploding.Frozen.approx_subadditivity` | `exploding.tex:758-763`, `lemma:approx_subadditivity` | SEALED |
+| `prop-recurrence` | `Exploding.Frozen.recurrence` | `exploding.tex:1906-1908`, `prop:recurrence` | SEALED |
 
 <!-- FROZEN-SURFACE-END -->

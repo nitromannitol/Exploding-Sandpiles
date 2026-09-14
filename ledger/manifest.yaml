@@ -29,15 +29,15 @@ nodes:
     approved: "2026-09-10"
 
   - id: thm-time-constant
-    version: 2
+    version: 3
     kind: theorem
     source: exploding.tex:259-262 (label theorem:convergence_of_time_constant)
     file: Exploding/Frozen/TimeConstant.lean
     export: Exploding.Frozen.convergence_of_time_constant
-    state: DRAFT_SORRY
-    frozen_sha256: f662cd5047f602296d5f6eb191f7cd72ece6c0a2497ca81a98f1fa3120166113
+    state: CONDITIONAL
+    frozen_sha256: b1af228e02acb135478d72dd923f3d354853656c26a3a5dab0d083777205c393
     provider: Exploding.Frozen.convergence_of_time_constant
-    approved: "2026-09-10"
+    approved: "2026-09-14"
 
   - id: thm-explosive
     version: 2
@@ -172,15 +172,15 @@ nodes:
     approved: "2026-09-10"
 
   - id: thm-generalized-convergence
-    version: 2
+    version: 3
     kind: theorem
     source: exploding.tex:1228-1232 (Convergence of the exploding sandpile)
     file: Exploding/Frozen/GeneralizedConvergence.lean
     export: Exploding.Frozen.generalized_convergence
-    state: DRAFT_SORRY
+    state: CONDITIONAL
     frozen_sha256: 70e405e5fb7fdebc17b00a68d245432d19daafeb9424e907d04a6ad3385ce428
     provider: Exploding.Frozen.generalized_convergence
-    approved: "2026-09-10"
+    approved: "2026-09-14"
 
   - id: thm-counterexample
     version: 2

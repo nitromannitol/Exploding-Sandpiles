@@ -91,4 +91,25 @@ theorem Gen.nearestSite_smul_mem_cent (y : Fin d → ℝ) (C n : ℕ)
   rw [hcast]
   exact hb
 
+/-- A finite `ℕ∞`-valued arrival time plus a natural constant is finite. -/
+theorem Gen.add_nat_ne_top {a : ℕ∞} (ha : a ≠ ⊤) (C : ℕ) : a + (C : ℕ∞) ≠ ⊤ := by
+  intro h
+  rw [ENat.add_eq_top] at h
+  exact h.elim ha (by simp)
+
+/-- The `toNat` of a sum of a finite `ℕ∞` and a natural is the sum of the
+`toNat`s. -/
+theorem Gen.toNat_add_nat {a : ℕ∞} (ha : a ≠ ⊤) (C : ℕ) :
+    (a + (C : ℕ∞)).toNat = a.toNat + C := by
+  cases a with
+  | top => exact absurd rfl ha
+  | coe n => simp [ENat.toNat_add]
+
+/-- If `a ≤ b + C` in `ℕ∞` with `b` finite, then `a.toNat ≤ b.toNat + C`. -/
+theorem Gen.toNat_le_add {a b : ℕ∞} {C : ℕ} (h : a ≤ b + (C : ℕ∞)) (hb : b ≠ ⊤) :
+    a.toNat ≤ b.toNat + C := by
+  have hfin : b + (C : ℕ∞) ≠ ⊤ := Gen.add_nat_ne_top hb C
+  have h1 : a.toNat ≤ (b + (C : ℕ∞)).toNat := ENat.toNat_le_toNat h hfin
+  rwa [Gen.toNat_add_nat hb C] at h1
+
 end Exploding

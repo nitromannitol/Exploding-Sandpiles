@@ -46,7 +46,6 @@ explicit hypothesis of the nodes whose proofs use it.
 | id | Lean | paper | state |
 |---|---|---|---|
 | `thm-limit-shape` | `Exploding.Frozen.limit_shape` | `exploding.tex:246-254`, `theorem:limit_shape` | DRAFT_SORRY |
-| `thm-time-constant` | `Exploding.Frozen.convergence_of_time_constant` | `exploding.tex:259-262`, `theorem:convergence_of_time_constant` | DRAFT_SORRY |
 | `thm-explosive` | `Exploding.Frozen.explosive` | `exploding.tex:265-268`, `theorem:explosive` | DRAFT_SORRY |
 | `prop-crossing-time` | `Exploding.Frozen.crossing_time` | `exploding.tex:416-422`, `prop:crossing_time` | DRAFT_SORRY |
 | `prop-renormalization` | `Exploding.Frozen.renormalization_properties` | `exploding.tex:482-497`, `prop:renormalization_properties` | DRAFT_SORRY |
@@ -69,5 +68,6 @@ explicit hypothesis of the nodes whose proofs use it.
 | `prop-dimensional-reduction` | `Exploding.Frozen.dimensional_reduction` | `exploding.tex:1869-1878`, `prop:dimensional_reduction` | SEALED |
 | `lem-approx-subadditivity` | `Exploding.Frozen.approx_subadditivity` | `exploding.tex:758-763`, `lemma:approx_subadditivity` | SEALED |
 | `thm-generalized-convergence` | `Exploding.Frozen.generalized_convergence` | exploding.tex:1228-1232 (Convergence of the exploding sandpile) | CONDITIONAL |
+| `thm-time-constant` | `Exploding.Frozen.convergence_of_time_constant` | `exploding.tex:259-262`, `theorem:convergence_of_time_constant` | CONDITIONAL |
 
 <!-- FROZEN-SURFACE-END -->

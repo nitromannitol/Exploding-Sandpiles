@@ -46,7 +46,7 @@ explicit hypothesis of the nodes whose proofs use it.
 | id | Lean | paper | state |
 |---|---|---|---|
 | `thm-limit-shape` | `Exploding.Frozen.limit_shape` | `exploding.tex:246-254`, `theorem:limit_shape` | DRAFT_SORRY |
-| `thm-time-constant` | `Exploding.Frozen.convergence_of_time_constant` | `exploding.tex:259-262`, `theorem:convergence_of_time_constant` | DRAFT_SORRY |
+| `thm-time-constant` | `Exploding.Frozen.convergence_of_time_constant` | `exploding.tex:259-262`, `theorem:convergence_of_time_constant` | CONDITIONAL |
 | `thm-explosive` | `Exploding.Frozen.explosive` | `exploding.tex:265-268`, `theorem:explosive` | DRAFT_SORRY |
 | `prop-crossing-time` | `Exploding.Frozen.crossing_time` | `exploding.tex:416-422`, `prop:crossing_time` | DRAFT_SORRY |
 | `prop-renormalization` | `Exploding.Frozen.renormalization_properties` | `exploding.tex:482-497`, `prop:renormalization_properties` | DRAFT_SORRY |
@@ -59,7 +59,7 @@ explicit hypothesis of the nodes whose proofs use it.
 | `prop-last-wave-convergence` | `Exploding.Frozen.convergence_of_the_last_wave` | `exploding.tex:844-850`, `prop:convergence_of_the_last_wave` | DRAFT_SORRY |
 | `prop-approximate-subadditive` | `Exploding.Frozen.approximate_subadditive` | `exploding.tex:878-890`, `prop:approximate_subadditive` | DRAFT_SORRY |
 | `prop-generalized-last-wave` | `Exploding.Frozen.convergence_of_the_generalized_last_wave` | `exploding.tex:1195-1199`, `prop:convergence_of_the_generalized_last_wave` | DRAFT_SORRY |
-| `thm-generalized-convergence` | `Exploding.Frozen.generalized_convergence` | exploding.tex:1228-1232 (Convergence of the exploding sandpile) | DRAFT_SORRY |
+| `thm-generalized-convergence` | `Exploding.Frozen.generalized_convergence` | exploding.tex:1228-1232 (Convergence of the exploding sandpile) | CONDITIONAL |
 | `thm-counterexample` | `Exploding.Frozen.counterexample` | `exploding.tex:1330-1340`, `theorem:counterexample` | DRAFT_SORRY |
 | `prop-explosion-criteria` | `Exploding.Frozen.explosion_criteria` | `exploding.tex:1800-1804`, `prop:explosion_criteria` | DRAFT_SORRY |
 | `prop-box-crossing` | `Exploding.Frozen.box_crossing` | exploding.tex:1965-1967 (P is box-crossing) | DRAFT_SORRY |

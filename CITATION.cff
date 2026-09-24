@@ -1,0 +1,42 @@
+cff-version: 1.2.0
+message: "If you use this formalization, please cite it as below."
+title: "Exploding-Sandpiles: a Lean 4 formalization, in progress, of A shape theorem for exploding sandpiles"
+abstract: >-
+  A Lean 4 / mathlib formalization, in progress, of the paper "A shape theorem
+  for exploding sandpiles" (Bou-Rabee).  Every theorem, lemma and proposition
+  of the paper is registered as a frozen statement, together with five further
+  results the paper cites in its proofs, 29 in all.  Five are proved, with no
+  custom axiom and no cited result taken as a hypothesis; two, among them the
+  convergence of the rescaled arrival times, have written proofs that rest on
+  open statements; seven are results the paper cites, stated as propositions
+  and assumed; and fifteen, among them the limit shape theorem, are open,
+  each a single registered sorry.
+type: software
+authors:
+  - family-names: Bou-Rabee
+    given-names: Ahmed
+keywords:
+  - Lean
+  - mathlib
+  - formal verification
+  - Abelian sandpile
+  - exploding sandpile
+  - limit shape
+  - probability
+license: Apache-2.0
+# Add a Zenodo DOI here once an archived release is minted.
+repository-code: "https://github.com/nitromannitol/Exploding-Sandpiles"
+references:
+  - type: article
+    title: "A shape theorem for exploding sandpiles"
+    authors:
+      - family-names: Bou-Rabee
+        given-names: Ahmed
+    journal: "The Annals of Applied Probability"
+    volume: 34
+    issue: "1A"
+    start: 714
+    end: 742
+    year: 2024
+    doi: "10.1214/23-AAP1976"
+    notes: "The paper formalized by this repository; arXiv:2102.04422."

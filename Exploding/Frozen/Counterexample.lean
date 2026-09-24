@@ -2,10 +2,11 @@
 Theorem 6.1 of the paper: explosive backgrounds without a limit shape.
 -/
 import Exploding.Support.Vocab
+import Exploding.External.FeyMeesterRedig
 
 open Exploding LatticeProb Filter
 
-/-- **Theorem 6.1** (`exploding.tex:1330-1340`, label
+/-- **Theorem 6.1** (`exploding.tex:1351-1361`, label
 `theorem:counterexample`).
 
 "For each dimension `d ≥ 2`, there are explosive backgrounds `η ≱ (2d-2)` on
@@ -16,9 +17,13 @@ open Exploding LatticeProb Filter
 `T(n)` is the arrival time of the exploding sandpile at `n e_1`; its finiteness
 at every `n` is asserted, so that reading it as a natural number is not a junk
 value.  The `limsup` and `liminf` are of a bounded sequence of reals, so the
-two clauses are the paper's. -/
+two clauses are the paper's.
+
+Theorem 2.8 of Fey, Meester and Redig, which the paper cites in Step 2, enters
+as the explicit hypothesis `hFMR`. -/
 -- FROZEN-STATEMENT-BEGIN
-theorem Exploding.Frozen.counterexample (d : ℕ) (hd : 2 ≤ d) :
+theorem Exploding.Frozen.counterexample (d : ℕ) (hd : 2 ≤ d)
+    (hFMR : Exploding.External.FeyMeesterRedigLeastAction) :
     ∃ η : Site d → ℤ,
       Explosive η ∧
       (¬ ∀ x : Site d, 2 * (d : ℤ) - 2 ≤ η x) ∧

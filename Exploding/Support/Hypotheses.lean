@@ -54,11 +54,13 @@ def StronglyBoxCrossed (η : Site d → ℤ) (k : Fin d → ℕ) (j : Site d) : 
 
 /-! ### The five hypotheses of Section 5 -/
 
-/-- **Hypothesis 5.1** (finite range of dependence): the coordinates at sites
-further apart than `K` are independent. -/
+/-- **Hypothesis 5.1** (finite range of dependence): the families of coordinates
+on two finite sets of sites, every site of one further than `K` from every site
+of the other, are independent. -/
 def FiniteRangeOfDependence (d : ℕ) (P : Measure (Site d → ℤ)) : Prop :=
-  ∃ K : ℕ, ∀ x y : Site d, (K : ℤ) < mnorm (x - y) →
-    ProbabilityTheory.IndepFun (fun η : Site d → ℤ => η x) (fun η : Site d → ℤ => η y) P
+  ∃ K : ℕ, ∀ I J : Finset (Site d), (∀ a ∈ I, ∀ b ∈ J, (K : ℤ) < mnorm (a - b)) →
+    ProbabilityTheory.IndepFun (fun η : Site d → ℤ => fun i : I => η i)
+      (fun η : Site d → ℤ => fun j : J => η j) P
 
 /-- **Hypothesis 5.2** (box-crossing). -/
 def BoxCrossingHyp (d : ℕ) (P : Measure (Site d → ℤ)) : Prop :=
@@ -92,7 +94,8 @@ def WaveApproximationHyp (d : ℕ) (P : Measure (Site d → ℤ)) : Prop :=
 
 /-! ### The setting of Section 5 -/
 
-/-- The state space `Ω` of Section 5: backgrounds with `η_min ≤ η ≤ 2d - 1`. -/
+/-- The state space `Ω` of Section 5: backgrounds with `η_min ≤ η ≤ 2d - 1`.  The
+statements that use it take `0 ≤ η_min`, as Section 5 does. -/
 def InOmega (d : ℕ) (ηmin : ℤ) (η : Site d → ℤ) : Prop :=
   ∀ x, ηmin ≤ η x ∧ η x ≤ 2 * (d : ℤ) - 1
 

@@ -1,10 +1,10 @@
 /-
-Lemma 2.3 of the paper: a path of topplings fills its bounding rectangle.
+Lemma 2.1 of the paper: a path of topplings fills its bounding rectangle.
 -/
 import Exploding.Support.Vocab
 
 open Exploding LatticeProb
-/-- **Lemma 2.3** (`exploding.tex:531-535`, label `lemma:local_convexity`).
+/-- **Lemma 2.1** (`exploding.tex:531-535`, label `lemma:local_convexity`).
 
 "Let `A := {z^(i)}` be a finite path `z^(i) ∼ z^(i+1)`.  Let `w_t` denote
 `A`-frozen parallel toppling with initial conditions `w_0|_A = 1`, `s_0' = η`.

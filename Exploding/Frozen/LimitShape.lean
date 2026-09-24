@@ -3,6 +3,10 @@ Theorem 1.2 of the paper: the support of the exploding sandpile, rescaled by
 time, converges in measure to a convex domain.
 -/
 import Exploding.Support.Vocab
+import Exploding.External.LiggettSchonmannStaceyBoundedDegree
+import Exploding.External.MathieuHoles
+import Exploding.External.AntalPisztora
+import Exploding.External.Schonmann
 
 open Exploding LatticeProb MeasureTheory Filter
 
@@ -17,9 +21,16 @@ lattice point `Exploding.nearestSite`; `|·|` is Lebesgue measure on `ℝ^d`; `�
 is the symmetric difference.  A *domain* is a nonempty open connected set, and
 a nonempty open convex set is connected, so convexity, openness and
 nonemptiness are the clauses carried.  `B(p)` is deterministic: it is bound
-before `η`. -/
+before `η`.
+
+The results the paper cites for Proposition 2.2 (`hLSSB`, `hHole`, `hChem`) and
+Schonmann's bound behind Theorem 1.4 (`hSch`) enter as explicit hypotheses. -/
 -- FROZEN-STATEMENT-BEGIN
-theorem Exploding.Frozen.limit_shape (d : ℕ) (hd : 2 ≤ d) (p : ℝ) (hp : 0 < p) (hp1 : p < 1) :
+theorem Exploding.Frozen.limit_shape (d : ℕ) (hd : 2 ≤ d) (p : ℝ) (hp : 0 < p) (hp1 : p < 1)
+    (hLSSB : Exploding.External.LiggettSchonmannStaceyBoundedDegree)
+    (hHole : Exploding.External.MathieuHoleVolume)
+    (hChem : Exploding.External.AntalPisztoraChemicalDistance)
+    (hSch : Exploding.External.SchonmannBootstrap) :
     ∃ B : Set (Fin d → ℝ),
       Convex ℝ B ∧ IsOpen B ∧ B.Nonempty ∧
       ∀ᵐ η ∂(toyLaw d p),

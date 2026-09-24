@@ -34,7 +34,7 @@ _spec = importlib.util.spec_from_file_location("pa", ROOT / "tools" / "paper_anc
 _pa = importlib.util.module_from_spec(_spec)
 _spec.loader.exec_module(_pa)
 
-CITE_RE = re.compile(r"rotor\.tex:(\d+)(?:-(\d+))?")
+CITE_RE = re.compile(re.escape(PAPER.name) + r":(\d+)(?:-(\d+))?")
 # A frozen file opens with a header docstring naming the paper statement it
 # transcribes: its LaTeX label and its line range.  Three wordings are in use
 # (citation before the label, after it, or with another backticked token
@@ -46,9 +46,15 @@ HEADER_LABEL_RE = re.compile(r"label\s+`([A-Za-z][A-Za-z0-9:_-]*)`")
 
 
 def header_block(text: str) -> tuple[int, int] | None:
-    """Offsets of the leading `/- ... -/` docstring, if the file opens with one."""
+    """Offsets of the header of a frozen file: its leading `/- ... -/` module
+    docstring together with the declaration docstring that follows, up to the
+    FROZEN-STATEMENT-BEGIN marker (or the end of the module docstring when the
+    file has no marker)."""
     if not text.startswith("/-"):
         return None
+    marker = text.find("-- FROZEN-STATEMENT-BEGIN")
+    if marker > 0:
+        return (0, marker)
     end = text.find("-/")
     return (0, end) if end > 0 else None
 

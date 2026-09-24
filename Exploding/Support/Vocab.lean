@@ -76,10 +76,11 @@ def GoodAt (η : Site d → ℤ) (k : ℕ) (i : Site d) : Prop :=
 /-- The set of good sites of the macroscopic lattice. -/
 def goodSites (η : Site d → ℤ) (k : ℕ) : Set (Site d) := {i | GoodAt η k i}
 
-/-- `C` is an infinite cluster of good cubes: an infinite connected component of
-the good sites of the macroscopic lattice. -/
-def IsInfiniteGoodCluster (η : Site d → ℤ) (k : ℕ) (C : Set (Site d)) : Prop :=
-  C.Infinite ∧ ∃ i ∈ C, C = componentIn (goodSites η k) i
+/-- `C` is an infinite connected set of good cubes: an infinite set of good sites
+of the macroscopic lattice, any two of which are joined by a nearest-neighbour
+path inside `C`. -/
+def IsInfiniteConnectedGoodSet (η : Site d → ℤ) (k : ℕ) (C : Set (Site d)) : Prop :=
+  C.Infinite ∧ C ⊆ goodSites η k ∧ ∀ x ∈ C, ∀ y ∈ C, y ∈ componentIn C x
 
 /-- The first unit direction `e_1`. -/
 def e1 (d : ℕ) : Site d := fun i => if (i : ℕ) = 0 then 1 else 0

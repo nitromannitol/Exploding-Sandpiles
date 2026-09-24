@@ -92,7 +92,7 @@ end Exploding
 
 open Exploding LatticeProb
 
-/-- **Lemma 3.4** (`exploding.tex:758-763`, label `lemma:approx_subadditivity`).
+/-- **Lemma 3.4** (`exploding.tex:760-765`, label `lemma:approx_subadditivity`).
 
 "The penultimate-cluster arrival times are subadditive: for all `a, b, z ∈ ℤ^d`,
 `T̃(a,z) ≤ T̃(a,b) + T̃(b,z)`."

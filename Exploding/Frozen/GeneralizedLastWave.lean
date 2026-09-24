@@ -3,10 +3,14 @@ Proposition 5.1 of the paper: convergence of the last-wave under the general
 hypotheses.
 -/
 import Exploding.Support.Hypotheses
+import Exploding.External.LiggettSchonmannStacey
+import Exploding.External.LiggettSchonmannStaceyBoundedDegree
+import Exploding.External.MathieuHoles
+import Exploding.External.AntalPisztora
 
 open Exploding LatticeProb MeasureTheory Filter
 
-/-- **Proposition 5.1** (`exploding.tex:1195-1199`, label
+/-- **Proposition 5.1** (`exploding.tex:1203-1207`, label
 `prop:convergence_of_the_generalized_last_wave`).
 
 "Under Hypotheses 5.1, 5.3, and 5.4, on an event of probability 1, `η` is
@@ -18,15 +22,24 @@ function on `ℝ^d` depending only on the law of `η`."
 `N_η` depends only on the law, so it is bound before `η` and after `P`.  Locally
 uniform convergence is written in its `ε`-form and the finiteness of `T̂` is
 asserted, so that no supremum over an empty set and no `ENat.toNat ⊤` is read.
-The setting is that of Section 5. -/
+The setting is that of Section 5, where `η_min ≥ 0`.
+
+The results the paper cites in the proof enter as explicit hypotheses: `hLSS`
+(Liggett, Schonmann and Stacey, Theorem 0.0), and, for the rerun of Section 3,
+`hLSSB` (Liggett, Schonmann and Stacey, Corollary 1.4), `hHole` (Mathieu,
+Lemma 5.2) and `hChem` (Antal and Pisztora, Theorem 1.1). -/
 -- FROZEN-STATEMENT-BEGIN
-theorem Exploding.Frozen.convergence_of_the_generalized_last_wave (d : ℕ) (hd : 2 ≤ d) (ηmin : ℤ)
+theorem Exploding.Frozen.convergence_of_the_generalized_last_wave (d : ℕ) (hd : 2 ≤ d) (ηmin : ℤ) (hηmin : 0 ≤ ηmin)
     (L : AddSubgroup (Site d)) (hL : L.index ≠ 0)
     (P : Measure (Site d → ℤ)) (hP : IsProbabilityMeasure P)
     (hsupp : ∀ᵐ η ∂P, InOmega d ηmin η)
     (hstat : StationaryOn d L P) (herg : ErgodicOn d L P)
     (h1 : FiniteRangeOfDependence d P) (h3 : PathFillingHyp d P)
-    (h4 : StronglyBoxCrossingHyp d P) :
+    (h4 : StronglyBoxCrossingHyp d P)
+    (hLSS : Exploding.External.LiggettSchonmannStacey)
+    (hLSSB : Exploding.External.LiggettSchonmannStaceyBoundedDegree)
+    (hHole : Exploding.External.MathieuHoleVolume)
+    (hChem : Exploding.External.AntalPisztoraChemicalDistance) :
     ∃ N : (Fin d → ℝ) → ℝ,
       Continuous N ∧
       ConvexOn ℝ Set.univ N ∧

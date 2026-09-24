@@ -10,7 +10,7 @@ open Exploding LatticeProb
 -- holds at every `(1, y)`, because both processes are frozen off their cubes and
 -- `cons 1 y` lies in `Q_n^{(d+1)}` exactly when `y` lies in `Q_n^{(d)}`.
 set_option linter.unusedVariables false in
-/-- **Proposition 7.2** (`exploding.tex:1869-1878`, label
+/-- **Proposition 7.2** (`exploding.tex:1890-1899`, label
 `prop:dimensional_reduction`).
 
 "For all `t ≥ 0` and `(1, 𝐱_{d-1}) ∈ F_1(Q_n^{(d)})`,

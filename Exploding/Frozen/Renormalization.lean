@@ -1,8 +1,11 @@
 /-
-Proposition 2.2 of the paper: the properties of the infinite cluster of good
-cubes on the macroscopic lattice.
+Proposition 2.2 of the paper: an infinite connected set of good cubes on the
+macroscopic lattice, with small holes and a linear chemical distance.
 -/
 import Exploding.Support.Vocab
+import Exploding.External.LiggettSchonmannStaceyBoundedDegree
+import Exploding.External.MathieuHoles
+import Exploding.External.AntalPisztora
 
 open Exploding LatticeProb MeasureTheory
 
@@ -11,7 +14,7 @@ open Exploding LatticeProb MeasureTheory
 
 "For fixed `k` large enough, there are constants `c, C` so that the following
 hold on an event of probability 1.
- (1) There is a unique infinite cluster `C_∞` of good cubes on the macroscopic
+ (1) There is an infinite connected set `C_∞` of good cubes on the macroscopic
      lattice `{Q_k(i)}`.
  (2) There is `n_0` so that for `n ≥ n_0`, any connected component of `C_∞^c`
      that intersects `[-n,n]^d` has volume smaller than `(log n)^{5/2}`.
@@ -23,12 +26,19 @@ hold on an event of probability 1.
 probability-one event.  "Volume" is cardinality, and the finiteness of the
 component is asserted alongside the bound so that no infinite set is read
 through `Set.ncard = 0`.  The chemical distance is taken in `ℕ∞`, so the upper
-bound also says that `x` and `y` are joined inside `C_∞`. -/
+bound also says that `x` and `y` are joined inside `C_∞`.
+
+The percolation results the paper cites for this proposition enter as explicit
+hypotheses: `hLSSB` (Liggett, Schonmann and Stacey, Corollary 1.4), `hHole`
+(Mathieu, Lemma 5.2) and `hChem` (Antal and Pisztora, Theorem 1.1). -/
 -- FROZEN-STATEMENT-BEGIN
-theorem Exploding.Frozen.renormalization_properties (d : ℕ) (hd : 2 ≤ d) (p : ℝ) (hp : 0 < p) (hp1 : p < 1) :
+theorem Exploding.Frozen.renormalization_properties (d : ℕ) (hd : 2 ≤ d) (p : ℝ) (hp : 0 < p) (hp1 : p < 1)
+    (hLSSB : Exploding.External.LiggettSchonmannStaceyBoundedDegree)
+    (hHole : Exploding.External.MathieuHoleVolume)
+    (hChem : Exploding.External.AntalPisztoraChemicalDistance) :
     ∃ k0 : ℕ, ∀ k : ℕ, k0 ≤ k → ∃ c C : ℝ, 0 < c ∧ 0 < C ∧
       ∀ᵐ η ∂(toyLaw d p),
-        ∃! Cinf : Set (Site d), IsInfiniteGoodCluster η k Cinf ∧
+        ∃ Cinf : Set (Site d), IsInfiniteConnectedGoodSet η k Cinf ∧
           (∃ n0 : ℕ, ∀ n : ℕ, n0 ≤ n → ∀ x ∈ (cent d n : Set (Site d)),
             x ∉ Cinf →
               (componentIn Cinfᶜ x).Finite ∧

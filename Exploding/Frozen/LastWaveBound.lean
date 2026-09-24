@@ -9,7 +9,7 @@ open Exploding LatticeProb
 -- The paper's `t ≥ 1` is part of the statement but not needed for the bound,
 -- which holds from `t = 0` on; the hypothesis stays, so the linter is silenced.
 set_option linter.unusedVariables false in
-/-- **Lemma 3.3** (`exploding.tex:728-733`, label `lemma:last_wave_bound`).
+/-- **Lemma 3.3** (`exploding.tex:730-735`, label `lemma:last_wave_bound`).
 
 "The last wave started at `z` is bounded by one outside the interior of the
 penultimate-cluster of `z`.  Moreover, for all `t ≥ 1` and `x, z ∈ ℤ^d`,

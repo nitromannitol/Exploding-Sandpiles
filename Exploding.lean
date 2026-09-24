@@ -17,9 +17,15 @@ import Exploding.Support.SubRecOne
 import Exploding.Support.SubRecSub
 import Exploding.Support.SubRecCard
 import Exploding.Support.SubRecMin
+import Exploding.Support.Percolation
 
 import Exploding.External.FeyLevinePeres
 import Exploding.External.Schonmann
+import Exploding.External.LiggettSchonmannStaceyBoundedDegree
+import Exploding.External.LiggettSchonmannStacey
+import Exploding.External.AntalPisztora
+import Exploding.External.MathieuHoles
+import Exploding.External.FeyMeesterRedig
 
 import Exploding.Frozen.LimitShape
 import Exploding.Frozen.TimeConstant
@@ -43,3 +49,4 @@ import Exploding.Frozen.ExplosionCriteria
 import Exploding.Frozen.DimensionalReduction
 import Exploding.Frozen.Recurrence
 import Exploding.Frozen.BoxCrossing
+import Exploding.MainTheorems

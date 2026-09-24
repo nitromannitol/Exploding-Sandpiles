@@ -7,6 +7,9 @@ import Exploding.External.FeyLevinePeres
 import Exploding.Frozen.LastWaveConvergence
 import Exploding.Frozen.ApproximateSubadditive
 import Exploding.Support.Gen
+import Exploding.External.LiggettSchonmannStaceyBoundedDegree
+import Exploding.External.MathieuHoles
+import Exploding.External.AntalPisztora
 
 open Exploding LatticeProb MeasureTheory Filter
 
@@ -22,10 +25,16 @@ for `η + M_η δ₀`, taken in `ℕ∞`; the almost-sure event asserts that it 
 at every site, so that reading it as a natural number is not a junk value.
 Locally uniform convergence is written in its `ε`-form for the same reason: a
 supremum over a compact set would be read through `sSup ∅ = 0`.  `N_p` is
-deterministic: it is bound before `η`. -/
+deterministic: it is bound before `η`.
+
+Theorem 1.1 (`hFLP`) and the results the paper cites for Proposition 2.2
+(`hLSSB`, `hHole`, `hChem`) enter as explicit hypotheses. -/
 -- FROZEN-STATEMENT-BEGIN
 theorem Exploding.Frozen.convergence_of_time_constant (d : ℕ) (hd : 2 ≤ d) (p : ℝ) (hp : 0 < p) (hp1 : p < 1)
-    (hFLP : Exploding.External.FeyLevinePeresExplosive) :
+    (hFLP : Exploding.External.FeyLevinePeresExplosive)
+    (hLSSB : Exploding.External.LiggettSchonmannStaceyBoundedDegree)
+    (hHole : Exploding.External.MathieuHoleVolume)
+    (hChem : Exploding.External.AntalPisztoraChemicalDistance) :
     ∃ N : (Fin d → ℝ) → ℝ,
       Continuous N ∧
       ConvexOn ℝ Set.univ N ∧
@@ -38,10 +47,10 @@ theorem Exploding.Frozen.convergence_of_time_constant (d : ℕ) (hd : 2 ≤ d) (
 -- FROZEN-STATEMENT-END
 := by
   obtain ⟨N, hcont, hconv, hhom, hlast⟩ :=
-    Exploding.Frozen.convergence_of_the_last_wave d hd p hp hp1
+    Exploding.Frozen.convergence_of_the_last_wave d hd p hp hp1 hLSSB hHole hChem
   have hexp : ∀ᵐ η ∂(toyLaw d p), Explosive η := hFLP d hd p hp hp1
   refine ⟨N, hcont, hconv, hhom, ?_⟩
-  filter_upwards [hlast, Exploding.Frozen.approximate_subadditive d hd p hp hp1, hexp]
+  filter_upwards [hlast, Exploding.Frozen.approximate_subadditive d hd p hp hp1 hLSSB hHole hChem, hexp]
     with η hlastη hsub hηexp
   obtain ⟨hfinL, hloc⟩ := hlastη
   obtain ⟨C1, C2, hC⟩ := hsub

@@ -235,4 +235,76 @@ theorem wave_dom_fodo {d : ℕ} (hd0 : (0 : ℤ) < 2 * (d : ℤ))
       · rw [add_zero, ← wave_of_ne η N z x (t0 + s) hxz]
         exact le_trans (ih x) (wave_mono_t η hη hd0 N z (t0 + s) x)
 
+/-- The `n`-wave never exceeds `n` on a background of at most `2d - 1` chips. -/
+theorem wave_le_n (η : Site d → ℤ) (hhigh : ∀ y, η y ≤ 2 * (d : ℤ) - 1)
+    (hd0 : (0 : ℤ) < 2 * (d : ℤ)) (N : ℕ) (z : Site d) (t : ℕ) (x : Site d) :
+    wave η N z t x ≤ (N : ℤ) := by
+  induction t generalizing x with
+  | zero =>
+    by_cases h : x = z <;> simp [wave_zero, h]
+  | succ t ih =>
+    by_cases h : x = z
+    · rw [h, wave_at_centre]
+    · rw [wave_of_ne η N z x t h]
+      have hsum : nbrSumZ (wave η N z t) x ≤ 2 * (d : ℤ) * (N : ℤ) := by
+        simp only [nbrSumZ]
+        calc ∑ i : Fin d, (wave η N z t (x + unit i) + wave η N z t (x - unit i))
+            ≤ ∑ _i : Fin d, ((N : ℤ) + (N : ℤ)) :=
+              Finset.sum_le_sum fun i _ => by linarith [ih (x + unit i), ih (x - unit i)]
+          _ = 2 * (d : ℤ) * (N : ℤ) := by
+              rw [Finset.sum_const, Finset.card_univ, Fintype.card_fin]; ring
+      have hlt : nbrSumZ (wave η N z t) x + η x < ((N : ℤ) + 1) * (2 * (d : ℤ)) := by
+        linarith [hhigh x]
+      by_contra hcon
+      have hcon' : (N : ℤ) < (nbrSumZ (wave η N z t) x + η x) / (2 * (d : ℤ)) :=
+        lt_of_not_ge hcon
+      have h1 : (N : ℤ) + 1 ≤ (nbrSumZ (wave η N z t) x + η x) / (2 * (d : ℤ)) := by
+        omega
+      rw [Int.le_ediv_iff_mul_le (by positivity)] at h1
+      linarith
+
+/-- The wave dominates the frozen odometer started from a seed that the wave
+already dominates, at every later time.  At the centre the wave is `N ≥ 1`
+while the frozen odometer is at most `1`. -/
+theorem wave_dom_fodo' {d : ℕ} (hd0 : (0 : ℤ) < 2 * (d : ℤ))
+    (S : Set (Site d)) (η : Site d → ℤ) (hη : ∀ y, 0 ≤ η y)
+    (hηhigh : ∀ y, η y ≤ 2 * (d : ℤ) - 1)
+    (N : ℕ) (hN : 1 ≤ N) (z : Site d)
+    (t0 : ℕ) (w0 : Site d → ℤ) (hw0nn : ∀ x, 0 ≤ w0 x) (hw0one : ∀ x, w0 x ≤ 1)
+    (hw0 : ∀ x, w0 x ≤ wave η N z t0 x)
+    (hSdom : ∀ s : ℕ, ∀ x ∈ S, w0 x ≤ wave η N z (t0 + s) x) :
+    ∀ s x, fodo S η w0 s x ≤ wave η N z (t0 + s) x := by
+  intro s
+  induction s with
+  | zero =>
+    intro x
+    rw [fodo_zero]
+    simpa using hw0 x
+  | succ s ih =>
+    intro x
+    rw [fodo_succ]
+    by_cases hx : x ∈ S
+    · rw [if_pos hx]
+      have h := hSdom (s + 1) x hx
+      rwa [show t0 + (s + 1) = t0 + s + 1 from by omega] at h
+    · rw [if_neg hx]
+      by_cases hxz : x = z
+      · subst hxz
+        rw [wave_at_centre]
+        have hle1 := fodo_le_one S η w0 hηhigh hw0one hw0nn (s + 1) x
+        have hN' : (1 : ℤ) ≤ (N : ℤ) := by exact_mod_cast hN
+        rw [fodo_succ] at hle1
+        rw [if_neg hx] at hle1
+        linarith
+      · rw [show t0 + (s + 1) = t0 + s + 1 from by omega,
+          wave_of_ne η N z x (t0 + s) hxz]
+        split_ifs with hc
+        · rw [Int.le_ediv_iff_mul_le (by positivity)]
+          have hc' : 2 * (d : ℤ) ≤ η x + lap (fodo S η w0 s) x := hc
+          rw [lap] at hc'
+          have hmono := nbrSumZ_mono (fun y => ih y) x
+          linarith
+        · rw [add_zero, ← wave_of_ne η N z x (t0 + s) hxz]
+          exact le_trans (ih x) (wave_mono_t η hη hd0 N z (t0 + s) x)
+
 end Exploding

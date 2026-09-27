@@ -517,4 +517,30 @@ theorem bmin_succ (z : ℕ → Site d) (j : ℕ) (i : Fin d) :
   rw [bmin, bmin, h1, Finset.inf'_insert hne]
   exact min_comm _ _
 
+/-- In the UP case the coordinatewise minimum does not change. -/
+theorem bmin_succ_up (z : ℕ → Site d) (j : ℕ) (i : Fin d)
+    (hstep : z (j + 1) = z j + unit i) (k : Fin d) :
+    bmin z (j + 1) k = bmin z j k := by
+  rw [bmin_succ, hstep]
+  by_cases hk : k = i
+  · rw [hk]
+    have h1 : (z j + unit i) i = z j i + 1 := by
+      simp only [Pi.add_apply, LatticeProb.unit, Pi.single_eq_same]
+    rw [h1]
+    exact min_eq_left (by linarith [bmin_le z j i (le_refl j)])
+  · have h1 : (z j + unit i) k = z j k := by
+      simp only [Pi.add_apply, LatticeProb.unit, Pi.single_eq_of_ne hk, add_zero]
+    rw [h1]
+    exact min_eq_left (bmin_le z j k (le_refl j))
+
+/-- In the UP case the coordinatewise maximum changes only in direction `i`. -/
+theorem bmax_succ_up (z : ℕ → Site d) (j : ℕ) (i : Fin d)
+    (hstep : z (j + 1) = z j + unit i) (k : Fin d) (hk : k ≠ i) :
+    bmax z (j + 1) k = bmax z j k := by
+  rw [bmax_succ, hstep]
+  have h1 : (z j + unit i) k = z j k := by
+    simp only [Pi.add_apply, LatticeProb.unit, Pi.single_eq_of_ne hk, add_zero]
+  rw [h1]
+  exact max_eq_left (le_bmax z j k (le_refl j))
+
 end Exploding

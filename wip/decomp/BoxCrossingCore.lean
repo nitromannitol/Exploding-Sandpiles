@@ -27,12 +27,23 @@ step uses the inductive hypothesis at layer `i` as the `hT` of
 `fodo_dominates_redOdoUpAt` at floor `i`, with `layer_topples` supplying
 `redOdoUpAt i n η T₀ (cons (i+1) y) = 1`.
 
-The only arithmetic left is `T + T₀ ≤ (i+1) * n ^ (d+1)`, which needs `T₀ ≤ n ^ (d+1)`.
-`T₀` comes from `exists_uniform_span_time`, which currently returns an unbounded sup.  The
-clean fix is to strengthen it to return `T ≤ n ^ d`: the cube has `n ^ d` sites and each
-topples at most once, so the sup over the cube of the individual toppling times is at most
-`n ^ d`.  That bound is what makes the layer arithmetic close; with it, unfold
-`CrossedInDirection` and bound the total time by `n ^ (d+1)`.
+The only arithmetic left is `T + T₀ ≤ (i+1) * n ^ (d+1)`, which needs `T₀ ≤ n ^ d` for the
+span time `T₀` returned by `exists_uniform_span_time`.  The bound is TRUE and the argument
+is a counting argument, not a new idea:
+
+  Let `N t := #{y ∈ cube d n : spanOdo n η t y = 0}`.  `N` is non-increasing (monotonicity
+  of `spanOdo` in time).  If `N (t+1) = N t` then no site newly topples at `t+1`, so by
+  `spanOdo_stabilizes` (proved below) nothing ever topples again, contradicting `hspan`.
+  Hence `N` strictly decreases while positive, so `N t = 0` for `t ≥ (cube d n).ncard`.
+  Equivalently: if `spanOdo n η t x = 0` with `x ∈ cube` and `t ≥ ncard`, then for each
+  `s < t` some site `y_s` newly topples at `s+1` (else `spanOdo_stabilizes` would freeze the
+  process before `x` ever topples, contradicting `hspan`); the `y_s` are distinct and none
+  is `x`, giving `t + 1 ≤ ncard`, a contradiction.
+
+`spanOdo_stabilizes` and its two helpers (`cube_finite'`, `lap_congr_on_cube`) are proved in
+`scratch/try374.lean` and compile; only the counting step above is left.  With
+`T₀ ≤ n ^ d` the layer arithmetic closes, and then unfolding `CrossedInDirection` and
+bounding the total time by `n ^ (d+1)` finishes `aux_box_crossing_core`.
 -/
 import Exploding.Support.ReductionShift
 import Exploding.Support.SubFodo

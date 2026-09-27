@@ -373,4 +373,75 @@ theorem fodo_two_nbrs_topple (S : Set (Site d)) (w0 : Site d → ℤ)
   rw [if_pos hc]
   omega
 
+/-- The increment `1{2d ≤ c}` is monotone in `c`. -/
+theorem incr_mono {c c' : ℤ} (h : c ≤ c') :
+    (if 2 * (d : ℤ) ≤ c then (1 : ℤ) else 0) ≤ (if 2 * (d : ℤ) ≤ c' then 1 else 0) := by
+  split_ifs with h1 h2
+  · exact le_refl 1
+  · exact absurd (le_trans h1 h) h2
+  · omega
+  · exact le_refl 0
+
+/-- With a `{0,1}`-valued seed and a background of at most `2d-1` chips, the
+frozen odometer is `{0,1}`-valued, so the toppling rule reads
+`s0 x + nbrSumZ (fodo …) x ≥ 2d` and is monotone in the background. -/
+theorem fodo_mono_background_01 (S : Set (Site d)) (s0 s0' w0 : Site d → ℤ)
+    (h : ∀ x, s0 x ≤ s0' x)
+    (hhigh : ∀ x, s0' x ≤ 2 * (d : ℤ) - 1)
+    (hw0 : ∀ x, w0 x ≤ 1) (hw0nn : ∀ x, 0 ≤ w0 x)
+    (t : ℕ) (x : Site d) :
+    fodo S s0 w0 t x ≤ fodo S s0' w0 t x := by
+  induction t generalizing x with
+  | zero => exact le_refl _
+  | succ t ih =>
+    rw [fodo_succ S s0 w0 t x, fodo_succ S s0' w0 t x]
+    by_cases hx : x ∈ S
+    · rw [if_pos hx, if_pos hx]
+    · rw [if_neg hx, if_neg hx]
+      have hle := fodo_le_one S s0' w0 hhigh hw0 hw0nn t x
+      have hnn := fodo_nonneg_of_seed S s0' w0 hw0nn t x
+      have hle0 := fodo_le_one S s0 w0 (fun y => le_trans (h y) (hhigh y)) hw0 hw0nn t x
+      have hnn0 := fodo_nonneg_of_seed S s0 w0 hw0nn t x
+      by_cases h1 : fodo S s0' w0 t x = 1
+      · by_cases h5 : fodo S s0 w0 t x = 1
+        · have hconf : fconf S s0 w0 t x ≤ fconf S s0' w0 t x := by
+            simp only [fconf, lap, h5, h1, mul_one]
+            have := nbrSumZ_mono (fun y => ih y) x
+            linarith [h x]
+          rw [h5, h1]
+          exact add_le_add_right (incr_mono (d := d) hconf) 1
+        · have h6 : fodo S s0 w0 t x = 0 := by omega
+          rw [h6]
+          have h7 : (if 2 * (d : ℤ) ≤ fconf S s0 w0 t x then (1 : ℤ) else 0) ≤ 1 := by
+            split_ifs <;> omega
+          have h8 : (if 2 * (d : ℤ) ≤ fconf S s0' w0 t x then (1 : ℤ) else 0) = 0 := by
+            split_ifs with hh
+            · exfalso
+              have h9 : nbrSumZ (fodo S s0' w0 t) x ≤ 2 * (d : ℤ) := by
+                simp only [nbrSumZ]
+                calc ∑ i : Fin d, (fodo S s0' w0 t (x + unit i) + fodo S s0' w0 t (x - unit i))
+                    ≤ ∑ _i : Fin d, ((1 : ℤ) + 1) :=
+                      Finset.sum_le_sum fun i _ => by
+                        have ha := fodo_le_one S s0' w0 hhigh hw0 hw0nn t (x + unit i)
+                        have hb := fodo_le_one S s0' w0 hhigh hw0 hw0nn t (x - unit i)
+                        linarith
+                  _ = 2 * (d : ℤ) := by
+                      rw [Finset.sum_const, Finset.card_univ, Fintype.card_fin]; ring
+              simp only [fconf, lap, h1, mul_one] at hh
+              linarith [hhigh x]
+            · rfl
+          rw [h8]
+          linarith
+      · have h0 : fodo S s0' w0 t x = 0 := by omega
+        have h0' : fodo S s0 w0 t x = 0 := by
+          have h4 : 0 ≤ fodo S s0 w0 t x := fodo_nonneg_of_seed S s0 w0 hw0nn t x
+          have h7 : fodo S s0 w0 t x ≤ fodo S s0' w0 t x := ih x
+          omega
+        rw [h0, h0']
+        have hconf : fconf S s0 w0 t x ≤ fconf S s0' w0 t x := by
+          simp only [fconf, lap, h0, h0', mul_zero, sub_zero]
+          have := nbrSumZ_mono (fun y => ih y) x
+          linarith [h x]
+        simpa using incr_mono (d := d) hconf
+
 end Exploding

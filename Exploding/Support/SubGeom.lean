@@ -1045,4 +1045,5 @@ theorem closed_slab (F : Set (Site d)) (a b : Site d) (i : Fin d) (hab : a i ≤
     exact hj (Finset.mem_erase.mpr ⟨hne, Finset.mem_univ j⟩)
   rw [hji, hy.1, hq.1]
 
+
 end Exploding

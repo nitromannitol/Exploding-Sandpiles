@@ -1,4 +1,5 @@
 import Exploding.Support.Vocab
+import Exploding.Support.SubGeom
 
 /-!
 # Bounding rectangles of paths
@@ -542,5 +543,84 @@ theorem bmax_succ_up (z : ℕ → Site d) (j : ℕ) (i : Fin d)
     simp only [Pi.add_apply, LatticeProb.unit, Pi.single_eq_of_ne hk, add_zero]
   rw [h1]
   exact max_eq_left (le_bmax z j k (le_refl j))
+
+
+/-- **The box update** (`exploding.tex:545-553`): if the path steps from `z j`
+to `z (j+1) = z j + e_i` and `z j i` is the maximum of the path in direction
+`i`, the box of the first `j+2` points is the box of the first `j+1` points
+together with the cap above it in direction `i`. -/
+theorem box_succ_up (z : ℕ → Site d) (j : ℕ) (i : Fin d)
+    (hstep : z (j + 1) = z j + unit i) (hmax : z j i = bmax z j i) :
+    Exploding.box z (j + 1) = Exploding.box z j ∪
+      slab (fun k => bmin z j k) (fun k => bmax z j k) i (bmax z j i + 1) := by
+  ext p
+  simp only [Exploding.box, Set.mem_setOf_eq, Set.mem_union, slab]
+  constructor
+  · intro hp
+    have hlo : ∀ k, bmin z j k ≤ p k := by
+      intro k
+      have h3 : bmin z (j + 1) k ≤ p k := (hp k).1
+      rw [bmin_succ_up z j i hstep k] at h3
+      exact h3
+    have hhi : ∀ k, k ≠ i → p k ≤ bmax z j k := by
+      intro k hk
+      have h3 : p k ≤ bmax z (j + 1) k := (hp k).2
+      rw [bmax_succ_up z j i hstep k hk] at h3
+      exact h3
+    have hpi : p i ≤ bmax z j i + 1 := by
+      have h3 : p i ≤ bmax z (j + 1) i := (hp i).2
+      rw [bmax_succ, hstep] at h3
+      have h1 : (z j + unit i) i = z j i + 1 := by
+        simp only [Pi.add_apply, LatticeProb.unit, Pi.single_eq_same]
+      rw [h1, hmax] at h3
+      have h4 : max (bmax z j i) (bmax z j i + 1) = bmax z j i + 1 := max_eq_right (by linarith)
+      rwa [h4] at h3
+    by_cases hi : p i ≤ bmax z j i
+    · left
+      intro k
+      by_cases hk : k = i
+      · subst hk
+        exact ⟨hlo k, hi⟩
+      · exact ⟨hlo k, hhi k hk⟩
+    · right
+      refine ⟨le_antisymm hpi (by omega), fun k hk => ⟨hlo k, hhi k hk⟩⟩
+  · intro hp
+    rcases hp with hp | hp
+    · intro k
+      refine ⟨?_, ?_⟩
+      · rw [bmin_succ_up z j i hstep k]
+        exact (hp k).1
+      · rw [bmax_succ, hstep]
+        by_cases hk : k = i
+        · rw [hk]
+          have h1 : (z j + unit i) i = z j i + 1 := by
+            simp only [Pi.add_apply, LatticeProb.unit, Pi.single_eq_same]
+          rw [h1, hmax]
+          exact le_trans (hp i).2 (le_max_left _ _)
+        · have h1 : (z j + unit i) k = z j k := by
+            simp only [Pi.add_apply, LatticeProb.unit, Pi.single_eq_of_ne hk, add_zero]
+          rw [h1]
+          exact le_trans (hp k).2 (le_max_left _ _)
+    · intro k
+      refine ⟨?_, ?_⟩
+      · rw [bmin_succ_up z j i hstep k]
+        by_cases hk : k = i
+        · rw [hk]
+          have h3 : bmin z j i ≤ bmax z j i :=
+            le_trans (bmin_le z j i (le_refl j)) (le_bmax z j i (le_refl j))
+          have h4 : bmin z j i ≤ bmax z j i + 1 := by linarith
+          exact le_trans h4 (le_of_eq hp.1.symm)
+        · exact (hp.2 k hk).1
+      · rw [bmax_succ, hstep]
+        by_cases hk : k = i
+        · rw [hk]
+          have h1 : (z j + unit i) i = z j i + 1 := by
+            simp only [Pi.add_apply, LatticeProb.unit, Pi.single_eq_same]
+          rw [h1, hmax]
+          exact le_trans (le_of_eq hp.1) (le_max_right _ _)
+        · have h1 : (z j + unit i) k = z j k := by
+            simp only [Pi.add_apply, LatticeProb.unit, Pi.single_eq_of_ne hk, add_zero]
+          rw [h1]
+          exact le_trans (hp.2 k hk).2 (le_max_left _ _)
 
 end Exploding

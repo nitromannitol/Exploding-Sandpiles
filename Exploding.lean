@@ -8,6 +8,7 @@ import Exploding.Support.Wave
 import Exploding.Support.SubArith
 import Exploding.Support.SubFodo
 import Exploding.Support.SubGeom
+import Exploding.Support.SubBox
 import Exploding.Support.SubPoly
 import Exploding.Support.SubFConf
 import Exploding.Support.SubNbr

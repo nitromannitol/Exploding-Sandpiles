@@ -3,6 +3,7 @@ import Exploding.Frozen.LastWaveBound
 import Exploding.Frozen.DimensionalReduction
 import Exploding.Frozen.ApproxSubadditivity
 import Exploding.Frozen.Recurrence
+import Exploding.Frozen.CrossingTime
 
 /-!
 # Main results
@@ -44,7 +45,7 @@ Section 3, `Exploding.clusterArrival` the penultimate-cluster arrival time, and
 `Exploding.Recurrent` recurrence in the sense of Section 7.  The constrained processes of
 Section 7.1 are in `Exploding/Support/Reduction.lean`.
 
-All five reduce to the standard axioms (`propext`, `Classical.choice`, `Quot.sound`); see
+All six reduce to the standard axioms (`propext`, `Classical.choice`, `Quot.sound`); see
 `Exploding/Meta/AxiomsAudit.lean`.
 -/
 
@@ -97,3 +98,12 @@ theorem Exploding.dimensional_reduction (d n : ℕ) (hd : 1 ≤ d) (η : Site (d
 recurrent.  The certified statement is `Exploding.Frozen.recurrence`, restated unchanged. -/
 theorem Exploding.recurrence (d : ℕ) (hd : 1 ≤ d) : Recurrent (fun _ : Site d => (d : ℤ)) := by
   exact Exploding.Frozen.recurrence d hd
+
+/-- **Proposition 2.1** (`prop:crossing_time`): for every `δ > 0` there is a side length
+`k` so that with probability at least `1 - δ` every line across the box `Q_k` carries a
+`(2d-1)`-chip catalyst, hence every crossing time is at most `k^d`.  The certified
+statement is `Exploding.Frozen.crossing_time`, restated unchanged. -/
+theorem Exploding.crossing_time (d : ℕ) (hd : 2 ≤ d) (p : ℝ) (hp : 0 < p) (hp1 : p < 1)
+    (δ : ℝ) (hδ : 0 < δ) :
+    ∃ k : ℕ, 1 ≤ k ∧ ENNReal.ofReal (1 - δ) ≤ toyLaw d p {η | GoodCube η k} := by
+  exact Exploding.Frozen.crossing_time d hd p hp hp1 δ hδ

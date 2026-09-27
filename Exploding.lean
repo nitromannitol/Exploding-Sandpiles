@@ -23,6 +23,7 @@ import Exploding.Support.SubSpanBridge
 import Exploding.Support.SubSpanZero
 import Exploding.Support.SubOdo
 import Exploding.Support.SubCrossTime
+import Exploding.Support.ReductionShift
 
 import Exploding.External.FeyLevinePeres
 import Exploding.External.Schonmann

@@ -179,7 +179,7 @@ theorem lap_redOdoUpAt_cons_succ (η : LatticeProb.Site (d + 1) → ℤ) (t : �
 /-- **The shifted-floor reduction.**  On the active layer the `(d+1)`-dimensional
 constrained odometer equals the `d`-dimensional constrained odometer of the
 background `η(i + 1, ·) - 1`. -/
-theorem redOdoUpAt_agree (η : LatticeProb.Site (d + 1) → ℤ) (hd : 1 ≤ d) (hi0 : 0 ≤ i)
+theorem redOdoUpAt_agree (η : LatticeProb.Site (d + 1) → ℤ) (hi0 : 0 ≤ i)
     (hi : i + 1 ≤ (n : ℤ)) (t : ℕ) (y : LatticeProb.Site d) :
     redOdoUpAt i n η t (cons (i + 1) y) = redOdoDownAt i n η t y := by
   induction t generalizing y with
@@ -204,15 +204,14 @@ theorem redOdoUpAt_agree (η : LatticeProb.Site (d + 1) → ℤ) (hd : 1 ≤ d) 
       · rw [if_neg h1]
         rw [if_neg (by rw [ih y]; exact h1)]
         have hlap : lap (redOdoUpAt i n η t) (cons (i + 1) y)
-            = lap (redOdoDownAt i n η t) y := by
+            = 1 + lap (redOdoDownAt i n η t) y - 2 * redOdoDownAt i n η t y := by
           rw [lap_redOdoUpAt_cons_succ]
           simp only [lap]
           rw [nbrSumZ_congr (fun w => ih w) y, ih y]
         have h0 : redOdoDownAt i n η t y = 0 :=
           (redOdoDownAt_zero_or_one η t y).resolve_right h1
-        rw [hlap, ih y, h0]
+        rw [ih y, h0, hlap]
         congr 1
-        push_cast
         by_cases h : 2 * (d : ℤ) ≤ η (cons (i + 1) y) - 1 + lap (redOdoDownAt i n η t) y
         · rw [if_pos h, if_pos (by linarith)]
         · rw [if_neg h, if_neg (by linarith)]

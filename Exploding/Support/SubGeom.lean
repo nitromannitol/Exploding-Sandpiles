@@ -864,4 +864,185 @@ theorem fillSet_slab (A : Set (Site d)) (a b : Site d) (i : Fin d) (hab : a i �
     by_contra hne
     exact hj (Finset.mem_erase.mpr ⟨hne, Finset.mem_univ j⟩)
   rw [hji, hy.1, hq.1]
+/-- **The cap spread for an arbitrary closed set**: if `F` contains a box and is
+closed under the two-neighbour rule, and one point of the cap above the box is
+in `F`, then the whole cap is.
+
+This is the combinatorial content of the paper's one-turn case
+(`exploding.tex:545-553`), stated without any odometer. -/
+theorem closed_slab (F : Set (Site d)) (a b : Site d) (i : Fin d) (hab : a i ≤ b i)
+    (hbox : ∀ x, (∀ j, a j ≤ x j ∧ x j ≤ b j) → x ∈ F)
+    (hclosed : ∀ x y z' : Site d, y ∈ F → z' ∈ F → y ≠ z' →
+      (lattice d).Adj y x → (lattice d).Adj z' x → x ∈ F)
+    {y : Site d} (hy : y ∈ slab a b i (b i + 1)) (hyF : y ∈ F) :
+    slab a b i (b i + 1) ⊆ F := by
+  have hstep : ∀ {p : Site d}, p ∈ slab a b i (b i + 1) → p ∈ F →
+      ∀ j : Fin d, j ≠ i → ∀ c : ℤ, (c = 1 ∨ c = -1) →
+      p + c • unit j ∈ slab a b i (b i + 1) →
+      p + c • unit j ∈ F := by
+    intro p hp hpF j hj c hc hpj
+    refine hclosed (p + c • unit j) p (p + c • unit j - unit i) hpF
+      (hbox (p + c • unit j - unit i) (slab_sub_unit_mem a b i hab hpj)) ?_ ?_ ?_
+    · intro hcon
+      have h1 := congrFun hcon i
+      have h2 : (p + c • unit j - unit i) i = p i - 1 := by
+        rw [Pi.sub_apply, coord_add_smul]
+        simp only [if_neg (Ne.symm hj), mul_zero, add_zero, LatticeProb.unit,
+          Pi.single_eq_same]
+      rw [h2] at h1
+      omega
+    · rcases hc with hc | hc
+      · refine ⟨j, Or.inl ?_⟩
+        rw [hc, one_smul]
+      · refine ⟨j, Or.inr ?_⟩
+        rw [hc, neg_smul, one_smul]
+        abel
+    · refine ⟨i, Or.inl ?_⟩
+      abel
+  have hmove : ∀ {p q : Site d} (j : Fin d), j ≠ i →
+      p ∈ slab a b i (b i + 1) → p ∈ F →
+      (∀ k, k ≠ j → p k = q k) → q ∈ slab a b i (b i + 1) →
+      q ∈ F := by
+    intro p q j hj hp hpF hagree hq
+    set N : ℕ := (if p j ≤ q j then (q j - p j).toNat else (p j - q j).toNat) with hN
+    have hNle : p j + (N : ℤ) * (if p j ≤ q j then 1 else -1) = q j := by
+      rw [hN]
+      by_cases hle : p j ≤ q j
+      · rw [if_pos hle, if_pos hle]
+        have h0 : (0 : ℤ) ≤ q j - p j := by linarith
+        rw [Int.toNat_of_nonneg h0]
+        ring
+      · rw [if_neg hle, if_neg hle]
+        have h0 : (0 : ℤ) ≤ p j - q j := by linarith
+        rw [Int.toNat_of_nonneg h0]
+        ring
+    have hbetween : ∀ (n : ℕ), n ≤ N →
+        min (p j) (q j) ≤ p j + (n : ℤ) * (if p j ≤ q j then 1 else -1) ∧
+        p j + (n : ℤ) * (if p j ≤ q j then 1 else -1) ≤ max (p j) (q j) := by
+      intro n hn
+      have hnN : (n : ℤ) ≤ (N : ℤ) := by exact_mod_cast hn
+      by_cases hle : p j ≤ q j
+      · rw [if_pos hle]
+        have hN' : p j + (N : ℤ) = q j := by
+          have h := hNle; rw [if_pos hle] at h; simpa using h
+        constructor
+        · rw [min_eq_left hle]; linarith
+        · rw [max_eq_right hle]; linarith
+      · rw [if_neg hle]
+        have hN' : p j - (N : ℤ) = q j := by
+          have h := hNle; rw [if_neg hle] at h; linarith
+        constructor
+        · rw [min_eq_right (le_of_lt (not_le.mp hle))]; linarith
+        · rw [max_eq_left (le_of_lt (not_le.mp hle))]; linarith
+    have hstep' : ∀ (n : ℕ), n ≤ N →
+        (fun l => if l = j then p j + (n : ℤ) * (if p j ≤ q j then 1 else -1) else p l) ∈
+          slab a b i (b i + 1) := by
+      intro n hn
+      refine ⟨?_, ?_⟩
+      · simp only [if_neg (Ne.symm hj)]; exact hp.1
+      · intro k hki
+        show a k ≤ (if k = j then p j + (n : ℤ) * (if p j ≤ q j then 1 else -1) else p k) ∧
+          (if k = j then p j + (n : ℤ) * (if p j ≤ q j then 1 else -1) else p k) ≤ b k
+        by_cases hkj : k = j
+        · subst hkj
+          rw [if_pos rfl]
+          have hb := hbetween n hn
+          have hpj := hp.2 k hki
+          have hqj := hq.2 k hki
+          refine ⟨le_trans (le_min hpj.1 hqj.1) hb.1, ?_⟩
+          exact le_trans hb.2 (max_le hpj.2 hqj.2)
+        · rw [if_neg hkj]
+          exact hp.2 k hki
+    have hwalk : ∀ (n : ℕ), n ≤ N →
+        (fun l => if l = j then p j + (n : ℤ) * (if p j ≤ q j then 1 else -1) else p l) ∈
+          F := by
+      intro n
+      induction n with
+      | zero =>
+        intro _
+        have h0 : (fun l => if l = j then p j + ((0 : ℕ) : ℤ) * (if p j ≤ q j then 1 else -1)
+            else p l) = p := by
+          funext l
+          by_cases hlj : l = j
+          · subst hlj; simp
+          · rw [if_neg hlj]
+        rw [h0]; exact hpF
+      | succ n ih =>
+        intro hn
+        have hn' : n ≤ N := le_trans (Nat.le_succ n) hn
+        have hprev := ih hn'
+        have hcur := hstep' (n + 1) hn
+        have hsucc : (fun l => if l = j then p j + ((n : ℕ) : ℤ) * (if p j ≤ q j then 1 else -1)
+              else p l) + (if p j ≤ q j then (1 : ℤ) else -1) • unit j =
+            (fun l => if l = j then p j + ((n + 1 : ℕ) : ℤ) * (if p j ≤ q j then 1 else -1)
+              else p l) := by
+          funext l
+          by_cases hlj : l = j
+          · subst hlj
+            rw [coord_add_smul]
+            ring_nf
+            push_cast
+            ring
+          · rw [coord_add_smul]
+            simp only [if_neg hlj, mul_zero, add_zero]
+        rw [← hsucc]
+        refine hstep (hstep' n hn') hprev j hj _ ?_ ?_
+        · by_cases hle : p j ≤ q j
+          · exact Or.inl (by rw [if_pos hle])
+          · exact Or.inr (by rw [if_neg hle])
+        · rw [hsucc]; exact hcur
+    have hfin := hwalk N le_rfl
+    have hqeq : (fun l => if l = j then p j + (N : ℤ) * (if p j ≤ q j then 1 else -1)
+        else p l) = q := by
+      funext l
+      by_cases hlj : l = j
+      · subst hlj; rw [if_pos rfl]; exact hNle
+      · rw [if_neg hlj]; exact hagree l hlj
+    rwa [hqeq] at hfin
+  have key : ∀ (s : Finset (Fin d)), i ∉ s →
+      ∀ {p q : Site d}, p ∈ slab a b i (b i + 1) → p ∈ F →
+      (∀ j, j ∉ s → p j = q j) → q ∈ slab a b i (b i + 1) →
+      q ∈ F := by
+    intro s
+    refine Finset.induction (motive := fun s => i ∉ s →
+      ∀ {p q : Site d}, p ∈ slab a b i (b i + 1) → p ∈ F →
+      (∀ j, j ∉ s → p j = q j) → q ∈ slab a b i (b i + 1) → q ∈ F) ?_ ?_ s
+    case refine_1 =>
+      intro _ p q hp hpF hagree hq
+      have hpq : p = q := by
+        funext j
+        exact hagree j (Finset.notMem_empty j)
+      rwa [← hpq]
+    case refine_2 =>
+      intro j s hjs ih hi p q hp hpF hagree hq
+      have hji : j ≠ i := fun h => hi (h ▸ Finset.mem_insert_self j s)
+      have hmid : (fun k => if k = j then q j else p k) ∈ slab a b i (b i + 1) := by
+        refine ⟨?_, ?_⟩
+        · simp only [if_neg (Ne.symm hji)]; exact hp.1
+        · intro k hki
+          show a k ≤ (if k = j then q j else p k) ∧ (if k = j then q j else p k) ≤ b k
+          by_cases hkj : k = j
+          · subst hkj
+            rw [if_pos rfl]
+            exact hq.2 k hki
+          · rw [if_neg hkj]
+            exact hp.2 k hki
+      have hmidF : (fun k => if k = j then q j else p k) ∈ F :=
+        hmove j hji hp hpF (fun k hkj => by rw [if_neg hkj]) hmid
+      refine ih (fun h => hi (Finset.mem_insert_of_mem h)) hmid hmidF ?_ hq
+      intro k hk
+      by_cases hkj : k = j
+      · subst hkj
+        rw [if_pos rfl]
+      · rw [if_neg hkj]
+        exact hagree k (by simp [hkj, hk])
+  intro q hq
+  refine key (Finset.univ.erase i) (Finset.notMem_erase i Finset.univ)
+    (p := y) (q := q) hy hyF ?_ hq
+  intro j hj
+  have hji : j = i := by
+    by_contra hne
+    exact hj (Finset.mem_erase.mpr ⟨hne, Finset.mem_univ j⟩)
+  rw [hji, hy.1, hq.1]
+
 end Exploding

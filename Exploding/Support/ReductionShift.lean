@@ -318,6 +318,21 @@ theorem redOdoUpAt_le_one (n : ℕ) (η : Site (d + 1) → ℤ) (i : ℤ) :
     have h := ih x
     split_ifs <;> omega
 
+/-- The shifted-floor constrained odometer takes only the values zero and one. -/
+theorem redOdoUpAt_zero_or_one (n : ℕ) (η : Site (d + 1) → ℤ) (i : ℤ) :
+    ∀ t x, redOdoUpAt i n η t x = 0 ∨ redOdoUpAt i n η t x = 1 := by
+  intro t
+  induction t with
+  | zero =>
+    intro x
+    rw [redOdoUpAt_zero]
+    split_ifs <;> omega
+  | succ t ih =>
+    intro x
+    rw [redOdoUpAt_succ]
+    have h := ih x
+    split_ifs <;> omega
+
 end ReductionShift
 
 end Exploding

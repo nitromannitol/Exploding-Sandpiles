@@ -11,25 +11,25 @@ All four step leaves are proved in `Exploding/Support/ReductionShift.lean`
 (`fodo_fires_of_redOdoUpAt` is the firing case; the other three are inline below), and the
 base case is proved.
 
-REMAINING, precisely.  The firing branch needs the pointwise domination
-`∀ y ∈ nbrs x, redOdoUpAt i n η t y ≤ fodo … (T + t) y`, and that is FALSE at the box
-boundary.  `redOdoUpAt` is initialised to `1` on the whole layer `i` (`redOdoUpAt_zero`)
-and frozen outside `cube (d+1) n`, so a site `y` with `y 0 = i ≥ 1` and `y ∉ cube (d+1) n`
-has `redOdoUpAt i n η t y = 1` for all `t`, while `fodo` is frozen there at the indicator of
-the low face, which is `0` because `y 0 ≥ 1`.  A neighbour of a boundary site of the cube is
-exactly such a `y`, so the neighbour-sum comparison `nbrSumZ_mono` fails there.
+REMAINING, precisely.  The layer chain needs the bridge
+`redOdoUpAt 0 n η t x = redOdoUp n η t x` for `x ∈ cube (d+1) n`, and that bridge is
+FALSE.  `redOdoUp` (Reduction.lean) lights its floor at layer `0` EVERYWHERE, including
+outside the cube, while `redOdoUpAt 0` lights it only inside the cube (the initial value is
+`if x 0 = 0 ∧ x ∈ cube then 1 else 0`).  At `t = 1` and `x ∈ cube` with `x 0 = 1`, the
+neighbour at `x - e_0` has layer `0` and lies outside the cube, so it contributes `1` to
+`lap (redOdoUp …) x` and `0` to `lap (redOdoUpAt 0 …) x`: the two Laplacians differ by `1`
+and the two processes fire at different thresholds.  The bridge is therefore not an
+identity, and the layer chain must be run entirely inside the `redOdoUpAt` family (which is
+what `layer_topples` already does) rather than by transporting to `redOdoUp`.
 
-The repair is to initialise the constrained odometer inside the box only:
-`redOdoUpAt i n η 0 x = if x 0 = i ∧ x ∈ cube (d+1) n then 1 else 0`.  Then it is `0`
-outside the box, matching `fodo`, and the boundary case disappears.  This is a change of
-definition, so the lemmas proved against the current `redOdoUpAt_zero` need their
-`cons i y ∈ cube (d+1) n` side condition added — `redOdoUpAt_floor` in particular, which is
-where `hT`'s hypothesis `y ∈ cube d n` is consumed.  Everything else in the file
-(`redOdoUpAt_succ`, `redOdoUpAt_above`, `redOdoUpAt_le_one`, `redOdoUpAt_zero_or_one`,
-`redOdoUpAt_agree`, `layer_topples`, `fodo_fires_of_redOdoUpAt`) is unaffected, since none of
-them reads the initial value off the box.
-
-With that one change the firing branch closes and the transport step is complete.
+What is proved and in the package: the seed (`cons_zero_mem_faceOut`), the layer step
+(`layer_topples`, with `redOdoUpAt_floor` supplying the permanent lighting of each floor),
+time monotonicity (`fodo_mono_time`, `fodo_mono_time'`), the firing case
+(`fodo_fires_of_redOdoUpAt`), the transport step
+(`fodo_dominates_redOdoUpAt`, the whole of the layer induction's domination), and the
+uniform span time (`exists_uniform_span_time`, `spanOdo_mono_le`).  Chaining the layers
+with `fodo_dominates_redOdoUpAt` at each floor and unfolding `CrossedInDirection` is what
+remains.
 -/
 import Exploding.Support.ReductionShift
 import Exploding.Support.SubFodo

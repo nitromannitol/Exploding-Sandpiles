@@ -13,6 +13,7 @@ layer `i` has been toppled and acts as the permanently lit floor for layer
 import Exploding.Support.Reduction
 import Exploding.Support.SubSpanZero
 import Exploding.Support.SubFodo
+import Exploding.Support.SubOdo
 
 namespace Exploding
 
@@ -514,6 +515,37 @@ theorem fodo_dominates_redOdoUpAt (n : ℕ) (η : Site (d + 1) → ℤ)
               rw [if_neg hthr, h0, zero_add]
               exact fodo_nonneg _ _ _
                 (Set.indicator_nonneg (fun _ _ => zero_le_one)) (T + (t + 1)) x
+
+/-- The bootstrap odometer is monotone in time. -/
+theorem spanOdo_mono_le (n : ℕ) (η : Site d → ℤ) {t t' : ℕ} (h : t ≤ t') (x : Site d) :
+    spanOdo n η t x ≤ spanOdo n η t' x := by
+  induction h with
+  | refl => exact le_rfl
+  | step h ih => exact le_trans ih (spanOdo_mono n η _ x)
+
+/-- A uniform time at which the `d`-dimensional bootstrap odometer has toppled the whole
+cube, when it is internally spanned. -/
+theorem exists_uniform_span_time (n : ℕ) (η : Site d → ℤ)
+    (hspan : InternallySpanned η n) :
+    ∃ T : ℕ, ∀ y ∈ cube d n, spanOdo n η T y = 1 := by
+  classical
+  have hfin : (cube d n).Finite := by
+    refine (Set.Finite.pi (fun _ : Fin d => Set.finite_Icc (0 : ℤ) (n : ℤ))).subset ?_
+    intro x hx i _
+    exact ⟨by have h := hx i; omega, (hx i).2⟩
+  choose t ht using hspan
+  refine ⟨hfin.toFinset.sup (fun y => if hy : y ∈ cube d n then t y hy else 0), ?_⟩
+  intro y hy
+  have hmem : y ∈ hfin.toFinset := by simpa using hy
+  have hle : (if hy : y ∈ cube d n then t y hy else 0) ≤
+      hfin.toFinset.sup (fun y => if hy : y ∈ cube d n then t y hy else 0) :=
+    Finset.le_sup (f := fun y => if hy : y ∈ cube d n then t y hy else 0) hmem
+  simp only [dif_pos hy] at hle
+  have h1 := spanOdo_mono_le n η hle y
+  rw [ht y hy] at h1
+  have h2 : spanOdo n η (hfin.toFinset.sup fun y => if hy : y ∈ cube d n then t y hy else 0) y ≤ 1 :=
+    spanOdo_le_one n η _ y
+  omega
 
 end ReductionShift
 

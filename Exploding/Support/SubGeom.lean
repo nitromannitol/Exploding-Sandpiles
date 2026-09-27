@@ -599,4 +599,33 @@ theorem fodo_fill_step (A : Set (Site d)) (t : ℕ) (x y z : Site d)
       linarith
     exact h2
 
+/-- The terminal support of the frozen odometer on the extremal background: the
+sites that topple at some time. -/
+def fillSet (A : Set (Site d)) : Set (Site d) :=
+  {x | ∃ t, fodo A (fun _ => 2 * (d : ℤ) - 2) (Set.indicator A 1) t x = 1}
+
+/-- The seed is in the terminal support. -/
+theorem mem_fillSet_of_mem (A : Set (Site d)) {x : Site d} (hx : x ∈ A) :
+    x ∈ fillSet A :=
+  ⟨0, fodo_indicator_mem A 0 hx⟩
+
+/-- The terminal support is closed under the toppling rule: a site off `A` with
+two distinct neighbours in the support is in the support. -/
+theorem fillSet_two_nbrs (A : Set (Site d)) {x y z : Site d} (hx : x ∉ A)
+    (hy : y ∈ fillSet A) (hz : z ∈ fillSet A) (hyz : y ≠ z)
+    (hxy : (lattice d).Adj y x) (hxz : (lattice d).Adj z x) :
+    x ∈ fillSet A := by
+  obtain ⟨ty, hty⟩ := hy
+  obtain ⟨tz, htz⟩ := hz
+  refine ⟨max ty tz + 1, ?_⟩
+  refine fodo_fill_step A (max ty tz) x y z hx hxy ?_ hxz ?_ hyz
+  · have h := fodo_mono_time' A (fun _ => 2 * (d : ℤ) - 2) (Set.indicator A 1)
+      (le_max_left ty tz) y
+    rw [hty] at h
+    exact le_antisymm (fodo_indicator_le_one A (max ty tz) y) h
+  · have h := fodo_mono_time' A (fun _ => 2 * (d : ℤ) - 2) (Set.indicator A 1)
+      (le_max_right ty tz) z
+    rw [htz] at h
+    exact le_antisymm (fodo_indicator_le_one A (max ty tz) z) h
+
 end Exploding

@@ -11,25 +11,28 @@ All four step leaves are proved in `Exploding/Support/ReductionShift.lean`
 (`fodo_fires_of_redOdoUpAt` is the firing case; the other three are inline below), and the
 base case is proved.
 
-REMAINING, precisely.  The layer chain needs the bridge
-`redOdoUpAt 0 n η t x = redOdoUp n η t x` for `x ∈ cube (d+1) n`, and that bridge is
-FALSE.  `redOdoUp` (Reduction.lean) lights its floor at layer `0` EVERYWHERE, including
-outside the cube, while `redOdoUpAt 0` lights it only inside the cube (the initial value is
-`if x 0 = 0 ∧ x ∈ cube then 1 else 0`).  At `t = 1` and `x ∈ cube` with `x 0 = 1`, the
-neighbour at `x - e_0` has layer `0` and lies outside the cube, so it contributes `1` to
-`lap (redOdoUp …) x` and `0` to `lap (redOdoUpAt 0 …) x`: the two Laplacians differ by `1`
-and the two processes fire at different thresholds.  The bridge is therefore not an
-identity, and the layer chain must be run entirely inside the `redOdoUpAt` family (which is
-what `layer_topples` already does) rather than by transporting to `redOdoUp`.
+REMAINING, precisely.  Chain the layers.  The natural statement is
 
-What is proved and in the package: the seed (`cons_zero_mem_faceOut`), the layer step
-(`layer_topples`, with `redOdoUpAt_floor` supplying the permanent lighting of each floor),
-time monotonicity (`fodo_mono_time`, `fodo_mono_time'`), the firing case
-(`fodo_fires_of_redOdoUpAt`), the transport step
-(`fodo_dominates_redOdoUpAt`, the whole of the layer induction's domination), and the
-uniform span time (`exists_uniform_span_time`, `spanOdo_mono_le`).  Chaining the layers
-with `fodo_dominates_redOdoUpAt` at each floor and unfolding `CrossedInDirection` is what
-remains.
+```
+theorem fodo_layer_chain (n : ℕ) (hn : 1 ≤ n) (η : Site (d + 1) → ℤ)
+    (hspan : ∀ i ∈ Finset.Icc 1 n,
+      InternallySpanned (fun w : Site d => η (cons (i : ℤ) w) - 1) n) :
+    ∀ i ∈ Finset.Icc 1 n, ∀ y ∈ cube d n,
+      1 ≤ fodo (rboxShift (fun _ => n) 0)ᶜ η (indicator (faceOut …) 1) (i * n ^ (d+1)) (cons i y)
+```
+
+proved by induction on `i`.  The `i = 1` case is the seed at layer `0`
+(`cons_zero_mem_faceOut`) plus `fodo_dominates_redOdoUpAt` at floor `0` with `T = 0`; the
+step uses the inductive hypothesis at layer `i` as the `hT` of
+`fodo_dominates_redOdoUpAt` at floor `i`, with `layer_topples` supplying
+`redOdoUpAt i n η T₀ (cons (i+1) y) = 1`.
+
+The only arithmetic left is `T + T₀ ≤ (i+1) * n ^ (d+1)`, which needs `T₀ ≤ n ^ (d+1)`.
+`T₀` comes from `exists_uniform_span_time`, which currently returns an unbounded sup.  The
+clean fix is to strengthen it to return `T ≤ n ^ d`: the cube has `n ^ d` sites and each
+topples at most once, so the sup over the cube of the individual toppling times is at most
+`n ^ d`.  That bound is what makes the layer arithmetic close; with it, unfold
+`CrossedInDirection` and bound the total time by `n ^ (d+1)`.
 -/
 import Exploding.Support.ReductionShift
 import Exploding.Support.SubFodo

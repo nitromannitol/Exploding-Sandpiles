@@ -14,36 +14,44 @@ base case is proved.
 REMAINING, precisely.  Chain the layers.  The natural statement is
 
 ```
-theorem fodo_layer_chain (n : ℕ) (hn : 1 ≤ n) (η : Site (d + 1) → ℤ)
+theorem fodo_topples_box_of_layers (n : ℕ) (hn : 1 ≤ n) (η : Site (d + 1) → ℤ)
     (hspan : ∀ i ∈ Finset.Icc 1 n,
       InternallySpanned (fun w : Site d => η (cons (i : ℤ) w) - 1) n) :
-    ∀ i ∈ Finset.Icc 1 n, ∀ y ∈ cube d n,
-      1 ≤ fodo (rboxShift (fun _ => n) 0)ᶜ η (indicator (faceOut …) 1) (i * n ^ (d+1)) (cons i y)
+    ∀ x ∈ cube (d + 1) n,
+      1 ≤ fodo (rboxShift (fun _ => n) 0)ᶜ η (indicator (faceOut …) 1) (n ^ (d+1)) x
 ```
 
-proved by induction on `i`.  The `i = 1` case is the seed at layer `0`
-(`cons_zero_mem_faceOut`) plus `fodo_dominates_redOdoUpAt` at floor `0` with `T = 0`; the
-step uses the inductive hypothesis at layer `i` as the `hT` of
-`fodo_dominates_redOdoUpAt` at floor `i`, with `layer_topples` supplying
-`redOdoUpAt i n η T₀ (cons (i+1) y) = 1`.
+proved by induction on the layer index `i`, with layer `i` toppling by time `i * n ^ d`.
 
-The only arithmetic left is `T + T₀ ≤ (i+1) * n ^ (d+1)`, which needs `T₀ ≤ n ^ d` for the
-span time `T₀` returned by `exists_uniform_span_time`.  The bound is TRUE and the argument
-is a counting argument, not a new idea:
+**The base case is the whole difficulty, and the reason is structural.**  `redOdoUpAt 0`
+lights its floor at `x 0 = 0 ∧ x ∈ cube (d+1) n`, and `cube (d+1) n` requires `1 ≤ x 0`, so
+that set is EMPTY: `redOdoUpAt 0` starts at zero everywhere and is useless for the box.  The
+floor of layer `1` is layer `0`, which lies OUTSIDE the cube (it is the low face
+`faceOut … ⟨0, …⟩ false`).  So the base case must use `redOdoUp` (whose floor at layer `0` is
+lit everywhere, including outside the cube), and the induction invariant must therefore be
+the box TOGETHER WITH its low face:
 
-  Let `N t := #{y ∈ cube d n : spanOdo n η t y = 0}`.  `N` is non-increasing (monotonicity
-  of `spanOdo` in time).  If `N (t+1) = N t` then no site newly topples at `t+1`, so by
-  `spanOdo_stabilizes` (proved below) nothing ever topples again, contradicting `hspan`.
-  Hence `N` strictly decreases while positive, so `N t = 0` for `t ≥ (cube d n).ncard`.
-  Equivalently: if `spanOdo n η t x = 0` with `x ∈ cube` and `t ≥ ncard`, then for each
-  `s < t` some site `y_s` newly topples at `s+1` (else `spanOdo_stabilizes` would freeze the
-  process before `x` ever topples, contradicting `hspan`); the `y_s` are distinct and none
-  is `x`, giving `t + 1 ≤ ncard`, a contradiction.
+```
+def lowSet (n : ℕ) : Set (Site (d + 1)) :=
+  cube (d + 1) n ∪ {x | x 0 = 0 ∧ (fun l => x l.succ) ∈ cube d n}
+```
 
-`spanOdo_stabilizes` and its two helpers (`cube_finite'`, `lap_congr_on_cube`) are proved in
-`scratch/try374.lean` and compile; only the counting step above is left.  With
-`T₀ ≤ n ^ d` the layer arithmetic closes, and then unfolding `CrossedInDirection` and
-bounding the total time by `n ^ (d+1)` finishes `aux_box_crossing_core`.
+with `nbr_mem_lowSet` (every neighbour of a point of `lowSet` lies in `lowSet`) and
+`fodo_dominates_redOdoUp_on_lowSet` (the floor-`0` transport step on `lowSet`).  Both are
+stated in `scratch/try381.lean`; the pieces they need are proved:
+`mem_faceOut_of_low` (a point of the low face lies in `faceOut`), `redOdoUp_lowface`
+(`redOdoUp` is `1` on the low face at every time), `fodo_lowface` (`fodo` is `1` there at
+time `0`), and the counting bound `spanOdo_topples_by_ncard` /
+`exists_uniform_span_time_le` (in the package) giving `T₀ ≤ n ^ d`.
+
+The remaining work in the base case is the firing branch of
+`fodo_dominates_redOdoUp_on_lowSet`: at a site `x` of the box where `redOdoUp` fires, the
+frozen odometer must fire too, which needs the neighbour sum of `redOdoUp` at `x` to be
+dominated by that of `fodo` — and that is exactly `nbr_mem_lowSet` plus the inductive
+hypothesis at the neighbours.  With the base case done, the step case is the already-proved
+`fodo_dominates_redOdoUpAt` at floor `i` with `layer_topples` supplying
+`redOdoUpAt i n η T₀ (cons (i+1) y) = 1`, and the arithmetic `T + T₀ ≤ (i+1) * n ^ d` closes
+with `T₀ ≤ n ^ d`.  Then unfold `CrossedInDirection` and bound the total time by `n ^ (d+1)`.
 -/
 import Exploding.Support.ReductionShift
 import Exploding.Support.SubFodo

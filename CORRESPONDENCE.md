@@ -71,7 +71,6 @@ No comparator challenge exists yet; see [`Audit/README.md`](Audit/README.md).
 | `thm-limit-shape` | [Exploding.Frozen.limit_shape](Exploding/Frozen/LimitShape.lean#L29) | exploding.tex:246-254 (label theorem:limit_shape) | DRAFT_SORRY |
 | `thm-time-constant` | [Exploding.Frozen.convergence_of_time_constant](Exploding/Frozen/TimeConstant.lean#L33) | exploding.tex:259-262 (label theorem:convergence_of_time_constant) | CONDITIONAL |
 | `thm-explosive` | [Exploding.Frozen.explosive](Exploding/Frozen/Explosive.lean#L22) | exploding.tex:265-268 (label theorem:explosive) | DRAFT_SORRY |
-| `prop-crossing-time` | [Exploding.Frozen.crossing_time](Exploding/Frozen/CrossingTime.lean#L19) | exploding.tex:416-422 (label prop:crossing_time) | DRAFT_SORRY |
 | `prop-renormalization` | [Exploding.Frozen.renormalization_properties](Exploding/Frozen/Renormalization.lean#L35) | exploding.tex:482-497 (label prop:renormalization_properties) | DRAFT_SORRY |
 | `lem-local-convexity` | [Exploding.Frozen.local_convexity](Exploding/Frozen/LocalConvexity.lean#L19) | exploding.tex:531-535 (label lemma:local_convexity) | DRAFT_SORRY |
 | `lem-square-lower-bound` | [Exploding.Frozen.square_lower_bound](Exploding/Frozen/SquareLowerBound.lean#L22) | exploding.tex:705-707 (label lemma:square_lower_bound) | SEALED |
@@ -97,5 +96,6 @@ No comparator challenge exists yet; see [`Audit/README.md`](Audit/README.md).
 | `prop-dimensional-reduction` | [Exploding.Frozen.dimensional_reduction](Exploding/Frozen/DimensionalReduction.lean#L24) | exploding.tex:1890-1899 (label prop:dimensional_reduction) | SEALED |
 | `lem-approx-subadditivity` | [Exploding.Frozen.approx_subadditivity](Exploding/Frozen/ApproxSubadditivity.lean#L105) | exploding.tex:760-765 (label lemma:approx_subadditivity) | SEALED |
 | `prop-recurrence` | [Exploding.Frozen.recurrence](Exploding/Frozen/Recurrence.lean#L17) | exploding.tex:1927-1929 (label prop:recurrence) | SEALED |
+| `prop-crossing-time` | [Exploding.Frozen.crossing_time](Exploding/Frozen/CrossingTime.lean#L20) | exploding.tex:416-422 (label prop:crossing_time) | SEALED |
 
 <!-- FROZEN-SURFACE-END -->

@@ -60,6 +60,10 @@ import Exploding.Support.SubFodoTopple
 open Exploding LatticeProb MeasureTheory Filter
 open scoped Classical
 
+set_option linter.unusedVariables false
+set_option linter.unusedSimpArgs false
+set_option linter.deprecated false
+
 variable {d : ℕ}
 
 /-! ### (b) Hoeffding's inequality, one line -/
@@ -294,8 +298,7 @@ theorem aux_ct_union_bound (d k : ℕ) (hd : 2 ≤ d) (p : ℝ) (hp : 0 < p) (hp
         ≤ (p - ε) * (k : ℝ)} := by
     intro η hη
     have hη' : ∀ x ∈ line d k i y, η x ≠ 2 * (d : ℤ) - 1 := by
-      intro x hx
-      intro heq
+      intro x hx heq
       exact hη ⟨x, hx, heq⟩
     have hsum : (∑ j ∈ Finset.Icc (1 : ℤ) (k : ℤ),
         if η (Function.update y i j) = 2 * (d : ℤ) - 1 then (1 : ℝ) else 0) = 0 := by
@@ -550,7 +553,7 @@ theorem aux_ct_off_step4 {d k : ℕ} (i : Fin d) (x y : Site d)
   have hpos : 0 < ∑ l ∈ Finset.univ.erase i, (y l - x l).natAbs := by omega
   have hex : ∃ l ∈ Finset.univ.erase i, (y l - x l).natAbs ≠ 0 := by
     by_contra hc
-    push_neg at hc
+    push Not at hc
     have hz : (∑ l ∈ Finset.univ.erase i, (y l - x l).natAbs) = 0 :=
       Finset.sum_eq_zero fun l hl => hc l hl
     omega
@@ -750,7 +753,7 @@ theorem aux_ct_off_step5 {d k : ℕ} (i : Fin d) (x y : Site d)
     have hpos : 0 < ∑ l ∈ Finset.univ.erase i, (y l - x l).natAbs := by omega
     have hex : ∃ l ∈ Finset.univ.erase i, (y l - x l).natAbs ≠ 0 := by
       by_contra hc
-      push_neg at hc
+      push Not at hc
       have hz : (∑ l ∈ Finset.univ.erase i, (y l - x l).natAbs) = 0 :=
         Finset.sum_eq_zero fun l hl => hc l hl
       omega
@@ -819,7 +822,354 @@ theorem aux_ct_propagate_line_fill (d k : ℕ) (hd : 2 ≤ d) (η : Site d → �
     (hadj : (lattice d).Adj Y Yref) (hieq : Y i = Yref i)
     (T : ℕ) (hT : ∀ w ∈ line d k i Yref, crossOdo η k i z T w = 1) :
     ∀ w ∈ line d k i Y, crossOdo η k i z (T + k) w = 1 := by
-  sorry
+  classical
+  set S : Set (Site d) := (cube d k)ᶜ ∪ line d k i z with hS
+  set w0 : Site d → ℤ := fun x => if x ∈ line d k i z then 1 else 0 with hw0
+  have hw0le : ∀ y, w0 y ≤ 1 := fun y => by simp only [hw0]; split_ifs <;> omega
+  have hw0nn : ∀ y, 0 ≤ w0 y := fun y => by simp only [hw0]; split_ifs <;> omega
+  have hle1 : ∀ t x, crossOdo η k i z t x ≤ 1 := fun t x =>
+    fodo_le_one S η w0 (fun y => (hbdd y).2) hw0le hw0nn t x
+  have hnn : ∀ t x, 0 ≤ crossOdo η k i z t x := fun t x =>
+    fodo_nonneg S η w0 hw0nn t x
+  have hmono : ∀ {s t : ℕ}, s ≤ t → ∀ x, crossOdo η k i z s x ≤ crossOdo η k i z t x :=
+    fun hst x => aux_ct_propagate_fodo_mono_time S η w0 hst x
+  obtain ⟨l0, hl0i, hl0step, hl0eq⟩ : ∃ l0 : Fin d, l0 ≠ i ∧
+      (Yref l0 = Y l0 + 1 ∨ Yref l0 = Y l0 - 1) ∧
+      ∀ m, m ≠ l0 → Yref m = Y m := by
+    rcases hadj with ⟨j, hj | hj⟩
+    · refine ⟨j, ?_, ?_, ?_⟩
+      · intro hji
+        rw [hji] at hj
+        have := congrFun hj i
+        simp only [Pi.add_apply, unit, Pi.single_eq_same] at this
+        omega
+      · left
+        have := congrFun hj j
+        simp only [Pi.add_apply, unit, Pi.single_eq_same] at this
+        omega
+      · intro m hm
+        have := congrFun hj m
+        simp only [Pi.add_apply, unit, Pi.single_eq_of_ne hm] at this
+        omega
+    · refine ⟨j, ?_, ?_, ?_⟩
+      · intro hji
+        rw [hji] at hj
+        have := congrFun hj i
+        simp only [Pi.add_apply, unit, Pi.single_eq_same] at this
+        omega
+      · right
+        have := congrFun hj j
+        simp only [Pi.add_apply, unit, Pi.single_eq_same] at this
+        omega
+      · intro m hm
+        have := congrFun hj m
+        simp only [Pi.add_apply, unit, Pi.single_eq_of_ne hm] at this
+        omega
+  have hperm : ∀ w ∈ line d k i Y, ∃ w' ∈ line d k i Yref, (lattice d).Adj w w' := by
+    intro w hw
+    refine ⟨Function.update w l0 (Yref l0), ?_, ?_⟩
+    · refine ⟨⟨?_, ?_⟩, ?_⟩
+      · rw [Function.update_of_ne (Ne.symm hl0i)]; exact hw.1.1
+      · rw [Function.update_of_ne (Ne.symm hl0i)]; exact hw.1.2
+      · intro m hm
+        by_cases hml : m = l0
+        · rw [hml, Function.update_self]
+        · rw [Function.update_of_ne hml, hw.2 m hm, hl0eq m hml]
+    · rcases hl0step with h | h
+      · refine ⟨l0, Or.inl ?_⟩
+        funext m
+        by_cases hml : m = l0
+        · rw [hml]
+          simp only [Function.update_self, Pi.add_apply, unit, Pi.single_eq_same]
+          rw [hw.2 l0 hl0i]; omega
+        · rw [Pi.add_apply, Function.update_of_ne hml, unit, Pi.single_eq_of_ne hml, add_zero]
+      · refine ⟨l0, Or.inr ?_⟩
+        funext m
+        by_cases hml : m = l0
+        · rw [hml]
+          simp only [Function.update_self, Pi.add_apply, unit, Pi.single_eq_same]
+          rw [hw.2 l0 hl0i]; omega
+        · rw [Pi.add_apply, Function.update_of_ne hml, unit, Pi.single_eq_of_ne hml, add_zero]
+  have hplus : ∀ t, T ≤ t → ∀ w ∈ line d k i Y, 1 ≤ nbrSumZ (crossOdo η k i z t) w := by
+    intro t ht w hw
+    obtain ⟨w', hw', hadj'⟩ := hperm w hw
+    have h1 : crossOdo η k i z t w' = 1 := by
+      have hge : 1 ≤ crossOdo η k i z t w' := by
+        rw [← hT w' hw']; exact hmono ht w'
+      exact le_antisymm (hle1 t w') hge
+    have h2 : crossOdo η k i z t w' ≤ nbrSumZ (crossOdo η k i z t) w := by
+      have hsum : nbrSumZ (crossOdo η k i z t) w
+          = ∑ j : Fin d, (crossOdo η k i z t (w + unit j) + crossOdo η k i z t (w - unit j)) := rfl
+      rw [hsum]
+      obtain ⟨j, hj⟩ := hadj'
+      have hnn' : ∀ y, 0 ≤ crossOdo η k i z t y := fun y => hnn t y
+      have hterm : crossOdo η k i z t w' ≤
+          crossOdo η k i z t (w + unit j) + crossOdo η k i z t (w - unit j) := by
+        rcases hj with hj | hj
+        · rw [hj]
+          have h3 : 0 ≤ crossOdo η k i z t (w - unit j) := hnn' _
+          omega
+        · have h6 : w' = w - unit j := by rw [hj]; abel
+          rw [h6]
+          have h3 : 0 ≤ crossOdo η k i z t (w + unit j) := hnn' _
+          omega
+      exact le_trans hterm (Finset.single_le_sum
+        (f := fun j : Fin d => crossOdo η k i z t (w + unit j) + crossOdo η k i z t (w - unit j))
+        (fun b _ => by
+          have h4 := hnn' (w + unit b)
+          have h5 := hnn' (w - unit b)
+          omega)
+        (Finset.mem_univ j))
+    omega
+  obtain ⟨x0, hx0line, hx0cat⟩ := hcat
+  have hx0cube : x0 ∈ cube d k := by
+    intro m
+    by_cases hm : m = i
+    · rw [hm]; exact hx0line.1
+    · rw [hx0line.2 m hm]; exact hYoff m hm
+  -- the catalyst fires at T+1
+  have hx0fire : crossOdo η k i z (T + 1) x0 = 1 := by
+    by_cases hz0 : x0 ∈ line d k i z
+    · rw [crossOdo, fodo_of_mem S η w0 (T + 1) (Or.inr hz0)]
+      simp only [hw0, if_pos hz0]
+    · have hx0notS : x0 ∉ S := by
+        intro hmem
+        rcases hmem with hmem | hmem
+        · exact hmem hx0cube
+        · exact hz0 hmem
+      rcases eq_or_ne (crossOdo η k i z T x0) 0 with hzero | hne
+      · have hconf : 2 * (d : ℤ) ≤ fconf S η w0 T x0 := by
+          have h1 := hplus T le_rfl x0 hx0line
+          have h2 : η x0 = 2 * (d : ℤ) - 1 := hx0cat
+          have h3 : fodo S η w0 T x0 = 0 := hzero
+          have h1' : 1 ≤ nbrSumZ (fodo S η w0 T) x0 := h1
+          simp only [fconf, lap] at h1' ⊢
+          rw [h2, h3]
+          simp only [mul_zero, sub_zero]
+          omega
+        have := fodo_topple_of_ge S η w0 T hx0notS hzero hconf
+        rw [crossOdo]
+        exact this
+      · have hpos : 1 ≤ crossOdo η k i z T x0 := by have := hnn T x0; omega
+        have hone : crossOdo η k i z T x0 = 1 := le_antisymm (hle1 T x0) hpos
+        have hge : 1 ≤ crossOdo η k i z (T + 1) x0 := by
+          rw [← hone]; exact hmono (Nat.le_succ T) x0
+        exact le_antisymm (hle1 (T + 1) x0) hge
+  -- the along-line spread
+  have hspread : ∀ (s : ℕ), s ≤ k → ∀ w ∈ line d k i Y,
+      (w i - x0 i).natAbs = (s : ℤ) →
+      crossOdo η k i z (T + 1 + s) w = 1 := by
+    intro s
+    induction s with
+    | zero =>
+      intro _ w hw hwi
+      have hweq : w = x0 := by
+        funext m
+        by_cases hm : m = i
+        · rw [hm]
+          have h0 : (w i - x0 i).natAbs = 0 := by omega
+          omega
+        · rw [hw.2 m hm, hx0line.2 m hm]
+      rw [hweq]
+      simpa using hx0fire
+    | succ s ih =>
+      intro hsk w hw hwi
+      have hsk' : s ≤ k := by omega
+      by_cases hdone : crossOdo η k i z (T + 1 + s) w = 1
+      · have heq : T + 1 + (s + 1) = (T + 1 + s) + 1 := by ring
+        rw [heq]
+        refine le_antisymm (hle1 _ w) ?_
+        have hmono' := hmono (Nat.le_succ (T + 1 + s)) w
+        rw [hdone] at hmono'
+        exact hmono'
+      · have hw0t : crossOdo η k i z (T + 1 + s) w = 0 := by
+          have hnn' := hnn (T + 1 + s) w
+          have hle' := hle1 (T + 1 + s) w
+          omega
+        have hwi1 : 1 ≤ w i := hw.1.1
+        have hwik : w i ≤ (k : ℤ) := hw.1.2
+        have hne : w i ≠ x0 i := by
+          intro heq
+          have : (w i - x0 i).natAbs = 0 := by omega
+          omega
+        -- the neighbour towards the catalyst
+        set v : Site d := if w i < x0 i then w + unit i else w - unit i with hv
+        have hvi : v i = if w i < x0 i then w i + 1 else w i - 1 := by
+          rw [hv]; split_ifs <;> simp [Pi.add_apply, Pi.sub_apply, unit, Pi.single_eq_same]
+        have hx0i1 : 1 ≤ x0 i := hx0line.1.1
+        have hx0ik : x0 i ≤ (k : ℤ) := hx0line.1.2
+        have hvline : v ∈ line d k i Y := by
+          refine ⟨⟨?_, ?_⟩, ?_⟩
+          · rw [hvi]
+            by_cases hlt : w i < x0 i
+            · simp only [if_pos hlt]; omega
+            · simp only [if_neg hlt]; omega
+          · rw [hvi]
+            by_cases hlt : w i < x0 i
+            · simp only [if_pos hlt]; omega
+            · simp only [if_neg hlt]; omega
+          · intro m hm
+            rw [hv]
+            by_cases hlt : w i < x0 i
+            · simp only [if_pos hlt, Pi.add_apply, unit, Pi.single_eq_of_ne hm, add_zero]
+              exact hw.2 m hm
+            · simp only [if_neg hlt, Pi.sub_apply, unit, Pi.single_eq_of_ne hm, sub_zero]
+              exact hw.2 m hm
+        have hnat : ((w i - x0 i).natAbs : ℤ) = (s : ℤ) + 1 := hwi
+        have hvdist : (v i - x0 i).natAbs = (s : ℤ) := by
+          rw [hvi]
+          split_ifs with hlt
+          · have h1 : (w i - x0 i).natAbs = x0 i - w i := by omega
+            have h2 : (w i + 1 - x0 i).natAbs = x0 i - (w i + 1) := by omega
+            omega
+          · have h1 : (w i - x0 i).natAbs = w i - x0 i := by omega
+            have h2 : (w i - 1 - x0 i).natAbs = (w i - 1) - x0 i := by omega
+            omega
+        have hv1 : crossOdo η k i z (T + 1 + s) v = 1 := ih hsk' v hvline hvdist
+        have hadjv : (lattice d).Adj w v := by
+          rw [hv]
+          split_ifs with hlt
+          · exact ⟨i, Or.inl (by simp [Pi.add_apply, unit, Pi.single_eq_same])⟩
+          · exact ⟨i, Or.inr (by simp [Pi.sub_apply, unit, Pi.single_eq_same])⟩
+        have hwcube : w ∈ cube d k := by
+          intro m
+          by_cases hm : m = i
+          · rw [hm]; exact hw.1
+          · rw [hw.2 m hm]; exact hYoff m hm
+        have hnotS : w ∉ S := by
+          intro hmem
+          rcases hmem with hmem | hmem
+          · exact hmem hwcube
+          · have h1 : crossOdo η k i z (T + 1 + s) w = 1 := by
+              show fodo S η w0 (T + 1 + s) w = 1
+              rw [fodo_of_mem S η w0 (T + 1 + s) (Or.inr hmem)]
+              simp only [hw0, if_pos hmem]
+            omega
+        have hconf : 2 * (d : ℤ) ≤ fconf S η w0 (T + 1 + s) w := by
+          have h2 : 2 * (d : ℤ) - 2 ≤ η w := (hbdd w).1
+          have hsingle : fodo S η w0 (T + 1 + s) (w + unit l0)
+              + fodo S η w0 (T + 1 + s) (w - unit l0)
+              + fodo S η w0 (T + 1 + s) (w + unit i)
+              + fodo S η w0 (T + 1 + s) (w - unit i)
+              ≤ nbrSumZ (fodo S η w0 (T + 1 + s)) w := by
+            have hsub : ({l0, i} : Finset (Fin d)) ⊆ Finset.univ := Finset.subset_univ _
+            have hsum := Finset.sum_le_sum_of_subset_of_nonneg hsub
+              (f := fun j : Fin d => fodo S η w0 (T + 1 + s) (w + unit j)
+                + fodo S η w0 (T + 1 + s) (w - unit j))
+              (fun b _ _ => by
+                have h7 : 0 ≤ fodo S η w0 (T + 1 + s) (w + unit b) := hnn (T + 1 + s) (w + unit b)
+                have h8 : 0 ≤ fodo S η w0 (T + 1 + s) (w - unit b) := hnn (T + 1 + s) (w - unit b)
+                omega)
+            have hpair : (∑ j ∈ ({l0, i} : Finset (Fin d)),
+                (fodo S η w0 (T + 1 + s) (w + unit j)
+                  + fodo S η w0 (T + 1 + s) (w - unit j)))
+                = fodo S η w0 (T + 1 + s) (w + unit l0)
+                  + fodo S η w0 (T + 1 + s) (w - unit l0)
+                  + fodo S η w0 (T + 1 + s) (w + unit i)
+                  + fodo S η w0 (T + 1 + s) (w - unit i) := by
+              rw [Finset.sum_insert (by simp [hl0i]), Finset.sum_singleton]
+              ring
+            rw [hpair] at hsum
+            simpa only [nbrSumZ] using hsum
+          have hvterm : fodo S η w0 (T + 1 + s) v
+              = fodo S η w0 (T + 1 + s) (w + unit i)
+                ∨ fodo S η w0 (T + 1 + s) v
+                  = fodo S η w0 (T + 1 + s) (w - unit i) := by
+            rw [hv]
+            split_ifs with hlt
+            · left; rfl
+            · right; rfl
+          have hv1' : fodo S η w0 (T + 1 + s) v = 1 := hv1
+          -- the permanent neighbour on the neighbouring line has value 1
+          have hperm1 : fodo S η w0 (T + 1 + s) (w + unit l0) = 1
+              ∨ fodo S η w0 (T + 1 + s) (w - unit l0) = 1 := by
+            have hwl0 : w l0 = Y l0 := hw.2 l0 hl0i
+            have h1 : crossOdo η k i z (T + 1 + s) (Function.update w l0 (Yref l0)) = 1 := by
+              have hge : 1 ≤ crossOdo η k i z (T + 1 + s) (Function.update w l0 (Yref l0)) := by
+                have hmem : Function.update w l0 (Yref l0) ∈ line d k i Yref := by
+                  refine ⟨⟨?_, ?_⟩, ?_⟩
+                  · rw [Function.update_of_ne (Ne.symm hl0i)]; exact hw.1.1
+                  · rw [Function.update_of_ne (Ne.symm hl0i)]; exact hw.1.2
+                  · intro m hm
+                    by_cases hml : m = l0
+                    · rw [hml, Function.update_self]
+                    · rw [Function.update_of_ne hml, hw.2 m hm, hl0eq m hml]
+                rw [← hT _ hmem]
+                exact hmono (by omega) _
+              exact le_antisymm (hle1 (T + 1 + s) _) hge
+            rcases hl0step with hstep | hstep
+            · left
+              have heq : Function.update w l0 (Yref l0) = w + unit l0 := by
+                funext m
+                by_cases hml : m = l0
+                · rw [hml]
+                  simp only [Function.update_self, Pi.add_apply, unit, Pi.single_eq_same]
+                  omega
+                · rw [Pi.add_apply, Function.update_of_ne hml, unit, Pi.single_eq_of_ne hml, add_zero]
+              rw [heq] at h1
+              exact h1
+            · right
+              have heq : Function.update w l0 (Yref l0) = w - unit l0 := by
+                funext m
+                by_cases hml : m = l0
+                · rw [hml]
+                  simp only [Function.update_self, Pi.sub_apply, unit, Pi.single_eq_same]
+                  omega
+                · rw [Pi.sub_apply, Function.update_of_ne hml, unit, Pi.single_eq_of_ne hml, sub_zero]
+              rw [heq] at h1
+              exact h1
+          simp only [fconf, lap]
+          have hw0t' : fodo S η w0 (T + 1 + s) w = 0 := hw0t
+          rw [hw0t']
+          simp only [mul_zero, sub_zero]
+          have h2d : 2 * (d : ℤ) - 2 ≤ η w := (hbdd w).1
+          have hnnl : 0 ≤ fodo S η w0 (T + 1 + s) (w + unit l0) := hnn (T + 1 + s) (w + unit l0)
+          have hnnl' : 0 ≤ fodo S η w0 (T + 1 + s) (w - unit l0) := hnn (T + 1 + s) (w - unit l0)
+          have hnni : 0 ≤ fodo S η w0 (T + 1 + s) (w + unit i) := hnn (T + 1 + s) (w + unit i)
+          have hnni' : 0 ≤ fodo S η w0 (T + 1 + s) (w - unit i) := hnn (T + 1 + s) (w - unit i)
+          rcases hvterm with hvterm | hvterm
+          · rw [hvterm] at hv1'
+            rcases hperm1 with hp | hp
+            · rw [hp, hv1'] at hsingle
+              omega
+            · rw [hp, hv1'] at hsingle
+              omega
+          · rw [hvterm] at hv1'
+            rcases hperm1 with hp | hp
+            · rw [hp, hv1'] at hsingle
+              omega
+            · rw [hp, hv1'] at hsingle
+              omega
+        have hfire := fodo_topple_of_ge S η w0 (T + 1 + s) hnotS hw0t hconf
+        have heq : T + 1 + (s + 1) = (T + 1 + s) + 1 := by ring
+        rw [heq]
+        exact hfire
+  intro w hw
+  have hwi : w i = x0 i + ((w i - x0 i).natAbs : ℤ) ∨ w i = x0 i - ((w i - x0 i).natAbs : ℤ) := by
+    rcases lt_or_ge (w i) (x0 i) with h | h
+    · right
+      have h1 : ((w i - x0 i).natAbs : ℤ) = x0 i - w i := by omega
+      omega
+    · left
+      have h1 : ((w i - x0 i).natAbs : ℤ) = w i - x0 i := by omega
+      omega
+  have hk : (w i - x0 i).natAbs ≤ k := by
+    have h1 := hw.1.1
+    have h2 := hw.1.2
+    have h3 := hx0line.1.1
+    have h4 := hx0line.1.2
+    omega
+  have hk1 : (w i - x0 i).natAbs + 1 ≤ k := by
+    have h1 := hw.1.1
+    have h2 := hw.1.2
+    have h3 := hx0line.1.1
+    have h4 := hx0line.1.2
+    omega
+  have h1 := hspread ((w i - x0 i).natAbs) hk w hw (by rfl)
+  refine le_antisymm (hle1 _ w) ?_
+  rw [← h1]
+  exact hmono (by omega) w
+
 
 -- GAP-closing piece: the paper's own chain-length count
 -- (`exploding.tex:447-449`, "every line in `Q_k` is joined to `L_k^{(1,z)}`

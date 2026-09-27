@@ -7,17 +7,15 @@ is `0` off the low face).  The corrected statement below restricts the dominatio
 sites above layer `i` (`i < x 0`) and shifts the time by `T`, a time at which layer `i` is
 already toppled in `fodo`.
 
-Proved: the base case (both branches) and the step leaf (a) (`x ∉ cube (d+1) n`, via
-`fodo_mono_time'`).  Remaining:
-  (b) `hle : x 0 ≤ i` — the site is at or below the floor, so `redOdoUpAt` freezes it at its
-      initial value, which is `1` exactly on layer `i`; the floor's lighting is `hT`, and
-      `fodo_mono_time'` carries it from `T` to `T + (t + 1)`.  (The draft below tries to
-      close this with `fodo_le_one`, which does NOT apply: `fodo_le_one` needs
-      `s0 ≤ 2d - 1`, and here `s0 = η` is unbounded.  The right route is `hT` plus
-      `fodo_mono_time'`.)
-  (c) `h1 : redOdoUpAt i n η t x = 1` — absorption at one, transported by `fodo_mono_time'`.
-  (d) the firing case — the threshold comparison, using `nbrSumZ_mono` on the inductive
-      hypothesis and `fodo`'s own recursion.
+Proved: the base case (both branches), the step leaf (a) (`x ∉ cube (d+1) n`, via
+`fodo_mono_time'`), the step leaf (b) (`x 0 ≤ i`, via the floor's lighting `hT` carried by
+`fodo_mono_time'` and capped by `redOdoUpAt_le_one`), and the step leaf (c) (absorption at
+one, via `fodo_mono_time'`).  Remaining: leaf (d), the firing case.  Its shape is written
+out below: from the inductive hypothesis and `redOdoUpAt_zero_or_one` one gets
+`fodo … (T + t) x = 0`; the goal is then `fodo … (T + (t + 1)) x = 1`, which is
+`fodo_succ` plus the threshold comparison — `nbrSumZ_mono` on the inductive hypothesis
+gives `nbrSumZ (redOdoUpAt … t) x ≤ nbrSumZ (fodo … (T + t)) x`, and the two thresholds
+differ by exactly the `-1` shift that `redOdoUpAt`'s definition carries.
 -/
 import Exploding.Support.ReductionShift
 import Exploding.Support.SubFodo
@@ -88,16 +86,43 @@ theorem fodo_dominates_redOdoUpAt_above (n : ℕ) (hn : 1 ≤ n) (η : Site (d +
           have h2 := fodo_mono_time' ((rboxShift (fun _ : Fin (d+1) => n) (0 : Site (d+1)))ᶜ) η
             (Set.indicator (faceOut (fun _ : Fin (d+1) => n) (0 : Site (d+1)) ⟨0, by omega⟩ false)
               (fun _ => (1 : ℤ))) T (T + (t + 1)) (cons i (fun l => x l.succ)) (by omega)
-          have h3 : fodo ((rboxShift (fun _ : Fin (d+1) => n) (0 : Site (d+1)))ᶜ) η
-              (Set.indicator (faceOut (fun _ : Fin (d+1) => n) (0 : Site (d+1)) ⟨0, by omega⟩ false)
-                (fun _ => (1 : ℤ))) (T + (t + 1)) (cons i (fun l => x l.succ)) ≤ 1 := by
-            rw [h1]
-            exact le_rfl
           omega
         rw [hT0]
+        exact redOdoUpAt_le_one n η i t (cons i (fun l => x l.succ))
       · rw [if_neg hle]
         by_cases h1 : redOdoUpAt i n η t x = 1
         · rw [if_pos h1]
-          sorry
+          have hle1 : redOdoUpAt i n η t x ≤
+              fodo ((rboxShift (fun _ : Fin (d+1) => n) (0 : Site (d+1)))ᶜ) η
+                (Set.indicator (faceOut (fun _ : Fin (d+1) => n) (0 : Site (d+1))
+                  ⟨0, by omega⟩ false) (fun _ => (1 : ℤ))) (T + t) x := ih x hx
+          rw [h1] at hle1
+          have hmono := fodo_mono_time' ((rboxShift (fun _ : Fin (d+1) => n)
+            (0 : Site (d+1)))ᶜ) η
+            (Set.indicator (faceOut (fun _ : Fin (d+1) => n) (0 : Site (d+1))
+              ⟨0, by omega⟩ false) (fun _ => (1 : ℤ))) (T + t) (T + (t + 1)) x (by omega)
+          omega
         · rw [if_neg h1]
-          sorry
+          have hle1 : redOdoUpAt i n η t x ≤
+              fodo ((rboxShift (fun _ : Fin (d+1) => n) (0 : Site (d+1)))ᶜ) η
+                (Set.indicator (faceOut (fun _ : Fin (d+1) => n) (0 : Site (d+1))
+                  ⟨0, by omega⟩ false) (fun _ => (1 : ℤ))) (T + t) x := ih x hx
+          have h0 : redOdoUpAt i n η t x = 0 := by
+            rcases redOdoUpAt_zero_or_one n η i t x with h | h
+            · exact h
+            · exact absurd h h1
+          rw [h0] at hle1
+          have hfodo0 : fodo ((rboxShift (fun _ : Fin (d+1) => n) (0 : Site (d+1)))ᶜ) η
+              (Set.indicator (faceOut (fun _ : Fin (d+1) => n) (0 : Site (d+1))
+                ⟨0, by omega⟩ false) (fun _ => (1 : ℤ))) (T + t) x = 0 := by omega
+          have hfodo1 : fodo ((rboxShift (fun _ : Fin (d+1) => n) (0 : Site (d+1)))ᶜ) η
+              (Set.indicator (faceOut (fun _ : Fin (d+1) => n) (0 : Site (d+1))
+                ⟨0, by omega⟩ false) (fun _ => (1 : ℤ))) (T + (t + 1)) x = 1 := by
+            rw [fodo_succ]
+            by_cases hxS : x ∈ ((rboxShift (fun _ : Fin (d+1) => n) (0 : Site (d+1)))ᶜ)
+            · rw [if_pos hxS]
+              sorry
+            · rw [if_neg hxS]
+              sorry
+          rw [hfodo1]
+          exact redOdoUpAt_le_one n η i (t + 1) x

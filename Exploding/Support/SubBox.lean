@@ -95,4 +95,53 @@ theorem box_mono (z : ℕ → Site d) (j : ℕ) : box z j ⊆ box z (j + 1) := b
     exact le_bmax z (j + 1) i hk'
   exact ⟨le_trans h1 (hp i).1, le_trans (hp i).2 h2⟩
 
+/-- A point of the bounding box of a path that is not on the path has a
+neighbour in the box. -/
+theorem box_point_has_nbr (m : ℕ) (z : ℕ → Site d) (p : Site d)
+    (hp : p ∈ br (z '' {i : ℕ | i ≤ m})) (hnot : p ∉ z '' {i : ℕ | i ≤ m}) :
+    ∃ q ∈ br (z '' {i : ℕ | i ≤ m}), (lattice d).Adj q p := by
+  by_contra hcon
+  have hcon' : ∀ q ∈ br (z '' {i : ℕ | i ≤ m}), ¬ (lattice d).Adj q p := by
+    intro q hq h
+    exact hcon ⟨q, hq, h⟩
+  clear hcon
+  apply hnot
+  have hA : ∀ y ∈ z '' {i : ℕ | i ≤ m}, y = p := by
+    intro y hy
+    funext i
+    by_contra hne
+    rcases lt_or_gt_of_ne hne with hlt | hgt
+    · have hmem : p - unit i ∈ br (z '' {i : ℕ | i ≤ m}) := by
+        intro j
+        constructor
+        · by_cases hji : j = i
+          · subst hji
+            exact ⟨y, hy, by simp [LatticeProb.unit, Pi.sub_apply]; omega⟩
+          · obtain ⟨y', hy', hle⟩ := (hp j).1
+            exact ⟨y', hy', by simpa [LatticeProb.unit, Pi.sub_apply, hji, Ne.symm hji] using hle⟩
+        · by_cases hji : j = i
+          · subst hji
+            obtain ⟨y', hy', hle⟩ := (hp j).2
+            exact ⟨y', hy', by simp [LatticeProb.unit, Pi.sub_apply]; omega⟩
+          · obtain ⟨y', hy', hle⟩ := (hp j).2
+            exact ⟨y', hy', by simpa [LatticeProb.unit, Pi.sub_apply, hji, Ne.symm hji] using hle⟩
+      exact hcon' (p - unit i) hmem ⟨i, Or.inl (by simp [sub_add_cancel])⟩
+    · have hmem : p + unit i ∈ br (z '' {i : ℕ | i ≤ m}) := by
+        intro j
+        constructor
+        · by_cases hji : j = i
+          · subst hji
+            obtain ⟨y', hy', hle⟩ := (hp j).1
+            exact ⟨y', hy', by simp [LatticeProb.unit, Pi.add_apply]; omega⟩
+          · obtain ⟨y', hy', hle⟩ := (hp j).1
+            exact ⟨y', hy', by simpa [LatticeProb.unit, Pi.add_apply, hji, Ne.symm hji] using hle⟩
+        · by_cases hji : j = i
+          · subst hji
+            exact ⟨y, hy, by simp [LatticeProb.unit, Pi.add_apply]; omega⟩
+          · obtain ⟨y', hy', hle⟩ := (hp j).2
+            exact ⟨y', hy', by simpa [LatticeProb.unit, Pi.add_apply, hji, Ne.symm hji] using hle⟩
+      exact hcon' (p + unit i) hmem ⟨i, Or.inr rfl⟩
+  have hz : z 0 ∈ z '' {i : ℕ | i ≤ m} := ⟨0, Nat.zero_le m, rfl⟩
+  exact (hA (z 0) hz) ▸ hz
+
 end Exploding

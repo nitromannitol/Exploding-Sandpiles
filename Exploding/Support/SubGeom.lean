@@ -611,22 +611,24 @@ theorem mem_fillSet_of_mem (A : Set (Site d)) {x : Site d} (hx : x ∈ A) :
 
 /-- The terminal support is closed under the toppling rule: a site off `A` with
 two distinct neighbours in the support is in the support. -/
-theorem fillSet_two_nbrs (A : Set (Site d)) {x y z : Site d} (hx : x ∉ A)
+theorem fillSet_two_nbrs (A : Set (Site d)) {x y z : Site d}
     (hy : y ∈ fillSet A) (hz : z ∈ fillSet A) (hyz : y ≠ z)
     (hxy : (lattice d).Adj y x) (hxz : (lattice d).Adj z x) :
     x ∈ fillSet A := by
-  obtain ⟨ty, hty⟩ := hy
-  obtain ⟨tz, htz⟩ := hz
-  refine ⟨max ty tz + 1, ?_⟩
-  refine fodo_fill_step A (max ty tz) x y z hx hxy ?_ hxz ?_ hyz
-  · have h := fodo_mono_time' A (fun _ => 2 * (d : ℤ) - 2) (Set.indicator A 1)
-      (le_max_left ty tz) y
-    rw [hty] at h
-    exact le_antisymm (fodo_indicator_le_one A (max ty tz) y) h
-  · have h := fodo_mono_time' A (fun _ => 2 * (d : ℤ) - 2) (Set.indicator A 1)
-      (le_max_right ty tz) z
-    rw [htz] at h
-    exact le_antisymm (fodo_indicator_le_one A (max ty tz) z) h
+  by_cases hx : x ∈ A
+  · exact mem_fillSet_of_mem A hx
+  · obtain ⟨ty, hty⟩ := hy
+    obtain ⟨tz, htz⟩ := hz
+    refine ⟨max ty tz + 1, ?_⟩
+    refine fodo_fill_step A (max ty tz) x y z hx hxy ?_ hxz ?_ hyz
+    · have h := fodo_mono_time' A (fun _ => 2 * (d : ℤ) - 2) (Set.indicator A 1)
+        (le_max_left ty tz) y
+      rw [hty] at h
+      exact le_antisymm (fodo_indicator_le_one A (max ty tz) y) h
+    · have h := fodo_mono_time' A (fun _ => 2 * (d : ℤ) - 2) (Set.indicator A 1)
+        (le_max_right ty tz) z
+      rw [htz] at h
+      exact le_antisymm (fodo_indicator_le_one A (max ty tz) z) h
 
 /-- A box in the coordinates other than `i`, as a set. -/
 def slab (a b : Site d) (i : Fin d) (c : ℤ) : Set (Site d) :=
@@ -676,4 +678,190 @@ theorem slab_move (a b : Site d) (i : Fin d) (c : ℤ) {p : Site d}
     · rw [if_neg hkj, mul_zero, add_zero]
       exact h2
 
+/-- **The cap spread** (`exploding.tex:545-553`, the mechanism of the one-turn
+case): if a box `B` is in the terminal support of the frozen odometer on the
+extremal background, and one point of the cap `S` one step above `B` in
+direction `i` is in the terminal support, then the whole cap is.
+
+The proof: `S` is a box in the coordinates `≠ i`, hence connected; along a path
+in `S` each step is in a direction `j ≠ i`, and a point of `S` whose predecessor
+is in the support has the two distinct neighbours `predecessor` (in the support)
+and `point - e_i` (in `B`, hence in the support). -/
+theorem fillSet_slab (A : Set (Site d)) (a b : Site d) (i : Fin d) (hab : a i ≤ b i)
+    (hbox : ∀ x, (∀ j, a j ≤ x j ∧ x j ≤ b j) → x ∈ fillSet A)
+    {y : Site d} (hy : y ∈ slab a b i (b i + 1)) (hyF : y ∈ fillSet A) :
+    slab a b i (b i + 1) ⊆ fillSet A := by
+  -- a single step of the slab in a direction `j ≠ i` preserves membership in `fillSet`
+  have hstep : ∀ {p : Site d}, p ∈ slab a b i (b i + 1) → p ∈ fillSet A →
+      ∀ j : Fin d, j ≠ i → ∀ c : ℤ, (c = 1 ∨ c = -1) →
+      p + c • unit j ∈ slab a b i (b i + 1) →
+      p + c • unit j ∈ fillSet A := by
+    intro p hp hpF j hj c hc hpj
+    refine fillSet_two_nbrs A (x := p + c • unit j) (y := p)
+      (z := p + c • unit j - unit i)
+      hpF (hbox (p + c • unit j - unit i) (slab_sub_unit_mem a b i hab hpj)) ?_ ?_ ?_
+    · -- the two neighbours differ in coordinate `i`
+      intro hcon
+      have h1 := congrFun hcon i
+      have h2 : (p + c • unit j - unit i) i = p i - 1 := by
+        rw [Pi.sub_apply, coord_add_smul]
+        simp only [if_neg (Ne.symm hj), mul_zero, add_zero, LatticeProb.unit,
+          Pi.single_eq_same]
+      rw [h2] at h1
+      omega
+    · rcases hc with hc | hc
+      · refine ⟨j, Or.inl ?_⟩
+        rw [hc, one_smul]
+      · refine ⟨j, Or.inr ?_⟩
+        rw [hc, neg_smul, one_smul]
+        abel
+    · refine ⟨i, Or.inl ?_⟩
+      abel
+  -- move one coordinate of `p` to that of `q`, one step at a time
+  have hmove : ∀ {p q : Site d} (j : Fin d), j ≠ i →
+      p ∈ slab a b i (b i + 1) → p ∈ fillSet A →
+      (∀ k, k ≠ j → p k = q k) → q ∈ slab a b i (b i + 1) →
+      q ∈ fillSet A := by
+    intro p q j hj hp hpF hagree hq
+    set N : ℕ := (if p j ≤ q j then (q j - p j).toNat else (p j - q j).toNat) with hN
+    have hNle : p j + (N : ℤ) * (if p j ≤ q j then 1 else -1) = q j := by
+      rw [hN]
+      by_cases hle : p j ≤ q j
+      · rw [if_pos hle, if_pos hle]
+        have h0 : (0 : ℤ) ≤ q j - p j := by linarith
+        rw [Int.toNat_of_nonneg h0]
+        ring
+      · rw [if_neg hle, if_neg hle]
+        have h0 : (0 : ℤ) ≤ p j - q j := by linarith
+        rw [Int.toNat_of_nonneg h0]
+        ring
+    have hbetween : ∀ (n : ℕ), n ≤ N →
+        min (p j) (q j) ≤ p j + (n : ℤ) * (if p j ≤ q j then 1 else -1) ∧
+        p j + (n : ℤ) * (if p j ≤ q j then 1 else -1) ≤ max (p j) (q j) := by
+      intro n hn
+      have hnN : (n : ℤ) ≤ (N : ℤ) := by exact_mod_cast hn
+      by_cases hle : p j ≤ q j
+      · rw [if_pos hle]
+        have hN' : p j + (N : ℤ) = q j := by
+          have h := hNle; rw [if_pos hle] at h; simpa using h
+        constructor
+        · rw [min_eq_left hle]; linarith
+        · rw [max_eq_right hle]; linarith
+      · rw [if_neg hle]
+        have hN' : p j - (N : ℤ) = q j := by
+          have h := hNle; rw [if_neg hle] at h; linarith
+        constructor
+        · rw [min_eq_right (le_of_lt (not_le.mp hle))]; linarith
+        · rw [max_eq_left (le_of_lt (not_le.mp hle))]; linarith
+    have hstep' : ∀ (n : ℕ), n ≤ N →
+        (fun l => if l = j then p j + (n : ℤ) * (if p j ≤ q j then 1 else -1) else p l) ∈
+          slab a b i (b i + 1) := by
+      intro n hn
+      refine ⟨?_, ?_⟩
+      · simp only [if_neg (Ne.symm hj)]; exact hp.1
+      · intro k hki
+        show a k ≤ (if k = j then p j + (n : ℤ) * (if p j ≤ q j then 1 else -1) else p k) ∧
+          (if k = j then p j + (n : ℤ) * (if p j ≤ q j then 1 else -1) else p k) ≤ b k
+        by_cases hkj : k = j
+        · subst hkj
+          rw [if_pos rfl]
+          have hb := hbetween n hn
+          have hpj := hp.2 k hki
+          have hqj := hq.2 k hki
+          exact ⟨le_trans (le_min hpj.1 hqj.1) hb.1,
+            le_trans hb.2 (max_le hpj.2 hqj.2)⟩
+        · rw [if_neg hkj]
+          exact hp.2 k hki
+    have hwalk : ∀ (n : ℕ), n ≤ N →
+        (fun l => if l = j then p j + (n : ℤ) * (if p j ≤ q j then 1 else -1) else p l) ∈
+          fillSet A := by
+      intro n
+      induction n with
+      | zero =>
+        intro _
+        have h0 : (fun l => if l = j then p j + ((0 : ℕ) : ℤ) * (if p j ≤ q j then 1 else -1)
+            else p l) = p := by
+          funext l
+          by_cases hlj : l = j
+          · subst hlj; simp
+          · rw [if_neg hlj]
+        rw [h0]; exact hpF
+      | succ n ih =>
+        intro hn
+        have hn' : n ≤ N := le_trans (Nat.le_succ n) hn
+        have hprev := ih hn'
+        have hcur := hstep' (n + 1) hn
+        have hsucc : (fun l => if l = j then p j + ((n : ℕ) : ℤ) * (if p j ≤ q j then 1 else -1)
+              else p l) + (if p j ≤ q j then (1 : ℤ) else -1) • unit j =
+            (fun l => if l = j then p j + ((n + 1 : ℕ) : ℤ) * (if p j ≤ q j then 1 else -1)
+              else p l) := by
+          funext l
+          by_cases hlj : l = j
+          · subst hlj
+            rw [coord_add_smul]
+            ring_nf
+            push_cast
+            ring
+          · rw [coord_add_smul]
+            simp only [if_neg hlj, mul_zero, add_zero]
+        rw [← hsucc]
+        refine hstep (hstep' n hn') hprev j hj _ ?_ ?_
+        · by_cases hle : p j ≤ q j
+          · exact Or.inl (by rw [if_pos hle])
+          · exact Or.inr (by rw [if_neg hle])
+        · rw [hsucc]; exact hcur
+    have hfin := hwalk N le_rfl
+    have hqeq : (fun l => if l = j then p j + (N : ℤ) * (if p j ≤ q j then 1 else -1)
+        else p l) = q := by
+      funext l
+      by_cases hlj : l = j
+      · subst hlj; rw [if_pos rfl]; exact hNle
+      · rw [if_neg hlj]; exact hagree l hlj
+    rwa [hqeq] at hfin
+  -- walk from `y` to the target, one coordinate at a time
+  have key : ∀ (s : Finset (Fin d)), i ∉ s →
+      ∀ {p q : Site d}, p ∈ slab a b i (b i + 1) → p ∈ fillSet A →
+      (∀ j, j ∉ s → p j = q j) → q ∈ slab a b i (b i + 1) →
+      q ∈ fillSet A := by
+    intro s
+    refine Finset.induction (motive := fun s => i ∉ s →
+      ∀ {p q : Site d}, p ∈ slab a b i (b i + 1) → p ∈ fillSet A →
+      (∀ j, j ∉ s → p j = q j) → q ∈ slab a b i (b i + 1) → q ∈ fillSet A) ?_ ?_ s
+    case refine_1 =>
+      intro _ p q hp hpF hagree hq
+      have hpq : p = q := by
+        funext j
+        exact hagree j (Finset.notMem_empty j)
+      rwa [← hpq]
+    case refine_2 =>
+      intro j s hjs ih hi p q hp hpF hagree hq
+      have hji : j ≠ i := fun h => hi (h ▸ Finset.mem_insert_self j s)
+      have hmid : (fun k => if k = j then q j else p k) ∈ slab a b i (b i + 1) := by
+        refine ⟨?_, ?_⟩
+        · simp only [if_neg (Ne.symm hji)]; exact hp.1
+        · intro k hki
+          show a k ≤ (if k = j then q j else p k) ∧ (if k = j then q j else p k) ≤ b k
+          by_cases hkj : k = j
+          · subst hkj
+            rw [if_pos rfl]
+            exact hq.2 k hki
+          · rw [if_neg hkj]
+            exact hp.2 k hki
+      have hmidF : (fun k => if k = j then q j else p k) ∈ fillSet A :=
+        hmove j hji hp hpF (fun k hkj => by rw [if_neg hkj]) hmid
+      refine ih (fun h => hi (Finset.mem_insert_of_mem h)) hmid hmidF ?_ hq
+      intro k hk
+      by_cases hkj : k = j
+      · subst hkj
+        simp
+      · rw [if_neg hkj]
+        exact hagree k (by simp [hkj, hk])
+  intro q hq
+  refine key (Finset.univ.erase i) (Finset.notMem_erase i Finset.univ)
+    (p := y) (q := q) hy hyF ?_ hq
+  intro j hj
+  have hji : j = i := by
+    by_contra hne
+    exact hj (Finset.mem_erase.mpr ⟨hne, Finset.mem_univ j⟩)
+  rw [hji, hy.1, hq.1]
 end Exploding

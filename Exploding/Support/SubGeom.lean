@@ -444,4 +444,29 @@ theorem fodo_mono_background_01 (S : Set (Site d)) (s0 s0' w0 : Site d → ℤ)
           linarith [h x]
         simpa using incr_mono (d := d) hconf
 
+/-- **"By monotonicity of parallel toppling, we may take `η = 2d-2`"**
+(`exploding.tex:539-540`).  A result proved on the extremal background
+transports to any background in `[2d-2, 2d-1]`: the frozen odometer is monotone
+in the background (`fodo_mono_background_01`) and is at most `1`
+(`fodo_le_one`). -/
+theorem local_convexity_wlog_eta (A : Set (Site d)) (η : Site d → ℤ)
+    (hlow : ∀ x, 2 * (d : ℤ) - 2 ≤ η x) (hhigh : ∀ x, η x ≤ 2 * (d : ℤ) - 1)
+    (t : ℕ) (x : Site d)
+    (hmin : fodo A (fun _ => 2 * (d : ℤ) - 2) (Set.indicator A 1) t x = 1) :
+    fodo A η (Set.indicator A 1) t x = 1 := by
+  have hle : fodo A (fun _ => 2 * (d : ℤ) - 2) (Set.indicator A 1) t x ≤
+      fodo A η (Set.indicator A 1) t x :=
+    fodo_mono_background_01 A (fun _ => 2 * (d : ℤ) - 2) η (Set.indicator A 1)
+      hlow hhigh (fun y => by
+        by_cases hy : y ∈ A <;> simp [Set.indicator_of_mem, Set.indicator_of_notMem, hy])
+      (fun y => by
+        by_cases hy : y ∈ A <;> simp [Set.indicator_of_mem, Set.indicator_of_notMem, hy]) t x
+  have hcap : fodo A η (Set.indicator A 1) t x ≤ 1 :=
+    fodo_le_one A η (Set.indicator A 1) hhigh
+      (fun y => by
+        by_cases hy : y ∈ A <;> simp [Set.indicator_of_mem, Set.indicator_of_notMem, hy])
+      (fun y => by
+        by_cases hy : y ∈ A <;> simp [Set.indicator_of_mem, Set.indicator_of_notMem, hy]) t x
+  linarith
+
 end Exploding

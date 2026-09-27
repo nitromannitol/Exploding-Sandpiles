@@ -14,6 +14,7 @@ import Exploding.Support.Reduction
 import Exploding.Support.SubSpanZero
 import Exploding.Support.SubFodo
 import Exploding.Support.SubOdo
+import Exploding.Support.CrossingTimeAux
 
 namespace Exploding
 
@@ -546,6 +547,150 @@ theorem exists_uniform_span_time (n : ℕ) (η : Site d → ℤ)
   have h2 : spanOdo n η (hfin.toFinset.sup fun y => if hy : y ∈ cube d n then t y hy else 0) y ≤ 1 :=
     spanOdo_le_one n η _ y
   omega
+
+/-- The cube is finite. -/
+theorem cube_finite' (n : ℕ) : (cube d n).Finite := by
+  refine (Set.Finite.pi (fun _ : Fin d => Set.finite_Icc (0 : ℤ) (n : ℤ))).subset ?_
+  intro x hx i _
+  exact ⟨by have h := hx i; omega, (hx i).2⟩
+
+/-- Two odometers that agree on the cube and vanish off it have the same Laplacian there. -/
+theorem lap_congr_on_cube (n : ℕ) (u v : Site d → ℤ)
+    (h : ∀ x ∈ cube d n, u x = v x) (hu : ∀ x ∉ cube d n, u x = 0)
+    (hv : ∀ x ∉ cube d n, v x = 0) (x : Site d) (hx : x ∈ cube d n) :
+    lap u x = lap v x := by
+  simp only [lap]
+  rw [nbrSumZ_congr (fun y => by
+    by_cases hy : y ∈ cube d n
+    · exact h y hy
+    · rw [hu y hy, hv y hy]) x, h x hx]
+
+/-- If no site of the cube topples at step `t + 1`, no site topples at any later step. -/
+theorem spanOdo_stabilizes (n : ℕ) (η : Site d → ℤ) (t : ℕ)
+    (h : ∀ x ∈ cube d n, spanOdo n η (t + 1) x = spanOdo n η t x) :
+    ∀ s, t ≤ s → ∀ x ∈ cube d n, spanOdo n η s x = spanOdo n η t x := by
+  intro s hs
+  induction hs with
+  | refl => intro x hx; rfl
+  | step hs ih =>
+    intro x hx
+    rw [spanOdo_succ_eq]
+    rw [if_neg (not_not.mpr hx)]
+    have hlap : lap (spanOdo n η _) x = lap (spanOdo n η t) x :=
+      lap_congr_on_cube n _ _ (fun y hy => ih y hy)
+        (fun y hy => spanOdo_of_notMem n η _ hy)
+        (fun y hy => spanOdo_of_notMem n η t hy) x hx
+    rw [hlap, ih x hx]
+    by_cases h1 : spanOdo n η t x = 1
+    · rw [if_pos h1, h1]
+    · rw [if_neg h1]
+      by_cases hthr : 2 * (d : ℤ) ≤ η x + lap (spanOdo n η t) x
+      · exfalso
+        have hstep := h x hx
+        rw [spanOdo_succ_eq] at hstep
+        rw [if_neg (not_not.mpr hx), if_neg h1, if_pos hthr] at hstep
+        omega
+      · rw [if_neg hthr]
+        ring
+
+/-- **The counting bound.**  If the cube is internally spanned, then every site of the cube
+has toppled by time `(cube d n).ncard`.  The set of untoppled sites is non-increasing; if it
+ever failed to shrink while nonempty the process would be frozen, contradicting internal
+spanning; so it shrinks at least once per step until it is empty. -/
+theorem spanOdo_topples_by_ncard (n : ℕ) (η : Site d → ℤ)
+    (hspan : InternallySpanned η n) :
+    ∀ x ∈ cube d n, spanOdo n η ((cube d n).ncard) x = 1 := by
+  classical
+  have hfin := cube_finite' (d := d) n
+  set g : ℕ → Finset (Site d) := fun t => hfin.toFinset.filter (fun y => spanOdo n η t y = 0)
+    with hg
+  have hg_sub : ∀ t, g (t + 1) ⊆ g t := by
+    intro t y hy
+    simp only [hg, Finset.mem_filter] at hy ⊢
+    obtain ⟨h1, h2⟩ := hy
+    refine ⟨h1, ?_⟩
+    have hmono := spanOdo_mono n η t y
+    have hnn := spanOdo_nonneg n η t y
+    omega
+  have hg_strict : ∀ t, g t ≠ ∅ → (g (t + 1)).card < (g t).card := by
+    intro t hne
+    have hss := hg_sub t
+    have hproper : g (t + 1) ≠ g t := by
+      intro heq
+      obtain ⟨y, hy⟩ := Finset.nonempty_iff_ne_empty.mpr hne
+      have hyc : y ∈ cube d n := hfin.mem_toFinset.mp (Finset.mem_filter.mp hy).1
+      have hy0 : spanOdo n η t y = 0 := (Finset.mem_filter.mp hy).2
+      have hfroz : ∀ s, t ≤ s → ∀ x ∈ cube d n, spanOdo n η s x = spanOdo n η t x := by
+        apply spanOdo_stabilizes n η t
+        intro x hx
+        have hiff : x ∈ g (t + 1) ↔ x ∈ g t := by rw [heq]
+        have h1 : spanOdo n η (t + 1) x = 0 ↔ spanOdo n η t x = 0 := by
+          constructor
+          · intro h
+            exact (Finset.mem_filter.mp (hiff.mp (Finset.mem_filter.mpr
+              ⟨hfin.mem_toFinset.mpr hx, h⟩))).2
+          · intro h
+            exact (Finset.mem_filter.mp (hiff.mpr (Finset.mem_filter.mpr
+              ⟨hfin.mem_toFinset.mpr hx, h⟩))).2
+        have hmono := spanOdo_mono n η t x
+        have hle1 := spanOdo_le_one n η (t + 1) x
+        have hnn := spanOdo_nonneg n η t x
+        by_cases hz : spanOdo n η t x = 0
+        · rw [h1.mpr hz, hz]
+        · have hz1 : spanOdo n η (t + 1) x ≠ 0 := fun h => hz (h1.mp h)
+          omega
+      obtain ⟨tx, htx⟩ := hspan y hyc
+      have hle : t ≤ tx := by
+        by_contra hcon
+        have hcon' : tx < t := Nat.lt_of_not_le hcon
+        have hmono := spanOdo_mono_le n η (Nat.le_of_lt hcon') y
+        rw [htx, hy0] at hmono
+        omega
+      rw [hfroz tx hle y hyc, hy0] at htx
+      omega
+    exact Finset.card_lt_card (Finset.ssubset_iff_subset_ne.mpr ⟨hss, hproper⟩)
+  have hbound : ∀ t, g t ≠ ∅ → (g t).card + t ≤ (g 0).card := by
+    intro t
+    induction t with
+    | zero => intro _; simp
+    | succ k ih =>
+      intro hne
+      have hk : g k ≠ ∅ := by
+        intro h
+        apply hne
+        exact Finset.eq_empty_iff_forall_notMem.mpr (fun z hz =>
+          Finset.eq_empty_iff_forall_notMem.mp h z (hg_sub k hz))
+      have h1 := ih hk
+      have h2 := hg_strict k hk
+      omega
+  have hcard0 : (g 0).card = (cube d n).ncard := by
+    rw [hg]
+    simp only
+    have hfilter : hfin.toFinset.filter (fun y => spanOdo n η 0 y = 0) = hfin.toFinset :=
+      Finset.filter_true_of_mem (fun y hy => rfl)
+    rw [hfilter]
+    exact (Set.ncard_eq_toFinset_card _ hfin).symm
+  intro x hx
+  by_contra hcon
+  have hx0 : spanOdo n η ((cube d n).ncard) x = 0 := by
+    have hnn := spanOdo_nonneg n η ((cube d n).ncard) x
+    have hle := spanOdo_le_one n η ((cube d n).ncard) x
+    omega
+  have hmem : x ∈ g ((cube d n).ncard) :=
+    Finset.mem_filter.mpr ⟨hfin.mem_toFinset.mpr hx, hx0⟩
+  have hne : g ((cube d n).ncard) ≠ ∅ := Finset.nonempty_iff_ne_empty.mp ⟨x, hmem⟩
+  have hb := hbound ((cube d n).ncard) hne
+  rw [hcard0] at hb
+  have hpos : 1 ≤ (g ((cube d n).ncard)).card := Finset.card_pos.mpr ⟨x, hmem⟩
+  omega
+
+/-- A uniform time, bounded by the number of sites, at which the `d`-dimensional bootstrap
+odometer has toppled the whole cube, when it is internally spanned. -/
+theorem exists_uniform_span_time_le (n : ℕ) (η : Site d → ℤ)
+    (hspan : InternallySpanned η n) :
+    ∃ T : ℕ, T ≤ n ^ d ∧ ∀ y ∈ cube d n, spanOdo n η T y = 1 := by
+  refine ⟨(cube d n).ncard, ?_, spanOdo_topples_by_ncard n η hspan⟩
+  rw [aux_ct_assemble_cube_ncard]
 
 end ReductionShift
 

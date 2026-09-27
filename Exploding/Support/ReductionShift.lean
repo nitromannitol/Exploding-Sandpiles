@@ -12,6 +12,7 @@ layer `i` has been toppled and acts as the permanently lit floor for layer
 -/
 import Exploding.Support.Reduction
 import Exploding.Support.SubSpanZero
+import Exploding.Support.SubFodo
 
 namespace Exploding
 
@@ -285,6 +286,7 @@ theorem fodo_mono_time (S : Set (Site d)) (s0 w0 : Site d → ℤ) :
   · rw [if_pos hx, fodo_of_mem S s0 w0 t hx]
   · rw [if_neg hx]
     split_ifs <;> omega
+
 
 end ReductionShift
 

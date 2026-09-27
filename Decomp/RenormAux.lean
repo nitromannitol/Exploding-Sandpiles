@@ -377,7 +377,18 @@ theorem aux_renorm_edge_marginal (p q : ℝ) (k : ℕ)
     (e : Site d × Fin d) :
     toyLaw d p {η : Site d → ℤ | GoodAt η k e.1 ∧ GoodAt η k (e.1 + unit e.2)}
       = ENNReal.ofReal q * ENNReal.ofReal q := by
-  sorry
+  have hne : e.1 ≠ e.1 + unit e.2 := by
+    intro h
+    have h' : e.1 + 0 = e.1 + unit e.2 := by simpa using h
+    have h'' : unit e.2 = 0 := (add_left_cancel h').symm
+    exact LatticeProb.unit_ne_zero e.2 h''
+  have hind : ProbabilityTheory.IndepSet {η : Site d → ℤ | GoodAt η k e.1}
+      {η : Site d → ℤ | GoodAt η k (e.1 + unit e.2)} (toyLaw d p) :=
+    hindep.indep hne
+  rw [show {η : Site d → ℤ | GoodAt η k e.1 ∧ GoodAt η k (e.1 + unit e.2)}
+      = {η : Site d → ℤ | GoodAt η k e.1} ∩ {η : Site d → ℤ | GoodAt η k (e.1 + unit e.2)} from rfl]
+  rw [ProbabilityTheory.IndepSet.measure_inter_eq_mul hind, hmarg e.1,
+    hmarg (e.1 + unit e.2)]
 
 open scoped Classical in
 /-- Step 1 (Corollary 1.4 of Liggett, Schonmann and Stacey, through `hLSSB`).  Call the

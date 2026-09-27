@@ -459,4 +459,30 @@ theorem br_two_nbrs (A : Set (Site d)) (hA : A.Finite) (i0 : Fin d) {p : Site d}
       exact hy
     exact absurd hpA hnot
 
+/-- The coordinatewise extrema of a finite nonempty set, as a box. -/
+theorem br_eq_box (A : Set (Site d)) (hA : A.Finite) (hne : A.Nonempty) :
+    ∃ m M : Site d, (∀ i, m i ∈ (fun y => y i) '' A) ∧ (∀ i, M i ∈ (fun y => y i) '' A) ∧
+      br A = {x | ∀ i, m i ≤ x i ∧ x i ≤ M i} := by
+  classical
+  have hne' : (hA.toFinset).Nonempty := hA.toFinset_nonempty.mpr hne
+  have hmin : ∀ i : Fin d, ∃ y ∈ A, ∀ y' ∈ A, y i ≤ y' i := by
+    intro i
+    obtain ⟨y, hy, hle⟩ := Finset.exists_min_image hA.toFinset (fun y => y i) hne'
+    exact ⟨y, hA.mem_toFinset.mp hy, fun y' hy' => hle y' (hA.mem_toFinset.mpr hy')⟩
+  have hmax : ∀ i : Fin d, ∃ y ∈ A, ∀ y' ∈ A, y' i ≤ y i := by
+    intro i
+    obtain ⟨y, hy, hle⟩ := Finset.exists_max_image hA.toFinset (fun y => y i) hne'
+    exact ⟨y, hA.mem_toFinset.mp hy, fun y' hy' => hle y' (hA.mem_toFinset.mpr hy')⟩
+  choose m hmA hm using hmin
+  choose M hMA hM using hmax
+  refine ⟨fun i => m i i, fun i => M i i,
+    fun i => ⟨m i, hmA i, rfl⟩, fun i => ⟨M i, hMA i, rfl⟩, ?_⟩
+  ext x
+  constructor
+  · intro hx i
+    obtain ⟨⟨y1, hy1, h1⟩, ⟨y2, hy2, h2⟩⟩ := hx i
+    exact ⟨le_trans (hm i y1 hy1) h1, le_trans h2 (hM i y2 hy2)⟩
+  · intro hx i
+    exact ⟨⟨m i, hmA i, (hx i).1⟩, ⟨M i, hMA i, (hx i).2⟩⟩
+
 end Exploding

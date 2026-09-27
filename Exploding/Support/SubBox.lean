@@ -144,4 +144,89 @@ theorem box_point_has_nbr (m : ℕ) (z : ℕ → Site d) (p : Site d)
   have hz : z 0 ∈ z '' {i : ℕ | i ≤ m} := ⟨0, Nat.zero_le m, rfl⟩
   exact (hA (z 0) hz) ▸ hz
 
+/-- A point of the bounding box of a nonempty set that is not in the set has a
+neighbour in the box. -/
+theorem br_has_nbr (A : Set (Site d)) (hA : A.Nonempty) {p : Site d}
+    (hp : p ∈ br A) (hnot : p ∉ A) :
+    ∃ q ∈ br A, (lattice d).Adj q p := by
+  by_contra hcon
+  have hcon' : ∀ q ∈ br A, ¬ (lattice d).Adj q p := fun q hq h => hcon ⟨q, hq, h⟩
+  clear hcon
+  apply hnot
+  have hA' : ∀ y ∈ A, y = p := by
+    intro y hy
+    funext i
+    by_contra hne
+    rcases lt_or_gt_of_ne hne with hlt | hgt
+    · have hmem : p - unit i ∈ br A := by
+        intro j
+        constructor
+        · by_cases hji : j = i
+          · rw [hji]
+            refine ⟨y, hy, ?_⟩
+            have h1 : (p - unit i) i = p i - 1 := by
+              simp only [Pi.sub_apply, LatticeProb.unit, Pi.single_eq_same]
+            have h2 : y i ≤ p i - 1 := by omega
+            rw [h1]
+            exact h2
+          · obtain ⟨y', hy', hle⟩ := (hp j).1
+            refine ⟨y', hy', ?_⟩
+            have h1 : (p - unit i) j = p j := by
+              simp only [Pi.sub_apply, LatticeProb.unit, Pi.single_eq_of_ne hji, sub_zero]
+            rw [h1]
+            exact hle
+        · by_cases hji : j = i
+          · rw [hji]
+            obtain ⟨y', hy', hle⟩ := (hp i).2
+            refine ⟨y', hy', ?_⟩
+            have h1 : (p - unit i) i = p i - 1 := by
+              simp only [Pi.sub_apply, LatticeProb.unit, Pi.single_eq_same]
+            rw [h1]
+            omega
+          · obtain ⟨y', hy', hle⟩ := (hp j).2
+            refine ⟨y', hy', ?_⟩
+            have h1 : (p - unit i) j = p j := by
+              simp only [Pi.sub_apply, LatticeProb.unit, Pi.single_eq_of_ne hji, sub_zero]
+            rw [h1]
+            exact hle
+      have hadj : (lattice d).Adj (p - unit i) p := ⟨i, Or.inl (by abel)⟩
+      exact hcon' _ hmem hadj
+    · have hmem : p + unit i ∈ br A := by
+        intro j
+        constructor
+        · by_cases hji : j = i
+          · rw [hji]
+            obtain ⟨y', hy', hle⟩ := (hp i).1
+            refine ⟨y', hy', ?_⟩
+            have h1 : (p + unit i) i = p i + 1 := by
+              simp only [Pi.add_apply, LatticeProb.unit, Pi.single_eq_same]
+            rw [h1]
+            omega
+          · obtain ⟨y', hy', hle⟩ := (hp j).1
+            refine ⟨y', hy', ?_⟩
+            have h1 : (p + unit i) j = p j := by
+              simp only [Pi.add_apply, LatticeProb.unit, Pi.single_eq_of_ne hji, add_zero]
+            rw [h1]
+            exact hle
+        · by_cases hji : j = i
+          · rw [hji]
+            refine ⟨y, hy, ?_⟩
+            have h1 : (p + unit i) i = p i + 1 := by
+              simp only [Pi.add_apply, LatticeProb.unit, Pi.single_eq_same]
+            have h2 : p i + 1 ≤ y i := by omega
+            rw [h1]
+            exact h2
+          · obtain ⟨y', hy', hle⟩ := (hp j).2
+            refine ⟨y', hy', ?_⟩
+            have h1 : (p + unit i) j = p j := by
+              simp only [Pi.add_apply, LatticeProb.unit, Pi.single_eq_of_ne hji, add_zero]
+            rw [h1]
+            exact hle
+      have hadj : (lattice d).Adj (p + unit i) p := ⟨i, Or.inr (by abel)⟩
+      exact hcon' _ hmem hadj
+  obtain ⟨y, hy⟩ := hA
+  have hy' : y = p := hA' y hy
+  rw [← hy']
+  exact hy
+
 end Exploding

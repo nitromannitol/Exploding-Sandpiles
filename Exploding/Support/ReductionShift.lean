@@ -303,6 +303,21 @@ theorem fodo_mono_time' (S : Set (Site d)) (s0 w0 : Site d → ℤ) :
     · have heq : t = t' + 1 := le_antisymm h hge
       subst heq; exact le_rfl
 
+/-- The shifted-floor constrained odometer is at most one. -/
+theorem redOdoUpAt_le_one (n : ℕ) (η : Site (d + 1) → ℤ) (i : ℤ) :
+    ∀ t x, redOdoUpAt i n η t x ≤ 1 := by
+  intro t
+  induction t with
+  | zero =>
+    intro x
+    rw [redOdoUpAt_zero]
+    split_ifs <;> omega
+  | succ t ih =>
+    intro x
+    rw [redOdoUpAt_succ]
+    have h := ih x
+    split_ifs <;> omega
+
 end ReductionShift
 
 end Exploding

@@ -249,6 +249,33 @@ theorem layer_topples (η : LatticeProb.Site (d + 1) → ℤ) (hi0 : 0 ≤ i)
   rw [redOdoUpAt_agree η hi0 hi t y, redOdoDownAt_eq_spanOdo]
   exact ht
 
+/-- The low face of the box is the outer boundary of the box at layer `0`. -/
+theorem cons_zero_mem_faceOut (hn : 1 ≤ n) (y : Site d) (hy : y ∈ cube d n) :
+    cons (0 : ℤ) y ∈ faceOut (fun _ : Fin (d+1) => n) (0 : Site (d+1)) ⟨0, by omega⟩ false := by
+  refine ⟨?_, ?_⟩
+  · right
+    refine ⟨?_, cons 1 y, ?_, ?_⟩
+    · intro h
+      have h0 := h 0
+      simp only [cons, Fin.cons_zero, Pi.zero_apply] at h0
+      omega
+    · intro i
+      refine Fin.cases ?_ ?_ i
+      · simp only [cons, Fin.cons_zero, Pi.zero_apply]
+        exact ⟨by omega, by omega⟩
+      · intro k
+        simp only [cons, Fin.cons_succ, Pi.zero_apply]
+        have hk := hy k
+        exact ⟨by omega, by omega⟩
+    · refine ⟨⟨0, by omega⟩, ?_⟩
+      left
+      funext i
+      refine Fin.cases ?_ ?_ i
+      · simp [cons, unit]
+      · intro k
+        simp [cons, unit]
+  · simp [cons]
+
 end ReductionShift
 
 end Exploding

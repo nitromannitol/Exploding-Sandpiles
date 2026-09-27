@@ -18,6 +18,10 @@ import Exploding.Support.SubRecSub
 import Exploding.Support.SubRecCard
 import Exploding.Support.SubRecMin
 import Exploding.Support.Percolation
+import Exploding.Support.SubLayer
+import Exploding.Support.SubSpanBridge
+import Exploding.Support.SubSpanZero
+import Exploding.Support.SubOdo
 
 import Exploding.External.FeyLevinePeres
 import Exploding.External.Schonmann

@@ -149,7 +149,7 @@ theorem box_point_has_nbr (m : ℕ) (z : ℕ → Site d) (p : Site d)
 
 /-- A point of the bounding box of a nonempty set that is not in the set has a
 neighbour in the box. -/
-theorem br_has_nbr (A : Set (Site d)) (hA : A.Nonempty) {p : Site d}
+theorem br_has_nbr (A : Set (Site d)) (i : Fin d) {p : Site d}
     (hp : p ∈ br A) (hnot : p ∉ A) :
     ∃ q ∈ br A, (lattice d).Adj q p := by
   by_contra hcon
@@ -227,7 +227,7 @@ theorem br_has_nbr (A : Set (Site d)) (hA : A.Nonempty) {p : Site d}
             exact hle
       have hadj : (lattice d).Adj (p + unit i) p := ⟨i, Or.inr (by abel)⟩
       exact hcon' _ hmem hadj
-  obtain ⟨y, hy⟩ := hA
+  obtain ⟨y, hy, _⟩ := (hp i).1
   have hy' : y = p := hA' y hy
   rw [← hy']
   exact hy
@@ -253,5 +253,210 @@ theorem br_finite (A : Set (Site d)) (hA : A.Finite) : (br A).Finite := by
   refine Set.Finite.pi' fun i => ?_
   refine Set.Finite.biUnion hA fun y _ => ?_
   exact Set.Finite.biUnion hA fun y' _ => Set.finite_Icc (y i) (y' i)
+
+/-- A point of the bounding box of a finite set that is not in the set has two
+distinct neighbours in the box. -/
+theorem br_two_nbrs (A : Set (Site d)) (hA : A.Finite) (i0 : Fin d) {p : Site d}
+    (hp : p ∈ br A) (hnot : p ∉ A) :
+    ∃ q ∈ br A, ∃ z ∈ br A, (lattice d).Adj q p ∧ (lattice d).Adj z p ∧ q ≠ z := by
+  classical
+  have hne : (hA.toFinset).Nonempty := by
+    obtain ⟨y, hy, _⟩ := (hp i0).1
+    exact ⟨y, hA.mem_toFinset.mpr hy⟩
+  choose m hmA hm using fun i : Fin d =>
+    Finset.exists_min_image hA.toFinset (fun y => y i) hne
+  choose M hMA hM using fun i : Fin d =>
+    Finset.exists_max_image hA.toFinset (fun y => y i) hne
+  have hmA' : ∀ i, m i ∈ A := fun i => hA.mem_toFinset.mp (hmA i)
+  have hMA' : ∀ i, M i ∈ A := fun i => hA.mem_toFinset.mp (hMA i)
+  have hmle : ∀ i y, y ∈ A → m i i ≤ y i := fun i y hy => hm i y (hA.mem_toFinset.mpr hy)
+  have hMle : ∀ i y, y ∈ A → y i ≤ M i i := fun i y hy => hM i y (hA.mem_toFinset.mpr hy)
+  -- the box is the product of the coordinatewise intervals
+  have hbox : br A = {x | ∀ i, m i i ≤ x i ∧ x i ≤ M i i} := by
+    ext x
+    constructor
+    · intro hx i
+      obtain ⟨⟨y1, hy1, h1⟩, ⟨y2, hy2, h2⟩⟩ := hx i
+      exact ⟨le_trans (hmle i y1 hy1) h1, le_trans h2 (hMle i y2 hy2)⟩
+    · intro hx i
+      exact ⟨⟨m i, hmA' i, (hx i).1⟩, ⟨M i, hMA' i, (hx i).2⟩⟩
+  have hpbox : ∀ i, m i i ≤ p i ∧ p i ≤ M i i := by
+    rw [hbox] at hp
+    exact hp
+  -- `p - e_i` is in the box when `m i i < p i`
+  have hdown : ∀ i, m i i < p i → p - unit i ∈ br A := by
+    intro i hi
+    rw [hbox]
+    intro j
+    constructor
+    · by_cases hji : j = i
+      · rw [hji]
+        have h1 : (p - unit i) i = p i - 1 := by
+          simp only [Pi.sub_apply, LatticeProb.unit, Pi.single_eq_same]
+        have h2 : m i i ≤ p i - 1 := by linarith [(hpbox i).1, hi]
+        rw [h1]; exact h2
+      · have h1 : (p - unit i) j = p j := by
+          simp only [Pi.sub_apply, LatticeProb.unit, Pi.single_eq_of_ne hji, sub_zero]
+        rw [h1]; exact (hpbox j).1
+    · by_cases hji : j = i
+      · rw [hji]
+        have h1 : (p - unit i) i = p i - 1 := by
+          simp only [Pi.sub_apply, LatticeProb.unit, Pi.single_eq_same]
+        have h2 : p i - 1 ≤ M i i := by linarith [(hpbox i).2]
+        rw [h1]; exact h2
+      · have h1 : (p - unit i) j = p j := by
+          simp only [Pi.sub_apply, LatticeProb.unit, Pi.single_eq_of_ne hji, sub_zero]
+        rw [h1]; exact (hpbox j).2
+  -- `p + e_i` is in the box when `p i < M i i`
+  have hup : ∀ i, p i < M i i → p + unit i ∈ br A := by
+    intro i hi
+    rw [hbox]
+    intro j
+    constructor
+    · by_cases hji : j = i
+      · rw [hji]
+        have h1 : (p + unit i) i = p i + 1 := by
+          simp only [Pi.add_apply, LatticeProb.unit, Pi.single_eq_same]
+        have h2 : m i i ≤ p i + 1 := by linarith [(hpbox i).1]
+        rw [h1]; exact h2
+      · have h1 : (p + unit i) j = p j := by
+          simp only [Pi.add_apply, LatticeProb.unit, Pi.single_eq_of_ne hji, add_zero]
+        rw [h1]; exact (hpbox j).1
+    · by_cases hji : j = i
+      · rw [hji]
+        have h1 : (p + unit i) i = p i + 1 := by
+          simp only [Pi.add_apply, LatticeProb.unit, Pi.single_eq_same]
+        have h2 : p i + 1 ≤ M i i := by linarith [(hpbox i).2, hi]
+        rw [h1]; exact h2
+      · have h1 : (p + unit i) j = p j := by
+          simp only [Pi.add_apply, LatticeProb.unit, Pi.single_eq_of_ne hji, add_zero]
+        rw [h1]; exact (hpbox j).2
+  -- the two neighbours are distinct
+  have hne' : ∀ i : Fin d, p - unit i ≠ p + unit i := by
+    intro i hcon
+    have := congrFun hcon i
+    simp only [Pi.sub_apply, Pi.add_apply, LatticeProb.unit, Pi.single_eq_same] at this
+    omega
+  -- case 1: some coordinate is strictly inside
+  by_cases h1 : ∃ i : Fin d, m i i < p i ∧ p i < M i i
+  · obtain ⟨i, hlo, hhi⟩ := h1
+    exact ⟨p - unit i, hdown i hlo, p + unit i, hup i hhi,
+      ⟨i, Or.inl (by abel)⟩, ⟨i, Or.inr (by abel)⟩, hne' i⟩
+  push Not at h1
+  -- case 2: two distinct free coordinates
+  by_cases h2 : ∃ i j : Fin d, i ≠ j ∧ (m i i < p i ∨ p i < M i i) ∧
+      (m j j < p j ∨ p j < M j j)
+  · obtain ⟨i, j, hij, hi, hj⟩ := h2
+    have hqi : p - unit i ∈ br A ∨ p + unit i ∈ br A := by
+      rcases hi with h | h
+      · exact Or.inl (hdown i h)
+      · exact Or.inr (hup i h)
+    have hqj : p - unit j ∈ br A ∨ p + unit j ∈ br A := by
+      rcases hj with h | h
+      · exact Or.inl (hdown j h)
+      · exact Or.inr (hup j h)
+    rcases hqi with hqi | hqi <;> rcases hqj with hqj | hqj
+    · refine ⟨p - unit i, hqi, p - unit j, hqj, ⟨i, Or.inl (by abel)⟩,
+        ⟨j, Or.inl (by abel)⟩, ?_⟩
+      intro hcon
+      have := congrFun hcon i
+      simp only [Pi.sub_apply, LatticeProb.unit, Pi.single_eq_same,
+        Pi.single_eq_of_ne hij, sub_zero] at this
+      omega
+    · refine ⟨p - unit i, hqi, p + unit j, hqj, ⟨i, Or.inl (by abel)⟩,
+        ⟨j, Or.inr (by abel)⟩, ?_⟩
+      intro hcon
+      have := congrFun hcon i
+      simp only [Pi.sub_apply, Pi.add_apply, LatticeProb.unit, Pi.single_eq_same,
+        Pi.single_eq_of_ne hij, add_zero] at this
+      omega
+    · refine ⟨p + unit i, hqi, p - unit j, hqj, ⟨i, Or.inr (by abel)⟩,
+        ⟨j, Or.inl (by abel)⟩, ?_⟩
+      intro hcon
+      have := congrFun hcon i
+      simp only [Pi.sub_apply, Pi.add_apply, LatticeProb.unit, Pi.single_eq_same,
+        Pi.single_eq_of_ne hij, sub_zero] at this
+      omega
+    · refine ⟨p + unit i, hqi, p + unit j, hqj, ⟨i, Or.inr (by abel)⟩,
+        ⟨j, Or.inr (by abel)⟩, ?_⟩
+      intro hcon
+      have := congrFun hcon i
+      simp only [Pi.add_apply, LatticeProb.unit, Pi.single_eq_same,
+        Pi.single_eq_of_ne hij, add_zero] at this
+      omega
+  push Not at h2
+  -- case 3: at most one free coordinate
+  by_cases h3 : ∃ i : Fin d, m i i < p i ∨ p i < M i i
+  · obtain ⟨i, hi⟩ := h3
+    -- every other coordinate is pinned
+    have hpin : ∀ j, j ≠ i → m j j = p j ∧ p j = M j j := by
+      intro j hji
+      have h2j := h2 i j (Ne.symm hji) hi
+      have h1' : p j ≤ m j j := h2j.1
+      have h2' : M j j ≤ p j := h2j.2
+      exact ⟨le_antisymm (hpbox j).1 h1', le_antisymm (hpbox j).2 h2'⟩
+    -- every element of `A` has coordinate `p j` in a pinned coordinate `j`
+    have hpin' : ∀ j, j ≠ i → ∀ y ∈ A, y j = p j := by
+      intro j hji y hy
+      have h1j := (hpin j hji).1
+      have h2j := (hpin j hji).2
+      exact le_antisymm (le_trans (hMle j y hy) (le_of_eq h2j.symm))
+        (le_trans (le_of_eq h1j.symm) (hmle j y hy))
+    -- `p` is one of the two extremal points of `A`
+    have hpA : p ∈ A := by
+      rcases hi with hlo | hhi
+      · -- `m i i < p i`, so `p i = M i i` and `M i = p`
+        have hMi : M i i = p i := by
+          have h' : ¬(p i < M i i) := not_lt.mpr (h1 i hlo)
+          exact le_antisymm (not_lt.mp h') (hpbox i).2
+        have hMp : M i = p := by
+          funext j
+          by_cases hji : j = i
+          · subst hji
+            exact hMi
+          · exact hpin' j hji (M i) (hMA' i)
+        rw [← hMp]
+        exact hMA' i
+      · -- `p i < M i i`, so `p i = m i i` and `m i = p`
+        have hmi : m i i = p i := by
+          have h' : ¬(m i i < p i) := fun hc => absurd hhi (not_lt.mpr (h1 i hc))
+          exact le_antisymm (hpbox i).1 (not_lt.mp h')
+        have hmp : m i = p := by
+          funext j
+          by_cases hji : j = i
+          · subst hji
+            exact hmi
+          · exact hpin' j hji (m i) (hmA' i)
+        rw [← hmp]
+        exact hmA' i
+    exact absurd hpA hnot
+  · -- no free coordinate: the box is a single point, which must be `p`
+    have hall : ∀ j, m j j = p j ∧ p j = M j j := by
+      intro j
+      have h : ¬(m j j < p j ∨ p j < M j j) := not_exists.mp h3 j
+      rw [not_or, not_lt, not_lt] at h
+      exact ⟨le_antisymm (hpbox j).1 h.1, le_antisymm (hpbox j).2 h.2⟩
+    have hboxp : br A = {p} := by
+      rw [hbox]
+      ext x
+      simp only [Set.mem_setOf_eq, Set.mem_singleton_iff]
+      constructor
+      · intro hx
+        funext j
+        have h1 := (hall j).1
+        have h2 := (hall j).2
+        exact le_antisymm (le_trans (hx j).2 (le_of_eq h2.symm)) (le_trans (le_of_eq h1.symm) (hx j).1)
+      · intro hx
+        rw [hx]
+        intro j
+        exact ⟨le_of_eq (hall j).1, le_of_eq (hall j).2⟩
+    have hpA : p ∈ A := by
+      obtain ⟨y, hy, _⟩ := (hp i0).1
+      have hyb : y ∈ br A := fun i => ⟨⟨y, hy, le_rfl⟩, ⟨y, hy, le_rfl⟩⟩
+      rw [hboxp] at hyb
+      have hyp : y = p := by simpa using hyb
+      rw [hyp] at hy
+      exact hy
+    exact absurd hpA hnot
 
 end Exploding

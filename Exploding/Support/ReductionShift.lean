@@ -276,6 +276,16 @@ theorem cons_zero_mem_faceOut (hn : 1 ≤ n) (y : Site d) (hy : y ∈ cube d n) 
         simp [cons, unit]
   · simp [cons]
 
+/-- The frozen odometer never decreases in time. -/
+theorem fodo_mono_time (S : Set (Site d)) (s0 w0 : Site d → ℤ) :
+    ∀ t x, fodo S s0 w0 t x ≤ fodo S s0 w0 (t + 1) x := by
+  intro t x
+  rw [fodo_succ]
+  by_cases hx : x ∈ S
+  · rw [if_pos hx, fodo_of_mem S s0 w0 t hx]
+  · rw [if_neg hx]
+    split_ifs <;> omega
+
 end ReductionShift
 
 end Exploding

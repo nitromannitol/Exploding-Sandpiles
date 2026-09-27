@@ -116,4 +116,12 @@ theorem redOdoUp_mono (n : ℕ) (η : Site (d + 1) → ℤ) :
   · rw [redOdoUp_one_stays n η t x h1]; omega
   · omega
 
+/-- The `(d+1)`-dimensional constrained odometer at layer `1` equals the `d`-dimensional
+bootstrap odometer of the shifted background. -/
+theorem redOdoUp_cons_one_eq_spanOdo (hd : 1 ≤ d) (n : ℕ) (η : Site (d + 1) → ℤ) (t : ℕ)
+    (y : Site d) :
+    redOdoUp n η t (cons 1 y) = spanOdo n (fun w => η (cons 1 w) - 1) t y := by
+  rw [redOdo_agree (d := d) hd t y]
+  exact redOdoDown_eq_spanOdo n η t y
+
 end Exploding

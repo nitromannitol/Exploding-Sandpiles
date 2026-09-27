@@ -333,6 +333,70 @@ theorem redOdoUpAt_zero_or_one (n : ℕ) (η : Site (d + 1) → ℤ) (i : ℤ) :
     have h := ih x
     split_ifs <;> omega
 
+/-- The firing case of the transport step. -/
+theorem fodo_fires_of_redOdoUpAt (n : ℕ) (η : Site (d + 1) → ℤ) (i : ℤ) (T t : ℕ)
+    (x : Site (d + 1))
+    (hle1 : ∀ y, redOdoUpAt i n η t y ≤
+      fodo ((rboxShift (fun _ : Fin (d+1) => n) (0 : Site (d+1)))ᶜ) η
+        (Set.indicator (faceOut (fun _ : Fin (d+1) => n) (0 : Site (d+1)) ⟨0, by omega⟩ false)
+          (fun _ => (1 : ℤ))) (T + t) y)
+    (h0 : redOdoUpAt i n η t x = 0)
+    (hc : x ∈ cube (d + 1) n)
+    (hthr : 2 * ((d : ℤ) + 1) ≤ η x + lap (redOdoUpAt i n η t) x) :
+    redOdoUpAt i n η (t + 1) x ≤
+      fodo ((rboxShift (fun _ : Fin (d+1) => n) (0 : Site (d+1)))ᶜ) η
+        (Set.indicator (faceOut (fun _ : Fin (d+1) => n) (0 : Site (d+1)) ⟨0, by omega⟩ false)
+          (fun _ => (1 : ℤ))) (T + (t + 1)) x := by
+  by_cases hf : fodo ((rboxShift (fun _ : Fin (d+1) => n) (0 : Site (d+1)))ᶜ) η
+      (Set.indicator (faceOut (fun _ : Fin (d+1) => n) (0 : Site (d+1)) ⟨0, by omega⟩ false)
+        (fun _ => (1 : ℤ))) (T + t) x = 0
+  · have hthr' : 2 * ((d : ℤ) + 1) ≤ η x + lap (fodo ((rboxShift (fun _ : Fin (d+1) => n)
+        (0 : Site (d+1)))ᶜ) η
+        (Set.indicator (faceOut (fun _ : Fin (d+1) => n) (0 : Site (d+1)) ⟨0, by omega⟩ false)
+          (fun _ => (1 : ℤ))) (T + t)) x := by
+      simp only [lap]
+      rw [hf, mul_zero, sub_zero]
+      have hmono : nbrSumZ (redOdoUpAt i n η t) x ≤
+          nbrSumZ (fodo ((rboxShift (fun _ : Fin (d+1) => n) (0 : Site (d+1)))ᶜ) η
+            (Set.indicator (faceOut (fun _ : Fin (d+1) => n) (0 : Site (d+1))
+              ⟨0, by omega⟩ false) (fun _ => (1 : ℤ))) (T + t)) x :=
+        nbrSumZ_mono (fun y => hle1 y) x
+      simp only [lap] at hthr
+      rw [h0, mul_zero, sub_zero] at hthr
+      linarith
+    have hle1' : redOdoUpAt i n η (t + 1) x ≤ 1 := redOdoUpAt_le_one n η i (t + 1) x
+    have hfodo1 : fodo ((rboxShift (fun _ : Fin (d+1) => n) (0 : Site (d+1)))ᶜ) η
+        (Set.indicator (faceOut (fun _ : Fin (d+1) => n) (0 : Site (d+1)) ⟨0, by omega⟩ false)
+          (fun _ => (1 : ℤ))) (T + (t + 1)) x = 1 := by
+      have hidx : T + (t + 1) = (T + t) + 1 := by omega
+      rw [hidx, fodo_succ]
+      by_cases hxS : x ∈ ((rboxShift (fun _ : Fin (d+1) => n) (0 : Site (d+1)))ᶜ)
+      · exfalso
+        exact hxS (by
+          intro i
+          have hxi := hc i
+          simp only [Pi.zero_apply, mul_zero, zero_add]
+          exact hxi)
+      · rw [if_neg hxS]
+        rw [if_pos]
+        · rw [hf]
+          ring
+        · simp only [fconf]
+          exact hthr'
+    rw [hfodo1]
+    exact hle1'
+  · have hpos : 1 ≤ fodo ((rboxShift (fun _ : Fin (d+1) => n) (0 : Site (d+1)))ᶜ) η
+        (Set.indicator (faceOut (fun _ : Fin (d+1) => n) (0 : Site (d+1)) ⟨0, by omega⟩ false)
+          (fun _ => (1 : ℤ))) (T + t) x := by
+      have hnn : (0 : ℤ) ≤ fodo ((rboxShift (fun _ : Fin (d+1) => n) (0 : Site (d+1)))ᶜ) η
+          (Set.indicator (faceOut (fun _ : Fin (d+1) => n) (0 : Site (d+1))
+            ⟨0, by omega⟩ false) (fun _ => (1 : ℤ))) (T + t) x :=
+        fodo_nonneg _ _ _
+          (Set.indicator_nonneg (fun _ _ => zero_le_one)) (T + t) x
+      omega
+    exact le_trans (le_trans (redOdoUpAt_le_one n η i (t + 1) x) hpos)
+      (fodo_mono_time' _ _ _ (T + t) (T + (t + 1)) x (by omega))
+
 end ReductionShift
 
 end Exploding

@@ -288,6 +288,21 @@ theorem fodo_mono_time (S : Set (Site d)) (s0 w0 : Site d → ℤ) :
     split_ifs <;> omega
 
 
+/-- `fodo` is monotone in time. -/
+theorem fodo_mono_time' (S : Set (Site d)) (s0 w0 : Site d → ℤ) :
+    ∀ t t' x, t ≤ t' → fodo S s0 w0 t x ≤ fodo S s0 w0 t' x := by
+  intro t t' x h
+  induction t' with
+  | zero =>
+    have h0 : t = 0 := Nat.le_zero.mp h
+    subst h0; exact le_rfl
+  | succ t' ih =>
+    rcases Nat.lt_or_ge t (t' + 1) with hlt | hge
+    · have hle : t ≤ t' := Nat.lt_succ_iff.mp hlt
+      exact le_trans (ih hle) (fodo_mono_time S s0 w0 t' x)
+    · have heq : t = t' + 1 := le_antisymm h hge
+      subst heq; exact le_rfl
+
 end ReductionShift
 
 end Exploding

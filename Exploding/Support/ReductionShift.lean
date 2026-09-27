@@ -27,7 +27,7 @@ layer `i`: the sites of layer `i` are permanently lit, the sites of layer
 `i + 1` topple at most once, and the sites above are frozen. -/
 noncomputable def redOdoUpAt (i : ℤ) (n : ℕ) (η : Site (d + 1) → ℤ) :
     ℕ → Site (d + 1) → ℤ
-  | 0 => fun x => if x 0 = i then 1 else 0
+  | 0 => fun x => if x 0 = i ∧ x ∈ cube (d + 1) n then 1 else 0
   | t + 1 => fun x =>
       if x ∉ cube (d + 1) n then redOdoUpAt i n η t x
       else if x 0 ≤ i then redOdoUpAt i n η t x
@@ -48,7 +48,7 @@ theorem redOdoUpAt_succ (i : ℤ) (n : ℕ) (η : Site (d + 1) → ℤ) (t : ℕ
 
 /-- The initial data of the shifted-floor constrained odometer. -/
 theorem redOdoUpAt_zero (i : ℤ) (n : ℕ) (η : Site (d + 1) → ℤ) (x : Site (d + 1)) :
-    redOdoUpAt i n η 0 x = if x 0 = i then 1 else 0 := rfl
+    redOdoUpAt i n η 0 x = if x 0 = i ∧ x ∈ cube (d + 1) n then 1 else 0 := rfl
 
 /-- The `d`-dimensional constrained odometer of `(7.5)` on the background
 `η(i + 1, ·) - 1`, with the floor at layer `i`. -/
@@ -91,10 +91,14 @@ theorem cons_notMem_cube_of_head_eq (a : ℤ) (y : LatticeProb.Site d) (h : a = 
   omega
 
 /-- The shifted-floor constrained odometer is one on its floor. -/
-theorem redOdoUpAt_floor (η : LatticeProb.Site (d + 1) → ℤ) (t : ℕ) (y : Site d) :
+theorem redOdoUpAt_floor (η : LatticeProb.Site (d + 1) → ℤ) (t : ℕ) (y : Site d)
+    (hy : cons i y ∈ cube (d + 1) n) :
     redOdoUpAt i n η t (cons i y) = 1 := by
   induction t with
-  | zero => simp [redOdoUpAt_zero, cons]
+  | zero =>
+    rw [redOdoUpAt_zero]
+    rw [if_pos]
+    exact ⟨rfl, hy⟩
   | succ t ih =>
     rw [redOdoUpAt_succ]
     by_cases hc : cons i y ∉ cube (d + 1) n
@@ -103,6 +107,24 @@ theorem redOdoUpAt_floor (η : LatticeProb.Site (d + 1) → ℤ) (t : ℕ) (y : 
       have hle : (cons i y) 0 ≤ i := le_of_eq (by simp only [cons, Fin.cons_zero])
       rw [if_pos hle]
       exact ih
+
+/-- Below its floor the shifted-floor constrained odometer is zero. -/
+theorem redOdoUpAt_below (η : LatticeProb.Site (d + 1) → ℤ) (t : ℕ) (x : LatticeProb.Site (d + 1))
+    (h : x 0 < i) : redOdoUpAt i n η t x = 0 := by
+  induction t with
+  | zero =>
+    rw [redOdoUpAt_zero, if_neg]
+    rintro ⟨heq, -⟩
+    omega
+  | succ t ih =>
+    rw [redOdoUpAt_succ]
+    by_cases hc : x ∉ cube (d + 1) n
+    · rw [if_pos hc]; exact ih
+    · rw [if_neg hc]
+      by_cases hle : x 0 ≤ i
+      · rw [if_pos hle]; exact ih
+      · rw [if_neg hle]
+        exfalso; omega
 
 /-- Above the active layer the shifted-floor constrained odometer is frozen. -/
 theorem redOdoUpAt_above (η : LatticeProb.Site (d + 1) → ℤ) (t : ℕ) (x : LatticeProb.Site (d + 1))
@@ -166,7 +188,8 @@ theorem redOdoDownAt_zero_or_one (η : LatticeProb.Site (d + 1) → ℤ) (t : �
         · rw [if_neg hc]; left; ring
 
 /-- The Laplacian at the active layer, in terms of the floor and the shadow. -/
-theorem lap_redOdoUpAt_cons_succ (η : LatticeProb.Site (d + 1) → ℤ) (t : ℕ) (y : LatticeProb.Site d) :
+theorem lap_redOdoUpAt_cons_succ (η : LatticeProb.Site (d + 1) → ℤ) (t : ℕ) (y : LatticeProb.Site d)
+    (hi1 : 1 ≤ i) (hy : cons (i + 1) y ∈ cube (d + 1) n) :
     lap (redOdoUpAt i n η t) (cons (i + 1) y) =
       1 + lap (fun w => redOdoUpAt i n η t (cons (i + 1) w)) y
         - 2 * redOdoUpAt i n η t (cons (i + 1) y) := by
@@ -174,18 +197,32 @@ theorem lap_redOdoUpAt_cons_succ (η : LatticeProb.Site (d + 1) → ℤ) (t : �
   rw [show redOdoUpAt i n η t (cons (i + 1 + 1) y) = 0 from
       redOdoUpAt_cons_high η t y (i + 1 + 1) (by omega),
     show redOdoUpAt i n η t (cons (i + 1 - 1) y) = 1 from by
-      rw [show i + 1 - 1 = i from by ring]; exact redOdoUpAt_floor η t y]
+      rw [show i + 1 - 1 = i from by ring]
+      exact redOdoUpAt_floor η t y (by
+        intro l
+        refine Fin.cases ?_ ?_ l
+        · have h0 : (i + 1 : ℤ) ≤ (n : ℤ) := by
+            have := hy 0
+            simpa only [cons, Fin.cons_zero] using this.2
+          simp only [cons, Fin.cons_zero]
+          exact ⟨hi1, by omega⟩
+        · intro k
+          simpa only [cons, Fin.cons_succ] using hy k.succ)]
   push_cast
   ring
 
 /-- **The shifted-floor reduction.**  On the active layer the `(d+1)`-dimensional
 constrained odometer equals the `d`-dimensional constrained odometer of the
 background `η(i + 1, ·) - 1`. -/
-theorem redOdoUpAt_agree (η : LatticeProb.Site (d + 1) → ℤ) (hi0 : 0 ≤ i)
+theorem redOdoUpAt_agree (η : LatticeProb.Site (d + 1) → ℤ) (hi0 : 0 ≤ i) (hi1 : 1 ≤ i)
     (hi : i + 1 ≤ (n : ℤ)) (t : ℕ) (y : LatticeProb.Site d) :
     redOdoUpAt i n η t (cons (i + 1) y) = redOdoDownAt i n η t y := by
   induction t generalizing y with
-  | zero => simp [redOdoUpAt_zero, redOdoDownAt_zero, cons]
+  | zero =>
+    rw [redOdoUpAt_zero, redOdoDownAt_zero]
+    rw [if_neg]
+    simp only [cons, Fin.cons_zero]
+    omega
   | succ t ih =>
     rw [redOdoUpAt_succ, redOdoDownAt_succ]
     have hmem : (cons (i + 1) y ∉ cube (d + 1) n) ↔ (y ∉ cube d n) := by
@@ -207,7 +244,8 @@ theorem redOdoUpAt_agree (η : LatticeProb.Site (d + 1) → ℤ) (hi0 : 0 ≤ i)
         rw [if_neg (by rw [ih y]; exact h1)]
         have hlap : lap (redOdoUpAt i n η t) (cons (i + 1) y)
             = 1 + lap (redOdoDownAt i n η t) y - 2 * redOdoDownAt i n η t y := by
-          rw [lap_redOdoUpAt_cons_succ]
+          rw [lap_redOdoUpAt_cons_succ η t y hi1
+            ((mem_cube_cons_succ hi0 hi y).mpr (not_not.mp hy))]
           simp only [lap]
           rw [nbrSumZ_congr (fun w => ih w) y, ih y]
         have h0 : redOdoDownAt i n η t y = 0 :=
@@ -240,14 +278,14 @@ theorem redOdoDownAt_eq_spanOdo (η : LatticeProb.Site (d + 1) → ℤ) (t : ℕ
 /-- **The layer step.**  If the `d`-dimensional shadow of layer `i + 1` is
 internally spanned, then layer `i + 1` of the box topples completely, at a
 uniform time, once layer `i` is permanently lit. -/
-theorem layer_topples (η : LatticeProb.Site (d + 1) → ℤ) (hi0 : 0 ≤ i)
+theorem layer_topples (η : LatticeProb.Site (d + 1) → ℤ) (hi0 : 0 ≤ i) (hi1 : 1 ≤ i)
     (hi : i + 1 ≤ (n : ℤ))
     (hspan : InternallySpanned (fun w : LatticeProb.Site d => η (cons (i + 1) w) - 1) n) :
     ∀ y ∈ cube d n, ∃ t : ℕ, redOdoUpAt i n η t (cons (i + 1) y) = 1 := by
   intro y hy
   obtain ⟨t, ht⟩ := hspan y hy
   refine ⟨t, ?_⟩
-  rw [redOdoUpAt_agree η hi0 hi t y, redOdoDownAt_eq_spanOdo]
+  rw [redOdoUpAt_agree η hi0 hi1 hi t y, redOdoDownAt_eq_spanOdo]
   exact ht
 
 /-- The low face of the box is the outer boundary of the box at layer `0`. -/
@@ -396,6 +434,86 @@ theorem fodo_fires_of_redOdoUpAt (n : ℕ) (η : Site (d + 1) → ℤ) (i : ℤ)
       omega
     exact le_trans (le_trans (redOdoUpAt_le_one n η i (t + 1) x) hpos)
       (fodo_mono_time' _ _ _ (T + t) (T + (t + 1)) x (by omega))
+
+/-- The transport step: the layer-`i` constrained odometer is dominated by the frozen
+odometer, once layer `i` is already toppled in the latter. -/
+theorem fodo_dominates_redOdoUpAt (n : ℕ) (η : Site (d + 1) → ℤ)
+    (i : ℤ) (T : ℕ)
+    (hT : ∀ y ∈ cube d n, fodo ((rboxShift (fun _ : Fin (d+1) => n) (0 : Site (d+1)))ᶜ) η
+      (Set.indicator (faceOut (fun _ : Fin (d+1) => n) (0 : Site (d+1)) ⟨0, by omega⟩ false)
+        (fun _ => (1 : ℤ))) T (cons i y) = 1) :
+    ∀ t x, redOdoUpAt i n η t x ≤
+      fodo ((rboxShift (fun _ : Fin (d+1) => n) (0 : Site (d+1)))ᶜ) η
+        (Set.indicator (faceOut (fun _ : Fin (d+1) => n) (0 : Site (d+1)) ⟨0, by omega⟩ false)
+          (fun _ => (1 : ℤ))) (T + t) x := by
+  intro t
+  induction t with
+  | zero =>
+    intro x
+    rw [redOdoUpAt_zero]
+    by_cases hxi : x 0 = i ∧ x ∈ cube (d + 1) n
+    · rw [if_pos hxi]
+      obtain ⟨h0, hmem⟩ := hxi
+      have hxeq : x = cons i (fun l => x l.succ) := by
+        funext j
+        refine Fin.cases ?_ ?_ j
+        · simpa [cons] using h0
+        · intro k; simp [cons]
+      rw [hxeq]
+      have hmem' : (fun l => x l.succ) ∈ cube d n := by
+        intro l
+        have h := hmem l.succ
+        simpa [cons] using h
+      rw [show T + 0 = T from rfl, hT (fun l => x l.succ) hmem']
+    · rw [if_neg hxi]
+      exact fodo_nonneg _ _ _
+        (Set.indicator_nonneg (fun _ _ => zero_le_one)) (T + 0) x
+  | succ t ih =>
+    intro x
+    rw [redOdoUpAt_succ]
+    by_cases hc : x ∉ cube (d + 1) n
+    · rw [if_pos hc]
+      exact le_trans (ih x) (fodo_mono_time' _ _ _ (T + t) (T + (t + 1)) x (by omega))
+    · rw [if_neg hc]
+      by_cases hle : x 0 ≤ i
+      · rw [if_pos hle]
+        exact le_trans (ih x) (fodo_mono_time' _ _ _ (T + t) (T + (t + 1)) x (by omega))
+      · rw [if_neg hle]
+        by_cases hlt : i + 1 < x 0
+        · rw [if_pos hlt]
+          exact le_trans (ih x) (fodo_mono_time' _ _ _ (T + t) (T + (t + 1)) x (by omega))
+        · rw [if_neg hlt]
+          by_cases h1 : redOdoUpAt i n η t x = 1
+          · rw [if_pos h1]
+            have hle1 : redOdoUpAt i n η t x ≤
+                fodo ((rboxShift (fun _ : Fin (d+1) => n) (0 : Site (d+1)))ᶜ) η
+                  (Set.indicator (faceOut (fun _ : Fin (d+1) => n) (0 : Site (d+1))
+                    ⟨0, by omega⟩ false) (fun _ => (1 : ℤ))) (T + t) x := ih x
+            rw [h1] at hle1
+            have hmono := fodo_mono_time' ((rboxShift (fun _ : Fin (d+1) => n)
+              (0 : Site (d+1)))ᶜ) η
+              (Set.indicator (faceOut (fun _ : Fin (d+1) => n) (0 : Site (d+1))
+                ⟨0, by omega⟩ false) (fun _ => (1 : ℤ))) (T + t) (T + (t + 1)) x (by omega)
+            omega
+          · rw [if_neg h1]
+            have h0 : redOdoUpAt i n η t x = 0 := by
+              rcases redOdoUpAt_zero_or_one n η i t x with h | h
+              · exact h
+              · exact absurd h h1
+            by_cases hthr : 2 * ((d : ℤ) + 1) ≤ η x + lap (redOdoUpAt i n η t) x
+            · have hstep : redOdoUpAt i n η (t + 1) x
+                  = redOdoUpAt i n η t x + 1 := by
+                rw [redOdoUpAt_succ]
+                rw [if_neg hc, if_neg hle, if_neg hlt, if_neg h1, if_pos hthr]
+              rw [if_pos hthr, ← hstep]
+              exact fodo_fires_of_redOdoUpAt n η i T t x (fun y => ih y) h0 (not_not.mp hc) hthr
+            · have hnext : redOdoUpAt i n η (t + 1) x = redOdoUpAt i n η t x := by
+                rw [redOdoUpAt_succ]
+                rw [if_neg hc, if_neg hle, if_neg hlt, if_neg h1, if_neg hthr]
+                ring
+              rw [if_neg hthr, h0, zero_add]
+              exact fodo_nonneg _ _ _
+                (Set.indicator_nonneg (fun _ _ => zero_le_one)) (T + (t + 1)) x
 
 end ReductionShift
 

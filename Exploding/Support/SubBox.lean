@@ -623,4 +623,159 @@ theorem box_succ_up (z : ℕ → Site d) (j : ℕ) (i : Fin d)
           rw [h1]
           exact le_trans (hp.2 k hk).2 (le_max_left _ _)
 
+/-- **The box update downwards**: if the path steps from `z j` to
+`z (j+1) = z j - e_i` and `z j i` is the minimum of the path in direction `i`,
+the box of the first `j+2` points is the box of the first `j+1` points together
+with the cap below it in direction `i`. -/
+theorem box_succ_down (z : ℕ → Site d) (j : ℕ) (i : Fin d)
+    (hstep : z (j + 1) = z j - unit i) (hmin : z j i = bmin z j i) :
+    Exploding.box z (j + 1) = Exploding.box z j ∪
+      slab (fun k => bmin z j k) (fun k => bmax z j k) i (bmin z j i - 1) := by
+  ext p
+  simp only [Exploding.box, Set.mem_setOf_eq, Set.mem_union, slab]
+  constructor
+  · intro hp
+    have hhi : ∀ k, p k ≤ bmax z j k := by
+      intro k
+      have h3 : p k ≤ bmax z (j + 1) k := (hp k).2
+      have h4 : bmax z (j + 1) k = max (bmax z j k) (z (j + 1) k) := bmax_succ z j k
+      have h3' : p k ≤ max (bmax z j k) (z (j + 1) k) := h4 ▸ h3
+      have h6 : z (j + 1) = z j - unit i := hstep
+      by_cases hk : k = i
+      · have h1 : (z j - unit i) k = z j k - 1 := by
+          rw [hk]
+          simp only [Pi.sub_apply, LatticeProb.unit, Pi.single_eq_same]
+        have h8 : max (bmax z j k) (z (j + 1) k) = max (bmax z j k) ((z j - unit i) k) := by
+          rw [h6]
+        rw [h8, h1] at h3'
+        have h9 : max (bmax z j k) (z j k - 1) = bmax z j k :=
+          max_eq_left (by linarith [le_bmax z j k (le_refl j)])
+        rwa [h9] at h3'
+      · have h1 : (z j - unit i) k = z j k := by
+          simp only [Pi.sub_apply, LatticeProb.unit, Pi.single_eq_of_ne hk, sub_zero]
+        have h8 : max (bmax z j k) (z (j + 1) k) = max (bmax z j k) ((z j - unit i) k) := by
+          rw [h6]
+        rw [h8, h1] at h3'
+        have h9 : max (bmax z j k) (z j k) = bmax z j k :=
+          max_eq_left (le_bmax z j k (le_refl j))
+        rwa [h9] at h3'
+    have hlo : ∀ k, k ≠ i → bmin z j k ≤ p k := by
+      intro k hk
+      have h3 : bmin z (j + 1) k ≤ p k := (hp k).1
+      have h4 : bmin z (j + 1) k = min (bmin z j k) (z (j + 1) k) := bmin_succ z j k
+      have h3' : min (bmin z j k) (z (j + 1) k) ≤ p k := h4 ▸ h3
+      have h6 : z (j + 1) = z j - unit i := hstep
+      have h1 : (z j - unit i) k = z j k := by
+        simp only [Pi.sub_apply, LatticeProb.unit, Pi.single_eq_of_ne hk, sub_zero]
+      have h8 : min (bmin z j k) (z (j + 1) k) = min (bmin z j k) ((z j - unit i) k) := by
+        rw [h6]
+      rw [h8, h1] at h3'
+      have h9 : min (bmin z j k) (z j k) = bmin z j k :=
+        min_eq_left (bmin_le z j k (le_refl j))
+      rwa [h9] at h3'
+    by_cases hi' : bmin z j i ≤ p i
+    · left
+      intro k
+      by_cases hk : k = i
+      · subst hk
+        exact ⟨hi', hhi k⟩
+      · exact ⟨hlo k hk, hhi k⟩
+    · right
+      refine ⟨?_, fun k hk => ⟨hlo k hk, hhi k⟩⟩
+      have h3 : bmin z (j + 1) i ≤ p i := (hp i).1
+      have h4 : bmin z (j + 1) i = min (bmin z j i) (z (j + 1) i) := bmin_succ z j i
+      have h3' : min (bmin z j i) (z (j + 1) i) ≤ p i := h4 ▸ h3
+      have h6 : z (j + 1) = z j - unit i := hstep
+      have h1 : (z j - unit i) i = z j i - 1 := by
+        simp only [Pi.sub_apply, LatticeProb.unit, Pi.single_eq_same]
+      have h8 : min (bmin z j i) (z (j + 1) i) = min (bmin z j i) ((z j - unit i) i) := by
+        rw [h6]
+      rw [h8, h1] at h3'
+      rw [hmin] at h3'
+      have h9 : min (bmin z j i) (bmin z j i - 1) = bmin z j i - 1 :=
+        min_eq_right (by linarith)
+      rw [h9] at h3'
+      exact le_antisymm (by linarith [not_le.mp hi']) h3'
+  · intro hp
+    rcases hp with hp | hp
+    · intro k
+      refine ⟨?_, ?_⟩
+      · have h4 : bmin z (j + 1) k = min (bmin z j k) (z (j + 1) k) := bmin_succ z j k
+        rw [h4]
+        have h6 : z (j + 1) = z j - unit i := hstep
+        by_cases hk : k = i
+        · have h1 : (z j - unit i) k = z j k - 1 := by
+            rw [hk]
+            simp only [Pi.sub_apply, LatticeProb.unit, Pi.single_eq_same]
+          have h8 : min (bmin z j k) (z (j + 1) k) = min (bmin z j k) ((z j - unit i) k) := by
+            rw [h6]
+          rw [h8, h1]
+          exact le_trans (min_le_left _ _) (hp k).1
+        · have h1 : (z j - unit i) k = z j k := by
+            simp only [Pi.sub_apply, LatticeProb.unit, Pi.single_eq_of_ne hk, sub_zero]
+          have h8 : min (bmin z j k) (z (j + 1) k) = min (bmin z j k) ((z j - unit i) k) := by
+            rw [h6]
+          rw [h8, h1]
+          exact le_trans (min_le_left _ _) (hp k).1
+      · have h4 : bmax z (j + 1) k = max (bmax z j k) (z (j + 1) k) := bmax_succ z j k
+        rw [h4]
+        have h6 : z (j + 1) = z j - unit i := hstep
+        by_cases hk : k = i
+        · have h1 : (z j - unit i) k = z j k - 1 := by
+            rw [hk]
+            simp only [Pi.sub_apply, LatticeProb.unit, Pi.single_eq_same]
+          have h8 : max (bmax z j k) (z (j + 1) k) = max (bmax z j k) ((z j - unit i) k) := by
+            rw [h6]
+          rw [h8, h1]
+          exact le_trans (hp k).2 (le_max_left _ _)
+        · have h1 : (z j - unit i) k = z j k := by
+            simp only [Pi.sub_apply, LatticeProb.unit, Pi.single_eq_of_ne hk, sub_zero]
+          have h8 : max (bmax z j k) (z (j + 1) k) = max (bmax z j k) ((z j - unit i) k) := by
+            rw [h6]
+          rw [h8, h1]
+          exact le_trans (hp k).2 (le_max_left _ _)
+    · intro k
+      refine ⟨?_, ?_⟩
+      · have h4 : bmin z (j + 1) k = min (bmin z j k) (z (j + 1) k) := bmin_succ z j k
+        rw [h4]
+        have h6 : z (j + 1) = z j - unit i := hstep
+        by_cases hk : k = i
+        · have h1 : (z j - unit i) k = z j k - 1 := by
+            rw [hk]
+            simp only [Pi.sub_apply, LatticeProb.unit, Pi.single_eq_same]
+          have h8 : min (bmin z j k) (z (j + 1) k) = min (bmin z j k) ((z j - unit i) k) := by
+            rw [h6]
+          rw [h8, h1]
+          have hp' : p k = bmin z j k - 1 := by rw [hk]; exact hp.1
+          have hmin' : z j k = bmin z j k := by rw [hk]; exact hmin
+          rw [hmin', hp']
+          exact min_le_right (bmin z j k) (bmin z j k - 1)
+        · have h1 : (z j - unit i) k = z j k := by
+            simp only [Pi.sub_apply, LatticeProb.unit, Pi.single_eq_of_ne hk, sub_zero]
+          have h8 : min (bmin z j k) (z (j + 1) k) = min (bmin z j k) ((z j - unit i) k) := by
+            rw [h6]
+          rw [h8, h1]
+          exact le_trans (min_le_left _ _) (hp.2 k hk).1
+      · have h4 : bmax z (j + 1) k = max (bmax z j k) (z (j + 1) k) := bmax_succ z j k
+        rw [h4]
+        have h6 : z (j + 1) = z j - unit i := hstep
+        by_cases hk : k = i
+        · have h1 : (z j - unit i) k = z j k - 1 := by
+            rw [hk]
+            simp only [Pi.sub_apply, LatticeProb.unit, Pi.single_eq_same]
+          have h8 : max (bmax z j k) (z (j + 1) k) = max (bmax z j k) ((z j - unit i) k) := by
+            rw [h6]
+          rw [h8, h1]
+          have hp' : p k = bmin z j k - 1 := by rw [hk]; exact hp.1
+          rw [hp']
+          have hb : bmin z j k ≤ bmax z j k :=
+            le_trans (bmin_le z j k (le_refl j)) (le_bmax z j k (le_refl j))
+          exact le_trans (by linarith) (le_max_left _ _)
+        · have h1 : (z j - unit i) k = z j k := by
+            simp only [Pi.sub_apply, LatticeProb.unit, Pi.single_eq_of_ne hk, sub_zero]
+          have h8 : max (bmax z j k) (z (j + 1) k) = max (bmax z j k) ((z j - unit i) k) := by
+            rw [h6]
+          rw [h8, h1]
+          exact le_trans (hp.2 k hk).2 (le_max_left _ _)
+
 end Exploding

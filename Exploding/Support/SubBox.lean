@@ -66,4 +66,33 @@ theorem br_image_eq_box (z : ℕ → Site d) (j : ℕ) :
     exact ⟨⟨z k, ⟨k, hk, rfl⟩, by rw [hk']; exact (h i).1⟩,
       ⟨z k', ⟨k', hk'', rfl⟩, by rw [hk''']; exact (h i).2⟩⟩
 
+/-- The `j+1`-st point of a path lies in the box of the first `j+2` points. -/
+theorem path_mem_box_succ (z : ℕ → Site d) (j : ℕ) : z (j + 1) ∈ box z (j + 1) := by
+  intro i
+  exact ⟨bmin_le z (j + 1) i (Nat.le_refl (j + 1)),
+    le_bmax z (j + 1) i (Nat.le_refl (j + 1))⟩
+
+/-- The box of the first `j+2` points contains the box of the first `j+1`. -/
+theorem box_mono (z : ℕ → Site d) (j : ℕ) : box z j ⊆ box z (j + 1) := by
+  intro p hp i
+  have h1 : bmin z (j + 1) i ≤ bmin z j i := by
+    show (Finset.range (j + 1 + 1)).inf' _ (fun k => z k i) ≤
+      (Finset.range (j + 1)).inf' _ (fun k => z k i)
+    rw [Finset.le_inf'_iff]
+    intro k hk
+    have hk' : k ≤ j + 1 := by
+      have := Finset.mem_range.mp hk
+      omega
+    exact bmin_le z (j + 1) i hk'
+  have h2 : bmax z j i ≤ bmax z (j + 1) i := by
+    show (Finset.range (j + 1)).sup' _ (fun k => z k i) ≤
+      (Finset.range (j + 1 + 1)).sup' _ (fun k => z k i)
+    rw [Finset.sup'_le_iff]
+    intro k hk
+    have hk' : k ≤ j + 1 := by
+      have := Finset.mem_range.mp hk
+      omega
+    exact le_bmax z (j + 1) i hk'
+  exact ⟨le_trans h1 (hp i).1, le_trans (hp i).2 h2⟩
+
 end Exploding

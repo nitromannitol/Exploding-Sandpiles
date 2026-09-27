@@ -11,6 +11,7 @@ layer `i` has been toppled and acts as the permanently lit floor for layer
 `i + 1`.
 -/
 import Exploding.Support.Reduction
+import Exploding.Support.SubSpanZero
 
 namespace Exploding
 
@@ -215,6 +216,39 @@ theorem redOdoUpAt_agree (η : LatticeProb.Site (d + 1) → ℤ) (hi0 : 0 ≤ i)
         by_cases h : 2 * (d : ℤ) ≤ η (cons (i + 1) y) - 1 + lap (redOdoDownAt i n η t) y
         · rw [if_pos h, if_pos (by linarith)]
         · rw [if_neg h, if_neg (by linarith)]
+theorem redOdoDownAt_eq_spanOdo (η : LatticeProb.Site (d + 1) → ℤ) (t : ℕ)
+    (y : LatticeProb.Site d) :
+    redOdoDownAt i n η t y = spanOdo n (fun w => η (cons (i + 1) w) - 1) t y := by
+  induction t generalizing y with
+  | zero => rfl
+  | succ t ih =>
+    rw [redOdoDownAt_succ]
+    have hlap : lap (fun w => redOdoDownAt i n η t w) y
+        = lap (spanOdo n (fun w => η (cons (i + 1) w) - 1) t) y := by
+      simp only [lap]
+      rw [nbrSumZ_congr (fun w => ih w) y, ih y]
+    rw [hlap, ih y]
+    simp only [spanOdo]
+    by_cases hy : y ∉ cube d n
+    · rw [if_pos hy, if_pos hy]; exact spanOdo_of_notMem n _ t hy
+    · rw [if_neg hy, if_neg hy]
+      by_cases h1 : spanOdo n (fun w => η (cons (i + 1) w) - 1) t y = 1
+      · simp only [if_pos h1]; exact h1
+      · rw [if_neg h1, if_neg h1]
+
+/-- **The layer step.**  If the `d`-dimensional shadow of layer `i + 1` is
+internally spanned, then layer `i + 1` of the box topples completely, at a
+uniform time, once layer `i` is permanently lit. -/
+theorem layer_topples (η : LatticeProb.Site (d + 1) → ℤ) (hi0 : 0 ≤ i)
+    (hi : i + 1 ≤ (n : ℤ))
+    (hspan : InternallySpanned (fun w : LatticeProb.Site d => η (cons (i + 1) w) - 1) n) :
+    ∀ y ∈ cube d n, ∃ t : ℕ, redOdoUpAt i n η t (cons (i + 1) y) = 1 := by
+  intro y hy
+  obtain ⟨t, ht⟩ := hspan y hy
+  refine ⟨t, ?_⟩
+  rw [redOdoUpAt_agree η hi0 hi t y, redOdoDownAt_eq_spanOdo]
+  exact ht
+
 end ReductionShift
 
 end Exploding

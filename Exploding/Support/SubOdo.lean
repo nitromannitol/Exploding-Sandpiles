@@ -65,4 +65,55 @@ theorem spanOdo_mono (n : ℕ) (η : Site d → ℤ) :
   · rw [spanOdo_one_stays n η t x h1]; omega
   · omega
 
+/-- `redOdoUp` is nonnegative. -/
+theorem redOdoUp_nonneg (n : ℕ) (η : Site (d + 1) → ℤ) : ∀ t x, 0 ≤ redOdoUp n η t x := by
+  intro t
+  induction t with
+  | zero =>
+    intro x
+    rw [redOdoUp_zero]
+    split_ifs <;> omega
+  | succ t ih =>
+    intro x
+    rw [redOdoUp_succ]
+    have h := ih x
+    split_ifs <;> omega
+
+/-- `redOdoUp` is at most one. -/
+theorem redOdoUp_le_one (n : ℕ) (η : Site (d + 1) → ℤ) : ∀ t x, redOdoUp n η t x ≤ 1 := by
+  intro t
+  induction t with
+  | zero =>
+    intro x
+    rw [redOdoUp_zero]
+    split_ifs <;> omega
+  | succ t ih =>
+    intro x
+    rw [redOdoUp_succ]
+    have h := ih x
+    split_ifs <;> omega
+
+/-- Once `redOdoUp` is one at a site it stays one. -/
+theorem redOdoUp_one_stays (n : ℕ) (η : Site (d + 1) → ℤ) (t : ℕ) (x : Site (d + 1))
+    (h : redOdoUp n η t x = 1) : redOdoUp n η (t + 1) x = 1 := by
+  rw [redOdoUp_succ]
+  by_cases hx : x ∉ cube (d + 1) n
+  · rw [if_pos hx]; exact h
+  · rw [if_neg hx]
+    by_cases h1 : 1 < x 0
+    · rw [if_pos h1]; exact h
+    · rw [if_neg h1]
+      rw [if_pos h]
+      exact h
+
+/-- `redOdoUp` is monotone in time. -/
+theorem redOdoUp_mono (n : ℕ) (η : Site (d + 1) → ℤ) :
+    ∀ t x, redOdoUp n η t x ≤ redOdoUp n η (t + 1) x := by
+  intro t x
+  have hle := redOdoUp_le_one n η t x
+  have hnn := redOdoUp_nonneg n η (t + 1) x
+  rcases eq_or_ne (redOdoUp n η t x) 1 with h1 | h1
+  · rw [redOdoUp_one_stays n η t x h1]; omega
+  · omega
+
 end Exploding

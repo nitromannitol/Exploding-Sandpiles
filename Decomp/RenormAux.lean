@@ -11,6 +11,7 @@ bond process, with Lemma 5.2 of Mathieu (`hHole`) for the holes and Theorem 1.1 
 and Pisztora (`hChem`) for the chemical distance, gives the three clauses (Step 2).
 -/
 import Exploding.Support.Vocab
+import Decomp.BoxCrossingAux
 import Exploding.Frozen.CrossingTime
 import Exploding.External.LiggettSchonmannStaceyBoundedDegree
 import Exploding.External.MathieuHoles
@@ -148,9 +149,103 @@ measurable" packaging lemma (no analogue of `MeasurableSet.pi` for an arbitrary,
 box-shaped, subset of a finite-coordinate product is present) together with a named finiteness
 lemma for `cube d k` itself (only ever carried as a bare hypothesis `hfin : (cube d k).Finite`
 in `prop-crossing-time-dec/node.lean`, never proved there either). -/
-theorem aux_renorm_iid_field_measurable (k : ℕ) :
-    MeasurableSet {η : Site d → ℤ | GoodCube η k} := by
-  sorry
+theorem aux_renorm_ct_le {d : ℕ} (η : Site d → ℤ) (k : ℕ) (i : Fin d) (z : Site d) (m : ℕ) :
+    crossingTime η k i z ≤ (m : ℕ∞) ↔
+      ∃ n : ℕ, 1 ≤ n ∧ n ≤ m ∧ ∀ x ∈ cube d k, crossOdo η k i z n x = 1 := by
+  unfold crossingTime
+  constructor
+  · intro h
+    by_contra hc
+    push Not at hc
+    have hmem : ∀ t ∈ {t : ℕ∞ | ∃ n : ℕ, t = (n : ℕ∞) ∧ 1 ≤ n ∧
+        ∀ x ∈ cube d k, crossOdo η k i z n x = 1}, (m : ℕ∞) + 1 ≤ t := by
+      intro t ht
+      obtain ⟨n, rfl, hn1, hnP⟩ := ht
+      by_contra hle
+      have hnm : n ≤ m := by
+        by_contra hnm'
+        have hlt : m < n := not_le.mp hnm'
+        exact hle (by exact_mod_cast (Nat.succ_le_of_lt hlt))
+      obtain ⟨x, hx, hne⟩ := hc n hn1 hnm
+      exact hne (hnP x hx)
+    have hle := le_sInf hmem
+    have h2 : (m : ℕ∞) + 1 ≤ (m : ℕ∞) := le_trans hle h
+    exact absurd h2 (by simp [ENat.add_one_le_iff])
+  · rintro ⟨n, hn1, hnm, hnP⟩
+    exact le_trans (sInf_le ⟨n, rfl, hn1, hnP⟩) (by exact_mod_cast hnm)
+
+theorem aux_renorm_goodcube_meas_comp {V : Type*} (f : Site d → V) (k : ℕ) :
+    MeasurableSet {g : V → ℤ | GoodCube (fun x => g (f x)) k} := by
+  have hshift : Measurable (fun g : V → ℤ => fun x : Site d => g (f x)) :=
+    measurable_pi_lambda _ fun x => measurable_pi_apply (f x)
+  have hfodo : ∀ (S : Set (Site d)) (w0 : Site d → ℤ) (t : ℕ) (x : Site d),
+      Measurable (fun g : V → ℤ => fodo S (fun y => g (f y)) w0 t x) :=
+    fun S w0 t x => (aux_box_crossing_fodo_measurable S w0 t x).comp hshift
+  have hset : {g : V → ℤ | GoodCube (fun x => g (f x)) k} =
+      ⋂ (i : Fin d) (z : Site d), ⋂ (_ : z ∈ closureN (cube d k)),
+        ⋃ (n : ℕ), ⋃ (_ : 1 ≤ n ∧ n ≤ k ^ d), ⋂ (x : Site d), ⋂ (_ : x ∈ cube d k),
+          {g : V → ℤ | crossOdo (fun x => g (f x)) k i z n x = 1} := by
+    ext g
+    simp only [GoodCube, Set.mem_setOf_eq, Set.mem_iInter, Set.mem_iUnion]
+    constructor
+    · intro h i z hz
+      by_cases hk : 1 ≤ k
+      · have h1 : crossingTime (fun x => g (f x)) k i z ≤ ((k ^ d : ℕ) : ℕ∞) := h i z hz
+        obtain ⟨n, hn1, hnm, hnP⟩ := (aux_renorm_ct_le (fun x => g (f x)) k i z (k ^ d)).mp h1
+        exact ⟨n, ⟨hn1, hnm⟩, fun x hx => hnP x hx⟩
+      · push Not at hk
+        have hk0 : k = 0 := by omega
+        subst hk0
+        simp only [closureN, outerBoundary, cube, Set.mem_union, Set.mem_setOf_eq,
+          not_forall, not_and] at hz
+        obtain hz | ⟨_, y, hy, _⟩ := hz
+        · exact absurd (hz i) (by omega)
+        · exact absurd (hy i) (by omega)
+    · intro h i z hz
+      obtain ⟨n, hb, hnP⟩ := h i z hz
+      exact (aux_renorm_ct_le (fun x => g (f x)) k i z (k ^ d)).mpr ⟨n, hb.1, hb.2, hnP⟩
+  rw [hset]
+  refine MeasurableSet.iInter (fun i => MeasurableSet.iInter (fun z => ?_))
+  refine MeasurableSet.iInter (fun _ => ?_)
+  refine MeasurableSet.iUnion (fun n => ?_)
+  refine MeasurableSet.iUnion (fun _ => ?_)
+  refine MeasurableSet.iInter (fun x => ?_)
+  refine MeasurableSet.iInter (fun _ => ?_)
+  exact measurableSet_eq_fun (hfodo _ _ _ _) measurable_const
+
+theorem aux_renorm_iid_field_measurable (k : ℕ) : MeasurableSet {η : Site d → ℤ | GoodCube η k} := by
+  have hset : {η : Site d → ℤ | GoodCube η k} =
+      ⋂ (i : Fin d) (z : Site d), ⋂ (_ : z ∈ closureN (cube d k)),
+        ⋃ (n : ℕ), ⋃ (_ : 1 ≤ n ∧ n ≤ k ^ d), ⋂ (x : Site d), ⋂ (_ : x ∈ cube d k),
+          {η : Site d → ℤ | crossOdo η k i z n x = 1} := by
+    ext η
+    simp only [GoodCube, Set.mem_setOf_eq, Set.mem_iInter, Set.mem_iUnion]
+    constructor
+    · intro h i z hz
+      by_cases hk : 1 ≤ k
+      · have h1 : crossingTime η k i z ≤ ((k ^ d : ℕ) : ℕ∞) := h i z hz
+        obtain ⟨n, hn1, hnm, hnP⟩ := (aux_renorm_ct_le η k i z (k ^ d)).mp h1
+        exact ⟨n, ⟨hn1, hnm⟩, fun x hx => hnP x hx⟩
+      · push Not at hk
+        have hk0 : k = 0 := by omega
+        subst hk0
+        simp only [closureN, outerBoundary, cube, Set.mem_union, Set.mem_setOf_eq,
+          not_forall, not_and] at hz
+        obtain hz | ⟨_, y, hy, _⟩ := hz
+        · exact absurd (hz i) (by omega)
+        · exact absurd (hy i) (by omega)
+    · intro h i z hz
+      obtain ⟨n, hb, hnP⟩ := h i z hz
+      exact (aux_renorm_ct_le η k i z (k ^ d)).mpr ⟨n, hb.1, hb.2, hnP⟩
+  rw [hset]
+  refine MeasurableSet.iInter (fun i => MeasurableSet.iInter (fun z => ?_))
+  refine MeasurableSet.iInter (fun _ => ?_)
+  refine MeasurableSet.iUnion (fun n => ?_)
+  refine MeasurableSet.iUnion (fun _ => ?_)
+  refine MeasurableSet.iInter (fun x => ?_)
+  refine MeasurableSet.iInter (fun _ => ?_)
+  exact measurableSet_eq_fun (aux_box_crossing_fodo_measurable _ _ _ _) measurable_const
+
 
 /-- [NEEDS FURTHER SPLIT] The `GoodAt`-events are independent across macroscopic sites. Given
 `aux_renorm_iid_field_measurable` (hence, via `aux_renorm_iid_field_goodat_congr`, measurability

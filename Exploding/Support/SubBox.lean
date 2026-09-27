@@ -1,11 +1,14 @@
-/-
-The bounding rectangle of a finite path, in the form the local-convexity
-argument of `paper/exploding.tex` uses it: the coordinatewise minimum and
-maximum of the first `j+1` points of a path, and the identification of the
-bounding rectangle `br` of the path's image with the box they define.
--/
 import Exploding.Support.Vocab
 
+/-!
+# Bounding rectangles of paths
+
+The bounding rectangle of a finite path, in the form the local-convexity
+argument of `paper/exploding.tex` uses it: the coordinatewise minimum and
+maximum of the first `j+1` points of a path, the identification of the
+bounding rectangle `br` of the path's image with the box they define, and the
+fact that a point of the box off the path has a neighbour in the box.
+-/
 namespace Exploding
 
 open LatticeProb

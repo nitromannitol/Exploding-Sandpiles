@@ -1,14 +1,17 @@
-/-
-Elementary geometry of the lattice used by the penultimate-cluster and
-local-convexity arguments of `paper/exploding.tex`: the centred box `cent d m`
-is connected, a segment between two of its points that differ in one coordinate
-stays inside it, and the frozen odometer is dominated by the wave once the wave
-dominates its seed.
--/
 import Exploding.Support.Vocab
 import Exploding.Support.Wave
 import Exploding.Support.SubFodo
 
+/-!
+# Lattice geometry for the filling argument
+
+Elementary geometry of the lattice used by the penultimate-cluster and
+local-convexity arguments of `paper/exploding.tex`: the centred box `cent d m`
+is connected, a segment between two of its points that differ in one coordinate
+stays inside it, the frozen odometer is monotone in time and in its background
+for a zero-one seed, and a site with two toppled neighbours topples next on the
+extremal background.
+-/
 namespace Exploding
 
 open LatticeProb

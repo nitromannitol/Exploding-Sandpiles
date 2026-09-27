@@ -307,4 +307,38 @@ theorem wave_dom_fodo' {d : ℕ} (hd0 : (0 : ℤ) < 2 * (d : ℤ))
         · rw [add_zero, ← wave_of_ne η N z x (t0 + s) hxz]
           exact le_trans (ih x) (wave_mono_t η hη hd0 N z (t0 + s) x)
 
+/-- The neighbour sum is translation invariant. -/
+theorem nbrSumZ_shift (u : Site d → ℤ) (c x : Site d) :
+    nbrSumZ (fun y => u (y + c)) x = nbrSumZ u (x + c) := by
+  simp only [nbrSumZ]
+  refine Finset.sum_congr rfl fun i _ => ?_
+  rw [show x + unit i + c = (x + c) + unit i from by abel,
+    show x - unit i + c = (x + c) - unit i from by abel]
+
+/-- The Laplacian is translation invariant. -/
+theorem lap_shift (u : Site d → ℤ) (c x : Site d) :
+    lap (fun y => u (y + c)) x = lap u (x + c) := by
+  simp only [lap, nbrSumZ_shift]
+
+/-- The frozen odometer is equivariant under translation of the lattice. -/
+theorem fodo_shift (S : Set (Site d)) (s0 w0 : Site d → ℤ) (c : Site d) :
+    ∀ t x, fodo {y | y + c ∈ S} (fun y => s0 (y + c)) (fun y => w0 (y + c)) t x
+      = fodo S s0 w0 t (x + c) := by
+  intro t
+  induction t with
+  | zero => intro x; rfl
+  | succ t ih =>
+    intro x
+    rw [fodo_succ, fodo_succ]
+    by_cases hx : x + c ∈ S
+    · rw [if_pos hx, if_pos (show x ∈ {y | y + c ∈ S} from hx)]
+    · rw [if_neg hx, if_neg (show ¬ (x ∈ {y | y + c ∈ S}) from hx)]
+      have hfun : fodo {y | y + c ∈ S} (fun y => s0 (y + c)) (fun y => w0 (y + c)) t
+          = fun y => fodo S s0 w0 t (y + c) := funext fun y => ih y
+      have hconf : fconf {y | y + c ∈ S} (fun y => s0 (y + c)) (fun y => w0 (y + c)) t x
+          = fconf S s0 w0 t (x + c) := by
+        simp only [fconf]
+        rw [hfun, lap_shift]
+      rw [hconf, ih]
+
 end Exploding

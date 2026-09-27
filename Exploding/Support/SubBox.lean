@@ -232,4 +232,26 @@ theorem br_has_nbr (A : Set (Site d)) (hA : A.Nonempty) {p : Site d}
   rw [← hy']
   exact hy
 
+/-- The bounding box of a finite set is finite. -/
+theorem br_finite (A : Set (Site d)) (hA : A.Finite) : (br A).Finite := by
+  classical
+  have hsub : br A ⊆ {z | ∀ i, (∃ y ∈ A, y i ≤ z i) ∧ (∃ y ∈ A, z i ≤ y i)} :=
+    fun z hz => hz
+  refine Set.Finite.subset ?_ hsub
+  have hset : {z : Site d | ∀ i, (∃ y ∈ A, y i ≤ z i) ∧ (∃ y ∈ A, z i ≤ y i)} =
+      {z | ∀ i, z i ∈ ⋃ y ∈ A, ⋃ y' ∈ A, Set.Icc (y i) (y' i)} := by
+    ext z
+    simp only [Set.mem_setOf_eq, Set.mem_iUnion, Set.mem_Icc]
+    constructor
+    · intro h i
+      obtain ⟨⟨y1, hy1, h1⟩, ⟨y2, hy2, h2⟩⟩ := h i
+      exact ⟨y1, hy1, y2, hy2, h1, h2⟩
+    · intro h i
+      obtain ⟨y1, hy1, y2, hy2, h1, h2⟩ := h i
+      exact ⟨⟨y1, hy1, h1⟩, ⟨y2, hy2, h2⟩⟩
+  rw [hset]
+  refine Set.Finite.pi' fun i => ?_
+  refine Set.Finite.biUnion hA fun y _ => ?_
+  exact Set.Finite.biUnion hA fun y' _ => Set.finite_Icc (y i) (y' i)
+
 end Exploding

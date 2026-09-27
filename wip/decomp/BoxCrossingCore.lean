@@ -7,13 +7,16 @@ is `0` off the low face).  The corrected statement below restricts the dominatio
 sites above layer `i` (`i < x 0`) and shifts the time by `T`, a time at which layer `i` is
 already toppled in `fodo`.
 
-Base case: proved (both branches).  Step: the case split is written out and compiles; the
-four leaves are
-  (a) `hc : x ∉ cube (d+1) n` — needs `fodo_mono_time` to transport the inductive
-      hypothesis from `T + t` to `T + (t + 1)`;
-  (b) `hle : x 0 ≤ i` — the site is at or below the floor, so `redOdoUpAt` freezes it at
-      its initial value, which is `1` exactly on layer `i`; the floor's lighting is `hT`;
-  (c) `h1 : redOdoUpAt i n η t x = 1` — absorption at one, transported by `fodo_mono_time`;
+Base case: proved (both branches).  Step: leaf (a) (`x ∉ cube (d+1) n`) is proved, using
+`fodo_mono_time'` (the two-time monotonicity, in `Exploding/Support/ReductionShift.lean`) to
+transport the inductive hypothesis from `T + t` to `T + (t + 1)`.  The three remaining
+leaves are
+  (b) `hle : x 0 ≤ i` — the site is at or below the floor, so `redOdoUpAt` freezes it at its
+      initial value, which is `1` exactly on layer `i`; the floor's lighting is `hT`, and
+      `fodo_le_one` caps the right side at `1` (the `le_antisymm` in the draft below is the
+      shape, but the two `fodo` terms have different time arguments and must be related by
+      `fodo_mono_time'` first);
+  (c) `h1 : redOdoUpAt i n η t x = 1` — absorption at one, transported by `fodo_mono_time'`;
   (d) the firing case — the threshold comparison, using `nbrSumZ_mono` on the inductive
       hypothesis and `fodo`'s own recursion.
 -/
@@ -64,18 +67,7 @@ theorem fodo_dominates_redOdoUpAt_above (n : ℕ) (hn : 1 ≤ n) (η : Site (d +
     rw [redOdoUpAt_succ]
     by_cases hc : x ∉ cube (d + 1) n
     · rw [if_pos hc]
-      have hle : redOdoUpAt i n η t x ≤ fodo ((rboxShift (fun _ : Fin (d+1) => n)
-          (0 : Site (d+1)))ᶜ) η
-          (Set.indicator (faceOut (fun _ : Fin (d+1) => n) (0 : Site (d+1)) ⟨0, by omega⟩ false)
-            (fun _ => (1 : ℤ))) (T + t) x := ih x hx
-      have hmono : fodo ((rboxShift (fun _ : Fin (d+1) => n) (0 : Site (d+1)))ᶜ) η
-          (Set.indicator (faceOut (fun _ : Fin (d+1) => n) (0 : Site (d+1)) ⟨0, by omega⟩ false)
-            (fun _ => (1 : ℤ))) (T + t) x ≤
-          fodo ((rboxShift (fun _ : Fin (d+1) => n) (0 : Site (d+1)))ᶜ) η
-          (Set.indicator (faceOut (fun _ : Fin (d+1) => n) (0 : Site (d+1)) ⟨0, by omega⟩ false)
-            (fun _ => (1 : ℤ))) (T + (t + 1)) x := by
-        sorry
-      exact le_trans hle hmono
+      exact le_trans (ih x hx) (fodo_mono_time' _ _ _ (T + t) (T + (t + 1)) x (by omega))
     · rw [if_neg hc]
       by_cases hle : x 0 ≤ i
       · rw [if_pos hle]

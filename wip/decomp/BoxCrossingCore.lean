@@ -7,13 +7,20 @@ is `0` off the low face).  The corrected statement below restricts the dominatio
 sites above layer `i` (`i < x 0`) and shifts the time by `T`, a time at which layer `i` is
 already toppled in `fodo`.
 
-All four step leaves are now proved in `Exploding/Support/ReductionShift.lean`
+All four step leaves are proved in `Exploding/Support/ReductionShift.lean`
 (`fodo_fires_of_redOdoUpAt` is the firing case; the other three are inline below), and the
-base case is proved.  What remains in this file is the last bookkeeping of the firing
-branch: the threshold `2(d+1) ≤ η x + lap (redOdoUpAt i n η t) x` must be extracted from
-the `redOdoUpAt_succ` unfolding of the enclosing case (the draft below attempts it with a
-`by_cases` plus the `if_neg` chain, and the two errors are in that extraction and in the
-`ih` application's argument order).
+base case is proved.
+
+REMAINING, precisely: the firing branch calls `fodo_fires_of_redOdoUpAt` with the
+pointwise hypothesis `fun y => ih y (by omega)`, but `ih` needs `i < y 0` for EVERY `y`,
+which is false (sites at or below the floor violate it).  The fix is to weaken
+`fodo_fires_of_redOdoUpAt`'s hypothesis from `∀ y, redOdoUpAt … t y ≤ fodo … (T + t) y` to
+the two facts the proof actually uses:
+  (i) `redOdoUpAt i n η t x ≤ fodo … (T + t) x` (at the firing site itself), and
+  (ii) `nbrSumZ (redOdoUpAt i n η t) x ≤ nbrSumZ (fodo … (T + t)) x` (the neighbour sum),
+the second of which follows from the pointwise domination only on the neighbours of `x`,
+and those can be taken above the floor by the same `i < x 0` argument.  With that
+weakening the firing branch closes, and the transport step is complete.
 -/
 import Exploding.Support.ReductionShift
 import Exploding.Support.SubFodo
@@ -105,13 +112,12 @@ theorem fodo_dominates_redOdoUpAt_above (n : ℕ) (hn : 1 ≤ n) (η : Site (d +
             rcases redOdoUpAt_zero_or_one n η i t x with h | h
             · exact h
             · exact absurd h h1
-          have hthr : 2 * ((d : ℤ) + 1) ≤ η x + lap (redOdoUpAt i n η t) x := by
-            by_cases hth : 2 * ((d : ℤ) + 1) ≤ η x + lap (redOdoUpAt i n η t) x
-            · exact hth
-            · exfalso
-              have hnext : redOdoUpAt i n η (t + 1) x = redOdoUpAt i n η t x := by
-                rw [redOdoUpAt_succ]
-                rw [if_neg hc, if_neg hle, if_neg h1, if_neg hth]
-              rw [hnext] at h1
-              exact h1 rfl
-          exact fodo_fires_of_redOdoUpAt n η i T t x (fun y hy => ih y hy) h0 hc hthr
+          by_cases hthr : 2 * ((d : ℤ) + 1) ≤ η x + lap (redOdoUpAt i n η t) x
+          · exact fodo_fires_of_redOdoUpAt n η i T t x (fun y => ih y (by omega)) h0 (not_not.mp hc) hthr
+          · have hnext : redOdoUpAt i n η (t + 1) x = redOdoUpAt i n η t x := by
+              rw [redOdoUpAt_succ]
+              rw [if_neg hc, if_neg hle, if_neg h1, if_neg hthr]
+              split_ifs <;> ring
+            rw [hnext, h0]
+            exact fodo_nonneg _ _ _
+              (Set.indicator_nonneg (fun _ _ => zero_le_one)) (T + (t + 1)) x

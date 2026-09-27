@@ -485,4 +485,36 @@ theorem br_eq_box (A : Set (Site d)) (hA : A.Finite) (hne : A.Nonempty) :
   · intro hx i
     exact ⟨⟨m i, hmA i, (hx i).1⟩, ⟨M i, hMA i, (hx i).2⟩⟩
 
+/-- The maximum over `range (j+2)` is the maximum of the maximum over
+`range (j+1)` and the value at `j+1`. -/
+theorem bmax_succ (z : ℕ → Site d) (j : ℕ) (i : Fin d) :
+    bmax z (j + 1) i = max (bmax z j i) (z (j + 1) i) := by
+  have hne : (Finset.range (j + 1)).Nonempty := ⟨0, Finset.mem_range.mpr (Nat.succ_pos j)⟩
+  have hne' : (Finset.range (j + 1 + 1)).Nonempty :=
+    ⟨0, Finset.mem_range.mpr (Nat.succ_pos (j + 1))⟩
+  have hset : Finset.range (j + 1 + 1) = insert (j + 1) (Finset.range (j + 1)) := by
+    rw [show (j + 1 + 1) = (j + 1) + 1 from rfl, Finset.range_add_one]
+  have h1 : (Finset.range (j + 1 + 1)).sup' hne' (fun k => z k i) =
+      (insert (j + 1) (Finset.range (j + 1))).sup' (hset ▸ hne')
+        (fun k => z k i) := by
+    congr 1
+  rw [bmax, bmax, h1, Finset.sup'_insert hne]
+  exact max_comm _ _
+
+/-- The minimum over `range (j+2)` is the minimum of the minimum over
+`range (j+1)` and the value at `j+1`. -/
+theorem bmin_succ (z : ℕ → Site d) (j : ℕ) (i : Fin d) :
+    bmin z (j + 1) i = min (bmin z j i) (z (j + 1) i) := by
+  have hne : (Finset.range (j + 1)).Nonempty := ⟨0, Finset.mem_range.mpr (Nat.succ_pos j)⟩
+  have hne' : (Finset.range (j + 1 + 1)).Nonempty :=
+    ⟨0, Finset.mem_range.mpr (Nat.succ_pos (j + 1))⟩
+  have hset : Finset.range (j + 1 + 1) = insert (j + 1) (Finset.range (j + 1)) := by
+    rw [show (j + 1 + 1) = (j + 1) + 1 from rfl, Finset.range_add_one]
+  have h1 : (Finset.range (j + 1 + 1)).inf' hne' (fun k => z k i) =
+      (insert (j + 1) (Finset.range (j + 1))).inf' (hset ▸ hne')
+        (fun k => z k i) := by
+    congr 1
+  rw [bmin, bmin, h1, Finset.inf'_insert hne]
+  exact min_comm _ _
+
 end Exploding

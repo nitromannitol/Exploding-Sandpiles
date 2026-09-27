@@ -341,4 +341,14 @@ theorem fodo_shift (S : Set (Site d)) (s0 w0 : Site d → ℤ) (c : Site d) :
         rw [hfun, lap_shift]
       rw [hconf, ih]
 
+/-- The frozen odometer is nondecreasing in time, for any seed and background:
+the increment is `0` or `1`. -/
+theorem fodo_mono_time (S : Set (Site d)) (η : Site d → ℤ) (w0 : Site d → ℤ)
+    (t : ℕ) (x : Site d) : fodo S η w0 t x ≤ fodo S η w0 (t + 1) x := by
+  rw [fodo_succ]
+  by_cases hx : x ∈ S
+  · rw [if_pos hx, fodo_of_mem S η w0 t hx]
+  · rw [if_neg hx]
+    exact le_add_of_nonneg_right (by positivity)
+
 end Exploding

@@ -628,4 +628,52 @@ theorem fillSet_two_nbrs (A : Set (Site d)) {x y z : Site d} (hx : x ∉ A)
     rw [htz] at h
     exact le_antisymm (fodo_indicator_le_one A (max ty tz) z) h
 
+/-- A box in the coordinates other than `i`, as a set. -/
+def slab (a b : Site d) (i : Fin d) (c : ℤ) : Set (Site d) :=
+  {y | y i = c ∧ ∀ j, j ≠ i → a j ≤ y j ∧ y j ≤ b j}
+
+/-- The `i`-th coordinate of a point of the slab below the cap. -/
+theorem slab_sub_unit_mem (a b : Site d) (i : Fin d) (hab : a i ≤ b i) {y : Site d}
+    (hy : y ∈ slab a b i (b i + 1)) :
+    ∀ j, a j ≤ (y - unit i) j ∧ (y - unit i) j ≤ b j := by
+  intro j
+  by_cases hji : j = i
+  · rw [hji]
+    have h1 : (y - unit i) i = y i - 1 := by
+      simp only [Pi.sub_apply, LatticeProb.unit, Pi.single_eq_same]
+    rw [h1, hy.1]
+    exact ⟨by linarith, by linarith⟩
+  · have h1 : (y - unit i) j = y j := by
+      simp only [Pi.sub_apply, LatticeProb.unit, Pi.single_eq_of_ne hji, sub_zero]
+    rw [h1]
+    exact hy.2 j hji
+
+/-- Moving one coordinate of a point of the slab by one step, staying in the
+slab. -/
+theorem slab_move (a b : Site d) (i : Fin d) (c : ℤ) {p : Site d}
+    (hp : p ∈ slab a b i c) (j : Fin d) (hj : j ≠ i) {d' : ℤ}
+    (hlo : a j ≤ p j + d') (hhi : p j + d' ≤ b j) :
+    p + d' • unit j ∈ slab a b i c := by
+  refine ⟨?_, ?_⟩
+  · have h1 : (p + d' • unit j) i = p i := by
+      rw [coord_add_smul]
+      simp only [if_neg (Ne.symm hj), mul_zero, add_zero]
+    rw [h1]; exact hp.1
+  · intro k hki
+    rw [coord_add_smul]
+    have h2 := hp.2 k hki
+    by_cases hkj : k = j
+    · rw [if_pos hkj]
+      constructor
+      · have h3 : p k + d' * 1 = p k + d' := by ring
+        rw [h3]
+        subst hkj
+        exact hlo
+      · have h3 : p k + d' * 1 = p k + d' := by ring
+        rw [h3]
+        subst hkj
+        exact hhi
+    · rw [if_neg hkj, mul_zero, add_zero]
+      exact h2
+
 end Exploding

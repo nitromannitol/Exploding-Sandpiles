@@ -351,4 +351,12 @@ theorem fodo_mono_time (S : Set (Site d)) (η : Site d → ℤ) (w0 : Site d →
   · rw [if_neg hx]
     exact le_add_of_nonneg_right (by positivity)
 
+/-- The frozen odometer is monotone in time, and its value at a site is `1` from
+the first time it topples on. -/
+theorem fodo_mono_time' (S : Set (Site d)) (η : Site d → ℤ) (w0 : Site d → ℤ)
+    {s t : ℕ} (hst : s ≤ t) (x : Site d) : fodo S η w0 s x ≤ fodo S η w0 t x := by
+  induction t, hst using Nat.le_induction with
+  | base => exact le_rfl
+  | succ t _ ih => exact le_trans ih (fodo_mono_time S η w0 t x)
+
 end Exploding

@@ -469,4 +469,131 @@ theorem local_convexity_wlog_eta (A : Set (Site d)) (η : Site d → ℤ)
         by_cases hy : y ∈ A <;> simp [Set.indicator_of_mem, Set.indicator_of_notMem, hy]) t x
   linarith
 
+/-- A nonnegative function is bounded by the neighbour sum at a site adjacent
+to it. -/
+theorem le_nbrSumZ_of_adj {u : Site d → ℤ} (hu : ∀ y, 0 ≤ u y) {x y : Site d}
+    (h : (lattice d).Adj x y) : u y ≤ nbrSumZ u x := by
+  obtain ⟨i, hi | hi⟩ := h
+  · rw [hi]
+    have h1 : u (x + unit i) ≤ ∑ k : Fin d, u (x + unit k) :=
+      Finset.single_le_sum (f := fun k : Fin d => u (x + unit k))
+        (fun k _ => hu _) (Finset.mem_univ i)
+    have h2 : 0 ≤ ∑ k : Fin d, u (x - unit k) := Finset.sum_nonneg (fun k _ => hu _)
+    simp only [nbrSumZ, Finset.sum_add_distrib]
+    linarith
+  · have hy : y = x - unit i := by rw [hi]; abel
+    rw [hy]
+    have h1 : u (x - unit i) ≤ ∑ k : Fin d, u (x - unit k) :=
+      Finset.single_le_sum (f := fun k : Fin d => u (x - unit k))
+        (fun k _ => hu _) (Finset.mem_univ i)
+    have h2 : 0 ≤ ∑ k : Fin d, u (x + unit k) := Finset.sum_nonneg (fun k _ => hu _)
+    simp only [nbrSumZ, Finset.sum_add_distrib]
+    linarith
+
+/-- Two distinct neighbours of a site contribute their values to the neighbour
+sum. -/
+theorem add_le_nbrSumZ_of_adj {u : Site d → ℤ} (hu : ∀ y, 0 ≤ u y) {x y z : Site d}
+    (hxy : (lattice d).Adj x y) (hxz : (lattice d).Adj x z) (hyz : y ≠ z) :
+    u y + u z ≤ nbrSumZ u x := by
+  obtain ⟨i, hi | hi⟩ := hxy
+  · obtain ⟨j, hj | hj⟩ := hxz
+    · have hij : i ≠ j := by
+        intro h
+        exact hyz (by rw [hi, hj, h])
+      have h1 : u (x + unit i) + u (x + unit j) ≤ ∑ k : Fin d, u (x + unit k) := by
+        rw [← Finset.add_sum_erase _ _ (Finset.mem_univ i)]
+        have h2 : u (x + unit j) ≤ ∑ k ∈ Finset.univ.erase i, u (x + unit k) :=
+          Finset.single_le_sum (f := fun k : Fin d => u (x + unit k))
+            (fun k _ => hu _) (Finset.mem_erase.mpr ⟨hij.symm, Finset.mem_univ j⟩)
+        linarith
+      have h3 : 0 ≤ ∑ k : Fin d, u (x - unit k) := Finset.sum_nonneg (fun k _ => hu _)
+      simp only [nbrSumZ, Finset.sum_add_distrib]
+      rw [hi, hj]
+      linarith
+    · have hz : z = x - unit j := by rw [hj]; abel
+      have h1 : u (x + unit i) ≤ ∑ k : Fin d, u (x + unit k) :=
+        Finset.single_le_sum (f := fun k : Fin d => u (x + unit k))
+          (fun k _ => hu _) (Finset.mem_univ i)
+      have h2 : u (x - unit j) ≤ ∑ k : Fin d, u (x - unit k) :=
+        Finset.single_le_sum (f := fun k : Fin d => u (x - unit k))
+          (fun k _ => hu _) (Finset.mem_univ j)
+      simp only [nbrSumZ, Finset.sum_add_distrib]
+      rw [hi, hz]
+      linarith
+  · obtain ⟨j, hj | hj⟩ := hxz
+    · have hy : y = x - unit i := by rw [hi]; abel
+      have h1 : u (x - unit i) ≤ ∑ k : Fin d, u (x - unit k) :=
+        Finset.single_le_sum (f := fun k : Fin d => u (x - unit k))
+          (fun k _ => hu _) (Finset.mem_univ i)
+      have h2 : u (x + unit j) ≤ ∑ k : Fin d, u (x + unit k) :=
+        Finset.single_le_sum (f := fun k : Fin d => u (x + unit k))
+          (fun k _ => hu _) (Finset.mem_univ j)
+      simp only [nbrSumZ, Finset.sum_add_distrib]
+      rw [hy, hj]
+      linarith
+    · have hy : y = x - unit i := by rw [hi]; abel
+      have hz : z = x - unit j := by rw [hj]; abel
+      have hij : i ≠ j := by
+        intro h
+        exact hyz (by rw [hy, hz, h])
+      have h1 : u (x - unit i) + u (x - unit j) ≤ ∑ k : Fin d, u (x - unit k) := by
+        rw [← Finset.add_sum_erase _ _ (Finset.mem_univ i)]
+        have h2 : u (x - unit j) ≤ ∑ k ∈ Finset.univ.erase i, u (x - unit k) :=
+          Finset.single_le_sum (f := fun k : Fin d => u (x - unit k))
+            (fun k _ => hu _) (Finset.mem_erase.mpr ⟨hij.symm, Finset.mem_univ j⟩)
+        linarith
+      have h3 : 0 ≤ ∑ k : Fin d, u (x + unit k) := Finset.sum_nonneg (fun k _ => hu _)
+      simp only [nbrSumZ, Finset.sum_add_distrib]
+      rw [hy, hz]
+      linarith
+
+/-- The frozen odometer on the extremal background, started from the indicator
+of `A`, is `1` on `A` at every time. -/
+theorem fodo_indicator_mem (A : Set (Site d)) (t : ℕ) {x : Site d} (hx : x ∈ A) :
+    fodo A (fun _ => 2 * (d : ℤ) - 2) (Set.indicator A 1) t x = 1 := by
+  rw [fodo_of_mem A _ _ t hx, Set.indicator_of_mem hx]
+  rfl
+
+/-- The frozen odometer on the extremal background, started from the indicator
+of `A`, is `{0,1}`-valued. -/
+theorem fodo_indicator_le_one (A : Set (Site d)) (t : ℕ) (x : Site d) :
+    fodo A (fun _ => 2 * (d : ℤ) - 2) (Set.indicator A 1) t x ≤ 1 :=
+  fodo_le_one A _ _ (fun y => by omega)
+    (fun y => by by_cases hy : y ∈ A <;> simp [Set.indicator_of_mem, Set.indicator_of_notMem, hy])
+    (fun y => by by_cases hy : y ∈ A <;> simp [Set.indicator_of_mem, Set.indicator_of_notMem, hy]) t x
+
+/-- The frozen odometer on the extremal background, started from the indicator
+of `A`, is nonnegative. -/
+theorem fodo_indicator_nonneg (A : Set (Site d)) (t : ℕ) (x : Site d) :
+    0 ≤ fodo A (fun _ => 2 * (d : ℤ) - 2) (Set.indicator A 1) t x :=
+  fodo_nonneg_of_seed A _ _
+    (fun y => by by_cases hy : y ∈ A <;> simp [Set.indicator_of_mem, Set.indicator_of_notMem, hy]) t x
+
+/-- A site of the bounding box of a path that is not yet toppled and has two
+toppled neighbours topples at the next step. -/
+theorem fodo_fill_step (A : Set (Site d)) (t : ℕ) (x y z : Site d)
+    (hx : x ∉ A) (hxy : (lattice d).Adj y x) (hy : fodo A (fun _ => 2 * (d : ℤ) - 2) (Set.indicator A 1) t y = 1)
+    (hxz : (lattice d).Adj z x) (hz : fodo A (fun _ => 2 * (d : ℤ) - 2) (Set.indicator A 1) t z = 1)
+    (hyz : y ≠ z) :
+    fodo A (fun _ => 2 * (d : ℤ) - 2) (Set.indicator A 1) (t + 1) x = 1 := by
+  have hle := fodo_indicator_le_one A t x
+  have hnn := fodo_indicator_nonneg A t x
+  by_cases h1 : fodo A (fun _ => 2 * (d : ℤ) - 2) (Set.indicator A 1) t x = 1
+  · have hmono := fodo_mono_time A (fun _ => 2 * (d : ℤ) - 2) (Set.indicator A 1) t x
+    have hle' := fodo_indicator_le_one A (t + 1) x
+    omega
+  · have h0 : fodo A (fun _ => 2 * (d : ℤ) - 2) (Set.indicator A 1) t x = 0 := by omega
+    refine Exploding.fodo_two_nbrs_topple A (Set.indicator A 1)
+      (fun y => by by_cases hy : y ∈ A <;> simp [Set.indicator_of_mem, Set.indicator_of_notMem, hy])
+      (fun y => by by_cases hy : y ∈ A <;> simp [Set.indicator_of_mem, Set.indicator_of_notMem, hy])
+      t x hx h0 ?_
+    have hsum := add_le_nbrSumZ_of_adj (u := fodo A (fun _ => 2 * (d : ℤ) - 2) (Set.indicator A 1) t)
+      (fun y => fodo_indicator_nonneg A t y) hxy.symm hxz.symm hyz
+    rw [hy, hz] at hsum
+    simp only [nbrSumZ] at hsum
+    have h2 : (2 : ℤ) ≤ nbrSumZ (fodo A (fun _ => 2 * (d : ℤ) - 2) (Set.indicator A 1) t) x := by
+      simp only [nbrSumZ]
+      linarith
+    exact h2
+
 end Exploding

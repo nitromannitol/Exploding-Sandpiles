@@ -359,4 +359,18 @@ theorem fodo_mono_time' (S : Set (Site d)) (η : Site d → ℤ) (w0 : Site d �
   | base => exact le_rfl
   | succ t _ ih => exact le_trans ih (fodo_mono_time S η w0 t x)
 
+/-- On the extremal background `η ≡ 2d-2`, a site with two toppled neighbours
+topples at the next step. -/
+theorem fodo_two_nbrs_topple (S : Set (Site d)) (w0 : Site d → ℤ)
+    (_hw0 : ∀ x, w0 x ≤ 1) (_hw0nn : ∀ x, 0 ≤ w0 x)
+    (t : ℕ) (x : Site d) (hx : x ∉ S) (h0 : fodo S (fun _ => 2 * (d : ℤ) - 2) w0 t x = 0)
+    (h2 : 2 ≤ nbrSumZ (fodo S (fun _ => 2 * (d : ℤ) - 2) w0 t) x) :
+    fodo S (fun _ => 2 * (d : ℤ) - 2) w0 (t + 1) x = 1 := by
+  rw [fodo_succ, if_neg hx]
+  have hc : 2 * (d : ℤ) ≤ fconf S (fun _ => 2 * (d : ℤ) - 2) w0 t x := by
+    simp only [fconf, lap, h0, mul_zero, sub_zero]
+    linarith
+  rw [if_pos hc]
+  omega
+
 end Exploding

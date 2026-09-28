@@ -1342,6 +1342,22 @@ theorem aux_pub_reach_support_finite {d : ℕ} (η : Site d → ℤ) (hlow : ∀
   simp only [Set.mem_setOf_eq] at hx
   rw [h2] at hx
   exact lt_irrefl 0 hx
+
+theorem wave_covers_of_line_one'' {d : ℕ} (hd : 2 ≤ d) (η : Site d → ℤ)
+    (hlow : ∀ x, 0 ≤ η x) (hhigh : ∀ x, η x ≤ 2 * (d : ℤ) - 1) (k : ℕ) (hk : 1 ≤ k)
+    (zc i : Site d) (hgoodi : GoodAt η k i) (dir : Fin d) (z : Site d)
+    (hz : z ∈ cube d k) (t : ℕ)
+    (hline : ∀ w ∈ line d k dir z, 0 < wave η 1 zc t (w + (k : ℤ) • i))
+    (hcov_zc : ∀ t : ℕ, ∀ x ∈ cube d k,
+      0 < wave η 1 zc t (x + (k : ℤ) • macroIdx k zc)) :
+    ∃ t' : ℕ, t ≤ t' ∧ ∀ x ∈ cube d k, 0 < wave η 1 zc t' (x + (k : ℤ) • i) := by
+  by_cases hi : i = macroIdx k zc
+  · refine ⟨t, le_refl t, fun x hx => ?_⟩
+    rw [hi]
+    exact hcov_zc t x hx
+  · exact wave_covers_of_line_one' hd η hlow hhigh k zc i hgoodi dir z (Or.inl hz) t hline
+      (fun y hy hcon => hi (macroIdx_eq_of_mem_image k hk zc i ⟨y, hy, hcon⟩))
+
 /-- **The `N = 1` propagation half.**  The analogue of
 `aux_penultimate_overlap_propagate_line` for the `1`-wave.  If the `1`-wave from
 `zc` is positive on a line of a good cube `Q_k(i)` with `i ∈ Cinf`, and `zc` is
@@ -1351,7 +1367,6 @@ theorem aux_penultimate_overlap_propagate_line_one {d : ℕ} (hd : 2 ≤ d) (η 
     (hlow : ∀ x, 2 * (d : ℤ) - 2 ≤ η x) (hhigh : ∀ x, η x ≤ 2 * (d : ℤ) - 1)
     (k : ℕ) (hk : 1 ≤ k) (Cinf : Set (Site d)) (hCinf : IsInfiniteConnectedGoodSet η k Cinf)
     (zc : Site d) (i : Site d) (hiCinf : i ∈ Cinf)
-    (hi_ne : i ≠ macroIdx k zc)
     (dir : Fin d) (z : Site d) (hz : z ∈ cube d k)
     (hline : ∀ w ∈ line d k dir z,
       0 < penultimateWave η zc (w + (k : ℤ) • i))
@@ -1384,13 +1399,9 @@ theorem aux_penultimate_overlap_propagate_line_one {d : ℕ} (hd : 2 ≤ d) (η 
     intro w hw
     rw [← hpenT]
     exact hline w hw
-  have hfar : ∀ y ∈ cube d k, y + (k : ℤ) • i ≠ zc := by
-    intro y hy hcon
-    exact hi_ne (macroIdx_eq_of_mem_image k hk zc i ⟨y, hy, hcon⟩)
   -- the line of `Q_k(i)` is crossed by the `1`-wave
-  obtain ⟨T0, hT0⟩ := wave_covers_of_line_one' hd η hlow0 hhigh k zc i
-    (hCinf.2.1 hiCinf) dir z (Or.inl hz)
-    T hline'' (fun y hy hcon => hfar y hy hcon)
+  obtain ⟨T0, hT0⟩ := wave_covers_of_line_one'' hd η hlow0 hhigh k hk zc i
+    (hCinf.2.1 hiCinf) dir z hz T hline'' hcov_zc
   have hreach : ∀ y ∈ Cinf, ∃ t, ∀ x ∈ cube d k,
       0 < wave η 1 zc t (x + (k : ℤ) • y) := by
     intro y hy
@@ -1577,7 +1588,7 @@ theorem aux_penultimate_side_bound_one {d : ℕ} (hd : 2 ≤ d) (η : Site d →
     rw [← hfun]
     exact hline _ (hcont w hw v hva hvb).1 (hcont w hw v hva hvb).2
   exact aux_penultimate_overlap_propagate_line_one hd η hlow hhigh k hk Cinf hCinf zc i
-    hvCinf hi_ne dir (fun _ => (1 : ℤ)) (fun l => ⟨le_refl 1, hk1⟩) hline' hM2 hlast hcov_zc
+    hvCinf dir (fun _ => (1 : ℤ)) (fun l => ⟨le_refl 1, hk1⟩) hline' hM2 hlast hcov_zc
 
 
 /-- **Segment-to-line.**  A segment of length `(log n)^(5/2) * k + 4k` in a
@@ -1822,7 +1833,7 @@ theorem aux_penultimate_segment_bound {d : ℕ} (hd : 2 ≤ d) (η : Site d → 
       obtain ⟨h2, _⟩ := aux_penultimate_hlast η hlow0 hhigh zc _ hzpos
       omega
     exact aux_penultimate_overlap_propagate_line_one hd η hlow hhigh k hk Cinf hCinf zc i hiC
-      hi_ne' l (fun j => if j = l then 1 else 1 + (c j - 1) % (k : ℤ)) hz hline'
+      l (fun j => if j = l then 1 else 1 + (c j - 1) % (k : ℤ)) hz hline'
       hM2 hlast hcov_zc
 
 
@@ -1925,3 +1936,5 @@ theorem box_end_le (m M x : ℤ) (h1 : m ≤ x) (h2 : x ≤ M) :
     · omega
     · have h3 : M ≤ x + (M - m) := by omega
       omega
+
+

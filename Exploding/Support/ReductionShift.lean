@@ -1632,6 +1632,17 @@ theorem exists_crossOdo_eq_one_of_goodCube (η : Site d → ℤ) (k : ℕ)
         exact_mod_cast this
   exact absurd hle (not_le.mpr hlt)
 
+/-- **The basic `chemDist` API.**  A walk of length `n` in `C` from `x` to `y` bounds the
+chemical distance by `n`.  This is the first step of the paper's "within at most `C |z-y|`
+steps, `Q_k(y)` will topple" (lines 807-812): the chemical distance counts the cubes on a
+path, and each cube's crossing costs at most `k^d` by
+`exists_crossOdo_eq_one_of_goodCube`. -/
+theorem chemDist_le_of_walk (C : Set (Site d)) {x y : Site d} (hx : x ∈ C) (hy : y ∈ C)
+    (w : ((lattice d).induce C).Walk ⟨x, hx⟩ ⟨y, hy⟩) :
+    chemDist C x y ≤ (w.length : ℕ∞) := by
+  rw [chemDist]
+  exact sInf_le ⟨w.length, rfl, hx, hy, w, rfl⟩
+
 end ReductionShift
 
 end Exploding

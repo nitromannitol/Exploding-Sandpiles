@@ -1308,3 +1308,266 @@ theorem aux_penultimate_side_bound {d : ℕ} (hd : 2 ≤ d) (η : Site d → ℤ
     exact hline _ hge hle
   exact aux_penultimate_overlap_propagate_line hd η hlow hhigh k hk Cinf hCinf zc i hvCinf
     dir (fun _ => (1 : ℤ)) (fun l => ⟨le_refl 1, hk1⟩) hline' hN hlast
+
+/-- **The support of a wave at a fixed time is finite.**  The wave started at
+`z` with mass `n` cannot be positive further than `t` steps away, by
+`aux_finite_exploding_speed`. -/
+theorem aux_pub_reach_support_finite {d : ℕ} (η : Site d → ℤ) (hlow : ∀ x, 0 ≤ η x)
+    (hhigh : ∀ x, η x ≤ 2 * (d : ℤ) - 1) (_hd0 : (0 : ℤ) < 2 * (d : ℤ))
+    (n : ℕ) (z : Site d) (t : ℕ) :
+    {x : Site d | 0 < wave η n z t x}.Finite := by
+  have hfin : ({x : Site d | ∀ i, x i ∈ Set.Icc (-(t : ℤ) + z i) ((t : ℤ) + z i)}).Finite := by
+    refine Set.Finite.pi' ?_
+    intro i
+    exact Set.finite_Icc _ _
+  refine hfin.subset ?_
+  intro x hx
+  by_contra hcon
+  have h1 : (t : ℤ) < mnorm (x - z) := by
+    by_contra h2
+    push Not at h2
+    exact hcon (fun i => by
+      have h3 : |(x - z) i| ≤ mnorm (x - z) := abs_coord_le_mnorm (x - z) i
+      have h4 : (x - z) i ≤ (t : ℤ) := le_trans (le_abs_self _) (le_trans h3 h2)
+      have h5 : -((t : ℤ)) ≤ (x - z) i := by
+        have := neg_abs_le ((x - z) i)
+        linarith
+      simp only [Pi.sub_apply] at h4 h5
+      constructor <;> linarith)
+  have h2 := aux_finite_exploding_speed η hlow hhigh n z t x h1
+  simp only [Set.mem_setOf_eq] at hx
+  rw [h2] at hx
+  exact lt_irrefl 0 hx
+/-- **The `N = 1` propagation half.**  The analogue of
+`aux_penultimate_overlap_propagate_line` for the `1`-wave.  If the `1`-wave from
+`zc` is positive on a line of a good cube `Q_k(i)` with `i ∈ Cinf`, and `zc` is
+not in the image of `Q_k(i)`, then the `1`-wave reaches the whole cluster,
+contradicting its stabilizability. -/
+theorem aux_penultimate_overlap_propagate_line_one {d : ℕ} (hd : 2 ≤ d) (η : Site d → ℤ)
+    (hlow : ∀ x, 2 * (d : ℤ) - 2 ≤ η x) (hhigh : ∀ x, η x ≤ 2 * (d : ℤ) - 1)
+    (k : ℕ) (hk : 1 ≤ k) (Cinf : Set (Site d)) (hCinf : IsInfiniteConnectedGoodSet η k Cinf)
+    (zc : Site d) (i : Site d) (hiCinf : i ∈ Cinf)
+    (hi_ne : i ≠ macroIdx k zc)
+    (dir : Fin d)
+    (hline : ∀ w ∈ line d k dir (fun _ => (1 : ℤ)),
+      0 < penultimateWave η zc (w + (k : ℤ) • i))
+    (hM2 : waveThreshold η zc = 2)
+    (hlast : ∃ n : ℕ, 1 ≤ n ∧ ¬ WaveStabilizable η n zc)
+    (hcov_zc : ∀ t : ℕ, ∀ x ∈ cube d k,
+      0 < wave η 1 zc t (x + (k : ℤ) • macroIdx k zc)) : False := by
+  have hlow0 : ∀ x, 0 ≤ η x := fun x => by linarith [hlow x]
+  have hd0 : (0 : ℤ) < 2 * (d : ℤ) := by
+    have : (2 : ℤ) ≤ (d : ℤ) := by exact_mod_cast hd
+    linarith
+  have hk1 : (1 : ℤ) ≤ (k : ℤ) := by exact_mod_cast hk
+  have hzpos : 0 < penultimateWave η zc ((fun _ => (1 : ℤ)) + (k : ℤ) • i) :=
+    hline _ ⟨⟨le_refl 1, hk1⟩, fun l hl => rfl⟩
+  obtain ⟨h2, hlast'⟩ := aux_penultimate_hlast η hlow0 hhigh zc _ hzpos
+  have h1 : waveThreshold η zc ≠ 1 := by omega
+  have hstab : WaveStabilizable η 1 zc := by
+    have h := penultimate_stabilizable η zc hlast' h1
+    rwa [hM2] at h
+  obtain ⟨T, hT⟩ := hstab
+  have hstab' : WaveStabilizable η 1 zc := ⟨T, hT⟩
+  have hstab0 : WaveStabilizable η 1 zc := hstab' 
+  have hpenT : ∀ x : Site d, penultimateWave η zc x = wave η 1 zc T x := by
+    intro x
+    simp only [penultimateWave, if_neg h1, waveTerminal]
+    rw [show waveThreshold η zc - 1 = 1 by omega]
+    exact (congrFun (waveTerminal_spec η 1 zc hstab' T (Nat.sInf_le hT)) x).symm
+  have hline'' : ∀ w ∈ line d k dir (fun _ => (1 : ℤ)),
+      0 < wave η 1 zc T (w + (k : ℤ) • i) := by
+    intro w hw
+    rw [← hpenT]
+    exact hline w hw
+  have hfar : ∀ y ∈ cube d k, y + (k : ℤ) • i ≠ zc := by
+    intro y hy hcon
+    exact hi_ne (macroIdx_eq_of_mem_image k hk zc i ⟨y, hy, hcon⟩)
+  -- the line of `Q_k(i)` is crossed by the `1`-wave
+  obtain ⟨T0, hT0⟩ := wave_covers_of_line_one' hd η hlow0 hhigh k zc i
+    (hCinf.2.1 hiCinf) dir (fun _ => (1 : ℤ)) (Or.inl (fun l => ⟨le_refl 1, hk1⟩))
+    T hline'' (fun y hy hcon => hfar y hy hcon)
+  have hreach : ∀ y ∈ Cinf, ∃ t, ∀ x ∈ cube d k,
+      0 < wave η 1 zc t (x + (k : ℤ) • y) := by
+    intro y hy
+    have hstep : ∀ (a b : Site d), b ∈ Cinf → (b = macroIdx k zc ∨ b ≠ macroIdx k zc) →
+        GoodAt η k b → (lattice d).Adj a b →
+        ∀ s : ℕ, (∀ x ∈ cube d k, 0 < wave η 1 zc s (x + (k : ℤ) • a)) →
+        ∃ s' : ℕ, s ≤ s' ∧ ∀ x ∈ cube d k, 0 < wave η 1 zc s' (x + (k : ℤ) • b) := by
+      intro a b hbC hbm hgood hadj s hs
+      by_cases hb : b = macroIdx k zc
+      · -- `b` is `zc`'s own cube: the wave is positive at `zc` itself, and
+        -- `zc` lies in `Q_k(b)`'s image, so the cube is covered
+        refine ⟨max s T0, le_max_left s T0, fun x hx => ?_⟩
+        have h2' : 0 < wave η 1 zc (max s T0) (x + (k : ℤ) • b) := by
+          -- `zc` lies in `Q_k(b)`'s image, and the wave is positive at `zc`
+          -- `zc` lies in `Q_k(b)`'s image, and the wave is positive at `zc`
+          obtain ⟨y0, hy0, hy0eq⟩ : ∃ y0 ∈ cube d k, y0 + (k : ℤ) • b = zc := by
+            refine ⟨fun j => zc j - (k : ℤ) * b j, ?_, ?_⟩
+            · intro j
+              have h1' : zc j = (zc j - 1) / (k : ℤ) * (k : ℤ) + (zc j - 1) % (k : ℤ) + 1 := by
+                have := Int.mul_ediv_add_emod (zc j - 1) (k : ℤ)
+                linarith
+              have h2' : 0 ≤ (zc j - 1) % (k : ℤ) := Int.emod_nonneg _ (by omega)
+              have h3' : (zc j - 1) % (k : ℤ) < (k : ℤ) := Int.emod_lt_of_pos _ (by omega)
+              have h4' : b j = (zc j - 1) / (k : ℤ) := by
+                rw [hb]
+                rfl
+              simp only [h4']
+              constructor
+              · linarith [h1', h2']
+              · linarith [h1', h3']
+            · ext j
+              simp only [Pi.add_apply, Pi.smul_apply, smul_eq_mul]
+              ring
+          -- the wave is positive at `zc`, and `zc` lies in `Q_k(b)`'s image,
+          -- so the cube is covered once the wave reaches `zc`
+          have hzc : 0 < wave η 1 zc (max s T0) zc := by
+            have h1' : 0 < wave η 1 zc T zc := by
+              rw [← hpenT zc]
+              rw [penultimateWave_at_centre η zc (by omega)]
+              omega
+            have h2'' : 0 < wave η 1 zc (max T T0) zc := by
+              have := wave_mono_time η hlow0 hd0 1 zc (le_max_left T T0) zc
+              linarith
+            have h3'' : max T T0 ≤ max s T0 := by omega
+            have := wave_mono_time η hlow0 hd0 1 zc h3'' zc
+            linarith
+          -- the cube `Q_k(b)` is covered by the wave at `zc`: the wave is
+          -- positive at `zc`, and `zc` is the image of `y0 ∈ Q_k(b)`
+          have hcov : ∀ x ∈ cube d k, 0 < wave η 1 zc (max s T0) (x + (k : ℤ) • b) := by
+            intro x hx
+            rw [hb]
+            exact hcov_zc (max s T0) x hx
+          exact hcov x hx
+        exact h2'
+      · obtain ⟨dir', hdir'⟩ := hadj
+        have hfar_b : ∀ y ∈ cube d k, y + (k : ℤ) • b ≠ zc := by
+          intro y hy hcon
+          exact hb (macroIdx_eq_of_mem_image k hk zc b ⟨y, hy, hcon⟩)
+        -- a direction different from the adjacency direction `dir'`
+        have hne' : ∃ dir'' : Fin d, dir'' ≠ dir' := by
+          by_cases h0 : dir' = (⟨0, by omega⟩ : Fin d)
+          · exact ⟨⟨1, by omega⟩, by rw [h0]; intro hc; simp at hc⟩
+          · exact ⟨⟨0, by omega⟩, fun hc => h0 hc.symm⟩
+        obtain ⟨dir'', hdir''⟩ := hne'
+        exact finite_exploding_step_one hd η hlow0 hhigh k hk zc a b hgood dir' hdir'
+          dir'' hdir'' s hs hfar_b
+    obtain ⟨t', ht'⟩ := aux_finite_exploding_propagate_walk_seed η hlow0 hhigh 1 k zc
+      Cinf (fun x hx => hCinf.2.1 hx) (macroIdx k zc) hstep i y
+      (hCinf.2.2 i hiCinf y hy) T0 hT0.2
+    exact ⟨t', ht'⟩
+  have hinf : {x : Site d | ∃ t, 0 < wave η 1 zc t x}.Infinite := by
+    have himg : (fun y : Site d => (fun _ => (1 : ℤ)) + (k : ℤ) • y) '' Cinf ⊆
+        {x : Site d | ∃ t, 0 < wave η 1 zc t x} := by
+      rintro x ⟨y, hy, rfl⟩
+      obtain ⟨t, ht⟩ := hreach y hy
+      exact ⟨t, ht _ (fun l => ⟨le_refl 1, hk1⟩)⟩
+    have hinj : Function.Injective (fun y : Site d => (fun _ => (1 : ℤ)) + (k : ℤ) • y) := by
+      intro y1 y2 h
+      have h1 := congrFun h
+      have h2 : ∀ l, (k : ℤ) * y1 l = (k : ℤ) * y2 l := by
+        intro l
+        have := h1 l
+        simp only [Pi.add_apply, Pi.smul_apply, smul_eq_mul] at this
+        linarith
+      funext l
+      have := h2 l
+      exact mul_left_cancel₀ (by omega : (k : ℤ) ≠ 0) this
+    exact (hCinf.1.image hinj.injOn).mono himg
+  have hfin : {x : Site d | ∃ t, 0 < wave η 1 zc t x}.Finite := by
+    have hsub : {x : Site d | ∃ t, 0 < wave η 1 zc t x} ⊆
+        {x : Site d | 0 < wave η 1 zc T x} := by
+      rintro x ⟨t, ht⟩
+      rcases Nat.le_total t T with h | h
+      · have h1 := wave_mono_time η hlow0 hd0 1 zc h x
+        exact lt_of_lt_of_le ht h1
+      · have h1 := hT t h
+        rw [h1] at ht
+        exact ht
+    exact (aux_pub_reach_support_finite η hlow0 hhigh hd0 1 zc T).subset hsub
+  exact hinf hfin
+
+/-- **The `M̂ = 2` case of the side-length bound.**  When the last-wave index
+at `zc` is two, the penultimate wave is the `1`-wave, and the same argument as
+`aux_penultimate_side_bound` applies with `wave_covers_of_line_one'` in place of
+`wave_covers_of_line`.  The one extra input is that the run must extend beyond
+`zc`'s own cube: the cube's image occupies the run's `dir`-coordinates
+`[1 + k*v0, k + k*v0]` with `v0 := (zc dir - 1)/k`, so the pigeonhole is applied
+with that interval excluded, and the good cube it returns is a different cube,
+for which `wave_covers_of_line_one'`'s `hfar` holds by
+`macroIdx_eq_of_mem_image`. -/
+theorem aux_penultimate_side_bound_one {d : ℕ} (hd : 2 ≤ d) (η : Site d → ℤ)
+    (hlow : ∀ x, 2 * (d : ℤ) - 2 ≤ η x) (hhigh : ∀ x, η x ≤ 2 * (d : ℤ) - 1)
+    (k : ℕ) (hk : 1 ≤ k) (Cinf : Set (Site d)) (hCinf : IsInfiniteConnectedGoodSet η k Cinf)
+    (zc : Site d)
+    (hM2 : waveThreshold η zc = 2)
+    (hlast : ∃ n : ℕ, 1 ≤ n ∧ ¬ WaveStabilizable η n zc)
+    (n0 : ℕ)
+    (hcomp : ∀ n, n0 ≤ n → ∀ x ∈ (cent d n : Set (Site d)), x ∉ Cinf →
+      (componentIn Cinfᶜ x).Finite ∧
+        ((componentIn Cinfᶜ x).ncard : ℝ) < Real.log n ^ ((5 : ℝ) / 2))
+    (n : ℕ) (hn : n0 ≤ n) (dir : Fin d) (a b : ℤ)
+    (_ha : 1 ≤ a)
+    (hin : ∀ v : ℤ, a ≤ v → v ≤ b →
+      (fun j => if j = dir then v else (zc j - 1) / (k : ℤ)) ∈ (cent d n : Set (Site d)))
+    (hline : ∀ u : ℤ, 1 + (k : ℤ) * a ≤ u → u ≤ (k : ℤ) + (k : ℤ) * b →
+      0 < penultimateWave η zc (fun j => if j = dir then u
+        else 1 + (k : ℤ) * ((zc j - 1) / (k : ℤ))))
+    (hlo : a ≤ (zc dir - 1) / (k : ℤ))
+    (hhi : (zc dir - 1) / (k : ℤ) ≤ b)
+    (hlen : Real.log n ^ ((5 : ℝ) / 2) ≤
+      (((zc dir - 1) / (k : ℤ)) - 1 - a : ℤ) ∨
+      Real.log n ^ ((5 : ℝ) / 2) ≤
+      ((b - ((zc dir - 1) / (k : ℤ) + 1) : ℤ) : ℝ))
+    (hcov_zc : ∀ t : ℕ, ∀ x ∈ cube d k,
+      0 < wave η 1 zc t (x + (k : ℤ) • macroIdx k zc)) :
+    False := by
+  have hk1 : (1 : ℤ) ≤ (k : ℤ) := by exact_mod_cast hk
+  set v0 : ℤ := (zc dir - 1) / (k : ℤ) with hv0def
+  have hlo' : a ≤ (zc dir - 1) / (k : ℤ) := hlo
+  have hhi' : (zc dir - 1) / (k : ℤ) ≤ b := hhi
+  obtain ⟨v, hva, hvb, hvCinf, hvout⟩ :=
+    aux_penultimate_overlap_line_meets_cinf_outside Cinf n0 hcomp n hn
+      (fun j => (zc j - 1) / (k : ℤ)) dir a b hin
+      ((zc dir - 1) / (k : ℤ)) ((zc dir - 1) / (k : ℤ)) hlo' hhi' le_rfl hlen
+  set i : Site d := fun j => if j = dir then v else (zc j - 1) / (k : ℤ) with hidef
+  have hi_ne : i ≠ macroIdx k zc := by
+    intro hcon
+    have h1 : i dir = macroIdx k zc dir := by rw [hcon]
+    have h2 : macroIdx k zc dir = v0 := by
+      simp only [macroIdx, hv0def]
+    have h3 : i dir = v := by simp only [hidef, if_true]
+    rw [h3, h2] at h1
+    rcases hvout with hlt | hgt
+    · omega
+    · omega
+  have hline' : ∀ w ∈ line d k dir (fun _ => (1 : ℤ)),
+      0 < penultimateWave η zc (w + (k : ℤ) • i) := by
+    intro w hw
+    have hother : ∀ l, l ≠ dir → (w + (k : ℤ) • i) l
+        = 1 + (k : ℤ) * ((zc l - 1) / (k : ℤ)) := by
+      intro l hl
+      have hwl : w l = 1 := by
+        have := hw.2 l hl
+        simpa using this
+      have hil : i l = (zc l - 1) / (k : ℤ) := by simp only [hidef, if_neg hl]
+      simp only [Pi.add_apply, Pi.smul_apply, smul_eq_mul, hwl, hil]
+    have hdir : (w + (k : ℤ) • i) dir = w dir + (k : ℤ) * v := by
+      simp only [Pi.add_apply, Pi.smul_apply, smul_eq_mul, hidef, if_true]
+    have hge : 1 + (k : ℤ) * a ≤ w dir + (k : ℤ) * v := by
+      have h1 : (k : ℤ) * a ≤ (k : ℤ) * v := mul_le_mul_of_nonneg_left hva (by linarith)
+      linarith [hw.1.1]
+    have hle : w dir + (k : ℤ) * v ≤ (k : ℤ) + (k : ℤ) * b := by
+      have h1 : (k : ℤ) * v ≤ (k : ℤ) * b := mul_le_mul_of_nonneg_left hvb (by linarith)
+      linarith [hw.1.2]
+    have hfun : (fun j => if j = dir then w dir + (k : ℤ) * v
+        else 1 + (k : ℤ) * ((zc j - 1) / (k : ℤ))) = (w + (k : ℤ) • i) := by
+      ext l
+      by_cases hl : l = dir
+      · subst hl; simp only [if_true, hdir]
+      · simp only [if_neg hl, hother l hl]
+    rw [← hfun]
+    exact hline _ hge hle
+  exact aux_penultimate_overlap_propagate_line_one hd η hlow hhigh k hk Cinf hCinf zc i
+    hvCinf hi_ne dir hline' hM2 hlast hcov_zc

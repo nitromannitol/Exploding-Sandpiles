@@ -511,4 +511,7 @@ theorem aux_pub_reach (d : ℕ) (hd : 2 ≤ d) (p : ℝ) (hp : 0 < p) (hp1 : p <
 /-! ### (b) every site has a nearby good cube -/
 
 
-end Exploding
+
+
+
+

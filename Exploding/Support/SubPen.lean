@@ -662,6 +662,34 @@ theorem aux_penultimate_overlap_line_meets_cinf {d : ℕ} (Cinf : Set (Site d)) 
     linarith
   linarith [h_bound, h_bound2, h_ineq]
 
+/-- **The strengthened pigeonhole.**  A run meets `Cinf` outside the interval
+`[lo, hi]`, provided one of the two pieces the interval cuts off is still longer
+than the hole bound.  This is the form the `M̂ = 2` case of the side-length bound
+needs: the cube's image occupies a contiguous interval of the run's
+`dir`-coordinate, so a run long enough to leave a piece longer than the hole
+bound on either side meets `Cinf` outside the cube. -/
+theorem aux_penultimate_overlap_line_meets_cinf_outside {d : ℕ} (Cinf : Set (Site d)) (n0 : ℕ)
+    (hcomp : ∀ n, n0 ≤ n → ∀ x ∈ (cent d n : Set (Site d)), x ∉ Cinf →
+      (componentIn Cinfᶜ x).Finite ∧
+        ((componentIn Cinfᶜ x).ncard : ℝ) < Real.log n ^ ((5 : ℝ) / 2))
+    (n : ℕ) (hn : n0 ≤ n) (zc : Site d) (i : Fin d) (a b : ℤ)
+    (hin : ∀ v : ℤ, a ≤ v → v ≤ b →
+      (fun j => if j = i then v else zc j) ∈ (cent d n : Set (Site d)))
+    (lo hi : ℤ) (hlo : a ≤ lo) (hhi : hi ≤ b) (hlohi : lo ≤ hi)
+    (hlen : Real.log n ^ ((5 : ℝ) / 2) ≤ ((lo - 1 - a : ℤ) : ℝ) ∨
+            Real.log n ^ ((5 : ℝ) / 2) ≤ ((b - (hi + 1) : ℤ) : ℝ)) :
+    ∃ u : ℤ, a ≤ u ∧ u ≤ b ∧ (fun j => if j = i then u else zc j) ∈ Cinf ∧
+      (u < lo ∨ hi < u) := by
+  rcases hlen with h | h
+  · obtain ⟨u, hua, hub, huC⟩ :=
+      aux_penultimate_overlap_line_meets_cinf Cinf n0 hcomp n hn zc i a (lo - 1) h
+        (fun v hv hv' => hin v hv (by omega))
+    exact ⟨u, hua, by omega, huC, Or.inl (by omega)⟩
+  · obtain ⟨u, hua, hub, huC⟩ :=
+      aux_penultimate_overlap_line_meets_cinf Cinf n0 hcomp n hn zc i (hi + 1) b h
+        (fun v hv hv' => hin v (by omega) hv')
+    exact ⟨u, by omega, hub, huC, Or.inr (by omega)⟩
+
 /-- **The penultimate-cluster propagation, first step.**  If the penultimate
 wave is positive at a site `v0` of the infinite good cluster, then the
 `(M-1)`-wave from `zc` is positive at `v0` at some finite time.  This is

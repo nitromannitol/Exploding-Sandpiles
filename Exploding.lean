@@ -12,6 +12,7 @@ import Exploding.Support.SubBox
 import Exploding.Support.SubFill
 import Exploding.Support.SubFinite
 import Exploding.Support.SubStep
+import Exploding.Support.SubCross
 import Exploding.Support.SubPoly
 import Exploding.Support.SubFConf
 import Exploding.Support.SubNbr

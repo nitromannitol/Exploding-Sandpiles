@@ -208,6 +208,32 @@ theorem aux_pub_reach_macro_reach {d : ℕ} (η : Site d → ℤ) (hlow : ∀ x,
             simpa [SimpleGraph.induce_adj] using hadj'.symm
           exact ⟨h0C, hxnotin, hreach.trans ⟨SimpleGraph.Walk.cons hadj_induce SimpleGraph.Walk.nil⟩⟩
 
+theorem aux_pub_nearest_mnorm_ray {d : ℕ} (x : Site d) (i0 : Fin d) (j : ℕ) :
+    mnorm (x - (x + (j : ℤ) • unit i0)) = (j : ℤ) := by
+  have hsub : x - (x + (j : ℤ) • unit i0) = -((j : ℤ) • unit i0) := by abel
+  rw [hsub, mnorm]
+  -- only the `i0`-coordinate is nonzero
+  have hcoord : ∀ i : Fin d, |(-((j : ℤ) • unit i0)) i| = if i = i0 then (j : ℤ) else 0 := by
+    intro i
+    by_cases hi : i = i0
+    · subst hi
+      simp only [Pi.neg_apply, Pi.smul_apply, smul_eq_mul, LatticeProb.unit,
+        Pi.single_eq_same, if_true]
+      rw [abs_neg, abs_of_nonneg (by positivity)]
+      ring
+    · simp only [Pi.neg_apply, Pi.smul_apply, smul_eq_mul, LatticeProb.unit,
+        Pi.single_eq_of_ne hi, mul_zero, neg_zero, if_neg hi, abs_zero]
+  rw [Finset.sum_congr rfl (fun i _ => hcoord i)]
+  rw [Finset.sum_ite_eq' Finset.univ i0 (fun _ => (j : ℤ))]
+  simp
+
+/-- **New, real.** If every point of the ray `x, x+unit i0, …, x+N•unit i0`
+lies in `S`, every one of them lies in `LatticeProb.componentIn S x`: induction
+on `j` chaining single-step adjacencies (`lattice d`'s `Adj` holds between
+`x+j•unit i0` and `x+(j+1)•unit i0` by definition, `⟨i0, Or.inl rfl⟩` up to the
+translation) via `SimpleGraph.induce_adj` (`(G.induce s).Adj u v ↔ G.Adj u v`,
+`.rfl`), `SimpleGraph.Adj.reachable` and `SimpleGraph.Reachable.trans`, and
+unfolding `componentIn`'s existential membership. -/
 theorem aux_pub_nearest_ray_aux {d : ℕ} (S : Set (Site d)) (x : Site d) (i0 : Fin d) (N : ℕ)
     (hray : ∀ j : ℕ, j ≤ N → x + (j : ℤ) • unit i0 ∈ S) :
     ∀ j : ℕ, ∀ _hj : j ≤ N, ∃ (hx : x ∈ S) (hy : x + (j : ℤ) • unit i0 ∈ S),
@@ -288,4 +314,50 @@ theorem aux_pub_nearest_pigeonhole {d : ℕ} (S : Set (Site d)) (x : Site d) (i0
 -- containing `x` (if any) is finite of cardinality `< (log n)^{5/2}`" into
 -- "there is `y ∈ Cinf` with `mnorm (x - y)` bounded by the same quantity" is
 -- an isoperimetric-type step (a finite subset of `ℤ^d` of cardinality `< V`
+theorem aux_pub_nearest (d : ℕ) (hd : 2 ≤ d) (k0 : ℕ) (η : Site d → ℤ) (Cinf : Set (Site d))
+    (_hCinf : IsInfiniteConnectedGoodSet η k0 Cinf) (n0 : ℕ)
+    (hhole : ∀ n : ℕ, n0 ≤ n → ∀ x ∈ (cent d n : Set (Site d)), x ∉ Cinf →
+      (componentIn Cinfᶜ x).Finite ∧
+        ((componentIn Cinfᶜ x).ncard : ℝ) < Real.log n ^ ((5 : ℝ) / 2))
+    (n : ℕ) (hn : n0 ≤ n) (x : Site d) (hx : mnorm x ≤ (n : ℤ)) :
+    ∃ y : Site d, y ∈ Cinf ∧ (mnorm (x - y) : ℝ) ≤ Real.log n ^ ((5 : ℝ) / 2) := by
+  by_cases hxC : x ∈ Cinf
+  · refine ⟨x, hxC, ?_⟩
+    have hxx : x - x = (0 : Site d) := sub_self x
+    have hm0 : mnorm (0 : Site d) = 0 := by simp [mnorm]
+    rw [hxx, hm0]
+    have hln : 0 ≤ Real.log (n : ℝ) := by
+      rcases Nat.eq_zero_or_pos n with h0 | hpos
+      · simp [h0]
+      · exact Real.log_nonneg (by exact_mod_cast hpos)
+    simpa using Real.rpow_nonneg hln ((5 : ℝ) / 2)
+  · have hxcent : x ∈ (cent d n : Set (Site d)) := by
+      intro i
+      have h1 : |x i| ≤ mnorm x := by
+        rw [mnorm]
+        exact Finset.single_le_sum (fun i _ => abs_nonneg (x i)) (Finset.mem_univ i)
+      omega
+    obtain ⟨hfin, hcard⟩ := hhole n hn x hxcent hxC
+    set N := hfin.toFinset.card with hNdef
+    have hcard' : (N : ℝ) < Real.log n ^ ((5 : ℝ) / 2) := by
+      rw [hNdef, ← Set.ncard_eq_toFinset_card (componentIn Cinfᶜ x) hfin]
+      exact hcard
+    by_contra hcon
+    push Not at hcon
+    have hi0 : (0 : ℕ) < d := by omega
+    have hray : ∀ j : ℕ, j ≤ N → x + (j : ℤ) • unit (⟨0, hi0⟩ : Fin d) ∈ Cinfᶜ := by
+      intro j hj
+      by_contra hmemC
+      simp only [Set.mem_compl_iff, not_not] at hmemC
+      have hb := hcon _ hmemC
+      rw [aux_pub_nearest_mnorm_ray x ⟨0, hi0⟩ j] at hb
+      have hjR : (j : ℝ) ≤ (N : ℝ) := by exact_mod_cast hj
+      have hcast : ((j : ℤ) : ℝ) = (j : ℝ) := by push_cast; ring
+      rw [hcast] at hb
+      linarith [hb]
+    have hraycomp := aux_pub_nearest_ray Cinfᶜ x (⟨0, hi0⟩ : Fin d) N hray
+    have hpig := aux_pub_nearest_pigeonhole Cinfᶜ x (⟨0, hi0⟩ : Fin d) hfin N hraycomp
+    omega
+
+
 end Exploding

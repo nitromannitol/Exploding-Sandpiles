@@ -1091,4 +1091,37 @@ theorem zeta1_periodic_4 (a b : ℤ) : zeta1 a (b + 4) = zeta1 a b := by
   have h : (b + 4) % 4 = b % 4 := by omega
   simp only [zeta1, h]
 
+
+
+/-- `ζ₁` depends only on its second coordinate mod 4. -/
+theorem zeta1_mod_4 (a b : ℤ) : zeta1 a (b % 4) = zeta1 a b := by
+  have h : (b % 4) % 4 = b % 4 := by omega
+  simp only [zeta1, h]
+
+
+
+
+def cylProj (x : Site 2) : ℤ × Fin 4 :=
+  (x ⟨0, by norm_num⟩, Fin.ofNat 4 (x ⟨1, by norm_num⟩).toNat)
+
+def cylEta (x : ℤ × Fin 4) : ℤ :=
+  zeta1 x.1 (x.2 : ℕ)
+
+/-- **The cylinder background is the folded `ζ₁`.** -/
+theorem cylEta_cylProj (x : Site 2) (hx2 : 0 ≤ x ⟨1, by norm_num⟩) :
+    cylEta (cylProj x) = zeta1 (x ⟨0, by norm_num⟩) (x ⟨1, by norm_num⟩ % 4) := by
+  unfold cylEta cylProj
+  congr 1
+  -- `(Fin.ofNat 4 n : ℕ) = n % 4`, and `ζ₁` depends only on `% 4`
+  rw [show ((Fin.ofNat 4 (x ⟨1, by norm_num⟩).toNat : Fin 4) : ℕ)
+      = (x ⟨1, by norm_num⟩).toNat % 4 from Fin.val_ofNat 4 _]
+  have h1 : ((x ⟨1, by norm_num⟩).toNat % 4 : ℤ) = x ⟨1, by norm_num⟩ % 4 := by
+    have h2 : ((x ⟨1, by norm_num⟩).toNat : ℤ) = x ⟨1, by norm_num⟩ :=
+      Int.toNat_of_nonneg hx2
+    have h3 : ((x ⟨1, by norm_num⟩).toNat % 4 : ℤ)
+        = ((x ⟨1, by norm_num⟩).toNat : ℤ) % 4 := by push_cast; ring
+    rw [h3, h2]
+  exact h1
+
+
 end Exploding

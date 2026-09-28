@@ -1048,7 +1048,6 @@ theorem aux_ce_fast (d : ℕ) (hd : 2 ≤ d) (n : ℕ) :
   rw [← hm] at hle
   exact ENat.coe_le_coe.mp hle
 
-end Exploding
 
 
 def cylNbrSum (u : ℤ × Fin 4 → ℤ) (x : ℤ × Fin 4) : ℤ :=
@@ -1086,3 +1085,10 @@ theorem cylOdo_mono_time (s0 : ℤ × Fin 4 → ℤ) {s t : ℕ} (h : s ≤ t) (
     · have hs : s = t + 1 := le_antisymm (by omega) hge
       rw [hs]
 
+
+/-- `ζ₁` is 4-periodic in its second coordinate. -/
+theorem zeta1_periodic_4 (a b : ℤ) : zeta1 a (b + 4) = zeta1 a b := by
+  have h : (b + 4) % 4 = b % 4 := by omega
+  simp only [zeta1, h]
+
+end Exploding

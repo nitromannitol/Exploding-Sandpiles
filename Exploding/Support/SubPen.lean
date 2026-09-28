@@ -658,5 +658,3 @@ theorem aux_penultimate_overlap_line_meets_cinf {d : ℕ} (Cinf : Set (Site d)) 
     push_cast
     linarith
   linarith [h_bound, h_bound2, h_ineq]
-
-

@@ -15,6 +15,7 @@ import Exploding.Support.SubSpanZero
 import Exploding.Support.SubFodo
 import Exploding.Support.SubOdo
 import Exploding.Support.CrossingTimeAux
+import Exploding.External.Schonmann
 import LatticeProb.Prob.Blocks
 
 namespace Exploding
@@ -1642,6 +1643,188 @@ theorem chemDist_le_of_walk (C : Set (Site d)) {x y : Site d} (hx : x ∈ C) (hy
     chemDist C x y ≤ (w.length : ℕ∞) := by
   rw [chemDist]
   exact sInf_le ⟨w.length, rfl, hx, hy, w, rfl⟩
+
+/-- **The layer law at dimension `d - 1`.**  The layer background `η(i,·) - 1` of a
+`{2d-2, 2d-1}`-background is Schonmann's two-point law `{2(d-1), (d-1)}` at dimension `d - 1`:
+`layer_one_site_law` says `(chipLaw (2d-1) d p).map (· - 1) = chipLaw (2d-2) (d-1) p`, and
+`2(d-1) = 2d-2`, `d-1 = d-1`. -/
+theorem schonmann_layer_law (d : ℕ) (hd : 1 ≤ d) (p : ℝ) :
+    (chipLaw (2 * (d : ℤ) - 1) (d : ℤ) p).map (fun m : ℤ => m - 1)
+      = chipLaw (2 * ((d - 1 : ℕ) : ℤ)) (((d - 1 : ℕ) : ℤ)) p := by
+  rw [layer_one_site_law d p]
+  congr 2
+  · omega
+  · omega
+
+/-- **The layer law is Schonmann's law at dimension `d`.**  The paper's two-point law at
+dimension `d + 1` is `{d + 1, 2d + 1}` (its `{d, 2d-1}` with `d` replaced by `d + 1`), and
+`layer_one_site_law` says its layer law `η(1,·) - 1` is `chipLaw (2d) d p` — exactly
+Schonmann's two-point law `{d, 2d}` at dimension `d`. -/
+theorem layer_law_is_schonmann (d : ℕ) (p : ℝ) (hp : 0 < p) (hp1 : p < 1) :
+    (productLaw (d + 1) (2 * ((d + 1 : ℕ) : ℤ) - 1) ((d + 1 : ℕ) : ℤ) p).map
+        (fun ω : Site (d + 1) → ℤ => fun w : Site d => ω (cons (1 : ℤ) w) - 1)
+      = productLaw d (2 * (d : ℤ)) (d : ℤ) p := by
+  have hchip : MeasureTheory.IsProbabilityMeasure
+      (chipLaw (2 * ((d + 1 : ℕ) : ℤ) - 1) ((d + 1 : ℕ) : ℤ) p) := by
+    refine ⟨?_⟩
+    unfold chipLaw
+    simp only [MeasureTheory.Measure.add_apply, MeasureTheory.Measure.smul_apply,
+      MeasureTheory.measure_univ, smul_eq_mul, mul_one]
+    rw [← ENNReal.ofReal_add (le_of_lt hp) (by linarith)]
+    norm_num
+  haveI := hchip
+  rw [productLaw, productLaw]
+  rw [show (fun ω : Site (d + 1) → ℤ => fun w : Site d => ω (cons (1 : ℤ) w) - 1)
+      = (fun (ζ : Site d → ℤ) => fun w : Site d => (fun m : ℤ => m - 1) (ζ w))
+        ∘ (fun ω : Site (d + 1) → ℤ => fun w : Site d => ω (cons (1 : ℤ) w)) from rfl]
+  rw [← MeasureTheory.Measure.map_map
+    (hg := measurable_pi_lambda _ fun w => (measurable_pi_apply w).sub measurable_const)
+    (g := fun (ζ : Site d → ℤ) => fun w : Site d => (fun m : ℤ => m - 1) (ζ w))
+    (hf := measurable_pi_lambda _ fun w => measurable_pi_apply (cons (1 : ℤ) w))
+    (f := fun ω : Site (d + 1) → ℤ => fun w : Site d => ω (cons (1 : ℤ) w))]
+  · rw [layer_restrict_eq d (chipLaw (2 * ((d + 1 : ℕ) : ℤ) - 1) ((d + 1 : ℕ) : ℤ) p) ?_ 1]
+    · rw [MeasureTheory.Measure.infinitePi_map_pi (μ := fun _ : Site d =>
+        chipLaw (2 * ((d + 1 : ℕ) : ℤ) - 1) ((d + 1 : ℕ) : ℤ) p)
+        (f := fun _ : Site d => (fun m : ℤ => m - 1))]
+      · congr 1
+        funext _
+        rw [layer_one_site_law (d + 1) p]
+        congr 2 <;> omega
+      · intro _
+        exact (measurable_id.sub measurable_const)
+    · refine ⟨?_⟩
+      unfold chipLaw
+      simp only [MeasureTheory.Measure.add_apply, MeasureTheory.Measure.smul_apply,
+        MeasureTheory.measure_univ, smul_eq_mul, mul_one]
+      rw [← ENNReal.ofReal_add (le_of_lt hp) (by linarith)]
+      norm_num
+
+
+/-- `spanOdo` is measurable in the background. -/
+theorem spanOdo_measurable (n : ℕ) (t : ℕ) (x : Site d) :
+    Measurable (fun η : Site d → ℤ => spanOdo n η t x) := by
+  induction t generalizing x with
+  | zero => simp only [spanOdo]; exact measurable_const
+  | succ t ih =>
+    rw [show (fun η : Site d → ℤ => spanOdo n η (t + 1) x)
+        = (fun η : Site d → ℤ => if x ∉ cube d n then 0
+            else if spanOdo n η t x = 1 then 1
+            else spanOdo n η t x +
+              (if 2 * (d : ℤ) ≤ η x + lap (spanOdo n η t) x then 1 else 0)) from rfl]
+    by_cases hx : x ∉ cube d n
+    · simp only [hx]
+      exact measurable_const
+    · simp only [hx, if_false]
+      apply Measurable.ite
+      · exact measurableSet_eq_fun (ih x) measurable_const
+      · exact measurable_const
+      · apply Measurable.add (ih x)
+        apply Measurable.ite
+        · apply measurableSet_le measurable_const
+          apply Measurable.add
+          · exact measurable_pi_apply x
+          · apply Measurable.sub
+            · apply Finset.measurable_sum
+              intro i _
+              apply Measurable.add
+              · exact ih (x + unit i)
+              · exact ih (x - unit i)
+            · apply Measurable.mul measurable_const (ih x)
+        · exact measurable_const
+        · exact measurable_const
+
+/-- **The layer spanning probability.**  Under the paper's two-point law `{d+1, 2d+1}` at
+dimension `d + 1`, each layer `η(1,·) - 1` is internally spanned at dimension `d` with
+probability `≥ 1 - c exp(-C n)`, by Schonmann's bound (`hSch`) applied to the layer law
+`layer_law_is_schonmann`. -/
+theorem layer_spanning_prob (d : ℕ) (hd : 1 ≤ d) (p : ℝ) (hp : 0 < p) (hp1 : p < 1)
+    (hSch : Exploding.External.SchonmannBootstrap) :
+    ∃ c C : ℝ, 0 < c ∧ 0 < C ∧ ∀ n : ℕ,
+      ENNReal.ofReal (1 - c * Real.exp (-(C * (n : ℝ)))) ≤
+        productLaw (d + 1) (2 * ((d + 1 : ℕ) : ℤ) - 1) ((d + 1 : ℕ) : ℤ) p
+          {η | InternallySpanned (fun w : Site d => η (cons (1 : ℤ) w) - 1) n} := by
+  obtain ⟨c, C, hc, hC, hbound⟩ := hSch d hd p hp hp1
+  refine ⟨c, C, hc, hC, fun n => ?_⟩
+  have hmeas : MeasurableSet {η : Site d → ℤ | InternallySpanned η n} := by
+    rw [show {η : Site d → ℤ | InternallySpanned η n}
+        = ⋂ (x : Site d), ⋂ (_ : x ∈ cube d n),
+            ⋃ (t : ℕ), {η : Site d → ℤ | spanOdo n η t x = 1} from by
+      ext η
+      simp only [InternallySpanned, Set.mem_setOf_eq, Set.mem_iInter, Set.mem_iUnion]]
+    refine MeasurableSet.iInter (fun x => MeasurableSet.iInter (fun _ => ?_))
+    refine MeasurableSet.iUnion (fun t => ?_)
+    exact measurableSet_eq_fun (spanOdo_measurable n t x) measurable_const
+  let f : (Site (d + 1) → ℤ) → (Site d → ℤ) := fun ω w => ω (cons (1 : ℤ) w) - 1
+  have hf : Measurable f := measurable_pi_lambda _ fun w => (measurable_pi_apply (cons (1 : ℤ) w)).sub measurable_const
+  have hmap : (productLaw (d + 1) (2 * ((d + 1 : ℕ) : ℤ) - 1) ((d + 1 : ℕ) : ℤ) p).map f
+      = productLaw d (2 * (d : ℤ)) (d : ℤ) p := layer_law_is_schonmann d p hp hp1
+  have hval := congrArg (fun μ : MeasureTheory.Measure (Site d → ℤ) =>
+    μ {η : Site d → ℤ | InternallySpanned η n}) hmap
+  rw [MeasureTheory.Measure.map_apply hf hmeas] at hval
+  rw [show {η : Site (d + 1) → ℤ | InternallySpanned (fun w : Site d => η (cons (1 : ℤ) w) - 1) n}
+      = f ⁻¹' {η : Site d → ℤ | InternallySpanned η n} from rfl]
+  rw [hval]
+  exact hbound n
+
+/-- The layer `i` of the box: the sites with first coordinate `i`. -/
+def layerSet (d : ℕ) (i : ℤ) : Set (Site (d + 1)) := {x | x 0 = i}
+
+/-- The layers are pairwise disjoint. -/
+theorem layerSet_disjoint (d : ℕ) {i j : ℤ} (hij : i ≠ j) :
+    Disjoint (layerSet d i) (layerSet d j) := by
+  rw [Set.disjoint_left]
+  intro x hxi hxj
+  exact hij (by rw [← hxi, ← hxj])
+
+/-- The layer-`i` spanning event reads only the coordinates of layer `i`. -/
+theorem layer_spanning_reads (d : ℕ) (i : ℤ) (n : ℕ) :
+    {η : Site (d + 1) → ℤ | InternallySpanned (fun w : Site d => η (cons i w) - 1) n}
+      = (fun ω : Site (d + 1) → ℤ => (layerSet d i).restrict ω) ⁻¹'
+          {g : ↥(layerSet d i) → ℤ | InternallySpanned (fun w : Site d => g ⟨cons i w, rfl⟩ - 1) n} := by
+  ext η
+  simp only [Set.mem_preimage, Set.mem_setOf_eq]
+  have hfun : (fun w : Site d => η (cons i w) - 1)
+      = (fun w : Site d => (layerSet d i).restrict η ⟨cons i w, rfl⟩ - 1) := by
+    funext w
+    rfl
+  rw [hfun]
+
+/-- **The layers are independent.**  The layer-`i` spanning events are independent under the
+product law, because each reads only its own layer and the layers are disjoint. -/
+theorem layer_spanning_iIndepSet (d : ℕ) (p : ℝ) (hp : 0 < p) (hp1 : p < 1) (n : ℕ) :
+    ProbabilityTheory.iIndepSet
+      (fun i : ℤ => {η : Site (d + 1) → ℤ |
+        InternallySpanned (fun w : Site d => η (cons i w) - 1) n})
+      (productLaw (d + 1) (2 * ((d + 1 : ℕ) : ℤ) - 1) ((d + 1 : ℕ) : ℤ) p) := by
+  have hchip : MeasureTheory.IsProbabilityMeasure
+      (chipLaw (2 * ((d + 1 : ℕ) : ℤ) - 1) ((d + 1 : ℕ) : ℤ) p) := by
+    refine ⟨?_⟩
+    unfold chipLaw
+    simp only [MeasureTheory.Measure.add_apply, MeasureTheory.Measure.smul_apply,
+      MeasureTheory.measure_univ, smul_eq_mul, mul_one]
+    rw [← ENNReal.ofReal_add (le_of_lt hp) (by linarith)]
+    norm_num
+  rw [productLaw]
+  refine iIndepSet_of_pairwise_disjoint_int
+    (chipLaw (2 * ((d + 1 : ℕ) : ℤ) - 1) ((d + 1 : ℕ) : ℤ) p) hchip
+    (layerSet d) (fun i j hij => layerSet_disjoint d hij) _ ?_
+  intro i
+  rw [layer_spanning_reads]
+  refine MeasurableSet.preimage ?_ (measurable_iff_comap_le.mpr le_rfl)
+  rw [show {g : ↥(layerSet d i) → ℤ |
+        InternallySpanned (fun w : Site d => g ⟨cons i w, rfl⟩ - 1) n}
+      = ⋂ (x : Site d), ⋂ (_ : x ∈ cube d n),
+          ⋃ (t : ℕ), {g : ↥(layerSet d i) → ℤ |
+            spanOdo n (fun w : Site d => g ⟨cons i w, rfl⟩ - 1) t x = 1} from by
+    ext g
+    simp only [InternallySpanned, Set.mem_setOf_eq, Set.mem_iInter, Set.mem_iUnion]]
+  refine MeasurableSet.iInter (fun x => MeasurableSet.iInter (fun _ => ?_))
+  refine MeasurableSet.iUnion (fun t => ?_)
+  exact measurableSet_eq_fun
+    ((spanOdo_measurable n t x).comp
+      (measurable_pi_lambda _ fun w => (measurable_pi_apply (⟨cons i w, rfl⟩ : ↥(layerSet d i))).sub
+        measurable_const))
+    measurable_const
 
 end ReductionShift
 

@@ -272,8 +272,54 @@ theorem Exploding.Frozen.last_penultimate_cluster (d : ℕ) (hd : 2 ≤ d) (p : 
         · have h5 : (x j - 1) / (max k0 1 : ℤ) ≤ |x j| + 1 := h3.2
           have h6 : |x j| + 1 ≤ (n' : ℤ) := by linarith [hbase' j]
           linarith
-    -- The side bound's three inputs: `hlast` from the transfer above, `n0` from
-    -- `hcomp`, and `hcov_zc` from the sibling node.
+    -- The side bound's inputs: `hlast` from the transfer above, `n0` from `hcomp`,
+    -- and the cube-index exclusion, which holds in the two long cases below.
     have hlast : ∃ n : ℕ, 1 ≤ n ∧ ¬ WaveStabilizable η n x := hlast_all x
     have hn0' : n0c ≤ n' := le_trans hn0c hn'_ge
+    -- the neighbour's coordinate difference
+    have hd1 : y i ≤ y' i + 1 := by
+      obtain ⟨j, hj | hj⟩ := hy'adj
+      · have h1 : y i = y' i + (unit j) i := by
+          rw [hj]; simp only [Pi.add_apply]
+        have h2 : (unit j) i ≤ 1 := by
+          by_cases h : j = i
+          · subst h; simp [LatticeProb.unit]
+          · simp [LatticeProb.unit, h]
+        omega
+      · have h1 : y i = y' i - (unit j) i := by
+          have h3 := congrFun hj i
+          simp only [Pi.add_apply] at h3
+          omega
+        have h2 : (unit j) i ≥ -1 := by
+          by_cases h : j = i
+          · subst h; simp [LatticeProb.unit]
+          · simp [LatticeProb.unit, h]
+        omega
+    have hd2 : y' i ≤ y i + 1 := by
+      obtain ⟨j, hj | hj⟩ := hy'adj
+      · have h1 : y i = y' i + (unit j) i := by
+          have h3 := congrFun hj i
+          simp only [Pi.add_apply] at h3
+          omega
+        have h2 : (unit j) i ≥ -1 := by
+          by_cases h : j = i
+          · subst h; simp [LatticeProb.unit]
+          · simp [LatticeProb.unit, h]
+        omega
+      · have h1 : y i = y' i - (unit j) i := by
+          have h3 := congrFun hj i
+          simp only [Pi.add_apply] at h3
+          omega
+        have h2 : (unit j) i ≤ 1 := by
+          by_cases h : j = i
+          · subst h; simp [LatticeProb.unit]
+          · simp [LatticeProb.unit, h]
+        omega
+    -- The two cases of the neighbour's coordinate difference:
+    --   `|y i - x i| ≤ (max k0 1) + 1` is absorbed into the threshold `n0`
+    --   (the frozen statement's `γ := 5/2 + 1` exceeds `(max k0 1) + 1` once
+    --   `Real.log n ≥ 2`, which the threshold already gives);
+    --   otherwise the run contains `x`'s own cube index, so the pigeonhole
+    --   excludes it and the side bound applies with `j0 := (x i - 1)/k`.
+    -- Both are recorded in FINDINGS.md updates 35-36.
     sorry

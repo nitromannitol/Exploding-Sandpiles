@@ -1011,37 +1011,6 @@ theorem box_line_of_cube {d : ℕ} (k : ℕ) (hk : 1 ≤ k) (R : Set (Site d)) (
       · rw [hy.2 l hl]
         exact ⟨le_refl 1, hk1⟩)
 
-/-- The `n`-wave is bounded by its index `n`. -/
-theorem wave_le_index {d : ℕ} (η : Site d → ℤ) (hlow : ∀ x, 0 ≤ η x)
-    (hhigh : ∀ x, η x ≤ 2 * (d : ℤ) - 1) (n : ℕ) (z : Site d) (t : ℕ) (x : Site d) :
-    wave η n z t x ≤ (n : ℤ) := by
-  induction t generalizing x with
-  | zero =>
-    rw [wave_zero]
-    by_cases h : x = z <;> simp [h]
-  | succ t ih =>
-    by_cases h : x = z
-    · rw [h, wave_at_centre]
-    · rw [wave_of_ne η n z x t h]
-      have hsum : nbrSumZ (wave η n z t) x ≤ 2 * (d : ℤ) * (n : ℤ) := by
-        have h1 := nbrSumZ_mono (fun y => ih y) x
-        have h2 : nbrSumZ (fun _ : Site d => (n : ℤ)) x = 2 * (d : ℤ) * (n : ℤ) := by
-          simp only [nbrSumZ, Finset.sum_const, Finset.card_univ, Fintype.card_fin,
-            nsmul_eq_mul]
-          ring
-        rwa [h2] at h1
-      have hlt : nbrSumZ (wave η n z t) x + η x < ((n : ℤ) + 1) * (2 * (d : ℤ)) := by
-        nlinarith [hsum, hhigh x]
-      rcases Nat.eq_zero_or_pos d with hd | hd
-      · subst hd
-        simp only [Nat.cast_zero, mul_zero] at hlt ⊢
-        omega
-      · have hd0 : (0 : ℤ) < 2 * (d : ℤ) := by
-          have : (0 : ℤ) < (d : ℤ) := by exact_mod_cast hd
-          linarith
-        rw [Int.ediv_le_iff_le_mul hd0]
-        linarith
-
 /-- The terminal odometer of a stabilizable wave vanishes far from its centre. -/
 theorem waveTerminal_eq_zero_far {d : ℕ} (η : Site d → ℤ) (hlow : ∀ x, 0 ≤ η x)
     (hhigh : ∀ x, η x ≤ 2 * (d : ℤ) - 1) (n : ℕ) (z : Site d)

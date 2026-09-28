@@ -1103,6 +1103,26 @@ theorem fodo_topples_box_of_layers (n : ℕ) (hn : 1 ≤ n) (η : Site (d + 1) �
         _ = n ^ (d + 1) := by ring)
   exact le_trans hlayer' hmono
 
+/-- **The box-crossing core.**  If every layer of the box is internally spanned, the frozen
+odometer seeded on the low face topples the whole box by time `n ^ (d + 1)`. -/
+theorem box_crossing_core (n : ℕ) (hn : 1 ≤ n) (η : Site (d + 1) → ℤ)
+    (hspan : ∀ i ∈ Finset.Icc 1 n,
+      InternallySpanned (fun w : Site d => η (cons (i : ℤ) w) - 1) n) :
+    CrossedInDirection η (fun _ : Fin (d + 1) => n) (0 : Site (d + 1))
+      ⟨0, by omega⟩ false := by
+  intro t ht x hx
+  rw [rboxShift_zero_eq_cube] at hx
+  have hbox := fodo_topples_box_of_layers n hn η hspan x hx
+  have hmono := fodo_mono_time' ((rboxShift (fun _ : Fin (d+1) => n)
+    (0 : Site (d+1)))ᶜ) η
+    (Set.indicator (faceOut (fun _ : Fin (d+1) => n) (0 : Site (d+1))
+      ⟨0, by omega⟩ false) (fun _ => (1 : ℤ))) (n ^ (d + 1)) t x (by
+      have hprod : (∏ l : Fin (d + 1), n) = n ^ (d + 1) := by
+        simp [Finset.prod_const, Finset.card_univ]
+      rw [hprod] at ht
+      exact ht)
+  exact le_trans hbox hmono
+
 end ReductionShift
 
 end Exploding

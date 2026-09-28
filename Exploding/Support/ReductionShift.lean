@@ -1606,6 +1606,32 @@ theorem renorm_iid_field_indep (p : ℝ) (hp : 0 < p) (hp1 : p < 1) (k : ℕ) (h
   · exact fun i j hij => blockO_disjoint k hk i j hij
   · exact fun i => goodAt_measurableSet_blockO k i
 
+/-- **The crossing-time-to-toppling-time conversion (OPEN-1's core).**  If the cube `Q_k` is
+good, then for every direction `i` and every starting point `z` on its closure, the cube has
+toppled by time `k^d`: there is `t ≤ k^d` with the crossing odometer `1` on the whole cube.
+This is `GoodCube`'s definition unwound — `crossingTime ≤ k^d` says the defining set has an
+element `≤ k^d`, and that element is the toppling time. -/
+theorem exists_crossOdo_eq_one_of_goodCube (η : Site d → ℤ) (k : ℕ)
+    (hgood : GoodCube η k) (i : Fin d) {z : Site d} (hz : z ∈ closureN (cube d k)) :
+    ∃ t : ℕ, t ≤ k ^ d ∧ ∀ x ∈ cube d k, crossOdo η k i z t x = 1 := by
+  have hle := hgood i z hz
+  rw [crossingTime] at hle
+  by_contra hcon
+  push Not at hcon
+  have hlt : ((k ^ d : ℕ) : ℕ∞) < crossingTime η k i z := by
+    rw [crossingTime]
+    rw [lt_sInf_iff]
+    refine ⟨((k ^ d + 1 : ℕ) : ℕ∞), ?_, ?_⟩
+    · exact_mod_cast Nat.lt_succ_self (k ^ d)
+    · intro t ht
+      obtain ⟨n, rfl, hn, hx'⟩ := ht
+      by_cases hn' : n ≤ k ^ d
+      · obtain ⟨y, hy, hne⟩ := hcon n hn'
+        exact absurd (hx' y hy) hne
+      · have : (k ^ d : ℕ) < n := by omega
+        exact_mod_cast this
+  exact absurd hle (not_le.mpr hlt)
+
 end ReductionShift
 
 end Exploding

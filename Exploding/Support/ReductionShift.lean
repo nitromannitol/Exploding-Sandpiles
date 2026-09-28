@@ -1123,6 +1123,94 @@ theorem box_crossing_core (n : ℕ) (hn : 1 ≤ n) (η : Site (d + 1) → ℤ)
       exact ht)
   exact le_trans hbox hmono
 
+/-- The restriction of the product measure to a layer is again a product measure. -/
+theorem layer_restrict_eq (d : ℕ) (ν : MeasureTheory.Measure ℤ)
+    (hν : MeasureTheory.IsProbabilityMeasure ν) (i : ℤ) :
+    (MeasureTheory.Measure.infinitePi fun _ : Site (d + 1) => ν).map
+        (fun η : Site (d + 1) → ℤ => fun w : Site d => η (cons i w))
+      = MeasureTheory.Measure.infinitePi fun _ : Site d => ν := by
+  have hinj : Function.Injective (fun w : Site d => cons i w) := by
+    intro a b h
+    funext l
+    have := congrFun h l.succ
+    simpa [cons] using this
+  haveI := hν
+  have h := MeasureTheory.Measure.map_infinitePi_infinitePi_of_inj
+    (P := fun _ : Site (d + 1) => ν) (f := fun w : Site d => cons i w) hinj
+  simpa using h
+
+/-- The one-site law of the layer, for the two-point law `chipLaw (2d-1) d p₀`: shifting
+down by one gives `chipLaw (2d-2) (d-1) p₀`. -/
+theorem layer_one_site_law (d : ℕ) (p : ℝ) :
+    (chipLaw (2 * (d : ℤ) - 1) (d : ℤ) p).map (fun m : ℤ => m - 1)
+      = chipLaw (2 * (d : ℤ) - 2) ((d : ℤ) - 1) p := by
+  rw [chipLaw, chipLaw]
+  ext s hs
+  rw [MeasureTheory.Measure.map_apply (by fun_prop : Measurable (fun m : ℤ => m - 1)) hs]
+  rw [MeasureTheory.Measure.add_apply, MeasureTheory.Measure.smul_apply,
+    MeasureTheory.Measure.smul_apply]
+  have hpre : (fun m : ℤ => m - 1) ⁻¹' s = (fun m : ℤ => m + 1) '' s := by
+    ext m
+    simp only [Set.mem_preimage, Set.mem_image]
+    constructor
+    · intro hm
+      exact ⟨m - 1, hm, by ring⟩
+    · rintro ⟨y, hy, rfl⟩
+      simpa using hy
+  rw [hpre]
+  rw [MeasureTheory.Measure.add_apply, MeasureTheory.Measure.smul_apply,
+    MeasureTheory.Measure.smul_apply]
+  simp only [MeasureTheory.Measure.dirac_apply]
+  by_cases h1 : (2 * (d : ℤ) - 2) ∈ s <;> by_cases h2 : ((d : ℤ) - 1) ∈ s
+  · have h3 : (2 * (d : ℤ) - 1) ∈ (fun m : ℤ => m + 1) '' s :=
+      ⟨2 * (d : ℤ) - 2, h1, by ring⟩
+    have h4 : (d : ℤ) ∈ (fun m : ℤ => m + 1) '' s :=
+      ⟨(d : ℤ) - 1, h2, by ring⟩
+    simp only [Set.indicator_of_mem h3, Set.indicator_of_mem h4,
+      Set.indicator_of_mem h1, Set.indicator_of_mem h2, Pi.one_apply]
+  · have h3 : (2 * (d : ℤ) - 1) ∈ (fun m : ℤ => m + 1) '' s :=
+      ⟨2 * (d : ℤ) - 2, h1, by ring⟩
+    have h4 : (d : ℤ) ∉ (fun m : ℤ => m + 1) '' s := by
+      rintro ⟨y, hy, hyeq⟩
+      exact h2 (by
+        have h5 : y = (d : ℤ) - 1 := by
+          simp only at hyeq
+          omega
+        rw [h5] at hy
+        exact hy)
+    simp only [Set.indicator_of_mem h3, Set.indicator_of_notMem h4,
+      Set.indicator_of_mem h1, Set.indicator_of_notMem h2, Pi.one_apply]
+  · have h3 : (2 * (d : ℤ) - 1) ∉ (fun m : ℤ => m + 1) '' s := by
+      rintro ⟨y, hy, hyeq⟩
+      exact h1 (by
+        have h5 : y = 2 * (d : ℤ) - 2 := by
+          simp only at hyeq
+          omega
+        rw [h5] at hy
+        exact hy)
+    have h4 : (d : ℤ) ∈ (fun m : ℤ => m + 1) '' s :=
+      ⟨(d : ℤ) - 1, h2, by ring⟩
+    simp only [Set.indicator_of_notMem h3, Set.indicator_of_mem h4,
+      Set.indicator_of_notMem h1, Set.indicator_of_mem h2, Pi.one_apply]
+  · have h3 : (2 * (d : ℤ) - 1) ∉ (fun m : ℤ => m + 1) '' s := by
+      rintro ⟨y, hy, hyeq⟩
+      exact h1 (by
+        have h5 : y = 2 * (d : ℤ) - 2 := by
+          simp only at hyeq
+          omega
+        rw [h5] at hy
+        exact hy)
+    have h4 : (d : ℤ) ∉ (fun m : ℤ => m + 1) '' s := by
+      rintro ⟨y, hy, hyeq⟩
+      exact h2 (by
+        have h5 : y = (d : ℤ) - 1 := by
+          simp only at hyeq
+          omega
+        rw [h5] at hy
+        exact hy)
+    simp only [Set.indicator_of_notMem h3, Set.indicator_of_notMem h4,
+      Set.indicator_of_notMem h1, Set.indicator_of_notMem h2]
+
 end ReductionShift
 
 end Exploding

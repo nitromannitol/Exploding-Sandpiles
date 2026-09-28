@@ -959,3 +959,21 @@ theorem pen_box_pos {d : ℕ} (hd : 2 ≤ d) (η : Site d → ℤ)
     br_finite _ (Set.Finite.image _ (Set.finite_Iic r))
   exact ⟨r, path, h0, hr, hadj, hfin,
     aux_penultimate_path_box_closure hd η hlow hhigh zc r path hadj hpos hfin⟩
+
+/-- **A box containing a cube contains a line of that cube.**  The line is read in
+the cube's local coordinates: `line d k dir z + k•i`. -/
+theorem box_line_of_cube {d : ℕ} (k : ℕ) (hk : 1 ≤ k) (R : Set (Site d)) (m M : Site d)
+    (_hR : R = {x | ∀ i, m i ≤ x i ∧ x i ≤ M i})
+    (dir : Fin d) (i : Site d)
+    (hsub : ∀ x ∈ cube d k, x + (k : ℤ) • i ∈ R) :
+    ∃ z : Site d, z + (k : ℤ) • i ∈ R ∧
+      ∀ y ∈ line d k dir z, y + (k : ℤ) • i ∈ R := by
+  have hk1 : (1 : ℤ) ≤ (k : ℤ) := by exact_mod_cast hk
+  refine ⟨fun _ => (1 : ℤ), ?_, ?_⟩
+  · exact hsub _ (fun l => ⟨le_refl 1, hk1⟩)
+  · intro y hy
+    exact hsub _ (fun l => by
+      by_cases hl : l = dir
+      · rw [hl]; exact hy.1
+      · rw [hy.2 l hl]
+        exact ⟨le_refl 1, hk1⟩)

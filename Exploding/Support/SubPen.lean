@@ -751,3 +751,80 @@ theorem key_down (k : ℤ) (hk : 0 < k) (a : ℤ) :
       · omega
     rw [h8]
     ring
+
+/-- One micro-step changes the macro index by at most one edge. -/
+theorem macroIdx_adj {d : ℕ} (k : ℕ) (hk : 1 ≤ k) (x : Site d) (i : Fin d) :
+    (macroIdx k (x + unit i) = macroIdx k x ∨
+      (lattice d).Adj (macroIdx k (x + unit i)) (macroIdx k x)) ∧
+    (macroIdx k (x - unit i) = macroIdx k x ∨
+      (lattice d).Adj (macroIdx k (x - unit i)) (macroIdx k x)) := by
+  have hk' : (0 : ℤ) < (k : ℤ) := Nat.cast_pos.mpr hk
+  have hcoord : ∀ (y : Site d) (j : Fin d), j ≠ i → y j = x j →
+      macroIdx k y j = macroIdx k x j := by
+    intro y j hj h
+    simp only [macroIdx, h]
+  have hplus : (x + unit i) i = x i + 1 := by
+    simp only [Pi.add_apply, LatticeProb.unit, Pi.single_eq_same]
+  have hminus : (x - unit i) i = x i - 1 := by
+    simp only [Pi.sub_apply, LatticeProb.unit, Pi.single_eq_same]
+  constructor
+  · by_cases h : (macroIdx k (x + unit i)) i = (macroIdx k x) i + 1
+    · right
+      refine ⟨i, Or.inr ?_⟩
+      funext j
+      by_cases hj : j = i
+      · rw [hj]
+        simp only [Pi.add_apply, LatticeProb.unit, Pi.single_eq_same]
+        exact h
+      · have h1 : (x + unit i) j = x j := by
+          simp only [Pi.add_apply, LatticeProb.unit]
+          rw [Pi.single_eq_of_ne hj]
+          simp
+        rw [hcoord _ j hj h1]
+        have h2 : (LatticeProb.unit i : Site d) j = 0 := by
+          simp only [LatticeProb.unit, Pi.single_eq_of_ne hj]
+        simp only [Pi.add_apply, h2, add_zero]
+    · left
+      funext j
+      by_cases hj : j = i
+      · rw [hj]
+        simp only [macroIdx, hplus] at h ⊢
+        rcases key_up (k : ℤ) hk' (x i) with hk1 | hk1
+        · exact hk1
+        · exact absurd hk1 h
+      · have h1 : (x + unit i) j = x j := by
+          simp only [Pi.add_apply, LatticeProb.unit]
+          rw [Pi.single_eq_of_ne hj]
+          simp
+        rw [hcoord _ j hj h1]
+  · by_cases h : (macroIdx k (x - unit i)) i = (macroIdx k x) i - 1
+    · right
+      refine ⟨i, Or.inl ?_⟩
+      funext j
+      by_cases hj : j = i
+      · rw [hj]
+        simp only [macroIdx, Pi.add_apply, Pi.sub_apply, LatticeProb.unit,
+          Pi.single_eq_same] at h ⊢
+        omega
+      · have h1 : (x - unit i) j = x j := by
+          simp only [Pi.sub_apply, LatticeProb.unit]
+          rw [Pi.single_eq_of_ne hj]
+          simp
+        have h2 : (LatticeProb.unit i : Site d) j = 0 := by
+          simp only [LatticeProb.unit, Pi.single_eq_of_ne hj]
+        have h3 : macroIdx k (x - unit i) j = macroIdx k x j := hcoord _ j hj h1
+        simp only [Pi.add_apply, h2, add_zero]
+        exact h3.symm
+    · left
+      funext j
+      by_cases hj : j = i
+      · rw [hj]
+        simp only [macroIdx, hminus] at h ⊢
+        rcases key_down (k : ℤ) hk' (x i) with hk1 | hk1
+        · exact hk1
+        · exact absurd hk1 h
+      · have h1 : (x - unit i) j = x j := by
+          simp only [Pi.sub_apply, LatticeProb.unit]
+          rw [Pi.single_eq_of_ne hj]
+          simp
+        rw [hcoord _ j hj h1]

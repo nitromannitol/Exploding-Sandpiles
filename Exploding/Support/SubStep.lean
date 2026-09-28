@@ -67,28 +67,28 @@ theorem wave_centre_eq (η : Site d → ℤ) (N : ℕ) (zc : Site d) (t : ℕ) (
 is already fired. -/
 theorem crossOdo_le_wave {d : ℕ} (hd0 : (0 : ℤ) < 2 * (d : ℤ))
     (η : Site d → ℤ) (hlow : ∀ x, 0 ≤ η x) (hhigh : ∀ x, η x ≤ 2 * (d : ℤ) - 1)
-    (N k : ℕ) (hN : 2 ≤ N) (j : Site d) (dir' : Fin d) (z : Site d) (t : ℕ)
-    (hseed : ∀ y ∈ line d k dir' z, 0 < wave η N (0 : Site d) t (y + (k : ℤ) • j)) :
+    (N k : ℕ) (hN : 2 ≤ N) (zc j : Site d) (dir' : Fin d) (z : Site d) (t : ℕ)
+    (hseed : ∀ y ∈ line d k dir' z, 0 < wave η N zc t (y + (k : ℤ) • j)) :
     ∀ s y, crossOdo (fun x => η (x + (k : ℤ) • j)) k dir' z s y ≤
-      wave η N (0 : Site d) (t + s) (y + (k : ℤ) • j) := by
+      wave η N zc (t + s) (y + (k : ℤ) • j) := by
   classical
-  have hseed1 : ∀ y ∈ line d k dir' z, (1 : ℤ) ≤ wave η N (0 : Site d) t (y + (k : ℤ) • j) :=
+  have hseed1 : ∀ y ∈ line d k dir' z, (1 : ℤ) ≤ wave η N zc t (y + (k : ℤ) • j) :=
     fun y hy => hseed y hy
   have hseed0 : ∀ y, (if y ∈ line d k dir' z then (1 : ℤ) else 0) ≤
-      wave η N (0 : Site d) t (y + (k : ℤ) • j) := by
+      wave η N zc t (y + (k : ℤ) • j) := by
     intro y
     by_cases hy : y ∈ line d k dir' z
     · rw [if_pos hy]; exact hseed1 y hy
-    · rw [if_neg hy]; exact wave_nonneg η hlow N (0 : Site d) t _
+    · rw [if_neg hy]; exact wave_nonneg η hlow N zc t _
   have hseed0' : ∀ y, (0 : ℤ) ≤ (if y ∈ line d k dir' z then (1 : ℤ) else 0) := by
     intro y
     by_cases hy : y ∈ line d k dir' z <;> simp [hy]
   have hseed1' : ∀ y, (if y ∈ line d k dir' z then (1 : ℤ) else 0) ≤ 1 := by
     intro y
     by_cases hy : y ∈ line d k dir' z <;> simp [hy]
-  have hmono : ∀ s y, wave η N (0 : Site d) t (y + (k : ℤ) • j) ≤
-      wave η N (0 : Site d) (t + s) (y + (k : ℤ) • j) :=
-    fun s y => wave_mono_time η hlow hd0 N (0 : Site d) (Nat.le_add_right t s) _
+  have hmono : ∀ s y, wave η N zc t (y + (k : ℤ) • j) ≤
+      wave η N zc (t + s) (y + (k : ℤ) • j) :=
+    fun s y => wave_mono_time η hlow hd0 N zc (Nat.le_add_right t s) _
   have hcap : ∀ s y, crossOdo (fun x => η (x + (k : ℤ) • j)) k dir' z s y ≤ 1 :=
     fun s y => fodo_le_one _ _ _ (fun x => hhigh _) hseed1' hseed0' s y
   intro s
@@ -107,29 +107,29 @@ theorem crossOdo_le_wave {d : ℕ} (hd0 : (0 : ℤ) < 2 * (d : ℤ))
       have hyc : y ∈ cube d k := by
         by_contra h
         exact hy (Or.inl h)
-      have hmono' : wave η N (0 : Site d) (t + s) (y + (k : ℤ) • j) ≤
-          wave η N (0 : Site d) (t + s + 1) (y + (k : ℤ) • j) :=
-        wave_mono_t η hlow hd0 N (0 : Site d) (t + s) (y + (k : ℤ) • j)
+      have hmono' : wave η N zc (t + s) (y + (k : ℤ) • j) ≤
+          wave η N zc (t + s + 1) (y + (k : ℤ) • j) :=
+        wave_mono_t η hlow hd0 N zc (t + s) (y + (k : ℤ) • j)
       by_cases hc : 2 * (d : ℤ) ≤ fconf ((cube d k)ᶜ ∪ line d k dir' z)
           (fun x => η (x + (k : ℤ) • j)) (fun x => if x ∈ line d k dir' z then 1 else 0) s y
       · rw [if_pos hc]
         have hsum : nbrSumZ (crossOdo (fun x => η (x + (k : ℤ) • j)) k dir' z s) y ≤
-            nbrSumZ (wave η N (0 : Site d) (t + s)) (y + (k : ℤ) • j) := by
+            nbrSumZ (wave η N zc (t + s)) (y + (k : ℤ) • j) := by
           have h1 := nbrSumZ_mono (fun w => ih w) y
           rwa [nbrSumZ_shift] at h1
         have hc' : 2 * (d : ℤ) ≤ η (y + (k : ℤ) • j) +
             lap (crossOdo (fun x => η (x + (k : ℤ) • j)) k dir' z s) y := hc
         rw [lap] at hc'
         have hle1 : crossOdo (fun x => η (x + (k : ℤ) • j)) k dir' z s y ≤
-            wave η N (0 : Site d) (t + s) (y + (k : ℤ) • j) := ih y
+            wave η N zc (t + s) (y + (k : ℤ) • j) := ih y
         rw [show t + (s + 1) = t + s + 1 from by omega]
-        by_cases hz : y + (k : ℤ) • j = 0
+        by_cases hz : y + (k : ℤ) • j = zc
         · have hN2 : (2 : ℤ) ≤ (N : ℤ) := by exact_mod_cast hN
           have hc1 := hcap s y
           simp only [crossOdo] at hc1 ⊢
           rw [hz, wave_at_centre]
           linarith
-        · rw [wave_of_ne η N (0 : Site d) (y + (k : ℤ) • j) (t + s) hz]
+        · rw [wave_of_ne η N zc (y + (k : ℤ) • j) (t + s) hz]
           rw [Int.le_ediv_iff_mul_le (by positivity)]
           simp only [crossOdo] at hsum hc' hle1 ⊢
           nlinarith [hsum, hc', hle1]

@@ -46,4 +46,4 @@ theorem Exploding.Frozen.finite_exploding (d : ℕ) (hd : 2 ≤ d) (p : ℝ) (hp
     rw [Fintype.card_fin] at hcard
     omega
   exact finite_exploding_step hd η (fun x => by have := (hbounds x).1; linarith)
-    (fun x => (hbounds x).2) N k hN hk a b hgood dir hdir dir' hne s hs
+    (fun x => (hbounds x).2) N k hN hk (0 : Site d) a b hgood dir hdir dir' hne s hs

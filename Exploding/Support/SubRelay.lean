@@ -8,7 +8,7 @@ import Exploding.Support.Vocab
 
 namespace Exploding
 
-open LatticeProb
+open LatticeProb Filter
 
 variable {d : ℕ}
 
@@ -950,5 +950,102 @@ theorem aux_ce_arrival_finite_of_pos (d : ℕ) (hd : 2 ≤ d) (n : ℕ) (m : ℕ
     (hpos : 0 < podo (fun x => ceEta d x + 3 * dirac (0 : Site d) x) m ((n : ℤ) • e1 d)) :
     arrival (ceEta d) ((n : ℤ) • e1 d) ≠ ⊤ :=
   ne_top_of_le_ne_top (ENat.coe_ne_top m) (aux_ce_arrival_le d hd n m hm1 hpos)
+
+theorem aux_mnorm_nsmul_e1_ge (d : ℕ) (hd : 1 ≤ d) (n : ℕ) :
+    (n : ℤ) ≤ mnorm (((n : ℤ) • e1 d : Site d)) := by
+  have hterm := Finset.single_le_sum
+    (f := fun j : Fin d => |(((n : ℤ) • e1 d : Site d) j)|)
+    (fun j _ => abs_nonneg _) (Finset.mem_univ ⟨0, hd⟩)
+  have hval : (((n : ℤ) • e1 d : Site d) ⟨0, hd⟩) = (n : ℤ) := by
+    simp [e1, Pi.smul_apply]
+  rw [hval, abs_of_nonneg (Nat.cast_nonneg n)] at hterm
+  exact hterm
+
+theorem aux_podo_mnorm_le (d : ℕ) (_hd : 2 ≤ d) :
+    ∀ t : ℕ, ∀ x : Site d,
+      0 < podo (explodingPile (ceEta d)) t x → mnorm x + 1 ≤ t := by
+  intro t
+  induction t with
+  | zero => intro x h; simp at h
+  | succ t ih =>
+    intro x hx
+    rw [podo_succ] at hx
+    by_cases h0 : 0 < podo (explodingPile (ceEta d)) t x
+    · have := ih x h0
+      omega
+    · have hge : 2 * d ≤ pconf (explodingPile (ceEta d)) t x := by
+        by_cases hc : 2 * d ≤ pconf (explodingPile (ceEta d)) t x
+        · exact hc
+        · simp [hc] at hx
+          omega
+      have hnng : 0 ≤ podo (explodingPile (ceEta d)) t x := aux_podo_nonneg _ t x
+      have hz : podo (explodingPile (ceEta d)) t x = 0 := by omega
+      have hpe : pconf (explodingPile (ceEta d)) t x =
+          explodingPile (ceEta d) x + nbrSumZ (podo (explodingPile (ceEta d)) t) x := by
+        simp only [pconf, lap_eq]
+        rw [hz]
+        ring
+      by_cases hx0 : x = 0
+      · subst hx0
+        have hm0 : mnorm (0 : Site d) = 0 := by simp [mnorm]
+        omega
+      · have hSx : explodingPile (ceEta d) x = ceEta d x := by
+          simp only [explodingPile]
+          rw [dirac_of_ne hx0, mul_zero, add_zero]
+        have hbd := aux_ceEta_bounds d x
+        have hnbr : 0 < nbrSumZ (podo (explodingPile (ceEta d)) t) x := by
+          have h2 : 2 * d ≤ ceEta d x + nbrSumZ (podo (explodingPile (ceEta d)) t) x := by
+            calc 2 * d ≤ pconf (explodingPile (ceEta d)) t x := hge
+              _ = explodingPile (ceEta d) x
+                    + nbrSumZ (podo (explodingPile (ceEta d)) t) x := hpe
+              _ = ceEta d x + nbrSumZ (podo (explodingPile (ceEta d)) t) x := by rw [hSx]
+          omega
+        rcases aux_nbrSumZ_pos_neighbour d (podo (explodingPile (ceEta d)) t) x hnbr with
+          ⟨i, hi⟩ | ⟨i, hi⟩
+        · have hrec := ih (x + unit i) hi
+          have hmm := aux_mnorm_le_add_unit d x i
+          omega
+        · have hrec := ih (x - unit i) hi
+          have hmm := aux_mnorm_le_sub_unit d x i
+          omega
+
+theorem aux_arrival_lower (d : ℕ) (hd : 2 ≤ d) (n : ℕ) :
+    ((n + 1 : ℕ) : ℕ∞) ≤ arrival (ceEta d) ((n : ℤ) • e1 d) := by
+  rw [aux_arrival_unfold]
+  refine le_sInf ?_
+  rintro t ⟨k, rfl, hk1, hk⟩
+  have hm : mnorm (((n : ℤ) • e1 d : Site d)) + 1 ≤ k :=
+    aux_podo_mnorm_le d hd k ((n : ℤ) • e1 d) hk
+  have hmn : (n : ℤ) ≤ mnorm (((n : ℤ) • e1 d : Site d)) :=
+    aux_mnorm_nsmul_e1_ge d (by omega) n
+  refine ENat.coe_le_coe.mpr ?_
+  omega
+
+theorem aux_ce_speed (d : ℕ) (hd : 2 ≤ d) (n m : ℕ)
+    (h : arrival (ceEta d) ((n : ℤ) • e1 d) = (m : ℕ∞)) : n ≤ m := by
+  have key := aux_arrival_lower d hd n
+  rw [h] at key
+  have hm := ENat.coe_le_coe.mp key
+  omega
+
+/-- Step 1 upper bound (exploding.tex:1386-1389), medium: `T((4n+1)e₁) ≤ 4n+4`.
+The row `x₁ = 1` is all `2d-1`; the origin fires at `t=1`, `e₂` at `t=2`, the
+row carries the firing one step per unit time, reaching `e₂+(4n+1)e₁` at
+`4n+3`, then `(4n+1)e₁` at `4n+4`.  Explicit induction on `n` along the row.
+For `d ≥ 3` the extra coordinates are held at `0`; the argument is identical. -/
+theorem aux_ce_fast (d : ℕ) (hd : 2 ≤ d) (n : ℕ) :
+    ∃ m : ℕ, arrival (ceEta d) (((4 * n + 1 : ℕ) : ℤ) • e1 d) = (m : ℕ∞) ∧ m ≤ 4 * n + 4 := by
+  have hmod : ((4 * n + 1 : ℕ) : ℤ) % 4 = 1 := by omega
+  have hpos := aux_ce_row0_lands d hd ((4 * n + 1 : ℕ) : ℤ) (Or.inl hmod) (by positivity)
+  have htoNat : (((4 * n + 1 : ℕ) : ℤ)).toNat = 4 * n + 1 := by omega
+  rw [htoNat] at hpos
+  have harg : 4 * n + 1 + 3 = 4 * n + 4 := by omega
+  rw [harg] at hpos
+  have hle := aux_ce_arrival_le d hd (4 * n + 1) (4 * n + 4) (by omega) hpos
+  have hne := aux_ce_arrival_finite_of_pos d hd (4 * n + 1) (4 * n + 4) (by omega) hpos
+  obtain ⟨m, hm⟩ := WithTop.ne_top_iff_exists.mp hne
+  refine ⟨m, hm.symm, ?_⟩
+  rw [← hm] at hle
+  exact ENat.coe_le_coe.mp hle
 
 end Exploding

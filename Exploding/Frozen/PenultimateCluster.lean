@@ -66,4 +66,65 @@ theorem Exploding.Frozen.last_penultimate_cluster (d : ℕ) (hd : 2 ≤ d) (p : 
   · -- `pen_box_pos` gives a positive rectangle from `x` to `y'`
     obtain ⟨m, path, h0, hm, hadj, hfin, hpos⟩ :=
       pen_box_pos hd η (fun z => (hb z).1) (fun z => (hb z).2) x y' hy'pos
+    -- the rectangle is a box, and it contains `x`
+    have hpathfin : (path '' {j : ℕ | j ≤ m}).Finite :=
+      Set.Finite.image _ (Set.finite_Iic m)
+    obtain ⟨m0, M0, hm0, hM0, hbox⟩ :=
+      br_eq_box (path '' {j : ℕ | j ≤ m}) hpathfin ⟨x, ⟨0, Nat.zero_le m, h0⟩⟩
+    -- `y` is a neighbour of `y'`, which lies in the rectangle
+    have hy'R : y' ∈ br (path '' {j : ℕ | j ≤ m}) := by
+      apply mem_br_of_mem
+      exact ⟨m, le_refl m, hm⟩
+    -- the coordinate bound: `|y i - x i| ≤ M0 i - m0 i + 1`
+    -- the coordinate bound: `y` is in the rectangle, or one step from it
+    have hcoord : ∀ j : Fin d, |y j - x j| ≤ (M0 j - m0 j) + 1 := by
+      intro j
+      have hxmem : x ∈ br (path '' {j : ℕ | j ≤ m}) := by
+        apply mem_br_of_mem
+        exact ⟨0, Nat.zero_le m, h0⟩
+      have hxbox : m0 j ≤ x j ∧ x j ≤ M0 j := by
+        rw [hbox] at hxmem
+        exact hxmem j
+      have hy'box : m0 j ≤ y' j ∧ y' j ≤ M0 j := by
+        rw [hbox] at hy'R
+        exact hy'R j
+      obtain ⟨hx1, hx2⟩ := hxbox
+      obtain ⟨hy1, hy2⟩ := hy'box
+      obtain ⟨j', hj' | hj'⟩ := hy'adj
+      · have h1 : y j = y' j + (unit j') j := by
+          have := congrFun hj' j
+          simp only [Pi.add_apply] at this
+          linarith
+        have h2 : (unit j') j ≤ 1 := by
+          by_cases h : j' = j
+          · subst h; simp [LatticeProb.unit]
+          · simp [LatticeProb.unit, h]
+        have h3 : (unit j') j ≥ -1 := by
+          by_cases h : j' = j
+          · subst h; simp [LatticeProb.unit]
+          · simp [LatticeProb.unit, h]
+        rw [h1, abs_le]
+        constructor <;> omega
+      · have h1 : y j = y' j - (unit j') j := by
+          have := congrFun hj' j
+          simp only [Pi.add_apply] at this
+          linarith
+        have h2 : (unit j') j ≤ 1 := by
+          by_cases h : j' = j
+          · subst h; simp [LatticeProb.unit]
+          · simp [LatticeProb.unit, h]
+        have h3 : (unit j') j ≥ -1 := by
+          by_cases h : j' = j
+          · subst h; simp [LatticeProb.unit]
+          · simp [LatticeProb.unit, h]
+        rw [h1, abs_le]
+        constructor <;> omega
+    -- The rectangle is a box containing `x`, and its side is bounded by the
+    -- side bound applied at the radius `n' := n + d * (M0 i - m0 i)`: the
+    -- segment `{p | m0 i ≤ p i ≤ M0 i, p j = x j (j ≠ i)}` lies in `R`, hence is
+    -- positive, and lies in `cent d n'`.  The side bound then gives
+    -- `(2 (log n')^(5/2) + 6) k ≤ M0 i - m0 i` or `M0 i - m0 i ≤ n`; in the
+    -- first case `log n' ≤ log n + log(d+1) + log (M0 i - m0 i)` and the
+    -- inequality fails for `M0 i - m0 i` beyond a constant depending on `d` and
+    -- `k`, so `M0 i - m0 i ≤ C (log n)^(5/2)` for `n` large.
     sorry

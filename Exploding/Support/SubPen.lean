@@ -1223,3 +1223,68 @@ theorem aux_penultimate_overlap_propagate_line {d : ℕ} (hd : 2 ≤ d) (η : Si
       exact hmax
     exact (hCinf.1.image hinj.injOn).mono himg
   exact hpeninf hpenfin
+
+
+/-- **The side-length bound (Lemma 3.5's core).**  If the penultimate wave
+centred at `zc` is positive on a run of `> (log n)^{5/2}` consecutive
+*macroscopic* sites in direction `dir`, then `zc`'s last-wave index exceeds two.
+The run is stated in cube-index coordinates: its points are
+`fun j => if j = dir then 1 + k * v else 1 + k * (i j)` for `v ∈ [a, b]`, so the
+line of `Q_k(i)` in direction `dir` based at the cube's lower corner is exactly
+the sub-run `v ∈ [0, k-1]` shifted by `i`.  The run crosses more than
+`(log n)^{5/2}` macroscopic cubes, so by the hole bound one of them lies in the
+infinite cluster, and the propagation half then contradicts stabilizability. -/
+theorem aux_penultimate_side_bound {d : ℕ} (hd : 2 ≤ d) (η : Site d → ℤ)
+    (hlow : ∀ x, 2 * (d : ℤ) - 2 ≤ η x) (hhigh : ∀ x, η x ≤ 2 * (d : ℤ) - 1)
+    (k : ℕ) (hk : 1 ≤ k) (Cinf : Set (Site d)) (hCinf : IsInfiniteConnectedGoodSet η k Cinf)
+    (zc : Site d)
+    (hN : 2 ≤ waveThreshold η zc - 1)
+    (hlast : ∃ n : ℕ, 1 ≤ n ∧ ¬ WaveStabilizable η n zc)
+    (n0 : ℕ)
+    (hcomp : ∀ n, n0 ≤ n → ∀ x ∈ (cent d n : Set (Site d)), x ∉ Cinf →
+      (componentIn Cinfᶜ x).Finite ∧
+        ((componentIn Cinfᶜ x).ncard : ℝ) < Real.log n ^ ((5 : ℝ) / 2))
+    (n : ℕ) (hn : n0 ≤ n) (dir : Fin d) (a b : ℤ)
+    (hab : Real.log n ^ ((5 : ℝ) / 2) ≤ ((b - a : ℤ) : ℝ))
+    (hin : ∀ v : ℤ, a ≤ v → v ≤ b →
+      (fun j => if j = dir then v else (zc j - 1) / (k : ℤ)) ∈ (cent d n : Set (Site d)))
+    (hline : ∀ u : ℤ, 1 + (k : ℤ) * a ≤ u → u ≤ (k : ℤ) + (k : ℤ) * b →
+      0 < penultimateWave η zc (fun j => if j = dir then u
+        else 1 + (k : ℤ) * ((zc j - 1) / (k : ℤ)))) :
+    False := by
+  have hk1 : (1 : ℤ) ≤ (k : ℤ) := by exact_mod_cast hk
+  obtain ⟨v, hva, hvb, hvCinf⟩ :=
+    aux_penultimate_overlap_line_meets_cinf Cinf n0 hcomp n hn
+      (fun j => (zc j - 1) / (k : ℤ)) dir a b hab hin
+  -- the cube index `i` is the run point at `v`
+  set i : Site d := fun j => if j = dir then v else (zc j - 1) / (k : ℤ) with hidef
+  -- the line of `Q_k(i)` maps into the run
+  have hline' : ∀ w ∈ line d k dir (fun _ => (1 : ℤ)),
+      0 < penultimateWave η zc (w + (k : ℤ) • i) := by
+    intro w hw
+    have hother : ∀ l, l ≠ dir → (w + (k : ℤ) • i) l
+        = 1 + (k : ℤ) * ((zc l - 1) / (k : ℤ)) := by
+      intro l hl
+      have hwl : w l = 1 := by
+        have := hw.2 l hl
+        simpa using this
+      have hil : i l = (zc l - 1) / (k : ℤ) := by simp only [hidef, if_neg hl]
+      simp only [Pi.add_apply, Pi.smul_apply, smul_eq_mul, hwl, hil]
+    have hdir : (w + (k : ℤ) • i) dir = w dir + (k : ℤ) * v := by
+      simp only [Pi.add_apply, Pi.smul_apply, smul_eq_mul, hidef, if_true]
+    have hge : 1 + (k : ℤ) * a ≤ w dir + (k : ℤ) * v := by
+      have h1 : (k : ℤ) * a ≤ (k : ℤ) * v := mul_le_mul_of_nonneg_left hva (by linarith)
+      linarith [hw.1.1]
+    have hle : w dir + (k : ℤ) * v ≤ (k : ℤ) + (k : ℤ) * b := by
+      have h1 : (k : ℤ) * v ≤ (k : ℤ) * b := mul_le_mul_of_nonneg_left hvb (by linarith)
+      linarith [hw.1.2]
+    have hfun : (fun j => if j = dir then w dir + (k : ℤ) * v
+        else 1 + (k : ℤ) * ((zc j - 1) / (k : ℤ))) = (w + (k : ℤ) • i) := by
+      ext l
+      by_cases hl : l = dir
+      · subst hl; simp only [if_true, hdir]
+      · simp only [if_neg hl, hother l hl]
+    rw [← hfun]
+    exact hline _ hge hle
+  exact aux_penultimate_overlap_propagate_line hd η hlow hhigh k hk Cinf hCinf zc i hvCinf
+    dir (fun _ => (1 : ℤ)) (fun l => ⟨le_refl 1, hk1⟩) hline' hN hlast

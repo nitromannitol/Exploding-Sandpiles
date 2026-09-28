@@ -1825,3 +1825,34 @@ theorem aux_penultimate_segment_bound {d : ℕ} (hd : 2 ≤ d) (η : Site d → 
       hi_ne' l (fun j => if j = l then 1 else 1 + (c j - 1) % (k : ℤ)) hz hline'
       hM2 hlast hcov_zc
 
+
+/-- **The radius re-choice, reduced to its content.**  If the side bound's
+hypotheses hold at the radius `n'` for a run of length `L`, then `L` is below the
+side bound's threshold.  This is the contrapositive of
+`aux_penultimate_segment_bound`, and it is what the frozen proof of Lemma 3.5
+needs: the caller supplies `hin'` at `n' := n + L + 2` from the rectangle. -/
+theorem aux_penultimate_segment_length_bound {d : ℕ} (hd : 2 ≤ d) (η : Site d → ℤ)
+    (hlow : ∀ x, 2 * (d : ℤ) - 2 ≤ η x) (hhigh : ∀ x, η x ≤ 2 * (d : ℤ) - 1)
+    (k : ℕ) (hk : 1 ≤ k) (Cinf : Set (Site d)) (hCinf : IsInfiniteConnectedGoodSet η k Cinf)
+    (zc : Site d)
+    (hlast : ∃ n : ℕ, 1 ≤ n ∧ ¬ WaveStabilizable η n zc)
+    (n0 : ℕ)
+    (hcomp : ∀ n, n0 ≤ n → ∀ x ∈ (cent d n : Set (Site d)), x ∉ Cinf →
+      (componentIn Cinfᶜ x).Finite ∧
+        ((componentIn Cinfᶜ x).ncard : ℝ) < Real.log n ^ ((5 : ℝ) / 2))
+    (n' : ℕ) (hn' : n0 ≤ n') (l : Fin d) (c : Site d) (a b : ℤ)
+    (hlog : 0 ≤ Real.log n' ^ ((5 : ℝ) / 2))
+    (hin' : ∀ v : ℤ, (a - 1) / (k : ℤ) + 1 ≤ v → v ≤ (b - (k : ℤ)) / (k : ℤ) →
+      (fun j => if j = l then v else (c j - 1) / (k : ℤ)) ∈ (cent d n' : Set (Site d)))
+    (j0 : ℤ)
+    (hj0lo : (a - 1) / (k : ℤ) + 1 ≤ j0) (hj0hi : j0 ≤ (b - (k : ℤ)) / (k : ℤ))
+    (hj0 : j0 = (zc l - 1) / (k : ℤ))
+    (hpos : ∀ v : ℤ, a ≤ v → v ≤ b →
+      0 < penultimateWave η zc (fun j => if j = l then v else c j))
+    (hcov_zc : ∀ t : ℕ, ∀ x ∈ cube d k,
+      0 < wave η 1 zc t (x + (k : ℤ) • macroIdx k zc)) :
+    ¬ (((2 * Real.log n' ^ ((5 : ℝ) / 2) + 6) * (k : ℝ)) ≤ ((b - a : ℤ) : ℝ)) := by
+  intro hbig
+  exact aux_penultimate_segment_bound hd η hlow hhigh k hk Cinf hCinf zc hlast n0 hcomp
+    n' hn' l c a b hlog hbig hin' j0 hj0lo hj0hi hj0 hpos hcov_zc
+

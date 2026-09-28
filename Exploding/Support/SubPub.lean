@@ -3,6 +3,7 @@ Support for Lemma 3.6 of `paper/exploding.tex`: the probability bounds on the
 toy law, the macroscopic cube index, and the wave's own mass bound.
 -/
 import Exploding.Support.Vocab
+import LatticeProb.Prob.Blocks
 import Exploding.Support.SubPen
 import Exploding.Frozen.FiniteExploding
 import Exploding.Frozen.Renormalization
@@ -511,7 +512,27 @@ theorem aux_pub_reach (d : ℕ) (hd : 2 ≤ d) (p : ℝ) (hp : 0 < p) (hp1 : p <
 /-! ### (b) every site has a nearby good cube -/
 
 
-
-
-
+/-- **Translation invariance of the toy law.**  Shifting the background by a
+lattice vector preserves its law. -/
+theorem toyLaw_shift (d : ℕ) (p : ℝ) (hp : 0 < p) (hp1 : p < 1) (x : Site d) :
+    (toyLaw d p).map (fun η : Site d → ℤ => fun z => η (z + x)) = toyLaw d p := by
+  have hpos_p : (0 : ℝ) ≤ p := by linarith
+  have hle_p : (0 : ℝ) ≤ 1 - p := by linarith
+  haveI hprob : IsProbabilityMeasure (chipLaw (2 * (d : ℤ) - 1) (2 * (d : ℤ) - 2) p) := by
+    constructor
+    simp only [chipLaw, Measure.add_apply, Measure.smul_apply, Measure.dirac_apply',
+      MeasurableSet.univ, Set.indicator_univ, Pi.one_apply, smul_eq_mul, mul_one]
+    rw [← ENNReal.ofReal_add hpos_p hle_p]
+    norm_num
+  have hinj : Function.Injective (fun k : Site d => k + x) := by
+    intro a b h
+    funext i
+    have h4 := congrFun h i
+    simpa using h4
+  have h2 : (Measure.infinitePi fun _ : Site d => chipLaw (2 * (d : ℤ) - 1) (2 * (d : ℤ) - 2) p).map
+      (fun ω : Site d → ℤ => fun k : Site d => ω (k + x)) =
+      Measure.infinitePi fun _ : Site d => chipLaw (2 * (d : ℤ) - 1) (2 * (d : ℤ) - 2) p :=
+    LatticeProb.infinitePi_map_comp' (chipLaw (2 * (d : ℤ) - 1) (2 * (d : ℤ) - 2) p)
+      (fun k : Site d => k + x) hinj
+  simpa only [toyLaw, productLaw] using h2
 

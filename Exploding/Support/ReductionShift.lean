@@ -1448,6 +1448,42 @@ theorem goodAt_reads_blockC (k : ℕ) (i : Site d) (η : Site d → ℤ) :
     show η (x + (k : ℤ) • i) = (if x ∈ closureN (cube d k) then η (x + (k : ℤ) • i) else 0)
     rw [closureN, Set.mem_union, if_pos (Or.inl hx)])]
 
+/-- The open block of the macroscopic site `i`. -/
+def blockO (k : ℕ) (i : Site d) : Set (Site d) := {x | x - (k : ℤ) • i ∈ cube d k}
+
+/-- **The paper's argument, step 4 (open cubes).**  The open blocks are pairwise disjoint. -/
+theorem blockO_disjoint (k : ℕ) (hk : 1 ≤ k) (i j : Site d) (hij : i ≠ j) :
+    Disjoint (blockO k i) (blockO k j) := by
+  rw [Set.disjoint_left]
+  intro x hxi hxj
+  apply hij
+  funext l
+  have h1 := hxi l
+  have h2 := hxj l
+  simp only [Pi.sub_apply, Pi.smul_apply, smul_eq_mul] at h1 h2
+  have hk' : (1 : ℤ) ≤ (k : ℤ) := by exact_mod_cast hk
+  have h4 : (k : ℤ) * i l = (k : ℤ) * j l := by
+    have hk0 : (0 : ℤ) < (k : ℤ) := by exact_mod_cast hk
+    have hb1 : (k : ℤ) * i l - (k : ℤ) * j l ≤ (k : ℤ) - 1 := by linarith [h2.2, h1.1]
+    have hb2 : (k : ℤ) * j l - (k : ℤ) * i l ≤ (k : ℤ) - 1 := by linarith [h1.2, h2.1]
+    have hfac : (k : ℤ) * (i l - j l) = (k : ℤ) * i l - (k : ℤ) * j l := by ring
+    have hfac2 : (k : ℤ) * (j l - i l) = (k : ℤ) * j l - (k : ℤ) * i l := by ring
+    have h5' : i l - j l < 1 := by
+      by_contra hc
+      push Not at hc
+      have hm := mul_le_mul_of_nonneg_left hc (le_of_lt hk0)
+      rw [hfac] at hm
+      linarith
+    have h6' : j l - i l < 1 := by
+      by_contra hc
+      push Not at hc
+      have hm := mul_le_mul_of_nonneg_left hc (le_of_lt hk0)
+      rw [hfac2] at hm
+      linarith
+    have hij' : i l = j l := by omega
+    rw [hij']
+  exact mul_left_cancel₀ (by omega : (k : ℤ) ≠ 0) h4
+
 end ReductionShift
 
 end Exploding

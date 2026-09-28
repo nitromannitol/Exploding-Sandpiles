@@ -942,3 +942,20 @@ theorem penultimate_le_last {d : ℕ} (η : Site d → ℤ) (_hlow0 : ∀ y, 0 �
   rw [← hspec]
   rw [← hT t ht]
   exact wave_mono_n η hd z (Nat.sub_le (waveThreshold η z) 1) t x
+
+/-- **The penultimate wave is positive on the bounding box of a path from `zc` to
+`v0`.** -/
+theorem pen_box_pos {d : ℕ} (hd : 2 ≤ d) (η : Site d → ℤ)
+    (hlow : ∀ x, 2 * (d : ℤ) - 2 ≤ η x) (hhigh : ∀ x, η x ≤ 2 * (d : ℤ) - 1)
+    (zc v0 : Site d) (hv0pos : 0 < penultimateWave η zc v0) :
+    ∃ (m : ℕ) (path : ℕ → Site d), path 0 = zc ∧ path m = v0 ∧
+      (∀ i : ℕ, i < m → (lattice d).Adj (path i) (path (i + 1))) ∧
+      (br (path '' {i : ℕ | i ≤ m})).Finite ∧
+      ∀ y ∈ br (path '' {i : ℕ | i ≤ m}), 0 < penultimateWave η zc y := by
+  have hlow0 : ∀ x, 0 ≤ η x := fun x => by have := hlow x; linarith
+  obtain ⟨r, path, h0, hr, hadj, hpos⟩ :=
+    aux_penultimate_connected_to_centre η hlow0 hhigh zc v0 hv0pos
+  have hfin : (br (path '' {i : ℕ | i ≤ r})).Finite :=
+    br_finite _ (Set.Finite.image _ (Set.finite_Iic r))
+  exact ⟨r, path, h0, hr, hadj, hfin,
+    aux_penultimate_path_box_closure hd η hlow hhigh zc r path hadj hpos hfin⟩

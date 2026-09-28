@@ -678,3 +678,71 @@ theorem penultimate_pos_at_time {d : ℕ} (η : Site d → ℤ) (_hlow : ∀ x, 
   have h := waveTerminal_spec η (waveThreshold η zc - 1) zc ⟨T, hT⟩ T hle
   rw [h]
   exact hv0
+
+theorem key_up (k : ℤ) (hk : 0 < k) (a : ℤ) :
+    (a + 1 - 1) / k = (a - 1) / k ∨ (a + 1 - 1) / k = (a - 1) / k + 1 := by
+  have h1 := Int.emod_add_ediv_mul (a - 1) k
+  have h2 : 0 ≤ (a - 1) % k := Int.emod_nonneg _ (ne_of_gt hk)
+  have h3 : (a - 1) % k < k := Int.emod_lt_of_pos _ hk
+  have h4 : (a + 1 - 1) = (a - 1) + 1 := by ring
+  rw [h4]
+  by_cases h : (a - 1) % k + 1 < k
+  · left
+    have h6 : (a - 1) + 1 = ((a - 1) / k) * k + ((a - 1) % k + 1) := by linarith
+    rw [h6]
+    rw [show ((a - 1) / k) * k + ((a - 1) % k + 1)
+        = ((a - 1) % k + 1) + ((a - 1) / k) * k from by ring]
+    rw [Int.add_mul_ediv_right _ _ (ne_of_gt hk)]
+    rw [Int.ediv_eq_zero_of_lt (by omega) (by omega)]
+    ring
+  · right
+    have h6 : (a - 1) % k + 1 = k := by omega
+    have h7 : (a - 1) + 1 = ((a - 1) / k + 1) * k + 0 := by
+      have := Int.emod_add_ediv_mul (a - 1) k
+      nlinarith
+    rw [h7]
+    rw [show ((a - 1) / k + 1) * k + 0 = 0 + ((a - 1) / k + 1) * k from by ring]
+    rw [Int.add_mul_ediv_right _ _ (ne_of_gt hk)]
+    rw [Int.ediv_eq_zero_of_lt (by omega) (by omega)]
+    ring
+
+theorem key_down (k : ℤ) (hk : 0 < k) (a : ℤ) :
+    (a - 1 - 1) / k = (a - 1) / k ∨ (a - 1 - 1) / k = (a - 1) / k - 1 := by
+  have h1 := Int.emod_add_ediv_mul (a - 1) k
+  have h2 : 0 ≤ (a - 1) % k := Int.emod_nonneg _ (ne_of_gt hk)
+  have h3 : (a - 1) % k < k := Int.emod_lt_of_pos _ hk
+  have h4 : (a - 1 - 1) = (a - 1) - 1 := by ring
+  rw [h4]
+  by_cases h : 0 < (a - 1) % k
+  · left
+    have h6 : (a - 1) - 1 = ((a - 1) / k) * k + ((a - 1) % k - 1) := by
+      have h8 : (a - 1) / k * k = a - 1 - (a - 1) % k := by linarith
+      rw [h8]
+      ring
+    rw [h6]
+    rw [show ((a - 1) / k) * k + ((a - 1) % k - 1)
+        = ((a - 1) % k - 1) + ((a - 1) / k) * k from by ring]
+    rw [Int.add_mul_ediv_right _ _ (ne_of_gt hk)]
+    have h7 : ((a - 1) % k - 1) / k = 0 := by
+      apply Int.ediv_eq_zero_of_lt
+      · omega
+      · omega
+    rw [h7]
+    ring
+  · right
+    have h6 : (a - 1) % k = 0 := by omega
+    have h7 : (a - 1) - 1 = ((a - 1) / k - 1) * k + (k - 1) := by
+      have h8 : (a - 1) / k * k = a - 1 := by linarith
+      have h9 : ((a - 1) / k - 1) * k = (a - 1) / k * k - k := by ring
+      rw [h9, h8]
+      ring
+    rw [h7]
+    rw [show ((a - 1) / k - 1) * k + (k - 1)
+        = (k - 1) + ((a - 1) / k - 1) * k from by ring]
+    rw [Int.add_mul_ediv_right _ _ (ne_of_gt hk)]
+    have h8 : (k - 1) / k = 0 := by
+      apply Int.ediv_eq_zero_of_lt
+      · omega
+      · omega
+    rw [h8]
+    ring

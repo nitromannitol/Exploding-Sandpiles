@@ -1379,6 +1379,75 @@ theorem iIndepSet_of_pairwise_disjoint_int {ι V : Type*}
     rw [ht]
     exact hE i)
 
+
+/-- **The frozen odometer is congruent in the background off the frozen set.** -/
+theorem fodo_congr_of_eq_off (S : Set (Site d)) (s0 s0' w0 : Site d → ℤ)
+    (h : ∀ x, x ∉ S → s0 x = s0' x) (t : ℕ) (x : Site d) :
+    fodo S s0 w0 t x = fodo S s0' w0 t x := by
+  induction t generalizing x with
+  | zero => rfl
+  | succ t ih =>
+    have hfun : fodo S s0 w0 t = fodo S s0' w0 t := funext ih
+    rw [fodo_succ, fodo_succ]
+    by_cases hx : x ∈ S
+    · rw [if_pos hx, if_pos hx]
+    · have hf : fconf S s0 w0 t x = fconf S s0' w0 t x := by
+        simp only [fconf, lap, hfun, h x hx]
+      rw [if_neg hx, if_neg hx, hfun, hf]
+
+/-- **The paper's argument, step 1.**  `crossOdo η k i z = fodo ((cube d k)ᶜ ∪ line d k i z) η
+(1{x ∈ line d k i z})` reads `η` only off the frozen set, i.e. on
+`cube d k \ line d k i z ⊆ cube d k`.  So two backgrounds that agree on `cube d k` have the
+same crossing odometer. -/
+theorem crossOdo_congr_of_eq_on_cube (k : ℕ) (i : Fin d) (z : Site d) (t : ℕ)
+    {η η' : Site d → ℤ} (h : ∀ x ∈ cube d k, η x = η' x) :
+    crossOdo η k i z t = crossOdo η' k i z t := by
+  rw [crossOdo, crossOdo]
+  funext x
+  exact fodo_congr_of_eq_off ((cube d k)ᶜ ∪ line d k i z) η η'
+    (fun x => if x ∈ line d k i z then 1 else 0) (fun x hx => h x (by
+      by_contra hc
+      exact hx (Or.inl hc))) t x
+
+/-- **The paper's argument, step 2.**  `crossingTime` is an `sInf` over `crossOdo`, so the
+background congruence transports: two backgrounds agreeing on `cube d k` have the same
+crossing time. -/
+theorem crossingTime_congr_of_eq_on_cube (k : ℕ) (i : Fin d) (z : Site d)
+    {η η' : Site d → ℤ} (h : ∀ x ∈ cube d k, η x = η' x) :
+    crossingTime η k i z = crossingTime η' k i z := by
+  rw [crossingTime, crossingTime]
+  congr 1
+  ext t
+  constructor
+  · rintro ⟨n, rfl, hn, hx⟩
+    exact ⟨n, rfl, hn, fun x hx' => by
+      rw [← crossOdo_congr_of_eq_on_cube k i z n h]
+      exact hx x hx'⟩
+  · rintro ⟨n, rfl, hn, hx⟩
+    exact ⟨n, rfl, hn, fun x hx' => by
+      rw [crossOdo_congr_of_eq_on_cube k i z n h]
+      exact hx x hx'⟩
+
+/-- The block of the macroscopic site `i`, with the boundary `GoodCube` reads. -/
+def blockC (k : ℕ) (i : Site d) : Set (Site d) := {x | x - (k : ℤ) • i ∈ closureN (cube d k)}
+
+/-- The read of the block `i` at the shifted coordinate. -/
+noncomputable def blockRead (k : ℕ) (i : Site d) (η : Site d → ℤ) : Site d → ℤ :=
+  fun x => if x ∈ closureN (cube d k) then η (x + (k : ℤ) • i) else 0
+
+/-- **The paper's argument, step 3.**  `GoodCube` reads the background only on
+`closureN (cube d k)`, and there `blockRead k i η` agrees with the shifted background. -/
+theorem goodAt_reads_blockC (k : ℕ) (i : Site d) (η : Site d → ℤ) :
+    GoodAt η k i ↔ GoodCube (blockRead k i η) k := by
+  rw [GoodAt]
+  refine forall_congr' (fun j => forall_congr' (fun z => imp_congr_right (fun hz => ?_)))
+  rw [show blockRead k i η
+      = (fun x : Site d => if x ∈ closureN (cube d k) then η (x + (k : ℤ) • i) else 0)
+      from rfl]
+  rw [crossingTime_congr_of_eq_on_cube k j z (fun x hx => by
+    show η (x + (k : ℤ) • i) = (if x ∈ closureN (cube d k) then η (x + (k : ℤ) • i) else 0)
+    rw [closureN, Set.mem_union, if_pos (Or.inl hx)])]
+
 end ReductionShift
 
 end Exploding

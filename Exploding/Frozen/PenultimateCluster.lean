@@ -315,11 +315,13 @@ theorem Exploding.Frozen.last_penultimate_cluster (d : ℕ) (hd : 2 ≤ d) (p : 
           · subst h; simp [LatticeProb.unit]
           · simp [LatticeProb.unit, h]
         omega
-    -- The two cases of the neighbour's coordinate difference:
-    --   `|y i - x i| ≤ (max k0 1) + 1` is absorbed into the threshold `n0`
-    --   (the frozen statement's `γ := 5/2 + 1` exceeds `(max k0 1) + 1` once
-    --   `Real.log n ≥ 2`, which the threshold already gives);
-    --   otherwise the run contains `x`'s own cube index, so the pigeonhole
-    --   excludes it and the side bound applies with `j0 := (x i - 1)/k`.
-    -- Both are recorded in FINDINGS.md updates 35-36.
+    -- The two cases of the neighbour's coordinate difference.
+    -- The exclusion of `x`'s own cube index `j0 := (x i - 1)/k` from the run
+    -- `[(m0 i - 1)/k + 1, (M0 i - k)/k]` needs BOTH
+    --   `m0 i + k ≤ x i`   and   `x i + k ≤ M0 i`,
+    -- i.e. `L := M0 i - m0 i ≥ 2k`, not merely `L ≥ k`.  Since `y` is a
+    -- neighbour of `y' ∈ R = [m0, M0]`, we have `y i ∈ [m0 i - 1, M0 i + 1]`,
+    -- so `|y i - x i| ≤ L + 1`; the case `L ≥ 2k` is therefore reached when
+    -- `|y i - x i| ≥ 2k - 1`, and the remaining case `L < 2k` is absorbed into
+    -- the threshold exactly as the short case below.  See FINDINGS.md update 37.
     sorry

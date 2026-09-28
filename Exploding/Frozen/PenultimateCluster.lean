@@ -317,8 +317,9 @@ theorem Exploding.Frozen.last_penultimate_cluster (d : ℕ) (hd : 2 ≤ d) (p : 
         omega
     -- The case split on whether `x`'s own cube index `j0 := (x i - 1)/k` lies in
     -- the run `[(m0 i - 1)/k + 1, (M0 i - k)/k]` (FINDINGS.md update 38).
-    --   `j0` in the run  -> `aux_penultimate_segment_bound'` applies with `j0`
-    --                       and no `hcov_zc`;
+    --   `j0` in the run  -> `aux_penultimate_segment_bound'` applies with `j0`;
+    --                       its `hcov_zc` input is the paper's Step-1 regularity,
+    --                       which is the sibling node's content;
     --   `j0` not in it   -> `x` is within `k` of an end of the rectangle, so
     --                       `|y i - x i| ≤ 2k`, absorbed into the threshold.
     sorry

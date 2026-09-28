@@ -236,4 +236,133 @@ theorem aux_ce_relay_fires (d : ℕ) (hd : 2 ≤ d) :
       rw [h0''']
       norm_num
 
+/-- The row-`0` point `k • e₁` is "high" type (`ceEta = 2d-1`, needs only one
+extra chip) exactly when `k ≢ 0, 3 (mod 4)`. -/
+theorem aux_ce_row0_high (d : ℕ) (hd : 2 ≤ d) (k : ℤ) (hk : k % 4 = 1 ∨ k % 4 = 2) :
+    ceEta d ((k • e1 d : Site d)) = 2 * (d : ℤ) - 1 := by
+  have h0 : 0 < d := by omega
+  have h1 : 1 < d := by omega
+  have hce : ceEta d ((k • e1 d : Site d))
+      = 2 * ((d : ℤ) - 2)
+        + zeta1 ((k • e1 d : Site d) ⟨0, h0⟩) ((k • e1 d : Site d) ⟨1, h1⟩) := by
+    simp [ceEta, h0, h1]
+  have hx0 : (k • e1 d : Site d) ⟨0, h0⟩ = k := by
+    simp [e1]
+  have hx1 : (k • e1 d : Site d) ⟨1, h1⟩ = 0 := by
+    simp [e1]
+  have hz : zeta1 k 0 = 3 := by
+    rcases hk with hk | hk <;> unfold zeta1 <;> norm_num [hk]
+  rw [hce, hx0, hx1, hz]
+  ring
+
+/-- One further step beyond the relay (`exploding.tex:1389`): a row-`0` point of
+"high" type gets fed by its own relay-row point above it. -/
+theorem aux_ce_row0_lands (d : ℕ) (hd : 2 ≤ d) (k : ℤ) (hk : k % 4 = 1 ∨ k % 4 = 2)
+    (hk0 : 0 ≤ k) :
+    0 < podo (fun x => ceEta d x + 3 * dirac (0 : Site d) x) (k.toNat + 3)
+      ((k • e1 d : Site d)) := by
+  have h0 : 0 < d := by omega
+  have h1 : 1 < d := by omega
+  have hrow : ceEta d ((k • e1 d : Site d)) = 2 * (d : ℤ) - 1 := aux_ce_row0_high d hd k hk
+  have hrelay : 0 < podo (fun x => ceEta d x + 3 * dirac (0 : Site d) x) (k.toNat + 2)
+      ((k.toNat : ℤ) • e1 d + e2 d) := aux_ce_relay_fires d hd k.toNat
+  have hcast : ((k.toNat : ℕ) : ℤ) = k := Int.toNat_of_nonneg hk0
+  rw [hcast] at hrelay
+  by_cases hpos : 0 < podo (fun x => ceEta d x + 3 * dirac (0 : Site d) x) (k.toNat + 3)
+      ((k • e1 d : Site d))
+  · exact hpos
+  · have h0f : podo (fun x => ceEta d x + 3 * dirac (0 : Site d) x) (k.toNat + 3)
+        ((k • e1 d : Site d)) = 0 := by
+      have hnn := aux_podo_nonneg (fun x => ceEta d x + 3 * dirac (0 : Site d) x) (k.toNat + 3)
+        ((k • e1 d : Site d))
+      omega
+    rw [podo_succ]
+    have hc : 2 * (d : ℤ) ≤ pconf (fun x => ceEta d x + 3 * dirac (0 : Site d) x) (k.toNat + 2)
+        ((k • e1 d : Site d)) := by
+      have hsum : (1 : ℤ) ≤ nbrSumZ (podo (fun x => ceEta d x + 3 * dirac (0 : Site d) x)
+          (k.toNat + 2)) ((k • e1 d : Site d)) := by
+        have hterm := Finset.single_le_sum
+          (f := fun j : Fin d => podo (fun x => ceEta d x + 3 * dirac (0 : Site d) x)
+              (k.toNat + 2) (((k • e1 d : Site d)) + unit j) +
+            podo (fun x => ceEta d x + 3 * dirac (0 : Site d) x) (k.toNat + 2)
+              (((k • e1 d : Site d)) - unit j))
+          (fun j _ => by
+            have ha := aux_podo_nonneg (fun x => ceEta d x + 3 * dirac (0 : Site d) x)
+              (k.toNat + 2) (((k • e1 d : Site d)) + unit j)
+            have hb := aux_podo_nonneg (fun x => ceEta d x + 3 * dirac (0 : Site d) x)
+              (k.toNat + 2) (((k • e1 d : Site d)) - unit j)
+            linarith)
+          (Finset.mem_univ ⟨1, h1⟩)
+        have hoff : ((k • e1 d : Site d)) + unit ⟨1, h1⟩ = (k : ℤ) • e1 d + e2 d := by
+          have he : e2 d = unit ⟨1, h1⟩ := by
+            funext i
+            simp only [e2, LatticeProb.unit, Pi.single_apply]
+            by_cases hi : (i : ℕ) = 1
+            · have hii : i = ⟨1, h1⟩ := Fin.ext hi
+              rw [hii, if_pos rfl, if_pos rfl]
+            · have hne : i ≠ ⟨1, h1⟩ := fun hcon => hi (by rw [hcon])
+              rw [if_neg hi, if_neg hne]
+          rw [he]
+        rw [hoff] at hterm
+        have hnn : (0 : ℤ) ≤ podo (fun x => ceEta d x + 3 * dirac (0 : Site d) x)
+            (k.toNat + 2) (((k • e1 d : Site d)) - unit ⟨1, h1⟩) := aux_podo_nonneg _ _ _
+        have hpos' : (1 : ℤ) ≤ podo (fun x => ceEta d x + 3 * dirac (0 : Site d) x)
+            (k.toNat + 2) ((k : ℤ) • e1 d + e2 d) := hrelay
+        simp only [nbrSumZ] at hterm ⊢
+        linarith
+      have hdirac0 : dirac (0 : Site d) ((k • e1 d : Site d)) = 0 := by
+        apply dirac_of_ne
+        intro hcon
+        have h1' := congrFun hcon ⟨0, h0⟩
+        simp only [Pi.smul_apply, smul_eq_mul, e1, Pi.zero_apply] at h1'
+        norm_num at h1'
+        have hkpos : k ≠ 0 := by
+          intro hkz
+          rw [hkz] at hk
+          norm_num at hk
+        exact hkpos h1'
+      have hle1 : podo (fun x => ceEta d x + 3 * dirac (0 : Site d) x) (k.toNat + 2)
+          ((k • e1 d : Site d)) ≤ 1 := by
+        rw [podo_succ]
+        have h0' : podo (fun x => ceEta d x + 3 * dirac (0 : Site d) x) (k.toNat + 1)
+            ((k • e1 d : Site d)) = 0 := by
+          have hmono := podo_mono_step (fun x => ceEta d x + 3 * dirac (0 : Site d) x)
+            (k.toNat + 1) ((k • e1 d : Site d))
+          have he : k.toNat + 1 + 1 = k.toNat + 2 := by omega
+          rw [he] at hmono
+          have hmono2 := podo_mono_step (fun x => ceEta d x + 3 * dirac (0 : Site d) x)
+            (k.toNat + 2) ((k • e1 d : Site d))
+          have he2 : k.toNat + 2 + 1 = k.toNat + 3 := by omega
+          rw [he2] at hmono2
+          have hnn := aux_podo_nonneg (fun x => ceEta d x + 3 * dirac (0 : Site d) x) (k.toNat + 1)
+            ((k • e1 d : Site d))
+          omega
+        rw [h0']
+        split <;> omega
+      have hnn1 : 0 ≤ podo (fun x => ceEta d x + 3 * dirac (0 : Site d) x) (k.toNat + 2)
+          ((k • e1 d : Site d)) := aux_podo_nonneg _ _ _
+      have h0mid : podo (fun x => ceEta d x + 3 * dirac (0 : Site d) x) (k.toNat + 2)
+          ((k • e1 d : Site d)) = 0 := by
+        have hmono := podo_mono_step (fun x => ceEta d x + 3 * dirac (0 : Site d) x)
+          (k.toNat + 2) ((k • e1 d : Site d))
+        have he : k.toNat + 2 + 1 = k.toNat + 3 := by omega
+        rw [he] at hmono
+        omega
+      simp only [pconf, lap, hrow, hdirac0, mul_zero, add_zero, h0mid]
+      linarith
+    rw [if_pos hc]
+    show (0 : ℤ) < podo (fun x => ceEta d x + 3 * dirac (0 : Site d) x) (k.toNat + 2)
+        ((k • e1 d : Site d)) + 1
+    have h0mid : podo (fun x => ceEta d x + 3 * dirac (0 : Site d) x) (k.toNat + 2)
+        ((k • e1 d : Site d)) = 0 := by
+      have hmono := podo_mono_step (fun x => ceEta d x + 3 * dirac (0 : Site d) x)
+        (k.toNat + 2) ((k • e1 d : Site d))
+      have he : k.toNat + 2 + 1 = k.toNat + 3 := by omega
+      rw [he] at hmono
+      have hnn := aux_podo_nonneg (fun x => ceEta d x + 3 * dirac (0 : Site d) x) (k.toNat + 2)
+        ((k • e1 d : Site d))
+      omega
+    rw [h0mid]
+    norm_num
+
 end Exploding

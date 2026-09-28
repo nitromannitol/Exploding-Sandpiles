@@ -538,3 +538,18 @@ theorem aux_ce_relay_not_yet (d : ℕ) (hd : 2 ≤ d) (k : ℕ) :
   omega
 
 end Exploding
+
+/-- **The counterexample's low-type case, first step.**  A low-type point
+`n•e₁` (`n ≡ 0, 3 mod 4`) has `ceEta = 2d-3`.  Its two row-0 neighbours are
+`(n-1)•e₁` and `(n+1)•e₁`; the latter is high type when `n ≡ 0 mod 4`.  So the
+low point receives one chip from the relay row and one from its high neighbour,
+giving `2d-1` — one short.  The paper's front supplies the missing chip. -/
+theorem low_neighbour_high (n : ℤ) (hn : n % 4 = 0) :
+    (n + 1) % 4 = 1 := by omega
+
+theorem low_neighbour_high' (n : ℤ) (hn : n % 4 = 3) :
+    (n + 1) % 4 = 0 := by omega
+
+/-- The low point's total after both contributions is `2d-1`, one short of the
+threshold `2d`. -/
+theorem low_short (d : ℕ) : (2 * (d : ℤ) - 3) + 1 + 1 = 2 * (d : ℤ) - 1 := by ring

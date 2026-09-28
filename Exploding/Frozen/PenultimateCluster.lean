@@ -43,4 +43,27 @@ theorem Exploding.Frozen.last_penultimate_cluster (d : ℕ) (hd : 2 ≤ d) (p : 
   obtain ⟨n0c, hn0c⟩ := hcomp
   refine ⟨max n0c (max 1 (Nat.ceil (Real.exp 2))), ?_⟩
   intro n hn x hx y hy i
-  sorry
+  -- the threshold gives `log n ≥ 2`
+  have hn0c : n0c ≤ n := le_trans (le_max_left _ _) hn
+  have hn1 : 1 ≤ n := le_trans (le_trans (le_max_left _ _) (le_max_right _ _)) hn
+  have hne : Nat.ceil (Real.exp 2) ≤ n :=
+    le_trans (le_trans (le_max_right _ _) (le_max_right _ _)) hn
+  have hlog2 : 2 ≤ Real.log n := by
+    have h1 : Real.exp 2 ≤ (n : ℝ) := by
+      have := Nat.le_ceil (Real.exp 2)
+      exact le_trans this (by exact_mod_cast hne)
+    have h2 : Real.log (Real.exp 2) ≤ Real.log (n : ℝ) :=
+      Real.log_le_log (Real.exp_pos 2) h1
+    rwa [Real.log_exp] at h2
+  have hlog0 : 0 ≤ Real.log n := by linarith
+  have hlogpow : 0 ≤ Real.log n ^ ((5 : ℝ) / 2) := Real.rpow_nonneg hlog0 _
+  -- the penultimate cluster: `y = x`, or a neighbour `y'` of `y` is positive
+  rcases hy with hxy | ⟨y', hy'adj, hy'pos⟩
+  · rw [hxy]
+    have h1 : ((|x i - x i| : ℤ) : ℝ) = 0 := by simp
+    rw [h1]
+    exact Real.rpow_nonneg hlog0 _
+  · -- `pen_box_pos` gives a positive rectangle from `x` to `y'`
+    obtain ⟨m, path, h0, hm, hadj, hfin, hpos⟩ :=
+      pen_box_pos hd η (fun z => (hb z).1) (fun z => (hb z).2) x y' hy'pos
+    sorry

@@ -658,3 +658,23 @@ theorem aux_penultimate_overlap_line_meets_cinf {d : ℕ} (Cinf : Set (Site d)) 
     push_cast
     linarith
   linarith [h_bound, h_bound2, h_ineq]
+
+/-- **The penultimate-cluster propagation, first step.**  If the penultimate
+wave is positive at a site `v0` of the infinite good cluster, then the
+`(M-1)`-wave from `zc` is positive at `v0` at some finite time.  This is
+`aux_penultimate_wave_pos_implies_terminal`'s converse direction, and it is the
+first step of `aux_penultimate_overlap_propagate`. -/
+theorem penultimate_pos_at_time {d : ℕ} (η : Site d → ℤ) (_hlow : ∀ x, 0 ≤ η x)
+    (_hhigh : ∀ x, η x ≤ 2 * (d : ℤ) - 1) (zc v0 : Site d)
+    (hlast : ∃ n : ℕ, 1 ≤ n ∧ ¬ WaveStabilizable η n zc)
+    (h1 : waveThreshold η zc ≠ 1) (hv0 : 0 < penultimateWave η zc v0) :
+    ∃ t : ℕ, 0 < wave η (waveThreshold η zc - 1) zc t v0 := by
+  obtain ⟨T, hT⟩ := penultimate_stabilizable η zc hlast h1
+  refine ⟨T, ?_⟩
+  rw [penultimateWave, if_neg h1] at hv0
+  have hle : sInf {T : ℕ | ∀ t : ℕ, T ≤ t →
+      wave η (waveThreshold η zc - 1) zc t = wave η (waveThreshold η zc - 1) zc T} ≤ T :=
+    Nat.sInf_le hT
+  have h := waveTerminal_spec η (waveThreshold η zc - 1) zc ⟨T, hT⟩ T hle
+  rw [h]
+  exact hv0

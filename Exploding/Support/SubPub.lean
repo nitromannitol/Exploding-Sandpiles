@@ -208,4 +208,84 @@ theorem aux_pub_reach_macro_reach {d : ℕ} (η : Site d → ℤ) (hlow : ∀ x,
             simpa [SimpleGraph.induce_adj] using hadj'.symm
           exact ⟨h0C, hxnotin, hreach.trans ⟨SimpleGraph.Walk.cons hadj_induce SimpleGraph.Walk.nil⟩⟩
 
+theorem aux_pub_nearest_ray_aux {d : ℕ} (S : Set (Site d)) (x : Site d) (i0 : Fin d) (N : ℕ)
+    (hray : ∀ j : ℕ, j ≤ N → x + (j : ℤ) • unit i0 ∈ S) :
+    ∀ j : ℕ, ∀ _hj : j ≤ N, ∃ (hx : x ∈ S) (hy : x + (j : ℤ) • unit i0 ∈ S),
+      (SimpleGraph.induce S (lattice d)).Reachable ⟨x, hx⟩ ⟨x + (j : ℤ) • unit i0, hy⟩ := by
+  intro j
+  induction j with
+  | zero =>
+    intro _
+    have h0 : x + ((0 : ℕ) : ℤ) • unit i0 = x := by simp
+    refine ⟨by simpa [h0] using hray 0 (Nat.zero_le N),
+      by simpa [h0] using hray 0 (Nat.zero_le N), ?_⟩
+    have h1 : (⟨x + ((0 : ℕ) : ℤ) • unit i0, hray 0 (Nat.zero_le N)⟩ : S) =
+        ⟨x, by simpa [h0] using hray 0 (Nat.zero_le N)⟩ := Subtype.ext h0
+    rw [h1]
+  | succ j ih =>
+    intro hj
+    have hj' : j ≤ N := Nat.le_of_succ_le hj
+    obtain ⟨hx', hy', hr⟩ := ih hj'
+    have hv : (⟨x + (j : ℤ) • unit i0, hy'⟩ : S) = ⟨x + (j : ℤ) • unit i0, hray j hj'⟩ :=
+      Subtype.ext rfl
+    rw [hv] at hr
+    have hstep : x + ((j + 1 : ℕ) : ℤ) • unit i0 = (x + (j : ℤ) • unit i0) + unit i0 := by
+      rw [Nat.cast_add, Nat.cast_one, add_smul, one_smul, add_assoc]
+    have hadj : (SimpleGraph.induce S (lattice d)).Adj
+        ⟨x + ((j + 1 : ℕ) : ℤ) • unit i0, hray (j + 1) hj⟩
+        ⟨x + (j : ℤ) • unit i0, hray j hj'⟩ := by
+      rw [SimpleGraph.induce_adj]
+      show (lattice d).Adj (x + ((j + 1 : ℕ) : ℤ) • unit i0) (x + (j : ℤ) • unit i0)
+      rw [hstep]
+      exact adj_add_unit _ _
+    exact ⟨hx', hray (j + 1) hj, hr.trans hadj.symm.reachable⟩
+
+theorem aux_pub_nearest_ray {d : ℕ} (S : Set (Site d)) (x : Site d) (i0 : Fin d)
+    (N : ℕ) (hray : ∀ j : ℕ, j ≤ N → x + (j : ℤ) • unit i0 ∈ S) :
+    ∀ j : ℕ, j ≤ N → x + (j : ℤ) • unit i0 ∈ componentIn S x := by
+  intro j hj
+  simp only [componentIn]
+  exact aux_pub_nearest_ray_aux S x i0 N hray j hj
+
+
+/-- **New, real (the isoperimetric pigeonhole step).** `N'+1` pairwise distinct
+points of a finite set force `N'+1 ≤` its cardinality: the ray map
+`j ↦ x + j•unit i0` is injective (`unit_ne_zero`, cancellation in the additive
+group `Site d`), so `Finset.image` of `Finset.range (N'+1)` under it has card
+`N'+1` (`Finset.card_image_of_injective`, `Finset.card_range`) and is a subset
+of `hfin.toFinset` (every ray point lies in `componentIn S x`, whose `hfin`
+witnesses finiteness); `Finset.card_le_card` finishes. -/
+theorem aux_pub_nearest_pigeonhole {d : ℕ} (S : Set (Site d)) (x : Site d) (i0 : Fin d)
+    (hfin : (componentIn S x).Finite) (N' : ℕ)
+    (hray : ∀ j : ℕ, j ≤ N' → x + (j : ℤ) • unit i0 ∈ componentIn S x) :
+    N' + 1 ≤ hfin.toFinset.card := by
+  have huinj : Function.Injective (fun j : ℕ => x + (j : ℤ) • unit i0) := (by
+    intro a b hab
+    have h' : (a : ℤ) • unit i0 = (b : ℤ) • unit i0 :=
+      add_left_cancel (show x + (a : ℤ) • unit i0 = x + (b : ℤ) • unit i0 from hab)
+    have h : ((a : ℤ) - (b : ℤ)) • unit i0 = 0 := (by rw [sub_smul, h', sub_self])
+    have h2 : (a : ℤ) - (b : ℤ) = 0 := (by
+      rcases smul_eq_zero.mp h with hh | hh
+      · exact hh
+      · exact absurd hh (unit_ne_zero i0))
+    have hz : (a : ℤ) = (b : ℤ) := sub_eq_zero.mp h2
+    exact_mod_cast hz)
+  have hcard : (Finset.image (fun j : ℕ => x + (j : ℤ) • unit i0) (Finset.range (N' + 1))).card
+      = N' + 1 := (by
+    rw [Finset.card_image_of_injective _ huinj, Finset.card_range])
+  have hsub : Finset.image (fun j : ℕ => x + (j : ℤ) • unit i0) (Finset.range (N' + 1))
+      ⊆ hfin.toFinset := (by
+    intro y hy
+    rw [Set.Finite.mem_toFinset]
+    obtain ⟨j, hj, hjy⟩ := Finset.mem_image.mp hy
+    rw [← hjy]
+    exact hray j (Nat.lt_succ_iff.mp (Finset.mem_range.mp hj)))
+  calc N' + 1 = (Finset.image (fun j : ℕ => x + (j : ℤ) • unit i0) (Finset.range (N' + 1))).card := hcard.symm
+    _ ≤ hfin.toFinset.card := Finset.card_le_card hsub
+
+
+-- GAP (closed by the three lemmas above): turning "the component of `Cinfᶜ`
+-- containing `x` (if any) is finite of cardinality `< (log n)^{5/2}`" into
+-- "there is `y ∈ Cinf` with `mnorm (x - y)` bounded by the same quantity" is
+-- an isoperimetric-type step (a finite subset of `ℤ^d` of cardinality `< V`
 end Exploding

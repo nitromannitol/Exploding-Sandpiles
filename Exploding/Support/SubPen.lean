@@ -1508,7 +1508,6 @@ theorem aux_penultimate_side_bound_one {d : ℕ} (hd : 2 ≤ d) (η : Site d →
       (componentIn Cinfᶜ x).Finite ∧
         ((componentIn Cinfᶜ x).ncard : ℝ) < Real.log n ^ ((5 : ℝ) / 2))
     (n : ℕ) (hn : n0 ≤ n) (dir : Fin d) (a b : ℤ)
-    (_ha : 1 ≤ a)
     (hin : ∀ v : ℤ, a ≤ v → v ≤ b →
       (fun j => if j = dir then v else (zc j - 1) / (k : ℤ)) ∈ (cent d n : Set (Site d)))
     (hline : ∀ u : ℤ, 1 + (k : ℤ) * a ≤ u → u ≤ (k : ℤ) + (k : ℤ) * b →

@@ -623,3 +623,62 @@ theorem measurableSet_not_stabilizable {d : ℕ} (n : ℕ) (z : Site d) :
   exact measurableSet_eq_fun (measurable_pi_lambda _ fun y => measurable_wave n z t y)
     (measurable_pi_lambda _ fun y => measurable_wave n z T y)
 
+
+/-- **The last wave is well defined at every site.**  The sealed node
+`Exploding.Frozen.finite_exploding` gives this at the origin; the translation
+invariance of the toy law and the wave's equivariance transfer it to every `x`. -/
+theorem finite_exploding_at (d : ℕ) (hd : 2 ≤ d) (p : ℝ) (hp : 0 < p) (hp1 : p < 1)
+    (hLSSB : Exploding.External.LiggettSchonmannStaceyBoundedDegree)
+    (hHole : Exploding.External.MathieuHoleVolume)
+    (hChem : Exploding.External.AntalPisztoraChemicalDistance) :
+    ∀ᵐ η ∂(toyLaw d p), ∀ x : Site d, ∃ n : ℕ, 1 ≤ n ∧ ¬ WaveStabilizable η n x := by
+  have h0 := Exploding.Frozen.finite_exploding d hd p hp hp1 hLSSB hHole hChem
+  have hshift : ∀ x : Site d, ∀ᵐ η ∂(toyLaw d p),
+      ∃ n : ℕ, 1 ≤ n ∧ ¬ WaveStabilizable η n x := by
+    intro x
+    have h1 : ∀ᵐ η ∂((toyLaw d p).map (fun η : Site d → ℤ => fun z => η (z + x))),
+        ∃ n : ℕ, 1 ≤ n ∧ ¬ WaveStabilizable η n (0 : Site d) := by
+      rw [toyLaw_shift d p hp hp1 x]
+      exact h0
+    rw [MeasureTheory.ae_map_iff] at h1
+    · rw [MeasureTheory.ae_iff] at h1
+      rw [MeasureTheory.ae_iff]
+      have h3 : {a : Site d → ℤ | ¬ ∃ n : ℕ, 1 ≤ n ∧ ¬ WaveStabilizable (fun z => a (z + x)) n (0 : Site d)} =
+          {a : Site d → ℤ | ¬ ∃ n : ℕ, 1 ≤ n ∧ ¬ WaveStabilizable a n x} := by
+        ext a
+        simp only [Set.mem_setOf_eq]
+        constructor
+        · intro hc ⟨n, hn, hns⟩
+          refine hc ⟨n, hn, fun hstab => hns ?_⟩
+          obtain ⟨T, hT⟩ := hstab
+          refine ⟨T, fun t ht => ?_⟩
+          funext y
+          have h4 := congrFun (hT t ht) (y - x)
+          have h5 := wave_shift_eq a n x x t y
+          have h6 := wave_shift_eq a n x x T y
+          simp only [sub_self] at h5 h6
+          rw [h5, h6] at h4
+          simpa using h4
+        · intro hc ⟨n, hn, hns⟩
+          refine hc ⟨n, hn, fun hstab => hns ?_⟩
+          obtain ⟨T, hT⟩ := hstab
+          refine ⟨T, fun t ht => ?_⟩
+          funext y
+          have h4 := congrFun (hT t ht) (y + x)
+          rw [← wave_shift_eq a n x x t (y + x), ← wave_shift_eq a n x x T (y + x)] at h4
+          simpa using h4
+      rw [h3] at h1
+      exact h1
+    · exact (measurable_pi_lambda _ fun z => measurable_pi_apply (z + x)).aemeasurable
+    · have h : MeasurableSet (⋃ n : ℕ, {a : Site d → ℤ |
+          (1 ≤ n ∧ ¬ WaveStabilizable a n (0 : Site d))}) :=
+        MeasurableSet.iUnion fun n =>
+          (measurableSet_le (f := fun _ : Site d → ℤ => (1 : ℕ)) measurable_const
+            measurable_const).inter (measurableSet_not_stabilizable n (0 : Site d))
+      rw [show {a : Site d → ℤ | ∃ n : ℕ, 1 ≤ n ∧ ¬ WaveStabilizable a n (0 : Site d)} =
+          ⋃ n : ℕ, {a : Site d → ℤ | (1 ≤ n ∧ ¬ WaveStabilizable a n (0 : Site d))} from by
+        ext a
+        simp only [Set.mem_setOf_eq, Set.mem_iUnion]]
+      exact h
+  exact (MeasureTheory.ae_all_iff).mpr hshift
+

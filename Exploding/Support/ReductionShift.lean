@@ -1484,6 +1484,54 @@ theorem blockO_disjoint (k : ℕ) (hk : 1 ≤ k) (i j : Site d) (hij : i ≠ j) 
     rw [hij']
   exact mul_left_cancel₀ (by omega : (k : ℤ) ≠ 0) h4
 
+/-- The read of the open block `i` at the shifted coordinate.  The guard is on the OPEN cube
+`cube d k`, because `crossOdo` is frozen outside it, so `GoodCube` reads `η` only there. -/
+noncomputable def blockReadO (k : ℕ) (i : Site d) (η : Site d → ℤ) : Site d → ℤ :=
+  fun x => if x ∈ cube d k then η (x + (k : ℤ) • i) else 0
+
+/-- **The paper's argument, step 5.**  `GoodCube` reads the background only on
+`closureN (cube d k)`, and there `blockReadO k i η` agrees with the shifted background. -/
+theorem goodAt_reads_blockO (k : ℕ) (i : Site d) (η : Site d → ℤ) :
+    GoodAt η k i ↔ GoodCube (blockReadO k i η) k := by
+  rw [GoodAt]
+  refine forall_congr' (fun j => forall_congr' (fun z => imp_congr_right (fun hz => ?_)))
+  rw [show blockReadO k i η
+      = (fun x : Site d => if x ∈ cube d k then η (x + (k : ℤ) • i) else 0)
+      from rfl]
+  rw [crossingTime_congr_of_eq_on_cube k j z (fun x hx => by
+    show η (x + (k : ℤ) • i) = (if x ∈ cube d k then η (x + (k : ℤ) • i) else 0)
+    rw [if_pos hx])]
+
+
+/-- **The frozen odometer is measurable in the background.** -/
+theorem fodo_measurable (S : Set (Site d)) (w0 : Site d → ℤ) (t : ℕ) (x : Site d) :
+    Measurable (fun η : Site d → ℤ => fodo S η w0 t x) := by
+  induction t generalizing x with
+  | zero =>
+    simp only [fodo_zero]
+    exact measurable_const
+  | succ t ih =>
+    simp only [fodo_succ]
+    by_cases hx : x ∈ S
+    · simp only [hx, if_true]
+      exact measurable_const
+    · simp only [hx, if_false]
+      apply Measurable.add (ih x)
+      apply Measurable.ite
+      · apply measurableSet_le measurable_const
+        unfold fconf lap nbrSumZ
+        apply Measurable.add
+        · exact measurable_pi_apply x
+        · apply Measurable.sub
+          · apply Finset.measurable_sum
+            intro i _
+            apply Measurable.add
+            · exact ih (x + unit i)
+            · exact ih (x - unit i)
+          · apply Measurable.mul measurable_const (ih x)
+      · exact measurable_const
+      · exact measurable_const
+
 end ReductionShift
 
 end Exploding

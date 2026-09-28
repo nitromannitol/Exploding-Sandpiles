@@ -457,6 +457,63 @@ theorem aux_nbrSumZ_pos_neighbour (d : ℕ) (u : Site d → ℤ) (x : Site d)
     exact Finset.sum_nonpos fun i _ => add_nonpos (h1 i) (h2 i)
   omega
 
+theorem aux_zeta1_mem (a b : ℤ) : 1 ≤ zeta1 a b ∧ zeta1 a b ≤ 3 := by
+  unfold zeta1
+  split <;> norm_num
+
+theorem aux_lap_zero (d : ℕ) (x : Site d) : lap (fun _ : Site d => (0 : ℤ)) x = 0 := by
+  simp [lap, nbrSumZ]
+
+theorem aux_podo_zero_of_bound (d : ℕ) (s0 : Site d → ℤ) (h : ∀ x, s0 x ≤ 2 * (d : ℤ) - 1) :
+    ∀ t : ℕ, podo s0 t = fun _ => 0 := by
+  intro t
+  induction t with
+  | zero => rfl
+  | succ t ih =>
+      funext x
+      rw [podo_succ]
+      have hp : pconf s0 t x = s0 x := by
+        rw [pconf, ih]
+        simp [lap, nbrSumZ]
+      rw [hp, if_neg (by intro hc; have hx := h x; linarith)]
+      rw [ih]
+      simp
+
+theorem aux_ce_s0_bound (d : ℕ) (hd : 2 ≤ d) (n : ℕ) (hn : n ≤ 2) (x : Site d) :
+    ceEta d x + n * dirac (0 : Site d) x ≤ 2 * (d : ℤ) - 1 := by
+  have h0 : 0 < d := by omega
+  have h1 : 1 < d := by omega
+  have hce : ceEta d x = 2 * ((d : ℤ) - 2) + zeta1 (x ⟨0, h0⟩) (x ⟨1, h1⟩) := by
+    simp [ceEta, h0, h1]
+  by_cases hx : x = 0
+  · subst hx
+    have hz : zeta1 ((0 : Site d) ⟨0, h0⟩) ((0 : Site d) ⟨1, h1⟩) = 1 := by
+      simp only [Pi.zero_apply]
+      norm_num [zeta1]
+    rw [hce, hz, dirac_self]
+    have hnz : (n : ℤ) ≤ 2 := by exact_mod_cast hn
+    nlinarith
+  · rw [hce, dirac_of_ne (z := (0 : Site d)) hx]
+    have hz := (aux_zeta1_mem (x ⟨0, h0⟩) (x ⟨1, h1⟩)).2
+    nlinarith
+
+theorem aux_ce_stab_small (d : ℕ) (hd : 2 ≤ d) (n : ℕ) (hn : n ≤ 2) :
+    Stabilizable (fun x => ceEta d x + n * dirac (0 : Site d) x) := by
+  refine ⟨0, ?_⟩
+  intro t ht
+  have hb : ∀ x : Site d, ceEta d x + n * dirac (0 : Site d) x ≤ 2 * (d : ℤ) - 1 :=
+    fun x => aux_ce_s0_bound d hd n hn x
+  have h := aux_podo_zero_of_bound d (fun x => ceEta d x + n * dirac (0 : Site d) x) hb t
+  have h0 := aux_podo_zero_of_bound d (fun x => ceEta d x + n * dirac (0 : Site d) x) hb 0
+  rw [h, h0]
+
+/-- General form of `aux_podo_mnorm_le` for an arbitrary extra charge `c` at
+the origin, instead of `explosionThreshold (ceEta d)`.  Needed because this
+is proven BEFORE `explosionThreshold (ceEta d) = 3` is available (that fact,
+`aux_ce_threshold`/`aux_ce_threshold'` below, itself rests on
+`aux_ce_not_stab3`).  Identical proof to `aux_podo_mnorm_le`, with
+`explodingPile (ceEta d)` replaced by `fun y => ceEta d y + c * dirac 0 y`
+throughout (the proof never used the specific value of the origin charge). -/
 theorem aux_ce_s0_mnorm_le (d : ℕ) (_hd : 2 ≤ d) (c : ℤ) :
     ∀ t : ℕ, ∀ x : Site d,
       0 < podo (fun y => ceEta d y + c * dirac (0 : Site d) y) t x → mnorm x + 1 ≤ t := by
@@ -537,7 +594,52 @@ theorem aux_ce_relay_not_yet (d : ℕ) (hd : 2 ≤ d) (k : ℕ) :
   have hge := aux_ce_relay_mnorm_ge d hd k
   omega
 
-end Exploding
+
+theorem aux_ce_not_stab3_direct (d : ℕ) (hd : 2 ≤ d) :
+    ¬ Stabilizable (fun x => ceEta d x + 3 * dirac (0 : Site d) x) := by
+  rintro ⟨T, hT⟩
+  have hfire := aux_ce_relay_fires d hd T
+  have hnotyet := aux_ce_relay_not_yet d hd T
+  have heq := hT (T + 2) (by omega)
+  rw [heq, hnotyet] at hfire
+  exact absurd hfire (lt_irrefl 0)
+
+/-- `aux_ce_threshold` without `hFMR`, by the same bookkeeping as
+`aux_ce_sInf_eq`/`aux_ce_threshold`, using `aux_ce_not_stab3_direct` in place
+of `aux_ce_not_stab3 d hd hFMR`. -/
+theorem aux_ce_sInf_eq' (d : ℕ) (hd : 2 ≤ d) :
+    sInf {n : ℕ | 1 ≤ n ∧ ¬ Stabilizable (fun x => ceEta d x + n * dirac (0 : Site d) x)} = 3 := by
+  have h3 : ¬ Stabilizable (fun x => ceEta d x + 3 * dirac (0 : Site d) x) :=
+    aux_ce_not_stab3_direct d hd
+  have h1 : Stabilizable (fun x => ceEta d x + 1 * dirac (0 : Site d) x) :=
+    aux_ce_stab_small d hd 1 (by norm_num)
+  have h2 : Stabilizable (fun x => ceEta d x + 2 * dirac (0 : Site d) x) :=
+    aux_ce_stab_small d hd 2 (by norm_num)
+  have hmem3 : (3 : ℕ) ∈ {n : ℕ | 1 ≤ n ∧ ¬ Stabilizable (fun x => ceEta d x + n * dirac (0 : Site d) x)} :=
+    ⟨by norm_num, h3⟩
+  have hmem : sInf {n : ℕ | 1 ≤ n ∧ ¬ Stabilizable (fun x => ceEta d x + n * dirac (0 : Site d) x)} ∈
+      {n : ℕ | 1 ≤ n ∧ ¬ Stabilizable (fun x => ceEta d x + n * dirac (0 : Site d) x)} :=
+    Nat.sInf_mem ⟨3, hmem3⟩
+  have hge : (1 : ℕ) ≤ sInf {n : ℕ | 1 ≤ n ∧ ¬ Stabilizable (fun x => ceEta d x + n * dirac (0 : Site d) x)} :=
+    hmem.1
+  refine le_antisymm (Nat.sInf_le hmem3) ?_
+  by_contra hc
+  have hclt : sInf {n : ℕ | 1 ≤ n ∧ ¬ Stabilizable (fun x => ceEta d x + n * dirac (0 : Site d) x)} < 3 :=
+    not_le.mp hc
+  have hcase : sInf {n : ℕ | 1 ≤ n ∧ ¬ Stabilizable (fun x => ceEta d x + n * dirac (0 : Site d) x)} = 1 ∨
+      sInf {n : ℕ | 1 ≤ n ∧ ¬ Stabilizable (fun x => ceEta d x + n * dirac (0 : Site d) x)} = 2 := by
+    omega
+  rcases hcase with hc1 | hc2
+  · rw [hc1] at hmem
+    exact hmem.2 h1
+  · rw [hc2] at hmem
+    exact hmem.2 h2
+
+theorem aux_ce_threshold' (d : ℕ) (hd : 2 ≤ d) :
+    explosionThreshold (ceEta d) = 3 := by
+  show sInf {n : ℕ | 1 ≤ n ∧ ¬ Stabilizable (fun x => ceEta d x + n * dirac (0 : Site d) x)} = 3
+  exact aux_ce_sInf_eq' d hd
+
 
 /-- **The counterexample's low-type case, first step.**  A low-type point
 `n•e₁` (`n ≡ 0, 3 mod 4`) has `ceEta = 2d-3`.  Its two row-0 neighbours are
@@ -553,3 +655,237 @@ theorem low_neighbour_high' (n : ℤ) (hn : n % 4 = 3) :
 /-- The low point's total after both contributions is `2d-1`, one short of the
 threshold `2d`. -/
 theorem low_short (d : ℕ) : (2 * (d : ℤ) - 3) + 1 + 1 = 2 * (d : ℤ) - 1 := by ring
+
+/-- Bookkeeping for `aux_ce_stack_le_2D_step`: the two extra `ζ₁`-stacking
+coordinates cancel between `ceEta d x` and `ceEta 2 (proj x) + 2*(d-2)`. -/
+theorem aux_ce_stack_eta_eq (d : ℕ) (hd : 2 ≤ d) (x : Site d) :
+    ceEta d x = ceEta 2 (fun i : Fin 2 => if (i : ℕ) = 0 then x ⟨0, by omega⟩ else x ⟨1, by omega⟩)
+      + 2 * ((d : ℤ) - 2) := by
+  have h0 : 0 < d := by omega
+  have h1 : 1 < d := by omega
+  unfold ceEta
+  simp [h0, h1]
+  ring
+
+/-- The inductive step of Step 3' (exploding.tex:1797-1811), the hard core:
+if the `d`-dim odometer at time `t` is dominated pointwise by the projected
+2D odometer (`ih`), it still is at `t+1`.  PROOF PLAN (paper's own case
+split).  Fix `x`, write `x̄` for its projection.  If `podo d t x < podo 2D t
+x̄` (strict): `podo d (t+1) x ≤ podo d t x + 1 ≤ podo 2D t x̄ ≤ podo 2D (t+1)
+x̄` via `podo_mono_step`, done.  Otherwise `podo d t x = podo 2D t x̄ =: v`
+(equality, from `ih`).  Unfold `pconf d t x = ceEta d x + nbrSumZ (podo d t)
+x - 2d*v` (`pconf`, `lap_eq`) and split the `2d`-term sum `∑_{i:Fin d}` at
+`i = ⟨0,h₀⟩, ⟨1,h₁⟩` versus the remaining `d - 2` indices: for `i ≥ 2` (in the
+`(i:ℕ)` sense), `x ± unit i` projects to `x̄` again (`unit i`'s first two
+coordinates vanish, `aux_unit_apply`), so those `2(d-2)` neighbour terms are
+each `≤ v` by `ih`; for `i = ⟨0,h₀⟩` or `⟨1,h₁⟩`, `x ± unit i` projects to
+`x̄ ± unit (matching Fin 2 index)`, so those `4` terms are bounded by the
+corresponding `podo 2D t` neighbour values via `ih`.  Summing, `nbrSumZ (podo
+d t) x ≤ nbrSumZ (podo 2D t) x̄ + 2*(d-2)*v`.  With `aux_ce_stack_eta_eq`,
+`pconf d t x ≤ ceEta 2 x̄ + 2*(d-2) + nbrSumZ (podo 2D t) x̄ + 2*(d-2)*v -
+2d*v = pconf 2D t x̄ + 2*(d-2) - 2*(d-2)*v ... ` reduces (using `v` common to
+both sides, exactly the paper's algebra at exploding.tex:1801-1811) to
+`pconf d t x ≥ 2d ↔ pconf 2D t x̄ ≥ 4`, so `d`'s firing at `x` forces `2D`'s
+firing at `x̄`, giving `podo d (t+1) x = v + 1 = podo 2D (t+1) x̄` (or `≤` if
+`2D` alone fires without `d` needing to). -/
+theorem aux_ce_stack_le_2D_step (d : ℕ) (hd : 2 ≤ d) (t : ℕ)
+    (ih : ∀ x : Site d, podo (explodingPile (ceEta d)) t x ≤
+      podo (explodingPile (ceEta 2)) t
+        (fun i : Fin 2 => if (i : ℕ) = 0 then x ⟨0, by omega⟩ else x ⟨1, by omega⟩)) :
+    ∀ x : Site d, podo (explodingPile (ceEta d)) (t + 1) x ≤
+      podo (explodingPile (ceEta 2)) (t + 1)
+        (fun i : Fin 2 => if (i : ℕ) = 0 then x ⟨0, by omega⟩ else x ⟨1, by omega⟩) := by
+  have h0 : 0 < d := by omega
+  have h1 : 1 < d := by omega
+  set proj := fun (x : Site d) (i : Fin 2) => if (i : ℕ) = 0 then x ⟨0, h0⟩ else x ⟨1, h1⟩ with hproj
+  have h_proj_add_zero : ∀ x : Site d, proj (x + unit ⟨0, h0⟩) = proj x + unit 0 := by
+    intro x; ext i; fin_cases i <;> simp [proj, unit, Pi.add_apply]
+  have h_proj_sub_zero : ∀ x : Site d, proj (x - unit ⟨0, h0⟩) = proj x - unit 0 := by
+    intro x; ext i; fin_cases i <;> simp [proj, unit, Pi.sub_apply]
+  have h_proj_add_one : ∀ x : Site d, proj (x + unit ⟨1, h1⟩) = proj x + unit 1 := by
+    intro x; ext i; fin_cases i <;> simp [proj, unit, Pi.add_apply]
+  have h_proj_sub_one : ∀ x : Site d, proj (x - unit ⟨1, h1⟩) = proj x - unit 1 := by
+    intro x; ext i; fin_cases i <;> simp [proj, unit, Pi.sub_apply]
+  have h_proj_add_ge2 : ∀ (x : Site d) (i : Fin d), 2 ≤ (i : ℕ) → proj (x + unit i) = proj x := by
+    intro x i hi
+    ext j
+    fin_cases j
+    · simp [proj, unit, Pi.add_apply]
+      by_cases h_eq : (⟨0, h0⟩ : Fin d) = i
+      · exfalso; have h_val : (⟨0, h0⟩ : Fin d).val = i.val := congrArg Fin.val h_eq; simp at h_val; omega
+      · simp [h_eq]
+    · simp [proj, unit, Pi.add_apply]
+      by_cases h_eq : (⟨1, h1⟩ : Fin d) = i
+      · exfalso; have h_val : (⟨1, h1⟩ : Fin d).val = i.val := congrArg Fin.val h_eq; simp at h_val; omega
+      · simp [h_eq]
+  have h_proj_sub_ge2 : ∀ (x : Site d) (i : Fin d), 2 ≤ (i : ℕ) → proj (x - unit i) = proj x := by
+    intro x i hi
+    ext j
+    fin_cases j
+    · simp [proj, unit, Pi.sub_apply]
+      by_cases h_eq : (⟨0, h0⟩ : Fin d) = i
+      · exfalso; have h_val : (⟨0, h0⟩ : Fin d).val = i.val := congrArg Fin.val h_eq; simp at h_val; omega
+      · simp [h_eq]
+    · simp [proj, unit, Pi.sub_apply]
+      by_cases h_eq : (⟨1, h1⟩ : Fin d) = i
+      · exfalso; have h_val : (⟨1, h1⟩ : Fin d).val = i.val := congrArg Fin.val h_eq; simp at h_val; omega
+      · simp [h_eq]
+  have h_dirac_le : ∀ x : Site d, dirac (0 : Site d) x ≤ dirac (0 : Site 2) (proj x) := by
+    intro x
+    by_cases hx : x = 0
+    · subst hx
+      have h_proj0 : proj (0 : Site d) = (0 : Site 2) := by
+        ext i; fin_cases i <;> simp [proj]
+      simp [dirac, h_proj0]
+    · rw [dirac_of_ne hx]
+      by_cases hproj0 : proj x = (0 : Site 2)
+      · rw [hproj0]; simp [dirac]
+      · simp [dirac_of_ne hproj0]
+  have h_eta_eq : ∀ x : Site d, ceEta d x = ceEta 2 (proj x) + 2 * ((d : ℤ) - 2) := by
+    intro x
+    unfold ceEta zeta1 proj
+    simp [h0, h1]
+    ring
+  intro x
+  set s0_d := explodingPile (ceEta d) with hs0_d
+  set s0_2 := explodingPile (ceEta 2) with hs0_2
+  set v := podo s0_d t with hv
+  set v2 := podo s0_2 t with hv2
+  have h_ih : v x ≤ v2 (proj x) := ih x
+  -- Key combinatorial inequality for nbrSumZ
+  have h_nbrSumZ : nbrSumZ v x ≤ nbrSumZ v2 (proj x) + 2 * ((d : ℤ) - 2) * v2 (proj x) := by
+    unfold nbrSumZ
+    have h_bound : ∀ i : Fin d, v (x + unit i) + v (x - unit i) ≤
+        v2 (proj (x + unit i)) + v2 (proj (x - unit i)) := by
+      intro i
+      have h1 := ih (x + unit i)
+      have h2 := ih (x - unit i)
+      linarith
+    have h_sum_le : (∑ i : Fin d, (v (x + unit i) + v (x - unit i))) ≤
+        (∑ i : Fin d, (v2 (proj (x + unit i)) + v2 (proj (x - unit i)))) :=
+      Finset.sum_le_sum fun i _ => h_bound i
+    have h_rhs_eq : (∑ i : Fin d, (v2 (proj (x + unit i)) + v2 (proj (x - unit i)))) =
+        (∑ j : Fin 2, (v2 (proj x + unit j) + v2 (proj x - unit j))) + 2 * ((d : ℤ) - 2) * v2 (proj x) := by
+      let f (i : Fin d) : ℤ := v2 (proj (x + unit i)) + v2 (proj (x - unit i))
+      let A : Finset (Fin d) := {⟨0, h0⟩, ⟨1, h1⟩}
+      have h_split : (∑ i : Fin d, f i) = (∑ i ∈ A, f i) + (∑ i ∈ Aᶜ, f i) :=
+        (Finset.sum_add_sum_compl (s := A) (f := f)).symm
+      have h_A_compl_eq : Aᶜ = (Finset.univ : Finset (Fin d)) \ A := by
+        ext i; simp [A]
+      rw [h_split, h_A_compl_eq]
+      have h_sum_A : (∑ i ∈ A, f i) = (∑ j : Fin 2, (v2 (proj x + unit j) + v2 (proj x - unit j))) := by
+        unfold A
+        have h0sum : f ⟨0, h0⟩ = v2 (proj x + unit 0) + v2 (proj x - unit 0) := by
+          unfold f; simp [h_proj_add_zero x, h_proj_sub_zero x]
+        have h1sum : f ⟨1, h1⟩ = v2 (proj x + unit 1) + v2 (proj x - unit 1) := by
+          unfold f; simp [h_proj_add_one x, h_proj_sub_one x]
+        simp [Finset.sum_insert, Finset.sum_singleton, h0sum, h1sum, Fin.sum_univ_two]
+      rw [h_sum_A]
+      have h_sum_compl : (∑ i ∈ ((Finset.univ : Finset (Fin d)) \ A), f i) =
+          2 * ((d : ℤ) - 2) * v2 (proj x) := by
+        have h_term : ∀ i, i ∈ ((Finset.univ : Finset (Fin d)) \ A) → f i = 2 * v2 (proj x) := by
+          intro i hi
+          have hi_not_A : i ∉ A := (Finset.mem_sdiff.mp hi).2
+          unfold A at hi_not_A
+          have hi_val_ge2 : 2 ≤ i.val := by
+            by_contra h_lt2
+            have h_val_lt2 : i.val < 2 := by omega
+            have h_val_cases : i.val = 0 ∨ i.val = 1 := by omega
+            rcases h_val_cases with h0val | h1val
+            · have heq : i = ⟨0, h0⟩ := Fin.ext h0val
+              subst heq; exact hi_not_A (by simp)
+            · have heq : i = ⟨1, h1⟩ := Fin.ext h1val
+              subst heq; exact hi_not_A (by simp)
+          unfold f
+          rw [h_proj_add_ge2 x i hi_val_ge2, h_proj_sub_ge2 x i hi_val_ge2]
+          rw [two_mul]
+        rw [Finset.sum_congr rfl h_term]
+        simp [Finset.sum_const]
+        have h_card : ((Finset.univ : Finset (Fin d)) \ A).card = d - 2 := by
+          have hA_sub_univ : A ⊆ Finset.univ := by simp [A]
+          have h_card_eq := Finset.card_sdiff_add_card_eq_card hA_sub_univ
+          have h_card_univ : (Finset.univ : Finset (Fin d)).card = d := by simp
+          have h_card_A : A.card = 2 := by simp [A]
+          rw [h_card_univ, h_card_A] at h_card_eq
+          omega
+        rw [h_card]
+        have hd2 : 2 ≤ d := hd
+        simp [Nat.cast_sub hd2, Nat.cast_ofNat]
+        ring
+      rw [h_sum_compl]
+    rw [← h_rhs_eq]
+    exact h_sum_le
+  have h_s0 : s0_d x ≤ s0_2 (proj x) + 2 * ((d : ℤ) - 2) := by
+    rw [hs0_d, hs0_2]
+    simp only [explodingPile]
+    have h_eta := h_eta_eq x
+    have h_dirac := h_dirac_le x
+    have h_thresh_d : (explosionThreshold (ceEta d) : ℤ) = 3 := by
+      exact mod_cast aux_ce_threshold' d hd
+    have h_thresh_2 : (explosionThreshold (ceEta 2) : ℤ) = 3 := by
+      have h2d : 2 ≤ 2 := by omega
+      exact mod_cast aux_ce_threshold' 2 h2d
+    rw [h_thresh_d, h_thresh_2]
+    linarith
+  rw [podo_succ s0_d t x, podo_succ s0_2 t (proj x)]
+  rw [← hv, ← hv2]
+  -- Goal: v x + (if 2*d ≤ pconf s0_d t x then 1 else 0) ≤ v2 (proj x) + (if 2*2 ≤ pconf s0_2 t (proj x) then 1 else 0)
+  by_cases h_eq : v x = v2 (proj x)
+  · have h_pconf : pconf s0_d t x ≤ pconf s0_2 t (proj x) + 2 * ((d : ℤ) - 2) := by
+      rw [pconf, pconf]
+      simp only [lap_eq]
+      rw [← hv, ← hv2]
+      have h_nbr := h_nbrSumZ
+      have h_s0' := h_s0
+      rw [← h_eq] at h_nbr
+      -- h_nbr: nbrSumZ v x ≤ nbrSumZ v2 (proj x) + 2*(d-2)*v x
+      -- h_s0': s0_d x ≤ s0_2 (proj x) + 2*(d-2)
+      rw [← h_eq]
+      -- Goal: s0_d x + (nbrSumZ v x - 2*d*v x) ≤ s0_2 (proj x) + (nbrSumZ v2 (proj x) - 4*v x) + 2*(d-2)
+      have h_sum : s0_d x + nbrSumZ v x ≤ s0_2 (proj x) + nbrSumZ v2 (proj x) + 2 * ((d : ℤ) - 2) + 2 * ((d : ℤ) - 2) * v x := by
+        linarith
+      calc
+        s0_d x + (nbrSumZ v x - 2 * (d : ℤ) * v x) = (s0_d x + nbrSumZ v x) - 2 * (d : ℤ) * v x := by ring
+        _ ≤ (s0_2 (proj x) + nbrSumZ v2 (proj x) + 2 * ((d : ℤ) - 2) + 2 * ((d : ℤ) - 2) * v x) - 2 * (d : ℤ) * v x :=
+          sub_le_sub_right h_sum (2 * (d : ℤ) * v x)
+        _ = s0_2 (proj x) + (nbrSumZ v2 (proj x) - 4 * v x) + 2 * ((d : ℤ) - 2) := by ring
+    rw [h_eq]
+    by_cases h_fire : 2 * d ≤ pconf s0_d t x
+    · have h_fire_2d : 4 ≤ pconf s0_2 t (proj x) := by
+        omega
+      simp [h_fire, h_fire_2d]
+    · have hpos : 0 ≤ (if 4 ≤ pconf s0_2 t (proj x) then (1 : ℤ) else 0) := by
+        split <;> norm_num
+      rw [if_neg h_fire]
+      have htemp := add_le_add_right hpos (v2 (proj x))
+      simpa [add_comm, show (2 : ℤ) * 2 = (4 : ℤ) by norm_num] using htemp
+  · have h_lt : v x < v2 (proj x) := lt_of_le_of_ne h_ih h_eq
+    have h_bound : v x + 1 ≤ v2 (proj x) := by omega
+    have h2c : (2 : ℤ) * 2 = 2 * ((2 : ℕ) : ℤ) := by norm_num
+    by_cases h_fire_2d : 2 * ((2 : ℕ) : ℤ) ≤ pconf s0_2 t (proj x)
+    · rw [if_pos h_fire_2d]
+      by_cases h_fire_d : 2 * d ≤ pconf s0_d t x
+      · rw [if_pos h_fire_d]; omega
+      · rw [if_neg h_fire_d]
+        omega
+    · rw [if_neg h_fire_2d]
+      by_cases h_fire_d : 2 * d ≤ pconf s0_d t x
+      · rw [if_pos h_fire_d]; omega
+      · rw [if_neg h_fire_d]
+        omega
+
+/-- Step 3' (exploding.tex:1767-1790), medium, self-contained in the paper
+(not a gap): the `d`-dimensional odometer is dominated by the 2D odometer of
+the projection, `v_t(x) ≤ v_t^{2D}(x₀, x₁)`, by induction on `t` using that
+the `d - 2` extra directions contribute `≤ 0` to the Laplacian at a site where
+equality holds.  Trivial for `d = 2`.  Carved into a base case (`t = 0`, both
+sides `0`) and `aux_ce_stack_le_2D_step` (the inductive step). -/
+theorem aux_ce_stack_le_2D (d : ℕ) (hd : 2 ≤ d) (t : ℕ) (x : Site d) :
+    podo (explodingPile (ceEta d)) t x ≤
+      podo (explodingPile (ceEta 2)) t
+        (fun i : Fin 2 => if (i : ℕ) = 0 then x ⟨0, by omega⟩ else x ⟨1, by omega⟩) := by
+  induction t generalizing x with
+  | zero => simp
+  | succ t ih => exact aux_ce_stack_le_2D_step d hd t ih x
+
+end Exploding

@@ -48,6 +48,21 @@ theorem wave_shift (η : Site d → ℤ) (N : ℕ) (z c : Site d) :
       congr 1
       abel
 
+/-- The wave at an arbitrary centre, read in the coordinates of that centre. -/
+theorem wave_centre_eq (η : Site d → ℤ) (N : ℕ) (zc : Site d) (t : ℕ) (w : Site d) :
+    wave η N zc t w = wave (fun y => η (y + zc)) N (0 : Site d) t (w - zc) := by
+  have h := wave_shift (fun y => η (y + zc)) N (0 : Site d) zc t (w - zc)
+  have h1 : (fun y : Site d => (fun y => η (y + zc)) (y - zc)) = η := by
+    funext y
+    show η (y - zc + zc) = η y
+    rw [show y - zc + zc = y from by abel]
+  rw [h1] at h
+  have h2 : (0 : Site d) + zc = zc := zero_add zc
+  rw [h2] at h
+  have h3 : w - zc + zc = w := by abel
+  rw [h3] at h
+  exact h
+
 /-- The wave dominates the frozen odometer of a good cube once the frozen line
 is already fired. -/
 theorem crossOdo_le_wave {d : ℕ} (hd0 : (0 : ℤ) < 2 * (d : ℤ))

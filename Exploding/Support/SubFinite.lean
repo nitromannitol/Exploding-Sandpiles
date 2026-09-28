@@ -536,6 +536,44 @@ theorem aux_finite_exploding_propagate_walk {d : ℕ} (η : Site d → ℤ) (hlo
   exact aux_finite_exploding_walk_prop η hlow hhigh N k zc S hS hstep ⟨i, hiS⟩ ⟨y, hyS⟩ p0 t hcover
 
 
+/-- **The walk propagation avoiding a forbidden cube.**  Same as
+`aux_finite_exploding_propagate_walk`, but the walk is required to avoid a fixed
+macroscopic site `m`, and `hstep` receives `j ≠ m`.  The invariant is a property
+of the walk's *prefix* (`m ∉ p.support`), which the induction on the walk's
+length preserves. -/
+theorem aux_finite_exploding_propagate_walk_avoid {d : ℕ} (η : Site d → ℤ)
+    (_hlow : ∀ x, 0 ≤ η x) (_hhigh : ∀ x, η x ≤ 2 * (d : ℤ) - 1) (N k : ℕ) (zc : Site d)
+    (S : Set (Site d)) (hS : S ⊆ goodSites η k) (m : Site d)
+    (hstep : ∀ (i j : Site d), j ∈ S → j ≠ m → GoodAt η k j → (lattice d).Adj i j → ∀ t : ℕ,
+      (∀ x ∈ cube d k, 0 < wave η N zc t (x + (k : ℤ) • i)) →
+      ∃ t' : ℕ, t ≤ t' ∧ ∀ x ∈ cube d k, 0 < wave η N zc t' (x + (k : ℤ) • j))
+    (i y : Site d) (hreach : y ∈ componentIn S i) (t : ℕ)
+    (hcover : ∀ x ∈ cube d k, 0 < wave η N zc t (x + (k : ℤ) • i))
+    (havoid : ∀ (p : ((lattice d).induce S).Walk ⟨i, hreach.1⟩ ⟨y, hreach.2.1⟩),
+      ∀ w ∈ p.support, (w : Site d) ≠ m) :
+    ∃ t' : ℕ, ∀ x ∈ cube d k, 0 < wave η N zc t' (x + (k : ℤ) • y) := by
+  unfold componentIn at hreach
+  obtain ⟨hiS, hyS, hreach'⟩ := hreach
+  obtain ⟨p0⟩ := hreach'
+  -- the walk's vertices are all in `S`, and the invariant `m ∉ p.support` is
+  -- preserved by the induction on the walk's length
+  have hwalk : ∀ (u v : S) (p : ((lattice d).induce S).Walk u v),
+      (∀ w ∈ p.support, (w : Site d) ≠ m) →
+      ∀ t : ℕ, (∀ z ∈ cube d k, 0 < wave η N zc t (z + (k : ℤ) • (u : Site d))) →
+        ∃ t' : ℕ, ∀ z ∈ cube d k, 0 < wave η N zc t' (z + (k : ℤ) • (v : Site d)) := by
+    intro u v p
+    refine p.recOn ?_ ?_
+    · intro w _ t ht
+      exact ⟨t, ht⟩
+    · intro u v w h p ih hm t ht
+      rw [SimpleGraph.Walk.support_cons] at hm
+      have hvgood : GoodAt η k (v : Site d) := hS v.2
+      have hadj : (lattice d).Adj (u : Site d) (v : Site d) := SimpleGraph.induce_adj.mp h
+      have hv_ne : (v : Site d) ≠ m := hm v (by simp)
+      obtain ⟨t', -, hcov'⟩ := hstep (u : Site d) (v : Site d) v.2 hv_ne hvgood hadj t ht
+      exact ih (fun w hw => hm w (by simp [hw])) t' hcov'
+  exact hwalk ⟨i, hiS⟩ ⟨y, hyS⟩ p0 (havoid p0) t hcover
+
 /-- `aux_finite_exploding_propagate`: once the `N`-wave's support entirely
 covers a good macroscopic cube `Q_k(i)` lying in the infinite cluster of good
 cubes, the `N`-wave never stabilizes.

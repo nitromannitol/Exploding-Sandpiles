@@ -1051,7 +1051,7 @@ theorem aux_ce_fast (d : ℕ) (hd : 2 ≤ d) (n : ℕ) :
 
 
 def cylNbrSum (u : ℤ × Fin 4 → ℤ) (x : ℤ × Fin 4) : ℤ :=
-  (if x.1 = 0 then 2 * u x else u (x.1 - 1, x.2) + u (x.1 + 1, x.2)) +
+  (if x.1 = 0 then u (1, x.2) + u x else u (x.1 - 1, x.2) + u (x.1 + 1, x.2)) +
     (u (x.1, x.2 + 1) + u (x.1, x.2 - 1))
 
 def cylLap (u : ℤ × Fin 4 → ℤ) (x : ℤ × Fin 4) : ℤ :=
@@ -1060,13 +1060,13 @@ def cylLap (u : ℤ × Fin 4 → ℤ) (x : ℤ × Fin 4) : ℤ :=
 def cylOdo (s0 : ℤ × Fin 4 → ℤ) : ℕ → ℤ × Fin 4 → ℤ
   | 0 => fun _ => 0
   | t + 1 => fun x =>
-      cylOdo s0 t x + (if 8 ≤ s0 x + cylLap (cylOdo s0 t) x then 1 else 0)
+      cylOdo s0 t x + (if 4 ≤ s0 x + cylLap (cylOdo s0 t) x then 1 else 0)
 
 @[simp] theorem cylOdo_zero (s0 : ℤ × Fin 4 → ℤ) : cylOdo s0 0 = fun _ => 0 := rfl
 
 theorem cylOdo_succ (s0 : ℤ × Fin 4 → ℤ) (t : ℕ) (x : ℤ × Fin 4) :
     cylOdo s0 (t + 1) x = cylOdo s0 t x +
-      (if 8 ≤ s0 x + cylLap (cylOdo s0 t) x then 1 else 0) := rfl
+      (if 4 ≤ s0 x + cylLap (cylOdo s0 t) x then 1 else 0) := rfl
 
 /-- The cylinder odometer is nondecreasing in time. -/
 theorem cylOdo_mono (s0 : ℤ × Fin 4 → ℤ) (t : ℕ) (x : ℤ × Fin 4) :

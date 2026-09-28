@@ -4,6 +4,8 @@ toy law, the macroscopic cube index, and the wave's own mass bound.
 -/
 import Exploding.Support.Vocab
 import Exploding.Support.SubPen
+import Exploding.Frozen.FiniteExploding
+import Exploding.Frozen.Renormalization
 
 open Exploding LatticeProb MeasureTheory
 
@@ -130,6 +132,59 @@ theorem aux_pub_reach_wave_le_n {d : ℕ} (η : Site d → ℤ)
 /-- **The backward chase.**  If the wave (mass `n`, centre `0`) is never positive
 at a micro site whose macro index lies in `Cinf`, then every micro site it is ever
 positive at has its macro index inside `componentIn Cinfᶜ (macroIdx k 0)`. -/
+theorem aux_pub_reach_confined_stabilizable {d : ℕ} (η : Site d → ℤ)
+    (hlow : ∀ x, 0 ≤ η x) (hhigh : ∀ x, η x ≤ 2 * (d : ℤ) - 1) (hd0 : (0 : ℤ) < 2 * (d : ℤ))
+    (n : ℕ) (z : Site d) (V : Set (Site d)) (hV : V.Finite)
+    (hconf : ∀ t x, x ∉ V → wave η n z t x = 0) :
+    WaveStabilizable η n z := by
+  have hper : ∀ x : Site d, ∃ Tx : ℕ, ∀ t : ℕ, Tx ≤ t → wave η n z t x = wave η n z Tx x := fun x => by
+    obtain ⟨ub, hub, hmax⟩ := Int.exists_greatest_of_bdd
+      (P := fun k : ℤ => ∃ t : ℕ, wave η n z t x = k)
+      ⟨(n : ℤ), fun k hk => by
+        obtain ⟨t, ht⟩ := hk
+        rw [← ht]
+        exact aux_pub_reach_wave_le_n η hhigh n z t x⟩
+      ⟨wave η n z 0 x, 0, rfl⟩
+    obtain ⟨Ts, hsT⟩ := hub
+    exact ⟨Ts, fun t ht => le_antisymm
+      (calc wave η n z t x ≤ ub := hmax _ ⟨t, rfl⟩
+        _ = wave η n z Ts x := hsT.symm)
+      (wave_mono_time η hlow hd0 n z ht x)⟩
+  let T : Site d → ℕ := fun x => Classical.choose (hper x)
+  have hT : ∀ x : Site d, ∀ t : ℕ, T x ≤ t → wave η n z t x = wave η n z (T x) x :=
+    fun x => Classical.choose_spec (hper x)
+  have hsup : ∀ x ∈ hV.toFinset, T x ≤ hV.toFinset.sup T :=
+    fun x hx => Finset.le_sup (f := T) hx
+  refine ⟨hV.toFinset.sup T, fun t ht => ?_⟩
+  funext x
+  by_cases hx : x ∈ V
+  · have hxfin : x ∈ hV.toFinset := hV.mem_toFinset.mpr hx
+    have h1 : T x ≤ t := le_trans (hsup x hxfin) ht
+    refine le_antisymm ?_ (wave_mono_time η hlow hd0 n z ht x)
+    rw [hT x t h1]
+    exact wave_mono_time η hlow hd0 n z (hsup x hxfin) x
+  · rw [hconf t x hx, hconf (hV.toFinset.sup T) x hx]
+
+
+/-- **New, the backward chase.** If the wave (mass `n`, centre `0`) is never
+positive at a micro site whose macro index lies in `Cinf`, then every micro
+site it is ever positive at has its macro index inside `componentIn Cinfᶜ
+(macroIdx k 0)`. Proof: induction on `t`. At `t = 0` only `x = 0` is positive
+(`wave_zero`), and `macroIdx k 0 ∈ componentIn Cinfᶜ (macroIdx k 0)` by
+reflexivity of `Reachable`, once `macroIdx k 0 ∈ Cinfᶜ` is known from `havoid`
+applied at `t := 1`, `x := 0` (`wave_at_centre` gives `wave _ n 0 1 0 = n > 0`).
+At `t + 1`: for `x = 0` the same argument applies at every `t`; for `x ≠ 0`
+with `wave η n 0 (t+1) x > 0`, either `wave η n 0 t x > 0` already (use the
+inductive hypothesis directly) or it is `0`, and unfolding `wave_of_ne` plus
+`Int.le_ediv_iff_mul_le` and `hhigh` forces `0 < nbrSumZ (wave η n 0 t) x`,
+so `exists_adj_pos_of_nbrSumZ_pos` (`Exploding/Support/Wave.lean`, needs
+`wave_nonneg`) gives an adjacent `y` with `wave η n 0 t y > 0`; by the
+inductive hypothesis `macroIdx k y ∈ componentIn Cinfᶜ (macroIdx k 0)`, and
+`macroIdx_adj` plus `havoid` at `(t+1, x)` (giving `macroIdx k x ∈ Cinfᶜ`)
+extend the reachability by one edge (`SimpleGraph.induce_adj`,
+`SimpleGraph.Adj.reachable`, `SimpleGraph.Reachable.trans`, exactly the
+technique named in `lem-finite-exploding-dec/node.lean`'s
+`aux_finite_exploding_box_connected`) to `macroIdx k x`. -/
 theorem aux_pub_reach_macro_reach {d : ℕ} (η : Site d → ℤ) (hlow : ∀ x, 0 ≤ η x)
     (hhigh : ∀ x, η x ≤ 2 * (d : ℤ) - 1) (hd0 : (0 : ℤ) < 2 * (d : ℤ))
     (k : ℕ) (hk : 1 ≤ k) (n : ℕ) (hn : 1 ≤ n) (Cinf : Set (Site d))
@@ -358,6 +413,102 @@ theorem aux_pub_nearest (d : ℕ) (hd : 2 ≤ d) (k0 : ℕ) (η : Site d → ℤ
     have hraycomp := aux_pub_nearest_ray Cinfᶜ x (⟨0, hi0⟩ : Fin d) N hray
     have hpig := aux_pub_nearest_pigeonhole Cinfᶜ x (⟨0, hi0⟩ : Fin d) hfin N hraycomp
     omega
+
+
+theorem aux_pub_reach_preimage_finite {d : ℕ} (k : ℕ) (hk : 1 ≤ k) (M : Set (Site d))
+    (hM : M.Finite) : {x : Site d | macroIdx k x ∈ M}.Finite := by
+  have hfin : (⋃ p ∈ M, {x : Site d | macroIdx k x = p}).Finite :=
+    Set.Finite.biUnion (s := M) hM
+      (t := fun p : Site d => {x : Site d | macroIdx k x = p})
+      (fun p _ => Set.Finite.subset
+        (Set.Finite.pi (t := fun j : Fin d => Set.Icc ((k : ℤ) * p j + 1) ((k : ℤ) * p j + (k : ℤ)))
+          (fun j => Set.finite_Icc _ _))
+        (fun x hx => by
+          rw [Set.mem_pi]
+          intro j _
+          rw [Set.mem_Icc]
+          have hq : (x j - 1) / (k : ℤ) = p j := congrFun hx j
+          have hh := Int.emod_add_mul_ediv (x j - 1) (k : ℤ)
+          rw [hq] at hh
+          have hr0 := Int.emod_nonneg (x j - 1) (by omega : (k : ℤ) ≠ 0)
+          have hr1 := Int.emod_lt_of_pos (x j - 1) (by omega : (0 : ℤ) < (k : ℤ))
+          constructor <;> linarith))
+  refine hfin.subset ?_
+  intro x hx
+  rw [Set.mem_iUnion]
+  exact ⟨macroIdx k x, by rw [Set.mem_iUnion]; exact ⟨hx, rfl⟩⟩
+
+
+/-- On the a.s. event of `renormalization_properties`, the last wave at the
+origin reaches some site of the infinite good-cube cluster within a constant
+(`η`-dependent) number of steps.  Restated (this lemma is not itself
+FROZEN) to name a witness point `x0` of the good cube rather than insisting on
+its scaled corner `k0•z`: getting from "some point of `Q_{k0}(z)` is touched"
+to "the corner `k0•z` is touched" needs the same crossing-time/domino
+machinery as `aux_pub_far` below, and `aux_pub_near`/`aux_pub_far`/
+`aux_pub_core` compose just as well from this shape. -/
+theorem aux_pub_reach (d : ℕ) (hd : 2 ≤ d) (p : ℝ) (hp : 0 < p) (hp1 : p < 1)
+    (hLSSB : Exploding.External.LiggettSchonmannStaceyBoundedDegree) (hHole : Exploding.External.MathieuHoleVolume)
+    (hChem : Exploding.External.AntalPisztoraChemicalDistance) :
+    ∀ᵐ η ∂(toyLaw d p), ∃ k0 : ℕ, 1 ≤ k0 ∧ ∃ Cinf : Set (Site d), IsInfiniteConnectedGoodSet η k0 Cinf ∧
+      ∃ Cη : ℕ, 1 ≤ Cη ∧ ∃ z : Site d, z ∈ Cinf ∧ ∃ x0 : Site d, x0 ∈ cube d k0 ∧
+        lastArrival η (0 : Site d) (x0 + (k0 : ℤ) • z) ≤ (Cη : ℕ∞) := by
+  have hd2 : (2 : ℤ) ≤ (d : ℤ) := by exact_mod_cast hd
+  have hd0 : (0 : ℤ) < 2 * (d : ℤ) := by linarith
+  obtain ⟨kb, hkb⟩ := Exploding.Frozen.renormalization_properties d hd p hp hp1 hLSSB hHole hChem
+  set k0 := max kb 1 with hk0def
+  have hk0 : 1 ≤ k0 := le_max_right kb 1
+  obtain ⟨c, Cr, hc, hCr, hae⟩ := hkb k0 (le_max_left kb 1)
+  filter_upwards [hae, aux_pub_reach_eta_bounds d p hp hp1,
+      Exploding.Frozen.finite_exploding d hd p hp hp1 hLSSB hHole hChem] with η hη hetabd hexplode
+  obtain ⟨Cinf, hCinf, ⟨n0, hn0⟩, -⟩ := hη
+  have hlow : ∀ x, 0 ≤ η x := fun x => by linarith [(hetabd x).1]
+  have hhigh : ∀ x, η x ≤ 2 * (d : ℤ) - 1 := fun x => (hetabd x).2
+  have hMmem := Nat.sInf_mem hexplode
+  set n := waveThreshold η (0 : Site d) with hndef
+  have hn1 : 1 ≤ n := hMmem.1
+  have hnstab : ¬ WaveStabilizable η n (0 : Site d) := hMmem.2
+  set i0 := macroIdx k0 (0 : Site d) with hi0def
+  have hexists : ∃ t x, 0 < wave η n (0 : Site d) t x ∧ macroIdx k0 x ∈ Cinf := by
+    by_contra hnone
+    push Not at hnone
+    have hi0pos : (0 : ℤ) < wave η n (0 : Site d) 1 (0 : Site d) := by
+      rw [wave_at_centre]; exact_mod_cast hn1
+    have hi0notin : i0 ∉ Cinf := hnone 1 (0 : Site d) hi0pos
+    have hi0nn : 0 ≤ mnorm i0 := Finset.sum_nonneg fun l _ => abs_nonneg (i0 l)
+    have hi0cast : ((mnorm i0).toNat : ℤ) = mnorm i0 := Int.toNat_of_nonneg hi0nn
+    set N1 := max n0 (mnorm i0).toNat with hN1def
+    have hN1n0 : n0 ≤ N1 := le_max_left _ _
+    have hi0cent : i0 ∈ (cent d N1 : Set (Site d)) := by
+      intro l
+      have h1 : |i0 l| ≤ mnorm i0 := Finset.single_le_sum (fun j _ => abs_nonneg (i0 j)) (Finset.mem_univ l)
+      have h2 : mnorm i0 ≤ (N1 : ℤ) := by
+        rw [← hi0cast]; exact_mod_cast le_max_right n0 (mnorm i0).toNat
+      linarith
+    obtain ⟨hfin, -⟩ := hn0 N1 hN1n0 i0 hi0cent hi0notin
+    apply hnstab
+    apply aux_pub_reach_confined_stabilizable η hlow hhigh hd0 n (0 : Site d)
+      {x : Site d | macroIdx k0 x ∈ componentIn Cinfᶜ i0}
+      (aux_pub_reach_preimage_finite k0 hk0 _ hfin)
+    intro t x hxV
+    by_contra hxpos
+    have hxpos' : 0 < wave η n (0 : Site d) t x :=
+      lt_of_le_of_ne (wave_nonneg η hlow n 0 t x) (Ne.symm hxpos)
+    exact hxV (aux_pub_reach_macro_reach η hlow hhigh hd0 k0 hk0 n hn1 Cinf hnone t x hxpos')
+  obtain ⟨t, x, htx, hxCinf⟩ := hexists
+  refine ⟨k0, hk0, Cinf, hCinf, max t 1, le_max_right t 1, macroIdx k0 x, hxCinf,
+    x - (k0 : ℤ) • macroIdx k0 x, mem_cube_of_macroIdx k0 hk0 x, ?_⟩
+  have heq : x - (k0 : ℤ) • macroIdx k0 x + (k0 : ℤ) • macroIdx k0 x = x := by abel
+  rw [heq]
+  have hmono := wave_mono_time η hlow hd0 n (0 : Site d) (le_max_left t 1) x
+  have hpos : 0 < wave η n (0 : Site d) (max t 1) x := lt_of_lt_of_le htx hmono
+  apply sInf_le
+  refine ⟨max t 1, rfl, le_max_right t 1, ?_⟩
+  show 0 < lastWave η (0 : Site d) (max t 1) x
+  rw [lastWave, ← hndef]
+  exact hpos
+
+/-! ### (b) every site has a nearby good cube -/
 
 
 end Exploding

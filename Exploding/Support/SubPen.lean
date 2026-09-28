@@ -1524,12 +1524,12 @@ theorem aux_penultimate_side_bound_one {d : ℕ} (hd : 2 ≤ d) (η : Site d →
     False := by
   have hk1 : (1 : ℤ) ≤ (k : ℤ) := by exact_mod_cast hk
   set v0 : ℤ := (zc dir - 1) / (k : ℤ) with hv0def
-  have hlo' : a ≤ (zc dir - 1) / (k : ℤ) := hlo
-  have hhi' : (zc dir - 1) / (k : ℤ) ≤ b := hhi
+  -- the excluded interval is the cube index, intersected with the run
   obtain ⟨v, hva, hvb, hvCinf, hvout⟩ :=
     aux_penultimate_overlap_line_meets_cinf_outside Cinf n0 hcomp n hn
       (fun j => (zc j - 1) / (k : ℤ)) dir a b hin
-      ((zc dir - 1) / (k : ℤ)) ((zc dir - 1) / (k : ℤ)) hlo' hhi' le_rfl hlen
+      ((zc dir - 1) / (k : ℤ)) ((zc dir - 1) / (k : ℤ))
+      hlo hhi le_rfl hlen
   set i : Site d := fun j => if j = dir then v else (zc j - 1) / (k : ℤ) with hidef
   have hi_ne : i ≠ macroIdx k zc := by
     intro hcon

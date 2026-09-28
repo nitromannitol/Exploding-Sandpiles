@@ -1027,9 +1027,68 @@ theorem waveTerminal_eq_zero_far {d : ℕ} (η : Site d → ℤ) (hlow : ∀ x, 
   rw [hspec]
   exact aux_finite_exploding_speed η hlow hhigh n z T x hx
 
-/-- **The penultimate propagation half, with the line hypothesis.**  If the
-penultimate wave is positive on a line of the good cube `Q_k(i)` with `i ∈ Cinf`,
-then the last wave reaches the whole cluster, contradicting its non-stabilizability. -/
+/-- **The geometric step.**  Let `zc` be the fixed other-coordinates of a run of
+positivity of the penultimate wave in direction `dir`, and let `i ∈ Cinf` be a
+cube index whose cube the run passes through, in the sense that `i` agrees with
+`zc` in the other coordinates after the cube-index change of variables
+`i l = (zc l - 1) / k` and the run's `dir`-coordinates `[1 + k * i dir, k + k * i dir]`
+lie inside the run `[a, b]`.  Then the line of `Q_k(i)` in direction `dir` based
+at the cube's lower corner maps into the run. -/
+theorem aux_penultimate_run_meets_cube {d : ℕ} (η : Site d → ℤ)
+    (k : ℕ) (hk : 1 ≤ k) (zc : Site d) (dir : Fin d) (a b : ℤ)
+    (i : Site d)
+    (hi : ∀ l, l ≠ dir → i l = (zc l - 1) / (k : ℤ))
+    (hlo : a ≤ 1 + (k : ℤ) * i dir)
+    (hhi : (k : ℤ) + (k : ℤ) * i dir ≤ b)
+    (hline : ∀ v : ℤ, a ≤ v → v ≤ b →
+      0 < penultimateWave η zc (fun j => if j = dir then v else zc j)) :
+    ∃ z : Site d, z ∈ cube d k ∧
+      ∀ w ∈ line d k dir z, 0 < penultimateWave η zc (w + (k : ℤ) • i) := by
+  have hk1 : (1 : ℤ) ≤ (k : ℤ) := by exact_mod_cast hk
+  have hk0 : (0 : ℤ) < (k : ℤ) := by linarith
+  -- the base point: the cube's lower corner in the other coordinates
+  refine ⟨fun l => if l = dir then 1 else ((zc l - 1) % (k : ℤ)) + 1, ?_, ?_⟩
+  · -- the base point lies in the cube
+    intro l
+    simp only
+    by_cases hl : l = dir
+    · rw [if_pos hl]; exact ⟨le_refl 1, hk1⟩
+    · rw [if_neg hl]
+      have hmod0 : 0 ≤ (zc l - 1) % (k : ℤ) := Int.emod_nonneg _ (by linarith)
+      have hmodk : (zc l - 1) % (k : ℤ) < (k : ℤ) := Int.emod_lt_of_pos _ hk0
+      constructor <;> linarith
+  · -- the line maps into the run
+    intro w hw
+    -- the other coordinates of `w + k•i` are `zc`'s
+    have hother : ∀ l, l ≠ dir → (w + (k : ℤ) • i) l = zc l := by
+      intro l hl
+      have hwl : w l = ((zc l - 1) % (k : ℤ)) + 1 := by
+        have := hw.2 l hl
+        simpa only [if_neg hl] using this
+      have hdiv : (k : ℤ) * ((zc l - 1) / (k : ℤ)) = zc l - 1 - ((zc l - 1) % (k : ℤ)) := by
+        have := Int.ediv_mul_add_emod (zc l - 1) (k : ℤ)
+        linarith
+      have hik : (k : ℤ) * i l = zc l - 1 - ((zc l - 1) % (k : ℤ)) := by
+        rw [hi l hl]; exact hdiv
+      simp only [Pi.add_apply, Pi.smul_apply, smul_eq_mul, hwl]
+      linarith
+    -- the `dir`-coordinate of `w + k•i` lies in the run
+    have hdir : (w + (k : ℤ) • i) dir = w dir + (k : ℤ) * i dir := by
+      simp only [Pi.add_apply, Pi.smul_apply, smul_eq_mul]
+    have hwlo : (1 : ℤ) ≤ w dir := hw.1.1
+    have hwhi : w dir ≤ (k : ℤ) := hw.1.2
+    have hge : a ≤ w dir + (k : ℤ) * i dir := by linarith
+    have hle : w dir + (k : ℤ) * i dir ≤ b := by linarith
+    -- identify the point with the run point at that coordinate
+    have hfun : (fun j => if j = dir then w dir + (k : ℤ) * i dir else zc j)
+        = (w + (k : ℤ) • i) := by
+      ext l
+      by_cases hl : l = dir
+      · subst hl; simp only [if_true, hdir]
+      · simp only [if_neg hl, hother l hl]
+    rw [← hfun]
+    exact hline _ hge hle
+
 theorem aux_penultimate_overlap_propagate_line {d : ℕ} (hd : 2 ≤ d) (η : Site d → ℤ)
     (hlow : ∀ x, 2 * (d : ℤ) - 2 ≤ η x) (hhigh : ∀ x, η x ≤ 2 * (d : ℤ) - 1)
     (k : ℕ) (hk : 1 ≤ k) (Cinf : Set (Site d)) (hCinf : IsInfiniteConnectedGoodSet η k Cinf)

@@ -1226,4 +1226,106 @@ theorem cylNbrSum_cylProj (u : ℤ × Fin 4 → ℤ) (v : Site 2 → ℤ)
   abel
 
 
+
+
+theorem emod_add_one (q r : ℤ) : (4 * q + r + 1) % 4 = (r + 1) % 4 := by
+  rw [show 4 * q + r + 1 = (4 * q) + (r + 1) by ring]
+  rw [Int.add_emod]
+  have h : (4 * q) % 4 = 0 := by
+    rw [Int.mul_emod]
+    simp
+  rw [h, Int.zero_add]
+  exact Int.emod_emod_of_dvd _ (dvd_refl 4)
+
+theorem emod_sub_one (q r : ℤ) : (4 * q + r - 1) % 4 = (r - 1) % 4 := by
+  rw [show 4 * q + r - 1 = (4 * q) + (r - 1) by ring]
+  rw [Int.add_emod]
+  have h : (4 * q) % 4 = 0 := by
+    rw [Int.mul_emod]
+    simp
+  rw [h, Int.zero_add]
+  exact Int.emod_emod_of_dvd _ (dvd_refl 4)
+
+
+
+theorem fin4_add_one_val (n : Fin 4) :
+    ((n + 1 : Fin 4) : ℕ) = (n.val + 1) % 4 := by
+  simp [Fin.val_add]
+
+theorem fin4_add_one_val_int (n : Fin 4) :
+    (((n + 1 : Fin 4) : ℕ) : ℤ) = ((n.val : ℤ) + 1) % 4 := by
+  rw [fin4_add_one_val]
+  push_cast
+  ring
+
+theorem fin4_sub_one_val (n : Fin 4) :
+    ((n - 1 : Fin 4) : ℕ) = (n.val + 3) % 4 := by
+  simp only [Fin.val_sub]
+  omega
+theorem fin4_sub_one_val_int (n : Fin 4) :
+    (((n - 1 : Fin 4) : ℕ) : ℤ) = ((n.val : ℤ) + 3) % 4 := by
+  have h := fin4_sub_one_val n
+  rw [h]
+  push_cast
+  ring
+
+
+
+
+theorem emod_add_one_0 (q : ℤ) : (4 * q + 0 + 1) % 4 = 1 := by
+  rw [show 4 * q + 0 + 1 = 4 * q + 1 by ring]
+  rw [Int.add_emod]
+  have h : (4 * q) % 4 = 0 := by rw [Int.mul_emod]; simp
+  rw [h, Int.zero_add]
+  norm_num
+
+theorem emod_add_one_1 (q : ℤ) : (4 * q + 1 + 1) % 4 = 2 := by
+  rw [show 4 * q + 1 + 1 = 4 * q + 2 by ring]
+  rw [Int.add_emod]
+  have h : (4 * q) % 4 = 0 := by rw [Int.mul_emod]; simp
+  rw [h, Int.zero_add]
+  norm_num
+
+theorem emod_add_one_2 (q : ℤ) : (4 * q + 2 + 1) % 4 = 3 := by
+  rw [show 4 * q + 2 + 1 = 4 * q + 3 by ring]
+  rw [Int.add_emod]
+  have h : (4 * q) % 4 = 0 := by rw [Int.mul_emod]; simp
+  rw [h, Int.zero_add]
+  norm_num
+
+theorem emod_add_one_3 (q : ℤ) : (4 * q + 3 + 1) % 4 = 0 := by
+  rw [show 4 * q + 3 + 1 = 4 * q + 4 by ring]
+  rw [Int.add_emod]
+  have h : (4 * q) % 4 = 0 := by rw [Int.mul_emod]; simp
+  rw [h, Int.zero_add]
+  norm_num
+
+theorem emod_sub_one_0 (q : ℤ) : (4 * q + 0 - 1) % 4 = 3 := by
+  rw [show 4 * q + 0 - 1 = 4 * q + (-1) by ring]
+  rw [Int.add_emod]
+  have h : (4 * q) % 4 = 0 := by rw [Int.mul_emod]; simp
+  rw [h, Int.zero_add]
+  norm_num
+
+theorem emod_sub_one_1 (q : ℤ) : (4 * q + 1 - 1) % 4 = 0 := by
+  rw [show 4 * q + 1 - 1 = 4 * q + 0 by ring]
+  rw [Int.add_emod]
+  have h : (4 * q) % 4 = 0 := by rw [Int.mul_emod]; simp
+  rw [h, Int.zero_add]
+  norm_num
+
+theorem emod_sub_one_2 (q : ℤ) : (4 * q + 2 - 1) % 4 = 1 := by
+  rw [show 4 * q + 2 - 1 = 4 * q + 1 by ring]
+  rw [Int.add_emod]
+  have h : (4 * q) % 4 = 0 := by rw [Int.mul_emod]; simp
+  rw [h, Int.zero_add]
+  norm_num
+
+theorem emod_sub_one_3 (q : ℤ) : (4 * q + 3 - 1) % 4 = 2 := by
+  rw [show 4 * q + 3 - 1 = 4 * q + 2 by ring]
+  rw [Int.add_emod]
+  have h : (4 * q) % 4 = 0 := by rw [Int.mul_emod]; simp
+  rw [h, Int.zero_add]
+  norm_num
+
 end Exploding

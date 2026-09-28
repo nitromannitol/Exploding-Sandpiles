@@ -1578,3 +1578,95 @@ theorem aux_penultimate_side_bound_one {d : ℕ} (hd : 2 ≤ d) (η : Site d →
     exact hline _ (hcont w hw v hva hvb).1 (hcont w hw v hva hvb).2
   exact aux_penultimate_overlap_propagate_line_one hd η hlow hhigh k hk Cinf hCinf zc i
     hvCinf hi_ne dir (fun _ => (1 : ℤ)) (fun l => ⟨le_refl 1, hk1⟩) hline' hM2 hlast hcov_zc
+
+
+/-- **Segment-to-line.**  A segment of length `(log n)^(5/2) * k + 4k` in a
+coordinate direction, inside `cent d n`, contains a full line of a cube of
+`Cinf`.  The line is read at the cube's own base coordinates. -/
+theorem aux_segment_meets_cinf_line {d : ℕ} (k : ℕ) (hk : 1 ≤ k)
+    (Cinf : Set (Site d)) (n0 : ℕ)
+    (hcomp : ∀ n, n0 ≤ n → ∀ x ∈ (cent d n : Set (Site d)), x ∉ Cinf →
+      (componentIn Cinfᶜ x).Finite ∧
+        ((componentIn Cinfᶜ x).ncard : ℝ) < Real.log n ^ ((5 : ℝ) / 2))
+    (n : ℕ) (hn : n0 ≤ n) (l : Fin d) (c : Site d) (a b : ℤ)
+    (hab : ((Real.log n ^ ((5 : ℝ) / 2) + 4) * (k : ℝ)) ≤ ((b - a : ℤ) : ℝ))
+    (hin' : ∀ v : ℤ, (a - 1) / (k : ℤ) + 1 ≤ v → v ≤ (b - (k : ℤ)) / (k : ℤ) →
+      (fun j => if j = l then v else (c j - 1) / (k : ℤ)) ∈ (cent d n : Set (Site d))) :
+    ∃ i ∈ Cinf, ∀ w ∈ line d k l (fun j => if j = l then 1 else 1 + (c j - 1) % (k : ℤ)),
+      a ≤ (w + (k : ℤ) • i) l ∧ (w + (k : ℤ) • i) l ≤ b ∧
+        ∀ j, j ≠ l → (w + (k : ℤ) • i) j = c j := by
+  have hk1 : (1 : ℤ) ≤ (k : ℤ) := by exact_mod_cast hk
+  have hk0 : (0 : ℤ) < (k : ℤ) := by linarith
+  have hkR : (0 : ℝ) < (k : ℝ) := by exact_mod_cast hk
+  set m : ℤ := ((b - (k : ℤ)) / (k : ℤ)) - ((a - 1) / (k : ℤ) + 1) with hm
+  have hlen : Real.log n ^ ((5 : ℝ) / 2) ≤ ((m : ℤ) : ℝ) := by
+    have h1 : (k : ℤ) * ((b - (k : ℤ)) / (k : ℤ)) =
+        (b - (k : ℤ)) - ((b - (k : ℤ)) % (k : ℤ)) := by
+      have := Int.ediv_mul_add_emod (b - (k : ℤ)) (k : ℤ); linarith
+    have h2 : (k : ℤ) * ((a - 1) / (k : ℤ)) = (a - 1) - ((a - 1) % (k : ℤ)) := by
+      have := Int.ediv_mul_add_emod (a - 1) (k : ℤ); linarith
+    have h4 : (b - (k : ℤ)) % (k : ℤ) ≤ (k : ℤ) - 1 := by
+      have := Int.emod_lt_of_pos (b - (k : ℤ)) hk0; omega
+    have h6 : (a - 1) % (k : ℤ) ≤ (k : ℤ) - 1 := by
+      have := Int.emod_lt_of_pos (a - 1) hk0; omega
+    have h7 : (k : ℤ) * m ≥ (b - a) - 3 * (k : ℤ) := by
+      rw [hm]
+      have h7a : (k : ℤ) * (((b - (k : ℤ)) / (k : ℤ)) - ((a - 1) / (k : ℤ) + 1)) =
+          (k : ℤ) * ((b - (k : ℤ)) / (k : ℤ)) - (k : ℤ) * ((a - 1) / (k : ℤ)) - (k : ℤ) := by
+        ring
+      rw [h7a, h1, h2]
+      have h3' : 0 ≤ (b - (k : ℤ)) % (k : ℤ) := Int.emod_nonneg _ (by linarith)
+      have h5' : 0 ≤ (a - 1) % (k : ℤ) := Int.emod_nonneg _ (by linarith)
+      omega
+    have h8 : (((b - a) - 3 * (k : ℤ) : ℤ) : ℝ) ≤ ((k : ℤ) : ℝ) * ((m : ℤ) : ℝ) := by
+      exact_mod_cast h7
+    have h9 : (((b - a) - 3 * (k : ℤ) : ℤ) : ℝ) = ((b - a : ℤ) : ℝ) - 3 * (k : ℝ) := by
+      push_cast; ring
+    rw [h9] at h8
+    have h10 : (Real.log n ^ ((5 : ℝ) / 2) + 1) * (k : ℝ) ≤ ((k : ℤ) : ℝ) * ((m : ℤ) : ℝ) := by
+      have hkR' : (0 : ℝ) < ((k : ℤ) : ℝ) := by exact_mod_cast hk
+      nlinarith [hab, h8, hkR']
+    have h10' : ((k : ℤ) : ℝ) * (Real.log n ^ ((5 : ℝ) / 2) + 1) ≤
+        ((k : ℤ) : ℝ) * ((m : ℤ) : ℝ) := by
+      rw [mul_comm ((k : ℤ) : ℝ) (Real.log n ^ ((5 : ℝ) / 2) + 1)]
+      exact h10
+    have hkR' : (0 : ℝ) < ((k : ℤ) : ℝ) := by exact_mod_cast hk
+    have h11 : Real.log n ^ ((5 : ℝ) / 2) + 1 ≤ ((m : ℤ) : ℝ) :=
+      le_of_mul_le_mul_left h10' hkR'
+    linarith
+  obtain ⟨v, hv0, hv1, hvC⟩ := aux_penultimate_overlap_line_meets_cinf Cinf n0 hcomp n hn
+    (fun j => (c j - 1) / (k : ℤ)) l ((a - 1) / (k : ℤ) + 1) ((b - (k : ℤ)) / (k : ℤ))
+    hlen hin'
+  refine ⟨fun j => if j = l then v else (c j - 1) / (k : ℤ), hvC, ?_⟩
+  intro w hw
+  have hwl : (1 : ℤ) ≤ w l := hw.1.1
+  have hwh : w l ≤ (k : ℤ) := hw.1.2
+  have hwj : ∀ j, j ≠ l → w j = 1 + (c j - 1) % (k : ℤ) := by
+    intro j hj
+    have := hw.2 j hj
+    simpa only [if_neg hj] using this
+  have h1 : (k : ℤ) * ((a - 1) / (k : ℤ) + 1) ≥ a := by
+    have := Int.ediv_mul_add_emod (a - 1) (k : ℤ)
+    have h2 : 0 ≤ (a - 1) % (k : ℤ) := Int.emod_nonneg _ (by linarith)
+    have h3 : (a - 1) % (k : ℤ) < (k : ℤ) := Int.emod_lt_of_pos _ hk0
+    nlinarith [this, h2, h3]
+  have h2 : (k : ℤ) * ((b - (k : ℤ)) / (k : ℤ)) ≤ b - (k : ℤ) := by
+    have := Int.ediv_mul_add_emod (b - (k : ℤ)) (k : ℤ)
+    have h3 : 0 ≤ (b - (k : ℤ)) % (k : ℤ) := Int.emod_nonneg _ (by linarith)
+    linarith
+  have h3 : (k : ℤ) * ((a - 1) / (k : ℤ) + 1) ≤ (k : ℤ) * v :=
+    mul_le_mul_of_nonneg_left hv0 (by linarith)
+  have h4 : (k : ℤ) * v ≤ (k : ℤ) * ((b - (k : ℤ)) / (k : ℤ)) :=
+    mul_le_mul_of_nonneg_left hv1 (by linarith)
+  refine ⟨?_, ?_, ?_⟩
+  · simp only [Pi.add_apply, Pi.smul_apply, smul_eq_mul, if_true]
+    linarith
+  · simp only [Pi.add_apply, Pi.smul_apply, smul_eq_mul, if_true]
+    linarith
+  · intro j hj
+    simp only [Pi.add_apply, Pi.smul_apply, smul_eq_mul, if_neg hj]
+    rw [hwj j hj]
+    have h6 : (k : ℤ) * ((c j - 1) / (k : ℤ)) = c j - 1 - ((c j - 1) % (k : ℤ)) := by
+      have := Int.ediv_mul_add_emod (c j - 1) (k : ℤ); linarith
+    linarith
+

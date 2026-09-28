@@ -1211,6 +1211,105 @@ theorem layer_one_site_law (d : ℕ) (p : ℝ) :
     simp only [Set.indicator_of_notMem h3, Set.indicator_of_notMem h4,
       Set.indicator_of_notMem h1, Set.indicator_of_notMem h2]
 
+/-- Translation of a background by `y` is a measurable bijection, so it maps measurable sets
+to measurable sets. -/
+theorem measurable_image_translate (y : Site d) {E : Set (Site d → ℤ)} (hE : MeasurableSet E) :
+    MeasurableSet ((fun η : Site d → ℤ => fun z => η (y + z)) '' E) := by
+  -- the inverse translation is `η ↦ fun z => η (z - y)`, also measurable
+  have hinv : Measurable (fun η : Site d → ℤ => fun z => η (z - y)) :=
+    measurable_pi_iff.mpr fun z => measurable_pi_apply (z - y)
+  have himg : (fun η : Site d → ℤ => fun z => η (y + z)) '' E
+      = (fun η : Site d → ℤ => fun z => η (z - y)) ⁻¹' E := by
+    ext η
+    constructor
+    · rintro ⟨η', hη', rfl⟩
+      have h1 : (fun z : Site d => η' (y + z - y)) = η' := by
+        funext z
+        abel
+      show (fun z : Site d => (fun z' => η' (y + z')) (z - y)) ∈ E
+      have h2 : (fun z : Site d => η' (y + (z - y))) = η' := by
+        funext z
+        abel
+      rw [h2]
+      exact hη'
+    · intro hη
+      refine ⟨fun z => η (z - y), hη, ?_⟩
+      funext z
+      abel
+  rw [himg]
+  exact hE.preimage hinv
+
+/-- **The zero-one a.e. step, with stationarity.**  If `E` is invariant under every
+translation in `L` (`T_y '' E ⊆ E`) and `P` is stationary on `L`, then `E` differs from
+`⋂_{y ∈ L} T_y '' E` by a null set. -/
+theorem criteria_zero_one_ae (L : AddSubgroup (Site d)) (P : MeasureTheory.Measure (Site d → ℤ))
+    (hP : MeasureTheory.IsProbabilityMeasure P) (hstat : StationaryOn d L P) (E : Set (Site d → ℤ))
+    (hmeas : MeasurableSet E)
+    (hinv : ∀ y ∈ L, (fun η : Site d → ℤ => fun z => η (y + z)) '' E ⊆ E) :
+    P (E \ ⋂ y ∈ (L : Set (Site d)), (fun η : Site d → ℤ => fun z => η (y + z)) '' E) = 0 := by
+  -- `E \ ⋂ T_y '' E ⊆ ⋃_{y ∈ L} (E \ T_y '' E)`, and each piece is null by stationarity
+  refine MeasureTheory.measure_mono_null (s := E \ (⋂ y ∈ (L : Set (Site d)),
+    (fun η : Site d → ℤ => fun z => η (y + z)) '' E))
+    (t := ⋃ y ∈ (L : Set (Site d)), (E \ (fun η : Site d → ℤ => fun z => η (y + z)) '' E)) ?_
+    ((MeasureTheory.measure_biUnion_null_iff (Set.countable_coe_iff.mpr
+      (Set.countable_univ.mono (Set.subset_univ _)))).2
+      (fun y hy => ?_))
+  · intro η hη
+    obtain ⟨hηE, hηnot⟩ := hη
+    rw [Set.mem_iInter] at hηnot
+    simp only [Set.mem_iInter, not_forall] at hηnot
+    obtain ⟨y, hyL, hy⟩ := hηnot
+    exact Set.mem_biUnion hyL ⟨hηE, hy⟩
+  · -- `P (E \ T_y '' E) = 0` by stationarity: `T_y '' E ⊆ E` and `T_y` preserves `P`
+    have hyL : y ∈ L := hy
+    · have hmap : P.map (fun η : Site d → ℤ => fun z => η (y + z)) = P := hstat y hyL
+      have hTmeas : Measurable (fun η : Site d → ℤ => fun z => η (y + z)) :=
+        measurable_pi_iff.mpr fun z => measurable_pi_apply (y + z)
+      -- `T '' E ⊆ E` and `T` preserves `P`, so `P (T '' E) = P E`; the difference is null
+      have hsub : (fun η : Site d → ℤ => fun z => η (y + z)) '' E ⊆ E := hinv y hyL
+      have hpre : (fun η : Site d → ℤ => fun z => η (y + z)) ⁻¹' E ⊇ E := by
+        intro η hη
+        exact hsub ⟨η, hη, rfl⟩
+      -- `P (T ⁻¹' E) = P E` by stationarity, and `E ⊆ T ⁻¹' E`, so `P (E \ T ⁻¹' E) = 0`
+      have hmapE : P ((fun η : Site d → ℤ => fun z => η (y + z)) ⁻¹' E) = P E := by
+        rw [← MeasureTheory.Measure.map_apply hTmeas hmeas, hmap]
+      have hrange : E ⊆ Set.range (fun η : Site d → ℤ => fun z => η (y + z)) := by
+        intro η hη
+        exact ⟨fun z => η (z - y), by
+          funext z
+          abel⟩
+      -- `T` is injective, so `T ⁻¹' (T '' E) = E`
+      have hset : (fun η : Site d → ℤ => fun z => η (y + z)) ⁻¹'
+          ((fun η : Site d → ℤ => fun z => η (y + z)) '' E) = E := by
+        ext η
+        constructor
+        · rintro ⟨η', hη', heq'⟩
+          have h2 : η' = η := by
+            funext z
+            have := congrFun heq' (z - y)
+            simpa [sub_add_cancel] using this
+          rwa [h2] at hη'
+        · intro h
+          exact ⟨η, h, rfl⟩
+      have heq : P ((fun η : Site d → ℤ => fun z => η (y + z)) '' E) = P E := by
+        have himg : MeasurableSet ((fun η : Site d → ℤ => fun z => η (y + z)) '' E) :=
+          measurable_image_translate y hmeas
+        have h1 : P ((fun η : Site d → ℤ => fun z => η (y + z)) '' E)
+            = P ((fun η : Site d → ℤ => fun z => η (y + z)) ⁻¹'
+                ((fun η : Site d → ℤ => fun z => η (y + z)) '' E)) := by
+          conv_lhs => rw [← hmap]
+          rw [MeasureTheory.Measure.map_apply hTmeas himg]
+        rw [h1, hset]
+      have himg : MeasurableSet ((fun η : Site d → ℤ => fun z => η (y + z)) '' E) :=
+        measurable_image_translate y hmeas
+      have hnull : P (E \ ((fun η : Site d → ℤ => fun z => η (y + z)) '' E)) = 0 := by
+        rw [MeasureTheory.measure_sdiff (μ := P) hsub himg.nullMeasurableSet (by
+          exact ne_top_of_le_ne_top (by rw [hP.measure_univ]; exact ENNReal.one_ne_top)
+            (MeasureTheory.measure_mono (μ := P) (Set.subset_univ _)))]
+        exact tsub_eq_zero_of_le heq.ge
+      exact hnull
+
+
 end ReductionShift
 
 end Exploding

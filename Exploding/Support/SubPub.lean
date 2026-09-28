@@ -682,3 +682,15 @@ theorem finite_exploding_at (d : ℕ) (hd : 2 ≤ d) (p : ℝ) (hp : 0 < p) (hp1
       exact h
   exact (MeasureTheory.ae_all_iff).mpr hshift
 
+
+/-- **The first inequality of Lemma 3.7.**  The last-wave arrival time is at most
+the penultimate-cluster arrival time, since the penultimate cluster contains the
+site. -/
+theorem lastArrival_le_clusterArrival {d : ℕ} (η : Site d → ℤ) (y x : Site d) :
+    lastArrival η y x ≤ clusterArrival η y x := by
+  refine le_sInf ?_
+  rintro t ⟨n, ht_eq, hn, ht⟩
+  rw [ht_eq]
+  exact lastArrival_le η y x n hn (ht x (by
+    exact Set.mem_union_left _ rfl))
+

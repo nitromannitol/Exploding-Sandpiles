@@ -3,6 +3,7 @@ Lemma 3.5 of the paper: penultimate clusters are polylogarithmically small.
 -/
 import Exploding.Support.Vocab
 import Exploding.Support.SubPen
+import Exploding.Support.SubPub
 import Exploding.Frozen.Renormalization
 import Exploding.External.LiggettSchonmannStaceyBoundedDegree
 import Exploding.External.MathieuHoles
@@ -39,7 +40,8 @@ theorem Exploding.Frozen.last_penultimate_cluster (d : ℕ) (hd : 2 ≤ d) (p : 
     Exploding.Frozen.renormalization_properties d hd p hp hp1 hLSSB hHole hChem
   obtain ⟨c, C, hc, hC, hren⟩ := hk0 (max k0 1) (le_max_left _ _)
   have hk : 1 ≤ max k0 1 := le_max_right _ _
-  filter_upwards [aux_penultimate_bounds d p hp hp1, hren] with η hb hren'
+  filter_upwards [aux_penultimate_bounds d p hp hp1, hren,
+    Exploding.finite_exploding_at d hd p hp hp1 hLSSB hHole hChem] with η hb hren' hlast_all
   obtain ⟨Cinf, hCinf, hcomp, hchem⟩ := hren'
   obtain ⟨n0c, hn0c⟩ := hcomp
   refine ⟨max n0c (max 1 (Nat.ceil (Real.exp 2))), ?_⟩
@@ -270,11 +272,8 @@ theorem Exploding.Frozen.last_penultimate_cluster (d : ℕ) (hd : 2 ≤ d) (p : 
         · have h5 : (x j - 1) / (max k0 1 : ℤ) ≤ |x j| + 1 := h3.2
           have h6 : |x j| + 1 ≤ (n' : ℤ) := by linarith [hbase' j]
           linarith
-    -- The side bound needs three inputs the frozen statement does not carry:
-    -- (i) `hlast`, that the last wave at `x` is well defined (the paper's
-    -- Lemma 3.2, sealed as `Exploding.Frozen.finite_exploding`);
-    -- (ii) `n0`, the threshold of the hole bound at the radius `n'`;
-    -- (iii) `hcov_zc`, the paper's Step-1 regularity of Proposition 4.1.
-    -- The first is available from the sealed node; the second from `hcomp`;
-    -- the third is the sibling node `prop-approximate-subadditive`'s input.
+    -- The side bound's three inputs: `hlast` from the transfer above, `n0` from
+    -- `hcomp`, and `hcov_zc` from the sibling node.
+    have hlast : ∃ n : ℕ, 1 ≤ n ∧ ¬ WaveStabilizable η n x := hlast_all x
+    have hn0' : n0c ≤ n' := le_trans hn0c hn'_ge
     sorry

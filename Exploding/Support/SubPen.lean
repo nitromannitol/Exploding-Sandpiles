@@ -1856,3 +1856,72 @@ theorem aux_penultimate_segment_length_bound {d : ℕ} (hd : 2 ≤ d) (η : Site
   exact aux_penultimate_segment_bound hd η hlow hhigh k hk Cinf hCinf zc hlast n0 hcomp
     n' hn' l c a b hlog hbig hin' j0 hj0lo hj0hi hj0 hpos hcov_zc
 
+/-- The quotient of an integer by a positive integer is no larger in absolute
+value than the integer itself. -/
+
+
+theorem div_abs_le (k : ℤ) (hk : 1 ≤ k) (a : ℤ) : |a / k| ≤ |a| := by
+  have hk0 : (0 : ℤ) < k := by linarith
+  rcases le_total 0 a with hp | hnn
+  · rw [abs_of_nonneg hp, abs_of_nonneg (Int.ediv_nonneg hp (by linarith))]
+    rw [Int.ediv_le_iff_le_mul hk0]
+    nlinarith
+  · rw [abs_of_nonpos hnn]
+    have h1 : a / k ≤ 0 := by
+      rw [Int.ediv_le_iff_le_mul hk0]
+      nlinarith
+    rw [abs_of_nonpos h1]
+    have h2 : a ≤ a / k := by
+      rw [Int.le_ediv_iff_mul_le hk0]
+      nlinarith
+    omega
+
+/-- The run of cube indices of a segment of length `a` lies within `|a| + k` of
+the origin. -/
+
+
+theorem div_run_abs_le (k : ℤ) (hk : 1 ≤ k) (a : ℤ) :
+    |(a - 1) / k + 1| ≤ |a| + 2 ∧ |(a - k) / k| ≤ |a| + k := by
+  have hk0 : (0 : ℤ) < k := by linarith
+  have h1 : |(a - 1) / k| ≤ |a - 1| := div_abs_le k hk (a - 1)
+  have h2 : |a - 1| ≤ |a| + 1 := by
+    rw [abs_sub_le_iff]
+    constructor
+    · have := le_abs_self a; omega
+    · have := neg_le_abs a; omega
+  have h3 : |(a - k) / k| ≤ |a - k| := div_abs_le k hk (a - k)
+  have h4 : |a - k| ≤ |a| + k := by
+    rw [abs_sub_le_iff]
+    constructor
+    · have := le_abs_self a; omega
+    · have := neg_le_abs a; omega
+  constructor
+  · have h5 : |(a - 1) / k + 1| ≤ |(a - 1) / k| + 1 := by
+      have h6 : |(a - 1) / k + 1| ≤ |(a - 1) / k| + |(1 : ℤ)| := by
+        have := abs_add_le ((a - 1) / k) 1
+        simpa using this
+      simpa using h6
+    have h6 : |(a - 1) / k| ≤ |a| + 1 := le_trans h1 h2
+    linarith
+  · exact le_trans h3 h4
+
+/-- The endpoints of a box containing `x` are within `|x|` plus the box's
+side length of the origin. -/
+
+
+theorem box_end_le (m M x : ℤ) (h1 : m ≤ x) (h2 : x ≤ M) :
+    |m| ≤ |x| + (M - m) ∧ |M| ≤ |x| + (M - m) := by
+  have hL : 0 ≤ M - m := by omega
+  have hx : -|x| ≤ x ∧ x ≤ |x| := abs_le.mp (le_refl |x|)
+  constructor
+  · rw [abs_le]
+    constructor
+    · have h3 : -|x| - (M - m) ≤ m := by omega
+      omega
+    · have h3 : m ≤ x := h1
+      omega
+  · rw [abs_le]
+    constructor
+    · omega
+    · have h3 : M ≤ x + (M - m) := by omega
+      omega

@@ -127,7 +127,7 @@ theorem crossOdo_le_wave {d : ℕ} (hd0 : (0 : ℤ) < 2 * (d : ℤ))
         · have hN2 : (2 : ℤ) ≤ (N : ℤ) := by exact_mod_cast hN
           have hc1 := hcap s y
           simp only [crossOdo] at hc1 ⊢
-          rw [hz, wave_at_centre]
+          rw [← hz, wave_at_centre]
           linarith
         · rw [wave_of_ne η N zc (y + (k : ℤ) • j) (t + s) hz]
           rw [Int.le_ediv_iff_mul_le (by positivity)]

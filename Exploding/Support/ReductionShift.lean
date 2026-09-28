@@ -15,6 +15,7 @@ import Exploding.Support.SubSpanZero
 import Exploding.Support.SubFodo
 import Exploding.Support.SubOdo
 import Exploding.Support.CrossingTimeAux
+import LatticeProb.Prob.Blocks
 
 namespace Exploding
 
@@ -1309,6 +1310,74 @@ theorem criteria_zero_one_ae (L : AddSubgroup (Site d)) (P : MeasureTheory.Measu
         exact tsub_eq_zero_of_le heq.ge
       exact hnull
 
+
+/-- The ℤ-valued analogue of `LatticeProb.Prob.Blocks.map_blocks`. -/
+theorem map_blocks_int {ι V : Type*} (ν : MeasureTheory.Measure ℤ)
+    (hν : MeasureTheory.IsProbabilityMeasure ν)
+    (A : ι → Set V) (hdisj : Pairwise (Function.onFun Disjoint A)) :
+    (MeasureTheory.Measure.infinitePi fun _ : V => ν).map (fun ω q => ω (blockIndex A q))
+      = MeasureTheory.Measure.infinitePi fun _ : (i : ι) × ↥(A i) => ν := by
+  haveI := hν
+  rw [LatticeProb.infinitePi_map_comp' ν (blockIndex A) (blockIndex_injective A hdisj)]
+
+/-- The curried form of `map_blocks_int`. -/
+theorem map_blocks_int_curried {ι V : Type*} (ν : MeasureTheory.Measure ℤ)
+    (hν : MeasureTheory.IsProbabilityMeasure ν)
+    (A : ι → Set V) (hdisj : Pairwise (Function.onFun Disjoint A)) :
+    (MeasureTheory.Measure.infinitePi fun _ : V => ν).map (fun ω (i : ι) => (A i).restrict ω)
+      = MeasureTheory.Measure.infinitePi fun i : ι => MeasureTheory.Measure.infinitePi fun _ : ↥(A i) => ν := by
+  have hcomp : (fun (ω : V → ℤ) (i : ι) => (A i).restrict ω)
+      = (MeasurableEquiv.piCurry (κ := fun i : ι => ↥(A i)) (fun _ _ => ℤ))
+        ∘ (fun (ω : V → ℤ) p => ω (blockIndex A p)) := by
+    funext ω i j
+    rfl
+  haveI := hν
+  rw [hcomp]
+  rw [← MeasureTheory.Measure.map_map]
+  · rw [map_blocks_int ν hν A hdisj]
+    rw [MeasureTheory.Measure.infinitePi_map_piCurry (μ := fun (_ : ι) (_ : ↥(A _)) => ν)]
+  · exact (MeasurableEquiv.piCurry _).measurable
+  · exact measurable_pi_lambda _ fun p => measurable_pi_apply (blockIndex A p)
+
+/-- The ℤ-valued analogue of `LatticeProb.Prob.Blocks.iIndepFun_restrict_of_pairwise_disjoint`. -/
+theorem iIndepFun_restrict_of_pairwise_disjoint_int {ι V : Type*}
+    (ν : MeasureTheory.Measure ℤ) (hν : MeasureTheory.IsProbabilityMeasure ν)
+    (A : ι → Set V) (hdisj : Pairwise (Function.onFun Disjoint A)) :
+    ProbabilityTheory.iIndepFun (fun (i : ι) (ω : V → ℤ) => (A i).restrict ω)
+      (MeasureTheory.Measure.infinitePi fun _ : V => ν) := by
+  have hm : AEMeasurable (fun (ω : V → ℤ) (i : ι) => (A i).restrict ω)
+      (MeasureTheory.Measure.infinitePi fun _ : V => ν) := by
+    refine (measurable_pi_lambda _ fun i => ?_).aemeasurable
+    exact measurable_pi_lambda _ fun j => measurable_pi_apply (j : V)
+  haveI := hν
+  rw [ProbabilityTheory.iIndepFun_iff_map_fun_eq_infinitePi_map₀ hm,
+    map_blocks_int_curried ν hν A hdisj]
+  congr 1
+  funext i
+  exact (MeasureTheory.Measure.infinitePi_map_restrict' (μ := fun _ : V => ν) (I := A i)).symm
+
+/-- **Events reading disjoint blocks of coordinates are independent** (ℤ-valued). -/
+theorem iIndepSet_of_pairwise_disjoint_int {ι V : Type*}
+    (ν : MeasureTheory.Measure ℤ) (hν : MeasureTheory.IsProbabilityMeasure ν)
+    (A : ι → Set V) (hdisj : Pairwise (Function.onFun Disjoint A))
+    (E : ι → Set (V → ℤ))
+    (hE : ∀ i, @MeasurableSet (V → ℤ)
+      (MeasurableSpace.comap (fun ω : V → ℤ => (A i).restrict ω) inferInstance) (E i)) :
+    ProbabilityTheory.iIndepSet E (MeasureTheory.Measure.infinitePi fun _ : V => ν) := by
+  rw [ProbabilityTheory.iIndepSet_iff_iIndep]
+  refine ProbabilityTheory.iIndep_of_iIndep_of_le
+    (m₂ := fun i : ι => MeasurableSpace.comap (fun ω : V → ℤ => (A i).restrict ω)
+      (inferInstance : MeasurableSpace (↥(A i) → ℤ)))
+    ((ProbabilityTheory.iIndepFun_iff_iIndep
+      (fun i : ι => (inferInstance : MeasurableSpace (↥(A i) → ℤ)))
+      (fun (i : ι) (ω : V → ℤ) => (A i).restrict ω)
+      (MeasureTheory.Measure.infinitePi fun _ : V => ν)).mp
+      (iIndepFun_restrict_of_pairwise_disjoint_int ν hν A hdisj)) ?_
+  intro i
+  exact MeasurableSpace.generateFrom_le (fun t ht => by
+    rw [Set.mem_singleton_iff] at ht
+    rw [ht]
+    exact hE i)
 
 end ReductionShift
 

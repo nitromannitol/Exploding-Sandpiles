@@ -863,3 +863,61 @@ theorem nbrSum_pos_of_wave_pos {d : ℕ} (η : Site d → ℤ) (hlow : ∀ x, 0 
     linarith
   have hh := hhigh x
   omega
+
+/-- **The macro-level reachability.** -/
+theorem macro_reach {d : ℕ} (η : Site d → ℤ) (hlow : ∀ x, 0 ≤ η x)
+    (hhigh : ∀ x, η x ≤ 2 * (d : ℤ) - 1) (k : ℕ) (hk : 1 ≤ k)
+    (n : ℕ) (_hn : 1 ≤ n) (Cinf : Set (Site d))
+    (havoid : ∀ t x, 0 < wave η n (0 : Site d) t x → macroIdx k x ∉ Cinf) :
+    ∀ t x, 0 < wave η n (0 : Site d) t x →
+      macroIdx k x ∈ componentIn Cinfᶜ (macroIdx k (0 : Site d)) := by
+  intro t
+  induction t with
+  | zero =>
+    intro x hx
+    rw [wave_zero] at hx
+    by_cases h : x = 0
+    · subst h
+      exact ⟨havoid 0 0 hx, havoid 0 0 hx, SimpleGraph.Reachable.refl _⟩
+    · simp [h] at hx
+  | succ t ih =>
+    intro x hx
+    rw [wave_succ] at hx
+    by_cases h : x = 0
+    · subst h
+      exact ⟨havoid (t + 1) 0 hx, havoid (t + 1) 0 hx, SimpleGraph.Reachable.refl _⟩
+    · have hxorig : 0 < wave η n (0 : Site d) (t + 1) x := hx
+      rw [if_neg h] at hx
+      by_cases hx' : 0 < wave η n (0 : Site d) t x
+      · exact ih x hx'
+      · have hsum : 0 < nbrSumZ (wave η n (0 : Site d) t) x :=
+          nbrSum_pos_of_wave_pos η hlow hhigh n t x hxorig h
+        obtain ⟨y, hy, hypos⟩ :=
+          exists_adj_pos_of_nbrSumZ_pos (wave η n (0 : Site d) t)
+            (fun y => wave_nonneg η hlow n 0 t y) x hsum
+        have hrec := ih y hypos
+        rcases hrec with ⟨h0c, hyc, h3⟩
+        have hxnot : macroIdx k x ∉ Cinf := havoid (t + 1) x hxorig
+        have hxcompl : macroIdx k x ∈ Cinfᶜ := hxnot
+        obtain ⟨i, hi | hi⟩ := hy
+        · -- hi : x = y + unit i, so y = x - unit i
+          have hyeq : y = x - unit i := by rw [hi]; abel
+          subst hyeq
+          rcases (macroIdx_adj k hk x i).2 with heq | hadj
+          · rw [← heq]
+            exact ⟨h0c, hyc, h3⟩
+          · have hadj' : ((lattice d).induce Cinfᶜ).Adj
+                ⟨macroIdx k (x - unit i), hyc⟩ ⟨macroIdx k x, hxcompl⟩ := by
+              simpa [SimpleGraph.induce_adj] using hadj
+            exact ⟨h0c, hxcompl,
+              h3.trans ⟨SimpleGraph.Walk.cons hadj' SimpleGraph.Walk.nil⟩⟩
+        · -- hi : y = x + unit i
+          subst hi
+          rcases (macroIdx_adj k hk x i).1 with heq | hadj
+          · rw [← heq]
+            exact ⟨h0c, hyc, h3⟩
+          · have hadj' : ((lattice d).induce Cinfᶜ).Adj
+                ⟨macroIdx k (x + unit i), hyc⟩ ⟨macroIdx k x, hxcompl⟩ := by
+              simpa [SimpleGraph.induce_adj] using hadj
+            exact ⟨h0c, hxcompl,
+              h3.trans ⟨SimpleGraph.Walk.cons hadj' SimpleGraph.Walk.nil⟩⟩

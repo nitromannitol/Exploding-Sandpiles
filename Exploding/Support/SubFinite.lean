@@ -504,13 +504,14 @@ once per edge, i.e. once per `Walk.cons`, and `GoodAt` from `hS` at each
 visited vertex) and `Q_k(i)` is covered by time `t`, then `Q_k(y)` is covered
 by *some* finite time. -/
 theorem aux_finite_exploding_walk_prop {d : ℕ} (η : Site d → ℤ) (_hlow : ∀ x, 0 ≤ η x)
-    (_hhigh : ∀ x, η x ≤ 2 * (d : ℤ) - 1) (N k : ℕ) (S : Set (Site d)) (hS : S ⊆ goodSites η k)
+    (_hhigh : ∀ x, η x ≤ 2 * (d : ℤ) - 1) (N k : ℕ) (zc : Site d) (S : Set (Site d))
+    (hS : S ⊆ goodSites η k)
     (hstep : ∀ (i j : Site d), GoodAt η k j → (lattice d).Adj i j → ∀ t : ℕ,
-      (∀ x ∈ cube d k, 0 < wave η N (0 : Site d) t (x + (k : ℤ) • i)) →
-      ∃ t' : ℕ, t ≤ t' ∧ ∀ x ∈ cube d k, 0 < wave η N (0 : Site d) t' (x + (k : ℤ) • j))
+      (∀ x ∈ cube d k, 0 < wave η N zc t (x + (k : ℤ) • i)) →
+      ∃ t' : ℕ, t ≤ t' ∧ ∀ x ∈ cube d k, 0 < wave η N zc t' (x + (k : ℤ) • j))
     (a b : S) (p0 : ((lattice d).induce S).Walk a b) :
-    ∀ t : ℕ, (∀ z ∈ cube d k, 0 < wave η N (0 : Site d) t (z + (k : ℤ) • (a : Site d))) →
-      ∃ t' : ℕ, ∀ z ∈ cube d k, 0 < wave η N (0 : Site d) t' (z + (k : ℤ) • (b : Site d)) := by
+    ∀ t : ℕ, (∀ z ∈ cube d k, 0 < wave η N zc t (z + (k : ℤ) • (a : Site d))) →
+      ∃ t' : ℕ, ∀ z ∈ cube d k, 0 < wave η N zc t' (z + (k : ℤ) • (b : Site d)) := by
   refine p0.recOn ?_ ?_
   · intro u t ht
     exact ⟨t, ht⟩
@@ -521,17 +522,18 @@ theorem aux_finite_exploding_walk_prop {d : ℕ} (η : Site d → ℤ) (_hlow : 
     exact ih t' hcov'
 
 theorem aux_finite_exploding_propagate_walk {d : ℕ} (η : Site d → ℤ) (hlow : ∀ x, 0 ≤ η x)
-    (hhigh : ∀ x, η x ≤ 2 * (d : ℤ) - 1) (N k : ℕ) (S : Set (Site d)) (hS : S ⊆ goodSites η k)
+    (hhigh : ∀ x, η x ≤ 2 * (d : ℤ) - 1) (N k : ℕ) (zc : Site d) (S : Set (Site d))
+    (hS : S ⊆ goodSites η k)
     (hstep : ∀ (i j : Site d), GoodAt η k j → (lattice d).Adj i j → ∀ t : ℕ,
-      (∀ x ∈ cube d k, 0 < wave η N (0 : Site d) t (x + (k : ℤ) • i)) →
-      ∃ t' : ℕ, t ≤ t' ∧ ∀ x ∈ cube d k, 0 < wave η N (0 : Site d) t' (x + (k : ℤ) • j))
+      (∀ x ∈ cube d k, 0 < wave η N zc t (x + (k : ℤ) • i)) →
+      ∃ t' : ℕ, t ≤ t' ∧ ∀ x ∈ cube d k, 0 < wave η N zc t' (x + (k : ℤ) • j))
     (i y : Site d) (hreach : y ∈ componentIn S i) (t : ℕ)
-    (hcover : ∀ x ∈ cube d k, 0 < wave η N (0 : Site d) t (x + (k : ℤ) • i)) :
-    ∃ t' : ℕ, ∀ x ∈ cube d k, 0 < wave η N (0 : Site d) t' (x + (k : ℤ) • y) := by
+    (hcover : ∀ x ∈ cube d k, 0 < wave η N zc t (x + (k : ℤ) • i)) :
+    ∃ t' : ℕ, ∀ x ∈ cube d k, 0 < wave η N zc t' (x + (k : ℤ) • y) := by
   unfold componentIn at hreach
   obtain ⟨hiS, hyS, hreach'⟩ := hreach
   obtain ⟨p0⟩ := hreach'
-  exact aux_finite_exploding_walk_prop η hlow hhigh N k S hS hstep ⟨i, hiS⟩ ⟨y, hyS⟩ p0 t hcover
+  exact aux_finite_exploding_walk_prop η hlow hhigh N k zc S hS hstep ⟨i, hiS⟩ ⟨y, hyS⟩ p0 t hcover
 
 
 /-- `aux_finite_exploding_propagate`: once the `N`-wave's support entirely
@@ -581,8 +583,8 @@ theorem aux_finite_exploding_propagate (d : ℕ) (hd : 2 ≤ d) (η : Site d →
   have hx0 : x0 ∈ cube d k := fun l => ⟨le_refl 1, by
     show (1 : ℤ) ≤ (k : ℤ); exact_mod_cast hk⟩
   obtain ⟨y, hyCinf, hybig⟩ := aux_finite_exploding_infinite_meets_box Cinf hCinf.1 (T + d + 1)
-  obtain ⟨t', ht'⟩ := aux_finite_exploding_propagate_walk η hlow hhigh N k Cinf hCinf.2.1 hstep
-    i y (hCinf.2.2 i hi y hyCinf) t hcover
+  obtain ⟨t', ht'⟩ := aux_finite_exploding_propagate_walk η hlow hhigh N k (0 : Site d) Cinf
+    hCinf.2.1 hstep i y (hCinf.2.2 i hi y hyCinf) t hcover
   have hfar : ∀ x ∈ cube d k, (T : ℤ) < mnorm (x + (k : ℤ) • y) := by
     intro x hx
     have heq : (-x) + (x + (k : ℤ) • y) = (k : ℤ) • y := by abel

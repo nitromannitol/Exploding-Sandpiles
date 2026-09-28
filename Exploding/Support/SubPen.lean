@@ -1748,3 +1748,80 @@ theorem aux_segment_meets_cinf_line {d : ℕ} (k : ℕ) (hk : 1 ≤ k)
       have h6 : (k : ℤ) * ((c j - 1) / (k : ℤ)) = c j - 1 - ((c j - 1) % (k : ℤ)) := by
         have := Int.ediv_mul_add_emod (c j - 1) (k : ℤ); linarith
       linarith
+
+
+/-- **The side bound, in the form the frozen proof needs.**  If the penultimate
+wave from `zc` is positive on a long coordinate segment whose cube-base points
+lie in `cent d n`, then the `(M̂-1)`-wave is not stabilizable. -/
+theorem aux_penultimate_segment_bound {d : ℕ} (hd : 2 ≤ d) (η : Site d → ℤ)
+    (hlow : ∀ x, 2 * (d : ℤ) - 2 ≤ η x) (hhigh : ∀ x, η x ≤ 2 * (d : ℤ) - 1)
+    (k : ℕ) (hk : 1 ≤ k) (Cinf : Set (Site d)) (hCinf : IsInfiniteConnectedGoodSet η k Cinf)
+    (zc : Site d)
+    (hlast : ∃ n : ℕ, 1 ≤ n ∧ ¬ WaveStabilizable η n zc)
+    (n0 : ℕ)
+    (hcomp : ∀ n, n0 ≤ n → ∀ x ∈ (cent d n : Set (Site d)), x ∉ Cinf →
+      (componentIn Cinfᶜ x).Finite ∧
+        ((componentIn Cinfᶜ x).ncard : ℝ) < Real.log n ^ ((5 : ℝ) / 2))
+    (n : ℕ) (hn : n0 ≤ n) (l : Fin d) (c : Site d) (a b : ℤ)
+    (hlog : 0 ≤ Real.log n ^ ((5 : ℝ) / 2))
+    (hab : ((2 * Real.log n ^ ((5 : ℝ) / 2) + 6) * (k : ℝ)) ≤ ((b - a : ℤ) : ℝ))
+    (hin' : ∀ v : ℤ, (a - 1) / (k : ℤ) + 1 ≤ v → v ≤ (b - (k : ℤ)) / (k : ℤ) →
+      (fun j => if j = l then v else (c j - 1) / (k : ℤ)) ∈ (cent d n : Set (Site d)))
+    (j0 : ℤ)
+    (hj0lo : (a - 1) / (k : ℤ) + 1 ≤ j0) (hj0hi : j0 ≤ (b - (k : ℤ)) / (k : ℤ))
+    (hj0 : j0 = (zc l - 1) / (k : ℤ))
+    (hpos : ∀ v : ℤ, a ≤ v → v ≤ b →
+      0 < penultimateWave η zc (fun j => if j = l then v else c j))
+    (hcov_zc : ∀ t : ℕ, ∀ x ∈ cube d k,
+      0 < wave η 1 zc t (x + (k : ℤ) • macroIdx k zc)) :
+    False := by
+  have hk1 : (1 : ℤ) ≤ (k : ℤ) := by exact_mod_cast hk
+  have hk0 : (0 : ℤ) < (k : ℤ) := by linarith
+  obtain ⟨i, hiC, hi_ne, hline⟩ :=
+    aux_segment_meets_cinf_line k hk Cinf n0 hcomp n hn l c a b hlog hab hin' j0 hj0lo hj0hi
+  have hz : (fun j => if j = l then 1 else 1 + (c j - 1) % (k : ℤ)) ∈ cube d k := by
+    intro j
+    have hval : (fun j' => if j' = l then (1 : ℤ) else 1 + (c j' - 1) % (k : ℤ)) j =
+        (if j = l then (1 : ℤ) else 1 + (c j - 1) % (k : ℤ)) := rfl
+    rw [hval]
+    split_ifs with hj
+    · exact ⟨le_refl 1, hk1⟩
+    · have h2 : 0 ≤ (c j - 1) % (k : ℤ) := Int.emod_nonneg _ (by linarith)
+      have h3 : (c j - 1) % (k : ℤ) < (k : ℤ) := Int.emod_lt_of_pos _ hk0
+      constructor <;> linarith
+  have hline' : ∀ w ∈ line d k l (fun j => if j = l then 1 else 1 + (c j - 1) % (k : ℤ)),
+      0 < penultimateWave η zc (w + (k : ℤ) • i) := by
+    intro w hw
+    obtain ⟨hlo, hhi, hoth⟩ := hline w hw
+    have hfun : (fun j => if j = l then (w + (k : ℤ) • i) l else c j) = (w + (k : ℤ) • i) := by
+      ext j
+      by_cases hj : j = l
+      · subst hj; simp only [if_true]
+      · simp only [if_neg hj]
+        exact (hoth j hj).symm
+    rw [← hfun]
+    exact hpos _ hlo hhi
+  have hi_ne' : i ≠ macroIdx k zc := by
+    intro hcon
+    have h1 : i l = macroIdx k zc l := by rw [hcon]
+    have h2 : macroIdx k zc l = (zc l - 1) / (k : ℤ) := rfl
+    rw [h2, ← hj0] at h1
+    exact hi_ne h1
+  by_cases hN : 2 ≤ waveThreshold η zc - 1
+  · exact aux_penultimate_overlap_propagate_line hd η hlow hhigh k hk Cinf hCinf zc i hiC
+      l (fun j => if j = l then 1 else 1 + (c j - 1) % (k : ℤ)) hz hline' hN hlast
+  · have hM2 : waveThreshold η zc = 2 := by
+      have hlow0 : ∀ x, 0 ≤ η x := fun x => by linarith [hlow x]
+      have hzpos : 0 < penultimateWave η zc ((fun j => if j = l then 1 else 1 + (c j - 1) % (k : ℤ)) + (k : ℤ) • i) :=
+        hline' _ (by
+          refine ⟨⟨?_, ?_⟩, fun j hj => rfl⟩
+          · show (1 : ℤ) ≤ (if l = l then (1 : ℤ) else 1 + (c l - 1) % (k : ℤ))
+            rw [if_pos rfl]
+          · show (if l = l then (1 : ℤ) else 1 + (c l - 1) % (k : ℤ)) ≤ (k : ℤ)
+            rw [if_pos rfl]; exact hk1)
+      obtain ⟨h2, _⟩ := aux_penultimate_hlast η hlow0 hhigh zc _ hzpos
+      omega
+    exact aux_penultimate_overlap_propagate_line_one hd η hlow hhigh k hk Cinf hCinf zc i hiC
+      hi_ne' l (fun j => if j = l then 1 else 1 + (c j - 1) % (k : ℤ)) hz hline'
+      hM2 hlast hcov_zc
+

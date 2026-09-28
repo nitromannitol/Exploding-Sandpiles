@@ -1049,3 +1049,40 @@ theorem aux_ce_fast (d : ℕ) (hd : 2 ≤ d) (n : ℕ) :
   exact ENat.coe_le_coe.mp hle
 
 end Exploding
+
+
+def cylNbrSum (u : ℤ × Fin 4 → ℤ) (x : ℤ × Fin 4) : ℤ :=
+  (if x.1 = 0 then 2 * u x else u (x.1 - 1, x.2) + u (x.1 + 1, x.2)) +
+    (u (x.1, x.2 + 1) + u (x.1, x.2 - 1))
+
+def cylLap (u : ℤ × Fin 4 → ℤ) (x : ℤ × Fin 4) : ℤ :=
+  cylNbrSum u x - 4 * u x
+
+def cylOdo (s0 : ℤ × Fin 4 → ℤ) : ℕ → ℤ × Fin 4 → ℤ
+  | 0 => fun _ => 0
+  | t + 1 => fun x =>
+      cylOdo s0 t x + (if 8 ≤ s0 x + cylLap (cylOdo s0 t) x then 1 else 0)
+
+@[simp] theorem cylOdo_zero (s0 : ℤ × Fin 4 → ℤ) : cylOdo s0 0 = fun _ => 0 := rfl
+
+theorem cylOdo_succ (s0 : ℤ × Fin 4 → ℤ) (t : ℕ) (x : ℤ × Fin 4) :
+    cylOdo s0 (t + 1) x = cylOdo s0 t x +
+      (if 8 ≤ s0 x + cylLap (cylOdo s0 t) x then 1 else 0) := rfl
+
+/-- The cylinder odometer is nondecreasing in time. -/
+theorem cylOdo_mono (s0 : ℤ × Fin 4 → ℤ) (t : ℕ) (x : ℤ × Fin 4) :
+    cylOdo s0 t x ≤ cylOdo s0 (t + 1) x := by
+  rw [cylOdo_succ]
+  split <;> omega
+
+/-- The cylinder odometer is monotone in time. -/
+theorem cylOdo_mono_time (s0 : ℤ × Fin 4 → ℤ) {s t : ℕ} (h : s ≤ t) (x : ℤ × Fin 4) :
+    cylOdo s0 s x ≤ cylOdo s0 t x := by
+  induction t with
+  | zero => simp at h; subst h; exact le_refl _
+  | succ t ih =>
+    rcases Nat.lt_or_ge s (t + 1) with hlt | hge
+    · exact le_trans (ih (Nat.lt_succ_iff.mp hlt)) (cylOdo_mono s0 t x)
+    · have hs : s = t + 1 := le_antisymm (by omega) hge
+      rw [hs]
+

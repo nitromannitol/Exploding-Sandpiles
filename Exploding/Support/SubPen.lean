@@ -960,6 +960,11 @@ theorem pen_box_pos {d : ℕ} (hd : 2 ≤ d) (η : Site d → ℤ)
   exact ⟨r, path, h0, hr, hadj, hfin,
     aux_penultimate_path_box_closure hd η hlow hhigh zc r path hadj hpos hfin⟩
 
+open Exploding LatticeProb in
+theorem abs_coord_le_mnorm {d : ℕ} (x : Site d) (i : Fin d) : |x i| ≤ mnorm x := by
+  rw [mnorm]
+  exact Finset.single_le_sum (fun j _ => abs_nonneg (x j)) (Finset.mem_univ i)
+
 /-- **A box containing a cube contains a line of that cube.**  The line is read in
 the cube's local coordinates: `line d k dir z + k•i`. -/
 theorem box_line_of_cube {d : ℕ} (k : ℕ) (hk : 1 ≤ k) (R : Set (Site d)) (m M : Site d)
@@ -977,3 +982,185 @@ theorem box_line_of_cube {d : ℕ} (k : ℕ) (hk : 1 ≤ k) (R : Set (Site d)) (
       · rw [hl]; exact hy.1
       · rw [hy.2 l hl]
         exact ⟨le_refl 1, hk1⟩)
+
+/-- The `n`-wave is bounded by its index `n`. -/
+theorem wave_le_index {d : ℕ} (η : Site d → ℤ) (hlow : ∀ x, 0 ≤ η x)
+    (hhigh : ∀ x, η x ≤ 2 * (d : ℤ) - 1) (n : ℕ) (z : Site d) (t : ℕ) (x : Site d) :
+    wave η n z t x ≤ (n : ℤ) := by
+  induction t generalizing x with
+  | zero =>
+    rw [wave_zero]
+    by_cases h : x = z <;> simp [h]
+  | succ t ih =>
+    by_cases h : x = z
+    · rw [h, wave_at_centre]
+    · rw [wave_of_ne η n z x t h]
+      have hsum : nbrSumZ (wave η n z t) x ≤ 2 * (d : ℤ) * (n : ℤ) := by
+        have h1 := nbrSumZ_mono (fun y => ih y) x
+        have h2 : nbrSumZ (fun _ : Site d => (n : ℤ)) x = 2 * (d : ℤ) * (n : ℤ) := by
+          simp only [nbrSumZ, Finset.sum_const, Finset.card_univ, Fintype.card_fin,
+            nsmul_eq_mul]
+          ring
+        rwa [h2] at h1
+      have hlt : nbrSumZ (wave η n z t) x + η x < ((n : ℤ) + 1) * (2 * (d : ℤ)) := by
+        nlinarith [hsum, hhigh x]
+      rcases Nat.eq_zero_or_pos d with hd | hd
+      · subst hd
+        simp only [Nat.cast_zero, mul_zero] at hlt ⊢
+        omega
+      · have hd0 : (0 : ℤ) < 2 * (d : ℤ) := by
+          have : (0 : ℤ) < (d : ℤ) := by exact_mod_cast hd
+          linarith
+        rw [Int.ediv_le_iff_le_mul hd0]
+        linarith
+
+/-- The terminal odometer of a stabilizable wave vanishes far from its centre. -/
+theorem waveTerminal_eq_zero_far {d : ℕ} (η : Site d → ℤ) (hlow : ∀ x, 0 ≤ η x)
+    (hhigh : ∀ x, η x ≤ 2 * (d : ℤ) - 1) (n : ℕ) (z : Site d)
+    (hs : WaveStabilizable η n z) (x : Site d)
+    (hx : ((sInf {T : ℕ | ∀ t : ℕ, T ≤ t → wave η n z t = wave η n z T} : ℕ) : ℤ) <
+      mnorm (x - z)) :
+    waveTerminal η n z x = 0 := by
+  set T := sInf {T : ℕ | ∀ t : ℕ, T ≤ t → wave η n z t = wave η n z T} with hT
+  have hspec := waveTerminal_spec η n z hs T le_rfl
+  simp only [waveTerminal]
+  rw [hspec]
+  exact aux_finite_exploding_speed η hlow hhigh n z T x hx
+
+/-- **The penultimate propagation half, with the line hypothesis.**  If the
+penultimate wave is positive on a line of the good cube `Q_k(i)` with `i ∈ Cinf`,
+then the last wave reaches the whole cluster, contradicting its non-stabilizability. -/
+theorem aux_penultimate_overlap_propagate_line {d : ℕ} (hd : 2 ≤ d) (η : Site d → ℤ)
+    (hlow : ∀ x, 2 * (d : ℤ) - 2 ≤ η x) (hhigh : ∀ x, η x ≤ 2 * (d : ℤ) - 1)
+    (k : ℕ) (hk : 1 ≤ k) (Cinf : Set (Site d)) (hCinf : IsInfiniteConnectedGoodSet η k Cinf)
+    (zc : Site d) (i : Site d) (hiCinf : i ∈ Cinf)
+    (dir : Fin d) (z : Site d) (hz : z ∈ cube d k)
+    (hline : ∀ w ∈ line d k dir z, 0 < penultimateWave η zc (w + (k : ℤ) • i))
+    (hN : 2 ≤ waveThreshold η zc - 1)
+    (hlast : ∃ n : ℕ, 1 ≤ n ∧ ¬ WaveStabilizable η n zc) : False := by
+  have hlow0 : ∀ x, 0 ≤ η x := fun x => by have := hlow x; linarith
+  have hd0 : (0 : ℤ) < 2 * (d : ℤ) := by
+    have : (2 : ℤ) ≤ (d : ℤ) := by exact_mod_cast hd
+    linarith
+  -- the penultimate wave is positive at the line's base point
+  have hzpos : 0 < penultimateWave η zc (z + (k : ℤ) • i) := hline z (by
+    exact ⟨hz dir, fun l hl => rfl⟩)
+  have h1 : waveThreshold η zc ≠ 1 := by
+    intro h
+    have hp : penultimateWave η zc = 0 := by simp [penultimateWave, h]
+    rw [hp] at hzpos
+    simp at hzpos
+  have hN' : 2 ≤ waveThreshold η zc - 1 := hN
+  have hk1 : (1 : ℤ) ≤ (k : ℤ) := by exact_mod_cast hk
+  -- the penultimate wave is stabilizable, so its support is finite
+  have hpenstab : WaveStabilizable η (waveThreshold η zc - 1) zc :=
+    penultimate_stabilizable η zc hlast h1
+  have hpenstab' := hpenstab
+  obtain ⟨T, hT⟩ := hpenstab
+  have hpen_eq : ∀ x : Site d,
+      penultimateWave η zc x = wave η (waveThreshold η zc - 1) zc T x := by
+    intro x
+    simp only [penultimateWave, if_neg h1, waveTerminal]
+    exact (congrFun (waveTerminal_spec η (waveThreshold η zc - 1) zc hpenstab' T
+      (Nat.sInf_le hT)) x).symm
+  have hpenfin : {x : Site d | 0 < penultimateWave η zc x}.Finite := by
+    refine Set.Finite.subset (Set.finite_Icc (zc - fun _ => (T : ℤ)) (zc + fun _ => (T : ℤ))) ?_
+    intro x hx
+    have hx' : 0 < penultimateWave η zc x := hx
+    rw [hpen_eq x] at hx'
+    constructor
+    · intro i
+      by_contra hcon
+      have hcon' : zc i - (T : ℤ) > x i := not_le.mp hcon
+      have hsp := aux_finite_exploding_speed η hlow0 hhigh (waveThreshold η zc - 1) zc T x
+      have hm : (T : ℤ) < mnorm (x - zc) := by
+        have h1' : (T : ℤ) < zc i - x i := by linarith
+        have h2' : zc i - x i ≤ mnorm (x - zc) := by
+          have := abs_coord_le_mnorm (x - zc) i
+          rw [show (x - zc) i = x i - zc i from rfl] at this
+          rw [abs_of_neg (by linarith : x i - zc i < 0)] at this
+          linarith
+        linarith
+      rw [hsp hm] at hx'
+      exact lt_irrefl 0 hx'
+    · intro i
+      by_contra hcon
+      have hcon' : x i > zc i + (T : ℤ) := not_le.mp hcon
+      have hsp := aux_finite_exploding_speed η hlow0 hhigh (waveThreshold η zc - 1) zc T x
+      have hm : (T : ℤ) < mnorm (x - zc) := by
+        have h1' : (T : ℤ) < x i - zc i := by linarith
+        have h2' : x i - zc i ≤ mnorm (x - zc) := by
+          have := abs_coord_le_mnorm (x - zc) i
+          rw [show (x - zc) i = x i - zc i from rfl] at this
+          rw [abs_of_pos (by linarith : 0 < x i - zc i)] at this
+          exact this
+        linarith
+      rw [hsp hm] at hx'
+      exact lt_irrefl 0 hx'
+  -- the (M̂-1)-wave is positive on the line at time T
+  have hline' : ∀ w ∈ line d k dir z,
+      0 < wave η (waveThreshold η zc - 1) zc T (w + (k : ℤ) • i) := by
+    intro w hw
+    rw [← hpen_eq]
+    exact hline w hw
+  obtain ⟨t', ht'⟩ := wave_covers_of_line hd η hlow0 hhigh (waveThreshold η zc - 1) k hN' zc i
+    (hCinf.2.1 hiCinf) dir z (Or.inl hz) T hline'
+  -- the penultimate wave is positive on Q_k(i)
+  have hcov : ∀ x ∈ cube d k, 0 < penultimateWave η zc (x + (k : ℤ) • i) := by
+    intro x hx
+    rw [hpen_eq]
+    have hpos := ht'.2 x hx
+    have hmono := wave_mono_time η hlow0 hd0 (waveThreshold η zc - 1) zc (le_max_right T t')
+      (x + (k : ℤ) • i)
+    have hmax : 0 < wave η (waveThreshold η zc - 1) zc (max T t') (x + (k : ℤ) • i) := by linarith
+    rw [← hT (max T t') (le_max_left T t')]
+    exact hmax
+  -- propagate to every cube of the cluster
+  have hreach' : ∀ y ∈ Cinf, ∃ t, ∀ x ∈ cube d k,
+      0 < wave η (waveThreshold η zc - 1) zc t (x + (k : ℤ) • y) := by
+    intro y hy
+    have hstep : ∀ (a b : Site d), GoodAt η k b → (lattice d).Adj a b → ∀ s : ℕ,
+        (∀ x ∈ cube d k, 0 < wave η (waveThreshold η zc - 1) zc s (x + (k : ℤ) • a)) →
+        ∃ s' : ℕ, s ≤ s' ∧
+          ∀ x ∈ cube d k, 0 < wave η (waveThreshold η zc - 1) zc s' (x + (k : ℤ) • b) := by
+      intro a b hgood hadj s hs
+      obtain ⟨dir', hdir'⟩ := hadj
+      obtain ⟨dir'', hne⟩ : ∃ dir'' : Fin d, dir'' ≠ dir' := by
+        by_contra hcon
+        simp only [not_exists, not_not] at hcon
+        have hcard : Fintype.card (Fin d) = 1 := Fintype.card_eq_one_iff.mpr ⟨dir', hcon⟩
+        rw [Fintype.card_fin] at hcard
+        omega
+      exact finite_exploding_step hd η hlow0 hhigh (waveThreshold η zc - 1) k hN' hk zc a b
+        hgood dir' hdir' dir'' hne s hs
+    obtain ⟨t'', ht''⟩ := aux_finite_exploding_propagate_walk η hlow0 hhigh
+      (waveThreshold η zc - 1) k zc Cinf hCinf.2.1 hstep i y (hCinf.2.2 i hiCinf y hy) t' ht'.2
+    exact ⟨t'', ht''⟩
+  -- so the penultimate wave is positive on Q_k(y) for every y in the cluster
+  have hpeninf : {x : Site d | 0 < penultimateWave η zc x}.Infinite := by
+    have hinj : Function.Injective (fun y : Site d => (fun _ => (1 : ℤ)) + (k : ℤ) • y) := by
+      intro y1 y2 h
+      have h1 := congrFun h
+      ext i
+      have h2 := h1 i
+      simp only [Pi.add_apply, Pi.smul_apply, smul_eq_mul] at h2
+      have hk0 : (k : ℤ) ≠ 0 := by
+        intro hkz
+        have : k = 0 := by exact_mod_cast hkz
+        omega
+      have : (k : ℤ) * y1 i = (k : ℤ) * y2 i := by linarith
+      exact mul_left_cancel₀ hk0 this
+    have himg : (fun y : Site d => (fun _ => (1 : ℤ)) + (k : ℤ) • y) '' Cinf ⊆
+        {x : Site d | 0 < penultimateWave η zc x} := by
+      rintro x ⟨y, hy, rfl⟩
+      obtain ⟨t, ht⟩ := hreach' y hy
+      have hpos := ht _ (fun l => ⟨le_refl 1, hk1⟩)
+      have hmono := wave_mono_time η hlow0 hd0 (waveThreshold η zc - 1) zc (le_max_right T t)
+        ((fun _ => (1 : ℤ)) + (k : ℤ) • y)
+      have hmax : 0 < wave η (waveThreshold η zc - 1) zc (max T t)
+          ((fun _ => (1 : ℤ)) + (k : ℤ) • y) := by linarith
+      show 0 < penultimateWave η zc ((fun _ => (1 : ℤ)) + (k : ℤ) • y)
+      rw [hpen_eq, ← hT (max T t) (le_max_left T t)]
+      exact hmax
+    exact (hCinf.1.image hinj.injOn).mono himg
+  exact hpeninf hpenfin

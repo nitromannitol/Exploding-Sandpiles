@@ -693,4 +693,3 @@ theorem lastArrival_le_clusterArrival {d : ℕ} (η : Site d → ℤ) (y x : Sit
   rw [ht_eq]
   exact lastArrival_le η y x n hn (ht x (by
     exact Set.mem_union_left _ rfl))
-

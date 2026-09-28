@@ -18,6 +18,36 @@ open LatticeProb
 
 variable {d : ℕ}
 
+/-- The wave is equivariant under translation: shifting the background back by
+`c` and the centre forward by `c` shifts the wave forward by `c`. -/
+theorem wave_shift (η : Site d → ℤ) (N : ℕ) (z c : Site d) :
+    ∀ t x, wave (fun y => η (y - c)) N (z + c) t (x + c) = wave η N z t x := by
+  intro t
+  induction t with
+  | zero =>
+    intro x
+    by_cases h : x = z
+    · subst h; simp
+    · have h' : x + c ≠ z + c := fun hcon => h (add_right_cancel hcon)
+      simp [wave_zero, h, h']
+  | succ t ih =>
+    intro x
+    by_cases h : x = z
+    · subst h; simp [wave_at_centre]
+    · have h' : x + c ≠ z + c := fun hcon => h (add_right_cancel hcon)
+      rw [wave_of_ne _ _ _ _ _ h', wave_of_ne _ _ _ _ _ h]
+      have hsum : nbrSumZ (wave (fun y => η (y - c)) N (z + c) t) (x + c) =
+          nbrSumZ (wave η N z t) x := by
+        simp only [nbrSumZ]
+        refine Finset.sum_congr rfl fun i _ => ?_
+        rw [show x + c + unit i = (x + unit i) + c from by abel,
+          show x + c - unit i = (x - unit i) + c from by abel]
+        rw [ih (x + unit i), ih (x - unit i)]
+      rw [hsum]
+      congr 1
+      congr 1
+      abel
+
 /-- The wave dominates the frozen odometer of a good cube once the frozen line
 is already fired. -/
 theorem crossOdo_le_wave {d : ℕ} (hd0 : (0 : ℤ) < 2 * (d : ℤ))

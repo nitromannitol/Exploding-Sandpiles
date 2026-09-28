@@ -1,0 +1,662 @@
+/-
+The penultimate cluster of `paper/exploding.tex` Section 3: the a.e. background
+bounds, the connectedness of the penultimate cluster to its centre, and the
+path-filling closure of the penultimate wave.
+
+The two remaining inputs of Lemma 3.5 are the propagation of penultimate-wave
+positivity through the infinite good cluster and the pigeonhole step that finds
+a good cube on a long line; both are recorded in `FINDINGS.md`.
+-/
+import Exploding.Support.Vocab
+import Exploding.Support.Wave
+import Exploding.Frozen.LocalConvexity
+import Exploding.Frozen.Renormalization
+import Exploding.External.LiggettSchonmannStaceyBoundedDegree
+import Exploding.External.MathieuHoles
+import Exploding.External.AntalPisztora
+
+open Exploding LatticeProb MeasureTheory
+
+theorem aux_penultimate_bounds (d : ℕ) (p : ℝ) (hp : 0 < p) (hp1 : p < 1) :
+    ∀ᵐ η ∂(toyLaw d p), ∀ x : Site d, 2 * (d : ℤ) - 2 ≤ η x ∧ η x ≤ 2 * (d : ℤ) - 1 := by
+  have hpos_p : (0 : ℝ) ≤ p := by linarith
+  have hle_p : (0 : ℝ) ≤ 1 - p := by linarith
+  haveI hprob : IsProbabilityMeasure (chipLaw (2 * (d : ℤ) - 1) (2 * (d : ℤ) - 2) p) := by
+    constructor
+    simp only [chipLaw, Measure.add_apply, Measure.smul_apply, Measure.dirac_apply',
+      MeasurableSet.univ, Set.indicator_univ, Pi.one_apply, smul_eq_mul, mul_one]
+    rw [← ENNReal.ofReal_add hpos_p hle_p]
+    norm_num
+  haveI hprob' : ∀ _ : Site d, IsProbabilityMeasure (chipLaw (2 * (d : ℤ) - 1) (2 * (d : ℤ) - 2) p) :=
+    fun _ => hprob
+  have h_each (x : Site d) : ∀ᵐ η ∂(toyLaw d p), 2 * (d : ℤ) - 2 ≤ η x ∧ η x ≤ 2 * (d : ℤ) - 1 := by
+    have h_marginal_eq : (toyLaw d p).map (fun η : Site d → ℤ => η x) =
+        chipLaw (2 * (d : ℤ) - 1) (2 * (d : ℤ) - 2) p := by
+      rw [toyLaw, productLaw, Measure.infinitePi_map_eval]
+    have h_ae_chip : ∀ᵐ v ∂(chipLaw (2 * (d : ℤ) - 1) (2 * (d : ℤ) - 2) p),
+        v = 2 * (d : ℤ) - 2 ∨ v = 2 * (d : ℤ) - 1 := by
+      have h_support : chipLaw (2 * (d : ℤ) - 1) (2 * (d : ℤ) - 2) p
+          {v : ℤ | ¬ (v = 2 * (d : ℤ) - 2 ∨ v = 2 * (d : ℤ) - 1)} = 0 := by
+        simp [chipLaw]
+      rw [MeasureTheory.ae_iff]
+      exact h_support
+    have h_ae_coord : ∀ᵐ η ∂(toyLaw d p), η x = 2 * (d : ℤ) - 2 ∨ η x = 2 * (d : ℤ) - 1 := by
+      have h_meas : MeasurableSet {v : ℤ | v = 2 * (d : ℤ) - 2 ∨ v = 2 * (d : ℤ) - 1} :=
+        (measurableSet_singleton _).union (measurableSet_singleton _)
+      have h_aemeas : AEMeasurable (fun (η : Site d → ℤ) => η x) (toyLaw d p) :=
+        (measurable_pi_apply x).aemeasurable
+      rw [← MeasureTheory.ae_map_iff h_aemeas h_meas, h_marginal_eq]
+      exact h_ae_chip
+    filter_upwards [h_ae_coord] with η h
+    rcases h with h_eq | h_eq
+    · rw [h_eq]; exact ⟨by omega, by omega⟩
+    · rw [h_eq]; exact ⟨by omega, by omega⟩
+  exact (MeasureTheory.ae_all_iff).mpr h_each
+
+/-! ### (a1) The penultimate wave's positive set is connected back to its centre -/
+
+/- `aux_penultimate_connected_to_centre`: every site where the penultimate
+wave is positive is joined to the centre `zc` by a lattice path all of whose
+vertices already carry positive penultimate-wave mass.
+
+This is *not* immediate from `mem_penultimateCluster_of_adj`
+(`Support/Wave.lean`): that lemma only says a site adjacent to a positive site
+belongs to the *cluster*, not that the site itself is positive, so it does not
+by itself produce a path of positive sites.  The right induction is on the
+*first time* `y` turns positive along the underlying time-indexed
+`(M̂_η(zc)-1)`-wave (`waveThreshold η zc - 1`): if `y ≠ zc` first turns positive
+at step `t+1`, `exists_adj_pos_of_nbrSumZ_pos` gives a neighbour `y'` already
+positive at step `t`, i.e. with a *strictly earlier* first-positive-time, so
+strong induction on that first-positive-time terminates (at `zc`, whose
+first-positive-time is `0`).  By monotonicity in time (`wave_mono_t`) every
+site visited along the resulting chain, once positive, stays positive forever,
+in particular in the terminal `penultimateWave`.
+
+-- GAP (real, not literature): needs a well-founded induction on
+-- `sInf {t | 0 < wave η (waveThreshold η zc - 1) zc t y}` that is not yet in
+-- `Support/Wave.lean`.  I am confident the statement is true and the sketch
+-- above is correct; formalizing the strong induction is genuine additional
+-- work.  Split below: `aux_penultimate_hlast` recovers the missing `hlast`
+-- witness that `Support/Wave.lean`'s own lemmas need from bare positivity of
+-- `penultimateWave`, and `aux_penultimate_wave_pos_implies_terminal` upgrades
+-- a positive value at *some* finite time to positivity of the terminal
+-- `penultimateWave`; the strong induction itself is assembled directly in
+-- this lemma's own proof (it is the natural home for it, not a separable
+-- ≤15-line fact). -/
+
+/-- If the penultimate wave is positive anywhere, `waveThreshold η zc ≥ 2`
+and in particular the `hlast` witness that `penultimateWave_fixed`/
+`penultimate_stabilizable` (`Support/Wave.lean`) need is available.  If
+`waveThreshold η zc = 1`, `penultimateWave η zc` is *by definition* the
+constant function `0` (`penultimateWave`'s `if`), contradicting positivity
+directly.  If `waveThreshold η zc = 0`, `waveThreshold η zc - 1 = 0` too (`ℕ`
+subtraction), so `penultimateWave η zc = waveTerminal η 0 zc`; the `0`-wave is
+identically `0` (`wave η 0 zc t x = 0` for every `t, x`, by induction on `t`:
+at `t = 0` either `x = zc` giving the cast `(0:ℕ) = (0:ℤ)`, or `0`
+outright; at `t + 1`, `η x < 2d` caps the floor `⌊(nbrSum + ηx)/2d⌋` at `0`
+since the sum of `0`s is `0`), so this again contradicts positivity. Hence
+`waveThreshold η zc ∉ {0, 1}`. -/
+theorem aux_penultimate_wave_zero_eq_zero {d : ℕ} (η : Site d → ℤ) (hlow : ∀ x, 0 ≤ η x)
+    (hhigh : ∀ x, η x ≤ 2 * (d : ℤ) - 1) (zc : Site d) :
+    ∀ t : ℕ, ∀ x : Site d, wave η 0 zc t x = 0 := by
+  intro t
+  induction t with
+  | zero =>
+    intro x
+    simp [wave_zero]
+  | succ t ih =>
+    intro x
+    by_cases h : x = zc
+    · simp [h]
+    · rw [wave_of_ne _ _ _ _ _ h]
+      have hsum : nbrSumZ (wave η 0 zc t) x = 0 := by
+        simp [nbrSumZ, ih]
+      rw [hsum]
+      have hlt : η x < 2 * (d : ℤ) := by
+        have : η x ≤ 2 * (d : ℤ) - 1 := hhigh x
+        omega
+      simp [Int.ediv_eq_zero_of_lt (hlow x) hlt]
+
+theorem aux_penultimate_hlast {d : ℕ} (η : Site d → ℤ) (hlow : ∀ x, 0 ≤ η x)
+    (hhigh : ∀ x, η x ≤ 2 * (d : ℤ) - 1) (zc x : Site d) (hx : 0 < penultimateWave η zc x) :
+    2 ≤ waveThreshold η zc ∧ ∃ n : ℕ, 1 ≤ n ∧ ¬ WaveStabilizable η n zc := by
+  have h_not_one : waveThreshold η zc ≠ 1 := by
+    intro h
+    have hp : penultimateWave η zc = 0 := by
+      simp [penultimateWave, h]
+    rw [hp] at hx
+    simp at hx
+  have h_not_zero : waveThreshold η zc ≠ 0 := by
+    intro h
+    have hp : penultimateWave η zc = 0 := by
+      unfold penultimateWave
+      simp [h]
+      have hw : waveTerminal η 0 zc = fun _ : Site d => (0 : ℤ) := by
+        have hzero : ∀ t : ℕ, ∀ x : Site d, wave η 0 zc t x = 0 :=
+          aux_penultimate_wave_zero_eq_zero η hlow hhigh zc
+        have hstab : ∀ t : ℕ, wave η 0 zc t = wave η 0 zc 0 := by
+          intro t; ext y; simp [hzero t y, hzero 0 y]
+        have hS : (0 : ℕ) ∈ {T : ℕ | ∀ t : ℕ, T ≤ t → wave η 0 zc t = wave η 0 zc T} := by
+          intro t ht; exact hstab t
+        have hsInf_eq : sInf {T : ℕ | ∀ t : ℕ, T ≤ t → wave η 0 zc t = wave η 0 zc T} = 0 := by
+          have hle : sInf {T : ℕ | ∀ t : ℕ, T ≤ t → wave η 0 zc t = wave η 0 zc T} ≤ 0 :=
+            Nat.sInf_le hS
+          omega
+        ext y
+        simp [waveTerminal, hsInf_eq, hzero 0 y]
+      exact hw
+    rw [hp] at hx
+    simp at hx
+  have h_two : 2 ≤ waveThreshold η zc := by
+    omega
+  have h_exists : ∃ n : ℕ, 1 ≤ n ∧ ¬ WaveStabilizable η n zc := by
+    have hpos : 0 < waveThreshold η zc := by omega
+    have hne : {n : ℕ | 1 ≤ n ∧ ¬ WaveStabilizable η n zc}.Nonempty := by
+      by_contra hempty
+      have hsInf_zero : waveThreshold η zc = 0 := by
+        unfold waveThreshold
+        have h_empty : {n : ℕ | 1 ≤ n ∧ ¬ WaveStabilizable η n zc} = (∅ : Set ℕ) := by
+          rw [Set.eq_empty_iff_forall_notMem]
+          intro n hn
+          rcases hn with ⟨hn1, hn2⟩
+          exact hempty ⟨n, hn1, hn2⟩
+        simp [h_empty]
+      exact h_not_zero hsInf_zero
+    have hmem : waveThreshold η zc ∈ {n : ℕ | 1 ≤ n ∧ ¬ WaveStabilizable η n zc} :=
+      Nat.sInf_mem hne
+    exact ⟨waveThreshold η zc, hmem.1, hmem.2⟩
+  exact ⟨h_two, h_exists⟩
+
+/-- A finite-time positive value of the `(M-1)`-wave upgrades to positivity
+of the terminal `penultimateWave`: with `T` the stabilization time of
+`WaveStabilizable η (waveThreshold η zc - 1) zc` (from `hlast`,
+`penultimate_stabilizable`), either `t ≤ T` (then `wave_mono_t`/monotonicity
+in time, or the induction underlying `wave_mono_time`, gives
+`wave t x ≤ wave T x`) or `t > T` (then `waveTerminal_spec` gives
+`wave t x = wave T x` directly, `T` already being past stabilization); either
+way `wave T x > 0`, i.e. `penultimateWave η zc x = waveTerminal η (M-1) zc x
+= wave η (M-1) zc T x > 0`. -/
+theorem aux_penultimate_wave_pos_implies_terminal {d : ℕ} (η : Site d → ℤ) (hlow : ∀ x, 0 ≤ η x)
+    (hhigh : ∀ x, η x ≤ 2 * (d : ℤ) - 1) (zc x : Site d)
+    (hlast : ∃ n : ℕ, 1 ≤ n ∧ ¬ WaveStabilizable η n zc) (h1 : waveThreshold η zc ≠ 1)
+    (t : ℕ) (ht : 0 < wave η (waveThreshold η zc - 1) zc t x) :
+    0 < penultimateWave η zc x := by
+  have hd : (0 : ℤ) < 2 * (d : ℤ) := (by linarith [hlow zc, hhigh zc])
+  obtain ⟨T, hT⟩ := penultimate_stabilizable η zc hlast h1
+  have hstab : WaveStabilizable η (waveThreshold η zc - 1) zc := ⟨T, hT⟩
+  set S : Set ℕ := {N : ℕ | ∀ t : ℕ, N ≤ t →
+    wave η (waveThreshold η zc - 1) zc t = wave η (waveThreshold η zc - 1) zc N} with hS
+  have hmem : sInf S ∈ S := Nat.sInf_mem ⟨T, hT⟩
+  have hwt : waveTerminal η (waveThreshold η zc - 1) zc =
+      wave η (waveThreshold η zc - 1) zc (sInf S) :=
+    waveTerminal_spec η (waveThreshold η zc - 1) zc hstab (sInf S) (le_refl (sInf S))
+  have hpos : 0 < wave η (waveThreshold η zc - 1) zc (sInf S) x := (by
+    rcases le_total t (sInf S) with hle | hle
+    · refine lt_of_lt_of_le ht ?_
+      exact wave_mono_time η hlow hd (waveThreshold η zc - 1) zc hle x
+    · rw [← hmem t hle]
+      exact ht)
+  simp only [penultimateWave, if_neg h1]
+  rw [hwt]
+  exact hpos
+
+
+theorem aux_penultimate_connected_to_centre {d : ℕ} (η : Site d → ℤ)
+    (hlow : ∀ x, 0 ≤ η x) (hhigh : ∀ x, η x ≤ 2 * (d : ℤ) - 1)
+    (zc y : Site d) (hy : 0 < penultimateWave η zc y) :
+    ∃ (r : ℕ) (path : ℕ → Site d), path 0 = zc ∧ path r = y ∧
+      (∀ j, j < r → (lattice d).Adj (path j) (path (j + 1))) ∧
+      ∀ j, j ≤ r → 0 < penultimateWave η zc (path j) := by
+  obtain ⟨hM2, hlast⟩ := aux_penultimate_hlast η hlow hhigh zc y hy
+  have h1ne : waveThreshold η zc ≠ 1 := by omega
+  have hzcpos : 0 < penultimateWave η zc zc := by
+    rw [penultimateWave_at_centre η zc (by omega)]; omega
+  have main : ∀ t : ℕ, ∀ x : Site d, 0 < wave η (waveThreshold η zc - 1) zc t x →
+      ∃ (r : ℕ) (path : ℕ → Site d), path 0 = zc ∧ path r = x ∧
+        (∀ j, j < r → (lattice d).Adj (path j) (path (j + 1))) ∧
+        ∀ j, j ≤ r → 0 < penultimateWave η zc (path j) := by
+    intro t
+    induction t using Nat.strong_induction_on with
+    | _ t ih =>
+      intro x hx
+      by_cases hxzc : x = zc
+      · refine ⟨0, fun _ => zc, rfl, hxzc.symm, fun j hj => absurd hj (Nat.not_lt_zero j),
+          fun j hj => ?_⟩
+        rw [show j = 0 by omega]; exact hzcpos
+      · match t, hx with
+        | 0, hx => exact absurd hx (by simp [wave_zero, hxzc])
+        | t0 + 1, hx =>
+          rw [wave_of_ne η _ zc x t0 hxzc] at hx
+          have hd0 : (0 : ℤ) < 2 * (d : ℤ) := by
+            rcases Nat.eq_zero_or_pos d with h0 | hpos
+            · exfalso
+              apply hxzc
+              subst h0
+              exact funext fun i => i.elim0
+            · have : (1 : ℤ) ≤ (d : ℤ) := by exact_mod_cast hpos
+              linarith
+          have hnbr : 0 < nbrSumZ (wave η (waveThreshold η zc - 1) zc t0) x := by
+            by_contra hcon
+            simp only [not_lt] at hcon
+            have hsumnn : 0 ≤ nbrSumZ (wave η (waveThreshold η zc - 1) zc t0) x :=
+              nbrSumZ_nonneg _ (fun z => wave_nonneg η hlow _ zc t0 z) x
+            have hlt : nbrSumZ (wave η (waveThreshold η zc - 1) zc t0) x + η x < 2 * (d : ℤ) := by
+              linarith [hhigh x]
+            have := Int.ediv_eq_zero_of_lt (by linarith [hlow x]) hlt
+            omega
+          obtain ⟨y', hadjy', hy'pos⟩ :=
+            exists_adj_pos_of_nbrSumZ_pos _ (fun z => wave_nonneg η hlow _ zc t0 z) x hnbr
+          obtain ⟨r', path', hp0, hpr', hstep', hinv'⟩ := ih t0 (by omega) y' hy'pos
+          have hxpos : 0 < penultimateWave η zc x :=
+            aux_penultimate_wave_pos_implies_terminal η hlow hhigh zc x hlast h1ne (t0 + 1)
+              (by rw [wave_of_ne η _ zc x t0 hxzc]; exact hx)
+          refine ⟨r' + 1, fun j => if j = r' + 1 then x else path' j, ?_, by simp, ?_, ?_⟩
+          · simp [hp0]
+          · intro j hj
+            by_cases hjr' : j = r'
+            · subst hjr'; simp [hpr']; exact hadjy'
+            · have h1 : j ≠ r' + 1 := by omega
+              have h2 : j + 1 ≠ r' + 1 := by omega
+              simp only [h1, h2, if_false]
+              exact hstep' j (by omega)
+          · intro j hj
+            by_cases hjeq : j = r' + 1
+            · simp [hjeq]; exact hxpos
+            · simp only [hjeq, if_false]
+              exact hinv' j (by omega)
+  have hyt : 0 < wave η (waveThreshold η zc - 1) zc
+      (sInf {T : ℕ | ∀ t : ℕ, T ≤ t →
+        wave η (waveThreshold η zc - 1) zc t = wave η (waveThreshold η zc - 1) zc T}) y := by
+    have heq : penultimateWave η zc y = wave η (waveThreshold η zc - 1) zc
+        (sInf {T : ℕ | ∀ t : ℕ, T ≤ t →
+          wave η (waveThreshold η zc - 1) zc t = wave η (waveThreshold η zc - 1) zc T}) y := by
+      simp only [penultimateWave, if_neg h1ne, waveTerminal]
+    rwa [heq] at hy
+  exact main _ y hyt
+
+/-! ### (a2) A path of positive sites forces its whole bounding rectangle positive -/
+
+/- `aux_penultimate_path_box_closure`: if a finite lattice path lies entirely
+in `{ũ > 0}` (the positive set of the penultimate wave centred at `zc`), so
+does its whole bounding rectangle.
+
+Sketch, citing `Exploding.Frozen.local_convexity` exactly as the paper's
+one-line proof does: let `A` be the path's image.  Since `penultimateWave η zc`
+is `≥ 1` on `A` and satisfies the *same* recursion off `zc` that
+`fodo A η (Set.indicator A 1)` satisfies off `A` (`penultimateWave_fixed`), a
+domination induction exactly like `aux_square_lower_bound_compare` in
+`lem-square-lower-bound-dec/node.lean` (there for `podo` against `wave`; here
+for `fodo A` against `penultimateWave η zc`) gives
+`fodo A η (Set.indicator A 1) t ≤ penultimateWave η zc` pointwise for every
+`t`.  `local_convexity` gives `fodo A η (Set.indicator A 1) t = 1` throughout
+`br A` once `t ≥ |br A|`, so `penultimateWave η zc ≥ 1` throughout `br A` too.
+-- GAP (real, not literature): the domination induction is not yet written;
+-- it is the same recipe as `aux_square_lower_bound_compare`, adapted from a
+-- single frozen point to a frozen path `A`, so I rate this the same
+-- provable-but-unformalized confidence as that lemma. -/
+/-- `fodo A η (indicator A 1)` is dominated by `penultimateWave η zc`
+pointwise at every time: the domination induction of `aux_square_lower_bound_
+compare` (`lem-square-lower-bound-dec/node.lean`, there for `podo` against
+`wave`), adapted from a single frozen point to a frozen set `A`.  At `x ∈ A`
+the frozen odometer is pinned at `w0 x = 1 ≤ penultimateWave η zc x`
+(`hApos`); at `x = zc ∉ A` (if any) the global cap `fodo_le_one`
+(`Support/SubFodo.lean`, needs `η ≤ 2d - 1`, `w0 ≤ 1`, `w0 ≥ 0`, all
+immediate from `hApos`/`Set.indicator`) bounds the frozen odometer by
+`1 ≤ penultimateWave η zc zc` (`hzcpos`) with no induction needed; at every
+other `x ∉ A` (so `x ≠ zc`), compare via `nbrSumZ_mono` on the induction
+hypothesis and `Int.ediv_le_ediv`, using `penultimateWave_fixed`
+(`Support/Wave.lean`, valid since `x ≠ zc`, needs `hlast`) in place of
+`wave`'s own one-step floor formula (`wave_of_ne`) — the recursions coincide
+in shape (`fodo_succ` increments by `1{config ≥ 2d}` just as `podo_succ`
+does). -/
+theorem aux_penultimate_path_box_closure_dominates {d : ℕ} (hd : 2 ≤ d) (η : Site d → ℤ)
+    (hlow : ∀ x, 2 * (d : ℤ) - 2 ≤ η x) (hhigh : ∀ x, η x ≤ 2 * (d : ℤ) - 1)
+    (zc : Site d) (A : Set (Site d)) (hApos : ∀ x ∈ A, 1 ≤ penultimateWave η zc x)
+    (hzcpos : 1 ≤ penultimateWave η zc zc)
+    (hlast : ∃ n : ℕ, 1 ≤ n ∧ ¬ WaveStabilizable η n zc) :
+    ∀ t x, fodo A η (Set.indicator A 1) t x ≤ penultimateWave η zc x := by
+  have hd0 : (0 : ℤ) < 2 * (d : ℤ) := by
+    have : (2 : ℤ) ≤ (d : ℤ) := by exact_mod_cast hd
+    linarith
+  have hη0 : ∀ x, 0 ≤ η x := fun x => by linarith [hlow x]
+  have hw0le : ∀ x, (Set.indicator A (1 : Site d → ℤ)) x ≤ 1 := by
+    intro x
+    by_cases hx : x ∈ A
+    · simp [hx]
+    · simp [hx]
+  have hw0nn : ∀ x, 0 ≤ (Set.indicator A (1 : Site d → ℤ)) x := by
+    intro x
+    by_cases hx : x ∈ A
+    · simp [hx]
+    · simp [hx]
+  intro t
+  induction t with
+  | zero =>
+    intro x
+    simp only [Exploding.fodo_zero]
+    by_cases hx : x ∈ A
+    · simp [hx]; exact hApos x hx
+    · simp [hx]; exact penultimateWave_nonneg η hη0 zc x
+  | succ t ih =>
+    intro x
+    by_cases hxA : x ∈ A
+    · rw [Exploding.fodo_succ, if_pos hxA]
+      simpa [hxA] using hApos x hxA
+    · rw [Exploding.fodo_succ, if_neg hxA]
+      by_cases hxzc : x = zc
+      · have hxA' : zc ∉ A := by rwa [← hxzc]
+        have h_fodo_nonneg : ∀ (t' : ℕ) (x' : Site d), 0 ≤ fodo A η (Set.indicator A 1) t' x' := by
+          intro t' x'
+          induction t' generalizing x' with
+          | zero => exact hw0nn x'
+          | succ t'' ih =>
+            rw [Exploding.fodo_succ]
+            by_cases hx' : x' ∈ A
+            · simp [hx']
+            · simp [hx']; split_ifs <;> linarith [ih x']
+        have hpos : 0 ≤ fodo A η (Set.indicator A 1) t zc := h_fodo_nonneg t zc
+        have h_fodo_le_one : ∀ (t' : ℕ) (x' : Site d), fodo A η (Set.indicator A 1) t' x' ≤ 1 := by
+          intro t'
+          induction t' with
+          | zero => intro x'; simpa [Exploding.fodo_zero] using hw0le x'
+          | succ t'' ih' =>
+            intro x'
+            rw [Exploding.fodo_succ]
+            by_cases hx' : x' ∈ A
+            · rw [if_pos hx']
+              exact hw0le x'
+            · simp [hx']
+              split_ifs with hcap'
+              · by_cases h_one : fodo A η (Set.indicator A 1) t'' x' = 1
+                · have hconf_eq' : fconf A η (Set.indicator A 1) t'' x' =
+                      η x' + nbrSumZ (fodo A η (Set.indicator A 1) t'') x' -
+                        2 * (d : ℤ) * fodo A η (Set.indicator A 1) t'' x' := by
+                    unfold fconf lap; ring
+                  rw [hconf_eq', h_one] at hcap'
+                  have hnbr_bound : nbrSumZ (fodo A η (Set.indicator A 1) t'') x' ≤ 2 * (d : ℤ) := by
+                    have h_each : ∀ y, fodo A η (Set.indicator A 1) t'' y ≤ 1 := ih'
+                    have : nbrSumZ (fodo A η (Set.indicator A 1) t'') x' ≤
+                        nbrSumZ (fun _ : Site d => (1 : ℤ)) x' :=
+                      nbrSumZ_mono h_each x'
+                    simpa [nbrSumZ, mul_comm] using this
+                  have hη_bound : η x' ≤ 2 * (d : ℤ) - 1 := hhigh x'
+                  nlinarith
+                · have h_zero : fodo A η (Set.indicator A 1) t'' x' = 0 := by
+                    have hle1' : fodo A η (Set.indicator A 1) t'' x' ≤ 1 := ih' x'
+                    have hge0 : 0 ≤ fodo A η (Set.indicator A 1) t'' x' :=
+                      h_fodo_nonneg t'' x'
+                    omega
+                  simp [h_zero]
+              · simpa [add_zero] using ih' x'
+        have hle1 : fodo A η (Set.indicator A 1) t zc ≤ 1 := h_fodo_le_one t zc
+        have hnext : fodo A η (Set.indicator A 1) (t + 1) zc ≤ 1 := by
+          rw [Exploding.fodo_succ, if_neg hxA']
+          split_ifs with hcap
+          · have hfodo0 : fodo A η (Set.indicator A 1) t zc = 0 := by
+              by_contra hgt
+              have hge1 : 1 ≤ fodo A η (Set.indicator A 1) t zc := by omega
+              have hconf_eq : fconf A η (Set.indicator A 1) t zc =
+                  η zc + nbrSumZ (fodo A η (Set.indicator A 1) t) zc -
+                    2 * (d : ℤ) * fodo A η (Set.indicator A 1) t zc := by
+                unfold fconf lap; ring
+              rw [hconf_eq] at hcap
+              have hnbr_bound : nbrSumZ (fodo A η (Set.indicator A 1) t) zc ≤ 2 * (d : ℤ) := by
+                have h_each : ∀ y, fodo A η (Set.indicator A 1) t y ≤ 1 := h_fodo_le_one t
+                have : nbrSumZ (fodo A η (Set.indicator A 1) t) zc ≤
+                    nbrSumZ (fun _ : Site d => (1 : ℤ)) zc :=
+                  nbrSumZ_mono h_each zc
+                simpa [nbrSumZ, mul_comm] using this
+              have hη_bound : η zc ≤ 2 * (d : ℤ) - 1 := hhigh zc
+              nlinarith
+            rw [hfodo0]
+            omega
+          · simpa [add_zero] using hle1
+        have hgoal : fodo A η (Set.indicator A 1) (t + 1) zc ≤ penultimateWave η zc zc :=
+          le_trans hnext hzcpos
+        simpa [hxzc, Exploding.fodo_succ, if_neg hxA'] using hgoal
+      · have hfix := penultimateWave_fixed η hη0 hhigh zc hlast hxzc
+        have hN_mono : nbrSumZ (fodo A η (Set.indicator A 1) t) x ≤
+            nbrSumZ (penultimateWave η zc) x :=
+          nbrSumZ_mono ih x
+        by_cases hcap : 2 * (d : ℤ) ≤ fconf A η (Set.indicator A 1) t x
+        · rw [if_pos hcap]
+          have hineq : (fodo A η (Set.indicator A 1) t x + 1) * (2 * (d : ℤ)) ≤
+              nbrSumZ (penultimateWave η zc) x + η x := by
+            have hcap_unfolded : 2 * (d : ℤ) ≤
+                η x + nbrSumZ (fodo A η (Set.indicator A 1) t) x -
+                  2 * (d : ℤ) * fodo A η (Set.indicator A 1) t x := by
+              have h := hcap
+              unfold fconf lap at h
+              omega
+            have htemp : 2 * (d : ℤ) * (fodo A η (Set.indicator A 1) t x + 1) ≤
+                η x + nbrSumZ (fodo A η (Set.indicator A 1) t) x := by
+              linarith
+            have : η x + nbrSumZ (fodo A η (Set.indicator A 1) t) x ≤
+                nbrSumZ (penultimateWave η zc) x + η x := by
+              linarith
+            linarith
+          rw [hfix]
+          rw [Int.le_ediv_iff_mul_le hd0]
+          nlinarith
+        · rw [if_neg hcap]
+          linarith [ih x]
+
+theorem aux_penultimate_path_box_closure {d : ℕ} (hd : 2 ≤ d) (η : Site d → ℤ)
+    (hlow : ∀ x, 2 * (d : ℤ) - 2 ≤ η x) (hhigh : ∀ x, η x ≤ 2 * (d : ℤ) - 1)
+    (zc : Site d) (m : ℕ) (path : ℕ → Site d)
+    (hpath : ∀ i : ℕ, i < m → (lattice d).Adj (path i) (path (i + 1)))
+    (hApos : ∀ i, i ≤ m → 0 < penultimateWave η zc (path i))
+    (hfin : (br (path '' {i : ℕ | i ≤ m})).Finite)
+    (y : Site d) (hy : y ∈ br (path '' {i : ℕ | i ≤ m})) :
+    0 < penultimateWave η zc y := by
+  have hd2 : (2 : ℤ) ≤ (d : ℤ) := by exact_mod_cast hd
+  set A := path '' {i : ℕ | i ≤ m} with hAdef
+  have hApos' : ∀ x ∈ A, 1 ≤ penultimateWave η zc x := by
+    rintro x ⟨i, hi, rfl⟩; exact hApos i hi
+  have h0 : 0 < penultimateWave η zc (path 0) := hApos 0 (Nat.zero_le m)
+  obtain ⟨hM2, hlast⟩ :=
+    aux_penultimate_hlast η (fun x => by linarith [hlow x]) hhigh zc (path 0) h0
+  have hzcpos : 1 ≤ penultimateWave η zc zc := by
+    rw [penultimateWave_at_centre η zc (by omega)]; omega
+  have hdom := aux_penultimate_path_box_closure_dominates hd η hlow hhigh zc A hApos' hzcpos hlast
+  have hlc := Exploding.Frozen.local_convexity d hd η hlow hhigh m path hpath A hAdef hfin
+    hfin.toFinset.card (le_refl _) y hy
+  have hkey := hdom hfin.toFinset.card y
+  rw [hlc] at hkey
+  omega
+
+/-! ### (b) A long straight run of positivity overlaps the infinite cluster and
+contradicts stability -/
+
+/- `aux_penultimate_overlap_contradiction`: the mechanism named in the task
+(and in the one-sentence paper proof): if the penultimate wave centred at `zc`
+(which *does* stabilize, by `penultimate_stabilizable`, since `zc`'s last-wave
+index is one more than its own) is positive along an entire straight run of
+`> (log n)^{5/2}` consecutive *macroscopic good cubes* in direction `i`, that
+run cannot lie entirely in a single finite complementary component of `Cinf`
+(clause (2) of `renormalization_properties` bounds every such component's
+cardinality by `(log n)^{5/2}`, exactly as in
+`aux_finite_exploding_meets_cluster` of `lem-finite-exploding-dec/node.lean`,
+applied to a line instead of a box), so the run must contain a macroscopic
+site of `Cinf` itself; combined with `aux_penultimate_path_box_closure`, the
+whole macroscopic cube there is then forced positive, and the *same*
+propagation mechanism as `lem-finite-exploding`'s
+`aux_finite_exploding_step`/`aux_finite_exploding_propagate`
+(`lem-finite-exploding-dec/node.lean`) forces `¬ WaveStabilizable η
+(waveThreshold η zc - 1) zc`, contradicting `hstab`.
+
+`a`/`b` bound the run along axis `i`, based at `zc`. -/
+
+-- PINNED DOWN (this pass), from the paper's ACTUAL proof of Lemma 3.5
+-- (exploding.tex:799-804, the short one, no `Hypothesis path_filling`):
+-- "By Lemma [local_convexity], `1{ũ^(x) > 0}` IS a rectangle [not merely
+-- CONTAINS one], therefore it suffices to bound the maximal side length. By
+-- Proposition [renormalization_properties], ... if any side length of the
+-- rectangle exceeds `(2k log n)^{5/2}` then it must overlap a good cube,
+-- contradicting stability." So `a`, `b` are meant to be the ACTUAL min/max
+-- of `P(zc)`'s own bounding rectangle along axis `i` (`P(zc) = br(P(zc))`,
+-- since `P(zc)` is connected through `zc` by `aux_penultimate_connected_to_
+-- centre` and `aux_penultimate_path_box_closure` then forces the whole
+-- bounding rectangle positive, so `P(zc)` cannot be a PROPER subset of its
+-- own `br`). This pins down `a ≤ zc i ∧ zc i ≤ b` (since `zc ∈ P(zc)`, a
+-- point of its own bounding rectangle) as the "based at `zc`" relation the
+-- original doc-comment named but never wrote down -- CONFIRMED needed by a
+-- future assembly of `Exploding.Frozen.last_penultimate_cluster` (to build
+-- `a`, `b`, `hline` in the first place), though NOT needed by the internal
+-- logic of `aux_penultimate_overlap_contradiction` itself (see below).
+--
+-- FALSE/UNDER-SPECIFIED STATEMENT FIX: the design's `hnz : (0 < mnorm zc) →
+-- (mnorm zc : ℝ) ≤ n` is genuinely insufficient to discharge (i)'s `hin`
+-- (`∀ v, a ≤ v → v ≤ b → (shifted point) ∈ cent d n`): `mnorm zc ≤ n` bounds
+-- `zc` alone, not `a` or `b`, and `hab` only bounds the DIFFERENCE `b - a`,
+-- not either endpoint individually, so no combination of `hnz`, `hab`, and a
+-- hypothetical `a ≤ zc i ≤ b` forces `|a| ≤ n` or `|b| ≤ n`. (The paper's own
+-- proof is silent on this because, read literally, its "if any side length
+-- exceeds `(2k log n)^{5/2}`" already implicitly re-chooses which radius
+-- `renormalization_properties` is applied at, e.g. `n' := n + (b - a)`, a
+-- genuinely separate, self-referential radius-choice argument -- since
+-- `log(n + (b-a))` still grows far slower than `b - a` once `b - a` is large
+-- -- that this pass does not carry out.) FIXED by replacing `hnz` with the
+-- SAME direct `hin` hypothesis `aux_penultimate_overlap_line_meets_cinf`
+-- already needs: this is exactly, precisely, what is needed here, with no
+-- guessing about the radius trade-off; discharging `hin` itself (via the
+-- `n' := n + (b - a)` argument sketched above, or otherwise) is left to
+-- whichever future pass assembles `Exploding.Frozen.last_penultimate_
+-- cluster`, which is where the genuine remaining difficulty lives.
+--
+-- Split into the two genuinely separable halves below: (i)
+-- `aux_penultimate_overlap_line_meets_cinf`, the pigeonhole argument (a line
+-- longer than the hole bound cannot avoid `Cinf`, no positivity involved,
+-- purely the geometry of `Cinfᶜ`'s components -- same recipe as
+-- `aux_close_long_path`/`aux_finite_exploding_meets_cluster`); and (ii) the
+-- propagation step, `aux_penultimate_overlap_propagate`, a re-centred
+-- instance of `aux_finite_exploding_propagate`'s own mechanism
+-- (`lem-finite-exploding-dec/node.lean`, itself still open at
+-- `aux_finite_exploding_step`) and rated at the same difficulty. With `hin`
+-- now correctly in the signature, `aux_penultimate_overlap_contradiction`
+-- ITSELF is real (not `sorry`): a direct two-line composition of (i) and
+-- (ii), needing no dynamics reasoning of its own.
+
+/-- The pigeonhole half of `aux_penultimate_overlap_contradiction`: a line
+longer than the hole bound cannot avoid `Cinf`.  Same recipe as
+`aux_close_long_path`/`aux_finite_exploding_meets_cluster`: if it did, all its
+(integer, hence `⌈b-a⌉+1`-many distinct) points would lie in a single
+component of `Cinfᶜ` (`aux_close_long_path_chain`-style connectivity along
+the `i`-direction unit steps, `componentIn`), whose cardinality `hcomp`
+bounds by `Real.log n ^ (5/2) ≤ b - a`, a contradiction via
+`Set.le_ncard_of_inj_on_range` on `v ↦ (fun j => if j = i then v else zc j)`
+(injective since coordinate `i` differs). -/
+theorem aux_penultimate_overlap_line_meets_cinf {d : ℕ} (Cinf : Set (Site d)) (n0 : ℕ)
+    (hcomp : ∀ n, n0 ≤ n → ∀ x ∈ (cent d n : Set (Site d)), x ∉ Cinf →
+      (componentIn Cinfᶜ x).Finite ∧
+        ((componentIn Cinfᶜ x).ncard : ℝ) < Real.log n ^ ((5 : ℝ) / 2))
+    (n : ℕ) (hn : n0 ≤ n) (zc : Site d) (i : Fin d) (a b : ℤ)
+    (hab : Real.log n ^ ((5 : ℝ) / 2) ≤ ((b - a : ℤ) : ℝ))
+    (hin : ∀ v : ℤ, a ≤ v → v ≤ b →
+      (fun j => if j = i then v else zc j) ∈ (cent d n : Set (Site d))) :
+    ∃ v : ℤ, a ≤ v ∧ v ≤ b ∧ (fun j => if j = i then v else zc j) ∈ Cinf := by
+  -- From `hab` we get `a ≤ b` since `Real.log n ^ (5/2) ≥ 0`
+  have hab_le : a ≤ b := by
+    by_contra h_lt
+    have h_neg : ((b - a : ℤ) : ℝ) < 0 := by
+      have : (b : ℤ) < a := by omega
+      have h_neg' : (b : ℝ) < (a : ℝ) := by exact_mod_cast this
+      push_cast
+      linarith
+    have h_nonneg : 0 ≤ Real.log (n : ℝ) ^ ((5 : ℝ) / 2) :=
+      Real.rpow_nonneg (Real.log_natCast_nonneg _) _
+    linarith [hab, h_nonneg, h_neg]
+  -- The line function
+  set f : ℤ → Site d := fun v => (fun j => if j = i then v else zc j) with hf
+  have hf_inj : Function.Injective f := by
+    intro v w h_eq
+    have hcoords : f v i = f w i := by rw [h_eq]
+    simp [f] at hcoords
+    exact hcoords
+  have hf_cent : ∀ v, a ≤ v → v ≤ b → f v ∈ (cent d n : Set (Site d)) := by
+    intro v hva hvb
+    simpa [f, hf] using hin v hva hvb
+  by_contra h_no_Cinf
+  simp only [not_exists, not_and] at h_no_Cinf
+  -- h_no_Cinf : ∀ v, a ≤ v → v ≤ b → f v ∉ Cinf
+  have hf_compl : ∀ v, a ≤ v → v ≤ b → f v ∈ Cinfᶜ := by
+    intro v hva hvb
+    -- Cinfᶜ is definitionally Cinfᶜ, so h_no_Cinf gives exactly membership
+    exact h_no_Cinf v hva hvb
+  -- Pick v₀ = a, get the component and its cardinality bound
+  have ha_cent : f a ∈ (cent d n : Set (Site d)) := hf_cent a (le_refl a) hab_le
+  have ha_compl : f a ∈ Cinfᶜ := hf_compl a (le_refl a) hab_le
+  obtain ⟨h_fin_comp, h_card_comp⟩ := hcomp n hn (f a) ha_cent ha_compl
+  -- h_fin_comp : (componentIn Cinfᶜ (f a)).Finite
+  -- h_card_comp : ((componentIn Cinfᶜ (f a)).ncard : ℝ) < Real.log n ^ ((5 : ℝ) / 2)
+  -- Show that for any v ∈ [a, b], f v is in the same component as f a
+  have h_chain (v : ℤ) (hva : a ≤ v) (hvb : v ≤ b) : f v ∈ componentIn Cinfᶜ (f a) := by
+    -- Use Int.le_induction: prove P(w) := w ≤ b → f w ∈ componentIn Cinfᶜ (f a)
+    -- for all w ≥ a, then apply to v
+    have h_base : a ≤ b → f a ∈ componentIn Cinfᶜ (f a) := by
+      intro _
+      refine ⟨ha_compl, ha_compl, ?_⟩
+      exact SimpleGraph.Reachable.refl (G := (lattice d).induce Cinfᶜ) ⟨f a, ha_compl⟩
+    have h_step (w : ℤ) (hw : a ≤ w) (h_prev : w ≤ b → f w ∈ componentIn Cinfᶜ (f a)) :
+        (w + 1 ≤ b → f (w + 1) ∈ componentIn Cinfᶜ (f a)) := by
+      intro hw1_le_b
+      have hw_le_b : w ≤ b := by omega
+      have h_fw : f w ∈ componentIn Cinfᶜ (f a) := h_prev hw_le_b
+      rcases h_fw with ⟨hx, hy, hreach⟩
+      -- hx : f a ∈ Cinfᶜ, hy : f w ∈ Cinfᶜ, hreach : Reachable from f a to f w
+      have h_adj : (lattice d).Adj (f w) (f (w + 1)) := by
+        have h_eq : f (w + 1) = f w + unit i := by
+          ext j
+          dsimp [f]
+          by_cases hj : j = i
+          · subst hj; simp [unit]
+          · simp [unit, hj]
+        rw [h_eq]
+        exact (adj_add_unit (f w) i).symm
+      have h_fw1_compl : f (w + 1) ∈ Cinfᶜ := hf_compl (w + 1) (by omega) hw1_le_b
+      have h_adj_induce : ((lattice d).induce Cinfᶜ).Adj ⟨f w, hy⟩ ⟨f (w + 1), h_fw1_compl⟩ := by
+        simpa [SimpleGraph.induce_adj] using h_adj
+      have h_reach_ext : ((lattice d).induce Cinfᶜ).Reachable ⟨f a, hx⟩ ⟨f (w + 1), h_fw1_compl⟩ :=
+        hreach.trans ⟨SimpleGraph.Walk.cons h_adj_induce SimpleGraph.Walk.nil⟩
+      exact ⟨hx, h_fw1_compl, h_reach_ext⟩
+    have h_all : ∀ n, a ≤ n → (n ≤ b → f n ∈ componentIn Cinfᶜ (f a)) :=
+      Int.leInduction h_base h_step
+    exact h_all v hva hvb
+  -- Now we have that the image of Icc a b under f is contained in the component
+  have h_image_subset : (Finset.image f (Finset.Icc a b) : Set (Site d)) ⊆ componentIn Cinfᶜ (f a) := by
+    intro x hx
+    simp only [Finset.mem_coe, Finset.mem_image] at hx
+    rcases hx with ⟨v, hv, rfl⟩
+    rcases Finset.mem_Icc.mp hv with ⟨hva, hvb⟩
+    exact h_chain v hva hvb
+  -- Cardinality argument
+  have h_card_image : ((Finset.image f (Finset.Icc a b) : Set (Site d)).ncard : ℝ) = ((Finset.Icc a b).card : ℝ) := by
+    have h : (Finset.image f (Finset.Icc a b) : Set (Site d)).ncard = (Finset.Icc a b).card := by
+      simpa [Finset.card_image_of_injective _ hf_inj] using Set.ncard_coe_finset (Finset.image f (Finset.Icc a b))
+    exact mod_cast h
+  have h_card_Icc : (Finset.Icc a b).card = (b + 1 - a).toNat := by
+    simp [Int.card_Icc]
+  have h_card_Icc_val : ((Finset.Icc a b).card : ℝ) = ((b + 1 - a).toNat : ℝ) := by
+    norm_cast
+  -- The component's ncard is at least the image's ncard
+  have h_ncard_le : ((Finset.image f (Finset.Icc a b) : Set (Site d)).ncard : ℝ) ≤
+      ((componentIn Cinfᶜ (f a)).ncard : ℝ) := by
+    have : ((Finset.image f (Finset.Icc a b) : Set (Site d)).ncard : ℕ) ≤
+        (componentIn Cinfᶜ (f a)).ncard :=
+      Set.ncard_le_ncard h_image_subset h_fin_comp
+    exact mod_cast this
+  -- Combine the inequalities
+  have h_bound : ((b + 1 - a).toNat : ℝ) < Real.log n ^ ((5 : ℝ) / 2) := by
+    linarith [h_card_image, h_card_Icc_val, h_ncard_le, h_card_comp]
+  have h_bound2 : Real.log n ^ ((5 : ℝ) / 2) ≤ ((b - a : ℤ) : ℝ) := hab
+  -- But (b + 1 - a).toNat ≥ b + 1 - a as integers, and b + 1 - a > b - a
+  have h_ineq : ((b - a : ℤ) : ℝ) < ((b + 1 - a).toNat : ℝ) := by
+    have hpos : 0 ≤ b + 1 - a := by omega
+    have h_eq : ((b + 1 - a).toNat : ℤ) = b + 1 - a := Int.toNat_of_nonneg hpos
+    have h_eq' : ((b + 1 - a).toNat : ℝ) = ((b + 1 - a : ℤ) : ℝ) := by exact_mod_cast h_eq
+    rw [h_eq']
+    push_cast
+    linarith
+  linarith [h_bound, h_bound2, h_ineq]
+
+

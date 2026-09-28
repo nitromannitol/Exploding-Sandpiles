@@ -14,6 +14,7 @@ import Exploding.Support.SubFinite
 import Exploding.Support.SubStep
 import Exploding.Support.SubCross
 import Exploding.Support.SubRelay
+import Exploding.Support.SubPen
 import Exploding.Support.SubPoly
 import Exploding.Support.SubFConf
 import Exploding.Support.SubNbr

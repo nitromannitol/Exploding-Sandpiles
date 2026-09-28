@@ -828,3 +828,38 @@ theorem macroIdx_adj {d : ℕ} (k : ℕ) (hk : 1 ≤ k) (x : Site d) (i : Fin d)
           rw [Pi.single_eq_of_ne hj]
           simp
         rw [hcoord _ j hj h1]
+
+/-- The key implication: with `η ≤ 2d-1`, a positive wave value at `t+1` forces a
+positive neighbour at `t`. -/
+theorem nbrSum_pos_of_wave_pos {d : ℕ} (η : Site d → ℤ) (hlow : ∀ x, 0 ≤ η x)
+    (hhigh : ∀ x, η x ≤ 2 * (d : ℤ) - 1) (n : ℕ) (t : ℕ) (x : Site d)
+    (hx : 0 < wave η n (0 : Site d) (t + 1) x) (hx0 : x ≠ 0) :
+    0 < nbrSumZ (wave η n (0 : Site d) t) x := by
+  rw [wave_of_ne η n 0 x t hx0] at hx
+  by_contra hcon
+  have hle : nbrSumZ (wave η n (0 : Site d) t) x ≤ 0 := le_of_not_gt hcon
+  have hnn : 0 ≤ nbrSumZ (wave η n (0 : Site d) t) x :=
+    nbrSumZ_nonneg _ (fun y => wave_nonneg η hlow n 0 t y) x
+  have h0 : nbrSumZ (wave η n (0 : Site d) t) x = 0 := le_antisymm hle hnn
+  rw [h0, zero_add] at hx
+  have h2d : (0 : ℤ) < 2 * (d : ℤ) := by
+    have hd1 : (1 : ℤ) ≤ (d : ℤ) := by
+      by_contra hc
+      have hd0 : d = 0 := by omega
+      subst hd0
+      simp at hx
+    linarith
+  -- 0 < η x / (2d) with 2d > 0 forces η x ≥ 2d, contradicting η x ≤ 2d-1.
+  have hge : 2 * (d : ℤ) ≤ η x := by
+    by_contra hc
+    have h1 : η x ≤ 2 * (d : ℤ) - 1 := by omega
+    have h3 : η x / (2 * (d : ℤ)) ≤ (2 * (d : ℤ) - 1) / (2 * (d : ℤ)) :=
+      Int.ediv_le_ediv h2d h1
+    have h4 : (2 * (d : ℤ) - 1) / (2 * (d : ℤ)) = 0 := by
+      apply Int.ediv_eq_zero_of_lt
+      · linarith
+      · linarith
+    rw [h4] at h3
+    linarith
+  have hh := hhigh x
+  omega

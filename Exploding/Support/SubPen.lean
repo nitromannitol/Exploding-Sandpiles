@@ -1268,9 +1268,10 @@ theorem aux_penultimate_side_bound {d : ℕ} (hd : 2 ≤ d) (η : Site d → ℤ
     (hab : Real.log n ^ ((5 : ℝ) / 2) ≤ ((b - a : ℤ) : ℝ))
     (hin : ∀ v : ℤ, a ≤ v → v ≤ b →
       (fun j => if j = dir then v else (zc j - 1) / (k : ℤ)) ∈ (cent d n : Set (Site d)))
+    (w0 : Site d)
+    (hw0 : ∀ j, j ≠ dir → w0 j = 1 + (k : ℤ) * ((zc j - 1) / (k : ℤ)))
     (hline : ∀ u : ℤ, 1 + (k : ℤ) * a ≤ u → u ≤ (k : ℤ) + (k : ℤ) * b →
-      0 < penultimateWave η zc (fun j => if j = dir then u
-        else 1 + (k : ℤ) * ((zc j - 1) / (k : ℤ)))) :
+      0 < penultimateWave η zc (fun j => if j = dir then u else w0 j)) :
     False := by
   have hk1 : (1 : ℤ) ≤ (k : ℤ) := by exact_mod_cast hk
   obtain ⟨v, hva, hvb, hvCinf⟩ :=
@@ -1298,12 +1299,12 @@ theorem aux_penultimate_side_bound {d : ℕ} (hd : 2 ≤ d) (η : Site d → ℤ
     have hle : w dir + (k : ℤ) * v ≤ (k : ℤ) + (k : ℤ) * b := by
       have h1 : (k : ℤ) * v ≤ (k : ℤ) * b := mul_le_mul_of_nonneg_left hvb (by linarith)
       linarith [hw.1.2]
-    have hfun : (fun j => if j = dir then w dir + (k : ℤ) * v
-        else 1 + (k : ℤ) * ((zc j - 1) / (k : ℤ))) = (w + (k : ℤ) • i) := by
+    have hfun : (fun j => if j = dir then w dir + (k : ℤ) * v else w0 j) =
+        (w + (k : ℤ) • i) := by
       ext l
       by_cases hl : l = dir
       · subst hl; simp only [if_true, hdir]
-      · simp only [if_neg hl, hother l hl]
+      · simp only [if_neg hl, hother l hl, hw0 l hl]
     rw [← hfun]
     exact hline _ hge hle
   exact aux_penultimate_overlap_propagate_line hd η hlow hhigh k hk Cinf hCinf zc i hvCinf
@@ -1510,9 +1511,10 @@ theorem aux_penultimate_side_bound_one {d : ℕ} (hd : 2 ≤ d) (η : Site d →
     (n : ℕ) (hn : n0 ≤ n) (dir : Fin d) (a b : ℤ)
     (hin : ∀ v : ℤ, a ≤ v → v ≤ b →
       (fun j => if j = dir then v else (zc j - 1) / (k : ℤ)) ∈ (cent d n : Set (Site d)))
+    (w0 : Site d)
+    (hw0 : ∀ j, j ≠ dir → w0 j = 1 + (k : ℤ) * ((zc j - 1) / (k : ℤ)))
     (hline : ∀ u : ℤ, 1 + (k : ℤ) * a ≤ u → u ≤ (k : ℤ) + (k : ℤ) * b →
-      0 < penultimateWave η zc (fun j => if j = dir then u
-        else 1 + (k : ℤ) * ((zc j - 1) / (k : ℤ))))
+      0 < penultimateWave η zc (fun j => if j = dir then u else w0 j))
     (hlo : a ≤ (zc dir - 1) / (k : ℤ))
     (hhi : (zc dir - 1) / (k : ℤ) ≤ b)
     (hlen : Real.log n ^ ((5 : ℝ) / 2) ≤
@@ -1560,12 +1562,12 @@ theorem aux_penultimate_side_bound_one {d : ℕ} (hd : 2 ≤ d) (η : Site d →
     have hle : w dir + (k : ℤ) * v ≤ (k : ℤ) + (k : ℤ) * b := by
       have h1 : (k : ℤ) * v ≤ (k : ℤ) * b := mul_le_mul_of_nonneg_left hvb (by linarith)
       linarith [hw.1.2]
-    have hfun : (fun j => if j = dir then w dir + (k : ℤ) * v
-        else 1 + (k : ℤ) * ((zc j - 1) / (k : ℤ))) = (w + (k : ℤ) • i) := by
+    have hfun : (fun j => if j = dir then w dir + (k : ℤ) * v else w0 j) =
+        (w + (k : ℤ) • i) := by
       ext l
       by_cases hl : l = dir
       · subst hl; simp only [if_true, hdir]
-      · simp only [if_neg hl, hother l hl]
+      · simp only [if_neg hl, hother l hl, hw0 l hl]
     rw [← hfun]
     exact hline _ hge hle
   exact aux_penultimate_overlap_propagate_line_one hd η hlow hhigh k hk Cinf hCinf zc i

@@ -1348,13 +1348,14 @@ theorem wave_covers_of_line_one'' {d : ℕ} (hd : 2 ≤ d) (η : Site d → ℤ)
     (zc i : Site d) (hgoodi : GoodAt η k i) (dir : Fin d) (z : Site d)
     (hz : z ∈ cube d k) (t : ℕ)
     (hline : ∀ w ∈ line d k dir z, 0 < wave η 1 zc t (w + (k : ℤ) • i))
-    (hcov_zc : ∀ t : ℕ, ∀ x ∈ cube d k,
+    (hcov_zc : ∃ T0 : ℕ, ∀ t : ℕ, T0 ≤ t → ∀ x ∈ cube d k,
       0 < wave η 1 zc t (x + (k : ℤ) • macroIdx k zc)) :
     ∃ t' : ℕ, t ≤ t' ∧ ∀ x ∈ cube d k, 0 < wave η 1 zc t' (x + (k : ℤ) • i) := by
   by_cases hi : i = macroIdx k zc
-  · refine ⟨t, le_refl t, fun x hx => ?_⟩
+  · obtain ⟨T0, hT0⟩ := hcov_zc
+    refine ⟨max T0 t, le_max_right _ _, fun x hx => ?_⟩
     rw [hi]
-    exact hcov_zc t x hx
+    exact hT0 (max T0 t) (le_max_left _ _) x hx
   · exact wave_covers_of_line_one' hd η hlow hhigh k zc i hgoodi dir z (Or.inl hz) t hline
       (fun y hy hcon => hi (macroIdx_eq_of_mem_image k hk zc i ⟨y, hy, hcon⟩))
 
@@ -1372,7 +1373,7 @@ theorem aux_penultimate_overlap_propagate_line_one {d : ℕ} (hd : 2 ≤ d) (η 
       0 < penultimateWave η zc (w + (k : ℤ) • i))
     (hM2 : waveThreshold η zc = 2)
     (hlast : ∃ n : ℕ, 1 ≤ n ∧ ¬ WaveStabilizable η n zc)
-    (hcov_zc : ∀ t : ℕ, ∀ x ∈ cube d k,
+    (hcov_zc : ∃ T0 : ℕ, ∀ t : ℕ, T0 ≤ t → ∀ x ∈ cube d k,
       0 < wave η 1 zc t (x + (k : ℤ) • macroIdx k zc)) : False := by
   have hlow0 : ∀ x, 0 ≤ η x := fun x => by linarith [hlow x]
   have hd0 : (0 : ℤ) < 2 * (d : ℤ) := by
@@ -1413,8 +1414,9 @@ theorem aux_penultimate_overlap_propagate_line_one {d : ℕ} (hd : 2 ≤ d) (η 
       by_cases hb : b = macroIdx k zc
       · -- `b` is `zc`'s own cube: the wave is positive at `zc` itself, and
         -- `zc` lies in `Q_k(b)`'s image, so the cube is covered
-        refine ⟨max s T0, le_max_left s T0, fun x hx => ?_⟩
-        have h2' : 0 < wave η 1 zc (max s T0) (x + (k : ℤ) • b) := by
+        obtain ⟨T1, hT1⟩ := hcov_zc
+        refine ⟨max (max s T0) T1, le_trans (le_max_left s T0) (le_max_left _ _), fun x hx => ?_⟩
+        have h2' : 0 < wave η 1 zc (max (max s T0) T1) (x + (k : ℤ) • b) := by
           -- `zc` lies in `Q_k(b)`'s image, and the wave is positive at `zc`
           -- `zc` lies in `Q_k(b)`'s image, and the wave is positive at `zc`
           obtain ⟨y0, hy0, hy0eq⟩ : ∃ y0 ∈ cube d k, y0 + (k : ℤ) • b = zc := by
@@ -1449,11 +1451,10 @@ theorem aux_penultimate_overlap_propagate_line_one {d : ℕ} (hd : 2 ≤ d) (η 
             have := wave_mono_time η hlow0 hd0 1 zc h3'' zc
             linarith
           -- the cube `Q_k(b)` is covered by the wave at `zc`: the wave is
-          -- positive at `zc`, and `zc` is the image of `y0 ∈ Q_k(b)`
-          have hcov : ∀ x ∈ cube d k, 0 < wave η 1 zc (max s T0) (x + (k : ℤ) • b) := by
+          have hcov : ∀ x ∈ cube d k, 0 < wave η 1 zc (max (max s T0) T1) (x + (k : ℤ) • b) := by
             intro x hx
             rw [hb]
-            exact hcov_zc (max s T0) x hx
+            exact hT1 (max (max s T0) T1) (le_max_right _ _) x hx
           exact hcov x hx
         exact h2'
       · obtain ⟨dir', hdir'⟩ := hadj
@@ -1538,7 +1539,7 @@ theorem aux_penultimate_side_bound_one {d : ℕ} (hd : 2 ≤ d) (η : Site d →
       (((zc dir - 1) / (k : ℤ)) - 1 - a : ℤ) ∨
       Real.log n ^ ((5 : ℝ) / 2) ≤
       ((b - ((zc dir - 1) / (k : ℤ) + 1) : ℤ) : ℝ))
-    (hcov_zc : ∀ t : ℕ, ∀ x ∈ cube d k,
+    (hcov_zc : ∃ T0 : ℕ, ∀ t : ℕ, T0 ≤ t → ∀ x ∈ cube d k,
       0 < wave η 1 zc t (x + (k : ℤ) • macroIdx k zc)) :
     False := by
   have hk1 : (1 : ℤ) ≤ (k : ℤ) := by exact_mod_cast hk
@@ -1910,7 +1911,7 @@ theorem aux_penultimate_segment_bound {d : ℕ} (hd : 2 ≤ d) (η : Site d → 
     (hj0 : j0 = (zc l - 1) / (k : ℤ))
     (hpos : ∀ v : ℤ, a ≤ v → v ≤ b →
       0 < penultimateWave η zc (fun j => if j = l then v else c j))
-    (hcov_zc : ∀ t : ℕ, ∀ x ∈ cube d k,
+    (hcov_zc : ∃ T0 : ℕ, ∀ t : ℕ, T0 ≤ t → ∀ x ∈ cube d k,
       0 < wave η 1 zc t (x + (k : ℤ) • macroIdx k zc)) :
     False := by
   have hk1 : (1 : ℤ) ≤ (k : ℤ) := by exact_mod_cast hk
@@ -1985,7 +1986,7 @@ theorem aux_penultimate_segment_bound' {d : ℕ} (hd : 2 ≤ d) (η : Site d →
       (fun j => if j = l then v else (c j - 1) / (k : ℤ)) ∈ (cent d n : Set (Site d)))
     (hpos : ∀ v : ℤ, a ≤ v → v ≤ b →
       0 < penultimateWave η zc (fun j => if j = l then v else c j))
-    (hcov_zc : ∀ t : ℕ, ∀ x ∈ cube d k,
+    (hcov_zc : ∃ T0 : ℕ, ∀ t : ℕ, T0 ≤ t → ∀ x ∈ cube d k,
       0 < wave η 1 zc t (x + (k : ℤ) • macroIdx k zc)) :
     False := by
   have hk1 : (1 : ℤ) ≤ (k : ℤ) := by exact_mod_cast hk
@@ -2056,7 +2057,7 @@ theorem aux_penultimate_segment_length_bound {d : ℕ} (hd : 2 ≤ d) (η : Site
     (hj0 : j0 = (zc l - 1) / (k : ℤ))
     (hpos : ∀ v : ℤ, a ≤ v → v ≤ b →
       0 < penultimateWave η zc (fun j => if j = l then v else c j))
-    (hcov_zc : ∀ t : ℕ, ∀ x ∈ cube d k,
+    (hcov_zc : ∃ T0 : ℕ, ∀ t : ℕ, T0 ≤ t → ∀ x ∈ cube d k,
       0 < wave η 1 zc t (x + (k : ℤ) • macroIdx k zc)) :
     ¬ (((2 * Real.log n' ^ ((5 : ℝ) / 2) + 6) * (k : ℝ)) ≤ ((b - a : ℤ) : ℝ)) := by
   intro hbig

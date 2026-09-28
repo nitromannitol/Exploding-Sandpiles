@@ -1826,6 +1826,37 @@ theorem layer_spanning_iIndepSet (d : ℕ) (p : ℝ) (hp : 0 < p) (hp1 : p < 1) 
         measurable_const))
     measurable_const
 
+/-- The layer-`i` spanning event is measurable. -/
+theorem layer_spanning_measurable (d : ℕ) (i : ℤ) (n : ℕ) :
+    MeasurableSet {η : Site (d + 1) → ℤ |
+      InternallySpanned (fun w : Site d => η (cons i w) - 1) n} := by
+  rw [show {η : Site (d + 1) → ℤ |
+        InternallySpanned (fun w : Site d => η (cons i w) - 1) n}
+      = ⋂ (x : Site d), ⋂ (_ : x ∈ cube d n),
+          ⋃ (t : ℕ), {η : Site (d + 1) → ℤ |
+            spanOdo n (fun w : Site d => η (cons i w) - 1) t x = 1} from by
+    ext η
+    simp only [InternallySpanned, Set.mem_setOf_eq, Set.mem_iInter, Set.mem_iUnion]]
+  refine MeasurableSet.iInter (fun x => MeasurableSet.iInter (fun _ => ?_))
+  refine MeasurableSet.iUnion (fun t => ?_)
+  exact measurableSet_eq_fun
+    ((spanOdo_measurable n t x).comp
+      (measurable_pi_lambda _ fun w => (measurable_pi_apply (cons i w)).sub measurable_const))
+    measurable_const
+
+/-- The "all layers spanned" event is measurable. -/
+theorem layer_all_spanning_measurable (d : ℕ) (n : ℕ) :
+    MeasurableSet {η : Site (d + 1) → ℤ | ∀ i ∈ Finset.Icc 1 n,
+      InternallySpanned (fun w : Site d => η (cons (i : ℤ) w) - 1) n} := by
+  rw [show {η : Site (d + 1) → ℤ | ∀ i ∈ Finset.Icc 1 n,
+        InternallySpanned (fun w : Site d => η (cons (i : ℤ) w) - 1) n}
+      = ⋂ i ∈ Finset.Icc 1 n, {η : Site (d + 1) → ℤ |
+          InternallySpanned (fun w : Site d => η (cons (i : ℤ) w) - 1) n} from by
+    ext η
+    simp only [Set.mem_setOf_eq, Set.mem_iInter]]
+  exact MeasurableSet.biInter (Finset.countable_toSet _)
+    (fun i _ => layer_spanning_measurable d (i : ℤ) n)
+
 end ReductionShift
 
 end Exploding

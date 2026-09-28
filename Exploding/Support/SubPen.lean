@@ -1117,6 +1117,29 @@ theorem aux_penultimate_run_meets_cube {d : ℕ} (η : Site d → ℤ)
     rw [← hfun]
     exact hline _ hge hle
 
+/-- **The geometric fact for the `N = 1` propagation.**  If `zc` lies in the
+image `cube d k + k•b` of a macroscopic cube, then `b` is exactly `zc`'s own cube
+index `macroIdx k zc`: writing `zc j = y j + k * b j` with `1 ≤ y j ≤ k` gives
+`zc j - 1 = (y j - 1) + k * b j` with `0 ≤ y j - 1 < k`, so
+`(zc j - 1) / k = b j`.  Hence `mnorm (b - macroIdx k zc) = 0`. -/
+theorem macroIdx_eq_of_mem_image {d : ℕ} (k : ℕ) (hk : 1 ≤ k) (zc : Site d)
+    (b : Site d) (hb : ∃ y ∈ cube d k, y + (k : ℤ) • b = zc) :
+    b = macroIdx k zc := by
+  obtain ⟨y, hy, hyb⟩ := hb
+  have hk0 : (0 : ℤ) < (k : ℤ) := Nat.cast_pos.mpr hk
+  ext j
+  have hyj : 1 ≤ y j ∧ y j ≤ (k : ℤ) := hy j
+  have hzj : zc j = y j + (k : ℤ) * b j := by
+    have := congrFun hyb j
+    simpa only [Pi.add_apply, Pi.smul_apply, smul_eq_mul] using this.symm
+  have h1 : zc j - 1 = (y j - 1) + (k : ℤ) * b j := by linarith
+  have h2 : 0 ≤ y j - 1 ∧ y j - 1 < (k : ℤ) := by omega
+  have h4 : (y j - 1) / (k : ℤ) = 0 := Int.ediv_eq_zero_of_lt h2.1 h2.2
+  simp only [macroIdx]
+  rw [h1]
+  rw [Int.add_mul_ediv_left _ _ (ne_of_gt hk0)]
+  rw [h4, zero_add]
+
 theorem aux_penultimate_overlap_propagate_line {d : ℕ} (hd : 2 ≤ d) (η : Site d → ℤ)
     (hlow : ∀ x, 2 * (d : ℤ) - 2 ≤ η x) (hhigh : ∀ x, η x ≤ 2 * (d : ℤ) - 1)
     (k : ℕ) (hk : 1 ≤ k) (Cinf : Set (Site d)) (hCinf : IsInfiniteConnectedGoodSet η k Cinf)

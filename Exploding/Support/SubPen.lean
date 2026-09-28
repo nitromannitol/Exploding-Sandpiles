@@ -8,6 +8,9 @@ positivity through the infinite good cluster and the pigeonhole step that finds
 a good cube on a long line; both are recorded in `FINDINGS.md`.
 -/
 import Exploding.Support.Vocab
+import Exploding.Support.SubFinite
+import Exploding.Support.SubCross
+import Exploding.Frozen.LastWaveBound
 import Exploding.Support.Wave
 import Exploding.Frozen.LocalConvexity
 import Exploding.Frozen.Renormalization
@@ -921,3 +924,21 @@ theorem macro_reach {d : ℕ} (η : Site d → ℤ) (hlow : ∀ x, 0 ≤ η x)
               simpa [SimpleGraph.induce_adj] using hadj
             exact ⟨h0c, hxcompl,
               h3.trans ⟨SimpleGraph.Walk.cons hadj' SimpleGraph.Walk.nil⟩⟩
+
+/-- The last wave dominates the penultimate wave at any time past the penultimate
+wave's stabilization. -/
+theorem penultimate_le_last {d : ℕ} (η : Site d → ℤ) (_hlow0 : ∀ y, 0 ≤ η y)
+    (hd : (0 : ℤ) < 2 * (d : ℤ))
+    (z : Site d) (_hlast : ∃ n : ℕ, 1 ≤ n ∧ ¬ WaveStabilizable η n z)
+    (h1 : waveThreshold η z ≠ 1) (T : ℕ)
+    (hT : ∀ t : ℕ, T ≤ t → wave η (waveThreshold η z - 1) z t =
+      wave η (waveThreshold η z - 1) z T)
+    (t : ℕ) (ht : T ≤ t) (x : Site d) :
+    penultimateWave η z x ≤ lastWave η z t x := by
+  rw [penultimateWave, if_neg h1, lastWave]
+  have hspec := waveTerminal_spec η (waveThreshold η z - 1) z ⟨T, hT⟩ T
+    (Nat.sInf_le (show T ∈ {T : ℕ | ∀ t : ℕ, T ≤ t →
+      wave η (waveThreshold η z - 1) z t = wave η (waveThreshold η z - 1) z T} from hT))
+  rw [← hspec]
+  rw [← hT t ht]
+  exact wave_mono_n η hd z (Nat.sub_le (waveThreshold η z) 1) t x

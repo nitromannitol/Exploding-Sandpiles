@@ -536,3 +536,90 @@ theorem toyLaw_shift (d : ℕ) (p : ℝ) (hp : 0 < p) (hp1 : p < 1) (x : Site d)
       (fun k : Site d => k + x) hinj
   simpa only [toyLaw, productLaw] using h2
 
+
+/-- **The wave is equivariant under translation.**  Shifting the background by
+`x` and the starting site by `-x` shifts the wave by `-x`. -/
+theorem wave_shift_eq {d : ℕ} (η : Site d → ℤ) (n : ℕ) (z x : Site d) (t : ℕ) :
+    ∀ y : Site d, wave (fun w => η (w + x)) n (z - x) t (y - x) = wave η n z t y := by
+  induction t with
+  | zero =>
+    intro y
+    rw [wave_zero, wave_zero]
+    by_cases h : y = z
+    · subst h; simp
+    · have h2 : y - x ≠ z - x := by
+        intro hc
+        apply h
+        have h5 := congrFun hc
+        exact funext fun i => by
+          have h6 := h5 i
+          simp only [Pi.sub_apply] at h6
+          omega
+      simp [h, h2]
+  | succ t ih =>
+    intro y
+    rw [wave_succ, wave_succ]
+    by_cases h : y = z
+    · subst h; simp
+    · have h2 : y - x ≠ z - x := by
+        intro hc
+        apply h
+        have h5 := congrFun hc
+        exact funext fun i => by
+          have h6 := h5 i
+          simp only [Pi.sub_apply] at h6
+          omega
+      rw [if_neg h, if_neg h2]
+      congr 1
+      have h3 : nbrSumZ (fun w => wave (fun w => η (w + x)) n (z - x) t w) (y - x) =
+          nbrSumZ (fun w => wave η n z t w) y := by
+        apply Finset.sum_congr rfl
+        intro i _
+        have h4 : y - x + unit i = (y + unit i) - x := by abel
+        have h5 : y - x - unit i = (y - unit i) - x := by abel
+        simp only [h4, h5]
+        rw [ih (y + unit i), ih (y - unit i)]
+      rw [h3]
+      congr 1
+      rw [show y - x + x = y by abel]
+
+
+/-- **The wave is measurable in the background.** -/
+theorem measurable_wave {d : ℕ} (n : ℕ) (z : Site d) (t : ℕ) :
+    ∀ y : Site d, Measurable fun η : Site d → ℤ => wave η n z t y := by
+  induction t with
+  | zero =>
+    intro y
+    simp only [wave_zero]
+    split <;> exact measurable_const
+  | succ t ih =>
+    intro y
+    rw [funext fun η => wave_succ η n z y t]
+    split
+    · exact measurable_const
+    · apply Measurable.div
+      · apply Measurable.add
+        · apply Finset.measurable_sum
+          intro i _
+          exact (ih (y + unit i)).add (ih (y - unit i))
+        · exact measurable_pi_apply y
+      · exact measurable_const
+
+
+/-- **The set of backgrounds where the `n`-wave at `z` does not stabilize is
+measurable.** -/
+theorem measurableSet_not_stabilizable {d : ℕ} (n : ℕ) (z : Site d) :
+    MeasurableSet {a : Site d → ℤ | ¬ WaveStabilizable a n z} := by
+  have h : {a : Site d → ℤ | ¬ WaveStabilizable a n z} =
+      (⋃ T : ℕ, ⋂ t : ℕ, ⋂ (_ : T ≤ t), {a : Site d → ℤ | wave a n z t = wave a n z T})ᶜ := by
+    ext a
+    simp only [Set.mem_setOf_eq, Set.mem_compl_iff, Set.mem_iUnion, Set.mem_iInter,
+      WaveStabilizable, not_exists, not_forall]
+  rw [h]
+  refine MeasurableSet.compl ?_
+  refine MeasurableSet.iUnion fun T => ?_
+  refine MeasurableSet.iInter fun t => ?_
+  refine MeasurableSet.iInter fun ht => ?_
+  exact measurableSet_eq_fun (measurable_pi_lambda _ fun y => measurable_wave n z t y)
+    (measurable_pi_lambda _ fun y => measurable_wave n z T y)
+

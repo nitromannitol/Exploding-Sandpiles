@@ -2,6 +2,8 @@
 Lemma 3.5 of the paper: penultimate clusters are polylogarithmically small.
 -/
 import Exploding.Support.Vocab
+import Exploding.Support.SubPen
+import Exploding.Frozen.Renormalization
 import Exploding.External.LiggettSchonmannStaceyBoundedDegree
 import Exploding.External.MathieuHoles
 import Exploding.External.AntalPisztora
@@ -31,4 +33,14 @@ theorem Exploding.Frozen.last_penultimate_cluster (d : ℕ) (hd : 2 ≤ d) (p : 
       ∀ᵐ η ∂(toyLaw d p), ∃ n0 : ℕ, ∀ n : ℕ, n0 ≤ n → ∀ x : Site d, mnorm x ≤ (n : ℤ) →
         ∀ y ∈ penultimateCluster η x, ∀ i, ((|y i - x i| : ℤ) : ℝ) ≤ Real.log n ^ γ
 -- FROZEN-STATEMENT-END
-:= by sorry
+:= by
+  refine ⟨(5 : ℝ) / 2 + 1, by norm_num, ?_⟩
+  obtain ⟨k0, hk0⟩ :=
+    Exploding.Frozen.renormalization_properties d hd p hp hp1 hLSSB hHole hChem
+  obtain ⟨c, C, hc, hC, hren⟩ := hk0 (max k0 1) (le_max_left _ _)
+  filter_upwards [aux_penultimate_bounds d p hp hp1, hren] with η hb hren'
+  obtain ⟨Cinf, hCinf, hcomp, hchem⟩ := hren'
+  obtain ⟨n0c, hn0c⟩ := hcomp
+  refine ⟨max n0c (max 1 (Nat.ceil (Real.exp 2))), ?_⟩
+  intro n hn x hx y hy i
+  sorry

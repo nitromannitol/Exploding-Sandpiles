@@ -679,6 +679,11 @@ theorem penultimate_pos_at_time {d : ℕ} (η : Site d → ℤ) (_hlow : ∀ x, 
   rw [h]
   exact hv0
 
+/-- The macroscopic cube index containing the microscopic site `x` at scale
+`k ≥ 1`: the unique `i` with `x - k•i ∈ cube d k`. -/
+noncomputable def macroIdx {d : ℕ} (k : ℕ) (x : Site d) : Site d :=
+  fun i => (x i - 1) / (k : ℤ)
+
 theorem key_up (k : ℤ) (hk : 0 < k) (a : ℤ) :
     (a + 1 - 1) / k = (a - 1) / k ∨ (a + 1 - 1) / k = (a - 1) / k + 1 := by
   have h1 := Int.emod_add_ediv_mul (a - 1) k

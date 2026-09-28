@@ -1352,8 +1352,8 @@ theorem aux_penultimate_overlap_propagate_line_one {d : ℕ} (hd : 2 ≤ d) (η 
     (k : ℕ) (hk : 1 ≤ k) (Cinf : Set (Site d)) (hCinf : IsInfiniteConnectedGoodSet η k Cinf)
     (zc : Site d) (i : Site d) (hiCinf : i ∈ Cinf)
     (hi_ne : i ≠ macroIdx k zc)
-    (dir : Fin d)
-    (hline : ∀ w ∈ line d k dir (fun _ => (1 : ℤ)),
+    (dir : Fin d) (z : Site d) (hz : z ∈ cube d k)
+    (hline : ∀ w ∈ line d k dir z,
       0 < penultimateWave η zc (w + (k : ℤ) • i))
     (hM2 : waveThreshold η zc = 2)
     (hlast : ∃ n : ℕ, 1 ≤ n ∧ ¬ WaveStabilizable η n zc)
@@ -1364,8 +1364,8 @@ theorem aux_penultimate_overlap_propagate_line_one {d : ℕ} (hd : 2 ≤ d) (η 
     have : (2 : ℤ) ≤ (d : ℤ) := by exact_mod_cast hd
     linarith
   have hk1 : (1 : ℤ) ≤ (k : ℤ) := by exact_mod_cast hk
-  have hzpos : 0 < penultimateWave η zc ((fun _ => (1 : ℤ)) + (k : ℤ) • i) :=
-    hline _ ⟨⟨le_refl 1, hk1⟩, fun l hl => rfl⟩
+  have hzpos : 0 < penultimateWave η zc (z + (k : ℤ) • i) :=
+    hline _ ⟨hz dir, fun l hl => rfl⟩
   obtain ⟨h2, hlast'⟩ := aux_penultimate_hlast η hlow0 hhigh zc _ hzpos
   have h1 : waveThreshold η zc ≠ 1 := by omega
   have hstab : WaveStabilizable η 1 zc := by
@@ -1379,7 +1379,7 @@ theorem aux_penultimate_overlap_propagate_line_one {d : ℕ} (hd : 2 ≤ d) (η 
     simp only [penultimateWave, if_neg h1, waveTerminal]
     rw [show waveThreshold η zc - 1 = 1 by omega]
     exact (congrFun (waveTerminal_spec η 1 zc hstab' T (Nat.sInf_le hT)) x).symm
-  have hline'' : ∀ w ∈ line d k dir (fun _ => (1 : ℤ)),
+  have hline'' : ∀ w ∈ line d k dir z,
       0 < wave η 1 zc T (w + (k : ℤ) • i) := by
     intro w hw
     rw [← hpenT]
@@ -1389,7 +1389,7 @@ theorem aux_penultimate_overlap_propagate_line_one {d : ℕ} (hd : 2 ≤ d) (η 
     exact hi_ne (macroIdx_eq_of_mem_image k hk zc i ⟨y, hy, hcon⟩)
   -- the line of `Q_k(i)` is crossed by the `1`-wave
   obtain ⟨T0, hT0⟩ := wave_covers_of_line_one' hd η hlow0 hhigh k zc i
-    (hCinf.2.1 hiCinf) dir (fun _ => (1 : ℤ)) (Or.inl (fun l => ⟨le_refl 1, hk1⟩))
+    (hCinf.2.1 hiCinf) dir z (Or.inl hz)
     T hline'' (fun y hy hcon => hfar y hy hcon)
   have hreach : ∀ y ∈ Cinf, ∃ t, ∀ x ∈ cube d k,
       0 < wave η 1 zc t (x + (k : ℤ) • y) := by
@@ -1577,4 +1577,4 @@ theorem aux_penultimate_side_bound_one {d : ℕ} (hd : 2 ≤ d) (η : Site d →
     rw [← hfun]
     exact hline _ (hcont w hw v hva hvb).1 (hcont w hw v hva hvb).2
   exact aux_penultimate_overlap_propagate_line_one hd η hlow hhigh k hk Cinf hCinf zc i
-    hvCinf hi_ne dir hline' hM2 hlast hcov_zc
+    hvCinf hi_ne dir (fun _ => (1 : ℤ)) (fun l => ⟨le_refl 1, hk1⟩) hline' hM2 hlast hcov_zc

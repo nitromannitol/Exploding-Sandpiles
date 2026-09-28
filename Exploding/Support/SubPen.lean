@@ -1084,7 +1084,7 @@ theorem aux_penultimate_run_meets_cube {d : ℕ} (η : Site d → ℤ)
       · subst hl; simp only [if_true, hdir]
       · simp only [if_neg hl, hother l hl]
     rw [← hfun]
-    exact hline _ (by linarith) (by linarith)
+    exact hline _ hge hle
 
 /-- **The geometric fact for the `N = 1` propagation.**  If `zc` lies in the
 image `cube d k + k•b` of a macroscopic cube, then `b` is exactly `zc`'s own cube
@@ -1271,7 +1271,8 @@ theorem aux_penultimate_side_bound {d : ℕ} (hd : 2 ≤ d) (η : Site d → ℤ
     (w0 : Site d)
     (hw0 : ∀ j, j ≠ dir → w0 j = 1 + (k : ℤ) * ((zc j - 1) / (k : ℤ)))
     (lo hi : ℤ)
-    (hlo' : lo ≤ 1 + (k : ℤ) * a) (hhi' : (k : ℤ) + (k : ℤ) * b ≤ hi)
+    (hcont : ∀ w ∈ line d k dir (fun _ => (1 : ℤ)), ∀ v : ℤ, a ≤ v → v ≤ b →
+      lo ≤ w dir + (k : ℤ) * v ∧ w dir + (k : ℤ) * v ≤ hi)
     (hline : ∀ u : ℤ, lo ≤ u → u ≤ hi →
       0 < penultimateWave η zc (fun j => if j = dir then u else w0 j)) :
     False := by
@@ -1308,7 +1309,7 @@ theorem aux_penultimate_side_bound {d : ℕ} (hd : 2 ≤ d) (η : Site d → ℤ
       · subst hl; simp only [if_true, hdir]
       · simp only [if_neg hl, hother l hl, hw0 l hl]
     rw [← hfun]
-    exact hline _ (by linarith) (by linarith)
+    exact hline _ (hcont w hw v hva hvb).1 (hcont w hw v hva hvb).2
   exact aux_penultimate_overlap_propagate_line hd η hlow hhigh k hk Cinf hCinf zc i hvCinf
     dir (fun _ => (1 : ℤ)) (fun l => ⟨le_refl 1, hk1⟩) hline' hN hlast
 
@@ -1516,7 +1517,8 @@ theorem aux_penultimate_side_bound_one {d : ℕ} (hd : 2 ≤ d) (η : Site d →
     (w0 : Site d)
     (hw0 : ∀ j, j ≠ dir → w0 j = 1 + (k : ℤ) * ((zc j - 1) / (k : ℤ)))
     (lo hi : ℤ)
-    (hlo' : lo ≤ 1 + (k : ℤ) * a) (hhi' : (k : ℤ) + (k : ℤ) * b ≤ hi)
+    (hcont : ∀ w ∈ line d k dir (fun _ => (1 : ℤ)), ∀ v : ℤ, a ≤ v → v ≤ b →
+      lo ≤ w dir + (k : ℤ) * v ∧ w dir + (k : ℤ) * v ≤ hi)
     (hline : ∀ u : ℤ, lo ≤ u → u ≤ hi →
       0 < penultimateWave η zc (fun j => if j = dir then u else w0 j))
     (hlo : a ≤ (zc dir - 1) / (k : ℤ))
@@ -1573,6 +1575,6 @@ theorem aux_penultimate_side_bound_one {d : ℕ} (hd : 2 ≤ d) (η : Site d →
       · subst hl; simp only [if_true, hdir]
       · simp only [if_neg hl, hother l hl, hw0 l hl]
     rw [← hfun]
-    exact hline _ (by linarith) (by linarith)
+    exact hline _ (hcont w hw v hva hvb).1 (hcont w hw v hva hvb).2
   exact aux_penultimate_overlap_propagate_line_one hd η hlow hhigh k hk Cinf hCinf zc i
     hvCinf hi_ne dir hline' hM2 hlast hcov_zc

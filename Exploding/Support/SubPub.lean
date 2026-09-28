@@ -693,3 +693,12 @@ theorem lastArrival_le_clusterArrival {d : ℕ} (η : Site d → ℤ) (y x : Sit
   rw [ht_eq]
   exact lastArrival_le η y x n hn (ht x (by
     exact Set.mem_union_left _ rfl))
+
+
+theorem clusterArrival_le_of_cover {d : ℕ} (η : Site d → ℤ)
+    (a b : Site d) (N : ℕ)
+    (hN1 : 1 ≤ N) (hN : ∀ w ∈ penultimateCluster η b, 0 < lastWave η a N w) :
+    clusterArrival η a b ≤ (N : ℕ∞) := by
+  rw [clusterArrival]
+  exact sInf_le ⟨N, rfl, hN1, hN⟩
+

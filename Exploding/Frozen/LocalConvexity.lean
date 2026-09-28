@@ -2,6 +2,7 @@
 Lemma 2.1 of the paper: a path of topplings fills its bounding rectangle.
 -/
 import Exploding.Support.Vocab
+import Exploding.Support.SubFill
 
 open Exploding LatticeProb
 /-- **Lemma 2.1** (`exploding.tex:531-535`, label `lemma:local_convexity`).
@@ -24,4 +25,18 @@ theorem Exploding.Frozen.local_convexity (d : ℕ) (hd : 2 ≤ d) (η : Site d �
     (x : Site d) (hx : x ∈ br A) :
     fodo A η (Set.indicator A 1) t x = 1
 -- FROZEN-STATEMENT-END
-:= by sorry
+:= by
+  have _hd := hd
+  subst hA
+  have hcard : (br (z '' {i : ℕ | i ≤ m})).ncard ≤ t := by
+    rw [Set.ncard_eq_toFinset_card _ hfin]
+    exact ht
+  have hmin := br_subset_supp_card (z '' {i : ℕ | i ≤ m}) hfin
+    (fillSet_path m z hpath)
+  have h1 : fodo (z '' {i : ℕ | i ≤ m}) (fun _ => 2 * (d : ℤ) - 2)
+      (Set.indicator (z '' {i : ℕ | i ≤ m}) 1) hfin.toFinset.card x = 1 := hmin hx
+  have hmono := fodo_mono_time' (z '' {i : ℕ | i ≤ m}) (fun _ => 2 * (d : ℤ) - 2)
+    (Set.indicator (z '' {i : ℕ | i ≤ m}) 1) ht x
+  rw [h1] at hmono
+  exact local_convexity_wlog_eta (z '' {i : ℕ | i ≤ m}) η hlow hhigh t x
+    (le_antisymm (fodo_indicator_le_one _ t x) hmono)

@@ -399,4 +399,27 @@ theorem wave_covers_of_line_one {d : ℕ} (hd : 2 ≤ d) (η : Site d → ℤ)
   rw [h1] at hdom
   omega
 
+/-- **The `N = 1` case of `wave_covers_of_line`, with the exceptional site
+handled.**  Same proof as `wave_covers_of_line`, with `crossOdo_le_wave_one'` in
+place of `crossOdo_le_wave`; the extra hypothesis is that the wave's centre `zc`
+does not lie in the cube's image, which is exactly what makes the `2 ≤ N`
+hypothesis of `crossOdo_le_wave` unnecessary. -/
+theorem wave_covers_of_line_one' {d : ℕ} (hd : 2 ≤ d) (η : Site d → ℤ)
+    (hlow : ∀ x, 0 ≤ η x) (hhigh : ∀ x, η x ≤ 2 * (d : ℤ) - 1) (k : ℕ)
+    (zc j : Site d) (hgoodj : GoodAt η k j) (dir' : Fin d) (z : Site d)
+    (hz : z ∈ closureN (cube d k)) (t : ℕ)
+    (hline : ∀ w ∈ line d k dir' z, 0 < wave η 1 zc t (w + (k : ℤ) • j))
+    (hfar : ∀ y ∈ cube d k, y + (k : ℤ) • j ≠ zc) :
+    ∃ t' : ℕ, t ≤ t' ∧ ∀ x ∈ cube d k, 0 < wave η 1 zc t' (x + (k : ℤ) • j) := by
+  have hd0 : (0 : ℤ) < 2 * (d : ℤ) := by
+    have : (2 : ℤ) ≤ (d : ℤ) := by exact_mod_cast hd
+    linarith
+  obtain ⟨n, hn, hcross⟩ := exists_crossOdo_of_good (fun x => η (x + (k : ℤ) • j)) k dir' z
+    hz hgoodj
+  refine ⟨t + n, Nat.le_add_right t n, fun x hx => ?_⟩
+  have hdom := crossOdo_le_wave_one' hd0 η hlow hhigh k zc j dir' z t hline hfar n x
+  have h1 : crossOdo (fun x => η (x + (k : ℤ) • j)) k dir' z n x = 1 := hcross x hx
+  rw [h1] at hdom
+  omega
+
 end Exploding

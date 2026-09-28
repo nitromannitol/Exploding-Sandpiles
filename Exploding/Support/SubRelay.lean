@@ -1124,4 +1124,106 @@ theorem cylEta_cylProj (x : Site 2) (hx2 : 0 ≤ x ⟨1, by norm_num⟩) :
   exact h1
 
 
+
+
+theorem fin4_succ (n : ℤ) (hn : 0 ≤ n) :
+    Fin.ofNat 4 (n + 1).toNat = Fin.ofNat 4 n.toNat + 1 := by
+  have h1 : (n + 1).toNat = n.toNat + 1 := by omega
+  rw [h1]
+  ext
+  simp only [Fin.val_ofNat, Fin.val_add, Fin.val_one]
+  omega
+
+theorem fin4_pred (n : ℤ) (hn : 1 ≤ n) :
+    Fin.ofNat 4 (n - 1).toNat = Fin.ofNat 4 n.toNat - 1 := by
+  have h1 : (n - 1).toNat = n.toNat - 1 := by omega
+  rw [h1]
+  ext
+  simp only [Fin.val_ofNat, Fin.val_sub, Fin.val_one]
+  omega
+
+
+
+/-- **The cylinder neighbour sum is the folded 2D neighbour sum.**  For a
+function `u` on the cylinder that is the fold of a function `v` on `Site 2`
+which is symmetric about `x₁ = -1/2` and 4-periodic in `x₂`, the cylinder
+neighbour sum at the projection of `x` equals the 2D neighbour sum of `v` at
+`x`, provided `x₁ ≥ 1`. -/
+theorem cylNbrSum_cylProj (u : ℤ × Fin 4 → ℤ) (v : Site 2 → ℤ)
+    (hfold : ∀ y : Site 2, 0 ≤ y ⟨0, by norm_num⟩ → u (cylProj y) = v y)
+    (x : Site 2) (hx : 1 ≤ x ⟨0, by norm_num⟩) (hx2 : 0 ≤ x ⟨1, by norm_num⟩)
+    (hx2' : 1 ≤ x ⟨1, by norm_num⟩) :
+    cylNbrSum u (cylProj x) = nbrSumZ v x := by
+  unfold cylNbrSum nbrSumZ
+  rw [Fin.sum_univ_two]
+  have hx0 : ¬ (cylProj x).1 = 0 := by
+    simp only [cylProj]
+    omega
+  rw [if_neg hx0]
+  -- the `x₁`-direction: `u (x₁-1, x₂) = v (x - e₁)` and `u (x₁+1, x₂) = v (x + e₁)`
+  have h1 : u ((cylProj x).1 - 1, (cylProj x).2) = v (x - unit (⟨0, by norm_num⟩ : Fin 2)) := by
+    rw [← hfold (x - unit (⟨0, by norm_num⟩ : Fin 2)) (by
+      simp only [Pi.sub_apply, LatticeProb.unit, Pi.single_eq_same]
+      omega)]
+    congr 1
+    refine Prod.ext ?_ ?_
+    · simp only [cylProj, Pi.sub_apply, LatticeProb.unit, Pi.single_eq_same]
+    · have hz : (LatticeProb.unit (⟨0, by norm_num⟩ : Fin 2) : Site 2)
+          (⟨1, by norm_num⟩ : Fin 2) = 0 := by
+        simp only [LatticeProb.unit, Pi.single_eq_of_ne
+          (show (⟨1, by norm_num⟩ : Fin 2) ≠ ⟨0, by norm_num⟩ from
+            fun hc => absurd (congrArg Fin.val hc) (by decide))]
+      simp only [cylProj, Pi.sub_apply, hz, sub_zero]
+  have h2 : u ((cylProj x).1 + 1, (cylProj x).2) = v (x + unit (⟨0, by norm_num⟩ : Fin 2)) := by
+    rw [← hfold (x + unit (⟨0, by norm_num⟩ : Fin 2)) (by
+      simp only [Pi.add_apply, LatticeProb.unit, Pi.single_eq_same]
+      omega)]
+    congr 1
+    refine Prod.ext ?_ ?_
+    · simp only [cylProj, Pi.add_apply, LatticeProb.unit, Pi.single_eq_same]
+    · have hz : (LatticeProb.unit (⟨0, by norm_num⟩ : Fin 2) : Site 2)
+          (⟨1, by norm_num⟩ : Fin 2) = 0 := by
+        simp only [LatticeProb.unit, Pi.single_eq_of_ne
+          (show (⟨1, by norm_num⟩ : Fin 2) ≠ ⟨0, by norm_num⟩ from
+            fun hc => absurd (congrArg Fin.val hc) (by decide))]
+      simp only [cylProj, Pi.add_apply, hz, add_zero]
+  rw [h1, h2]
+  -- the `x₂`-direction: `u (x₁, x₂+1) = v (x + e₂)` and `u (x₁, x₂-1) = v (x - e₂)`
+  have h3 : u ((cylProj x).1, (cylProj x).2 + 1) = v (x + unit (⟨1, by norm_num⟩ : Fin 2)) := by
+    rw [← hfold (x + unit (⟨1, by norm_num⟩ : Fin 2)) (by
+      simp only [Pi.add_apply, LatticeProb.unit,
+        Pi.single_eq_of_ne
+          (show (⟨0, by norm_num⟩ : Fin 2) ≠ ⟨1, by norm_num⟩ from
+            fun hc => absurd (congrArg Fin.val hc) (by decide))]
+      omega)]
+    congr 1
+    refine Prod.ext ?_ ?_
+    · simp only [cylProj, Pi.add_apply, LatticeProb.unit,
+        Pi.single_eq_of_ne
+          (show (⟨0, by norm_num⟩ : Fin 2) ≠ ⟨1, by norm_num⟩ from
+            fun hc => absurd (congrArg Fin.val hc) (by decide)),
+        add_zero]
+    · simp only [cylProj, Pi.add_apply, LatticeProb.unit, Pi.single_eq_same]
+      exact (fin4_succ _ hx2).symm
+  have h4 : u ((cylProj x).1, (cylProj x).2 - 1) = v (x - unit (⟨1, by norm_num⟩ : Fin 2)) := by
+    rw [← hfold (x - unit (⟨1, by norm_num⟩ : Fin 2)) (by
+      simp only [Pi.sub_apply, LatticeProb.unit,
+        Pi.single_eq_of_ne
+          (show (⟨0, by norm_num⟩ : Fin 2) ≠ ⟨1, by norm_num⟩ from
+            fun hc => absurd (congrArg Fin.val hc) (by decide))]
+      omega)]
+    congr 1
+    refine Prod.ext ?_ ?_
+    · simp only [cylProj, Pi.sub_apply, LatticeProb.unit,
+        Pi.single_eq_of_ne
+          (show (⟨0, by norm_num⟩ : Fin 2) ≠ ⟨1, by norm_num⟩ from
+            fun hc => absurd (congrArg Fin.val hc) (by decide)),
+        sub_zero]
+    · simp only [cylProj, Pi.sub_apply, LatticeProb.unit, Pi.single_eq_same]
+      exact (fin4_pred _ (by omega)).symm
+  rw [h3, h4]
+  -- both sides are now the same four terms
+  abel
+
+
 end Exploding

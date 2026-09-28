@@ -58,4 +58,17 @@ theorem wave_covers_of_line {d : ℕ} (hd : 2 ≤ d) (η : Site d → ℤ)
   rw [h1] at hdom
   omega
 
+/-- **The line producer.**  A line of `Q_k(j)` whose base point lies in the cube is
+contained in the cube, so the cover hypothesis gives the wave on it. -/
+theorem line_of_cover {d : ℕ} (η : Site d → ℤ) (N k : ℕ) (i : Site d) (t : ℕ)
+    (dir : Fin d) (z : Site d)
+    (hcover : ∀ x ∈ cube d k, 0 < wave η N (0 : Site d) t (x + (k : ℤ) • i))
+    (hz : z ∈ cube d k) :
+    ∀ y ∈ line d k dir z, 0 < wave η N (0 : Site d) t (y + (k : ℤ) • i) := by
+  intro y hy
+  exact hcover y (fun l => by
+    by_cases hl : l = dir
+    · rw [hl]; exact hy.1
+    · rw [hy.2 l hl]; exact hz l)
+
 end Exploding

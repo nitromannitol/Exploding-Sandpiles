@@ -12,6 +12,17 @@ open LatticeProb Filter
 
 variable {d : ℕ}
 
+/-- The modified block `ζ'` of `exploding.tex:1490-1500`, transcribed from the
+paper's display `[[4,2,2,3],[2,3,3,2],[3,3,3,2],[3,3,2,3]]` with the origin at the
+bottom left and `x₂` increasing upwards. -/
+def zeta1' (a b : ℤ) : ℤ :=
+  match a % 4, b % 4 with
+  | 0, 0 => 3 | 1, 0 => 3 | 2, 0 => 2 | 3, 0 => 3
+  | 0, 1 => 3 | 1, 1 => 3 | 2, 1 => 3 | 3, 1 => 2
+  | 0, 2 => 2 | 1, 2 => 3 | 2, 2 => 3 | 3, 2 => 2
+  | 0, 3 => 4 | 1, 3 => 2 | 2, 3 => 2 | 3, 3 => 3
+  | _, _ => 0
+
 /-- The checkerboard block `ζ₁` of `exploding.tex:1370-1376`. -/
 def zeta1 (a b : ℤ) : ℤ :=
   if (a % 4 = 0 ∨ a % 4 = 3) ∧ (b % 4 = 0 ∨ b % 4 = 3) then 1 else 3

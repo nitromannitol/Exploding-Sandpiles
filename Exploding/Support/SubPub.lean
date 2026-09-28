@@ -127,4 +127,85 @@ theorem aux_pub_reach_wave_le_n {d : ℕ} (η : Site d → ℤ)
         exact Int.natCast_nonneg n
 
 
+/-- **The backward chase.**  If the wave (mass `n`, centre `0`) is never positive
+at a micro site whose macro index lies in `Cinf`, then every micro site it is ever
+positive at has its macro index inside `componentIn Cinfᶜ (macroIdx k 0)`. -/
+theorem aux_pub_reach_macro_reach {d : ℕ} (η : Site d → ℤ) (hlow : ∀ x, 0 ≤ η x)
+    (hhigh : ∀ x, η x ≤ 2 * (d : ℤ) - 1) (hd0 : (0 : ℤ) < 2 * (d : ℤ))
+    (k : ℕ) (hk : 1 ≤ k) (n : ℕ) (hn : 1 ≤ n) (Cinf : Set (Site d))
+    (havoid : ∀ t x, 0 < wave η n (0 : Site d) t x → macroIdx k x ∉ Cinf) :
+    ∀ t x, 0 < wave η n (0 : Site d) t x →
+      macroIdx k x ∈ componentIn Cinfᶜ (macroIdx k (0 : Site d)) := by
+  intro t
+  induction t with
+  | zero =>
+    intro x hx
+    -- at time `0` only the centre is positive
+    have hx0 : x = 0 := by
+      by_contra hne
+      rw [wave_zero] at hx
+      simp [hne] at hx
+    subst hx0
+    -- `macroIdx k 0 ∈ Cinfᶜ` by `havoid` at time `1`
+    have hpos : 0 < wave η n (0 : Site d) 1 (0 : Site d) := by
+      rw [wave_at_centre]
+      exact_mod_cast hn
+    have hnotin : macroIdx k (0 : Site d) ∉ Cinf := havoid 1 _ hpos
+    exact ⟨hnotin, hnotin,
+      SimpleGraph.Reachable.refl (G := (lattice d).induce Cinfᶜ) ⟨_, hnotin⟩⟩
+  | succ t ih =>
+    intro x hx
+    by_cases hx0 : x = 0
+    · subst hx0
+      have hpos : 0 < wave η n (0 : Site d) (t + 1) (0 : Site d) := by
+        rw [wave_at_centre]
+        exact_mod_cast hn
+      have hnotin : macroIdx k (0 : Site d) ∉ Cinf := havoid (t + 1) _ hpos
+      exact ⟨hnotin, hnotin,
+        SimpleGraph.Reachable.refl (G := (lattice d).induce Cinfᶜ) ⟨_, hnotin⟩⟩
+    · -- `x ≠ 0`: either the wave was already positive at `t`, or a neighbour was
+      by_cases hprev : 0 < wave η n (0 : Site d) t x
+      · exact ih x hprev
+      · -- the wave is `0` at `t` and positive at `t+1`, so a neighbour was positive
+        have hxnn : 0 ≤ wave η n (0 : Site d) t x := wave_nonneg η hlow n 0 t x
+        have hxzero : wave η n (0 : Site d) t x = 0 := by omega
+        have hxpos : 0 < wave η n (0 : Site d) (t + 1) x := hx
+        rw [wave_of_ne η n (0 : Site d) x t hx0] at hx
+        have hsum : 0 < nbrSumZ (wave η n (0 : Site d) t) x := by
+          -- `0 < (nbrSumZ + η) / (2d)` gives `2d ≤ nbrSumZ + η`
+          have h3 : 2 * (d : ℤ) ≤ nbrSumZ (wave η n (0 : Site d) t) x + η x := by
+            -- `0 < (nbrSumZ + η) / (2d)` means the quotient is at least `1`,
+            -- so `2d ≤ nbrSumZ + η`
+            have h4 : 1 ≤ (nbrSumZ (wave η n (0 : Site d) t) x + η x) / (2 * (d : ℤ)) := by
+              omega
+            rw [Int.le_ediv_iff_mul_le (by positivity)] at h4
+            linarith
+          have h1 := hhigh x
+          linarith
+        obtain ⟨y, hyadj, hypos⟩ := exists_adj_pos_of_nbrSumZ_pos _ (fun y => wave_nonneg η hlow n 0 t y) x hsum
+        have hyreach := ih y hypos
+        -- `macroIdx k x` is adjacent to `macroIdx k y` or equal to it
+        have hxnotin : macroIdx k x ∉ Cinf := havoid (t + 1) x hxpos
+        have hynot : macroIdx k y ∉ Cinf := havoid t y hypos
+        -- `macroIdx k x` and `macroIdx k y` differ by at most one step
+        have hadj : macroIdx k x = macroIdx k y ∨ (lattice d).Adj (macroIdx k x) (macroIdx k y) := by
+          -- `y` is `x ± unit i` for some `i`
+          obtain ⟨i, hi | hi⟩ := hyadj
+          · -- `x = y + unit i`
+            have h1 := (macroIdx_adj k hk y i).1
+            rw [← hi] at h1
+            exact h1
+          · -- `y = x + unit i`
+            have h1 := (macroIdx_adj k hk x i).1
+            rw [← hi] at h1
+            exact h1.imp (fun h => h.symm) (fun h => h.symm)
+        rcases hadj with heq | hadj'
+        · rw [heq]; exact hyreach
+        · -- extend the reachability by one edge
+          obtain ⟨h0C, hyC, hreach⟩ := hyreach
+          have hadj_induce : ((lattice d).induce Cinfᶜ).Adj ⟨macroIdx k y, hyC⟩
+              ⟨macroIdx k x, hxnotin⟩ := by
+            simpa [SimpleGraph.induce_adj] using hadj'.symm
+          exact ⟨h0C, hxnotin, hreach.trans ⟨SimpleGraph.Walk.cons hadj_induce SimpleGraph.Walk.nil⟩⟩
+
 end Exploding

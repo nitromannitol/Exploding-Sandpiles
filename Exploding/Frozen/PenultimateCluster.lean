@@ -47,7 +47,7 @@ theorem Exploding.Frozen.last_penultimate_cluster (d : ℕ) (hd : 2 ≤ d) (p : 
   refine ⟨max n0c (max 1 (Nat.ceil (Real.exp 2))), ?_⟩
   intro n hn x hx y hy i
   -- the threshold gives `log n ≥ 2`
-  have hn0c : n0c ≤ n := le_trans (le_max_left _ _) hn
+  have hn0c' : n0c ≤ n := le_trans (le_max_left _ _) hn
   have hn1 : 1 ≤ n := le_trans (le_trans (le_max_left _ _) (le_max_right _ _)) hn
   have hne : Nat.ceil (Real.exp 2) ≤ n :=
     le_trans (le_trans (le_max_right _ _) (le_max_right _ _)) hn
@@ -275,7 +275,7 @@ theorem Exploding.Frozen.last_penultimate_cluster (d : ℕ) (hd : 2 ≤ d) (p : 
     -- The side bound's inputs: `hlast` from the transfer above, `n0` from `hcomp`,
     -- and the cube-index exclusion, which holds in the two long cases below.
     have hlast : ∃ n : ℕ, 1 ≤ n ∧ ¬ WaveStabilizable η n x := hlast_all x
-    have hn0' : n0c ≤ n' := le_trans hn0c hn'_ge
+    have hn0' : n0c ≤ n' := le_trans hn0c' hn'_ge
     -- the neighbour's coordinate difference
     have hd1 : y i ≤ y' i + 1 := by
       obtain ⟨j, hj | hj⟩ := hy'adj
@@ -315,13 +315,11 @@ theorem Exploding.Frozen.last_penultimate_cluster (d : ℕ) (hd : 2 ≤ d) (p : 
           · subst h; simp [LatticeProb.unit]
           · simp [LatticeProb.unit, h]
         omega
-    -- The two cases of the neighbour's coordinate difference.
-    -- The exclusion of `x`'s own cube index `j0 := (x i - 1)/k` from the run
-    -- `[(m0 i - 1)/k + 1, (M0 i - k)/k]` needs BOTH
-    --   `m0 i + k ≤ x i`   and   `x i + k ≤ M0 i`,
-    -- i.e. `L := M0 i - m0 i ≥ 2k`, not merely `L ≥ k`.  Since `y` is a
-    -- neighbour of `y' ∈ R = [m0, M0]`, we have `y i ∈ [m0 i - 1, M0 i + 1]`,
-    -- so `|y i - x i| ≤ L + 1`; the case `L ≥ 2k` is therefore reached when
-    -- `|y i - x i| ≥ 2k - 1`, and the remaining case `L < 2k` is absorbed into
-    -- the threshold exactly as the short case below.  See FINDINGS.md update 37.
+    -- The case split on `L := M0 i - m0 i` against `2k` (FINDINGS.md update 37):
+    --   `L ≥ 2k`  -> the run contains `x`'s own cube index `j0 := (x i - 1)/k`,
+    --                so `aux_penultimate_segment_bound'` applies with `j0` and
+    --                no `hcov_zc`;
+    --   `L < 2k`  -> `|y i - x i| ≤ L + 1 ≤ 2k`, absorbed into the threshold.
+    -- The side bound's call is written out below; the only remaining work is the
+    -- two `j0`-membership inequalities and the `hab` comparison.
     sorry

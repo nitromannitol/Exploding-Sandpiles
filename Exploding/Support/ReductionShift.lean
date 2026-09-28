@@ -441,9 +441,9 @@ theorem fodo_fires_of_redOdoUpAt (n : ℕ) (η : Site (d + 1) → ℤ) (i : ℤ)
 odometer, once layer `i` is already toppled in the latter. -/
 theorem fodo_dominates_redOdoUpAt (n : ℕ) (η : Site (d + 1) → ℤ)
     (i : ℤ) (T : ℕ)
-    (hT : ∀ y ∈ cube d n, fodo ((rboxShift (fun _ : Fin (d+1) => n) (0 : Site (d+1)))ᶜ) η
+    (hT : ∀ y ∈ cube d n, 1 ≤ fodo ((rboxShift (fun _ : Fin (d+1) => n) (0 : Site (d+1)))ᶜ) η
       (Set.indicator (faceOut (fun _ : Fin (d+1) => n) (0 : Site (d+1)) ⟨0, by omega⟩ false)
-        (fun _ => (1 : ℤ))) T (cons i y) = 1) :
+        (fun _ => (1 : ℤ))) T (cons i y)) :
     ∀ t x, redOdoUpAt i n η t x ≤
       fodo ((rboxShift (fun _ : Fin (d+1) => n) (0 : Site (d+1)))ᶜ) η
         (Set.indicator (faceOut (fun _ : Fin (d+1) => n) (0 : Site (d+1)) ⟨0, by omega⟩ false)
@@ -466,7 +466,8 @@ theorem fodo_dominates_redOdoUpAt (n : ℕ) (η : Site (d + 1) → ℤ)
         intro l
         have h := hmem l.succ
         simpa [cons] using h
-      rw [show T + 0 = T from rfl, hT (fun l => x l.succ) hmem']
+      rw [show T + 0 = T from rfl]
+      exact hT (fun l => x l.succ) hmem'
     · rw [if_neg hxi]
       exact fodo_nonneg _ _ _
         (Set.indicator_nonneg (fun _ _ => zero_le_one)) (T + 0) x
@@ -691,6 +692,416 @@ theorem exists_uniform_span_time_le (n : ℕ) (η : Site d → ℤ)
     ∃ T : ℕ, T ≤ n ^ d ∧ ∀ y ∈ cube d n, spanOdo n η T y = 1 := by
   refine ⟨(cube d n).ncard, ?_, spanOdo_topples_by_ncard n η hspan⟩
   rw [aux_ct_assemble_cube_ncard]
+
+/-- The tile of the box at the origin is the box itself. -/
+theorem rboxShift_zero_eq_cube (n : ℕ) :
+    rboxShift (fun _ : Fin (d+1) => n) (0 : Site (d+1)) = cube (d + 1) n := by
+  ext x
+  simp only [rboxShift, cube, Set.mem_setOf_eq, Pi.zero_apply, mul_zero, zero_add]
+  constructor <;> intro h i <;> exact h i
+
+/-- The low face of the box is exactly the part of the closure at layer `0`. -/
+theorem faceOut_eq_lowface (n : ℕ) :
+    faceOut (fun _ : Fin (d+1) => n) (0 : Site (d+1)) ⟨0, by omega⟩ false
+      = {x : Site (d + 1) | x 0 = 0 ∧ x ∈ closureN (cube (d + 1) n)} := by
+  ext x
+  simp only [faceOut, Set.mem_inter_iff, Set.mem_setOf_eq, rboxShift_zero_eq_cube]
+  constructor
+  · rintro ⟨h1, h2⟩
+    exact ⟨h2, h1⟩
+  · rintro ⟨h2, h1⟩
+    exact ⟨h1, h2⟩
+
+/-- The floor-`0` constrained odometer with the low face of the box lit. -/
+noncomputable def redOdoLow (n : ℕ) (η : Site (d + 1) → ℤ) : ℕ → Site (d + 1) → ℤ
+  | 0 => fun x => if x 0 = 0 ∧ x ∈ closureN (cube (d + 1) n) then 1 else 0
+  | t + 1 => fun x =>
+      if x ∉ cube (d + 1) n then redOdoLow n η t x
+      else if 1 < x 0 then redOdoLow n η t x
+      else if redOdoLow n η t x = 1 then redOdoLow n η t x
+      else redOdoLow n η t x +
+        (if 2 * ((d : ℤ) + 1) ≤ η x + lap (redOdoLow n η t) x then 1 else 0)
+
+theorem redOdoLow_succ (n : ℕ) (η : Site (d + 1) → ℤ) (t : ℕ) (x : Site (d + 1)) :
+    redOdoLow n η (t + 1) x =
+      if x ∉ cube (d + 1) n then redOdoLow n η t x
+      else if 1 < x 0 then redOdoLow n η t x
+      else if redOdoLow n η t x = 1 then redOdoLow n η t x
+      else redOdoLow n η t x +
+        (if 2 * ((d : ℤ) + 1) ≤ η x + lap (redOdoLow n η t) x then 1 else 0) := rfl
+
+theorem redOdoLow_zero (n : ℕ) (η : Site (d + 1) → ℤ) (x : Site (d + 1)) :
+    redOdoLow n η 0 x = if x 0 = 0 ∧ x ∈ closureN (cube (d + 1) n) then 1 else 0 := rfl
+
+/-- The low-face odometer is nonnegative. -/
+theorem redOdoLow_nonneg (n : ℕ) (η : Site (d + 1) → ℤ) : ∀ t x, 0 ≤ redOdoLow n η t x := by
+  intro t
+  induction t with
+  | zero =>
+    intro x
+    rw [redOdoLow_zero]
+    split <;> omega
+  | succ t ih =>
+    intro x
+    have hih := ih x
+    rw [redOdoLow_succ]
+    split
+    · exact hih
+    · split
+      · exact hih
+      · split
+        · exact hih
+        · split <;> omega
+
+/-- The low-face odometer is at most one. -/
+theorem redOdoLow_le_one (n : ℕ) (η : Site (d + 1) → ℤ) : ∀ t x, redOdoLow n η t x ≤ 1 := by
+  intro t
+  induction t with
+  | zero =>
+    intro x
+    rw [redOdoLow_zero]
+    split <;> omega
+  | succ t ih =>
+    intro x
+    have hih := ih x
+    rw [redOdoLow_succ]
+    split
+    · exact hih
+    · split
+      · exact hih
+      · split
+        · exact hih
+        · split <;> omega
+
+/-- The low-face odometer is zero or one. -/
+theorem redOdoLow_zero_or_one (n : ℕ) (η : Site (d + 1) → ℤ) (t : ℕ) (x : Site (d + 1)) :
+    redOdoLow n η t x = 0 ∨ redOdoLow n η t x = 1 := by
+  have hle := redOdoLow_le_one n η t x
+  have hnn := redOdoLow_nonneg n η t x
+  omega
+
+/-- **The transport step for the low-face odometer.**  It is dominated by the frozen
+odometer seeded on the low face, at every time and every site. -/
+theorem fodo_dominates_redOdoLow (n : ℕ) (η : Site (d + 1) → ℤ) :
+    ∀ t x, redOdoLow n η t x ≤
+      fodo ((rboxShift (fun _ : Fin (d+1) => n) (0 : Site (d+1)))ᶜ) η
+        (Set.indicator (faceOut (fun _ : Fin (d+1) => n) (0 : Site (d+1)) ⟨0, by omega⟩ false)
+          (fun _ => (1 : ℤ))) t x := by
+  intro t
+  induction t with
+  | zero =>
+    intro x
+    rw [redOdoLow_zero]
+    by_cases h : x 0 = 0 ∧ x ∈ closureN (cube (d + 1) n)
+    · rw [if_pos h]
+      have hw : fodo ((rboxShift (fun _ : Fin (d+1) => n) (0 : Site (d+1)))ᶜ) η
+          (Set.indicator (faceOut (fun _ : Fin (d+1) => n) (0 : Site (d+1))
+            ⟨0, by omega⟩ false) (fun _ => (1 : ℤ))) 0 x
+          = Set.indicator (faceOut (fun _ : Fin (d+1) => n) (0 : Site (d+1))
+              ⟨0, by omega⟩ false) (fun _ => (1 : ℤ)) x := rfl
+      rw [hw]
+      have hmem : x ∈ faceOut (fun _ : Fin (d+1) => n) (0 : Site (d+1)) ⟨0, by omega⟩ false := by
+        rw [faceOut_eq_lowface]
+        exact h
+      rw [Set.indicator_of_mem hmem (fun _ => (1 : ℤ))]
+    · rw [if_neg h]
+      exact fodo_nonneg _ _ _
+        (Set.indicator_nonneg (fun _ _ => zero_le_one)) 0 x
+  | succ t ih =>
+    intro x
+    rw [redOdoLow_succ]
+    by_cases hc : x ∉ cube (d + 1) n
+    · rw [if_pos hc]
+      exact le_trans (ih x) (fodo_mono_time' _ _ _ t (t + 1) x (by omega))
+    · rw [if_neg hc]
+      by_cases hlt : (1 : ℤ) < x 0
+      · rw [if_pos hlt]
+        exact le_trans (ih x) (fodo_mono_time' _ _ _ t (t + 1) x (by omega))
+      · rw [if_neg hlt]
+        by_cases h1 : redOdoLow n η t x = 1
+        · rw [if_pos h1]
+          have hle1 : redOdoLow n η t x ≤
+              fodo ((rboxShift (fun _ : Fin (d+1) => n) (0 : Site (d+1)))ᶜ) η
+                (Set.indicator (faceOut (fun _ : Fin (d+1) => n) (0 : Site (d+1))
+                  ⟨0, by omega⟩ false) (fun _ => (1 : ℤ))) t x := ih x
+          rw [h1] at hle1
+          have hmono := fodo_mono_time' ((rboxShift (fun _ : Fin (d+1) => n)
+            (0 : Site (d+1)))ᶜ) η
+            (Set.indicator (faceOut (fun _ : Fin (d+1) => n) (0 : Site (d+1))
+              ⟨0, by omega⟩ false) (fun _ => (1 : ℤ))) t (t + 1) x (by omega)
+          omega
+        · rw [if_neg h1]
+          have h0 : redOdoLow n η t x = 0 := (redOdoLow_zero_or_one n η t x).resolve_right h1
+          by_cases hthr : 2 * ((d : ℤ) + 1) ≤ η x + lap (redOdoLow n η t) x
+          · have hstep : redOdoLow n η (t + 1) x = redOdoLow n η t x + 1 := by
+              rw [redOdoLow_succ]
+              rw [if_neg hc, if_neg hlt, if_neg h1, if_pos hthr]
+            rw [if_pos hthr, ← hstep]
+            -- the frozen odometer is at least one at `x` at time `t + 1`
+            have hfodo : 1 ≤ fodo ((rboxShift (fun _ : Fin (d+1) => n)
+                (0 : Site (d+1)))ᶜ) η
+                (Set.indicator (faceOut (fun _ : Fin (d+1) => n) (0 : Site (d+1))
+                  ⟨0, by omega⟩ false) (fun _ => (1 : ℤ))) (t + 1) x := by
+              by_cases hf0 : fodo ((rboxShift (fun _ : Fin (d+1) => n)
+                  (0 : Site (d+1)))ᶜ) η
+                  (Set.indicator (faceOut (fun _ : Fin (d+1) => n) (0 : Site (d+1))
+                    ⟨0, by omega⟩ false) (fun _ => (1 : ℤ))) t x = 0
+              · -- `fodo` is still zero, so it fires at `x` too
+                have hnbr : nbrSumZ (redOdoLow n η t) x ≤
+                    nbrSumZ (fodo ((rboxShift (fun _ : Fin (d+1) => n)
+                      (0 : Site (d+1)))ᶜ) η
+                      (Set.indicator (faceOut (fun _ : Fin (d+1) => n) (0 : Site (d+1))
+                        ⟨0, by omega⟩ false) (fun _ => (1 : ℤ))) t) x :=
+                  nbrSumZ_mono (fun y => ih y) x
+                have hthr' : 2 * ((d : ℤ) + 1) ≤ η x + nbrSumZ (redOdoLow n η t) x := by
+                  have h := hthr
+                  simp only [lap, nbrSumZ] at h ⊢
+                  rw [h0] at h
+                  simpa using h
+                have hgoal : 2 * ((d : ℤ) + 1) ≤ η x +
+                    nbrSumZ (fodo ((rboxShift (fun _ : Fin (d+1) => n)
+                      (0 : Site (d+1)))ᶜ) η
+                      (Set.indicator (faceOut (fun _ : Fin (d+1) => n) (0 : Site (d+1))
+                        ⟨0, by omega⟩ false) (fun _ => (1 : ℤ))) t) x := by
+                  linarith
+                rw [fodo_succ]
+                rw [if_neg (fun hcon => hcon (by
+                  rw [rboxShift_zero_eq_cube]
+                  exact not_not.mp hc))]
+                rw [if_pos]
+                · omega
+                · simp only [fconf, lap, nbrSumZ] at hgoal ⊢
+                  rw [hf0]
+                  simp only [mul_zero, sub_zero]
+                  omega
+              · -- `fodo` is already at least one, and it is monotone in time
+                have hpos : 1 ≤ fodo ((rboxShift (fun _ : Fin (d+1) => n)
+                    (0 : Site (d+1)))ᶜ) η
+                    (Set.indicator (faceOut (fun _ : Fin (d+1) => n) (0 : Site (d+1))
+                      ⟨0, by omega⟩ false) (fun _ => (1 : ℤ))) t x := by
+                  have hnn := fodo_nonneg ((rboxShift (fun _ : Fin (d+1) => n)
+                    (0 : Site (d+1)))ᶜ) η
+                    (Set.indicator (faceOut (fun _ : Fin (d+1) => n) (0 : Site (d+1))
+                      ⟨0, by omega⟩ false) (fun _ => (1 : ℤ)))
+                    (Set.indicator_nonneg (fun _ _ => zero_le_one)) t x
+                  omega
+                exact le_trans hpos (fodo_mono_time' _ _ _ t (t + 1) x (by omega))
+            exact le_trans (redOdoLow_le_one n η (t + 1) x) hfodo
+          · have hnext : redOdoLow n η (t + 1) x = redOdoLow n η t x := by
+              rw [redOdoLow_succ]
+              rw [if_neg hc, if_neg hlt, if_neg h1, if_neg hthr]
+              ring
+            rw [if_neg hthr, h0, zero_add]
+            exact fodo_nonneg _ _ _
+              (Set.indicator_nonneg (fun _ _ => zero_le_one)) (t + 1) x
+
+/-- Above layer `1` the low-face odometer is frozen at its initial value. -/
+theorem redOdoLow_cons_high (n : ℕ) (η : Site (d + 1) → ℤ) (t : ℕ) (y : Site d) (a : ℤ)
+    (ha : 1 < a) : redOdoLow n η t (cons a y) = redOdoLow n η 0 (cons a y) := by
+  induction t with
+  | zero => rfl
+  | succ t ih =>
+    rw [redOdoLow_succ]
+    by_cases hc : cons a y ∉ cube (d + 1) n
+    · rw [if_pos hc]; exact ih
+    · rw [if_neg hc, if_pos (by simpa [cons] using ha)]
+      exact ih
+
+/-- Two layers above the floor the low-face odometer is zero. -/
+theorem redOdoLow_cons_high_zero (n : ℕ) (η : Site (d + 1) → ℤ) (t : ℕ) (y : Site d) (a : ℤ)
+    (ha : 1 < a) : redOdoLow n η t (cons a y) = 0 := by
+  rw [redOdoLow_cons_high n η t y a ha, redOdoLow_zero]
+  rw [if_neg]
+  rintro ⟨h0, -⟩
+  simp only [cons, Fin.cons_zero] at h0
+  omega
+
+/-- The low face of the box is lit in the low-face odometer. -/
+theorem redOdoLow_floor (n : ℕ) (η : Site (d + 1) → ℤ) (t : ℕ) (y : Site d)
+    (hy : cons 0 y ∈ closureN (cube (d + 1) n)) : redOdoLow n η t (cons 0 y) = 1 := by
+  induction t with
+  | zero =>
+    rw [redOdoLow_zero, if_pos]
+    exact ⟨rfl, hy⟩
+  | succ t ih =>
+    rw [redOdoLow_succ]
+    by_cases hc : cons 0 y ∉ cube (d + 1) n
+    · rw [if_pos hc]; exact ih
+    · rw [if_neg hc]
+      rw [if_neg (by simp only [cons, Fin.cons_zero]; omega)]
+      rw [if_pos ih]
+      exact ih
+
+/-- **The low-face reduction.**  On layer `1`, the low-face constrained odometer equals the
+`d`-dimensional constrained odometer of the background `η(1, ·) - 1`. -/
+theorem redOdoLow_agree (n : ℕ) (hn : 1 ≤ n) (η : Site (d + 1) → ℤ) (t : ℕ) (y : Site d) :
+    redOdoLow n η t (cons 1 y) = redOdoDownAt 0 n η t y := by
+  induction t generalizing y with
+  | zero =>
+    rw [redOdoLow_zero, redOdoDownAt_zero]
+    rw [if_neg]
+    rintro ⟨h0, -⟩
+    simp only [cons, Fin.cons_zero] at h0
+    omega
+  | succ t ih =>
+    rw [redOdoLow_succ, redOdoDownAt_succ]
+    have hmem : (cons (1 : ℤ) y ∉ cube (d + 1) n) ↔ (y ∉ cube d n) := by
+      have h := mem_cube_cons_succ (i := 0) (d := d) (n := n) (by omega) (by omega) y
+      rw [show (0 : ℤ) + 1 = 1 from by ring] at h
+      exact not_congr h
+    have hnot : ¬ ((1 : ℤ) < (cons (1 : ℤ) y) 0) := by
+      simp only [cons, Fin.cons_zero]; omega
+    rw [if_neg hnot]
+    by_cases hy : y ∉ cube d n
+    · rw [if_pos (hmem.mpr hy), if_pos hy]
+      exact ih y
+    · rw [if_neg (fun h => hy (hmem.mp h)), if_neg hy]
+      by_cases h1 : redOdoDownAt 0 n η t y = 1
+      · rw [if_pos h1]
+        rw [if_pos (by rw [ih y]; exact h1)]
+        exact ih y
+      · rw [if_neg h1]
+        rw [if_neg (by rw [ih y]; exact h1)]
+        have hhigh : redOdoLow n η t (cons (1 + 1) y) = 0 :=
+          redOdoLow_cons_high_zero n η t y (1 + 1) (by omega)
+        have hfloor : redOdoLow n η t (cons (1 - 1) y) = 1 := by
+          rw [show (1 : ℤ) - 1 = 0 from by ring]
+          exact redOdoLow_floor n η t y (by
+            rw [closureN, Set.mem_union]
+            right
+            refine ⟨?_, ?_⟩
+            · intro hcon
+              have h0 := hcon 0
+              simp only [cons, Fin.cons_zero] at h0
+              omega
+            · refine ⟨cons 1 y, (mem_cube_cons_succ (i := 0) (by omega) (by omega) y).mpr
+                (not_not.mp hy), ?_⟩
+              exact ⟨0, Or.inl (by
+                funext j
+                refine Fin.cases ?_ ?_ j
+                · simp only [cons, Fin.cons_zero, Pi.add_apply, unit, Pi.single_eq_same]
+                  norm_num
+                · intro k
+                  simp only [cons, Fin.cons_succ, Pi.add_apply, unit,
+                    Pi.single_eq_of_ne (Fin.succ_ne_zero k)]
+                  ring)⟩)
+        have hlap : lap (redOdoLow n η t) (cons 1 y)
+            = 1 + lap (redOdoDownAt 0 n η t) y - 2 * redOdoDownAt 0 n η t y := by
+          simp only [lap, nbrSumZ_cons]
+          rw [hhigh, hfloor]
+          simp only [nbrSumZ]
+          rw [Finset.sum_congr rfl (fun w _ => by rw [ih (y + unit w), ih (y - unit w)]),
+            ih y]
+          push_cast
+          ring
+        have h0 : redOdoDownAt 0 n η t y = 0 :=
+          (redOdoDownAt_zero_or_one η t y).resolve_right h1
+        rw [ih y, h0, hlap]
+        rw [show (0 : ℤ) + 1 = 1 from by ring]
+        congr 1
+        by_cases h : 2 * (d : ℤ) ≤ η (cons 1 y) - 1 + lap (redOdoDownAt 0 n η t) y
+        · rw [if_pos h, if_pos (by linarith)]
+        · rw [if_neg h, if_neg (by linarith)]
+
+/-- The layer chain: if every layer of the box is internally spanned, the frozen odometer
+seeded on the low face topples the whole box by time `n ^ (d + 1)`. -/
+theorem fodo_topples_box_of_layers (n : ℕ) (hn : 1 ≤ n) (η : Site (d + 1) → ℤ)
+    (hspan : ∀ i ∈ Finset.Icc 1 n,
+      InternallySpanned (fun w : Site d => η (cons (i : ℤ) w) - 1) n) :
+    ∀ x ∈ cube (d + 1) n,
+      1 ≤ fodo ((rboxShift (fun _ : Fin (d+1) => n) (0 : Site (d+1)))ᶜ) η
+        (Set.indicator (faceOut (fun _ : Fin (d+1) => n) (0 : Site (d+1)) ⟨0, by omega⟩ false)
+          (fun _ => (1 : ℤ))) (n ^ (d + 1)) x := by
+  -- the layer chain: layer i topples by time i * n ^ d
+  have hlayer : ∀ i ∈ Finset.Icc 1 n, ∀ y ∈ cube d n,
+      1 ≤ fodo ((rboxShift (fun _ : Fin (d+1) => n) (0 : Site (d+1)))ᶜ) η
+        (Set.indicator (faceOut (fun _ : Fin (d+1) => n) (0 : Site (d+1)) ⟨0, by omega⟩ false)
+          (fun _ => (1 : ℤ))) (i * n ^ d) (cons (i : ℤ) y) := by
+    intro i hi
+    induction i with
+    | zero => exact absurd (Finset.mem_Icc.mp hi).1 (by omega)
+    | succ k ih =>
+      intro y hy
+      by_cases hk : k = 0
+      · subst hk
+        -- layer 1: the low-face odometer at floor 0, dominated by `fodo`
+        obtain ⟨T₀, hT₀le, hT₀⟩ := exists_uniform_span_time_le n
+          (fun w : Site d => η (cons (1 : ℤ) w) - 1)
+          (hspan 1 (Finset.mem_Icc.mpr ⟨le_refl 1, hn⟩))
+        have hred : redOdoLow n η T₀ (cons (0 + 1) y) = 1 := by
+          rw [show (0 : ℤ) + 1 = 1 from by ring]
+          rw [redOdoLow_agree n hn η T₀ y, redOdoDownAt_eq_spanOdo]
+          exact hT₀ y hy
+        have hdom := fodo_dominates_redOdoLow n η T₀ (cons (0 + 1) y)
+        rw [hred] at hdom
+        have hmono := fodo_mono_time' ((rboxShift (fun _ : Fin (d+1) => n)
+          (0 : Site (d+1)))ᶜ) η
+          (Set.indicator (faceOut (fun _ : Fin (d+1) => n) (0 : Site (d+1))
+            ⟨0, by omega⟩ false) (fun _ => (1 : ℤ))) T₀ (1 * n ^ d) (cons 1 y)
+          (by
+            have hTle : T₀ ≤ n ^ d := hT₀le
+            rw [one_mul]
+            exact hTle)
+        exact le_trans hdom hmono
+      · -- layer k+1: the inductive hypothesis at layer k
+        have hk1 : 1 ≤ k := Nat.one_le_iff_ne_zero.mpr hk
+        have hkn : k ≤ n := by
+          have := (Finset.mem_Icc.mp hi).2
+          omega
+        have hkIcc : k ∈ Finset.Icc 1 n := Finset.mem_Icc.mpr ⟨hk1, hkn⟩
+        obtain ⟨T₀, hT₀le, hT₀⟩ := exists_uniform_span_time_le n
+          (fun w : Site d => η (cons ((k : ℤ) + 1) w) - 1) (hspan (k + 1) hi)
+        have hred : redOdoUpAt (k : ℤ) n η T₀ (cons ((k : ℤ) + 1) y) = 1 := by
+          have hcastn : (k : ℤ) + 1 ≤ (n : ℤ) := by
+            have hk' : k + 1 ≤ n := (Finset.mem_Icc.mp hi).2
+            exact_mod_cast hk'
+          rw [redOdoUpAt_agree η (by omega) (by omega) hcastn T₀ y,
+            redOdoDownAt_eq_spanOdo]
+          exact hT₀ y hy
+        have hT : ∀ z ∈ cube d n, 1 ≤ fodo ((rboxShift (fun _ : Fin (d+1) => n)
+            (0 : Site (d+1)))ᶜ) η
+            (Set.indicator (faceOut (fun _ : Fin (d+1) => n) (0 : Site (d+1))
+              ⟨0, by omega⟩ false) (fun _ => (1 : ℤ))) (k * n ^ d) (cons (k : ℤ) z) :=
+          fun z hz => ih hkIcc z hz
+        have hdom := fodo_dominates_redOdoUpAt (d := d) n η (k : ℤ) (k * n ^ d)
+          hT T₀ (cons ((k : ℤ) + 1) y)
+        rw [hred] at hdom
+        have hmono := fodo_mono_time' ((rboxShift (fun _ : Fin (d+1) => n)
+          (0 : Site (d+1)))ᶜ) η
+          (Set.indicator (faceOut (fun _ : Fin (d+1) => n) (0 : Site (d+1))
+            ⟨0, by omega⟩ false) (fun _ => (1 : ℤ))) (k * n ^ d + T₀) ((k + 1) * n ^ d)
+          (cons ((k : ℤ) + 1) y) (by
+            have hTle : T₀ ≤ n ^ d := hT₀le
+            calc k * n ^ d + T₀ ≤ k * n ^ d + n ^ d := Nat.add_le_add_left hTle _
+              _ = (k + 1) * n ^ d := by ring)
+        exact le_trans hdom hmono
+  -- assemble: every site of the box lies in some layer
+  intro x hx
+  have hx0 : 1 ≤ x 0 := (hx 0).1
+  have hxn : x 0 ≤ (n : ℤ) := (hx 0).2
+  set i : ℕ := (x 0).toNat with hi
+  have hicast : (i : ℤ) = x 0 := Int.toNat_of_nonneg (by omega)
+  have hiIcc : i ∈ Finset.Icc 1 n := Finset.mem_Icc.mpr ⟨by omega, by omega⟩
+  have hxeq : x = cons (i : ℤ) (fun l => x l.succ) := by
+    funext j
+    refine Fin.cases ?_ ?_ j
+    · simp only [cons, Fin.cons_zero]; exact hicast.symm
+    · intro l; simp [cons]
+  have hmem : (fun l => x l.succ) ∈ cube d n := by
+    intro l
+    have h := hx l.succ
+    simpa [cons] using h
+  rw [hxeq]
+  have hlayer' := hlayer i hiIcc (fun l => x l.succ) hmem
+  have hmono := fodo_mono_time' ((rboxShift (fun _ : Fin (d+1) => n)
+    (0 : Site (d+1)))ᶜ) η
+    (Set.indicator (faceOut (fun _ : Fin (d+1) => n) (0 : Site (d+1))
+      ⟨0, by omega⟩ false) (fun _ => (1 : ℤ))) (i * n ^ d) (n ^ (d + 1))
+    (cons (i : ℤ) (fun l => x l.succ)) (by
+      have hi_le : i ≤ n := (Finset.mem_Icc.mp hiIcc).2
+      calc i * n ^ d ≤ n * n ^ d := Nat.mul_le_mul_right _ hi_le
+        _ = n ^ (d + 1) := by ring)
+  exact le_trans hlayer' hmono
 
 end ReductionShift
 

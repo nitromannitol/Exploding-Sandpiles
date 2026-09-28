@@ -315,11 +315,10 @@ theorem Exploding.Frozen.last_penultimate_cluster (d : ℕ) (hd : 2 ≤ d) (p : 
           · subst h; simp [LatticeProb.unit]
           · simp [LatticeProb.unit, h]
         omega
-    -- The case split on `L := M0 i - m0 i` against `2k` (FINDINGS.md update 37):
-    --   `L ≥ 2k`  -> the run contains `x`'s own cube index `j0 := (x i - 1)/k`,
-    --                so `aux_penultimate_segment_bound'` applies with `j0` and
-    --                no `hcov_zc`;
-    --   `L < 2k`  -> `|y i - x i| ≤ L + 1 ≤ 2k`, absorbed into the threshold.
-    -- The side bound's call is written out below; the only remaining work is the
-    -- two `j0`-membership inequalities and the `hab` comparison.
+    -- The case split on whether `x`'s own cube index `j0 := (x i - 1)/k` lies in
+    -- the run `[(m0 i - 1)/k + 1, (M0 i - k)/k]` (FINDINGS.md update 38).
+    --   `j0` in the run  -> `aux_penultimate_segment_bound'` applies with `j0`
+    --                       and no `hcov_zc`;
+    --   `j0` not in it   -> `x` is within `k` of an end of the rectangle, so
+    --                       `|y i - x i| ≤ 2k`, absorbed into the threshold.
     sorry

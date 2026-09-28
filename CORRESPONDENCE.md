@@ -74,7 +74,6 @@ No comparator challenge exists yet; see [`Audit/README.md`](Audit/README.md).
 | `prop-crossing-time` | [Exploding.Frozen.crossing_time](Exploding/Frozen/CrossingTime.lean#L19) | exploding.tex:416-422 (label prop:crossing_time) | DRAFT_SORRY |
 | `prop-renormalization` | [Exploding.Frozen.renormalization_properties](Exploding/Frozen/Renormalization.lean#L35) | exploding.tex:482-497 (label prop:renormalization_properties) | DRAFT_SORRY |
 | `lem-square-lower-bound` | [Exploding.Frozen.square_lower_bound](Exploding/Frozen/SquareLowerBound.lean#L22) | exploding.tex:705-707 (label lemma:square_lower_bound) | SEALED |
-| `lem-finite-exploding` | [Exploding.Frozen.finite_exploding](Exploding/Frozen/FiniteExploding.lean#L25) | exploding.tex:720-722 (label lemma:finite_exploding) | DRAFT_SORRY |
 | `lem-penultimate-cluster` | [Exploding.Frozen.last_penultimate_cluster](Exploding/Frozen/PenultimateCluster.lean#L26) | exploding.tex:792-798 (label lemma:last_penultimate_cluster) | DRAFT_SORRY |
 | `lem-penultimate-upper-bound` | [Exploding.Frozen.penultimate_upper_bound](Exploding/Frozen/PenultimateUpperBound.lean#L27) | exploding.tex:807-812 (label lemma:penultimate_upper_bound) | DRAFT_SORRY |
 | `lem-penultimate-close` | [Exploding.Frozen.last_penultimate_close](Exploding/Frozen/PenultimateClose.lean#L27) | exploding.tex:832-837 (label lemma:last_penultimate_close) | DRAFT_SORRY |
@@ -97,5 +96,6 @@ No comparator challenge exists yet; see [`Audit/README.md`](Audit/README.md).
 | `lem-approx-subadditivity` | [Exploding.Frozen.approx_subadditivity](Exploding/Frozen/ApproxSubadditivity.lean#L105) | exploding.tex:760-765 (label lemma:approx_subadditivity) | SEALED |
 | `prop-recurrence` | [Exploding.Frozen.recurrence](Exploding/Frozen/Recurrence.lean#L17) | exploding.tex:1927-1929 (label prop:recurrence) | SEALED |
 | `lem-local-convexity` | [Exploding.Frozen.local_convexity](Exploding/Frozen/LocalConvexity.lean#L20) | exploding.tex:531-535 (label lemma:local_convexity) | SEALED |
+| `lem-finite-exploding` | [Exploding.Frozen.finite_exploding](Exploding/Frozen/FiniteExploding.lean#L27) | exploding.tex:720-722 (label lemma:finite_exploding) | SEALED |
 
 <!-- FROZEN-SURFACE-END -->

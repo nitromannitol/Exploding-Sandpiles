@@ -83,17 +83,6 @@ nodes:
     provider: Exploding.Frozen.square_lower_bound
     approved: "2026-09-24"
 
-  - id: lem-finite-exploding
-    version: 4
-    kind: theorem
-    source: exploding.tex:720-722 (label lemma:finite_exploding)
-    file: Exploding/Frozen/FiniteExploding.lean
-    export: Exploding.Frozen.finite_exploding
-    state: DRAFT_SORRY
-    frozen_sha256: 2bdfdb526cdb4146e9765019df878274f2d3d49991244591748bbce579ac9772
-    provider: Exploding.Frozen.finite_exploding
-    approved: "2026-09-24"
-
   - id: lem-penultimate-cluster
     version: 4
     kind: theorem
@@ -335,4 +324,15 @@ nodes:
     frozen_sha256: c265b27336538e776144ad00d8ad3e44a93816312863f9b3cb9dc3d5997e91f4
     provider: Exploding.Frozen.local_convexity
     approved: "2026-09-27"
+
+  - id: lem-finite-exploding
+    version: 6
+    kind: theorem
+    source: exploding.tex:720-722 (label lemma:finite_exploding)
+    file: Exploding/Frozen/FiniteExploding.lean
+    export: Exploding.Frozen.finite_exploding
+    state: SEALED
+    frozen_sha256: 2bdfdb526cdb4146e9765019df878274f2d3d49991244591748bbce579ac9772
+    provider: Exploding.Frozen.finite_exploding
+    approved: "2026-09-28"
 

@@ -78,10 +78,82 @@ theorem line_of_cover {d : ℕ} (η : Site d → ℤ) (N k : ℕ) (i : Site d) (
 theorem finite_exploding_step {d : ℕ} (hd : 2 ≤ d) (η : Site d → ℤ)
     (hlow : ∀ x, 0 ≤ η x) (hhigh : ∀ x, η x ≤ 2 * (d : ℤ) - 1)
     (N k : ℕ) (hN : 2 ≤ N) (hk : 1 ≤ k) (i j : Site d)
-    (hgoodj : GoodAt η k j) (dir : Fin d) (hdir : j = i + LatticeProb.unit dir)
+    (hgoodj : GoodAt η k j) (dir : Fin d)
+    (hdir : j = i + LatticeProb.unit dir ∨ i = j + LatticeProb.unit dir)
     (dir' : Fin d) (hne : dir' ≠ dir)
     (t : ℕ) (hcover : ∀ x ∈ cube d k, 0 < wave η N (0 : Site d) t (x + (k : ℤ) • i)) :
     ∃ t' : ℕ, t ≤ t' ∧ ∀ x ∈ cube d k, 0 < wave η N (0 : Site d) t' (x + (k : ℤ) • j) := by
+  rcases hdir with hdir | hdir
+  swap
+  · -- i = j + unit dir: the same argument with the bottom face of Q_k(i)
+    have hk1 : (1 : ℤ) ≤ (k : ℤ) := by exact_mod_cast hk
+    have hz : (fun l : Fin d => if l = dir then (1 : ℤ) else 1) ∈ cube d k := fun l => by
+      show 1 ≤ (if l = dir then (1 : ℤ) else 1) ∧ (if l = dir then (1 : ℤ) else 1) ≤ (k : ℤ)
+      by_cases hl : l = dir
+      · rw [if_pos hl]; exact ⟨le_refl 1, hk1⟩
+      · rw [if_neg hl]; exact ⟨le_refl 1, hk1⟩
+    have hline : ∀ y ∈ line d k dir' (fun l : Fin d => if l = dir then (1 : ℤ) else 1),
+        0 < wave η N (0 : Site d) t (y + (k : ℤ) • i) :=
+      line_of_cover η N k i t dir' (fun l : Fin d => if l = dir then (1 : ℤ) else 1) hcover hz
+    have hz' : (fun l : Fin d => if l = dir then (k : ℤ) + 1 else 1) ∈ closureN (cube d k) := by
+      refine Or.inr ⟨?_, (fun l : Fin d => if l = dir then (k : ℤ) else 1), ?_, ?_⟩
+      · intro hcon
+        have h := (hcon dir).2
+        have h0 : (fun l : Fin d => if l = dir then (k : ℤ) + 1 else 1) dir = (k : ℤ) + 1 := by
+          simp
+        omega
+      · intro l
+        show 1 ≤ (if l = dir then (k : ℤ) else 1) ∧ (if l = dir then (k : ℤ) else 1) ≤ (k : ℤ)
+        by_cases hl : l = dir
+        · rw [if_pos hl]; exact ⟨hk1, le_refl _⟩
+        · rw [if_neg hl]; exact ⟨le_refl 1, hk1⟩
+      · refine ⟨dir, Or.inr ?_⟩
+        funext l
+        by_cases hl : l = dir
+        · show (if l = dir then (k : ℤ) + 1 else 1) = (if l = dir then (k : ℤ) else 1) +
+            (LatticeProb.unit dir : Site d) l
+          simp only [hl, LatticeProb.unit, Pi.single_eq_same]
+          norm_num
+        · show (if l = dir then (k : ℤ) + 1 else 1) = (if l = dir then (k : ℤ) else 1) +
+            (LatticeProb.unit dir : Site d) l
+          simp only [if_neg hl, LatticeProb.unit, Pi.single_eq_of_ne hl, add_zero]
+    have hline' : ∀ w ∈ line d k dir' (fun l : Fin d => if l = dir then (k : ℤ) + 1 else 1),
+        0 < wave η N (0 : Site d) t (w + (k : ℤ) • j) := by
+      intro w hw
+      have hmem : w - (k : ℤ) • LatticeProb.unit dir ∈
+          line d k dir' (fun l : Fin d => if l = dir then (1 : ℤ) else 1) := by
+        refine ⟨?_, ?_⟩
+        · have hwl := hw.1
+          show 1 ≤ (w - (k : ℤ) • LatticeProb.unit dir) dir' ∧
+            (w - (k : ℤ) • LatticeProb.unit dir) dir' ≤ (k : ℤ)
+          have hne' : dir' ≠ dir := hne
+          simp only [Pi.sub_apply, Pi.smul_apply, smul_eq_mul, LatticeProb.unit,
+            Pi.single_eq_of_ne hne', mul_zero, sub_zero]
+          exact hwl
+        · intro l hl
+          have h2 := hw.2 l hl
+          show (w - (k : ℤ) • LatticeProb.unit dir) l = (if l = dir then (1 : ℤ) else 1)
+          by_cases hld : l = dir
+          · show (w - (k : ℤ) • LatticeProb.unit dir) l = (if l = dir then (1 : ℤ) else 1)
+            have hwv : w l = (k : ℤ) + 1 := by
+              have h3 := hw.2 l (by rw [hld]; exact Ne.symm hne)
+              simpa [hld] using h3
+            simp only [Pi.sub_apply, Pi.smul_apply, smul_eq_mul, LatticeProb.unit,
+              hld, Pi.single_eq_same]
+            rw [hld] at hwv
+            rw [hwv]
+            norm_num
+          · simp only [Pi.sub_apply, Pi.smul_apply, smul_eq_mul, LatticeProb.unit,
+              Pi.single_eq_of_ne hld, mul_zero, sub_zero, if_neg hld] at h2 ⊢
+            exact h2
+      have h := hline _ hmem
+      have he : w - (k : ℤ) • LatticeProb.unit dir + (k : ℤ) • i = w + (k : ℤ) • j := by
+        rw [hdir]
+        simp only [smul_add]
+        abel
+      rwa [he] at h
+    exact wave_covers_of_line hd η hlow hhigh N k hN j hgoodj dir'
+      (fun l : Fin d => if l = dir then (k : ℤ) + 1 else 1) hz' t hline'
   have hk1 : (1 : ℤ) ≤ (k : ℤ) := by exact_mod_cast hk
   -- the top face of Q_k(i), in Q_k(i) coordinates
   have hz : (fun l : Fin d => if l = dir then (k : ℤ) else 1) ∈ cube d k := fun l => by

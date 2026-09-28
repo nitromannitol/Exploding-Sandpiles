@@ -340,7 +340,7 @@ conjunct `1 ≤ k` is threaded through so `propagate` has what it needs. -/
 theorem aux_finite_exploding_covers (d : ℕ) (hd : 2 ≤ d) (p : ℝ) (hp : 0 < p) (hp1 : p < 1)
     (hLSSB : Exploding.External.LiggettSchonmannStaceyBoundedDegree) (hHole : Exploding.External.MathieuHoleVolume)
     (hChem : Exploding.External.AntalPisztoraChemicalDistance) :
-    ∀ᵐ η ∂(toyLaw d p), ∃ N t k : ℕ, 1 ≤ N ∧ 1 ≤ k ∧ ∃ (Cinf : Set (Site d)) (i : Site d),
+    ∀ᵐ η ∂(toyLaw d p), ∃ N t k : ℕ, 2 ≤ N ∧ 1 ≤ k ∧ ∃ (Cinf : Set (Site d)) (i : Site d),
       IsInfiniteConnectedGoodSet η k Cinf ∧ i ∈ Cinf ∧
         ∀ x ∈ cube d k, 0 < wave η N (0 : Site d) t (x + (k : ℤ) • i) := by
   obtain ⟨kb, hkb⟩ := Exploding.Frozen.renormalization_properties d hd p hp hp1 hLSSB hHole hChem
@@ -376,8 +376,17 @@ theorem aux_finite_exploding_covers (d : ℕ) (hd : 2 ≤ d) (p : ℝ) (hp : 0 <
   obtain ⟨t, ht⟩ := aux_finite_exploding_uniform_time η hηnn hd0
     N (0 : Site d) (cube d k0) (aux_finite_exploding_cube_finite d k0)
     (fun x => x + (k0 : ℤ) • i) hpt
-  exact ⟨N, t, k0, Nat.one_le_iff_ne_zero.mpr (pow_ne_zero _ (by positivity)),
-    le_max_right kb 1, Cinf, i, hCinf, hiCinf, ht⟩
+  refine ⟨N, t, k0, ?_, le_max_right kb 1, Cinf, i, hCinf, hiCinf, ht⟩
+  rw [hNdef]
+  have hbase : 2 ≤ 2 * d := by omega
+  have hexp : 1 ≤ d * n1 := Nat.one_le_iff_ne_zero.mpr (by positivity)
+  have hpos : 0 < 2 * d := by omega
+  have h2d : 2 ≤ 2 * d := by omega
+  calc 2 = 2 ^ 1 := by norm_num
+    _ ≤ (2 * d) ^ 1 := by
+        rw [pow_one, pow_one]
+        exact h2d
+    _ ≤ (2 * d) ^ (d * n1) := Nat.pow_le_pow_right hpos hexp
 
 /-! ### Two elementary facts used by the propagation step -/
 

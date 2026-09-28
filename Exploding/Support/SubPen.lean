@@ -1764,6 +1764,133 @@ theorem aux_segment_meets_cinf_line {d : ℕ} (k : ℕ) (hk : 1 ≤ k)
 /-- **The side bound, in the form the frozen proof needs.**  If the penultimate
 wave from `zc` is positive on a long coordinate segment whose cube-base points
 lie in `cent d n`, then the `(M̂-1)`-wave is not stabilizable. -/
+theorem aux_segment_meets_cinf_line' {d : ℕ} (k : ℕ) (hk : 1 ≤ k)
+    (Cinf : Set (Site d)) (n0 : ℕ)
+    (hcomp : ∀ n, n0 ≤ n → ∀ x ∈ (cent d n : Set (Site d)), x ∉ Cinf →
+      (componentIn Cinfᶜ x).Finite ∧
+        ((componentIn Cinfᶜ x).ncard : ℝ) < Real.log n ^ ((5 : ℝ) / 2))
+    (n : ℕ) (hn : n0 ≤ n) (l : Fin d) (c : Site d) (a b : ℤ)
+    (hlog : 0 ≤ Real.log n ^ ((5 : ℝ) / 2))
+    (hab : ((2 * Real.log n ^ ((5 : ℝ) / 2) + 6) * (k : ℝ)) ≤ ((b - a : ℤ) : ℝ))
+    (hin' : ∀ v : ℤ, (a - 1) / (k : ℤ) + 1 ≤ v → v ≤ (b - (k : ℤ)) / (k : ℤ) →
+      (fun j => if j = l then v else (c j - 1) / (k : ℤ)) ∈ (cent d n : Set (Site d)))
+    :
+    ∃ i ∈ Cinf,
+      ∀ w ∈ line d k l (fun j => if j = l then 1 else 1 + (c j - 1) % (k : ℤ)),
+      a ≤ (w + (k : ℤ) • i) l ∧ (w + (k : ℤ) • i) l ≤ b ∧
+        ∀ j, j ≠ l → (w + (k : ℤ) • i) j = c j := by
+  have hk1 : (1 : ℤ) ≤ (k : ℤ) := by exact_mod_cast hk
+  have hk0 : (0 : ℤ) < (k : ℤ) := by linarith
+  have hkR : (0 : ℝ) < (k : ℝ) := by exact_mod_cast hk
+  set m : ℤ := ((b - (k : ℤ)) / (k : ℤ)) - ((a - 1) / (k : ℤ) + 1) with hm
+  have hlen : Real.log n ^ ((5 : ℝ) / 2) ≤ ((m : ℤ) : ℝ) := by
+    have h1 : (k : ℤ) * ((b - (k : ℤ)) / (k : ℤ)) =
+        (b - (k : ℤ)) - ((b - (k : ℤ)) % (k : ℤ)) := by
+      have := Int.ediv_mul_add_emod (b - (k : ℤ)) (k : ℤ); linarith
+    have h2 : (k : ℤ) * ((a - 1) / (k : ℤ)) = (a - 1) - ((a - 1) % (k : ℤ)) := by
+      have := Int.ediv_mul_add_emod (a - 1) (k : ℤ); linarith
+    have h4 : (b - (k : ℤ)) % (k : ℤ) ≤ (k : ℤ) - 1 := by
+      have := Int.emod_lt_of_pos (b - (k : ℤ)) hk0; omega
+    have h6 : (a - 1) % (k : ℤ) ≤ (k : ℤ) - 1 := by
+      have := Int.emod_lt_of_pos (a - 1) hk0; omega
+    have h7 : (k : ℤ) * m ≥ (b - a) - 3 * (k : ℤ) := by
+      rw [hm]
+      have h7a : (k : ℤ) * (((b - (k : ℤ)) / (k : ℤ)) - ((a - 1) / (k : ℤ) + 1)) =
+          (k : ℤ) * ((b - (k : ℤ)) / (k : ℤ)) - (k : ℤ) * ((a - 1) / (k : ℤ)) - (k : ℤ) := by
+        ring
+      rw [h7a, h1, h2]
+      have h3' : 0 ≤ (b - (k : ℤ)) % (k : ℤ) := Int.emod_nonneg _ (by linarith)
+      have h5' : 0 ≤ (a - 1) % (k : ℤ) := Int.emod_nonneg _ (by linarith)
+      omega
+    have h8 : (((b - a) - 3 * (k : ℤ) : ℤ) : ℝ) ≤ ((k : ℤ) : ℝ) * ((m : ℤ) : ℝ) := by
+      exact_mod_cast h7
+    have h9 : (((b - a) - 3 * (k : ℤ) : ℤ) : ℝ) = ((b - a : ℤ) : ℝ) - 3 * (k : ℝ) := by
+      push_cast; ring
+    rw [h9] at h8
+    have h10 : (2 * Real.log n ^ ((5 : ℝ) / 2) + 3) * (k : ℝ) ≤ ((k : ℤ) : ℝ) * ((m : ℤ) : ℝ) := by
+      have hkR' : (0 : ℝ) < ((k : ℤ) : ℝ) := by exact_mod_cast hk
+      have h8' : ((b - a : ℤ) : ℝ) - 3 * (k : ℝ) ≤ ((k : ℤ) : ℝ) * ((m : ℤ) : ℝ) := h8
+      nlinarith [hab, h8', hkR']
+    have h10' : ((k : ℤ) : ℝ) * (2 * Real.log n ^ ((5 : ℝ) / 2) + 3) ≤
+        ((k : ℤ) : ℝ) * ((m : ℤ) : ℝ) := by
+      rw [mul_comm ((k : ℤ) : ℝ) (2 * Real.log n ^ ((5 : ℝ) / 2) + 3)]
+      exact h10
+    have hkR' : (0 : ℝ) < ((k : ℤ) : ℝ) := by exact_mod_cast hk
+    have h11 : 2 * Real.log n ^ ((5 : ℝ) / 2) + 3 ≤ ((m : ℤ) : ℝ) :=
+      le_of_mul_le_mul_left h10' hkR'
+    linarith
+  have hm_ge : 2 * Real.log n ^ ((5 : ℝ) / 2) + 3 ≤ ((m : ℤ) : ℝ) := by
+    have h1 : (k : ℤ) * ((b - (k : ℤ)) / (k : ℤ)) =
+        (b - (k : ℤ)) - ((b - (k : ℤ)) % (k : ℤ)) := by
+      have := Int.ediv_mul_add_emod (b - (k : ℤ)) (k : ℤ); linarith
+    have h2 : (k : ℤ) * ((a - 1) / (k : ℤ)) = (a - 1) - ((a - 1) % (k : ℤ)) := by
+      have := Int.ediv_mul_add_emod (a - 1) (k : ℤ); linarith
+    have h4 : (b - (k : ℤ)) % (k : ℤ) ≤ (k : ℤ) - 1 := by
+      have := Int.emod_lt_of_pos (b - (k : ℤ)) hk0; omega
+    have h6 : (a - 1) % (k : ℤ) ≤ (k : ℤ) - 1 := by
+      have := Int.emod_lt_of_pos (a - 1) hk0; omega
+    have h7 : (k : ℤ) * m ≥ (b - a) - 3 * (k : ℤ) := by
+      rw [hm]
+      have h7a : (k : ℤ) * (((b - (k : ℤ)) / (k : ℤ)) - ((a - 1) / (k : ℤ) + 1)) =
+          (k : ℤ) * ((b - (k : ℤ)) / (k : ℤ)) - (k : ℤ) * ((a - 1) / (k : ℤ)) - (k : ℤ) := by
+        ring
+      rw [h7a, h1, h2]
+      have h3' : 0 ≤ (b - (k : ℤ)) % (k : ℤ) := Int.emod_nonneg _ (by linarith)
+      have h5' : 0 ≤ (a - 1) % (k : ℤ) := Int.emod_nonneg _ (by linarith)
+      omega
+    have h8 : (((b - a) - 3 * (k : ℤ) : ℤ) : ℝ) ≤ ((k : ℤ) : ℝ) * ((m : ℤ) : ℝ) := by
+      exact_mod_cast h7
+    have h9 : (((b - a) - 3 * (k : ℤ) : ℤ) : ℝ) = ((b - a : ℤ) : ℝ) - 3 * (k : ℝ) := by
+      push_cast; ring
+    rw [h9] at h8
+    have h10 : (2 * Real.log n ^ ((5 : ℝ) / 2) + 3) * (k : ℝ) ≤ ((k : ℤ) : ℝ) * ((m : ℤ) : ℝ) := by
+      have hkR' : (0 : ℝ) < ((k : ℤ) : ℝ) := by exact_mod_cast hk
+      nlinarith [hab, h8, hkR']
+    have h10' : ((k : ℤ) : ℝ) * (2 * Real.log n ^ ((5 : ℝ) / 2) + 3) ≤
+        ((k : ℤ) : ℝ) * ((m : ℤ) : ℝ) := by
+      rw [mul_comm ((k : ℤ) : ℝ) (2 * Real.log n ^ ((5 : ℝ) / 2) + 3)]
+      exact h10
+    exact le_of_mul_le_mul_left h10' hkR
+  obtain ⟨v, hv0, hv1, hvC⟩ := aux_penultimate_overlap_line_meets_cinf Cinf n0 hcomp n hn
+    (fun j => (c j - 1) / (k : ℤ)) l ((a - 1) / (k : ℤ) + 1) ((b - (k : ℤ)) / (k : ℤ))
+    hlen hin'
+  refine ⟨fun j => if j = l then v else (c j - 1) / (k : ℤ), hvC, ?_⟩
+  · intro w hw
+    have hwl : (1 : ℤ) ≤ w l := hw.1.1
+    have hwh : w l ≤ (k : ℤ) := hw.1.2
+    have hwj : ∀ j, j ≠ l → w j = 1 + (c j - 1) % (k : ℤ) := by
+      intro j hj
+      have := hw.2 j hj
+      simpa only [if_neg hj] using this
+    have h1 : (k : ℤ) * ((a - 1) / (k : ℤ) + 1) ≥ a := by
+      have := Int.ediv_mul_add_emod (a - 1) (k : ℤ)
+      have h2 : 0 ≤ (a - 1) % (k : ℤ) := Int.emod_nonneg _ (by linarith)
+      have h3 : (a - 1) % (k : ℤ) < (k : ℤ) := Int.emod_lt_of_pos _ hk0
+      nlinarith [this, h2, h3]
+    have h2 : (k : ℤ) * ((b - (k : ℤ)) / (k : ℤ)) ≤ b - (k : ℤ) := by
+      have := Int.ediv_mul_add_emod (b - (k : ℤ)) (k : ℤ)
+      have h3 : 0 ≤ (b - (k : ℤ)) % (k : ℤ) := Int.emod_nonneg _ (by linarith)
+      linarith
+    have h3 : (k : ℤ) * ((a - 1) / (k : ℤ) + 1) ≤ (k : ℤ) * v :=
+      mul_le_mul_of_nonneg_left hv0 (by linarith)
+    have h4 : (k : ℤ) * v ≤ (k : ℤ) * ((b - (k : ℤ)) / (k : ℤ)) :=
+      mul_le_mul_of_nonneg_left hv1 (by linarith)
+    refine ⟨?_, ?_, ?_⟩
+    · simp only [Pi.add_apply, Pi.smul_apply, smul_eq_mul, if_true]
+      linarith
+    · simp only [Pi.add_apply, Pi.smul_apply, smul_eq_mul, if_true]
+      linarith
+    · intro j hj
+      simp only [Pi.add_apply, Pi.smul_apply, smul_eq_mul, if_neg hj]
+      rw [hwj j hj]
+      have h6 : (k : ℤ) * ((c j - 1) / (k : ℤ)) = c j - 1 - ((c j - 1) % (k : ℤ)) := by
+        have := Int.ediv_mul_add_emod (c j - 1) (k : ℤ); linarith
+      linarith
+
+
+/-- **The side bound, in the form the frozen proof needs.**  If the penultimate
+wave from `zc` is positive on a long coordinate segment whose cube-base points
+lie in `cent d n`, then the `(M̂-1)`-wave is not stabilizable. -/
 theorem aux_penultimate_segment_bound {d : ℕ} (hd : 2 ≤ d) (η : Site d → ℤ)
     (hlow : ∀ x, 2 * (d : ℤ) - 2 ≤ η x) (hhigh : ∀ x, η x ≤ 2 * (d : ℤ) - 1)
     (k : ℕ) (hk : 1 ≤ k) (Cinf : Set (Site d)) (hCinf : IsInfiniteConnectedGoodSet η k Cinf)
@@ -1818,6 +1945,75 @@ theorem aux_penultimate_segment_bound {d : ℕ} (hd : 2 ≤ d) (η : Site d → 
     have h2 : macroIdx k zc l = (zc l - 1) / (k : ℤ) := rfl
     rw [h2, ← hj0] at h1
     exact hi_ne h1
+  by_cases hN : 2 ≤ waveThreshold η zc - 1
+  · exact aux_penultimate_overlap_propagate_line hd η hlow hhigh k hk Cinf hCinf zc i hiC
+      l (fun j => if j = l then 1 else 1 + (c j - 1) % (k : ℤ)) hz hline' hN hlast
+  · have hM2 : waveThreshold η zc = 2 := by
+      have hlow0 : ∀ x, 0 ≤ η x := fun x => by linarith [hlow x]
+      have hzpos : 0 < penultimateWave η zc ((fun j => if j = l then 1 else 1 + (c j - 1) % (k : ℤ)) + (k : ℤ) • i) :=
+        hline' _ (by
+          refine ⟨⟨?_, ?_⟩, fun j hj => rfl⟩
+          · show (1 : ℤ) ≤ (if l = l then (1 : ℤ) else 1 + (c l - 1) % (k : ℤ))
+            rw [if_pos rfl]
+          · show (if l = l then (1 : ℤ) else 1 + (c l - 1) % (k : ℤ)) ≤ (k : ℤ)
+            rw [if_pos rfl]; exact hk1)
+      obtain ⟨h2, _⟩ := aux_penultimate_hlast η hlow0 hhigh zc _ hzpos
+      omega
+    exact aux_penultimate_overlap_propagate_line_one hd η hlow hhigh k hk Cinf hCinf zc i hiC
+      l (fun j => if j = l then 1 else 1 + (c j - 1) % (k : ℤ)) hz hline'
+      hM2 hlast hcov_zc
+
+
+/-- **The radius re-choice, reduced to its content.**  If the side bound's
+hypotheses hold at the radius `n'` for a run of length `L`, then `L` is below the
+side bound's threshold.  This is the contrapositive of
+`aux_penultimate_segment_bound`, and it is what the frozen proof of Lemma 3.5
+needs: the caller supplies `hin'` at `n' := n + L + 2` from the rectangle. -/
+theorem aux_penultimate_segment_bound' {d : ℕ} (hd : 2 ≤ d) (η : Site d → ℤ)
+    (hlow : ∀ x, 2 * (d : ℤ) - 2 ≤ η x) (hhigh : ∀ x, η x ≤ 2 * (d : ℤ) - 1)
+    (k : ℕ) (hk : 1 ≤ k) (Cinf : Set (Site d)) (hCinf : IsInfiniteConnectedGoodSet η k Cinf)
+    (zc : Site d)
+    (hlast : ∃ n : ℕ, 1 ≤ n ∧ ¬ WaveStabilizable η n zc)
+    (n0 : ℕ)
+    (hcomp : ∀ n, n0 ≤ n → ∀ x ∈ (cent d n : Set (Site d)), x ∉ Cinf →
+      (componentIn Cinfᶜ x).Finite ∧
+        ((componentIn Cinfᶜ x).ncard : ℝ) < Real.log n ^ ((5 : ℝ) / 2))
+    (n : ℕ) (hn : n0 ≤ n) (l : Fin d) (c : Site d) (a b : ℤ)
+    (hlog : 0 ≤ Real.log n ^ ((5 : ℝ) / 2))
+    (hab : ((2 * Real.log n ^ ((5 : ℝ) / 2) + 6) * (k : ℝ)) ≤ ((b - a : ℤ) : ℝ))
+    (hin' : ∀ v : ℤ, (a - 1) / (k : ℤ) + 1 ≤ v → v ≤ (b - (k : ℤ)) / (k : ℤ) →
+      (fun j => if j = l then v else (c j - 1) / (k : ℤ)) ∈ (cent d n : Set (Site d)))
+    (hpos : ∀ v : ℤ, a ≤ v → v ≤ b →
+      0 < penultimateWave η zc (fun j => if j = l then v else c j))
+    (hcov_zc : ∀ t : ℕ, ∀ x ∈ cube d k,
+      0 < wave η 1 zc t (x + (k : ℤ) • macroIdx k zc)) :
+    False := by
+  have hk1 : (1 : ℤ) ≤ (k : ℤ) := by exact_mod_cast hk
+  have hk0 : (0 : ℤ) < (k : ℤ) := by linarith
+  obtain ⟨i, hiC, hline⟩ :=
+    aux_segment_meets_cinf_line' k hk Cinf n0 hcomp n hn l c a b hlog hab hin'
+  have hz : (fun j => if j = l then 1 else 1 + (c j - 1) % (k : ℤ)) ∈ cube d k := by
+    intro j
+    have hval : (fun j' => if j' = l then (1 : ℤ) else 1 + (c j' - 1) % (k : ℤ)) j =
+        (if j = l then (1 : ℤ) else 1 + (c j - 1) % (k : ℤ)) := rfl
+    rw [hval]
+    split_ifs with hj
+    · exact ⟨le_refl 1, hk1⟩
+    · have h2 : 0 ≤ (c j - 1) % (k : ℤ) := Int.emod_nonneg _ (by linarith)
+      have h3 : (c j - 1) % (k : ℤ) < (k : ℤ) := Int.emod_lt_of_pos _ hk0
+      constructor <;> linarith
+  have hline' : ∀ w ∈ line d k l (fun j => if j = l then 1 else 1 + (c j - 1) % (k : ℤ)),
+      0 < penultimateWave η zc (w + (k : ℤ) • i) := by
+    intro w hw
+    obtain ⟨hlo, hhi, hoth⟩ := hline w hw
+    have hfun : (fun j => if j = l then (w + (k : ℤ) • i) l else c j) = (w + (k : ℤ) • i) := by
+      ext j
+      by_cases hj : j = l
+      · subst hj; simp only [if_true]
+      · simp only [if_neg hj]
+        exact (hoth j hj).symm
+    rw [← hfun]
+    exact hpos _ hlo hhi
   by_cases hN : 2 ≤ waveThreshold η zc - 1
   · exact aux_penultimate_overlap_propagate_line hd η hlow hhigh k hk Cinf hCinf zc i hiC
       l (fun j => if j = l then 1 else 1 + (c j - 1) % (k : ℤ)) hz hline' hN hlast

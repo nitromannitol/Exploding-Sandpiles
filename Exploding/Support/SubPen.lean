@@ -2134,3 +2134,53 @@ theorem box_end_le (m M x : ℤ) (h1 : m ≤ x) (h2 : x ≤ M) :
       omega
 
 
+/-- **The self-referential length bound.**  If `L` is a nonnegative integer with
+`(2 (log n')^(5/2) + 6) k ≤ L` where `n' := n + L + K + 4`, and `L ≤ 2n + 1`,
+then `L ≤ (2 (log n + log 8)^(5/2) + 6) k`. -/
+theorem aux_length_bound (k K : ℕ) (hk : 1 ≤ k) (n L : ℤ)
+    (hn : 2 ≤ n) (hKle : (K : ℤ) ≤ n) (hL0 : 0 ≤ L) (hL2 : L ≤ 2 * n + 1)
+    (hbig : (L : ℝ) < (2 * Real.log ((n + L + (K : ℤ) + 4).toNat : ℝ) ^ ((5 : ℝ) / 2) + 6) * (k : ℝ)) :
+    (L : ℝ) ≤ (2 * (Real.log n + Real.log 8) ^ ((5 : ℝ) / 2) + 6) * (k : ℝ) := by
+  by_contra hcon
+  rw [not_le] at hcon
+  have h1 : ((n + L + (K : ℤ) + 4).toNat : ℝ) ≤ 8 * (n : ℝ) := by
+    have h2 : ((n + L + (K : ℤ) + 4).toNat : ℤ) ≤ 8 * n := by
+      have h7 : (0 : ℤ) ≤ (K : ℤ) := by positivity
+      have h8 : (0 : ℤ) ≤ L := hL0
+      have h10 : (2 : ℤ) ≤ n := hn
+      have h11 : (0 : ℤ) ≤ n + L + (K : ℤ) + 4 := by linarith
+      rw [Int.toNat_of_nonneg h11]
+      have h12 : n + L + (K : ℤ) + 4 ≤ 8 * n := by
+        have h13 : L ≤ 2 * n + 1 := hL2
+        have h14 : (K : ℤ) ≤ n := hKle
+        linarith
+      linarith [h12]
+    exact_mod_cast h2
+  have h3 : (1 : ℝ) ≤ ((n + L + (K : ℤ) + 4).toNat : ℝ) := by
+    have h7 : (0 : ℤ) ≤ (K : ℤ) := by positivity
+    have h8 : (0 : ℤ) ≤ L := hL0
+    have h10 : (2 : ℤ) ≤ n := hn
+    have h11 : (0 : ℤ) ≤ n + L + (K : ℤ) + 4 := by linarith
+    have h4 : (1 : ℤ) ≤ ((n + L + (K : ℤ) + 4).toNat : ℤ) := by
+      rw [Int.toNat_of_nonneg h11]
+      linarith
+    exact_mod_cast h4
+  have hlog : Real.log ((n + L + (K : ℤ) + 4).toNat : ℝ) ≤ Real.log n + Real.log 8 := by
+    have h5 : Real.log ((n + L + (K : ℤ) + 4).toNat : ℝ) ≤ Real.log (8 * (n : ℝ)) :=
+      Real.log_le_log (by linarith [h3]) h1
+    rw [Real.log_mul (by norm_num) (by positivity)] at h5
+    linarith
+  have h6 : Real.log ((n + L + (K : ℤ) + 4).toNat : ℝ) ^ ((5 : ℝ) / 2) ≤
+      (Real.log n + Real.log 8) ^ ((5 : ℝ) / 2) := by
+    apply Real.rpow_le_rpow
+    · exact Real.log_nonneg (by linarith [h3])
+    · exact hlog
+    · norm_num
+  have hkR : (0 : ℝ) < (k : ℝ) := by exact_mod_cast hk
+  have h7 : (2 * Real.log ((n + L + (K : ℤ) + 4).toNat : ℝ) ^ ((5 : ℝ) / 2) + 6) * (k : ℝ) ≤
+      (2 * (Real.log n + Real.log 8) ^ ((5 : ℝ) / 2) + 6) * (k : ℝ) := by
+    nlinarith [h6, hkR]
+  have h8 : (L : ℝ) < (2 * (Real.log n + Real.log 8) ^ ((5 : ℝ) / 2) + 6) * (k : ℝ) :=
+    lt_of_lt_of_le hbig h7
+  exact absurd h8 (not_lt.mpr (le_of_lt hcon))
+

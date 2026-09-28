@@ -874,18 +874,81 @@ theorem aux_ce_stack_le_2D_step (d : ℕ) (hd : 2 ≤ d) (t : ℕ)
       · rw [if_neg h_fire_d]
         omega
 
-/-- Step 3' (exploding.tex:1767-1790), medium, self-contained in the paper
-(not a gap): the `d`-dimensional odometer is dominated by the 2D odometer of
-the projection, `v_t(x) ≤ v_t^{2D}(x₀, x₁)`, by induction on `t` using that
-the `d - 2` extra directions contribute `≤ 0` to the Laplacian at a site where
-equality holds.  Trivial for `d = 2`.  Carved into a base case (`t = 0`, both
-sides `0`) and `aux_ce_stack_le_2D_step` (the inductive step). -/
-theorem aux_ce_stack_le_2D (d : ℕ) (hd : 2 ≤ d) (t : ℕ) (x : Site d) :
-    podo (explodingPile (ceEta d)) t x ≤
-      podo (explodingPile (ceEta 2)) t
-        (fun i : Fin 2 => if (i : ℕ) = 0 then x ⟨0, by omega⟩ else x ⟨1, by omega⟩) := by
-  induction t generalizing x with
-  | zero => simp
-  | succ t ih => exact aux_ce_stack_le_2D_step d hd t ih x
+/-- Steps 3-4 (exploding.tex:1443-1726), hard, `T((3+8n)e₁) ≥ 12n` in 2D.
+CONFIRMED (this pass) genuinely NOT a mechanical further split of the current
+toolkit: the paper's own four sub-steps split into two that need brand-new
+Lean INFRASTRUCTURE (not new mathematics -- the paper supplies the full
+argument) rather than a restatement from existing pieces, and two that are
+routine given that infrastructure:
+(3a) `-- GAP`, NEEDS-PROOF-DESIGN: replace `ζ₁` by the cylinder background
+     `ζ`, reflect across `x₁ = -1/2` (`v_t(-1,x₂) := v_t(0,x₂)`, an extra
+     SELF-LOOP at the boundary, not a frozen exterior) and fold `x₂` mod `4`
+     onto a symmetrised Laplacian on `{x₁ ≥ 0} × ℤ/4`.  Checked: no cylinder,
+     reflection, or folded-Laplacian object exists anywhere in this
+     repository (`grep`-confirmed empty in `Exploding/`), and
+     `Exploding.fodo`'s `S`-frozen odometer only supports a FROZEN exterior
+     held at a fixed `w₀`, not this reflected/coupled one, so it cannot
+     stand in for it.  The paper cites "Lemma 2.3 in [bou2020dynamic]" for
+     identifying the resulting folded process with the honest `Site 2`
+     odometer's restriction to `{x₁ ≥ 0}`; formalizing it needs a NEW
+     recursive definition (a `cylOdo` on, e.g., `ℤ × Fin 4` with a
+     hand-written reflected/toroidal neighbour-sum) plus the symmetry lemma
+     identifying it with `podo (explodingPile (ceEta 2))` restricted to the
+     half-plane -- a genuine, self-contained but substantial design task for
+     a future pass, not attempted here.
+(3b) TRACTABLE once (3a)'s objects exist: the comparison `v_t ≤ w_t + ũ`, a
+     clean induction written out in full at exploding.tex:1506-1513, in
+     exactly the same style as `aux_te_podo_mono`/`aux_ce_stack_le_2D_step`
+     above (compare two odometers on the SAME domain via a fixed pointwise
+     offset function).
+(4a) TRACTABLE once (3a)'s objects exist: reduce `w_t` to its last wave with
+     the displayed `{0,1}` initial data, "identical to Step 1 of Proposition
+     4.1" (`prop-approximate-subadditive`'s own already-present machinery,
+     just not yet wired to a cylinder domain).
+(4b) `-- GAP`, NEEDS-PROOF-DESIGN: the pulsating front, 12 steps of the last
+     wave on the cylinder translate the front configuration by 8 columns,
+     which the paper itself verifies "by manual computation" on an explicit
+     `4x13` window.  Recommended route (unchanged from the prior pass):
+     define the front recursion on a fixed finite window as a computable
+     `Fin 13 → Fin 4 → ℤ` iteration and discharge "12 steps shift the front
+     by 8" via `decide`/`native_decide`, then a NEW locality lemma (the front
+     only interacts with columns within distance `1` per step) transfers the
+     window computation to the infinite cylinder.  This needs (3a)'s cylinder
+     object to even state, and is a genuinely separate, self-contained
+     finite-computation task once that object exists.
+Both GAPs need the SAME missing object ((3a)'s cylinder/reflected process);
+until it is designed, (3b)/(4a)/(4b) cannot be stated as separate Lean
+lemmas either (they are all ABOUT that object).  This is why the file's own
+prior "needs further split" note could not, in this pass, be turned into
+additional standalone `sorry` declarations without guessing at that object's
+definition -- which risks a silently wrong formalization more than it helps
+a later prover. -/
+
+theorem aux_arrival_unfold (d : ℕ) (η : Site d → ℤ) (x : Site d) :
+    arrival η x = sInf {t : ℕ∞ | ∃ k : ℕ, t = (k : ℕ∞) ∧ 1 ≤ k ∧
+      0 < podo (explodingPile η) k x} := rfl
+
+theorem aux_ce_explodingPile_eq (d : ℕ) (hd : 2 ≤ d) :
+    explodingPile (ceEta d) = (fun x => ceEta d x + 3 * dirac (0 : Site d) x) := by
+  funext x
+  simp only [explodingPile, aux_ce_threshold' d hd]
+  norm_num
+
+/-- Packages a single witness time `m` at which `(n•e₁)` has fired into the
+bound `arrival (ceEta d) (n•e₁) ≤ m`. -/
+theorem aux_ce_arrival_le (d : ℕ) (hd : 2 ≤ d) (n : ℕ) (m : ℕ) (hm1 : 1 ≤ m)
+    (hpos : 0 < podo (fun x => ceEta d x + 3 * dirac (0 : Site d) x) m ((n : ℤ) • e1 d)) :
+    arrival (ceEta d) ((n : ℤ) • e1 d) ≤ (m : ℕ∞) := by
+  rw [aux_arrival_unfold]
+  apply sInf_le
+  refine ⟨m, rfl, hm1, ?_⟩
+  rw [aux_ce_explodingPile_eq d hd]
+  exact hpos
+
+/-- Corollary of `aux_ce_arrival_le`: such a witness proves finiteness. -/
+theorem aux_ce_arrival_finite_of_pos (d : ℕ) (hd : 2 ≤ d) (n : ℕ) (m : ℕ) (hm1 : 1 ≤ m)
+    (hpos : 0 < podo (fun x => ceEta d x + 3 * dirac (0 : Site d) x) m ((n : ℤ) • e1 d)) :
+    arrival (ceEta d) ((n : ℤ) • e1 d) ≠ ⊤ :=
+  ne_top_of_le_ne_top (ENat.coe_ne_top m) (aux_ce_arrival_le d hd n m hm1 hpos)
 
 end Exploding

@@ -90,4 +90,41 @@ theorem mem_cube_of_macroIdx {d : ℕ} (k : ℕ) (hk : 1 ≤ k) (x : Site d) :
   exact aux_mem_cube_of_macroIdx k hk x
 
 
+theorem aux_ediv_le_of_lt_mul (A B n : ℤ) (hB : 0 < B) (h : A < (n + 1) * B) :
+    A / B ≤ n := by
+  refine Int.le_of_lt_add_one ?_
+  rwa [Int.ediv_lt_iff_lt_mul hB]
+
+theorem aux_nbrSumZ_const (d : ℕ) (n : ℤ) (x : Site d) :
+    nbrSumZ (fun _ : Site d => n) x = 2 * (d : ℤ) * n := by
+  simp only [nbrSumZ, Finset.sum_const, Finset.card_univ, Fintype.card_fin, nsmul_eq_mul]
+  ring
+
+theorem aux_pub_reach_wave_le_n {d : ℕ} (η : Site d → ℤ)
+    (hhigh : ∀ x, η x ≤ 2 * (d : ℤ) - 1) (n : ℕ) (z : Site d) (t : ℕ) (x : Site d) :
+    wave η n z t x ≤ (n : ℤ) := by
+  induction t generalizing x with
+  | zero =>
+    rw [wave_zero]
+    by_cases h : x = z
+    · rw [if_pos h]
+    · rw [if_neg h]
+      exact Int.natCast_nonneg n
+  | succ t ih =>
+    rw [wave_succ]
+    by_cases h : x = z
+    · rw [if_pos h]
+    · rw [if_neg h]
+      by_cases hdpos : (0 : ℤ) < 2 * (d : ℤ)
+      · refine aux_ediv_le_of_lt_mul (nbrSumZ (wave η n z t) x + η x) (2 * (d : ℤ)) n hdpos ?_
+        have h1 := nbrSumZ_mono (fun y => ih y) x
+        have h3 := aux_nbrSumZ_const d (n : ℤ) x
+        have h2 := hhigh x
+        nlinarith [h1, h2, h3]
+      · rw [not_lt] at hdpos
+        have hd0 : 2 * (d : ℤ) = 0 := le_antisymm hdpos (by positivity)
+        rw [hd0, Int.ediv_zero]
+        exact Int.natCast_nonneg n
+
+
 end Exploding

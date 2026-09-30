@@ -120,7 +120,7 @@ theorem ce_liminf (d : ℕ) (hd : 2 ≤ d)
     refine csSup_le hSne fun a ha => ?_
     simp only [Set.mem_setOf_eq] at ha
     by_contra hcon
-    push_neg at hcon
+    push Not at hcon
     rw [Filter.eventually_atTop] at ha
     obtain ⟨N, hN⟩ := ha
     obtain ⟨k, hk⟩ : ∃ k : ℕ, max ((4 - a) / (4 * (a - 1))) (N : ℝ) < (k : ℝ) := exists_nat_gt _
@@ -150,7 +150,7 @@ theorem ce_liminf (d : ℕ) (hd : 2 ≤ d)
 /-- `T(3+8n)/(3+8n) ≥ 12n/(3+8n) → 3/2` gives `limsup ≥ 3/2`.  `hSlow` is the
 slow bound (conditional on the cylinder front) and `hBdd` makes the defining
 `sInf` of `Filter.limsup_eq` nonempty. -/
-theorem ce_limsup (d : ℕ) (hd : 2 ≤ d)
+theorem ce_limsup (d : ℕ) (_hd : 2 ≤ d)
     (hSlow : ∀ n : ℕ, ∃ m : ℕ,
       arrival (ceEta d) (((3 + 8 * n : ℕ) : ℤ) • e1 d) = (m : ℕ∞) ∧ 12 * n ≤ m)
     (hBdd : ∃ C : ℝ, ∀ᶠ n : ℕ in atTop,
@@ -161,7 +161,7 @@ theorem ce_limsup (d : ℕ) (hd : 2 ≤ d)
   refine le_csInf ⟨C, hC⟩ ?_
   intro a ha
   by_contra hcon
-  push_neg at hcon
+  push Not at hcon
   simp only [Set.mem_setOf_eq] at ha
   rw [Filter.eventually_atTop] at ha
   obtain ⟨N, hN⟩ := ha

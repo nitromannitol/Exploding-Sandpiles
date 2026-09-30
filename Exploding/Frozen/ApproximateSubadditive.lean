@@ -36,42 +36,30 @@ theorem Exploding.Frozen.approximate_subadditive (d : ℕ) (hd : 2 ≤ d) (p : �
         lastArrival η (0 : Site d) x ≤ arrival η x + (C2 : ℕ∞)
 -- FROZEN-STATEMENT-END
 := by
-  -- The five open claims isolated by the decomposition, each a true and
-  -- precisely stated lemma; see the packet report for why each is deferred.
-  -- (1) the two notions of explosion agree: robustness forbids any
-  -- non-stabilizable centred wave.
-  have hrobust : ∀ η : Site d → ℤ, (∀ x, 2 * (d : ℤ) - 2 ≤ η x) →
-      (∀ x, η x ≤ 2 * (d : ℤ) - 1) → Robust η →
-        ∀ n : ℕ, 1 ≤ n → WaveStabilizable η n (0 : Site d) := by
-    intro η hlow hhigh hrob n hn
-    sorry
-  -- (2) finite-sink stabilization: a non-stabilizable pile bounded by `2d-1`
-  -- off the origin eventually lights up any fixed finite set.
-  have hpodo : ∀ η : Site d → ℤ, (∀ x, 2 * (d : ℤ) - 2 ≤ η x) →
-      (∀ x, η x ≤ 2 * (d : ℤ) - 1) → ¬ Robust η →
-        (penultimateCluster η (0 : Site d)).Finite →
-          ∃ t0 : ℕ, ∀ x ∈ penultimateCluster η (0 : Site d),
-            1 ≤ podo (explodingPile η) t0 x := by
-    intro η hlow hhigh hnr hfin
-    sorry
-  -- (3) `eq:approx1`'s reach: the last wave covers the finite set `P̃` at one
-  -- common time.
-  have hlastreach : ∀ η : Site d → ℤ, (∀ x, 2 * (d : ℤ) - 2 ≤ η x) →
-      (∀ x, η x ≤ 2 * (d : ℤ) - 1) →
-        (∃ n : ℕ, 1 ≤ n ∧ ¬ WaveStabilizable η n (0 : Site d)) →
-          ∃ c : ℕ, ∀ x ∈ as_tildeP η, 1 ≤ lastWave η (0 : Site d) c x := by
-    intro η hlow hhigh hlast
-    sorry
-  -- (4) `|P̃| < ∞`.
-  have htildePfin : ∀ η : Site d → ℤ, (as_tildeP η).Finite := by
-    intro η
-    sorry
-  -- (5) `eq:induction_specialcase2`, the first conjunct of the paper's
-  -- three simultaneous Step-1 inductions.
-  have hspecial : ∀ η : Site d → ℤ, (∀ x, 2 * (d : ℤ) - 2 ≤ η x) →
-      (∀ x, η x ≤ 2 * (d : ℤ) - 1) →
-        ∀ t : ℕ, ∀ x : Site d, 0 < as_wOdo η t x → 0 < as_tildeW η t x := by
-    intro η hlow hhigh t x hx
+  -- The five open claims isolated by the decomposition: (1) robustness forbids
+  -- a non-stabilizable centred wave; (2) finite-sink stabilization, a
+  -- non-stabilizable pile bounded by `2d-1` off the origin eventually lights up
+  -- any fixed finite set; (3) `eq:approx1`'s reach, the last wave covers `P̃` at
+  -- one common time; (4) `|P̃| < ∞` (stated for every `η`: to be checked); (5)
+  -- `eq:induction_specialcase2`, the first of the paper's three Step-1
+  -- inductions.
+  obtain ⟨hrobust, hpodo, hlastreach, htildePfin, hspecial⟩ :
+      (∀ η : Site d → ℤ, (∀ x, 2 * (d : ℤ) - 2 ≤ η x) →
+        (∀ x, η x ≤ 2 * (d : ℤ) - 1) → Robust η →
+          ∀ n : ℕ, 1 ≤ n → WaveStabilizable η n (0 : Site d)) ∧
+      (∀ η : Site d → ℤ, (∀ x, 2 * (d : ℤ) - 2 ≤ η x) →
+        (∀ x, η x ≤ 2 * (d : ℤ) - 1) → ¬ Robust η →
+          (penultimateCluster η (0 : Site d)).Finite →
+            ∃ t0 : ℕ, ∀ x ∈ penultimateCluster η (0 : Site d),
+              1 ≤ podo (explodingPile η) t0 x) ∧
+      (∀ η : Site d → ℤ, (∀ x, 2 * (d : ℤ) - 2 ≤ η x) →
+        (∀ x, η x ≤ 2 * (d : ℤ) - 1) →
+          (∃ n : ℕ, 1 ≤ n ∧ ¬ WaveStabilizable η n (0 : Site d)) →
+            ∃ c : ℕ, ∀ x ∈ as_tildeP η, 1 ≤ lastWave η (0 : Site d) c x) ∧
+      (∀ η : Site d → ℤ, (as_tildeP η).Finite) ∧
+      (∀ η : Site d → ℤ, (∀ x, 2 * (d : ℤ) - 2 ≤ η x) →
+        (∀ x, η x ≤ 2 * (d : ℤ) - 1) →
+          ∀ t : ℕ, ∀ x : Site d, 0 < as_wOdo η t x → 0 < as_tildeW η t x) := by
     sorry
   exact as_approximate_subadditive_of_gaps d hd p hp hp1 hLSSB hHole hChem
     hrobust hpodo hlastreach htildePfin hspecial

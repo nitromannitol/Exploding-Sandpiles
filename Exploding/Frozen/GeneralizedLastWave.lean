@@ -3,6 +3,7 @@ Proposition 5.1 of the paper: convergence of the last-wave under the general
 hypotheses.
 -/
 import Exploding.Support.Hypotheses
+import Exploding.Support.GLWProofAux
 import Exploding.External.LiggettSchonmannStacey
 import Exploding.External.LiggettSchonmannStaceyBoundedDegree
 import Exploding.External.MathieuHoles
@@ -51,4 +52,15 @@ theorem Exploding.Frozen.convergence_of_the_generalized_last_wave (d : ℕ) (hd 
               |((lastArrival η (0 : Site d) (nearestSite ((n : ℝ) • y))).toNat : ℝ) / (n : ℝ)
                 - N y| ≤ ε
 -- FROZEN-STATEMENT-END
-:= by sorry
+:= by
+  classical
+  obtain ⟨_hkd, _hmix, hsec3⟩ :
+      (∀ (k : Fin d → ℕ), (∀ i, 0 < k i) →
+        ∃ m : ℕ, KDependent m (P.map fun η (j : Site d) => decide (StronglyBoxCrossed η k j))) ∧
+      (∀ (y : Site d), y ≠ 0 → ∀ (s : Finset (Site d)) (S : Set (s → ℤ)), MeasurableSet S →
+        ∃ n : ℕ, P (cylinder s S ∩
+          (fun η : Site d → ℤ => fun z => η (y + z))^[n] ⁻¹' cylinder s S) =
+          P (cylinder s S) * P (cylinder s S)) ∧
+      glw_Section3Open d hd ηmin hηmin L hL P := by
+    sorry
+  exact glw_reduce d hd ηmin hηmin L hL P hP hsupp hstat herg h1 h3 h4 hLSS hLSSB hHole hChem hsec3

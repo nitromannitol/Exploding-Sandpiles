@@ -70,10 +70,10 @@ No comparator challenge exists yet; see [`Audit/README.md`](Audit/README.md).
 |---|---|---|---|
 | `thm-limit-shape` | [Exploding.Frozen.limit_shape](Exploding/Frozen/LimitShape.lean#L30) | exploding.tex:246-254 (label theorem:limit_shape) | CONDITIONAL |
 | `thm-time-constant` | [Exploding.Frozen.convergence_of_time_constant](Exploding/Frozen/TimeConstant.lean#L33) | exploding.tex:259-262 (label theorem:convergence_of_time_constant) | CONDITIONAL |
-| `thm-explosive` | [Exploding.Frozen.explosive](Exploding/Frozen/Explosive.lean#L22) | exploding.tex:265-268 (label theorem:explosive) | DRAFT_SORRY |
+| `thm-explosive` | [Exploding.Frozen.explosive](Exploding/Frozen/Explosive.lean#L28) | exploding.tex:265-268 (label theorem:explosive) | CONDITIONAL |
 | `prop-renormalization` | [Exploding.Frozen.renormalization_properties](Exploding/Frozen/Renormalization.lean#L35) | exploding.tex:482-497 (label prop:renormalization_properties) | DRAFT_SORRY |
 | `lem-square-lower-bound` | [Exploding.Frozen.square_lower_bound](Exploding/Frozen/SquareLowerBound.lean#L22) | exploding.tex:705-707 (label lemma:square_lower_bound) | SEALED |
-| `lem-penultimate-cluster` | [Exploding.Frozen.last_penultimate_cluster](Exploding/Frozen/PenultimateCluster.lean#L29) | exploding.tex:792-798 (label lemma:last_penultimate_cluster) | DRAFT_SORRY |
+| `lem-penultimate-cluster` | [Exploding.Frozen.last_penultimate_cluster](Exploding/Frozen/PenultimateCluster.lean#L30) | exploding.tex:792-798 (label lemma:last_penultimate_cluster) | CONDITIONAL |
 | `lem-penultimate-upper-bound` | [Exploding.Frozen.penultimate_upper_bound](Exploding/Frozen/PenultimateUpperBound.lean#L27) | exploding.tex:807-812 (label lemma:penultimate_upper_bound) | DRAFT_SORRY |
 | `lem-penultimate-close` | [Exploding.Frozen.last_penultimate_close](Exploding/Frozen/PenultimateClose.lean#L30) | exploding.tex:832-837 (label lemma:last_penultimate_close) | DRAFT_SORRY |
 | `prop-last-wave-convergence` | [Exploding.Frozen.convergence_of_the_last_wave](Exploding/Frozen/LastWaveConvergence.lean#L28) | exploding.tex:846-852 (label prop:convergence_of_the_last_wave) | DRAFT_SORRY |

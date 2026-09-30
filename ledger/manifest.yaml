@@ -45,7 +45,7 @@ nodes:
     source: exploding.tex:265-268 (label theorem:explosive)
     file: Exploding/Frozen/Explosive.lean
     export: Exploding.Frozen.explosive
-    state: DRAFT_SORRY
+    state: CONDITIONAL
     frozen_sha256: 8132c02216ac6b502b1b4e6bb898ead2d8aaeea4a7b9da2795b1f83af4b403ed
     provider: Exploding.Frozen.explosive
     approved: "2026-09-24"
@@ -78,7 +78,7 @@ nodes:
     source: exploding.tex:792-798 (label lemma:last_penultimate_cluster)
     file: Exploding/Frozen/PenultimateCluster.lean
     export: Exploding.Frozen.last_penultimate_cluster
-    state: DRAFT_SORRY
+    state: CONDITIONAL
     frozen_sha256: 3cfbfa23e89ec1c52bed2c12a4a6be62d2cd17bb135b6f9438498d8f244d8544
     provider: Exploding.Frozen.last_penultimate_cluster
     approved: "2026-09-24"

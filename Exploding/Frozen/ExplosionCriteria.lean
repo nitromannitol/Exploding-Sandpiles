@@ -2,6 +2,7 @@
 Proposition 7.1 of the paper: a criterion for a background law to be explosive.
 -/
 import Exploding.Support.Hypotheses
+import Exploding.Support.ECProofMain
 
 open Exploding LatticeProb MeasureTheory
 
@@ -23,4 +24,9 @@ theorem Exploding.Frozen.explosion_criteria (d : ℕ) (hd : 2 ≤ d) (ηmin : �
     (hrec : RecurrentLaw d P) :
     ExplosiveLaw d P
 -- FROZEN-STATEMENT-END
-:= by sorry
+:= by
+  have _unused := And.intro hL (And.intro hstat (And.intro herg hrec))
+  have hsupp' : ∀ᵐ η ∂P, ∀ x, 0 ≤ η x ∧ η x ≤ 2 * (d : ℤ) - 1 := by
+    filter_upwards [hsupp] with η hη x
+    exact ⟨le_trans hηmin (hη x).1, (hη x).2⟩
+  exact ec_explosive_ae hd P hP hsupp' h1 h2

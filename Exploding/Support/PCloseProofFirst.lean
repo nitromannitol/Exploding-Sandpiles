@@ -45,7 +45,7 @@ theorem pclose_update_add_smul (x : Site d) (i : Fin d) (u r : ℤ) :
   rw [Pi.add_apply]
   by_cases hl : l = i
   · subst hl; simp [unit]
-  · simp [unit, hl, Function.update_of_ne hl]
+  · simp [unit, hl]
 
 set_option maxHeartbeats 1000000 in
 /-- **The first fired good cube.**  If the wave is positive at `x` at time `t`, and `x`
@@ -72,7 +72,7 @@ theorem pclose_first_cube (hd : 2 ≤ d) (η : Site d → ℤ)
   have hS1 : 1 ≤ k * (Z + 2) := Nat.mul_pos (by omega) (by omega)
   -- the path from the centre to `x`
   obtain ⟨m, z, hz0, hzm, hadj, hinj, hpos⟩ :=
-    pclose_path_extract η hη0 hhigh hd0 N hN t x hx
+    pclose_path_extract η hη0 hhigh hd0 N t x hx
   have hmx : mnorm x ≤ (m : ℤ) := by
     have := pclose_mnorm_le_of_path m z hz0 hadj
     rwa [hzm] at this

@@ -151,8 +151,7 @@ theorem pclose_adj_line (hd : 2 ≤ d) (k : ℕ) (hk : 1 ≤ k) (i j : Site d)
         by_cases hl : l = dir
         · subst hl; simp [unit]
         · simp [unit, hl]
-    · intro w hw
-      intro l
+    · intro w hw l
       have hwl : w l = if l = dir' then w l else (if l = dir then (k : ℤ) + 1 else 1) := by
         by_cases hl : l = dir'
         · simp [hl]
@@ -196,8 +195,7 @@ theorem pclose_adj_line (hd : 2 ≤ d) (k : ℕ) (hk : 1 ≤ k) (i j : Site d)
         by_cases hl : l = dir
         · subst hl; simp [unit]
         · simp [unit, hl]
-    · intro w hw
-      intro l
+    · intro w hw l
       have hcoord : (w + (k : ℤ) • j - (k : ℤ) • i) l = w l + (k : ℤ) * (j l - i l) := by
         simp only [Pi.add_apply, Pi.sub_apply, Pi.smul_apply, smul_eq_mul]; ring
       rw [hcoord]

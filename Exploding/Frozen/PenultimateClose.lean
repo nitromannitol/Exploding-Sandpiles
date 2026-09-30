@@ -5,6 +5,7 @@ polylogarithmically close.
 import Exploding.Support.Vocab
 import Exploding.Support.Wave
 import Exploding.Support.SubPub
+import Exploding.Support.PCloseProofFinal
 import Exploding.Frozen.PenultimateUpperBound
 import Exploding.External.LiggettSchonmannStaceyBoundedDegree
 import Exploding.External.MathieuHoles
@@ -38,15 +39,9 @@ theorem Exploding.Frozen.last_penultimate_close (d : ℕ) (hd : 2 ≤ d) (p : �
             clusterArrival η (0 : Site d) x = (b : ℕ∞) ∧ (b : ℝ) ≤ (a : ℝ) + Real.log n ^ γ
 -- FROZEN-STATEMENT-END
 := by
-  obtain ⟨γ, C, hγ, hC, hbound⟩ :=
-    Exploding.Frozen.penultimate_upper_bound d hd p hp hp1 hLSSB hHole hChem
+  obtain ⟨γ, hγ, hcore⟩ := pclose_second d hd p hp hp1 hLSSB hHole hChem
   refine ⟨γ, hγ, ?_⟩
-  filter_upwards [hbound] with η hη
+  filter_upwards [hcore] with η hη
   obtain ⟨n0, hn0⟩ := hη
-  refine ⟨n0, fun n hn x hx => ?_⟩
-  obtain ⟨m, hm_eq, hm_le⟩ := hn0 n hn x hx
-  refine ⟨lastArrival_le_clusterArrival η (0 : Site d) x, ?_⟩
-  -- The second inequality needs the support-growth step: the last wave's support
-  -- grows by at least one site per step, so `T̃(x) ≤ T̂(x) + |P(x)|`, and the
-  -- penultimate cluster's size is polylogarithmic by `last_penultimate_cluster`.
-  sorry
+  exact ⟨n0, fun n hn x hx =>
+    ⟨lastArrival_le_clusterArrival η (0 : Site d) x, hn0 n hn x hx⟩⟩

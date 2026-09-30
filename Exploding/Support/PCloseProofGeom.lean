@@ -156,9 +156,9 @@ theorem pclose_path_tail_ncard (m : ℕ) (z : ℕ → Site d)
     intro i hi j hj hij
     have := hinj (m - L + i) (m - L + j) (by simp at hi; omega) (by simp at hj; omega) hij
     omega
-  rw [Set.ncard_image_of_injOn hinjOn]
+  rw [hinjOn.ncard_image]
   have : {j : ℕ | j ≤ L} = ↑(Finset.range (L + 1)) := by
-    ext j; simp [Nat.lt_succ_iff]
+    ext j; simp
   rw [this, Set.ncard_coe_finset, Finset.card_range]
 
 end Exploding

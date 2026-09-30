@@ -27,7 +27,7 @@ pairwise distinct sites, all positive at time `s`: a site outside the support
 at time `s - 1` has a positive neighbour there, because `η ≤ 2d - 1`. -/
 theorem pclose_path_extract (η : Site d → ℤ) (hlow : ∀ y, 0 ≤ η y)
     (hhigh : ∀ y, η y ≤ 2 * (d : ℤ) - 1) (hd0 : (0 : ℤ) < 2 * (d : ℤ))
-    (N : ℕ) (hN : 1 ≤ N) :
+    (N : ℕ) :
     ∀ s : ℕ, ∀ y : Site d, 0 < wave η N 0 s y →
       ∃ (m : ℕ) (z : ℕ → Site d), z 0 = 0 ∧ z m = y ∧
         (∀ i, i < m → (lattice d).Adj (z i) (z (i + 1))) ∧
@@ -76,7 +76,7 @@ theorem pclose_path_extract (η : Site d → ℤ) (hlow : ∀ y, 0 ≤ η y)
         · have him' : i = m := by omega
           subst him'
           simp only [le_refl, if_true, Nat.lt_irrefl, Nat.succ_le_iff]
-          simp only [show ¬ (i + 1 ≤ i) from by omega, if_false]
+          simp only [if_false]
           rw [hm]
           exact hadj'
       · intro i j hi hj hij
@@ -107,7 +107,7 @@ theorem pclose_mnorm_unit (l : Fin d) : mnorm (unit l : Site d) = 1 := by
   unfold mnorm
   have h : ∀ j : Fin d, |(unit l : Site d) j| = if j = l then 1 else 0 := by
     intro j
-    by_cases hj : j = l <;> simp [unit, Pi.single_apply, hj]
+    by_cases hj : j = l <;> simp [unit, hj]
   simp [h]
 
 /-- The triangle inequality for the Manhattan norm. -/

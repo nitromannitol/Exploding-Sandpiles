@@ -211,7 +211,9 @@ theorem pclose_corner_path (k : ℕ) (hk : 1 ≤ k) (c : ℕ → Site d) :
               · exact hdir
             simp only [σ, hδ, pcloseCorner, Pi.sub_apply, Pi.add_apply, Pi.smul_apply,
               smul_eq_mul, Pi.neg_apply, unit, Pi.single_apply, hc1]
-            by_cases hl : l = dir <;> simp [hl] <;> ring
+            by_cases hl : l = dir
+            · simp [hl]; ring
+            · simp [hl]
           rw [hc]
           by_cases hl : l = dir
           · simp only [hl, if_true]

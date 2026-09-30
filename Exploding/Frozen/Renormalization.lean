@@ -6,6 +6,7 @@ import Exploding.Support.Vocab
 import Exploding.External.LiggettSchonmannStaceyBoundedDegree
 import Exploding.External.MathieuHoles
 import Exploding.External.AntalPisztora
+import Exploding.Support.RNProofGood
 
 open Exploding LatticeProb MeasureTheory
 
@@ -48,4 +49,7 @@ theorem Exploding.Frozen.renormalization_properties (d : ℕ) (hd : 2 ≤ d) (p 
               ∃ m : ℕ, chemDist Cinf x y = (m : ℕ∞) ∧
                 c * (mnorm (x - y) : ℝ) ≤ (m : ℝ) ∧ (m : ℝ) ≤ C * (mnorm (x - y) : ℝ))
 -- FROZEN-STATEMENT-END
-:= by sorry
+:= by
+  have hPE : ∃ qP : ℝ, 0 ≤ qP ∧ qP < 1 ∧ ∀ q : ℝ, qP ≤ q → q ≤ 1 → bondTheta d q ≠ 0 := by
+    sorry
+  exact rn_renormalization hLSSB hHole hChem d hd p hp hp1 hPE

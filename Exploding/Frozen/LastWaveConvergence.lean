@@ -4,6 +4,7 @@ Proposition 3.1 of the paper: the rescaled last-wave arrival times converge.
 import Exploding.Support.Vocab
 import Exploding.Support.LWCProof
 import Exploding.Support.LWCProof2
+import Exploding.Support.LWCProof3
 import Exploding.External.LiggettSchonmannStaceyBoundedDegree
 import Exploding.External.MathieuHoles
 import Exploding.External.AntalPisztora
@@ -42,12 +43,11 @@ theorem Exploding.Frozen.convergence_of_the_last_wave (d : ℕ) (hd : 2 ≤ d) (
                 - N y| ≤ ε
 -- FROZEN-STATEMENT-END
 := by
-  -- The one open conjunction (gate rule 11).  It separates the three genuinely open pieces
-  -- of Proposition 3.1: the moment-free Kingman step producing the limit shape `N`, the
-  -- general real-analysis upgrade from lattice directions to locally uniform convergence
-  -- (its rational-direction half is proved in `Exploding.Support.LWCProof2`), and the far
-  -- bound of `eq:lastwave_lipschitz`.  The transfer to the last wave is proved below.
-  obtain ⟨hking, hupgrade, hlip⟩ :
+  -- The one open conjunction (gate rule 11): the moment-free Kingman step producing the
+  -- limit shape `N`, and the far bound of `eq:lastwave_lipschitz`.  The real-analysis
+  -- upgrade from lattice directions to locally uniform convergence is proved in
+  -- `Exploding.Support.LWCProof3`, and the transfer to the last wave is proved below.
+  obtain ⟨hking, hlip⟩ :
       (∃ N : (Fin d → ℝ) → ℝ,
         Continuous N ∧ ConvexOn ℝ Set.univ N ∧
         (∀ (c : ℝ), 0 ≤ c → ∀ y : Fin d → ℝ, N (c • y) = c * N y) ∧
@@ -57,18 +57,6 @@ theorem Exploding.Frozen.convergence_of_the_last_wave (d : ℕ) (hd : 2 ≤ d) (
             Tendsto (fun n : ℕ =>
                 ((clusterArrival η (0 : Site d) ((n : ℤ) • v)).toNat : ℝ) / (n : ℝ))
               atTop (nhds (N (lwc2_toReal v))))
-      ∧
-      (∀ (f : Site d → ℝ) (N : (Fin d → ℝ) → ℝ), 0 < d →
-        Continuous N →
-        (∀ (c : ℝ), 0 ≤ c → ∀ y : Fin d → ℝ, N (c • y) = c * N y) →
-        (∀ v : Site d, Tendsto (fun n : ℕ => f ((n : ℤ) • v) / (n : ℝ)) atTop
-            (nhds (N (lwc2_toReal v)))) →
-        (∃ C γ : ℝ, 0 < C ∧ 0 < γ ∧ ∃ n0 : ℕ, ∀ n : ℕ, n0 ≤ n →
-            ∀ x x' : Site d, x ∈ cent d n → x' ∈ cent d n →
-              |f x - f x'| ≤ C * (mnorm (x - x') : ℝ) + Real.log n ^ γ) →
-        ∀ K : Set (Fin d → ℝ), IsCompact K → ∀ ε : ℝ, 0 < ε →
-          ∀ᶠ n : ℕ in atTop, ∀ y ∈ K,
-            |f (nearestSite ((n : ℝ) • y)) / (n : ℝ) - N y| ≤ ε)
       ∧
       (∀ᵐ η ∂(toyLaw d p), ∃ C γ : ℝ, 0 < C ∧ 0 < γ ∧ ∃ n0 : ℕ, ∀ n : ℕ, n0 ≤ n →
         ∀ x x' : Site d, x ∈ cent d n → x' ∈ cent d n →
@@ -80,6 +68,8 @@ theorem Exploding.Frozen.convergence_of_the_last_wave (d : ℕ) (hd : 2 ≤ d) (
   refine ⟨N, hcont, hconvex, hhom, ?_⟩
   apply lwc_transfer d hd p hp hp1 hLSSB hHole hChem N
   filter_upwards [hking_ae, hlip] with η hk hl
+  obtain ⟨C, γ, hC, hγ, hrest⟩ := hl
+  obtain ⟨n0, hn0⟩ := hrest
   exact ⟨hk.1, fun K hK ε hε =>
-    hupgrade (fun x => ((clusterArrival η (0 : Site d) x).toNat : ℝ)) N (by omega)
-      hcont hhom hk.2 hl K hK ε hε⟩
+    lwc3_lattice_upgrade (fun x => ((clusterArrival η (0 : Site d) x).toNat : ℝ)) N (by omega)
+      hcont hhom hk.2 C γ hC hγ ⟨n0, hn0⟩ K hK ε hε⟩

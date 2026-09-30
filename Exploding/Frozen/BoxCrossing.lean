@@ -4,6 +4,7 @@ a positive density of `(2d-1)`-sites is box-crossing.
 -/
 import Exploding.Support.Hypotheses
 import Exploding.External.Schonmann
+import Exploding.Support.BCProofMain
 
 open Exploding LatticeProb MeasureTheory
 
@@ -23,4 +24,5 @@ theorem Exploding.Frozen.box_crossing (d : ℕ) (hd : 2 ≤ d) (ν : Measure ℤ
     (hSch : Exploding.External.SchonmannBootstrap) :
     BoxCrossingHyp d (Measure.infinitePi fun _ : Site d => ν)
 -- FROZEN-STATEMENT-END
-:= by sorry
+:= by
+  exact bc_box_crossing d hd ν hν hlow hhit hSch

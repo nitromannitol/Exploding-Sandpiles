@@ -2,6 +2,7 @@
 Theorem 6.1 of the paper: explosive backgrounds without a limit shape.
 -/
 import Exploding.Support.Vocab
+import Exploding.Support.CEProof
 import Exploding.External.FeyMeesterRedig
 
 open Exploding LatticeProb Filter
@@ -31,4 +32,24 @@ theorem Exploding.Frozen.counterexample (d : ℕ) (hd : 2 ≤ d)
       3 / 2 ≤ limsup (fun n : ℕ => ((arrival η ((n : ℤ) • e1 d)).toNat : ℝ) / (n : ℝ)) atTop ∧
       liminf (fun n : ℕ => ((arrival η ((n : ℤ) • e1 d)).toNat : ℝ) / (n : ℝ)) atTop = 1
 -- FROZEN-STATEMENT-END
-:= by sorry
+:= by
+  -- Step 3-4 on the reflected cylinder: the slow front bound `12n` at
+  -- `(3+8n)e₁`, reduced to 2D by `ce_stack_le_2D`.
+  have hSlow2D : ∀ n : ℕ, ∃ m : ℕ,
+      arrival (ceEta 2) (((3 + 8 * n : ℕ) : ℤ) • e1 2) = (m : ℕ∞) ∧ 12 * n ≤ m := by
+    sorry
+  -- The low-type row-0 points `n ≡ 0, 3 (mod 4)` are reached by the pulsating
+  -- front (the high-type points are reached by `aux_ce_row0_lands`).
+  have hLow : ∀ n : ℕ, n % 4 = 0 ∨ n % 4 = 3 →
+      arrival (ceEta d) ((n : ℤ) • e1 d) ≠ ⊤ := by
+    sorry
+  -- Eventual linear upper bound on `T(n)`, making `Filter.limsup`'s defining
+  -- `sInf` nonempty; the same front analysis gives it.
+  have hBdd : ∃ C : ℝ, ∀ᶠ n : ℕ in atTop,
+      ((arrival (ceEta d) ((n : ℤ) • e1 d)).toNat : ℝ) / (n : ℝ) ≤ C := by
+    sorry
+  have hFin : ∀ n : ℕ, arrival (ceEta d) ((n : ℤ) • e1 d) ≠ ⊤ :=
+    ce_arrival_finite_of_low d hd hLow
+  refine ⟨ceEta d, ce_explosive d hd, ce_not_ge d hd, hFin, ?_, ?_⟩
+  · exact ce_limsup d hd (ce_slow d hd hSlow2D hFin) hBdd
+  · exact ce_liminf d hd hFin

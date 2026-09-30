@@ -68,7 +68,7 @@ No comparator challenge exists yet; see [`Audit/README.md`](Audit/README.md).
 
 | id | Lean | paper | state |
 |---|---|---|---|
-| `thm-limit-shape` | [Exploding.Frozen.limit_shape](Exploding/Frozen/LimitShape.lean#L29) | exploding.tex:246-254 (label theorem:limit_shape) | DRAFT_SORRY |
+| `thm-limit-shape` | [Exploding.Frozen.limit_shape](Exploding/Frozen/LimitShape.lean#L30) | exploding.tex:246-254 (label theorem:limit_shape) | CONDITIONAL |
 | `thm-time-constant` | [Exploding.Frozen.convergence_of_time_constant](Exploding/Frozen/TimeConstant.lean#L33) | exploding.tex:259-262 (label theorem:convergence_of_time_constant) | CONDITIONAL |
 | `thm-explosive` | [Exploding.Frozen.explosive](Exploding/Frozen/Explosive.lean#L22) | exploding.tex:265-268 (label theorem:explosive) | DRAFT_SORRY |
 | `prop-renormalization` | [Exploding.Frozen.renormalization_properties](Exploding/Frozen/Renormalization.lean#L35) | exploding.tex:482-497 (label prop:renormalization_properties) | DRAFT_SORRY |

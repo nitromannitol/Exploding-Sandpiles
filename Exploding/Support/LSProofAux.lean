@@ -236,7 +236,7 @@ theorem ls_toNat_lt_of_podo_zero (η : Site d → ℤ) (x : Site d) (n : ℕ)
     (hexp : arrival η x ≠ ⊤) (h : podo (explodingPile η) n x = 0) :
     n < (arrival η x).toNat := by
   by_contra hlt
-  push_neg at hlt
+  push Not at hlt
   obtain ⟨m, hm⟩ := ENat.ne_top_iff_exists.mp hexp
   have hpos := ls_arrival_attained η x m hm.symm
   have hmt : (arrival η x).toNat = m := by rw [← hm]; exact ENat.toNat_coe m
@@ -368,7 +368,7 @@ theorem ls_N_zero (d : ℕ) (N : (Fin d → ℝ) → ℝ)
 theorem ls_B_domain (N : (Fin d → ℝ) → ℝ) (hcont : Continuous N)
     (hconv : ConvexOn ℝ Set.univ N)
     (hhom : ∀ c : ℝ, 0 ≤ c → ∀ y : Fin d → ℝ, N (c • y) = c * N y)
-    (hlb : ∀ y : Fin d → ℝ, ∑ i, |y i| ≤ N y) :
+    (_hlb : ∀ y : Fin d → ℝ, ∑ i, |y i| ≤ N y) :
     Convex ℝ {y : Fin d → ℝ | N y < 1} ∧ IsOpen {y : Fin d → ℝ | N y < 1} ∧
       {y : Fin d → ℝ | N y < 1}.Nonempty ∧
       volume (frontier {y : Fin d → ℝ | N y < 1}) = 0 := by
@@ -836,7 +836,7 @@ theorem ls_shell_sandwich_tendsto (η : Site d → ℤ) (N : (Fin d → ℝ) →
       _ ≤ δ := ENNReal.half_le_self
 
 theorem ls_measure_convergence (η : Site d → ℤ) (N : (Fin d → ℝ) → ℝ)
-    (hexp : ∀ x : Site d, arrival η x ≠ ⊤)
+    (_hexp : ∀ x : Site d, arrival η x ≠ ⊤)
     (hlb : ∀ y : Fin d → ℝ, ∑ i, |y i| ≤ N y)
     (hshell : ∀ K : Set (Fin d → ℝ), IsCompact K → ∀ ε : ℝ, 0 < ε →
       ∀ᶠ t : ℕ in atTop,
@@ -893,7 +893,7 @@ one, by `aux_te_recurrent_law`'s docstring in `thm-explosive-dec`); combine
 `∀ x, ∀ᵐ η, η x ≤ 2d-1` (one instance of `ls_chipLaw_up` per `x`, read
 through the marginal) into `∀ᵐ η, ∀ x, η x ≤ 2d-1` via
 `MeasureTheory.ae_all_iff` (valid since `Site d` is countable). -/
-theorem ls_toyLaw_upper_ae (d : ℕ) (hd : 2 ≤ d) (p : ℝ) (hp : 0 < p) (hp1 : p < 1) :
+theorem ls_toyLaw_upper_ae (d : ℕ) (_hd : 2 ≤ d) (p : ℝ) (hp : 0 < p) (hp1 : p < 1) :
     ∀ᵐ η ∂(toyLaw d p), ∀ x : Site d, η x ≤ 2 * (d : ℤ) - 1 := by
   have hp0 : 0 ≤ p := by linarith
   have hp1' : p ≤ 1 := by linarith
@@ -915,7 +915,7 @@ theorem ls_toyLaw_upper_ae (d : ℕ) (hd : 2 ≤ d) (p : ℝ) (hp : 0 < p) (hp1 
       simpa [toyLaw, productLaw] using MeasureTheory.Measure.infinitePi_map_eval (μ := fun _ : Site d => chipLaw (2 * (d : ℤ) - 1) (2 * (d : ℤ) - 2) p) (i := x)
     have h_ae_chip : ∀ᵐ v ∂(chipLaw (2 * (d : ℤ) - 1) (2 * (d : ℤ) - 2) p), v ≤ 2 * (d : ℤ) - 1 := by
       rw [MeasureTheory.ae_iff]
-      simpa [chipLaw] using h_chip x
+      simp [chipLaw]
     have h_aemeas : AEMeasurable (fun (η : Site d → ℤ) => η x) (toyLaw d p) :=
       (measurable_pi_apply x).aemeasurable
     have h_meas : MeasurableSet {v : ℤ | v ≤ 2 * (d : ℤ) - 1} := measurableSet_Iic

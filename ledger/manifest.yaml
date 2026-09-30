@@ -45,7 +45,7 @@ nodes:
     source: exploding.tex:265-268 (label theorem:explosive)
     file: Exploding/Frozen/Explosive.lean
     export: Exploding.Frozen.explosive
-    state: CONDITIONAL
+    state: SEALED
     frozen_sha256: 8132c02216ac6b502b1b4e6bb898ead2d8aaeea4a7b9da2795b1f83af4b403ed
     provider: Exploding.Frozen.explosive
     approved: "2026-09-24"
@@ -166,7 +166,7 @@ nodes:
     source: exploding.tex:1821-1825 (label prop:explosion_criteria)
     file: Exploding/Frozen/ExplosionCriteria.lean
     export: Exploding.Frozen.explosion_criteria
-    state: DRAFT_SORRY
+    state: SEALED
     frozen_sha256: 1346c0fe8b765d135baa9ad2b1a81e233decd87ad277bc353504f7b721b270ca
     provider: Exploding.Frozen.explosion_criteria
     approved: "2026-09-24"

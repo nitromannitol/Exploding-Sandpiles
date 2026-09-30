@@ -50,17 +50,6 @@ nodes:
     provider: Exploding.Frozen.explosive
     approved: "2026-09-24"
 
-  - id: prop-crossing-time
-    version: 2
-    kind: theorem
-    source: exploding.tex:416-422 (label prop:crossing_time)
-    file: Exploding/Frozen/CrossingTime.lean
-    export: Exploding.Frozen.crossing_time
-    state: DRAFT_SORRY
-    frozen_sha256: 86d88877abf5e6e1dc37f9bf5e1a1552bb04588de3fa050596b1faf4fb3d5e38
-    provider: Exploding.Frozen.crossing_time
-    approved: "2026-09-10"
-
   - id: prop-renormalization
     version: 4
     kind: theorem
@@ -331,8 +320,19 @@ nodes:
     source: exploding.tex:720-722 (label lemma:finite_exploding)
     file: Exploding/Frozen/FiniteExploding.lean
     export: Exploding.Frozen.finite_exploding
-    state: SEALED
+    state: CONDITIONAL
     frozen_sha256: 2bdfdb526cdb4146e9765019df878274f2d3d49991244591748bbce579ac9772
     provider: Exploding.Frozen.finite_exploding
     approved: "2026-09-28"
+
+  - id: prop-crossing-time
+    version: 3
+    kind: theorem
+    source: exploding.tex:416-422 (label prop:crossing_time)
+    file: Exploding/Frozen/CrossingTime.lean
+    export: Exploding.Frozen.crossing_time
+    state: SEALED
+    frozen_sha256: 86d88877abf5e6e1dc37f9bf5e1a1552bb04588de3fa050596b1faf4fb3d5e38
+    provider: Exploding.Frozen.crossing_time
+    approved: "2026-09-27"
 

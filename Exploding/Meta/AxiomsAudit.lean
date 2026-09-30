@@ -3,7 +3,7 @@ import Exploding.MainTheorems
 /-!
 # Axioms audit
 
-Building this module prints the axiom dependencies of the five proved results restated in
+Building this module prints the axiom dependencies of the six proved results restated in
 `Exploding/MainTheorems.lean`.  Each must report exactly the three standard foundational
 axioms of Mathlib: `propext`, `Classical.choice`, `Quot.sound`.
 
@@ -14,7 +14,7 @@ open ones included.
 
 No `axiom` is declared in this development.  The cited results are stated as propositions
 in `Exploding/External/` and taken as explicit hypotheses by the theorems that use them;
-none of the five theorems below uses any of them (see `ASSUMPTIONS.md`).
+none of the six theorems below uses any of them (see `ASSUMPTIONS.md`).
 
 This file is not imported by the library root; the report runs when it is built explicitly
 (`lake build Exploding.Meta.AxiomsAudit`).
@@ -25,3 +25,4 @@ This file is not imported by the library root; the report runs when it is built 
 #print axioms Exploding.approx_subadditivity
 #print axioms Exploding.dimensional_reduction
 #print axioms Exploding.recurrence
+#print axioms Exploding.crossing_time

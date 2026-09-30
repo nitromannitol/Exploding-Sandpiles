@@ -3,6 +3,7 @@ Proposition 2.1 of the paper: a large box is crossed quickly with high
 probability.
 -/
 import Exploding.Support.Vocab
+import Exploding.Support.CrossingTimeAux
 
 open Exploding LatticeProb MeasureTheory
 
@@ -20,4 +21,5 @@ theorem Exploding.Frozen.crossing_time (d : ℕ) (hd : 2 ≤ d) (p : ℝ) (hp : 
     (δ : ℝ) (hδ : 0 < δ) :
     ∃ k : ℕ, 1 ≤ k ∧ ENNReal.ofReal (1 - δ) ≤ toyLaw d p {η | GoodCube η k}
 -- FROZEN-STATEMENT-END
-:= by sorry
+:= by
+  exact aux_ct_assemble d hd p hp hp1 δ hδ

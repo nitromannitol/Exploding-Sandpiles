@@ -4,6 +4,7 @@ Lemma 3.5 of the paper: penultimate clusters are polylogarithmically small.
 import Exploding.Support.Vocab
 import Exploding.Support.SubPen
 import Exploding.Support.SubPub
+import Exploding.Support.PCLProof
 import Exploding.Frozen.Renormalization
 import Exploding.External.LiggettSchonmannStaceyBoundedDegree
 import Exploding.External.MathieuHoles
@@ -40,17 +41,17 @@ theorem Exploding.Frozen.last_penultimate_cluster (d : ℕ) (hd : 2 ≤ d) (p : 
     Exploding.Frozen.renormalization_properties d hd p hp hp1 hLSSB hHole hChem
   obtain ⟨c, C, hc, hC, hren⟩ := hk0 (max k0 1) (le_max_left _ _)
   have hk : 1 ≤ max k0 1 := le_max_right _ _
+  -- the threshold depends on the cube size `max k0 1`, which is fixed before `η`
+  obtain ⟨Nk, hNk8, hNkk, hNk1, hNk2⟩ := pcl_thresh_spec (max k0 1)
   filter_upwards [aux_penultimate_bounds d p hp hp1, hren,
     Exploding.finite_exploding_at d hd p hp hp1 hLSSB hHole hChem] with η hb hren' hlast_all
   obtain ⟨Cinf, hCinf, hcomp, hchem⟩ := hren'
   obtain ⟨n0c, hn0c⟩ := hcomp
-  refine ⟨max n0c (max 1 (Nat.ceil (Real.exp 2))), ?_⟩
+  refine ⟨max n0c (max Nk (max 1 (Nat.ceil (Real.exp 2)))), ?_⟩
   intro n hn x hx y hy i
-  -- the threshold gives `log n ≥ 2`
-  have hn0c' : n0c ≤ n := le_trans (le_max_left _ _) hn
-  have hn1 : 1 ≤ n := le_trans (le_trans (le_max_left _ _) (le_max_right _ _)) hn
-  have hne : Nat.ceil (Real.exp 2) ≤ n :=
-    le_trans (le_trans (le_max_right _ _) (le_max_right _ _)) hn
+  -- the threshold gives `log n ≥ 2`, `n0c ≤ n` and `Nk ≤ n`
+  simp only [max_le_iff] at hn
+  obtain ⟨hn0c', hnNk, hn1, hne⟩ := hn
   have hlog2 : 2 ≤ Real.log n := by
     have h1 : Real.exp 2 ≤ (n : ℝ) := by
       have := Nat.le_ceil (Real.exp 2)
@@ -272,54 +273,23 @@ theorem Exploding.Frozen.last_penultimate_cluster (d : ℕ) (hd : 2 ≤ d) (p : 
         · have h5 : (x j - 1) / (max k0 1 : ℤ) ≤ |x j| + 1 := h3.2
           have h6 : |x j| + 1 ≤ (n' : ℤ) := by linarith [hbase' j]
           linarith
-    -- The side bound's inputs: `hlast` from the transfer above, `n0` from `hcomp`,
-    -- and the cube-index exclusion, which holds in the two long cases below.
+    -- The side bound's inputs: `hlast` from the transfer above and `n0` from `hcomp`.
     have hlast : ∃ n : ℕ, 1 ≤ n ∧ ¬ WaveStabilizable η n x := hlast_all x
-    have hn0' : n0c ≤ n' := le_trans hn0c' hn'_ge
-    -- the neighbour's coordinate difference
-    have hd1 : y i ≤ y' i + 1 := by
-      obtain ⟨j, hj | hj⟩ := hy'adj
-      · have h1 : y i = y' i + (unit j) i := by
-          rw [hj]; simp only [Pi.add_apply]
-        have h2 : (unit j) i ≤ 1 := by
-          by_cases h : j = i
-          · subst h; simp [LatticeProb.unit]
-          · simp [LatticeProb.unit, h]
-        omega
-      · have h1 : y i = y' i - (unit j) i := by
-          have h3 := congrFun hj i
-          simp only [Pi.add_apply] at h3
-          omega
-        have h2 : (unit j) i ≥ -1 := by
-          by_cases h : j = i
-          · subst h; simp [LatticeProb.unit]
-          · simp [LatticeProb.unit, h]
-        omega
-    have hd2 : y' i ≤ y i + 1 := by
-      obtain ⟨j, hj | hj⟩ := hy'adj
-      · have h1 : y i = y' i + (unit j) i := by
-          have h3 := congrFun hj i
-          simp only [Pi.add_apply] at h3
-          omega
-        have h2 : (unit j) i ≥ -1 := by
-          by_cases h : j = i
-          · subst h; simp [LatticeProb.unit]
-          · simp [LatticeProb.unit, h]
-        omega
-      · have h1 : y i = y' i - (unit j) i := by
-          have h3 := congrFun hj i
-          simp only [Pi.add_apply] at h3
-          omega
-        have h2 : (unit j) i ≤ 1 := by
-          by_cases h : j = i
-          · subst h; simp [LatticeProb.unit]
-          · simp [LatticeProb.unit, h]
-        omega
-    -- The case split on whether `x`'s own cube index `j0 := (x i - 1)/k` lies in
-    -- the run `[(m0 i - 1)/k + 1, (M0 i - k)/k]` (FINDINGS.md update 38).
-    --   `j0` in the run  -> `aux_penultimate_segment_bound'` applies with `j0`;
-    --                       its `hcov_zc` input is the paper's Step-1 regularity,
-    --                       which is the sibling node's content;
-    --   `j0` not in it   -> `x` is within `k` of an end of the rectangle, so
-    --                       `|y i - x i| ≤ 2k`, absorbed into the threshold.
-    sorry
+    -- the cube size, as a natural number and as an integer
+    have hcastk : ((max k0 1 : ℕ) : ℤ) = (max k0 1 : ℤ) := by push_cast; rfl
+    have hin'' : ∀ v : ℤ, (m0 i - 1) / ((max k0 1 : ℕ) : ℤ) + 1 ≤ v →
+        v ≤ (M0 i - ((max k0 1 : ℕ) : ℤ)) / ((max k0 1 : ℕ) : ℤ) →
+        (fun j => if j = i then v else (x j - 1) / ((max k0 1 : ℕ) : ℤ)) ∈
+          (cent d (n + (M0 i - m0 i).toNat + (max k0 1 : ℕ) + 4) : Set (Site d)) := by
+      rw [hcastk]
+      exact hin'
+    -- the side bound and the length bound: `M0 i - m0 i + 1 ≤ (log n)^(5/2 + 1)`
+    have hfin := pcl_length_final hd η (fun z => (hb z).1) (fun z => (hb z).2) (max k0 1) hk
+      Cinf hCinf x hlast n0c hn0c Nk hNk8 hNkk hNk1 hNk2 n hn0c' hnNk i x (m0 i) (M0 i)
+      (by omega) hin'' hseg
+    -- `y` lies within one step of the rectangle, so `|y i - x i| ≤ M0 i - m0 i + 1`
+    have hc := hcoord i
+    have hcR : ((|y i - x i| : ℤ) : ℝ) ≤ ((M0 i - m0 i : ℤ) : ℝ) + 1 := by
+      have : ((|y i - x i| : ℤ) : ℝ) ≤ (((M0 i - m0 i) + 1 : ℤ) : ℝ) := by exact_mod_cast hc
+      simpa using this
+    linarith

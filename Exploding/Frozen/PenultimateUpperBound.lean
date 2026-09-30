@@ -5,6 +5,7 @@ import Exploding.Support.Vocab
 import Exploding.External.LiggettSchonmannStaceyBoundedDegree
 import Exploding.External.MathieuHoles
 import Exploding.External.AntalPisztora
+import Exploding.Support.PUBProofF
 
 open Exploding LatticeProb MeasureTheory
 
@@ -33,4 +34,4 @@ theorem Exploding.Frozen.penultimate_upper_bound (d : ℕ) (hd : 2 ≤ d) (p : �
         ∃ m : ℕ, lastArrival η (0 : Site d) x = (m : ℕ∞) ∧
           (m : ℝ) ≤ C * (mnorm x : ℝ) + Real.log n ^ γ
 -- FROZEN-STATEMENT-END
-:= by sorry
+:= Exploding.pub_penultimate_upper_bound d hd p hp hp1 hLSSB hHole hChem

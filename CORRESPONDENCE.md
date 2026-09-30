@@ -76,7 +76,7 @@ No comparator challenge exists yet; see [`Audit/README.md`](Audit/README.md).
 | `lem-penultimate-cluster` | [Exploding.Frozen.last_penultimate_cluster](Exploding/Frozen/PenultimateCluster.lean#L29) | exploding.tex:792-798 (label lemma:last_penultimate_cluster) | DRAFT_SORRY |
 | `lem-penultimate-upper-bound` | [Exploding.Frozen.penultimate_upper_bound](Exploding/Frozen/PenultimateUpperBound.lean#L27) | exploding.tex:807-812 (label lemma:penultimate_upper_bound) | DRAFT_SORRY |
 | `lem-penultimate-close` | [Exploding.Frozen.last_penultimate_close](Exploding/Frozen/PenultimateClose.lean#L30) | exploding.tex:832-837 (label lemma:last_penultimate_close) | DRAFT_SORRY |
-| `prop-last-wave-convergence` | [Exploding.Frozen.convergence_of_the_last_wave](Exploding/Frozen/LastWaveConvergence.lean#L27) | exploding.tex:846-852 (label prop:convergence_of_the_last_wave) | DRAFT_SORRY |
+| `prop-last-wave-convergence` | [Exploding.Frozen.convergence_of_the_last_wave](Exploding/Frozen/LastWaveConvergence.lean#L28) | exploding.tex:846-852 (label prop:convergence_of_the_last_wave) | DRAFT_SORRY |
 | `prop-approximate-subadditive` | [Exploding.Frozen.approximate_subadditive](Exploding/Frozen/ApproximateSubadditive.lean#L29) | exploding.tex:886-898 (label prop:approximate_subadditive) | DRAFT_SORRY |
 | `prop-generalized-last-wave` | [Exploding.Frozen.convergence_of_the_generalized_last_wave](Exploding/Frozen/GeneralizedLastWave.lean#L32) | exploding.tex:1203-1207 (label prop:convergence_of_the_generalized_last_wave) | DRAFT_SORRY |
 | `thm-generalized-convergence` | [Exploding.Frozen.generalized_convergence](Exploding/Frozen/GeneralizedConvergence.lean#L33) | exploding.tex:1249-1253 (Convergence of the exploding sandpile) | CONDITIONAL |

@@ -34,6 +34,7 @@ import Exploding.Support.SubSpanZero
 import Exploding.Support.SubOdo
 import Exploding.Support.SubCrossTime
 import Exploding.Support.ReductionShift
+import Exploding.Support.LWCProof
 
 import Exploding.External.FeyLevinePeres
 import Exploding.External.Schonmann

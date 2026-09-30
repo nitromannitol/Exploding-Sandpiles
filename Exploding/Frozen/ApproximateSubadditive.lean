@@ -3,7 +3,7 @@ Proposition 4.1 of the paper: the last-wave is a bounded approximation of the
 exploding sandpile.
 -/
 import Exploding.Support.Vocab
-import Exploding.Support.ASProof
+import Exploding.Support.ASProof2
 import Exploding.External.LiggettSchonmannStaceyBoundedDegree
 import Exploding.External.MathieuHoles
 import Exploding.External.AntalPisztora
@@ -36,13 +36,11 @@ theorem Exploding.Frozen.approximate_subadditive (d : ℕ) (hd : 2 ≤ d) (p : �
         lastArrival η (0 : Site d) x ≤ arrival η x + (C2 : ℕ∞)
 -- FROZEN-STATEMENT-END
 := by
-  -- The five open claims isolated by the decomposition: (1) robustness forbids
-  -- a non-stabilizable centred wave; (2) finite-sink stabilization, a
-  -- non-stabilizable pile bounded by `2d-1` off the origin eventually lights up
-  -- any fixed finite set; (3) `eq:approx1`'s reach, the last wave covers `P̃` at
-  -- one common time; (4) `|P̃| < ∞` (stated for every `η`: to be checked); (5)
-  -- `eq:induction_specialcase2`, the first of the paper's three Step-1
-  -- inductions.
+  -- The remaining open claims: (1) robustness forbids a non-stabilizable
+  -- centred wave; (2) finite-sink stabilization; (3) `eq:approx1`'s reach;
+  -- (4) `|P̃| < ∞`, restated under the standing bounds (the unrestricted
+  -- version is false, see `Exploding/Support/ASProof2.lean`); (5)
+  -- `eq:induction_specialcase2`.
   obtain ⟨hrobust, hpodo, hlastreach, htildePfin, hspecial⟩ :
       (∀ η : Site d → ℤ, (∀ x, 2 * (d : ℤ) - 2 ≤ η x) →
         (∀ x, η x ≤ 2 * (d : ℤ) - 1) → Robust η →
@@ -56,10 +54,11 @@ theorem Exploding.Frozen.approximate_subadditive (d : ℕ) (hd : 2 ≤ d) (p : �
         (∀ x, η x ≤ 2 * (d : ℤ) - 1) →
           (∃ n : ℕ, 1 ≤ n ∧ ¬ WaveStabilizable η n (0 : Site d)) →
             ∃ c : ℕ, ∀ x ∈ as_tildeP η, 1 ≤ lastWave η (0 : Site d) c x) ∧
-      (∀ η : Site d → ℤ, (as_tildeP η).Finite) ∧
+      (∀ η : Site d → ℤ, (∀ x, 2 * (d : ℤ) - 2 ≤ η x) →
+        (∀ x, η x ≤ 2 * (d : ℤ) - 1) → (as_tildeP η).Finite) ∧
       (∀ η : Site d → ℤ, (∀ x, 2 * (d : ℤ) - 2 ≤ η x) →
         (∀ x, η x ≤ 2 * (d : ℤ) - 1) →
           ∀ t : ℕ, ∀ x : Site d, 0 < as_wOdo η t x → 0 < as_tildeW η t x) := by
     sorry
-  exact as_approximate_subadditive_of_gaps d hd p hp hp1 hLSSB hHole hChem
+  exact as2_approximate_subadditive_of_gaps d hd p hp hp1 hLSSB hHole hChem
     hrobust hpodo hlastreach htildePfin hspecial

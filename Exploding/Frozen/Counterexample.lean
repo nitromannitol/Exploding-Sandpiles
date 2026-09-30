@@ -3,6 +3,7 @@ Theorem 6.1 of the paper: explosive backgrounds without a limit shape.
 -/
 import Exploding.Support.Vocab
 import Exploding.Support.CEProof
+import Exploding.Support.CEProof2
 import Exploding.External.FeyMeesterRedig
 
 open Exploding LatticeProb Filter

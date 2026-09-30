@@ -82,7 +82,7 @@ No comparator challenge exists yet; see [`Audit/README.md`](Audit/README.md).
 | `thm-generalized-convergence` | [Exploding.Frozen.generalized_convergence](Exploding/Frozen/GeneralizedConvergence.lean#L33) | exploding.tex:1249-1253 (Convergence of the exploding sandpile) | CONDITIONAL |
 | `thm-counterexample` | [Exploding.Frozen.counterexample](Exploding/Frozen/Counterexample.lean#L26) | exploding.tex:1351-1361 (label theorem:counterexample) | DRAFT_SORRY |
 | `prop-explosion-criteria` | [Exploding.Frozen.explosion_criteria](Exploding/Frozen/ExplosionCriteria.lean#L18) | exploding.tex:1821-1825 (label prop:explosion_criteria) | DRAFT_SORRY |
-| `prop-box-crossing` | [Exploding.Frozen.box_crossing](Exploding/Frozen/BoxCrossing.lean#L21) | exploding.tex:1986-1988 (P is box-crossing) | DRAFT_SORRY |
+| `prop-box-crossing` | [Exploding.Frozen.box_crossing](Exploding/Frozen/BoxCrossing.lean#L22) | exploding.tex:1986-1988 (P is box-crossing) | SEALED |
 | `ext-fey-levine-peres` | [Exploding.External.FeyLevinePeresExplosive](Exploding/External/FeyLevinePeres.lean#L18) | exploding.tex:238-240 (label prop:fey_levine_peres_explode) | FROZEN |
 | `ext-schonmann-bootstrap` | [Exploding.External.SchonmannBootstrap](Exploding/External/Schonmann.lean#L23) | exploding.tex:1969-1981 (label prop:schonnmann_bootstrap) | FROZEN |
 | `ext-liggett-schonmann-stacey` | [Exploding.External.LiggettSchonmannStacey](Exploding/External/LiggettSchonmannStacey.lean#L26) | liggett1997domination Theorem 0.0, cited at exploding.tex:1215-1217 in the proof of prop:convergence_of_the_generalized_last_wave | FROZEN |

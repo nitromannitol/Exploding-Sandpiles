@@ -10,7 +10,7 @@ import Exploding.Support.Hypotheses
 open Exploding LatticeProb MeasureTheory
 
 
-/-- **New, real.** `fodo` is monotone in the background, on the SAME frozen set and initial data:
+/-- `fodo` is monotone in the background, on the SAME frozen set and initial data:
 a pointwise-larger `s0` can only make firing easier, so an induction on `t` (`Int.ediv_le_ediv`
 against the inductive hypothesis, exactly as in `Exploding.Support.SubWave.wave_le_fodo`'s and
 `Exploding.Support.Toppling.wave_mono_n`'s proofs, which use the identical technique for a
@@ -54,7 +54,7 @@ theorem bc_fodo_mono_background {d : ℕ} (S : Set (Site d)) (s0 s0' w0 : Site d
         · rw [if_neg hc, if_neg hc']
           simpa
 
-/-- **New, real.** `Measure.infinitePi` commutes with a coordinatewise pushforward: applying a
+/-- `Measure.infinitePi` commutes with a coordinatewise pushforward: applying a
 measurable map `T` to every coordinate of an i.i.d. field has the same law as an i.i.d. field of
 the pushed-forward law `ν.map T`. Proof: `MeasureTheory.eq_infinitePi`, checking the
 projective-limit property against `Measure.pi (fun i : I => ν.map T)` for each finite `I` -- the
@@ -70,7 +70,7 @@ theorem bc_infinitePi_map_coord {V : Type*} [MeasurableSpace V] [Countable V]
       = Measure.infinitePi fun _ : V => ν.map T := by
   simpa using Measure.infinitePi_map_pi (μ := fun _ : V => ν) (f := fun _ : V => T) (hf := fun _ => hT)
 
-/-- **New, real.** For `ν` with `ν {m | (d:ℤ) ≤ m} = 1` and writing `p₀ := ν {2d-1}`, the
+/-- For `ν` with `ν {m | (d:ℤ) ≤ m} = 1` and writing `p₀ := ν {2d-1}`, the
 deterministic map `T x := if x = 2d-1 then 2d-1 else d` pushes `ν` forward to the two-point law
 `chipLaw (2d-1) d p₀`: `(ν.map T) {2d-1} = ν (T⁻¹' {2d-1}) = ν {2d-1} = p₀`
 (`Measure.map_apply`, `T`'s definition) and `(ν.map T) {d} = ν (T⁻¹' {d}) = ν {m | m ≠ 2d-1} =
@@ -78,7 +78,7 @@ deterministic map `T x := if x = 2d-1 then 2d-1 else d` pushes `ν` forward to t
 (`measure_compl`, `ν {2d-1} + ν {m | m ≠ 2d-1} = 1`), matching `chipLaw`'s two-atom definition via
 `Measure.ext` on the generating singletons (or a direct case split on membership of `2d-1`). -/
 theorem bc_two_point_pushforward (d : ℕ) (ν : Measure ℤ) [IsProbabilityMeasure ν]
-    (hlow : ν {m : ℤ | (d : ℤ) ≤ m} = 1) :
+    (_hlow : ν {m : ℤ | (d : ℤ) ≤ m} = 1) :
     ν.map (fun x => if x = 2 * (d : ℤ) - 1 then 2 * (d : ℤ) - 1 else (d : ℤ))
       = chipLaw (2 * (d : ℤ) - 1) (d : ℤ) (ν {(2 * (d : ℤ) - 1)}).toReal := by
   set a := 2 * (d : ℤ) - 1
@@ -198,7 +198,7 @@ theorem bc_fodo_measurable {d : ℕ} (S : Set (Site d)) (w0 : Site d → ℤ)
       · exact measurable_const
       · exact measurable_const
 
-/-- **New, real.** `{η | BoxCrossed η k j}` is measurable: `BoxCrossed`/`CrossedInDirection` are
+/-- `{η | BoxCrossed η k j}` is measurable: `BoxCrossed`/`CrossedInDirection` are
 built from countably many `fodo`-value comparisons (`fodo` itself built, at each finite time, from
 finitely many `if`/`nbrSumZ`/`lap` operations on the coordinate projections `η ↦ η x`, all
 measurable) intersected over the countable index sets `Fin d`, `Bool`, `ℕ`, and `rboxShift k j`
@@ -219,7 +219,7 @@ theorem bc_boxcrossed_measurable {d : ℕ} (k : Fin d → ℕ) (j : Site d) :
   refine MeasurableSet.iInter (fun _ => ?_)
   exact measurableSet_le measurable_const (bc_fodo_measurable _ _ _ _)
 
-/-- **New, real.** `ν`-a.e. every coordinate of an `ν`-i.i.d. field is `≥ d`: each one-site
+/-- `ν`-a.e. every coordinate of an `ν`-i.i.d. field is `≥ d`: each one-site
 marginal `(Measure.infinitePi fun _ => ν).map (fun η => η x)` equals `ν` (`Measure.infinitePi_
 map_restrict'`/an evaluation-map special case, matching `aux_finite_exploding_bounds`'s technique
 in `lem-finite-exploding-dec/node.lean`, restated here), so `hlow` gives each single-coordinate
@@ -269,14 +269,14 @@ theorem bc_nu_good (d : ℕ) (ν : Measure ℤ) [IsProbabilityMeasure ν]
   rw [h_compl_null, measure_univ, add_zero] at h_add
   simpa [μ] using h_add
 
-/-- **GAP, hard, new (`exploding.tex:1807-1809`, "by monotonicity, we may assume `η ∈ {d,
-2d-1}`"), now assembled from the pieces above.** A general one-site law `ν` with `ν(η ≥ d) = 1`
+/-- (`exploding.tex:1807-1809`, "by monotonicity, we may assume `η ∈ {d,
+2d-1}`"), now assembled from the pieces above. A general one-site law `ν` with `ν(η ≥ d) = 1`
 and `ν(η = 2d-1) = p₀ > 0` pointwise-dominates the two-point law `chipLaw (2d-1) d p₀` under the
 coupling `T` that keeps the atom at `2d-1` and collapses every other value to `d`; parallel
 toppling is monotone in the background (`T x ≤ x` whenever `x ≥ d`,
 `bc_fodo_mono_background`), so the box-crossing probability under `ν` is at least
 that under the two-point law. -/
-theorem bc_two_point_reduction (d : ℕ) (hd : 1 ≤ d) (ν : Measure ℤ)
+theorem bc_two_point_reduction (d : ℕ) (_hd : 1 ≤ d) (ν : Measure ℤ)
     [IsProbabilityMeasure ν] (hlow : ν {m : ℤ | (d : ℤ) ≤ m} = 1)
     (k : Fin d → ℕ) (j : Site d) :
     productLaw d (2 * (d : ℤ) - 1) (d : ℤ) (ν {(2 * (d : ℤ) - 1)}).toReal

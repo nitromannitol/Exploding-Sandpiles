@@ -177,7 +177,7 @@ nodes:
     source: exploding.tex:1986-1988 (P is box-crossing)
     file: Exploding/Frozen/BoxCrossing.lean
     export: Exploding.Frozen.box_crossing
-    state: DRAFT_SORRY
+    state: SEALED
     frozen_sha256: d0e2daded00c514cd4ea1476eb509a9440219ff70994ebcc7fa6b1b58a9a0f1a
     provider: Exploding.Frozen.box_crossing
     approved: "2026-09-24"

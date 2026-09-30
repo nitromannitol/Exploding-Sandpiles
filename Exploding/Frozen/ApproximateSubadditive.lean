@@ -5,6 +5,7 @@ exploding sandpile.
 import Exploding.Support.Vocab
 import Exploding.Support.ASProof2
 import Exploding.Support.ASProof3
+import Exploding.Support.ASProof4
 import Exploding.Support.ASSpecial
 import Exploding.External.LiggettSchonmannStaceyBoundedDegree
 import Exploding.External.MathieuHoles
@@ -38,17 +39,15 @@ theorem Exploding.Frozen.approximate_subadditive (d : ℕ) (hd : 2 ≤ d) (p : �
         lastArrival η (0 : Site d) x ≤ arrival η x + (C2 : ℕ∞)
 -- FROZEN-STATEMENT-END
 := by
-  -- The remaining open claims: (1) robustness forbids a non-stabilizable
-  -- centred wave; (2) finite-sink stabilization.  The finiteness of `P̃` and
-  -- the last-wave reach are proved in `Exploding/Support/ASProof3.lean`.
-  obtain ⟨hrobust, hpodo⟩ :
-      (∀ η : Site d → ℤ, (∀ x, 2 * (d : ℤ) - 2 ≤ η x) →
-        (∀ x, η x ≤ 2 * (d : ℤ) - 1) → Robust η →
-          ∀ n : ℕ, 1 ≤ n → WaveStabilizable η n (0 : Site d)) ∧
-      (∀ η : Site d → ℤ, (∀ x, 2 * (d : ℤ) - 2 ≤ η x) →
-        (∀ x, η x ≤ 2 * (d : ℤ) - 1) → ¬ Robust η →
-          (penultimateCluster η (0 : Site d)).Finite →
-            ∃ t0 : ℕ, ∀ x ∈ penultimateCluster η (0 : Site d),
-              1 ≤ podo (explodingPile η) t0 x) := by
+  -- The remaining open claim is finite-sink stabilization; the finiteness of
+  -- `P̃`, the last-wave reach and robustness are proved in
+  -- `Exploding/Support/ASProof3.lean` and `Exploding/Support/ASProof4.lean`.
+  have hpodo : ∀ η : Site d → ℤ, (∀ x, 2 * (d : ℤ) - 2 ≤ η x) →
+      (∀ x, η x ≤ 2 * (d : ℤ) - 1) → ¬ Robust η →
+        (penultimateCluster η (0 : Site d)).Finite →
+          ∃ t0 : ℕ, ∀ x ∈ penultimateCluster η (0 : Site d),
+            1 ≤ podo (explodingPile η) t0 x := by
+    intro η hlow hhigh hnr hfin
     sorry
-  exact as3_approximate_subadditive_of_gaps d hd p hp hp1 hLSSB hHole hChem hrobust hpodo
+  exact as3_approximate_subadditive_of_gaps d hd p hp hp1 hLSSB hHole hChem
+    (as4_hrobust d hd) hpodo

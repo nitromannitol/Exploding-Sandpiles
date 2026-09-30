@@ -35,6 +35,7 @@ import Exploding.Support.SubOdo
 import Exploding.Support.SubCrossTime
 import Exploding.Support.ReductionShift
 import Exploding.Support.LWCProof
+import Exploding.Support.LWCProof3
 import Exploding.Support.ECProofPoincare
 import Exploding.Support.ECProofStar
 import Exploding.Support.ECProofTop

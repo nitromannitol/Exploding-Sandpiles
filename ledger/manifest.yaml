@@ -89,7 +89,7 @@ nodes:
     source: exploding.tex:807-812 (label lemma:penultimate_upper_bound)
     file: Exploding/Frozen/PenultimateUpperBound.lean
     export: Exploding.Frozen.penultimate_upper_bound
-    state: DRAFT_SORRY
+    state: CONDITIONAL
     frozen_sha256: 755dc2bd6ea319253c74e38c3f0320cd0b6ec98d60157d330873710e2519e903
     provider: Exploding.Frozen.penultimate_upper_bound
     approved: "2026-09-24"

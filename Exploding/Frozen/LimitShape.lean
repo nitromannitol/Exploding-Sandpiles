@@ -3,6 +3,7 @@ Theorem 1.2 of the paper: the support of the exploding sandpile, rescaled by
 time, converges in measure to a convex domain.
 -/
 import Exploding.Support.Vocab
+import Exploding.Support.LSProofAux
 import Exploding.External.LiggettSchonmannStaceyBoundedDegree
 import Exploding.External.MathieuHoles
 import Exploding.External.AntalPisztora
@@ -40,4 +41,5 @@ theorem Exploding.Frozen.limit_shape (d : ℕ) (hd : 2 ≤ d) (p : ℝ) (hp : 0 
               {y : Fin d → ℝ | 0 < podo (explodingPile η) t (nearestSite ((t : ℝ) • y))} B))
           atTop (nhds 0)
 -- FROZEN-STATEMENT-END
-:= by sorry
+:= Exploding.LSProof.ls_assemble d hd p hp hp1
+    (Exploding.LSProof.ls_flp_from_explosive hSch) hLSSB hHole hChem

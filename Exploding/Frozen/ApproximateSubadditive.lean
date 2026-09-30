@@ -4,6 +4,7 @@ exploding sandpile.
 -/
 import Exploding.Support.Vocab
 import Exploding.Support.ASProof2
+import Exploding.Support.ASSpecial
 import Exploding.External.LiggettSchonmannStaceyBoundedDegree
 import Exploding.External.MathieuHoles
 import Exploding.External.AntalPisztora
@@ -39,9 +40,8 @@ theorem Exploding.Frozen.approximate_subadditive (d : ℕ) (hd : 2 ≤ d) (p : �
   -- The remaining open claims: (1) robustness forbids a non-stabilizable
   -- centred wave; (2) finite-sink stabilization; (3) `eq:approx1`'s reach;
   -- (4) `|P̃| < ∞`, restated under the standing bounds (the unrestricted
-  -- version is false, see `Exploding/Support/ASProof2.lean`); (5)
-  -- `eq:induction_specialcase2`.
-  obtain ⟨hrobust, hpodo, hlastreach, htildePfin, hspecial⟩ :
+  -- version is false, see `Exploding/Support/ASProof2.lean`).
+  obtain ⟨hrobust, hpodo, hlastreach, htildePfin⟩ :
       (∀ η : Site d → ℤ, (∀ x, 2 * (d : ℤ) - 2 ≤ η x) →
         (∀ x, η x ≤ 2 * (d : ℤ) - 1) → Robust η →
           ∀ n : ℕ, 1 ≤ n → WaveStabilizable η n (0 : Site d)) ∧
@@ -55,10 +55,7 @@ theorem Exploding.Frozen.approximate_subadditive (d : ℕ) (hd : 2 ≤ d) (p : �
           (∃ n : ℕ, 1 ≤ n ∧ ¬ WaveStabilizable η n (0 : Site d)) →
             ∃ c : ℕ, ∀ x ∈ as_tildeP η, 1 ≤ lastWave η (0 : Site d) c x) ∧
       (∀ η : Site d → ℤ, (∀ x, 2 * (d : ℤ) - 2 ≤ η x) →
-        (∀ x, η x ≤ 2 * (d : ℤ) - 1) → (as_tildeP η).Finite) ∧
-      (∀ η : Site d → ℤ, (∀ x, 2 * (d : ℤ) - 2 ≤ η x) →
-        (∀ x, η x ≤ 2 * (d : ℤ) - 1) →
-          ∀ t : ℕ, ∀ x : Site d, 0 < as_wOdo η t x → 0 < as_tildeW η t x) := by
+        (∀ x, η x ≤ 2 * (d : ℤ) - 1) → (as_tildeP η).Finite) := by
     sorry
   exact as2_approximate_subadditive_of_gaps d hd p hp hp1 hLSSB hHole hChem
-    hrobust hpodo hlastreach htildePfin hspecial
+    hrobust hpodo hlastreach htildePfin (assp_special d hd)

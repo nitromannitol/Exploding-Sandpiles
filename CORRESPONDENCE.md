@@ -80,7 +80,7 @@ No comparator challenge exists yet; see [`Audit/README.md`](Audit/README.md).
 | `prop-approximate-subadditive` | [Exploding.Frozen.approximate_subadditive](Exploding/Frozen/ApproximateSubadditive.lean#L35) | exploding.tex:886-898 (label prop:approximate_subadditive) | SEALED |
 | `prop-generalized-last-wave` | [Exploding.Frozen.convergence_of_the_generalized_last_wave](Exploding/Frozen/GeneralizedLastWave.lean#L36) | exploding.tex:1203-1207 (label prop:convergence_of_the_generalized_last_wave) | DRAFT_SORRY |
 | `thm-generalized-convergence` | [Exploding.Frozen.generalized_convergence](Exploding/Frozen/GeneralizedConvergence.lean#L33) | exploding.tex:1249-1253 (Convergence of the exploding sandpile) | CONDITIONAL |
-| `thm-counterexample` | [Exploding.Frozen.counterexample](Exploding/Frozen/Counterexample.lean#L27) | exploding.tex:1351-1361 (label theorem:counterexample) | DRAFT_SORRY |
+| `thm-counterexample` | [Exploding.Frozen.counterexample](Exploding/Frozen/Counterexample.lean#L28) | exploding.tex:1351-1361 (label theorem:counterexample) | DRAFT_SORRY |
 | `prop-explosion-criteria` | [Exploding.Frozen.explosion_criteria](Exploding/Frozen/ExplosionCriteria.lean#L19) | exploding.tex:1821-1825 (label prop:explosion_criteria) | SEALED |
 | `prop-box-crossing` | [Exploding.Frozen.box_crossing](Exploding/Frozen/BoxCrossing.lean#L22) | exploding.tex:1986-1988 (P is box-crossing) | SEALED |
 | `ext-fey-levine-peres` | [Exploding.External.FeyLevinePeresExplosive](Exploding/External/FeyLevinePeres.lean#L18) | exploding.tex:238-240 (label prop:fey_levine_peres_explode) | FROZEN |

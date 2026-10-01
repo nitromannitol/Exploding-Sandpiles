@@ -5,6 +5,7 @@ import Exploding.Support.Vocab
 import Exploding.Support.CEProof
 import Exploding.Support.CEProof2
 import Exploding.External.FeyMeesterRedig
+import Exploding.Support.CELow4
 
 open Exploding LatticeProb Filter
 
@@ -45,8 +46,8 @@ theorem Exploding.Frozen.counterexample (d : ℕ) (hd : 2 ≤ d)
       (∀ n : ℕ, n % 4 = 0 ∨ n % 4 = 3 →
         arrival (ceEta d) ((n : ℤ) • e1 d) ≠ ⊤) ∧
       (∃ C : ℝ, ∀ᶠ n : ℕ in atTop,
-        ((arrival (ceEta d) ((n : ℤ) • e1 d)).toNat : ℝ) / (n : ℝ) ≤ C) := by
-    sorry
+        ((arrival (ceEta d) ((n : ℤ) • e1 d)).toNat : ℝ) / (n : ℝ) ≤ C) :=
+    ⟨by sorry, Exploding.cel_low d hd, Exploding.cel_bdd d hd⟩
   have hFin : ∀ n : ℕ, arrival (ceEta d) ((n : ℤ) • e1 d) ≠ ⊤ :=
     ce_arrival_finite_of_low d hd hLow
   refine ⟨ceEta d, ce_explosive d hd, ce_not_ge d hd, hFin, ?_, ?_⟩

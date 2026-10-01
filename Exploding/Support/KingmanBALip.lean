@@ -251,10 +251,10 @@ extends the convergence to all times. -/
 theorem king_convergence_on_A {μ : Measure Ω} [IsProbabilityMeasure μ] {T : Ω → Ω}
     (hT : MeasurePreserving T μ μ) (g : ℕ → Ω → ℝ)
     (hsub : ∀ m n x, g (m + n) x ≤ g m x + g n (T^[m] x)) (hg : ∀ n x, 0 ≤ g n x)
-    (hgm : ∀ n, Measurable (g n)) (C' K C : ℝ) (hC' : 0 ≤ C') (hK : 0 ≤ K)
+    (hgm : ∀ n, Measurable (g n)) (C' K : ℝ) (hC' : 0 ≤ C') (hK : 0 ≤ K)
     (hA0 : μ (king_A g C' K) ≠ 0)
-    (hlip : ∀ᵐ x ∂μ, ∀ ε : ℝ, 0 < ε → ∀ᶠ n : ℕ in atTop, ∀ n' : ℕ, n ≤ n' → n' ≤ 2 * n →
-      g n' x ≤ g n x + C * ((n' : ℝ) - n) + ε * n) :
+    (hlip : ∀ᵐ x ∂μ, ∃ C : ℝ, ∀ ε : ℝ, 0 < ε → ∀ᶠ n : ℕ in atTop, ∀ n' : ℕ, n ≤ n' →
+      n' ≤ 2 * n → g n' x ≤ g n x + C * ((n' : ℝ) - n) + ε * n) :
     ∀ᵐ x ∂μ, x ∈ king_A g C' K →
       ∃ ℓ : ℝ, Tendsto (fun n : ℕ => g n x / (n : ℝ)) atTop (𝓝 ℓ) := by
   have hA : MeasurableSet (king_A g C' K) := king_A_measurable hgm C' K
@@ -309,6 +309,7 @@ theorem king_convergence_on_A {μ : Measure Ω} [IsProbabilityMeasure μ] {T : �
       ∃ ℓ : ℝ, Tendsto (fun n : ℕ => g n x / (n : ℝ)) atTop (𝓝 ℓ) := by
     filter_upwards [hKing, hBirk, hgood, hae hlip] with x hKx hBx hgx hlipx
     obtain ⟨ρ, hρ⟩ := hBx
+    obtain ⟨C, hCx⟩ := hlipx
     have hRmono : ∀ k, mk2_returnSeq T A x k < mk2_returnSeq T A x (k + 1) := by
       intro k
       have hpos := mk2_returnTime_pos T A ((mk2_inducedMap T A)^[k] x) (hgx k).2
@@ -339,7 +340,7 @@ theorem king_convergence_on_A {μ : Measure Ω} [IsProbabilityMeasure μ] {T : �
       rw [Nat.cast_sub hkn] at hb
       linarith
     exact ⟨_, king_transfer (fun n => g n x) (fun k => mk2_returnSeq T A x k) ρ _ C' K C
-      (fun n => hg n x) hC' hK hR0 hRmono (by linarith) hρlim hret' hup hlipx⟩
+      (fun n => hg n x) hC' hK hR0 hRmono (by linarith) hρlim hret' hup hCx⟩
   have hc0 : (μ A)⁻¹ ≠ 0 := ENNReal.inv_ne_zero.2 (measure_ne_top μ A)
   unfold mk3_normalizedRestrict at hmain
   have hrestr : ∀ᵐ x ∂(μ.restrict A), ∃ ℓ : ℝ,
@@ -355,65 +356,82 @@ section Main
 
 variable {Ω : Type} [MeasurableSpace Ω]
 
+/-- Linear growth gives bounded averages. -/
+theorem king_isBoundedUnder_of_linear {g : ℕ → ℝ} {C' B : ℝ} (hB : ∀ n : ℕ, g n ≤ C' * n + B) :
+    IsBoundedUnder (· ≤ ·) atTop fun n : ℕ => g n / (n : ℝ) := by
+  refine ⟨C' + |B|, ?_⟩
+  rw [Filter.eventually_map]
+  filter_upwards [eventually_ge_atTop 1] with n hn
+  have hn0 : (0 : ℝ) < n := by exact_mod_cast (by omega : 0 < n)
+  rw [div_le_iff₀ hn0]
+  have h1 : |B| ≤ |B| * n := by
+    have : (1 : ℝ) ≤ n := by exact_mod_cast hn
+    nlinarith [abs_nonneg B]
+  have := hB n
+  nlinarith [le_abs_self B]
+
 /-- **Kingman's subadditive ergodic theorem with a Lipschitz transfer.**  A nonnegative
 measurable subadditive cocycle over an ergodic measure-preserving map that is Lipschitz upward up
-to a sublinear error, `g n' x ≤ g n x + C (n' - n) + ε n` for `n ≤ n' ≤ 2 n` and `n` large,
-has an almost sure limit `g n x / n → L`.  No integrability is assumed. -/
+to a sublinear error, `g n' x ≤ g n x + C (n' - n) + ε n` for `n ≤ n' ≤ 2 n` and `n` large
+(with a Lipschitz constant `C` that may depend on `x`), has an almost sure limit
+`g n x / n → L`.  No integrability is assumed. -/
 theorem king_lipKingman (μ : Measure Ω) [IsProbabilityMeasure μ] (T : Ω → Ω)
     (hT : MeasurePreserving T μ μ) (herg : Ergodic T μ) (g : ℕ → Ω → ℝ)
     (hsub : ∀ m n x, g (m + n) x ≤ g m x + g n (T^[m] x)) (hg : ∀ n x, 0 ≤ g n x)
-    (hgm : ∀ n, Measurable (g n)) (C : ℝ)
-    (hlip : ∀ᵐ x ∂μ, ∀ ε : ℝ, 0 < ε → ∀ᶠ n : ℕ in atTop, ∀ n' : ℕ, n ≤ n' → n' ≤ 2 * n →
-      g n' x ≤ g n x + C * ((n' : ℝ) - n) + ε * n) :
+    (hgm : ∀ n, Measurable (g n))
+    (hlip : ∀ᵐ x ∂μ, ∃ C : ℝ, ∀ ε : ℝ, 0 < ε → ∀ᶠ n : ℕ in atTop, ∀ n' : ℕ, n ≤ n' →
+      n' ≤ 2 * n → g n' x ≤ g n x + C * ((n' : ℝ) - n) + ε * n) :
     ∃ L : ℝ, ∀ᵐ x ∂μ, Tendsto (fun n : ℕ => g n x / (n : ℝ)) atTop (𝓝 L) := by
-  set C' : ℝ := 4 * |C| + 4 with hC'
-  have hC'0 : 0 ≤ C' := by positivity
   -- the almost sure linear bound
-  have hlin : ∀ᵐ x ∂μ, ∃ B : ℝ, ∀ n : ℕ, g n x ≤ C' * n + B := by
+  have hlin : ∀ᵐ x ∂μ, ∃ C' B : ℝ, ∀ n : ℕ, g n x ≤ C' * n + B := by
     filter_upwards [hlip] with x hx
-    exact king_linear_bound_of_lip (fun n => g n x) C hx
+    obtain ⟨C, hC⟩ := hx
+    obtain ⟨B, hB⟩ := king_linear_bound_of_lip (fun n => g n x) C hC
+    exact ⟨_, B, hB⟩
   -- a good set of positive measure
-  have hex : ∃ K : ℕ, μ (king_A g C' K) ≠ 0 := by
+  have hex : ∃ p : ℕ × ℕ, μ (king_A g (4 * (p.1 : ℝ) + 4) p.2) ≠ 0 := by
     by_contra hcon
     push Not at hcon
-    have hnull : μ (⋃ K : ℕ, king_A g C' K) = 0 := measure_iUnion_null hcon
-    have hcov : ∀ᵐ x ∂μ, x ∈ ⋃ K : ℕ, king_A g C' K := by
-      filter_upwards [hlin] with x hx
-      obtain ⟨B, hB⟩ := hx
-      refine Set.mem_iUnion.2 ⟨⌈B⌉₊, fun n => ?_⟩
-      have := Nat.le_ceil B
-      linarith [hB n]
-    have hcomp : μ (⋃ K : ℕ, king_A g C' K)ᶜ = 0 := ae_iff.1 hcov
+    have hnull : μ (⋃ p : ℕ × ℕ, king_A g (4 * (p.1 : ℝ) + 4) p.2) = 0 :=
+      measure_iUnion_null hcon
+    have hcov : ∀ᵐ x ∂μ, x ∈ ⋃ p : ℕ × ℕ, king_A g (4 * (p.1 : ℝ) + 4) p.2 := by
+      filter_upwards [hlip] with x hx
+      obtain ⟨C, hC⟩ := hx
+      obtain ⟨B, hB⟩ := king_linear_bound_of_lip (fun n => g n x) C hC
+      refine Set.mem_iUnion.2 ⟨(⌈|C|⌉₊, ⌈B⌉₊), fun n => ?_⟩
+      have h1 := Nat.le_ceil B
+      have h2 := Nat.le_ceil |C|
+      have hn : (0 : ℝ) ≤ n := Nat.cast_nonneg n
+      have h3 : (4 * |C| + 4) * (n : ℝ) ≤ (4 * (⌈|C|⌉₊ : ℝ) + 4) * n :=
+        mul_le_mul_of_nonneg_right (by linarith) hn
+      have := hB n
+      simp only
+      linarith
+    have hcomp : μ (⋃ p : ℕ × ℕ, king_A g (4 * (p.1 : ℝ) + 4) p.2)ᶜ = 0 := ae_iff.1 hcov
     have : μ Set.univ = 0 := by
-      have h1 : (Set.univ : Set Ω) = (⋃ K : ℕ, king_A g C' K) ∪ (⋃ K : ℕ, king_A g C' K)ᶜ :=
+      have h1 : (Set.univ : Set Ω) = (⋃ p : ℕ × ℕ, king_A g (4 * (p.1 : ℝ) + 4) p.2) ∪
+          (⋃ p : ℕ × ℕ, king_A g (4 * (p.1 : ℝ) + 4) p.2)ᶜ :=
         (Set.union_compl_self _).symm
       rw [h1]
       exact measure_union_null hnull hcomp
     simp at this
-  obtain ⟨K0, hK0⟩ := hex
-  have hconvA := king_convergence_on_A hT g hsub hg hgm C' K0 C hC'0 (Nat.cast_nonneg K0) hK0 hlip
+  obtain ⟨⟨M0, K0⟩, hK0⟩ := hex
+  have hC'0 : (0 : ℝ) ≤ 4 * (M0 : ℝ) + 4 := by positivity
+  have hconvA := king_convergence_on_A hT g hsub hg hgm (4 * (M0 : ℝ) + 4) K0 hC'0
+    (Nat.cast_nonneg K0) hK0 hlip
   -- the lower limit is a.s. constant
   have hg' : ∀ n y, 1 ≤ n → 0 ≤ g n y := fun n y _ => hg n y
   have hbdd : ∀ᵐ x ∂μ, IsBoundedUnder (· ≤ ·) atTop fun n : ℕ => g n x / (n : ℝ) := by
     filter_upwards [hlin] with x hx
-    obtain ⟨B, hB⟩ := hx
-    refine ⟨C' + |B|, ?_⟩
-    rw [Filter.eventually_map]
-    filter_upwards [eventually_ge_atTop 1] with n hn
-    have hn0 : (0 : ℝ) < n := by exact_mod_cast (by omega : 0 < n)
-    rw [div_le_iff₀ hn0]
-    have h1 : |B| ≤ |B| * n := by
-      have : (1 : ℝ) ≤ n := by exact_mod_cast hn
-      nlinarith [abs_nonneg B]
-    have := hB n
-    nlinarith [le_abs_self B]
+    obtain ⟨C', B, hB⟩ := hx
+    exact king_isBoundedUnder_of_linear hB
   have hinv : gLow g ∘ T =ᵐ[μ] gLow g := king_ae_gLow_comp hT hsub hg' hgm hbdd
   obtain ⟨c, hc⟩ := herg.ae_eq_const_of_ae_eq_comp₀ (measurable_gLow hgm).nullMeasurable hinv
   refine ⟨c, ?_⟩
-  have hA : MeasurableSet (king_A g C' K0) := king_A_measurable hgm C' K0
+  have hA : MeasurableSet (king_A g (4 * (M0 : ℝ) + 4) K0) := king_A_measurable hgm _ _
   -- along the orbit
   have hvis := king_ae_visit herg hA hK0
-  have horb : ∀ᵐ x ∂μ, ∀ m : ℕ, (T^[m] x ∈ king_A g C' K0 →
+  have horb : ∀ᵐ x ∂μ, ∀ m : ℕ, (T^[m] x ∈ king_A g (4 * (M0 : ℝ) + 4) K0 →
       ∃ ℓ : ℝ, Tendsto (fun n : ℕ => g n (T^[m] x) / (n : ℝ)) atTop (𝓝 ℓ)) ∧
       gLow g (T^[m] x) = c := by
     rw [ae_all_iff]
@@ -433,17 +451,8 @@ theorem king_lipKingman (μ : Measure Ω) [IsProbabilityMeasure μ] (T : Ω → 
     rw [← this]
     rfl
   refine tendsto_of_le_liminf_of_limsup_le hlow hup ?_ ?_
-  · obtain ⟨B, hB⟩ := hlx
-    refine ⟨C' + |B|, ?_⟩
-    rw [Filter.eventually_map]
-    filter_upwards [eventually_ge_atTop 1] with n hn
-    have hn0 : (0 : ℝ) < n := by exact_mod_cast (by omega : 0 < n)
-    rw [div_le_iff₀ hn0]
-    have h1 : |B| ≤ |B| * n := by
-      have : (1 : ℝ) ≤ n := by exact_mod_cast hn
-      nlinarith [abs_nonneg B]
-    have := hB n
-    nlinarith [le_abs_self B]
+  · obtain ⟨C', B, hB⟩ := hlx
+    exact king_isBoundedUnder_of_linear hB
   · refine ⟨0, ?_⟩
     rw [Filter.eventually_map]
     filter_upwards with n
@@ -459,21 +468,21 @@ def king_LipKingman : Prop :=
     (T : Ω → Ω), MeasurePreserving T μ μ → Ergodic T μ →
     ∀ (g : ℕ → Ω → ℝ), (∀ m n x, g (m + n) x ≤ g m x + g n (T^[m] x)) →
     (∀ n x, 0 ≤ g n x) → (∀ n, Measurable (g n)) →
-    ∀ C : ℝ, (∀ᵐ x ∂μ, ∀ ε : ℝ, 0 < ε → ∀ᶠ n : ℕ in atTop, ∀ n' : ℕ, n ≤ n' → n' ≤ 2 * n →
+    (∀ᵐ x ∂μ, ∃ C : ℝ, ∀ ε : ℝ, 0 < ε → ∀ᶠ n : ℕ in atTop, ∀ n' : ℕ, n ≤ n' → n' ≤ 2 * n →
       g n' x ≤ g n x + C * ((n' : ℝ) - n) + ε * n) →
     ∃ L : ℝ, ∀ᵐ x ∂μ, Tendsto (fun n : ℕ => g n x / (n : ℝ)) atTop (𝓝 L)
 
 theorem king_LipKingman_true : king_LipKingman :=
-  fun μ _ T hT herg g hsub hg hgm C hlip => king_lipKingman μ T hT herg g hsub hg hgm C hlip
+  fun μ _ T hT herg g hsub hg hgm hlip => king_lipKingman μ T hT herg g hsub hg hgm hlip
 
 /-- The form closest to `mk4_boundedAboveKingman`: a subadditive cocycle bounded below by a
 linear function, with the upward Lipschitz bound, converges. -/
 theorem king_lipKingman_linear (μ : Measure Ω) [IsProbabilityMeasure μ] (T : Ω → Ω)
     (hT : MeasurePreserving T μ μ) (herg : Ergodic T μ) (h : ℕ → Ω → ℝ)
     (hsub : ∀ m n x, h (m + n) x ≤ h m x + h n (T^[m] x))
-    (hlow : ∃ c : ℝ, ∀ n x, -c * n ≤ h n x) (hgm : ∀ n, Measurable (h n)) (C : ℝ)
-    (hlip : ∀ᵐ x ∂μ, ∀ ε : ℝ, 0 < ε → ∀ᶠ n : ℕ in atTop, ∀ n' : ℕ, n ≤ n' → n' ≤ 2 * n →
-      h n' x ≤ h n x + C * ((n' : ℝ) - n) + ε * n) :
+    (hlow : ∃ c : ℝ, ∀ n x, -c * n ≤ h n x) (hgm : ∀ n, Measurable (h n))
+    (hlip : ∀ᵐ x ∂μ, ∃ C : ℝ, ∀ ε : ℝ, 0 < ε → ∀ᶠ n : ℕ in atTop, ∀ n' : ℕ, n ≤ n' →
+      n' ≤ 2 * n → h n' x ≤ h n x + C * ((n' : ℝ) - n) + ε * n) :
     ∃ L : ℝ, ∀ᵐ x ∂μ, Tendsto (fun n : ℕ => h n x / (n : ℝ)) atTop (𝓝 L) := by
   obtain ⟨c, hc⟩ := hlow
   have hsub' : ∀ m n x, (fun n x => h n x + c * n) (m + n) x ≤
@@ -485,9 +494,11 @@ theorem king_lipKingman_linear (μ : Measure Ω) [IsProbabilityMeasure μ] (T : 
     linarith
   obtain ⟨L, hL⟩ := king_lipKingman μ T hT herg (fun n x => h n x + c * n) hsub'
     (fun n x => by have := hc n x; linarith)
-    (fun n => (hgm n).add measurable_const) (C + c) (by
-      filter_upwards [hlip] with x hx ε hε
-      filter_upwards [hx ε hε] with n hn n' hnn' hn'2
+    (fun n => (hgm n).add measurable_const) (by
+      filter_upwards [hlip] with x hx
+      obtain ⟨C, hC⟩ := hx
+      refine ⟨C + c, fun ε hε => ?_⟩
+      filter_upwards [hC ε hε] with n hn n' hnn' hn'2
       have := hn n' hnn' hn'2
       linarith)
   refine ⟨L - c, ?_⟩
@@ -527,11 +538,11 @@ theorem king_log_rpow_le (γ : ℝ) (m : ℕ) (hm : 1 ≤ m) (ε : ℝ) (hε : 0
         field_simp
 
 /-- **From a logarithmic Lipschitz bound along a ray to the form used by
-`king_lipKingman`.**  If, for all box sizes `N ≥ n0` and all `n₁ m, n₂ m ≤ N`,
+`king_lipKingman`.**  If, for all box sizes `N ≥ n0` and all `n₁ ≤ n₂` with `n₂ m ≤ N`,
 `a n₂ ≤ a n₁ + C (n₂ - n₁) + (log N)^γ`, then `a` is Lipschitz upward up to a sublinear
 error. -/
 theorem king_lip_of_log (a : ℕ → ℝ) (C γ : ℝ) (m : ℕ) (hm : 1 ≤ m) (n0 : ℕ)
-    (h : ∀ N : ℕ, n0 ≤ N → ∀ n₁ n₂ : ℕ, n₁ * m ≤ N → n₂ * m ≤ N →
+    (h : ∀ N : ℕ, n0 ≤ N → ∀ n₁ n₂ : ℕ, n₁ ≤ n₂ → n₂ * m ≤ N →
       a n₂ ≤ a n₁ + C * ((n₂ : ℝ) - n₁) + Real.log N ^ γ) :
     ∀ ε : ℝ, 0 < ε → ∀ᶠ n : ℕ in atTop, ∀ n' : ℕ, n ≤ n' → n' ≤ 2 * n →
       a n' ≤ a n + C * ((n' : ℝ) - n) + ε * n := by
@@ -541,7 +552,7 @@ theorem king_lip_of_log (a : ℕ → ℝ) (C γ : ℝ) (m : ℕ) (hm : 1 ≤ m) 
   have hN : n0 ≤ 2 * m * n := by
     have : n ≤ 2 * m * n := by nlinarith
     omega
-  have := h (2 * m * n) hN n n' (by nlinarith) (by nlinarith)
+  have := h (2 * m * n) hN n n' hnn' (by nlinarith)
   linarith
 
 end LogError

@@ -7,11 +7,19 @@ Here the thinning is used together with the exact finite-dimensional law of the
 product measure to dominate every increasing event, and the parameter `ρ` is
 recovered from the one-site marginals.
 
-The finite-to-countable passage from the finite-coordinate thinning to an arbitrary
-increasing event is isolated as the explicit hypothesis `xlss_finite_to_countable`.
-It is a measure-theoretic statement about a projective family of finite-dimensional
-couplings whose Kolmogorov extension is not available in Mathlib, so the theorem
-`xlss_proved` below is stated relative to it.
+The passage from the finite-coordinate thinning to an arbitrary increasing event
+is isolated as the explicit hypothesis `xlss_finite_to_countable`.  It splits into
+two estimates.  The first is finite-coordinate domination: for each finite `T` the
+thinning supplies a coupling of `μ` to the product law on `T`, so every
+`T`-determined increasing event is dominated.  The second is the countable upgrade
+from the finite-coordinate increasing events to all increasing measurable events.
+The countable upgrade is not available in Mathlib: it needs either Kolmogorov's
+extension theorem for the consistent finite-dimensional couplings (absent, as the
+Brownian development notes) or a monotone-class theorem representing every
+increasing Borel set as a countable monotone combination of finite-coordinate
+increasing sets, together with almost-sure continuity of increasing sets.  The
+route through `Exploding.rn_strassen` consumes the full domination as its
+hypothesis, so it gives no independent reduction.
 -/
 import Exploding.External.LiggettSchonmannStaceyBoundedDegree
 import Exploding.Support.ExtLSSProofThin

@@ -6,6 +6,7 @@ import Exploding.Support.CEProof
 import Exploding.Support.CEProof2
 import Exploding.External.FeyMeesterRedig
 import Exploding.Support.CELow4
+import Exploding.Support.CESlow4
 
 open Exploding LatticeProb Filter
 
@@ -35,6 +36,8 @@ theorem Exploding.Frozen.counterexample (d : ℕ) (hd : 2 ≤ d)
       liminf (fun n : ℕ => ((arrival η ((n : ℤ) • e1 d)).toNat : ℝ) / (n : ℝ)) atTop = 1
 -- FROZEN-STATEMENT-END
 := by
+  -- The cited least-action principle is not needed: explosion is shown directly.
+  have _ := hFMR
   -- The three front estimates of Steps 3-4 on the reflected cylinder: the slow
   -- bound `12n` at `(3+8n)e₁` (reduced to 2D by `ce_stack_le_2D`), finiteness at
   -- the low-type row-0 points `n ≡ 0, 3 (mod 4)` (the high-type points are
@@ -47,7 +50,7 @@ theorem Exploding.Frozen.counterexample (d : ℕ) (hd : 2 ≤ d)
         arrival (ceEta d) ((n : ℤ) • e1 d) ≠ ⊤) ∧
       (∃ C : ℝ, ∀ᶠ n : ℕ in atTop,
         ((arrival (ceEta d) ((n : ℤ) • e1 d)).toNat : ℝ) / (n : ℝ) ≤ C) :=
-    ⟨by sorry, Exploding.cel_low d hd, Exploding.cel_bdd d hd⟩
+    ⟨Exploding.cels_slow2D, Exploding.cel_low d hd, Exploding.cel_bdd d hd⟩
   have hFin : ∀ n : ℕ, arrival (ceEta d) ((n : ℤ) • e1 d) ≠ ⊤ :=
     ce_arrival_finite_of_low d hd hLow
   refine ⟨ceEta d, ce_explosive d hd, ce_not_ge d hd, hFin, ?_, ?_⟩

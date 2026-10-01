@@ -23,7 +23,7 @@ nodes:
     source: exploding.tex:246-254 (label theorem:limit_shape)
     file: Exploding/Frozen/LimitShape.lean
     export: Exploding.Frozen.limit_shape
-    state: CONDITIONAL
+    state: SEALED
     frozen_sha256: 7a9bc664298b2adfc0b528e3f1d6ba565efdcb2da1d055eb6e222032e835b44b
     provider: Exploding.Frozen.limit_shape
     approved: "2026-09-24"
@@ -34,7 +34,7 @@ nodes:
     source: exploding.tex:259-262 (label theorem:convergence_of_time_constant)
     file: Exploding/Frozen/TimeConstant.lean
     export: Exploding.Frozen.convergence_of_time_constant
-    state: CONDITIONAL
+    state: SEALED
     frozen_sha256: e2982ba6c4bcfa0f77bde5a780c388f19a53c0dea53751b01958d6d9bed8f8a1
     provider: Exploding.Frozen.convergence_of_time_constant
     approved: "2026-09-24"
@@ -111,7 +111,7 @@ nodes:
     source: exploding.tex:846-852 (label prop:convergence_of_the_last_wave)
     file: Exploding/Frozen/LastWaveConvergence.lean
     export: Exploding.Frozen.convergence_of_the_last_wave
-    state: DRAFT_SORRY
+    state: SEALED
     frozen_sha256: 757cd6a770e4ea98496b4203ac93795842f3cbafac4b0ee55cea24e49f32e679
     provider: Exploding.Frozen.convergence_of_the_last_wave
     approved: "2026-09-24"
@@ -155,7 +155,7 @@ nodes:
     source: exploding.tex:1351-1361 (label theorem:counterexample)
     file: Exploding/Frozen/Counterexample.lean
     export: Exploding.Frozen.counterexample
-    state: DRAFT_SORRY
+    state: SEALED
     frozen_sha256: c9c8b8778d204a8280a899f7dda2fefda47e85854c1169bb477828b81f191dd3
     provider: Exploding.Frozen.counterexample
     approved: "2026-09-24"

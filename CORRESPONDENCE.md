@@ -68,19 +68,19 @@ No comparator challenge exists yet; see [`Audit/README.md`](Audit/README.md).
 
 | id | Lean | paper | state |
 |---|---|---|---|
-| `thm-limit-shape` | [Exploding.Frozen.limit_shape](Exploding/Frozen/LimitShape.lean#L30) | exploding.tex:246-254 (label theorem:limit_shape) | CONDITIONAL |
-| `thm-time-constant` | [Exploding.Frozen.convergence_of_time_constant](Exploding/Frozen/TimeConstant.lean#L33) | exploding.tex:259-262 (label theorem:convergence_of_time_constant) | CONDITIONAL |
+| `thm-limit-shape` | [Exploding.Frozen.limit_shape](Exploding/Frozen/LimitShape.lean#L30) | exploding.tex:246-254 (label theorem:limit_shape) | SEALED |
+| `thm-time-constant` | [Exploding.Frozen.convergence_of_time_constant](Exploding/Frozen/TimeConstant.lean#L33) | exploding.tex:259-262 (label theorem:convergence_of_time_constant) | SEALED |
 | `thm-explosive` | [Exploding.Frozen.explosive](Exploding/Frozen/Explosive.lean#L28) | exploding.tex:265-268 (label theorem:explosive) | SEALED |
 | `prop-renormalization` | [Exploding.Frozen.renormalization_properties](Exploding/Frozen/Renormalization.lean#L37) | exploding.tex:482-497 (label prop:renormalization_properties) | SEALED |
 | `lem-square-lower-bound` | [Exploding.Frozen.square_lower_bound](Exploding/Frozen/SquareLowerBound.lean#L22) | exploding.tex:705-707 (label lemma:square_lower_bound) | SEALED |
 | `lem-penultimate-cluster` | [Exploding.Frozen.last_penultimate_cluster](Exploding/Frozen/PenultimateCluster.lean#L30) | exploding.tex:792-798 (label lemma:last_penultimate_cluster) | SEALED |
 | `lem-penultimate-upper-bound` | [Exploding.Frozen.penultimate_upper_bound](Exploding/Frozen/PenultimateUpperBound.lean#L28) | exploding.tex:807-812 (label lemma:penultimate_upper_bound) | SEALED |
 | `lem-penultimate-close` | [Exploding.Frozen.last_penultimate_close](Exploding/Frozen/PenultimateClose.lean#L31) | exploding.tex:832-837 (label lemma:last_penultimate_close) | SEALED |
-| `prop-last-wave-convergence` | [Exploding.Frozen.convergence_of_the_last_wave](Exploding/Frozen/LastWaveConvergence.lean#L33) | exploding.tex:846-852 (label prop:convergence_of_the_last_wave) | DRAFT_SORRY |
+| `prop-last-wave-convergence` | [Exploding.Frozen.convergence_of_the_last_wave](Exploding/Frozen/LastWaveConvergence.lean#L34) | exploding.tex:846-852 (label prop:convergence_of_the_last_wave) | SEALED |
 | `prop-approximate-subadditive` | [Exploding.Frozen.approximate_subadditive](Exploding/Frozen/ApproximateSubadditive.lean#L35) | exploding.tex:886-898 (label prop:approximate_subadditive) | SEALED |
 | `prop-generalized-last-wave` | [Exploding.Frozen.convergence_of_the_generalized_last_wave](Exploding/Frozen/GeneralizedLastWave.lean#L36) | exploding.tex:1203-1207 (label prop:convergence_of_the_generalized_last_wave) | DRAFT_SORRY |
 | `thm-generalized-convergence` | [Exploding.Frozen.generalized_convergence](Exploding/Frozen/GeneralizedConvergence.lean#L33) | exploding.tex:1249-1253 (Convergence of the exploding sandpile) | CONDITIONAL |
-| `thm-counterexample` | [Exploding.Frozen.counterexample](Exploding/Frozen/Counterexample.lean#L28) | exploding.tex:1351-1361 (label theorem:counterexample) | DRAFT_SORRY |
+| `thm-counterexample` | [Exploding.Frozen.counterexample](Exploding/Frozen/Counterexample.lean#L29) | exploding.tex:1351-1361 (label theorem:counterexample) | SEALED |
 | `prop-explosion-criteria` | [Exploding.Frozen.explosion_criteria](Exploding/Frozen/ExplosionCriteria.lean#L19) | exploding.tex:1821-1825 (label prop:explosion_criteria) | SEALED |
 | `prop-box-crossing` | [Exploding.Frozen.box_crossing](Exploding/Frozen/BoxCrossing.lean#L22) | exploding.tex:1986-1988 (P is box-crossing) | SEALED |
 | `ext-fey-levine-peres` | [Exploding.External.FeyLevinePeresExplosive](Exploding/External/FeyLevinePeres.lean#L18) | exploding.tex:238-240 (label prop:fey_levine_peres_explode) | FROZEN |

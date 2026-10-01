@@ -11,6 +11,7 @@ import Exploding.External.AntalPisztora
 import Exploding.Support.LWCLipE
 import Exploding.Support.LWCProof8
 import Exploding.Support.MKingman4
+import Exploding.Support.KingmanBAWire
 
 open Exploding LatticeProb MeasureTheory Filter
 
@@ -66,9 +67,7 @@ theorem Exploding.Frozen.convergence_of_the_last_wave (d : ℕ) (hd : 2 ≤ d) (
           |((clusterArrival η (0 : Site d) x).toNat : ℝ) -
             ((clusterArrival η (0 : Site d) x').toNat : ℝ)|
               ≤ C * (mnorm (x - x') : ℝ) + Real.log n ^ γ) :=
-    ⟨Exploding.lwc8_hking_of_mk
-        (Exploding.mk4_kingman_linear_of_boundedAbove (by sorry : mk4_boundedAboveKingman))
-        d hd p hp hp1 hLSSB hHole hChem,
+    ⟨Exploding.king_hking d hd p hp hp1 hLSSB hHole hChem,
       Exploding.lwcl_far_lipschitz d hd p hp hp1 hLSSB hHole hChem⟩
   obtain ⟨N, hcont, hconvex, hhom, hking_ae⟩ := hking
   refine ⟨N, hcont, hconvex, hhom, ?_⟩

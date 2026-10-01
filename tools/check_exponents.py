@@ -43,7 +43,7 @@ def paper_path() -> Path:
 # Superscripts that are not exponents of a quantity: set names like `ℤ^d`, the
 # inverse in `Δ^{-1}`, the summation limits, and the `θ`-expressions of lem:exp,
 # which Lean writes with `Real.exp` rather than with `^`.
-NOISE = {"2", "+", "-1", "\Z", "\R", "\infty", "\ast", "\star", "j", "n", "m", "k", "i"}
+NOISE = {"2", "+", "-1", r"\Z", r"\R", r"\infty", r"\ast", r"\star", "j", "n", "m", "k", "i"}
 
 # Per node: exponents present in the paper's line range but legitimately absent
 # from this node's Lean statement, with the reason.

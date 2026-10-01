@@ -6,6 +6,7 @@ import Exploding.Support.Hypotheses
 import Exploding.Support.GLWProofAux
 import Exploding.Support.GLWProof2
 import Exploding.Support.MKingman
+import Exploding.Support.MKingman4
 import Exploding.External.LiggettSchonmannStacey
 import Exploding.External.LiggettSchonmannStaceyBoundedDegree
 import Exploding.External.MathieuHoles
@@ -55,9 +56,9 @@ theorem Exploding.Frozen.convergence_of_the_generalized_last_wave (d : ℕ) (hd 
                 - N y| ≤ ε
 -- FROZEN-STATEMENT-END
 := by
-  obtain ⟨hmk, hlips, hconv⟩ :
-      mk_kingman_linear ∧ glw2_LipschitzLocal d ηmin P ∧
+  obtain ⟨hba, hlips, hconv⟩ :
+      mk4_boundedAboveKingman ∧ glw2_LipschitzLocal d ηmin P ∧
         glw2_Section3Convergence d hd ηmin hηmin L hL P := by
     sorry
   exact glw2_assemble d hd ηmin hηmin L hL P hP hsupp hstat herg h1 h3 h4 hLSS hLSSB hHole hChem
-    (glw2_KingmanCore_of_mk hmk) hlips hconv
+    (glw2_KingmanCore_of_mk (mk4_kingman_linear_of_boundedAbove hba)) hlips hconv

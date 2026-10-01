@@ -47,10 +47,11 @@ theorem Exploding.Frozen.convergence_of_the_last_wave (d : ℕ) (hd : 2 ≤ d) (
                 - N y| ≤ ε
 -- FROZEN-STATEMENT-END
 := by
-  -- The one open conjunction (gate rule 11): the moment-free Kingman theorem `mk4_boundedAboveKingman`,
-  -- from which `lwc8_hking_of_mk` produces the limit shape `N`; the far bound of `eq:lastwave_lipschitz` is `lwcl_far_lipschitz`.  The real-analysis
-  -- upgrade from lattice directions to locally uniform convergence is proved in
-  -- `Exploding.Support.LWCProof3`, and the transfer to the last wave is proved below.
+  -- The limit shape `N` comes from the Lipschitz form of the subadditive ergodic theorem
+  -- (`king_hking`, from `king_lipKingman`), whose Lipschitz input is the far bound of
+  -- `eq:lastwave_lipschitz` (`lwcl_far_lipschitz`).  The upgrade from lattice directions to
+  -- locally uniform convergence is `Exploding.Support.LWCProof3`; the transfer to the last
+  -- wave is proved below.
   obtain ⟨hking, hlip⟩ :
       (∃ N : (Fin d → ℝ) → ℝ,
         Continuous N ∧ ConvexOn ℝ Set.univ N ∧

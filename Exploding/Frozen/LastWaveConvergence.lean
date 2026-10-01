@@ -9,6 +9,8 @@ import Exploding.External.LiggettSchonmannStaceyBoundedDegree
 import Exploding.External.MathieuHoles
 import Exploding.External.AntalPisztora
 import Exploding.Support.LWCLipE
+import Exploding.Support.LWCProof8
+import Exploding.Support.MKingman4
 
 open Exploding LatticeProb MeasureTheory Filter
 
@@ -44,8 +46,8 @@ theorem Exploding.Frozen.convergence_of_the_last_wave (d : ℕ) (hd : 2 ≤ d) (
                 - N y| ≤ ε
 -- FROZEN-STATEMENT-END
 := by
-  -- The one open conjunction (gate rule 11): the moment-free Kingman step producing the
-  -- limit shape `N`; the far bound of `eq:lastwave_lipschitz` is `lwcl_far_lipschitz`.  The real-analysis
+  -- The one open conjunction (gate rule 11): the moment-free Kingman theorem `mk4_boundedAboveKingman`,
+  -- from which `lwc8_hking_of_mk` produces the limit shape `N`; the far bound of `eq:lastwave_lipschitz` is `lwcl_far_lipschitz`.  The real-analysis
   -- upgrade from lattice directions to locally uniform convergence is proved in
   -- `Exploding.Support.LWCProof3`, and the transfer to the last wave is proved below.
   obtain ⟨hking, hlip⟩ :
@@ -64,7 +66,10 @@ theorem Exploding.Frozen.convergence_of_the_last_wave (d : ℕ) (hd : 2 ≤ d) (
           |((clusterArrival η (0 : Site d) x).toNat : ℝ) -
             ((clusterArrival η (0 : Site d) x').toNat : ℝ)|
               ≤ C * (mnorm (x - x') : ℝ) + Real.log n ^ γ) :=
-    ⟨by sorry, Exploding.lwcl_far_lipschitz d hd p hp hp1 hLSSB hHole hChem⟩
+    ⟨Exploding.lwc8_hking_of_mk
+        (Exploding.mk4_kingman_linear_of_boundedAbove (by sorry : mk4_boundedAboveKingman))
+        d hd p hp hp1 hLSSB hHole hChem,
+      Exploding.lwcl_far_lipschitz d hd p hp hp1 hLSSB hHole hChem⟩
   obtain ⟨N, hcont, hconvex, hhom, hking_ae⟩ := hking
   refine ⟨N, hcont, hconvex, hhom, ?_⟩
   apply lwc_transfer d hd p hp hp1 hLSSB hHole hChem N

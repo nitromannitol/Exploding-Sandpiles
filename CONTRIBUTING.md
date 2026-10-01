@@ -1,7 +1,9 @@
 # Contributing / Building notes
 
-This repository is a formalization in progress: 5 of its 29 registered statements are
-proved, and none of the paper's main results is yet.  Issues and pull requests are welcome.
+This repository formalizes the paper *A shape theorem for exploding sandpiles*: 22 of its
+29 registered statements are proved (`SEALED`), and the remaining 7 are cited results carried
+as explicit hypotheses (`FROZEN`).  No proof obligation is open.  Issues and pull requests
+are welcome.
 
 ## Building locally
 

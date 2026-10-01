@@ -188,9 +188,9 @@ correspondence between the two sources.
 ## Verified against a Mathlib-only statement
 
 Not yet.  The repositories this one follows restate each main theorem using only Mathlib and
-check it with [`leanprover/comparator`](https://github.com/leanprover/comparator).  Such a
-check certifies nothing while the main theorems rest on `sorry`, so the challenges will be
-added when they are sealed; [`Audit/README.md`](Audit/README.md) describes the plan.
+check it with [`leanprover/comparator`](https://github.com/leanprover/comparator).  Every
+main theorem is sealed, so the challenges can now be built; none exists yet.
+[`Audit/README.md`](Audit/README.md) describes the plan.
 
 ## Building
 

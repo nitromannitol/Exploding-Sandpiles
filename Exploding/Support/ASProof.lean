@@ -14,9 +14,9 @@ It contains
   `as_tildeV_regular`, `as_tildeV_lap_nonpos_off_tildeP` and the delicate
   floor-arithmetic step `as_step2_approx2_step`,
 * the conditional assemblies `as_ineq1` and `as_ineq2`, which take the
-  still-open claims as hypotheses.
+  five claims as hypotheses.
 
-The five open claims (supplied by the frozen proof body as `sorry` steps) are:
+The five claims, proved in the `ASProof2`–`ASProof7` companion files, are:
 robustness implies every centred wave stabilizes (the two explosion notions
 agree), finite-sink stabilization (`as_tildeP`'s reach), `eq:approx1`'s
 reach of the last wave to `as_tildeP`, `|as_tildeP| < ∞`, and
@@ -275,8 +275,8 @@ theorem as_coord_bdd_finite {d : ℕ} (x : Site d) (R : ℝ)
   exact h_finite.subset h_subset
 
 /-- **New, real modulo `Exploding.Frozen.last_penultimate_cluster` (a FROZEN
-statement of this project, cf. `PenultimateCluster.lean`; its own proof is
-still `sorry` but it is a valid citable target exactly like
+statement of this project, cf. `PenultimateCluster.lean`; it is a valid
+citable target exactly like
 `Exploding.Frozen.renormalization_properties` elsewhere).** Applies it at
 `x := 0` (using `mnorm (0:Site d) = 0 ≤ n` for any `n ≥ n0`) to bound
 `penultimateCluster η 0` inside a coordinatewise box of radius `(log n)^γ`,

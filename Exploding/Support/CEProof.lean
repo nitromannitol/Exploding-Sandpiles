@@ -4,7 +4,8 @@ Section 6 that reduce to the Step 1 relay / Step 3'-stacking machinery already
 proved in `Exploding/Support/SubRelay.lean`, together with the real-analysis
 assembly of `T(n)/n`.  The genuinely new Step 3-4 material (the reflected
 cylinder front) enters only through the explicit hypotheses `hSlow2D`,
-`hLow` and `hBdd`; the frozen statement discharges those with `sorry`.
+`hLow` and `hBdd`; the frozen proof supplies those from `Exploding/Support/CESlow4.lean`
+and `Exploding/Support/CELow4.lean`.
 -/
 import Exploding.Support.SubRelay
 

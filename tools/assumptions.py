@@ -15,6 +15,9 @@ try:
 except ImportError:
     sys.exit("assumptions.py: PyYAML is required")
 
+sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent))
+from check_manifest import strip_block_comments  # noqa: E402
+
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 BEGIN, END = "-- FROZEN-STATEMENT-BEGIN", "-- FROZEN-STATEMENT-END"
 
@@ -58,6 +61,81 @@ def bridge_proof(n):
     return None
 
 
+def _theorem_headers(text):
+    """Yield `(name, binders, type, raw)` for each top-level `theorem` declaration.
+
+    `binders` is the text between the name and the first top-level colon, `type` the text
+    between that colon and the `:=` ending the header, and `raw` the whole header up to the
+    `:=`.  `text` must have comments masked (pass it through `strip_block_comments`).
+    """
+    pattern = re.compile(
+        r"(?m)^[ \t]*(?:noncomputable\s+|protected\s+|private\s+)*"
+        r"theorem\s+([A-Za-z0-9_'.]+)")
+    for m in pattern.finditer(text):
+        name = m.group(1)
+        i = m.end()
+        depth = 0
+        end = None
+        j = i
+        while j < len(text):
+            ch = text[j]
+            if ch in "([{":
+                depth += 1
+            elif ch in ")]}":
+                depth -= 1
+            elif depth == 0 and text.startswith(":=", j):
+                end = j
+                break
+            j += 1
+        if end is None:
+            continue
+        header = text[i:end]
+        depth = 0
+        colon = None
+        for k, ch in enumerate(header):
+            if ch in "([{":
+                depth += 1
+            elif ch in ")]}":
+                depth -= 1
+            elif ch == ":" and depth == 0:
+                colon = k
+                break
+        if colon is None:
+            continue
+        binders = header[:colon].strip()
+        typ = header[colon + 1:].strip()
+        raw = f"theorem {name}{header}".rstrip()
+        yield name, binders, typ, raw
+
+
+def conditional_bridge_proof(n, externals, frozen_text):
+    """A theorem outside `External/` and `Frozen/` that derives the assumed proposition from
+    another registered external and is consumed by a frozen statement.
+
+    Such a theorem discharges the hypothesis only under the other external, so it is reported
+    as *proved here, under hypotheses* rather than as an outright proof.  Requiring that the
+    name occurs in a frozen file keeps the note to the derivations the sealed surface uses.
+    """
+    export = n["export"]
+    short = export.split(".")[-1]
+    names = {export, "External." + short}
+    pkg = pathlib.Path(n["file"]).parts[0]
+    for f in sorted((ROOT / pkg).rglob("*.lean")):
+        rel = f.relative_to(ROOT)
+        if "External" in rel.parts or "Frozen" in rel.parts:
+            continue
+        text = strip_block_comments(f.read_text(encoding="utf-8"))
+        for name, binders, typ, raw in _theorem_headers(text):
+            if not binders or typ not in names:
+                continue
+            if not any(exp in binders for exp in externals):
+                continue
+            if re.search(r"\b" + re.escape(name) + r"\b", frozen_text) is None:
+                continue
+            return {"id": name, "file": str(rel), "conditional_statement": raw}
+    return None
+
+
 def conditional(c):
     """The frozen statement of a companion node, when it carries hypotheses; else None.
 
@@ -73,6 +151,14 @@ def conditional(c):
         return None
     # Show the statement only: a frozen block may also carry the proof after `:=`.
     return block.split(":=", 1)[0].rstrip()
+
+
+def bridge_condition(c):
+    """The statement displayed for a derived proof, conditional or not; None when the proof
+    is unconditional (a `*Proved.lean` companion or an outright `bridge_proof`)."""
+    if c.get("conditional_statement"):
+        return c["conditional_statement"]
+    return conditional(c)
 
 
 def render():
@@ -99,12 +185,19 @@ def render():
         "`ledger/manifest.yaml` and the Lean sources; do not edit it by hand.",
         "",
     ]
+    frozen_text = "\n".join(
+        p.read_text(encoding="utf-8")
+        for p in sorted((ROOT / "Exploding" / "Frozen").rglob("*.lean")))
+    externals = {n["export"] for n in man["nodes"] if n.get("state") == "FROZEN"}
     for n in assumed:
         stem = pathlib.Path(n["file"]).stem
-        if stem not in comp:
-            b = bridge_proof(n)
-            if b:
-                comp[stem] = b
+        if stem in comp:
+            continue
+        b = bridge_proof(n)
+        if b is None:
+            b = conditional_bridge_proof(n, externals, frozen_text)
+        if b:
+            comp[stem] = b
     withproof = [n for n in assumed if pathlib.Path(n["file"]).stem in comp]
     if withproof:
         out += [(f"Of these, **{len(withproof)} are also proved in this repository** and so need not "
@@ -113,7 +206,7 @@ def render():
                  "Of these, **one is also proved in this repository** and so need not "
                  "be taken on trust; it is marked below with the theorem that proves it. ") +
                 f"The remaining **{len(assumed) - len(withproof)}** are assumed outright.", ""]
-        ncond = sum(1 for n in withproof if conditional(comp[pathlib.Path(n["file"]).stem]))
+        ncond = sum(1 for n in withproof if bridge_condition(comp[pathlib.Path(n["file"]).stem]))
         if ncond:
             out[-2] += ((f" Of the {len(withproof)} proofs, **{ncond}** hold only under hypotheses "
                          "of their own, shown with them; where those fail, the result is still assumed.")
@@ -122,7 +215,7 @@ def render():
                          "those fail, the result is still assumed."))
     for n in sorted(assumed, key=lambda x: x["id"]):
         c = comp.get(pathlib.Path(n["file"]).stem)
-        cond = conditional(c) if c else None
+        cond = bridge_condition(c) if c else None
         if cond:
             line = (f"* **Also proved here, under hypotheses**, by `{c['id']}` in `{c['file']}`, "
                     "whose statement is shown after the assumed one; where those hypotheses "

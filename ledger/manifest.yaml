@@ -25,6 +25,7 @@ nodes:
     export: Exploding.Frozen.limit_shape
     state: SEALED
     frozen_sha256: 7a9bc664298b2adfc0b528e3f1d6ba565efdcb2da1d055eb6e222032e835b44b
+    closure_sha256: 9452aef58fe5be3d2e73376b97502f1c15e8a83ac7db608683db47c60398c6a8
     provider: Exploding.Frozen.limit_shape
     approved: "2026-09-24"
 
@@ -36,6 +37,7 @@ nodes:
     export: Exploding.Frozen.convergence_of_time_constant
     state: SEALED
     frozen_sha256: e2982ba6c4bcfa0f77bde5a780c388f19a53c0dea53751b01958d6d9bed8f8a1
+    closure_sha256: d8de311133b2df87608b8cf2da97975aab922b242cd3966f537d68132d78608b
     provider: Exploding.Frozen.convergence_of_time_constant
     approved: "2026-09-24"
 
@@ -47,6 +49,7 @@ nodes:
     export: Exploding.Frozen.explosive
     state: SEALED
     frozen_sha256: 8132c02216ac6b502b1b4e6bb898ead2d8aaeea4a7b9da2795b1f83af4b403ed
+    closure_sha256: 9aab685c9ae56d183558908b6885a177a84707a133f5bb13aa1b6296e92a701e
     provider: Exploding.Frozen.explosive
     approved: "2026-09-24"
 
@@ -58,6 +61,7 @@ nodes:
     export: Exploding.Frozen.renormalization_properties
     state: SEALED
     frozen_sha256: 79b4e8c59d8d852b23963f9f48ecd2a4c39a6d1e66163c3eaa41f57c08ade127
+    closure_sha256: e1fbda039f229cc3970c40943ccbabd91047436071447c13c923fe0c65e916fd
     provider: Exploding.Frozen.renormalization_properties
     approved: "2026-09-24"
 
@@ -69,6 +73,7 @@ nodes:
     export: Exploding.Frozen.square_lower_bound
     state: SEALED
     frozen_sha256: ef7444fd525fb739159df1b1f18e6d7795f7028ca66531e1c9f675c3b15ab9b7
+    closure_sha256: 90f46f3de965432d54b837cc13b9ef4ee9e86282de8e2e81a31c57ef2dd77960
     provider: Exploding.Frozen.square_lower_bound
     approved: "2026-09-24"
 
@@ -80,6 +85,7 @@ nodes:
     export: Exploding.Frozen.last_penultimate_cluster
     state: SEALED
     frozen_sha256: 3cfbfa23e89ec1c52bed2c12a4a6be62d2cd17bb135b6f9438498d8f244d8544
+    closure_sha256: 3d5a2f4b74fe32a432a2529ad00f46fac74402eae25e5254079ba54a62d4a7cc
     provider: Exploding.Frozen.last_penultimate_cluster
     approved: "2026-09-24"
 
@@ -91,6 +97,7 @@ nodes:
     export: Exploding.Frozen.penultimate_upper_bound
     state: SEALED
     frozen_sha256: 755dc2bd6ea319253c74e38c3f0320cd0b6ec98d60157d330873710e2519e903
+    closure_sha256: 1d2f2a78d56ec40472f7752e4c65eea0ab4d26481d5dfd2733a8eaac2812122e
     provider: Exploding.Frozen.penultimate_upper_bound
     approved: "2026-09-24"
 
@@ -102,6 +109,7 @@ nodes:
     export: Exploding.Frozen.last_penultimate_close
     state: SEALED
     frozen_sha256: 155ee18f906de192a37114b586420bfae02efadb3d6d74235494dccf37ea9af7
+    closure_sha256: 8809d5aaeb8694fe1e159ffeb3a85240465aa90c45ed1b32619d396d1a3a7876
     provider: Exploding.Frozen.last_penultimate_close
     approved: "2026-09-24"
 
@@ -113,6 +121,7 @@ nodes:
     export: Exploding.Frozen.convergence_of_the_last_wave
     state: SEALED
     frozen_sha256: 757cd6a770e4ea98496b4203ac93795842f3cbafac4b0ee55cea24e49f32e679
+    closure_sha256: 7bbd08b1ea43a5a7b547f5f6ed0a1e1ff13299548c88f61b24d4048383f9c1bf
     provider: Exploding.Frozen.convergence_of_the_last_wave
     approved: "2026-09-24"
 
@@ -124,6 +133,7 @@ nodes:
     export: Exploding.Frozen.approximate_subadditive
     state: SEALED
     frozen_sha256: 724f16a435a724da7cf5af101b9d248d41329ddd4286e2360a1502aa9f2138a4
+    closure_sha256: fd050d97f3820155430dabbd8a70840b7e97d22490af56cba2f5f1c6a9b2a4d0
     provider: Exploding.Frozen.approximate_subadditive
     approved: "2026-09-24"
 
@@ -135,6 +145,7 @@ nodes:
     export: Exploding.Frozen.convergence_of_the_generalized_last_wave
     state: SEALED
     frozen_sha256: 63edbd1a3a9902f41df41c9c3efbe3e73ae7802ffacce176582e67f10b0cf8f3
+    closure_sha256: 94a2d61d86c120e99b2c3cfed7c719a993bbb214e683cb4fab02daacf9f09ceb
     provider: Exploding.Frozen.convergence_of_the_generalized_last_wave
     approved: "2026-09-24"
 
@@ -146,6 +157,7 @@ nodes:
     export: Exploding.Frozen.generalized_convergence
     state: SEALED
     frozen_sha256: d81928d9c4ec6e2469184bd5c807767999597eacb970ea31d10a3458fd5f9e75
+    closure_sha256: 45cc4e17ac16b9828683dbeefea2c533c793e7b29531c5392820fe4b656b6ad1
     provider: Exploding.Frozen.generalized_convergence
     approved: "2026-09-24"
 
@@ -157,6 +169,7 @@ nodes:
     export: Exploding.Frozen.counterexample
     state: SEALED
     frozen_sha256: c9c8b8778d204a8280a899f7dda2fefda47e85854c1169bb477828b81f191dd3
+    closure_sha256: ff157998636d1fa5296aa50733454d0a0538d591c0824fd6e6fcab3f9e9b4b9e
     provider: Exploding.Frozen.counterexample
     approved: "2026-09-24"
 
@@ -168,6 +181,7 @@ nodes:
     export: Exploding.Frozen.explosion_criteria
     state: SEALED
     frozen_sha256: 1346c0fe8b765d135baa9ad2b1a81e233decd87ad277bc353504f7b721b270ca
+    closure_sha256: 320b10029b506fd7fcce25166048ce5e35babd4c0e943dd4666e948f0e492c69
     provider: Exploding.Frozen.explosion_criteria
     approved: "2026-09-24"
 
@@ -179,6 +193,7 @@ nodes:
     export: Exploding.Frozen.box_crossing
     state: SEALED
     frozen_sha256: d0e2daded00c514cd4ea1476eb509a9440219ff70994ebcc7fa6b1b58a9a0f1a
+    closure_sha256: 4c609c829820817e8d325fd4616d65e902f9028939fddb11abc860e55b388429
     provider: Exploding.Frozen.box_crossing
     approved: "2026-09-24"
 
@@ -190,6 +205,7 @@ nodes:
     export: Exploding.External.FeyLevinePeresExplosive
     state: FROZEN
     frozen_sha256: 16cbe44911cfe7e8ec9c4369cb757275bcb1d30cc51822c13f68488d34e7ca02
+    closure_sha256: 7d32df49d39e9a46798ae2c7fded657a853975017764efa694fa53e31947d473
     provider: Exploding.External.FeyLevinePeresExplosive
     approved: "2026-09-10"
 
@@ -201,6 +217,7 @@ nodes:
     export: Exploding.External.SchonmannBootstrap
     state: FROZEN
     frozen_sha256: 1ef132590c8069beea81e81b996ec77278f3f8614af4224fec242eb74c88e6de
+    closure_sha256: 6fca9aa8f47b3d1b8ec861362ad6e79194487dc5568bdf6282488fd312e76925
     provider: Exploding.External.SchonmannBootstrap
     approved: "2026-09-10"
 
@@ -212,6 +229,7 @@ nodes:
     export: Exploding.External.LiggettSchonmannStacey
     state: FROZEN
     frozen_sha256: 60327e46178ffdfcf6edcdcc3590b2896f6ea1a0bdaf71064c3782d2e159cd96
+    closure_sha256: 9ea0611d9fc14746b5411b138a27df13a147c43708c92de8a0c7756f227a0da1
     provider: Exploding.External.LiggettSchonmannStacey
     approved: "2026-09-24"
 
@@ -223,6 +241,7 @@ nodes:
     export: Exploding.External.LiggettSchonmannStaceyBoundedDegree
     state: FROZEN
     frozen_sha256: 21027b6175c4669b5dd05dd0e6083e3f962b6df4955405b6ddf28305eaac4e4f
+    closure_sha256: 1d4f6fd2c31b276b7698ba40d8bfd39d6a81032b0ceb93a14a5eddf8e721116c
     provider: Exploding.External.LiggettSchonmannStaceyBoundedDegree
     approved: "2026-09-24"
 
@@ -234,6 +253,7 @@ nodes:
     export: Exploding.External.AntalPisztoraChemicalDistance
     state: FROZEN
     frozen_sha256: 952704b4ea136adac8cd89abdfdd69dedc9a57e4362d8f376117324a6bccbfb7
+    closure_sha256: 101626948703a80b72588b7f9e840a54a47815bc573425e093419932710d0cf0
     provider: Exploding.External.AntalPisztoraChemicalDistance
     approved: "2026-09-24"
 
@@ -245,6 +265,7 @@ nodes:
     export: Exploding.External.MathieuHoleVolume
     state: FROZEN
     frozen_sha256: 0e80c60c71a1048803975b1b15f05e7eb37519bb878f00d7e6277d97a9581bb7
+    closure_sha256: 1f890c0c3f3ffa37fae313b9514e8a14ef983cb6dfeb6f097a2afb4dda458be6
     provider: Exploding.External.MathieuHoleVolume
     approved: "2026-09-24"
 
@@ -256,6 +277,7 @@ nodes:
     export: Exploding.External.FeyMeesterRedigLeastAction
     state: FROZEN
     frozen_sha256: f834322e354be0f0fcbfbd64b3f9eaefbfadf4457ff510062932911d4f45e44b
+    closure_sha256: 66b134f67c410f8bd472baa957db30202ef9066e0d3fafbb52ed62e177c28604
     provider: Exploding.External.FeyMeesterRedigLeastAction
     approved: "2026-09-24"
 
@@ -267,6 +289,7 @@ nodes:
     export: Exploding.Frozen.last_wave_bound
     state: SEALED
     frozen_sha256: 747c9a088fbc2cde832d7fb7842235dd0ba49396ddf1e67a96c5bed6e2872338
+    closure_sha256: 2bfc67b3b9bc251d1a709ca706d995ca2f610b5e01e385d9d52969f21d636400
     provider: Exploding.Frozen.last_wave_bound
     approved: "2026-09-10"
 
@@ -278,6 +301,7 @@ nodes:
     export: Exploding.Frozen.dimensional_reduction
     state: SEALED
     frozen_sha256: 5777a520125b85ceccd832b9191d16da33405025e490edfaa05aa10b546da169
+    closure_sha256: 5b8f70c729ef5acb6903bdddec5fae0839664e9e412f7a9d132956e1c1fe32ef
     provider: Exploding.Frozen.dimensional_reduction
     approved: "2026-09-10"
 
@@ -289,6 +313,7 @@ nodes:
     export: Exploding.Frozen.approx_subadditivity
     state: SEALED
     frozen_sha256: cc8f12ca936e4c7004662f4796489012419c44eb5071f5549ea1fa3cf5fc67f5
+    closure_sha256: 25f2e869473ec46977491845a922638d538d44feb379848d35c2c6deda4f73ff
     provider: Exploding.Frozen.approx_subadditivity
     approved: "2026-09-10"
 
@@ -300,6 +325,7 @@ nodes:
     export: Exploding.Frozen.recurrence
     state: SEALED
     frozen_sha256: fb09b457811848161a746759e6fd31ee024a56bee43df4e23cca58af7ae87fa1
+    closure_sha256: ece9c83ad0ab470ba157e422cd7ba64ec7edd6b431013fc90f8b5991b95a332a
     provider: Exploding.Frozen.recurrence
     approved: "2026-09-13"
 
@@ -311,6 +337,7 @@ nodes:
     export: Exploding.Frozen.local_convexity
     state: SEALED
     frozen_sha256: c265b27336538e776144ad00d8ad3e44a93816312863f9b3cb9dc3d5997e91f4
+    closure_sha256: 9fc397172a1d2fb1a95712e26d81cbf5bc54845e253fb4ae362f361660dfe3b7
     provider: Exploding.Frozen.local_convexity
     approved: "2026-09-27"
 
@@ -322,6 +349,7 @@ nodes:
     export: Exploding.Frozen.finite_exploding
     state: SEALED
     frozen_sha256: 2bdfdb526cdb4146e9765019df878274f2d3d49991244591748bbce579ac9772
+    closure_sha256: 77673f7e7668fc185b4aa41a865f2abe3a7deca9485e1c58d58353968b2ca7f5
     provider: Exploding.Frozen.finite_exploding
     approved: "2026-09-28"
 
@@ -333,6 +361,7 @@ nodes:
     export: Exploding.Frozen.crossing_time
     state: SEALED
     frozen_sha256: 86d88877abf5e6e1dc37f9bf5e1a1552bb04588de3fa050596b1faf4fb3d5e38
+    closure_sha256: 5f0632a4b96204dfd366f2ac98a1044bf8b675751e6e881271076bb7d8885c0d
     provider: Exploding.Frozen.crossing_time
     approved: "2026-09-27"
 

@@ -52,11 +52,16 @@ import Exploding.Support.ExtMHProof4
 import Exploding.Support.ExtMHProof5
 import Exploding.Support.ExtMHProof6
 import Exploding.Support.ExtMHProof7
+import Exploding.Support.ExtMHProof8
 import Exploding.Support.ExtAPDefs
 import Exploding.Support.ExtAPProof
 import Exploding.Support.ExtAPProof2
 import Exploding.Support.ExtAPProof3
 import Exploding.Support.ExtAPProof4
+import Exploding.Support.ExtAPProof5
+import Exploding.Support.ExtAPProof6
+import Exploding.Support.ExtAPProof7
+import Exploding.Support.ExtAPProof8
 import Exploding.Support.ExtSchTop
 import Exploding.Support.ExtSchProb
 import Exploding.Support.ExtSchProof
@@ -68,6 +73,7 @@ import Exploding.Support.ExtSchProof6
 import Exploding.Support.ExtSchProof7
 import Exploding.Support.ExtSchProof8
 import Exploding.Support.ExtSchProof9
+import Exploding.Support.ExtSchProof10
 import Exploding.Support.S3CloseA
 import Exploding.Support.S3CloseB
 import Exploding.Support.S3CloseC

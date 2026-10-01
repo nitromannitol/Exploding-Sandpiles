@@ -11,6 +11,7 @@ import Exploding.External.LiggettSchonmannStacey
 import Exploding.External.LiggettSchonmannStaceyBoundedDegree
 import Exploding.External.MathieuHoles
 import Exploding.External.AntalPisztora
+import Exploding.Support.KingmanBAWireGlw
 
 open Exploding LatticeProb MeasureTheory Filter
 
@@ -56,9 +57,12 @@ theorem Exploding.Frozen.convergence_of_the_generalized_last_wave (d : ℕ) (hd 
                 - N y| ≤ ε
 -- FROZEN-STATEMENT-END
 := by
-  obtain ⟨hba, hlips, hconv⟩ :
-      mk4_boundedAboveKingman ∧ glw2_LipschitzLocal d ηmin P ∧
-        glw2_Section3Convergence d hd ηmin hηmin L hL P := by
+  -- The one open conjunction: the local Lipschitz bound of the arrival times and the
+  -- Section-3 convergence along lattice directions.  The subadditive ergodic step is
+  -- `king_lipKingman`, which needs the Lipschitz bound instead of integrability (the
+  -- integrability-free form `mk4_boundedAboveKingman` is false: `king_not_boundedAbove`).
+  obtain ⟨hlips, hconv⟩ :
+      glw2_LipschitzLocal d ηmin P ∧ king_Section3Convergence d hd ηmin hηmin L hL P := by
     sorry
-  exact glw2_assemble d hd ηmin hηmin L hL P hP hsupp hstat herg h1 h3 h4 hLSS hLSSB hHole hChem
-    (glw2_KingmanCore_of_mk (mk4_kingman_linear_of_boundedAbove hba)) hlips hconv
+  exact king_glw_assemble d hd ηmin hηmin L hL P hP hsupp hstat herg h1 h3 h4 hLSS hLSSB hHole
+    hChem hlips hconv

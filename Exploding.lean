@@ -52,6 +52,7 @@ import Exploding.Support.ExtLSSCyl
 import Exploding.Support.ExtLSSUpHull
 import Exploding.Support.ExtLSSReg
 import Exploding.Support.ExtLSSCountable
+import Exploding.Support.ExtBCBernoulli
 import Exploding.Support.ExtMHBase
 import Exploding.Support.ExtMHProof
 import Exploding.Support.ExtMHCount
@@ -70,6 +71,7 @@ import Exploding.Support.ExtMHProof13
 import Exploding.Support.ExtMHProof14
 import Exploding.Support.ExtMHProof15
 import Exploding.Support.ExtMHProof16
+import Exploding.Support.ExtMHProof17
 import Exploding.Support.ExtAPDefs
 import Exploding.Support.ExtAPProof
 import Exploding.Support.ExtAPProof2
@@ -88,6 +90,7 @@ import Exploding.Support.ExtAPProof14
 import Exploding.Support.ExtAPProof15
 import Exploding.Support.ExtAPProof16
 import Exploding.Support.ExtAPProof17
+import Exploding.Support.ExtAPProof18
 import Exploding.Support.ExtSchTop
 import Exploding.Support.ExtSchProb
 import Exploding.Support.ExtSchProof
@@ -108,6 +111,7 @@ import Exploding.Support.ExtSchProof15
 import Exploding.Support.ExtSchProof16
 import Exploding.Support.ExtSchProof17
 import Exploding.Support.ExtSchProof18
+import Exploding.Support.ExtSchProof19
 import Exploding.Support.S3CloseA
 import Exploding.Support.S3CloseB
 import Exploding.Support.S3CloseC

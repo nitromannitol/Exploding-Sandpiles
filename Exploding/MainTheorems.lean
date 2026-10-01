@@ -48,10 +48,10 @@ Lemmas 2.1 and 3.1 to 3.7.
 
 ## Cited results
 
-Seven results of the literature that the paper cites are not proved here.  Each is stated as
-a proposition in `Exploding/External/` and registered as `FROZEN` in the manifest; a theorem
-that needs one takes it as an explicit hypothesis, and no `axiom` is declared (see
-`ASSUMPTIONS.md`):
+Seven results of the literature that the paper cites are stated in this development as
+assumptions.  Each is stated as a proposition in `Exploding/External/` and registered as
+`FROZEN` in the manifest; a theorem that needs one takes it as an explicit hypothesis, and no
+`axiom` is declared (see `ASSUMPTIONS.md`):
 
 * `FeyLevinePeresExplosive`, Theorem 1.1 of the paper (Proposition 1.4 of Fey, Levine and
   Peres), `hFLP`;

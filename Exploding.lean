@@ -39,7 +39,9 @@ import Exploding.Support.ExtLSSG
 import Exploding.Support.ExtFMR
 import Exploding.Support.ExtLSSLLL
 import Exploding.Support.ExtMHBase
+import Exploding.Support.ExtMHProof
 import Exploding.Support.ExtAPDefs
+import Exploding.Support.ExtAPProof
 import Exploding.Support.ExtSchTop
 import Exploding.Support.ExtSchProb
 import Exploding.Support.S3CloseA

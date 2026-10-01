@@ -44,6 +44,7 @@ import Exploding.Support.ExtAPDefs
 import Exploding.Support.ExtAPProof
 import Exploding.Support.ExtSchTop
 import Exploding.Support.ExtSchProb
+import Exploding.Support.ExtSchProof
 import Exploding.Support.S3CloseA
 import Exploding.Support.S3CloseB
 import Exploding.Support.S3CloseC

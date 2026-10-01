@@ -307,27 +307,5 @@ def glw2_Section3Convergence (d : ℕ) (_hd : 2 ≤ d) (ηmin : ℤ) (_hηmin : 
         P (cylinder s S) * P (cylinder s S)) →
   glw2_KingmanCore → glw2_LipschitzLocal d ηmin P → glw_Conclusion d P
 
-/-- The deterministic assembly: (A) and (B) are supplied by
-`glw2_kdep`/`glw2_shift_mixing`, and the three remaining Section-3 pieces are
-the open conjuncts. -/
-theorem glw2_assemble (d : ℕ) (hd : 2 ≤ d) (ηmin : ℤ) (hηmin : 0 ≤ ηmin)
-    (L : AddSubgroup (Site d)) (hL : L.index ≠ 0)
-    (P : Measure (Site d → ℤ)) (hP : IsProbabilityMeasure P)
-    (hsupp : ∀ᵐ η ∂P, InOmega d ηmin η)
-    (hstat : StationaryOn d L P) (herg : ErgodicOn d L P)
-    (h1 : FiniteRangeOfDependence d P) (h3 : PathFillingHyp d P)
-    (h4 : StronglyBoxCrossingHyp d P)
-    (hLSS : Exploding.External.LiggettSchonmannStacey)
-    (hLSSB : Exploding.External.LiggettSchonmannStaceyBoundedDegree)
-    (hHole : Exploding.External.MathieuHoleVolume)
-    (hChem : Exploding.External.AntalPisztoraChemicalDistance)
-    (hking : glw2_KingmanCore) (hlips : glw2_LipschitzLocal d ηmin P)
-    (hconv : glw2_Section3Convergence d hd ηmin hηmin L hL P) :
-    glw_Conclusion d P :=
-  hconv hP hsupp hstat herg h1 h3 h4 hLSS hLSSB hHole hChem
-    (fun k hk => glw2_kdep d P h1 k hk)
-    (fun y hy hy0 s S hS => glw2_shift_mixing d P h1 y
-      (glw_shift_ergodic_meas_pres d L P hstat y hy) hy0 s S hS)
-    hking hlips
 
 end Exploding

@@ -13,9 +13,8 @@ It contains
   the frozen `last_penultimate_cluster`), `as_podoTerminal_bound`,
   `as_tildeV_regular`, `as_tildeV_lap_nonpos_off_tildeP` and the delicate
   floor-arithmetic step `as_step2_approx2_step`,
-* the conditional assembly `as_ineq1`, `as_ineq2` and the final a.e.
-  `as_approximate_subadditive_of_gaps`, which take the five still-open claims
-  as hypotheses.
+* the conditional assemblies `as_ineq1` and `as_ineq2`, which take the
+  still-open claims as hypotheses.
 
 The five open claims (supplied by the frozen proof body as `sorry` steps) are:
 robustness implies every centred wave stabilizes (the two explosion notions
@@ -972,48 +971,4 @@ theorem as_explosionThreshold_spec {d : ℕ} (η : Site d → ℤ) (h : ¬ Robus
   change ¬ Stabilizable
     (fun x => η x + (explosionThreshold η : ℤ) * dirac (0 : Site d) x)
   exact hmem.2
-
-/-- The final a.e. assembly, conditional on the five open claims:
-`hrobust` (the equivalence of the two explosion notions, the contrapositive of
-`as_robust_implies_wave_stabilizable`), `hpodo` (finite-sink stabilization),
-`hlastreach` (`eq:approx1`'s reach), `htildePfin` (`|P̃| < ∞`) and `hspecial`
-(`eq:induction_specialcase2`). -/
-theorem as_approximate_subadditive_of_gaps
-    (d : ℕ) (hd : 2 ≤ d) (p : ℝ) (hp : 0 < p) (hp1 : p < 1)
-    (hLSSB : Exploding.External.LiggettSchonmannStaceyBoundedDegree)
-    (hHole : Exploding.External.MathieuHoleVolume)
-    (hChem : Exploding.External.AntalPisztoraChemicalDistance)
-    (hrobust : ∀ η : Site d → ℤ, (∀ x, 2 * (d : ℤ) - 2 ≤ η x) →
-      (∀ x, η x ≤ 2 * (d : ℤ) - 1) → Robust η →
-        ∀ n : ℕ, 1 ≤ n → WaveStabilizable η n (0 : Site d))
-    (hpodo : ∀ η : Site d → ℤ, (∀ x, 2 * (d : ℤ) - 2 ≤ η x) →
-      (∀ x, η x ≤ 2 * (d : ℤ) - 1) → ¬ Robust η →
-        (penultimateCluster η (0 : Site d)).Finite →
-          ∃ t0 : ℕ, ∀ x ∈ penultimateCluster η (0 : Site d),
-            1 ≤ podo (explodingPile η) t0 x)
-    (hlastreach : ∀ η : Site d → ℤ, (∀ x, 2 * (d : ℤ) - 2 ≤ η x) →
-      (∀ x, η x ≤ 2 * (d : ℤ) - 1) →
-        (∃ n : ℕ, 1 ≤ n ∧ ¬ WaveStabilizable η n (0 : Site d)) →
-          ∃ c : ℕ, ∀ x ∈ as_tildeP η, 1 ≤ lastWave η (0 : Site d) c x)
-    (htildePfin : ∀ η : Site d → ℤ, (as_tildeP η).Finite)
-    (hspecial : ∀ η : Site d → ℤ, (∀ x, 2 * (d : ℤ) - 2 ≤ η x) →
-      (∀ x, η x ≤ 2 * (d : ℤ) - 1) →
-        ∀ t : ℕ, ∀ x : Site d, 0 < as_wOdo η t x → 0 < as_tildeW η t x) :
-    ∀ᵐ η ∂(toyLaw d p), ∃ C1 C2 : ℕ, ∀ x : Site d,
-      arrival η x ≤ lastArrival η (0 : Site d) x + (C1 : ℕ∞) ∧
-        lastArrival η (0 : Site d) x ≤ arrival η x + (C2 : ℕ∞) := by
-  filter_upwards [as_eta_bounds d hd p hp hp1,
-    Exploding.Frozen.finite_exploding d hd p hp hp1 hLSSB hHole hChem,
-    as_penultimateCluster_finite d hd p hp hp1 hLSSB hHole hChem] with η hbounds hlast hPfin
-  have hlow : ∀ x, 2 * (d : ℤ) - 2 ≤ η x := fun x => (hbounds x).1
-  have hhigh : ∀ x, η x ≤ 2 * (d : ℤ) - 1 := fun x => (hbounds x).2
-  have hnotrobust : ¬ Robust η := by
-    intro hrob
-    obtain ⟨n, hn1, hnstab⟩ := hlast
-    exact hnstab (hrobust η hlow hhigh hrob n hn1)
-  have hexp1 : 1 ≤ explosionThreshold η := (as_explosionThreshold_spec η hnotrobust).1
-  obtain ⟨C1, hC1⟩ := as_ineq1 hd η hlow hhigh hlast (hpodo η hlow hhigh hnotrobust hPfin)
-  obtain ⟨C2, hC2⟩ := as_ineq2 hd η hlow hhigh hlast hexp1
-    (hlastreach η hlow hhigh hlast) (htildePfin η) (hspecial η hlow hhigh)
-  exact ⟨C1, C2, fun x => ⟨hC1 x, hC2 x⟩⟩
 

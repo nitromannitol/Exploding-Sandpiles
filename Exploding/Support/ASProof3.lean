@@ -187,37 +187,3 @@ theorem as3_hlastreach (d : ℕ) (hd : 2 ≤ d) (p : ℝ) (hp : 0 < p) (hp1 : p 
     wave_mono_time η hlow0 hd0 (waveThreshold η (0 : Site d)) (0 : Site d) h1 x
   linarith
 
-/-- The final a.e. assembly, now taking only the two remaining open claims
-`hrobust` and `hpodo`: the finiteness of `P̃` and the last-wave reach are the
-proved lemmas `as3_tildeP_finite` and `as3_hlastreach`. -/
-theorem as3_approximate_subadditive_of_gaps
-    (d : ℕ) (hd : 2 ≤ d) (p : ℝ) (hp : 0 < p) (hp1 : p < 1)
-    (hLSSB : Exploding.External.LiggettSchonmannStaceyBoundedDegree)
-    (hHole : Exploding.External.MathieuHoleVolume)
-    (hChem : Exploding.External.AntalPisztoraChemicalDistance)
-    (hrobust : ∀ η : Site d → ℤ, (∀ x, 2 * (d : ℤ) - 2 ≤ η x) →
-      (∀ x, η x ≤ 2 * (d : ℤ) - 1) → Robust η →
-        ∀ n : ℕ, 1 ≤ n → WaveStabilizable η n (0 : Site d))
-    (hpodo : ∀ η : Site d → ℤ, (∀ x, 2 * (d : ℤ) - 2 ≤ η x) →
-      (∀ x, η x ≤ 2 * (d : ℤ) - 1) → ¬ Robust η →
-        (penultimateCluster η (0 : Site d)).Finite →
-          ∃ t0 : ℕ, ∀ x ∈ penultimateCluster η (0 : Site d),
-            1 ≤ podo (explodingPile η) t0 x) :
-    ∀ᵐ η ∂(toyLaw d p), ∃ C1 C2 : ℕ, ∀ x : Site d,
-      arrival η x ≤ lastArrival η (0 : Site d) x + (C1 : ℕ∞) ∧
-        lastArrival η (0 : Site d) x ≤ arrival η x + (C2 : ℕ∞) := by
-  filter_upwards [as_eta_bounds d hd p hp hp1,
-    Exploding.Frozen.finite_exploding d hd p hp hp1 hLSSB hHole hChem,
-    as_penultimateCluster_finite d hd p hp hp1 hLSSB hHole hChem,
-    as3_hlastreach d hd p hp hp1 hLSSB hHole hChem] with η hbounds hlast hPfin hlastreach
-  have hlow : ∀ x, 2 * (d : ℤ) - 2 ≤ η x := fun x => (hbounds x).1
-  have hhigh : ∀ x, η x ≤ 2 * (d : ℤ) - 1 := fun x => (hbounds x).2
-  have hnotrobust : ¬ Robust η := by
-    intro hrob
-    obtain ⟨n, hn1, hnstab⟩ := hlast
-    exact hnstab (hrobust η hlow hhigh hrob n hn1)
-  have hexp1 : 1 ≤ explosionThreshold η := (as_explosionThreshold_spec η hnotrobust).1
-  obtain ⟨C1, hC1⟩ := as_ineq1 hd η hlow hhigh hlast (hpodo η hlow hhigh hnotrobust hPfin)
-  obtain ⟨C2, hC2⟩ := as_ineq2 hd η hlow hhigh hlast hexp1
-    hlastreach (as3_tildeP_finite η hhigh) (assp_special d hd η hlow hhigh)
-  exact ⟨C1, C2, fun x => ⟨hC1 x, hC2 x⟩⟩

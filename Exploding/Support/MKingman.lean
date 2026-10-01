@@ -56,9 +56,5 @@ theorem mk_kingman_linear_uniform {Ω : Type} [MeasurableSpace Ω] (μ : Measure
   filter_upwards [hlow, hc] with x hx hxc
   simpa [hxc] using hx
 
-/-- `glw2_KingmanCore` is an immediate specialization of `mk_kingman_linear`. -/
-theorem glw2_KingmanCore_of_mk (h : mk_kingman_linear) : glw2_KingmanCore := by
-  intro Ω _ μ _ T hT herg g hsub hg hgm C hlin K _hA _hApos
-  exact h (μ := μ) (T := T) hT herg g hsub hg hgm ⟨C, hlin⟩
 
 end Exploding

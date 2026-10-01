@@ -459,3 +459,157 @@ theorem lwc8_L_data (hmk : mk_kingman_linear) (d : ℕ) (hd : 2 ≤ d) (p : ℝ)
   exact ⟨L, hLc, hnonneg, hbound, hhom⟩
 
 end Exploding
+
+namespace Exploding
+
+variable {d : ℕ}
+
+open MeasureTheory
+
+/-- **Subadditivity of the limit shape.**  The intermediate term
+`T̃(nu, n(u+v))/n` is equidistributed with `T̃(0, nv)/n`, hence converges in probability to
+`L v`; along a subsequence where it converges almost surely, the microscopic subadditivity
+gives `L (u+v) ≤ L u + L v`. -/
+theorem lwc8_L_subadditive (d : ℕ) (hd : 2 ≤ d) (p : ℝ) (hp : 0 < p) (hp1 : p < 1)
+    (hLSSB : Exploding.External.LiggettSchonmannStaceyBoundedDegree)
+    (hHole : Exploding.External.MathieuHoleVolume)
+    (hChem : Exploding.External.AntalPisztoraChemicalDistance)
+    (L : Site d → ℝ)
+    (hLc : ∀ v : Site d, ∀ᵐ η ∂(toyLaw d p),
+      Tendsto (fun n : ℕ => ((clusterArrival η 0 ((n : ℤ) • v)).toNat : ℝ) / (n : ℝ))
+        atTop (nhds (L v)))
+    (u v : Site d) : L (u + v) ≤ L u + L v := by
+  classical
+  haveI : IsProbabilityMeasure (toyLaw d p) := by
+    haveI : IsProbabilityMeasure (chipLaw (2 * (d : ℤ) - 1) (2 * (d : ℤ) - 2) p) :=
+      lwc_isProbabilityMeasure_chipLaw _ _ p hp.le hp1.le
+    change IsProbabilityMeasure
+      (Measure.infinitePi (fun _ : Site d => chipLaw (2 * (d : ℤ) - 1) (2 * (d : ℤ) - 2) p))
+    infer_instance
+  obtain ⟨E, hEmeas, hEfull, hEshift, hEmem⟩ := lwc_good_event d hd p hp hp1 hLSSB hHole hChem
+  have hEae : ∀ᵐ η ∂(toyLaw d p), η ∈ E := ae_iff.mpr hEfull
+  let T : (Site d → ℤ) → (Site d → ℤ) := fun η => fun z => η (u + z)
+  have hT : MeasurePreserving T (toyLaw d p) (toyLaw d p) := by
+    rcases eq_or_ne u 0 with rfl | hu
+    · have hid : T = id := by funext η z; simp [T]
+      rw [hid]; exact MeasurePreserving.id _
+    · exact (lwc_shift_ergodic d p hp hp1 u hu).toMeasurePreserving
+  let X : ℕ → (Site d → ℤ) → ℝ := fun n η =>
+    ((clusterArrival η ((n : ℤ) • u) ((n : ℤ) • (u + v))).toNat : ℝ) / (n : ℝ)
+  let Y : ℕ → (Site d → ℤ) → ℝ := fun n η =>
+    ((clusterArrival η 0 ((n : ℤ) • v)).toNat : ℝ) / (n : ℝ)
+  have hXY : ∀ n η, X n η = Y n (T^[n] η) := by
+    intro n η
+    simp only [X, Y]
+    congr 1
+    rw [show T^[n] η = fun z => η ((n : ℤ) • u + z) from lwc8_shift_iterate u n η]
+    rw [lwc_cluster_shift d η ((n : ℤ) • u) 0 ((n : ℤ) • v), add_zero]
+    congr 1
+    rw [← smul_add]
+  have hYmeas : ∀ n, Measurable (Y n) := fun n => (lwc_measurable d 0 ((n : ℤ) • v)).div_const n
+  have hY_im : TendstoInMeasure (toyLaw d p) Y atTop (fun _ => L v) :=
+    tendstoInMeasure_of_tendsto_ae (fun n => (hYmeas n).aestronglyMeasurable) (hLc v)
+  have hX_im : TendstoInMeasure (toyLaw d p) X atTop (fun _ => L v) := by
+    rw [tendstoInMeasure_iff_norm] at hY_im ⊢
+    intro ε hε
+    have heq : ∀ n, (toyLaw d p) {x | ε ≤ ‖X n x - L v‖}
+        = (toyLaw d p) {x | ε ≤ ‖Y n x - L v‖} := by
+      intro n
+      have hmp := hT.iterate n
+      have hset : {x | ε ≤ ‖X n x - L v‖} = (T^[n]) ⁻¹' {y | ε ≤ ‖Y n y - L v‖} := by
+        ext x
+        simp only [Set.mem_setOf_eq, Set.mem_preimage]
+        rw [hXY n x]
+      have hmeas : MeasurableSet {y : Site d → ℤ | ε ≤ ‖Y n y - L v‖} :=
+        measurableSet_le measurable_const (((hYmeas n).sub measurable_const).norm)
+      rw [hset, hmp.measure_preimage hmeas.nullMeasurableSet]
+    simp_rw [heq]
+    exact hY_im ε hε
+  obtain ⟨ns, hns, hns_ae⟩ := hX_im.exists_seq_tendsto_ae
+  have hns_tendsto : Tendsto ns atTop atTop := hns.tendsto_atTop
+  have huv_ae : ∀ᵐ η ∂(toyLaw d p),
+      Tendsto (fun i : ℕ =>
+        ((clusterArrival η 0 ((((ns i : ℕ) : ℤ)) • (u + v))).toNat : ℝ) / (ns i : ℝ))
+        atTop (nhds (L (u + v))) :=
+    (hLc (u + v)).mono fun η hη => hη.comp hns_tendsto
+  have hu_ae : ∀ᵐ η ∂(toyLaw d p),
+      Tendsto (fun i : ℕ =>
+        ((clusterArrival η 0 ((((ns i : ℕ) : ℤ)) • u)).toNat : ℝ) / (ns i : ℝ))
+        atTop (nhds (L u)) :=
+    (hLc u).mono fun η hη => hη.comp hns_tendsto
+  have hineq_ae : ∀ᵐ η ∂(toyLaw d p), ∀ᶠ i : ℕ in atTop,
+      ((clusterArrival η 0 ((((ns i : ℕ) : ℤ)) • (u + v))).toNat : ℝ) / (ns i : ℝ)
+        ≤ ((clusterArrival η 0 ((((ns i : ℕ) : ℤ)) • u)).toNat : ℝ) / (ns i : ℝ)
+          + X (ns i) η := by
+    filter_upwards [hEae] with η hηE
+    have hlow : ∀ x, 2 * (d : ℤ) - 2 ≤ η x := fun x => ((hEmem η hηE).1 x).1
+    have hhigh : ∀ x, η x ≤ 2 * (d : ℤ) - 1 := fun x => ((hEmem η hηE).1 x).2
+    have hlast : ∀ y : Site d, ∃ n : ℕ, 1 ≤ n ∧ ¬ WaveStabilizable η n y := (hEmem η hηE).2.1
+    have hfin : ∀ a b : Site d, clusterArrival η a b ≠ ⊤ := (hEmem η hηE).2.2
+    filter_upwards [hns_tendsto.eventually_ge_atTop 1] with i hi
+    have h := Exploding.Frozen.approx_subadditivity d hd η hlow hhigh hlast (0 : Site d)
+      (((ns i : ℕ) : ℤ) • u) ((((ns i : ℕ) : ℤ)) • (u + v))
+    have hfin2 : clusterArrival η 0 ((((ns i : ℕ) : ℤ)) • u) ≠ ⊤ := hfin 0 _
+    have hfin3 : clusterArrival η ((((ns i : ℕ) : ℤ)) • u) ((((ns i : ℕ) : ℤ)) • (u + v)) ≠ ⊤ :=
+      hfin _ _
+    have hsum : clusterArrival η 0 ((((ns i : ℕ) : ℤ)) • u)
+        + clusterArrival η ((((ns i : ℕ) : ℤ)) • u) ((((ns i : ℕ) : ℤ)) • (u + v)) ≠ ⊤ := by
+      intro hc
+      rw [ENat.add_eq_top] at hc
+      exact hc.elim hfin2 hfin3
+    have htoNat := ENat.toNat_le_toNat h hsum
+    rw [ENat.toNat_add hfin2 hfin3] at htoNat
+    have htoNatR : (((clusterArrival η 0 ((((ns i : ℕ) : ℤ)) • (u + v))).toNat : ℝ)
+        ≤ ((clusterArrival η 0 ((((ns i : ℕ) : ℤ)) • u)).toNat : ℝ)
+          + ((clusterArrival η ((((ns i : ℕ) : ℤ)) • u)
+              ((((ns i : ℕ) : ℤ)) • (u + v))).toNat : ℝ)) := by
+      exact_mod_cast htoNat
+    have hpos : (0 : ℝ) < (ns i : ℝ) := by exact_mod_cast hi
+    have := div_le_div_of_nonneg_right htoNatR hpos.le
+    rw [add_div] at this
+    exact this
+  obtain ⟨η, huv, hu, hxv, hineq⟩ :=
+    (huv_ae.and (hu_ae.and (hns_ae.and hineq_ae))).exists
+  have hZ : Tendsto (fun i : ℕ =>
+      ((clusterArrival η 0 ((((ns i : ℕ) : ℤ)) • (u + v))).toNat : ℝ) / (ns i : ℝ)
+        - ((clusterArrival η 0 ((((ns i : ℕ) : ℤ)) • u)).toNat : ℝ) / (ns i : ℝ))
+      atTop (nhds (L (u + v) - L u)) := huv.sub hu
+  have hW : Tendsto (fun i : ℕ => X (ns i) η) atTop (nhds (L v)) := hxv
+  have hineq' : ∀ᶠ i : ℕ in atTop,
+      ((clusterArrival η 0 ((((ns i : ℕ) : ℤ)) • (u + v))).toNat : ℝ) / (ns i : ℝ)
+        - ((clusterArrival η 0 ((((ns i : ℕ) : ℤ)) • u)).toNat : ℝ) / (ns i : ℝ)
+        ≤ X (ns i) η := by
+    filter_upwards [hineq] with i hi
+    linarith
+  have := le_of_tendsto_of_tendsto hZ hW hineq'
+  linarith
+
+end Exploding
+
+namespace Exploding
+
+variable {d : ℕ}
+
+/-- **Proposition 3.1's Kingman conjunct**, from `mk_kingman_linear`.  There is a continuous,
+convex, one-homogeneous `N` with almost-sure finiteness of `clusterArrival` and lattice-direction
+convergence of the rescaled penultimate-cluster arrival times to `N`. -/
+theorem lwc8_hking_of_mk (hmk : mk_kingman_linear) (d : ℕ) (hd : 2 ≤ d) (p : ℝ) (hp : 0 < p)
+    (hp1 : p < 1)
+    (hLSSB : Exploding.External.LiggettSchonmannStaceyBoundedDegree)
+    (hHole : Exploding.External.MathieuHoleVolume)
+    (hChem : Exploding.External.AntalPisztoraChemicalDistance) :
+    ∃ N : (Fin d → ℝ) → ℝ,
+      Continuous N ∧ ConvexOn ℝ Set.univ N ∧
+      (∀ c : ℝ, 0 ≤ c → ∀ y : Fin d → ℝ, N (c • y) = c * N y) ∧
+      ∀ᵐ η ∂(toyLaw d p),
+        (∀ x : Site d, clusterArrival η (0 : Site d) x ≠ ⊤) ∧
+        ∀ v : Site d,
+          Tendsto (fun n : ℕ =>
+              ((clusterArrival η (0 : Site d) ((n : ℤ) • v)).toNat : ℝ) / (n : ℝ))
+            atTop (nhds (N (lwc2_toReal v))) := by
+  obtain ⟨L, hLc, hnonneg, ⟨C, hC, hbound⟩, hhom⟩ :=
+    lwc8_L_data hmk d hd p hp hp1 hLSSB hHole hChem
+  exact lwc8_assemble d hd p hp hp1 hLSSB hHole hChem L hLc hnonneg C hC hbound hhom
+    (fun u v => lwc8_L_subadditive d hd p hp hp1 hLSSB hHole hChem L hLc u v)
+
+end Exploding

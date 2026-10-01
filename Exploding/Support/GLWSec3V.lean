@@ -43,23 +43,15 @@ theorem glws_eventually_polylog_le (a c : ℝ) :
     exact this
   nlinarith [abs_nonneg c]
 
-/-- `glws_Pn` is at most `n`, for `n` large. -/
-theorem glws_asymp_Pn (γp : ℝ) (hγp : 0 < γp) (kmax d : ℕ) :
-    ∃ n1 : ℕ, ∀ n : ℕ, n1 ≤ n → 3 ≤ n ∧ glws_Pn γp kmax d n ≤ n := by
+/-- **`glws_Pn` is polylogarithmic.** -/
+theorem glws_Pn_poly (γp : ℝ) (hγp : 0 < γp) (kmax d n : ℕ) (hn3 : 3 ≤ n)
+    (hL1 : 1 ≤ Real.log n) :
+    (glws_Pn γp kmax d n : ℝ) ≤ ((kmax : ℝ) * ((2 : ℝ) ^ ((5 : ℝ) / 2) + 3)) ^ d *
+      Real.log n ^ ((5 : ℝ) / 2 * d) + (2 : ℝ) ^ γp * Real.log n ^ γp + 1 := by
   set c0 : ℝ := (2 : ℝ) ^ ((5 : ℝ) / 2) + 3 with hc0
-  set c1 : ℝ := ((kmax : ℝ) * c0) ^ d with hc1
-  set c2 : ℝ := (2 : ℝ) ^ γp with hc2
-  have hlog : Tendsto (fun n : ℕ => Real.log n) atTop atTop :=
-    Real.tendsto_log_atTop.comp tendsto_natCast_atTop_atTop
-  obtain ⟨n1, hn1⟩ := eventually_atTop.mp ((glws_eventually_polylog_le ((5 : ℝ) / 2 * d) (3 * c1)).and
-    (((glws_eventually_polylog_le γp (3 * c2)).and
-    ((hlog.eventually_ge_atTop 1).and (eventually_ge_atTop 3)))))
-  refine ⟨n1, fun n hn => ?_⟩
-  obtain ⟨h1, h2, h3, h4⟩ := hn1 n hn
-  refine ⟨h4, ?_⟩
   set L := Real.log n with hL
   have hL0 : 0 < L := by linarith
-  have hn3 : (3 : ℝ) ≤ n := by exact_mod_cast h4
+  have hn3' : (3 : ℝ) ≤ n := by exact_mod_cast hn3
   have hlog2n : Real.log ((2 * n + 1 : ℕ) : ℝ) ≤ 2 * L := by
     have hle : ((2 * n + 1 : ℕ) : ℝ) ≤ (n : ℝ) ^ 2 := by
       push_cast; nlinarith
@@ -74,7 +66,6 @@ theorem glws_asymp_Pn (γp : ℝ) (hγp : 0 < γp) (kmax d : ℕ) :
       _ = 2 * L := by rw [Real.log_pow]; push_cast; ring
   have hlog_nn1 : 0 ≤ Real.log ((2 * n + 1 : ℕ) : ℝ) := Real.log_natCast_nonneg _
   have hlog_nn2 : 0 ≤ Real.log ((2 * n : ℕ) : ℝ) := Real.log_natCast_nonneg _
-  -- the row length
   have hr2 : (glws_r2 n : ℝ) + 2 ≤ c0 * L ^ ((5 : ℝ) / 2) := by
     have e1 : (glws_r2 n : ℝ) ≤ Real.log ((2 * n + 1 : ℕ) : ℝ) ^ ((5 : ℝ) / 2) + 1 :=
       (Nat.ceil_lt_add_one (by positivity)).le
@@ -82,11 +73,12 @@ theorem glws_asymp_Pn (γp : ℝ) (hγp : 0 < γp) (kmax d : ℕ) :
       Real.rpow_le_rpow hlog_nn1 hlog2n (by norm_num)
     have e3 : (2 * L) ^ ((5 : ℝ) / 2) = 2 ^ ((5 : ℝ) / 2) * L ^ ((5 : ℝ) / 2) :=
       Real.mul_rpow (by norm_num) hL0.le
-    have e4 : (1 : ℝ) ≤ L ^ ((5 : ℝ) / 2) := Real.one_le_rpow h3 (by norm_num)
+    have e4 : (1 : ℝ) ≤ L ^ ((5 : ℝ) / 2) := Real.one_le_rpow hL1 (by norm_num)
     rw [hc0]
     nlinarith [e1, e2, e3, e4]
   have hk0 : (0 : ℝ) ≤ (kmax : ℝ) := Nat.cast_nonneg _
-  have hmain : (((kmax * (glws_r2 n + 2)) ^ d : ℕ) : ℝ) ≤ c1 * L ^ ((5 : ℝ) / 2 * d) := by
+  have hmain : (((kmax * (glws_r2 n + 2)) ^ d : ℕ) : ℝ) ≤
+      ((kmax : ℝ) * c0) ^ d * L ^ ((5 : ℝ) / 2 * d) := by
     have e1 : (((kmax * (glws_r2 n + 2) : ℕ) : ℝ)) ≤ (kmax : ℝ) * c0 * L ^ ((5 : ℝ) / 2) := by
       push_cast
       calc (kmax : ℝ) * ((glws_r2 n : ℝ) + 2) ≤ (kmax : ℝ) * (c0 * L ^ ((5 : ℝ) / 2)) :=
@@ -99,24 +91,39 @@ theorem glws_asymp_Pn (γp : ℝ) (hγp : 0 < γp) (kmax d : ℕ) :
           push_cast at e1
           exact e1
       _ = ((kmax : ℝ) * c0) ^ d * (L ^ ((5 : ℝ) / 2)) ^ d := mul_pow _ _ _
-      _ = c1 * L ^ ((5 : ℝ) / 2 * d) := by
-          rw [hc1]
+      _ = ((kmax : ℝ) * c0) ^ d * L ^ ((5 : ℝ) / 2 * d) := by
           congr 1
           rw [← Real.rpow_natCast (L ^ ((5 : ℝ) / 2)) d, ← Real.rpow_mul hL0.le]
-  have hcl : ((⌈Real.log ((2 * n : ℕ) : ℝ) ^ γp⌉₊ : ℕ) : ℝ) ≤ c2 * L ^ γp + 1 := by
+  have hcl : ((⌈Real.log ((2 * n : ℕ) : ℝ) ^ γp⌉₊ : ℕ) : ℝ) ≤ (2 : ℝ) ^ γp * L ^ γp + 1 := by
     have e1 : ((⌈Real.log ((2 * n : ℕ) : ℝ) ^ γp⌉₊ : ℕ) : ℝ) ≤
         Real.log ((2 * n : ℕ) : ℝ) ^ γp + 1 := (Nat.ceil_lt_add_one (by positivity)).le
     have e2 : Real.log ((2 * n : ℕ) : ℝ) ^ γp ≤ (2 * L) ^ γp :=
       Real.rpow_le_rpow hlog_nn2 hlog2n' hγp.le
     have e3 : (2 * L) ^ γp = 2 ^ γp * L ^ γp := Real.mul_rpow (by norm_num) hL0.le
-    rw [hc2]
     linarith
   unfold glws_Pn
-  have : (((kmax * (glws_r2 n + 2)) ^ d + ⌈Real.log ((2 * n : ℕ) : ℝ) ^ γp⌉₊ : ℕ) : ℝ) ≤ n := by
-    push_cast at hmain hcl ⊢
+  rw [Nat.cast_add]
+  linarith [hmain, hcl]
+
+/-- `glws_Pn` is at most `n`, for `n` large. -/
+theorem glws_asymp_Pn (γp : ℝ) (hγp : 0 < γp) (kmax d : ℕ) :
+    ∃ n1 : ℕ, ∀ n : ℕ, n1 ≤ n → 3 ≤ n ∧ glws_Pn γp kmax d n ≤ n := by
+  set c1 : ℝ := ((kmax : ℝ) * ((2 : ℝ) ^ ((5 : ℝ) / 2) + 3)) ^ d with hc1
+  set c2 : ℝ := (2 : ℝ) ^ γp with hc2
+  have hlog : Tendsto (fun n : ℕ => Real.log n) atTop atTop :=
+    Real.tendsto_log_atTop.comp tendsto_natCast_atTop_atTop
+  obtain ⟨n1, hn1⟩ := eventually_atTop.mp ((glws_eventually_polylog_le ((5 : ℝ) / 2 * d) (3 * c1)).and
+    (((glws_eventually_polylog_le γp (3 * c2)).and
+    ((hlog.eventually_ge_atTop 1).and (eventually_ge_atTop 3)))))
+  refine ⟨n1, fun n hn => ?_⟩
+  obtain ⟨h1, h2, h3, h4⟩ := hn1 n hn
+  refine ⟨h4, ?_⟩
+  have hpoly := glws_Pn_poly γp hγp kmax d n h4 h3
+  have hn3 : (3 : ℝ) ≤ n := by exact_mod_cast h4
+  have : (glws_Pn γp kmax d n : ℝ) ≤ n := by
     have hc1n : 0 ≤ c1 := by rw [hc1]; positivity
     have hc2n : 0 ≤ c2 := by rw [hc2]; positivity
-    linarith
+    nlinarith [hpoly, h1, h2]
   exact_mod_cast this
 
 end Exploding

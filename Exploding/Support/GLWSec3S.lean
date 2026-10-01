@@ -33,6 +33,13 @@ theorem glws_cover (k : Fin d → ℕ) (hk : ∀ i, 0 < k i) (ν : Site d) (Z : 
     have := mul_le_mul_of_nonneg_left (hhi m) (by linarith : (0 : ℤ) ≤ (k m : ℤ))
     nlinarith
 
+/-- The coefficient of the distance in the time of the lighting. -/
+noncomputable def glws_LA (Cch : ℝ) (k : Fin d → ℕ) : ℕ := ⌈Cch⌉₊ * ∏ l, k l
+
+/-- The coefficient of the polylogarithmic term in the time of the lighting. -/
+noncomputable def glws_LB (Cch : ℝ) (k : Fin d → ℕ) : ℕ :=
+  9 * ⌈Cch⌉₊ * (∏ l, k l) * d + ((6 * ⌈Cch⌉₊ * d + 1) * (∑ i, k i) ^ d) ^ d
+
 /-- The sites of the second walk stay in the box of radius `2 n` (arithmetic). -/
 theorem glws_walk_size (n Cn d Λ m2 s : ℕ) (x Mf : ℤ) (hx : x ≤ (s : ℤ) + Mf)
     (hMf : Mf ≤ (n : ℤ) + (d : ℤ) * Λ) (hs : s ≤ m2) (hm2 : m2 ≤ Cn * (d * (2 * Λ)))
@@ -61,7 +68,7 @@ theorem glws_light_near_key (hd : 2 ≤ d) (η : Site d → ℤ) (hlow : ∀ x, 
       Real.log n ^ (2 : ℕ) ≤ (mnorm (x - y) : ℝ) →
       ∃ m : ℕ, chemDist Cinf x y = (m : ℕ∞) ∧ (m : ℝ) ≤ Cch * (mnorm (x - y) : ℝ))
     (γp : ℝ) (hγp : 0 < γp) (hpf : glws_PF d γp η) (l₁ : Fin d) :
-    ∃ A B n0 : ℕ, ∀ n : ℕ, n0 ≤ n → ∀ (N : ℕ), 1 ≤ N → ∀ (zc : Site d) (τ : ℕ) (j : Site d),
+    ∃ n0 : ℕ, ∀ n : ℕ, n0 ≤ n → ∀ (N : ℕ), 1 ≤ N → ∀ (zc : Site d) (τ : ℕ) (j : Site d),
       j ∈ Cinf → mnorm j ≤ (n : ℤ) → glws_Fired η N k zc τ j → ∀ ν : Site d,
       mnorm ν ≤ (n : ℤ) → ∀ y : Site d,
       (∀ m, (k m : ℤ) * (ν m - (glws_Zn γp n : ℤ)) + 1 ≤ y m ∧
@@ -75,7 +82,8 @@ theorem glws_light_near_key (hd : 2 ≤ d) (η : Site d → ℤ) (hlow : ∀ x, 
           (k m : ℤ) * (ν m - (glws_Zn γp n : ℤ)) + 1 ∧
         (k m : ℤ) * (ν m + (glws_Zn γp n : ℤ) + 1) ≤
           max (glws_corner k Mf m) (glws_corner k Mo m)) →
-      0 < wave η N zc (τ + A * ((mnorm (j - ν)).toNat) + B * (glws_Zn γp n) ^ d) y := by
+      0 < wave η N zc (τ + glws_LA Cch k * (mnorm (j - ν)).toNat +
+        glws_LB Cch k * (glws_Zn γp n) ^ d) y := by
   classical
   have hd0 : (0 : ℤ) < 2 * (d : ℤ) := by
     have : (2 : ℤ) ≤ (d : ℤ) := by exact_mod_cast hd
@@ -89,8 +97,7 @@ theorem glws_light_near_key (hd : 2 ≤ d) (η : Site d → ℤ) (hlow : ∀ x, 
     (Finset.single_le_sum (f := k) (fun _ _ => Nat.zero_le _) (Finset.mem_univ l₁))
   obtain ⟨n1, hasym⟩ := glws_asymp_ln γp hγp kmax Cn d
   obtain ⟨n0lc, hcore⟩ := glws_light_near_core hd η hlow hhigh k hk Cinf hgood γp hpf
-  refine ⟨Cn * K, 9 * Cn * K * d + ((6 * Cn * d + 1) * kmax ^ d) ^ d,
-    max (max n1 n0c) n0lc, ?_⟩
+  refine ⟨max (max n1 n0c) n0lc, ?_⟩
   intro n hn N hN zc τ j hj hjn hfired ν hνn y hy Mf Mo hMf hMo hfj hfo hMfν hMoν hcov
   have hn1 : n1 ≤ n := le_trans (le_trans (le_max_left _ _) (le_max_left _ _)) hn
   have hn0c : n0c ≤ n := le_trans (le_trans (le_max_right _ _) (le_max_left _ _)) hn
@@ -237,21 +244,22 @@ theorem glws_light_near (hd : 2 ≤ d) (η : Site d → ℤ) (hlow : ∀ x, 0 �
       Real.log n ^ (2 : ℕ) ≤ (mnorm (x - y) : ℝ) →
       ∃ m : ℕ, chemDist Cinf x y = (m : ℕ∞) ∧ (m : ℝ) ≤ Cch * (mnorm (x - y) : ℝ))
     (γp : ℝ) (hγp : 0 < γp) (hpf : glws_PF d γp η) :
-    ∃ A B n0 : ℕ, ∀ n : ℕ, n0 ≤ n → ∀ (N : ℕ), 1 ≤ N → ∀ (zc : Site d) (τ : ℕ) (j : Site d),
+    ∃ n0 : ℕ, ∀ n : ℕ, n0 ≤ n → ∀ (N : ℕ), 1 ≤ N → ∀ (zc : Site d) (τ : ℕ) (j : Site d),
       j ∈ Cinf → mnorm j ≤ (n : ℤ) → glws_Fired η N k zc τ j → ∀ ν : Site d,
       mnorm ν ≤ (n : ℤ) → ∀ y : Site d,
       (∀ m, (k m : ℤ) * (ν m - (glws_Zn γp n : ℤ)) + 1 ≤ y m ∧
         y m ≤ (k m : ℤ) * (ν m + (glws_Zn γp n : ℤ) + 1)) →
-      0 < wave η N zc (τ + A * ((mnorm (j - ν)).toNat) + B * (glws_Zn γp n) ^ d) y := by
+      0 < wave η N zc (τ + glws_LA Cch k * (mnorm (j - ν)).toNat +
+        glws_LB Cch k * (glws_Zn γp n) ^ d) y := by
   classical
   have hdpos : 0 < d := by omega
   set kmax : ℕ := ∑ i, k i with hkmax
   set Cn : ℕ := ⌈Cch⌉₊ with hCn
   set l₁ : Fin d := ⟨0, hdpos⟩ with hl₁
   obtain ⟨n1, hasym⟩ := glws_asymp_ln γp hγp kmax Cn d
-  obtain ⟨A, B, n0k, hkey⟩ := glws_light_near_key hd η hlow hhigh k hk Cinf hgood Cch hCch n0c
+  obtain ⟨n0k, hkey⟩ := glws_light_near_key hd η hlow hhigh k hk Cinf hgood Cch hCch n0c
     hchem γp hγp hpf l₁
-  refine ⟨A, B, max (max n1 n0h) (max n0k n0c), ?_⟩
+  refine ⟨max (max n1 n0h) (max n0k n0c), ?_⟩
   intro n hn N hN zc τ j hj hjn hfired ν hνn y hy
   have hn1 : n1 ≤ n := le_trans (le_trans (le_max_left _ _) (le_max_left _ _)) hn
   have hn0h : n0h ≤ n := le_trans (le_trans (le_max_right _ _) (le_max_left _ _)) hn

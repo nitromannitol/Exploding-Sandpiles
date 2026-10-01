@@ -6,6 +6,7 @@ opaque `Classical.choose` of `xmh_StarCount`), and the box `[-n,n]^d` is bounded
 `6^d · c^{Nat.log 2 n}` with `c = 2^d K (1-q)`, whose dyadic blocks sum to a finite quantity.
 -/
 import Exploding.Support.ExtMHProof8
+import Exploding.Support.GLWSec3L
 
 namespace Exploding
 
@@ -151,5 +152,30 @@ theorem xmh5_ae_no_bad (K : ℕ)
     (hr : ((2 : ENNReal) ^ d * ((K : ENNReal) * ENNReal.ofReal (1 - q))) * 2 < 1) :
     ∀ᵐ ω ∂(sitePercolation d q), ∀ᶠ n : ℕ in atTop, ¬ xmh4_bad d n ω :=
   xmh4_ae_no_bad (xmh5_tsum_ne_top K hK h0 h1 hr)
+
+/-- **The boundary of a hole is all-closed.**  Sites of `B` adjacent to an open cluster of
+`ω` are closed, because an open neighbour would join the same open component. -/
+theorem xmh5_boundary_closed {ω : Site d → Bool} {i : Site d} {B : Set (Site d)}
+    (hdisj : ∀ z, z ∈ B → z ∉ componentIn (openSites ω) i) {z : Site d} (hzB : z ∈ B)
+    (hc : ∃ c ∈ componentIn (openSites ω) i, (lattice d).Adj c z) : ω z = false := by
+  obtain ⟨c, hcC, hcz⟩ := hc
+  by_cases hz : ω z = true
+  · exact absurd (glws_component_step hcC (by simpa [openSites] using hz) hcz) (hdisj z hzB)
+  · simpa using hz
+
+/-- **A large `*`-connected all-closed set meeting the box gives the bad event.** -/
+theorem xmh5_bad_of_boundary {ω : Site d → Bool} {n : ℕ} {D : Set (Site d)}
+    (hfin : D.Finite) (hconn : xmh_SConn D) (hclosed : ∀ z ∈ D, ω z = false)
+    (hsize : xmh4_m n ≤ D.ncard) (hmeet : ∃ p ∈ D, p ∈ xmh4_centFinset d n) :
+    xmh4_bad d n ω := by
+  obtain ⟨p, hpD, hpbox⟩ := hmeet
+  have hsize' : xmh4_m n ≤ hfin.toFinset.card := by
+    rw [← Set.ncard_eq_toFinset_card D hfin]; exact hsize
+  have hen : ((xmh4_m n : ℕ) : ℕ∞) ≤ D.encard := by
+    rw [hfin.encard_eq_coe_toFinset_card]
+    exact_mod_cast hsize'
+  obtain ⟨F, hpF, hFD, hFcard, hFconn⟩ :=
+    xmh_grow hconn hpD (xmh4_m n) (xmh4_m_pos n) hen
+  exact ⟨p, hpbox, F, hpF, hFcard.ge, hFconn, fun x hx => hclosed x (hFD hx)⟩
 
 end Exploding

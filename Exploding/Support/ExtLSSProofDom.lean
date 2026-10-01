@@ -110,4 +110,50 @@ noncomputable def xlss_VofEquiv (T : Finset S) :
     (xlss_Vof_surjective T (xlss_Vof T v) (Finset.mem_powerset.mpr (xlss_Vof_subset T v))))
   right_inv V := Subtype.ext (Classical.choose_spec (xlss_Vof_surjective T V.1 V.2))
 
+/-- Reindexing a sum over the powerset of `T` as a sum over `T`-bit configurations. -/
+theorem xlss_sum_Vof [DecidableEq S] (T : Finset S) (g : Finset S → ENNReal) :
+    ∑ v : T → Bool, g (xlss_Vof T v) = ∑ V ∈ T.powerset, g V := by
+  classical
+  rw [← Finset.sum_attach T.powerset g]
+  exact (xlss_VofEquiv T).sum_comp (fun V : {V : Finset S // V ∈ T.powerset} => g V.1)
+
+/-- The cardinality of the occupied subset. -/
+theorem xlss_card_Vof [DecidableEq S] (T : Finset S) (v : T → Bool) :
+    (xlss_Vof T v).card = (Finset.univ.filter (fun t : T => v t = true)).card := by
+  rw [xlss_Vof, Finset.card_map]
+
+/-- The product of one-site Bernoulli masses of a bit configuration. -/
+theorem xlss_bitLaw_prod [DecidableEq S] (ρ : ℝ) (hρ0 : 0 ≤ ρ) (hρ1 : ρ ≤ 1)
+    (T : Finset S) (v : T → Bool) :
+    ∏ t : T, bitLaw ρ {v t} =
+      ENNReal.ofReal (ρ ^ (xlss_Vof T v).card *
+        (1 - ρ) ^ (T.card - (xlss_Vof T v).card)) := by
+  classical
+  have hbit : ∀ b : Bool,
+      bitLaw ρ {b} = if b then ENNReal.ofReal ρ else ENNReal.ofReal (1 - ρ) := by
+    intro b
+    cases b <;> simp [bitLaw]
+  simp only [hbit]
+  have hite : ∀ t : T, (if v t then ENNReal.ofReal ρ else ENNReal.ofReal (1 - ρ)) =
+      ENNReal.ofReal (if v t then ρ else 1 - ρ) := by
+    intro t
+    split_ifs <;> rfl
+  simp_rw [hite]
+  rw [← ENNReal.ofReal_prod_of_nonneg]
+  · congr 1
+    rw [xlss_card_Vof, Finset.prod_ite,
+      Finset.prod_eq_pow_card (fun _ _ => rfl),
+      Finset.prod_eq_pow_card (fun _ _ => rfl)]
+    have hcard : (Finset.univ.filter (fun t : T => v t = true)).card +
+        (Finset.univ.filter (fun t : T => ¬ (v t = true))).card = T.card := by
+      rw [Finset.card_filter_add_card_filter_not (s := Finset.univ)
+        (p := fun t : T => v t = true), Finset.card_univ, Fintype.card_coe]
+    have hsub : (Finset.univ.filter (fun t : T => ¬ (v t = true))).card =
+        T.card - (Finset.univ.filter (fun t : T => v t = true)).card := by omega
+    rw [hsub]
+  · intro t _
+    split_ifs
+    · exact hρ0
+    · linarith
+
 end Exploding

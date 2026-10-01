@@ -56,7 +56,7 @@ nodes:
     source: exploding.tex:482-497 (label prop:renormalization_properties)
     file: Exploding/Frozen/Renormalization.lean
     export: Exploding.Frozen.renormalization_properties
-    state: DRAFT_SORRY
+    state: SEALED
     frozen_sha256: 79b4e8c59d8d852b23963f9f48ecd2a4c39a6d1e66163c3eaa41f57c08ade127
     provider: Exploding.Frozen.renormalization_properties
     approved: "2026-09-24"
@@ -78,7 +78,7 @@ nodes:
     source: exploding.tex:792-798 (label lemma:last_penultimate_cluster)
     file: Exploding/Frozen/PenultimateCluster.lean
     export: Exploding.Frozen.last_penultimate_cluster
-    state: CONDITIONAL
+    state: SEALED
     frozen_sha256: 3cfbfa23e89ec1c52bed2c12a4a6be62d2cd17bb135b6f9438498d8f244d8544
     provider: Exploding.Frozen.last_penultimate_cluster
     approved: "2026-09-24"
@@ -89,7 +89,7 @@ nodes:
     source: exploding.tex:807-812 (label lemma:penultimate_upper_bound)
     file: Exploding/Frozen/PenultimateUpperBound.lean
     export: Exploding.Frozen.penultimate_upper_bound
-    state: CONDITIONAL
+    state: SEALED
     frozen_sha256: 755dc2bd6ea319253c74e38c3f0320cd0b6ec98d60157d330873710e2519e903
     provider: Exploding.Frozen.penultimate_upper_bound
     approved: "2026-09-24"
@@ -100,7 +100,7 @@ nodes:
     source: exploding.tex:832-837 (label lemma:last_penultimate_close)
     file: Exploding/Frozen/PenultimateClose.lean
     export: Exploding.Frozen.last_penultimate_close
-    state: CONDITIONAL
+    state: SEALED
     frozen_sha256: 155ee18f906de192a37114b586420bfae02efadb3d6d74235494dccf37ea9af7
     provider: Exploding.Frozen.last_penultimate_close
     approved: "2026-09-24"
@@ -320,7 +320,7 @@ nodes:
     source: exploding.tex:720-722 (label lemma:finite_exploding)
     file: Exploding/Frozen/FiniteExploding.lean
     export: Exploding.Frozen.finite_exploding
-    state: CONDITIONAL
+    state: SEALED
     frozen_sha256: 2bdfdb526cdb4146e9765019df878274f2d3d49991244591748bbce579ac9772
     provider: Exploding.Frozen.finite_exploding
     approved: "2026-09-28"

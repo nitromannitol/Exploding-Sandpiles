@@ -71,11 +71,11 @@ No comparator challenge exists yet; see [`Audit/README.md`](Audit/README.md).
 | `thm-limit-shape` | [Exploding.Frozen.limit_shape](Exploding/Frozen/LimitShape.lean#L30) | exploding.tex:246-254 (label theorem:limit_shape) | CONDITIONAL |
 | `thm-time-constant` | [Exploding.Frozen.convergence_of_time_constant](Exploding/Frozen/TimeConstant.lean#L33) | exploding.tex:259-262 (label theorem:convergence_of_time_constant) | CONDITIONAL |
 | `thm-explosive` | [Exploding.Frozen.explosive](Exploding/Frozen/Explosive.lean#L28) | exploding.tex:265-268 (label theorem:explosive) | SEALED |
-| `prop-renormalization` | [Exploding.Frozen.renormalization_properties](Exploding/Frozen/Renormalization.lean#L36) | exploding.tex:482-497 (label prop:renormalization_properties) | DRAFT_SORRY |
+| `prop-renormalization` | [Exploding.Frozen.renormalization_properties](Exploding/Frozen/Renormalization.lean#L37) | exploding.tex:482-497 (label prop:renormalization_properties) | SEALED |
 | `lem-square-lower-bound` | [Exploding.Frozen.square_lower_bound](Exploding/Frozen/SquareLowerBound.lean#L22) | exploding.tex:705-707 (label lemma:square_lower_bound) | SEALED |
-| `lem-penultimate-cluster` | [Exploding.Frozen.last_penultimate_cluster](Exploding/Frozen/PenultimateCluster.lean#L30) | exploding.tex:792-798 (label lemma:last_penultimate_cluster) | CONDITIONAL |
-| `lem-penultimate-upper-bound` | [Exploding.Frozen.penultimate_upper_bound](Exploding/Frozen/PenultimateUpperBound.lean#L28) | exploding.tex:807-812 (label lemma:penultimate_upper_bound) | CONDITIONAL |
-| `lem-penultimate-close` | [Exploding.Frozen.last_penultimate_close](Exploding/Frozen/PenultimateClose.lean#L31) | exploding.tex:832-837 (label lemma:last_penultimate_close) | CONDITIONAL |
+| `lem-penultimate-cluster` | [Exploding.Frozen.last_penultimate_cluster](Exploding/Frozen/PenultimateCluster.lean#L30) | exploding.tex:792-798 (label lemma:last_penultimate_cluster) | SEALED |
+| `lem-penultimate-upper-bound` | [Exploding.Frozen.penultimate_upper_bound](Exploding/Frozen/PenultimateUpperBound.lean#L28) | exploding.tex:807-812 (label lemma:penultimate_upper_bound) | SEALED |
+| `lem-penultimate-close` | [Exploding.Frozen.last_penultimate_close](Exploding/Frozen/PenultimateClose.lean#L31) | exploding.tex:832-837 (label lemma:last_penultimate_close) | SEALED |
 | `prop-last-wave-convergence` | [Exploding.Frozen.convergence_of_the_last_wave](Exploding/Frozen/LastWaveConvergence.lean#L30) | exploding.tex:846-852 (label prop:convergence_of_the_last_wave) | DRAFT_SORRY |
 | `prop-approximate-subadditive` | [Exploding.Frozen.approximate_subadditive](Exploding/Frozen/ApproximateSubadditive.lean#L33) | exploding.tex:886-898 (label prop:approximate_subadditive) | DRAFT_SORRY |
 | `prop-generalized-last-wave` | [Exploding.Frozen.convergence_of_the_generalized_last_wave](Exploding/Frozen/GeneralizedLastWave.lean#L35) | exploding.tex:1203-1207 (label prop:convergence_of_the_generalized_last_wave) | DRAFT_SORRY |
@@ -95,7 +95,7 @@ No comparator challenge exists yet; see [`Audit/README.md`](Audit/README.md).
 | `lem-approx-subadditivity` | [Exploding.Frozen.approx_subadditivity](Exploding/Frozen/ApproxSubadditivity.lean#L105) | exploding.tex:760-765 (label lemma:approx_subadditivity) | SEALED |
 | `prop-recurrence` | [Exploding.Frozen.recurrence](Exploding/Frozen/Recurrence.lean#L17) | exploding.tex:1927-1929 (label prop:recurrence) | SEALED |
 | `lem-local-convexity` | [Exploding.Frozen.local_convexity](Exploding/Frozen/LocalConvexity.lean#L20) | exploding.tex:531-535 (label lemma:local_convexity) | SEALED |
-| `lem-finite-exploding` | [Exploding.Frozen.finite_exploding](Exploding/Frozen/FiniteExploding.lean#L27) | exploding.tex:720-722 (label lemma:finite_exploding) | CONDITIONAL |
+| `lem-finite-exploding` | [Exploding.Frozen.finite_exploding](Exploding/Frozen/FiniteExploding.lean#L27) | exploding.tex:720-722 (label lemma:finite_exploding) | SEALED |
 | `prop-crossing-time` | [Exploding.Frozen.crossing_time](Exploding/Frozen/CrossingTime.lean#L20) | exploding.tex:416-422 (label prop:crossing_time) | SEALED |
 
 <!-- FROZEN-SURFACE-END -->

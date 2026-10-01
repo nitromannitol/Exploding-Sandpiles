@@ -47,6 +47,9 @@ import Exploding.Support.ExtMHProof
 import Exploding.Support.ExtMHCount
 import Exploding.Support.ExtMHProof2
 import Exploding.Support.ExtMHProof3
+import Exploding.Support.ExtMHProof4
+import Exploding.Support.ExtMHProof5
+import Exploding.Support.ExtMHProof6
 import Exploding.Support.ExtAPDefs
 import Exploding.Support.ExtAPProof
 import Exploding.Support.ExtAPProof2

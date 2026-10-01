@@ -156,4 +156,52 @@ theorem xlss_bitLaw_prod [DecidableEq S] (ρ : ℝ) (hρ0 : 0 ≤ ρ) (hρ1 : ρ
     · exact hρ0
     · linarith
 
+/-- The indicator of the occupied subset restricts back to the configuration. -/
+theorem xlss_rest_ind_Vof [DecidableEq S] (T : Finset S) (v : T → Bool) :
+    T.restrict (fun s => decide (s ∈ xlss_Vof T v)) = v := by
+  funext t
+  have h : ((t : S) ∈ xlss_Vof T v) ↔ v t = true := by
+    rw [xlss_mem_Vof]
+    constructor
+    · rintro ⟨hs, hv⟩
+      have : (⟨(t : S), hs⟩ : T) = t := Subtype.ext rfl
+      rwa [this] at hv
+    · intro hv
+      exact ⟨t.2, hv⟩
+  show decide ((t : S) ∈ xlss_Vof T v) = v t
+  by_cases hv : v t = true
+  · have ht : (t : S) ∈ xlss_Vof T v := h.mpr hv
+    simp [hv, ht]
+  · have ht : ¬ ((t : S) ∈ xlss_Vof T v) := fun hc => hv (h.mp hc)
+    have hv' : v t = false := by cases h' : v t <;> simp_all
+    simp [hv', ht]
+
+/-- The projection of a `T`-determined set is the set of configurations whose occupied subset
+belongs to the set. -/
+theorem xlss_mem_proj [DecidableEq S] (T : Finset S) (A : Set (S → Bool))
+    (hdet : ∀ x y, (∀ t ∈ T, x t = y t) → (x ∈ A ↔ y ∈ A)) (v : T → Bool) :
+    v ∈ T.restrict '' A ↔ (fun s => decide (s ∈ xlss_Vof T v)) ∈ A := by
+  constructor
+  · rintro ⟨x, hxA, hxv⟩
+    refine (hdet x (fun s => decide (s ∈ xlss_Vof T v)) ?_).mp hxA
+    intro t ht
+    calc x t = T.restrict x ⟨t, ht⟩ := rfl
+      _ = v ⟨t, ht⟩ := congrFun hxv ⟨t, ht⟩
+      _ = T.restrict (fun s => decide (s ∈ xlss_Vof T v)) ⟨t, ht⟩ :=
+          (congrFun (xlss_rest_ind_Vof T v) ⟨t, ht⟩).symm
+      _ = (fun s => decide (s ∈ xlss_Vof T v)) t := rfl
+  · rintro hv
+    exact ⟨fun s => decide (s ∈ xlss_Vof T v), hv, xlss_rest_ind_Vof T v⟩
+
+/-- The occupied subset of the indicator configuration of a subset of `T`. -/
+theorem xlss_Vof_ind [DecidableEq S] (T : Finset S) (V : Finset S) (hV : V ⊆ T) :
+    xlss_Vof T (fun t => decide ((t : S) ∈ V)) = V := by
+  ext s
+  rw [xlss_mem_Vof]
+  constructor
+  · rintro ⟨_, hv⟩
+    simpa using hv
+  · intro hsV
+    exact ⟨hV hsV, by simp [hsV]⟩
+
 end Exploding

@@ -61,6 +61,7 @@ import Exploding.Support.ExtSchProof4
 import Exploding.Support.ExtSchProof5
 import Exploding.Support.ExtSchProof6
 import Exploding.Support.ExtSchProof7
+import Exploding.Support.ExtSchProof8
 import Exploding.Support.S3CloseA
 import Exploding.Support.S3CloseB
 import Exploding.Support.S3CloseC

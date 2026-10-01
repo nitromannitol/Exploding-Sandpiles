@@ -35,8 +35,8 @@ theorem glws_nsmul_ne_zero {v : Site d} (hv : v ≠ 0) {q : ℕ} (hq : 0 < q) :
 theorem glws_lattice_limit (hd : 2 ≤ d) (ηmin : ℤ) (hηmin : 0 ≤ ηmin)
     (L : AddSubgroup (Site d)) (hL : L.index ≠ 0) (P : Measure (Site d → ℤ))
     (hP : IsProbabilityMeasure P) (hstat : StationaryOn d L P) (hKing : glw2_KingmanCore)
-    (hG : ∀ᵐ η ∂P, η ∈ glws_G d ηmin) {γ C : ℝ} (hC : 0 ≤ C)
-    (hloc : ∀ᵐ η ∂P, glws_Loc d γ C η) (hmix : glws_Mix d L P) (v : Site d) :
+    (hG : ∀ᵐ η ∂P, η ∈ glws_G d ηmin L) {γ C : ℝ} (hC : 0 ≤ C)
+    (hloc : ∀ᵐ η ∂P, glws_Loc0 d γ C η) (hmix : glws_Mix d L P) (v : Site d) :
     ∃ ℓ : ℝ, ∀ᵐ η ∂P,
       Tendsto (fun n : ℕ => glws_f η ((n : ℤ) • v) / (n : ℝ)) atTop (nhds ℓ) := by
   by_cases hv : v = 0
@@ -54,28 +54,26 @@ theorem glws_lattice_limit (hd : 2 ≤ d) (ηmin : ℤ) (hηmin : 0 ≤ ηmin)
       ((q : ℤ) • v) hyL (hmix _ hyL hy0)
     refine ⟨ℓy * (q : ℝ)⁻¹, ?_⟩
     filter_upwards [hℓy, hG, hloc] with η h1 h2 h3
-    have hlow : ∀ x, 0 ≤ η x := fun x => le_trans hηmin (h2.1 x).1
-    have hhigh : ∀ x, η x ≤ 2 * (d : ℤ) - 1 := fun x => (h2.1 x).2
-    exact glws_subseq_conv hC (glws_two_sided hd hlow hhigh h3) v q hq0 ℓy h1
+    exact glws_subseq_conv hC (glws_two_sided h3) v q hq0 ℓy h1
 
 /-- The limits `N₀ v` along all integer directions, chosen. -/
 theorem glws_lattice_data (hd : 2 ≤ d) (ηmin : ℤ) (hηmin : 0 ≤ ηmin)
     (L : AddSubgroup (Site d)) (hL : L.index ≠ 0) (P : Measure (Site d → ℤ))
     (hP : IsProbabilityMeasure P) (hstat : StationaryOn d L P) (hKing : glw2_KingmanCore)
-    (hG : ∀ᵐ η ∂P, η ∈ glws_G d ηmin) {γ C : ℝ} (hC : 0 ≤ C)
-    (hloc : ∀ᵐ η ∂P, glws_Loc d γ C η) (hmix : glws_Mix d L P) :
+    (hG : ∀ᵐ η ∂P, η ∈ glws_G d ηmin L) {γ C : ℝ} (hC : 0 ≤ C)
+    (hloc : ∀ᵐ η ∂P, glws_Loc0 d γ C η) (hmix : glws_Mix d L P) :
     ∃ N0 : Site d → ℝ, ∀ v : Site d, ∀ᵐ η ∂P,
       Tendsto (fun n : ℕ => glws_f η ((n : ℤ) • v) / (n : ℝ)) atTop (nhds (N0 v)) := by
   have h := fun v => glws_lattice_limit hd ηmin hηmin L hL P hP hstat hKing hG hC hloc hmix v
   exact ⟨fun v => (h v).choose, fun v => (h v).choose_spec⟩
 
 /-- A single background on which everything holds. -/
-theorem glws_exists_good (P : Measure (Site d → ℤ)) (hP : IsProbabilityMeasure P) (ηmin : ℤ)
-    (hG : ∀ᵐ η ∂P, η ∈ glws_G d ηmin) {γ C : ℝ} (hloc : ∀ᵐ η ∂P, glws_Loc d γ C η)
+theorem glws_exists_good (L : AddSubgroup (Site d)) (P : Measure (Site d → ℤ))
+    (hP : IsProbabilityMeasure P) (ηmin : ℤ) (hG : ∀ᵐ η ∂P, η ∈ glws_G d ηmin L) {γ C : ℝ} (hloc : ∀ᵐ η ∂P, glws_Loc0 d γ C η)
     (N0 : Site d → ℝ)
     (hN0 : ∀ v : Site d, ∀ᵐ η ∂P,
       Tendsto (fun n : ℕ => glws_f η ((n : ℤ) • v) / (n : ℝ)) atTop (nhds (N0 v))) :
-    ∃ η : Site d → ℤ, η ∈ glws_G d ηmin ∧ glws_Loc d γ C η ∧
+    ∃ η : Site d → ℤ, η ∈ glws_G d ηmin L ∧ glws_Loc0 d γ C η ∧
       ∀ v : Site d,
         Tendsto (fun n : ℕ => glws_f η ((n : ℤ) • v) / (n : ℝ)) atTop (nhds (N0 v)) := by
   haveI := hP
@@ -95,14 +93,12 @@ theorem glws_N0_nonneg {η : Site d → ℤ} {N0 : Site d → ℝ}
   positivity
 
 /-- `N₀` is Lipschitz for the `ℓ¹` norm. -/
-theorem glws_N0_lip (hd : 2 ≤ d) (ηmin : ℤ) (hηmin : 0 ≤ ηmin) {γ C : ℝ} {η : Site d → ℤ}
-    {N0 : Site d → ℝ} (hG : η ∈ glws_G d ηmin) (hloc : glws_Loc d γ C η)
+theorem glws_N0_lip {γ C : ℝ} {η : Site d → ℤ}
+    {N0 : Site d → ℝ} (hloc : glws_Loc0 d γ C η)
     (hlat : ∀ v : Site d,
       Tendsto (fun n : ℕ => glws_f η ((n : ℤ) • v) / (n : ℝ)) atTop (nhds (N0 v)))
     (v w : Site d) : |N0 v - N0 w| ≤ C * (mnorm (v - w) : ℝ) := by
-  have hlow : ∀ x, 0 ≤ η x := fun x => le_trans hηmin (hG.1 x).1
-  have hhigh : ∀ x, η x ≤ 2 * (d : ℤ) - 1 := fun x => (hG.1 x).2
-  exact glws_lip_limit (glws_two_sided hd hlow hhigh hloc) v w _ _ (hlat v) (hlat w)
+  exact glws_lip_limit (glws_two_sided hloc) v w _ _ (hlat v) (hlat w)
 
 /-- `N₀` is homogeneous under natural scaling. -/
 theorem glws_N0_nsmul {η : Site d → ℤ} {N0 : Site d → ℝ}

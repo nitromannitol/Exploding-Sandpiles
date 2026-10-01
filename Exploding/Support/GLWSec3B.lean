@@ -13,43 +13,45 @@ namespace Exploding
 variable {d : ℕ}
 
 /-- The cocycle `g_n(η) = T̃(0, n y)(η)` on the good event, `0` off it. -/
-noncomputable def glws_g (ηmin : ℤ) (y : Site d) (n : ℕ) (η : Site d → ℤ) : ℝ :=
-  if η ∈ glws_G d ηmin then glws_f η ((n : ℤ) • y) else 0
+noncomputable def glws_g (ηmin : ℤ) (L : AddSubgroup (Site d)) (y : Site d) (n : ℕ) (η : Site d → ℤ) : ℝ :=
+  if η ∈ glws_G d ηmin L then glws_f η ((n : ℤ) • y) else 0
 
-theorem glws_g_nonneg (ηmin : ℤ) (y : Site d) (n : ℕ) (η : Site d → ℤ) :
-    0 ≤ glws_g ηmin y n η := by
+theorem glws_g_nonneg (ηmin : ℤ) (L : AddSubgroup (Site d)) (y : Site d) (n : ℕ) (η : Site d → ℤ) :
+    0 ≤ glws_g ηmin L y n η := by
   unfold glws_g
   split_ifs
   · exact Nat.cast_nonneg _
   · exact le_refl _
 
-theorem glws_g_measurable (ηmin : ℤ) (y : Site d) (n : ℕ) :
-    Measurable (glws_g ηmin y n) := by
+theorem glws_g_measurable (ηmin : ℤ) (L : AddSubgroup (Site d)) (y : Site d) (n : ℕ) :
+    Measurable (glws_g ηmin L y n) := by
   unfold glws_g
-  exact Measurable.ite (glws_G_measurable d ηmin) (lwc_measurable d 0 ((n : ℤ) • y))
+  exact Measurable.ite (glws_G_measurable d ηmin L) (lwc_measurable d 0 ((n : ℤ) • y))
     measurable_const
 
-/-- The cocycle inequality, for every background. -/
-theorem glws_g_subadd (hd : 2 ≤ d) (ηmin : ℤ) (hηmin : 0 ≤ ηmin) (y : Site d) (m n : ℕ)
+/-- The cocycle inequality, for every background (`y` in the sublattice). -/
+theorem glws_g_subadd (hd : 2 ≤ d) (ηmin : ℤ) (hηmin : 0 ≤ ηmin) (L : AddSubgroup (Site d))
+    {y : Site d} (hy : y ∈ L) (m n : ℕ)
     (η : Site d → ℤ) :
-    glws_g ηmin y (m + n) η ≤
-      glws_g ηmin y m η + glws_g ηmin y n (((fun η : Site d → ℤ => fun z => η (y + z))^[m]) η) := by
-  by_cases hη : η ∈ glws_G d ηmin
-  · have hT : ((fun η : Site d → ℤ => fun z => η (y + z))^[m]) η ∈ glws_G d ηmin :=
-      glws_iterate_mem hη y m
+    glws_g ηmin L y (m + n) η ≤
+      glws_g ηmin L y m η + glws_g ηmin L y n (((fun η : Site d → ℤ => fun z => η (y + z))^[m]) η) := by
+  by_cases hη : η ∈ glws_G d ηmin L
+  · have hT : ((fun η : Site d → ℤ => fun z => η (y + z))^[m]) η ∈ glws_G d ηmin L :=
+      glws_iterate_mem hη hy m
     unfold glws_g
     rw [if_pos hη, if_pos hη, if_pos hT]
     unfold glws_f
     rw [glw_shift_ergodic_iterate, lwc_cluster_shift]
-    have h := glws_f_subadd hd ηmin hηmin hη (0 : Site d) ((m : ℤ) • y) (((m + n : ℕ) : ℤ) • y)
+    have h := glws_f_subadd hd ηmin hηmin hη L.zero_mem (L.zsmul_mem hy m)
+      (((m + n : ℕ) : ℤ) • y)
     have e1 : (m : ℤ) • y + (0 : Site d) = (m : ℤ) • y := add_zero _
     have e2 : (m : ℤ) • y + (n : ℤ) • y = ((m + n : ℕ) : ℤ) • y := by
       rw [← add_smul]; push_cast; rfl
     rw [e1, e2]
     exact h
-  · have h1 := glws_g_nonneg ηmin y m η
-    have h2 := glws_g_nonneg ηmin y n (((fun η : Site d → ℤ => fun z => η (y + z))^[m]) η)
-    have h0 : glws_g ηmin y (m + n) η = 0 := by
+  · have h1 := glws_g_nonneg ηmin L y m η
+    have h2 := glws_g_nonneg ηmin L y n (((fun η : Site d → ℤ => fun z => η (y + z))^[m]) η)
+    have h0 : glws_g ηmin L y (m + n) η = 0 := by
       unfold glws_g
       rw [if_neg hη]
     rw [h0]
@@ -85,9 +87,9 @@ theorem glws_log_pow_le (γ : ℝ) : ∃ B : ℝ, ∀ t : ℕ, Real.log t ^ γ �
     linarith
 
 /-- The linear upper bound of the cocycle, on the local good event. -/
-theorem glws_g_linear {γ C : ℝ} (ηmin : ℤ) {η : Site d → ℤ}
-    (hG : η ∈ glws_G d ηmin) (hloc : glws_Loc d γ C η) (y : Site d) :
-    ∃ K : ℝ, ∀ n : ℕ, glws_g ηmin y n η ≤
+theorem glws_g_linear {γ C : ℝ} (ηmin : ℤ) {L : AddSubgroup (Site d)} {η : Site d → ℤ}
+    (hG : η ∈ glws_G d ηmin L) (hloc : glws_Loc0 d γ C η) (y : Site d) :
+    ∃ K : ℝ, ∀ n : ℕ, glws_g ηmin L y n η ≤
       (C * (mnorm y : ℝ) + ((mnorm y).toNat + 1 : ℕ)) * n + K := by
   obtain ⟨B, hB⟩ := glws_log_pow_le γ
   obtain ⟨_, n0, hn0⟩ := hloc
@@ -107,20 +109,12 @@ theorem glws_g_linear {γ C : ℝ} (ηmin : ℤ) {η : Site d → ℤ}
     push_cast
     exact h4
   have hcentx' : ((n : ℤ) • y) ∈ cent d n' := lwc3_cent_mono (le_max_right _ _) hcentx
-  have hcent0 : (0 : Site d) ∈ cent d n' := by intro i; simp
-  obtain ⟨a, ha, hloc0⟩ := hn0 n' hn0le 0 hcent0
-  obtain ⟨c, hc, hcb⟩ := hloc0 ((n : ℤ) • y) hcentx'
+  obtain ⟨c, hc, hcb, _⟩ := hn0 n' hn0le ((n : ℤ) • y) hcentx'
   unfold glws_g
   rw [if_pos hG]
   unfold glws_f
   rw [hc, ENat.toNat_coe]
-  have hnorm : mnorm ((0 : Site d) - (n : ℤ) • y) = (n : ℤ) * mnorm y := by
-    unfold mnorm
-    rw [Finset.mul_sum]
-    refine Finset.sum_congr rfl fun i _ => ?_
-    simp only [Pi.sub_apply, Pi.zero_apply, zero_sub, abs_neg, Pi.smul_apply, smul_eq_mul]
-    rw [abs_mul, abs_of_nonneg (Int.natCast_nonneg n)]
-  rw [hnorm] at hcb
+  rw [lwc2_mnorm_nat_smul] at hcb
   have hlog := hB n'
   have hn'le : (n' : ℝ) ≤ (n0 : ℝ) + (n : ℝ) * (Y : ℝ) := by
     rcases le_total n0 (n * Y) with h | h
@@ -168,7 +162,7 @@ theorem glws_shift_ergodic (d : ℕ) (L : AddSubgroup (Site d))
 theorem glws_direction_limit (hd : 2 ≤ d) (ηmin : ℤ) (hηmin : 0 ≤ ηmin)
     (L : AddSubgroup (Site d)) (P : Measure (Site d → ℤ)) (hP : IsProbabilityMeasure P)
     (hstat : StationaryOn d L P) (hKing : glw2_KingmanCore)
-    (hG : ∀ᵐ η ∂P, η ∈ glws_G d ηmin) {γ C : ℝ} (hloc : ∀ᵐ η ∂P, glws_Loc d γ C η)
+    (hG : ∀ᵐ η ∂P, η ∈ glws_G d ηmin L) {γ C : ℝ} (hloc : ∀ᵐ η ∂P, glws_Loc0 d γ C η)
     (y : Site d) (hy : y ∈ L)
     (hmix : ∀ (s : Finset (Site d)) (S : Set (s → ℤ)),
       MeasurableSet S → ∃ n : ℕ, P (cylinder s S ∩
@@ -180,13 +174,13 @@ theorem glws_direction_limit (hd : 2 ≤ d) (ηmin : ℤ) (hηmin : 0 ≤ ηmin)
   have hmp := glw_shift_ergodic_meas_pres d L P hstat y hy
   have herg := glws_shift_ergodic d L P hP hstat y hy hmix
   set C' : ℝ := C * (mnorm y : ℝ) + (((mnorm y).toNat + 1 : ℕ) : ℝ) with hC'
-  have hlin : ∀ᵐ η ∂P, ∃ K : ℝ, ∀ n : ℕ, glws_g ηmin y n η ≤ C' * n + K := by
+  have hlin : ∀ᵐ η ∂P, ∃ K : ℝ, ∀ n : ℕ, glws_g ηmin L y n η ≤ C' * n + K := by
     filter_upwards [hG, hloc] with η h1 h2
     exact glws_g_linear ηmin h1 h2 y
-  obtain ⟨K, hA, hApos⟩ := glw_kingman_linear_setA P (glws_g ηmin y)
-    (glws_g_measurable ηmin y) C' hlin
-  obtain ⟨ℓ, hℓ⟩ := hKing (μ := P) (fun η z => η (y + z)) hmp herg (glws_g ηmin y)
-    (glws_g_subadd hd ηmin hηmin y) (glws_g_nonneg ηmin y) (glws_g_measurable ηmin y) C' hlin
+  obtain ⟨K, hA, hApos⟩ := glw_kingman_linear_setA P (glws_g ηmin L y)
+    (glws_g_measurable ηmin L y) C' hlin
+  obtain ⟨ℓ, hℓ⟩ := hKing (μ := P) (fun η z => η (y + z)) hmp herg (glws_g ηmin L y)
+    (glws_g_subadd hd ηmin hηmin L hy) (glws_g_nonneg ηmin L y) (glws_g_measurable ηmin L y) C' hlin
     K hA hApos
   refine ⟨ℓ, ?_⟩
   filter_upwards [hℓ, hG] with η h1 h2

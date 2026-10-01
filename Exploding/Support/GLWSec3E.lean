@@ -14,17 +14,18 @@ namespace Exploding
 
 variable {d : ℕ}
 
-theorem glws_g_eq_of_mem {ηmin : ℤ} {η : Site d → ℤ} (hη : η ∈ glws_G d ηmin) (y : Site d)
-    (n : ℕ) : glws_g ηmin y n η = glws_f η ((n : ℤ) • y) := by
+theorem glws_g_eq_of_mem {ηmin : ℤ} {L : AddSubgroup (Site d)} {η : Site d → ℤ}
+    (hη : η ∈ glws_G d ηmin L) (y : Site d)
+    (n : ℕ) : glws_g ηmin L y n η = glws_f η ((n : ℤ) • y) := by
   unfold glws_g
   rw [if_pos hη]
 
 /-- The pointwise cocycle inequality along a pair of directions. -/
-theorem glws_f_add_shift (hd : 2 ≤ d) (ηmin : ℤ) (hηmin : 0 ≤ ηmin) {η : Site d → ℤ}
-    (hη : η ∈ glws_G d ηmin) (a b : Site d) (n : ℕ) :
+theorem glws_f_add_shift (hd : 2 ≤ d) (ηmin : ℤ) (hηmin : 0 ≤ ηmin) {L : AddSubgroup (Site d)}
+    {η : Site d → ℤ} (hη : η ∈ glws_G d ηmin L) {a : Site d} (ha : a ∈ L) (b : Site d) (n : ℕ) :
     glws_f η ((n : ℤ) • (a + b)) ≤
       glws_f η ((n : ℤ) • a) + glws_f (fun z => η ((n : ℤ) • a + z)) ((n : ℤ) • b) := by
-  have h := glws_f_subadd hd ηmin hηmin hη (0 : Site d) ((n : ℤ) • a) ((n : ℤ) • (a + b))
+  have h := glws_f_subadd hd ηmin hηmin hη L.zero_mem (L.zsmul_mem ha n) ((n : ℤ) • (a + b))
   have hshift := lwc_cluster_shift d η ((n : ℤ) • a) (0 : Site d) ((n : ℤ) • b)
   have e1 : (n : ℤ) • a + (0 : Site d) = (n : ℤ) • a := add_zero _
   have e2 : (n : ℤ) • a + (n : ℤ) • b = (n : ℤ) • (a + b) := by rw [smul_add]
@@ -36,7 +37,7 @@ theorem glws_f_add_shift (hd : 2 ≤ d) (ηmin : ℤ) (hηmin : 0 ≤ ηmin) {η
 /-- **Subadditivity of `N₀`**, when the first direction lies in the sublattice. -/
 theorem glws_N0_subadd_L (hd : 2 ≤ d) (ηmin : ℤ) (hηmin : 0 ≤ ηmin)
     (L : AddSubgroup (Site d)) (P : Measure (Site d → ℤ)) (hP : IsProbabilityMeasure P)
-    (hstat : StationaryOn d L P) (hG : ∀ᵐ η ∂P, η ∈ glws_G d ηmin) (N0 : Site d → ℝ)
+    (hstat : StationaryOn d L P) (hG : ∀ᵐ η ∂P, η ∈ glws_G d ηmin L) (N0 : Site d → ℝ)
     (hN0 : ∀ v : Site d, ∀ᵐ η ∂P,
       Tendsto (fun n : ℕ => glws_f η ((n : ℤ) • v) / (n : ℝ)) atTop (nhds (N0 v)))
     (a b : Site d) (ha : a ∈ L) : N0 (a + b) ≤ N0 a + N0 b := by
@@ -45,20 +46,20 @@ theorem glws_N0_subadd_L (hd : 2 ≤ d) (ηmin : ℤ) (hηmin : 0 ≤ ηmin)
   set e : ℝ := ε / 3 with he
   have he0 : 0 < e := by rw [he]; positivity
   -- the events
-  set H : ℕ → Set (Site d → ℤ) := fun m => glws_G d ηmin ∩ ⋂ n : ℕ, ⋂ (_ : m ≤ n),
-    ({η | glws_g ηmin a n η / (n : ℝ) ≤ N0 a + e} ∩
-      {η | N0 (a + b) - e ≤ glws_g ηmin (a + b) n η / (n : ℝ)}) with hH
+  set H : ℕ → Set (Site d → ℤ) := fun m => glws_G d ηmin L ∩ ⋂ n : ℕ, ⋂ (_ : m ≤ n),
+    ({η | glws_g ηmin L a n η / (n : ℝ) ≤ N0 a + e} ∩
+      {η | N0 (a + b) - e ≤ glws_g ηmin L (a + b) n η / (n : ℝ)}) with hH
   set F : ℕ → Set (Site d → ℤ) := fun m => ⋂ n : ℕ, ⋂ (_ : m ≤ n),
-    {η | glws_g ηmin b n η / (n : ℝ) ≤ N0 b + e} with hF
+    {η | glws_g ηmin L b n η / (n : ℝ) ≤ N0 b + e} with hF
   have hHm : ∀ m, MeasurableSet (H m) := by
     intro m
-    refine (glws_G_measurable d ηmin).inter (MeasurableSet.iInter fun n => MeasurableSet.iInter fun _ => ?_)
-    exact (measurableSet_le ((glws_g_measurable ηmin a n).div_const _) measurable_const).inter
-      (measurableSet_le measurable_const ((glws_g_measurable ηmin (a + b) n).div_const _))
+    refine (glws_G_measurable d ηmin L).inter (MeasurableSet.iInter fun n => MeasurableSet.iInter fun _ => ?_)
+    exact (measurableSet_le ((glws_g_measurable ηmin L a n).div_const _) measurable_const).inter
+      (measurableSet_le measurable_const ((glws_g_measurable ηmin L (a + b) n).div_const _))
   have hFm : ∀ m, MeasurableSet (F m) := by
     intro m
     refine MeasurableSet.iInter fun n => MeasurableSet.iInter fun _ => ?_
-    exact measurableSet_le ((glws_g_measurable ηmin b n).div_const _) measurable_const
+    exact measurableSet_le ((glws_g_measurable ηmin L b n).div_const _) measurable_const
   have hHmono : Monotone H := by
     intro m m' hmm' η hη
     refine ⟨hη.1, Set.mem_iInter.mpr fun n => Set.mem_iInter.mpr fun hn => ?_⟩
@@ -77,10 +78,10 @@ theorem glws_N0_subadd_L (hd : 2 ≤ d) (ηmin : ℤ) (hηmin : 0 ≤ ηmin)
       refine Set.mem_iUnion.mpr ⟨m, h1, Set.mem_iInter.mpr fun n => Set.mem_iInter.mpr fun hn => ?_⟩
       obtain ⟨u, v⟩ := hm n hn
       refine ⟨?_, ?_⟩
-      · show glws_g ηmin a n η / (n : ℝ) ≤ N0 a + e
+      · show glws_g ηmin L a n η / (n : ℝ) ≤ N0 a + e
         rw [glws_g_eq_of_mem h1]
         exact u.le
-      · show N0 (a + b) - e ≤ glws_g ηmin (a + b) n η / (n : ℝ)
+      · show N0 (a + b) - e ≤ glws_g ηmin L (a + b) n η / (n : ℝ)
         rw [glws_g_eq_of_mem h1]
         exact v.le
     have hmeas : MeasurableSet (⋃ m, H m) := MeasurableSet.iUnion hHm
@@ -91,7 +92,7 @@ theorem glws_N0_subadd_L (hd : 2 ≤ d) (ηmin : ℤ) (hηmin : 0 ≤ ηmin)
       have h2' := h2.eventually (gt_mem_nhds (by linarith : N0 b < N0 b + e))
       obtain ⟨m, hm⟩ := eventually_atTop.mp h2'
       refine Set.mem_iUnion.mpr ⟨m, Set.mem_iInter.mpr fun n => Set.mem_iInter.mpr fun hn => ?_⟩
-      show glws_g ηmin b n η / (n : ℝ) ≤ N0 b + e
+      show glws_g ηmin L b n η / (n : ℝ) ≤ N0 b + e
       rw [glws_g_eq_of_mem h1]
       exact (hm n hn).le
     have hmeas : MeasurableSet (⋃ m, F m) := MeasurableSet.iUnion hFm
@@ -126,12 +127,13 @@ theorem glws_N0_subadd_L (hd : 2 ≤ d) (ηmin : ℤ) (hηmin : 0 ≤ ηmin)
     rw [hunion] at this
     exact absurd hsum (not_lt.mpr this)
   obtain ⟨η, hηH, hηS⟩ := nonempty_of_measure_ne_zero hne
-  have hηG : η ∈ glws_G d ηmin := hηH.1
-  have hTG : (fun z => η ((n : ℤ) • a + z)) ∈ glws_G d ηmin := glws_G_shift hηG _
+  have hηG : η ∈ glws_G d ηmin L := hηH.1
+  have hTG : (fun z => η ((n : ℤ) • a + z)) ∈ glws_G d ηmin L :=
+    glws_G_shift hηG (L.zsmul_mem ha n)
   have hηH2 := hηH.2
   simp only [Set.mem_iInter] at hηH2
   obtain ⟨hA, hAB⟩ := hηH2 n hnm
-  have hB : glws_g ηmin b n (fun z => η ((n : ℤ) • a + z)) / (n : ℝ) ≤ N0 b + e := by
+  have hB : glws_g ηmin L b n (fun z => η ((n : ℤ) • a + z)) / (n : ℝ) ≤ N0 b + e := by
     have := hηS
     simp only [hS, Set.mem_preimage, hF, Set.mem_iInter] at this
     exact this n hnm
@@ -139,7 +141,7 @@ theorem glws_N0_subadd_L (hd : 2 ≤ d) (ηmin : ℤ) (hηmin : 0 ≤ ηmin)
   rw [glws_g_eq_of_mem hηG] at hA hAB
   rw [glws_g_eq_of_mem hTG] at hB
   have hnpos : (0 : ℝ) < n := by exact_mod_cast Nat.succ_pos m
-  have hmain := glws_f_add_shift hd ηmin hηmin hηG a b n
+  have hmain := glws_f_add_shift hd ηmin hηmin hηG ha b n
   have h1 : N0 (a + b) - e ≤ (glws_f η ((n : ℤ) • a) + glws_f (fun z => η ((n : ℤ) • a + z))
       ((n : ℤ) • b)) / (n : ℝ) :=
     le_trans hAB (div_le_div_of_nonneg_right hmain hnpos.le)
@@ -150,7 +152,7 @@ theorem glws_N0_subadd_L (hd : 2 ≤ d) (ηmin : ℤ) (hηmin : 0 ≤ ηmin)
 theorem glws_N0_subadd (hd : 2 ≤ d) (ηmin : ℤ) (hηmin : 0 ≤ ηmin)
     (L : AddSubgroup (Site d)) (hL : L.index ≠ 0) (P : Measure (Site d → ℤ))
     (hP : IsProbabilityMeasure P) (hstat : StationaryOn d L P)
-    (hG : ∀ᵐ η ∂P, η ∈ glws_G d ηmin) (N0 : Site d → ℝ)
+    (hG : ∀ᵐ η ∂P, η ∈ glws_G d ηmin L) (N0 : Site d → ℝ)
     (hN0 : ∀ v : Site d, ∀ᵐ η ∂P,
       Tendsto (fun n : ℕ => glws_f η ((n : ℤ) • v) / (n : ℝ)) atTop (nhds (N0 v)))
     {η₀ : Site d → ℤ}

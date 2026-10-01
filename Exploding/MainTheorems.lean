@@ -66,16 +66,20 @@ assumptions.  Each is stated as a proposition in `Exploding/External/` and regis
 * `FeyMeesterRedigLeastAction`, Theorem 2.8 of Fey, Meester and Redig, cited in the proof of
   Theorem 6.1, `hFMR`.
 
-Two of the seven are discharged by proofs in this repository:
+Four of the seven are discharged by proofs in this repository:
 
 * `FeyMeesterRedigLeastAction` is proved by `Exploding.xfmr_proved`
   (`Exploding/Support/ExtFMR.lean`), so Theorem 6.1 holds with `hFMR := Exploding.xfmr_proved`;
+* `LiggettSchonmannStaceyBoundedDegree` is proved by `Exploding.xlse_lss_bounded_degree`
+  and `LiggettSchonmannStacey` by `Exploding.xlse_lss_general`
+  (`Exploding/Support/ExtLSSCountable.lean`), so `hLSSB` and `hLSS` may be discharged
+  everywhere they occur;
 * `FeyLevinePeresExplosive` follows from `SchonmannBootstrap` by
   `Exploding.LSProof.ls_flp_from_explosive` (`Exploding/Support/LSProofAux.lean`), because
   Theorem 1.4 strengthens Theorem 1.1, so `hFLP` of Theorem 1.3 may be replaced by `hSch`.
   Theorem 1.2 already does so in its proof.
 
-The other five are assumed.  The results below take them as follows, `perc` standing for the
+The other three are assumed.  The results below take them as follows, `perc` standing for the
 three percolation results `hLSSB`, `hHole`, `hChem`:
 
 | result | cited hypotheses taken |

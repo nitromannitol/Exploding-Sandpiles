@@ -28,9 +28,10 @@ status:
     counterexample (Theorem 6.1), and the lemmas and propositions of Sections
     2 to 7.  SEALED (22): all of the paper's results, each with axiom closure
     exactly propext, Classical.choice and Quot.sound, taking the cited results
-    as explicit hypotheses.  Two cited results are also proved here: the
-    least-action principle of Fey, Meester and Redig, and the explosion
-    theorem of Fey, Levine and Peres from Schonmann's bound.  SCOPE BOUNDARY:
+    as explicit hypotheses.  Four cited results are also proved here: the
+    least-action principle of Fey, Meester and Redig, both domination
+    theorems of Liggett, Schonmann and Stacey, and the explosion theorem of
+    Fey, Levine and Peres from Schonmann's bound.  SCOPE BOUNDARY:
     seven results the paper cites are stated as propositions in
     Exploding/External/ and assumed, not proved, each taken as an explicit
     hypothesis by the statements whose proofs use it: the explosion theorem of
@@ -169,7 +170,7 @@ automation:
     supervision of the author.  All 22 of the paper's registered results are
     proved, each with axiom closure exactly propext, Classical.choice and
     Quot.sound; the remaining 7 registered statements are cited results that
-    are assumed as explicit hypotheses, two of them also proved in the
+    are assumed as explicit hypotheses, four of them also proved in the
     repository.  No custom axiom is declared; cited results enter only as
     explicit hypotheses.
 

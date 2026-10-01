@@ -34,7 +34,7 @@ theorem glws_nsmul_ne_zero {v : Site d} (hv : v ≠ 0) {q : ℕ} (hq : 0 < q) :
 /-- **The limit along every integer direction.** -/
 theorem glws_lattice_limit (hd : 2 ≤ d) (ηmin : ℤ) (hηmin : 0 ≤ ηmin)
     (L : AddSubgroup (Site d)) (hL : L.index ≠ 0) (P : Measure (Site d → ℤ))
-    (hP : IsProbabilityMeasure P) (hstat : StationaryOn d L P) (hKing : glw2_KingmanCore)
+    (hP : IsProbabilityMeasure P) (hstat : StationaryOn d L P)
     (hG : ∀ᵐ η ∂P, η ∈ glws_G d ηmin L) {γ C : ℝ} (hC : 0 ≤ C)
     (hloc : ∀ᵐ η ∂P, glws_Loc0 d γ C η) (hmix : glws_Mix d L P) (v : Site d) :
     ∃ ℓ : ℝ, ∀ᵐ η ∂P,
@@ -50,7 +50,7 @@ theorem glws_lattice_limit (hd : 2 ≤ d) (ηmin : ℤ) (hηmin : 0 ≤ ηmin)
   · obtain ⟨q, hq0, _, hqL⟩ := AddSubgroup.exists_nsmul_mem_of_index_ne_zero hL v
     have hyL : (q : ℤ) • v ∈ L := by rw [natCast_zsmul]; exact hqL
     have hy0 : (q : ℤ) • v ≠ 0 := glws_nsmul_ne_zero hv hq0
-    obtain ⟨ℓy, hℓy⟩ := glws_direction_limit hd ηmin hηmin L P hP hstat hKing hG hloc
+    obtain ⟨ℓy, hℓy⟩ := glws_direction_limit hd ηmin hηmin L P hP hstat hG hloc
       ((q : ℤ) • v) hyL (hmix _ hyL hy0)
     refine ⟨ℓy * (q : ℝ)⁻¹, ?_⟩
     filter_upwards [hℓy, hG, hloc] with η h1 h2 h3
@@ -59,12 +59,12 @@ theorem glws_lattice_limit (hd : 2 ≤ d) (ηmin : ℤ) (hηmin : 0 ≤ ηmin)
 /-- The limits `N₀ v` along all integer directions, chosen. -/
 theorem glws_lattice_data (hd : 2 ≤ d) (ηmin : ℤ) (hηmin : 0 ≤ ηmin)
     (L : AddSubgroup (Site d)) (hL : L.index ≠ 0) (P : Measure (Site d → ℤ))
-    (hP : IsProbabilityMeasure P) (hstat : StationaryOn d L P) (hKing : glw2_KingmanCore)
+    (hP : IsProbabilityMeasure P) (hstat : StationaryOn d L P)
     (hG : ∀ᵐ η ∂P, η ∈ glws_G d ηmin L) {γ C : ℝ} (hC : 0 ≤ C)
     (hloc : ∀ᵐ η ∂P, glws_Loc0 d γ C η) (hmix : glws_Mix d L P) :
     ∃ N0 : Site d → ℝ, ∀ v : Site d, ∀ᵐ η ∂P,
       Tendsto (fun n : ℕ => glws_f η ((n : ℤ) • v) / (n : ℝ)) atTop (nhds (N0 v)) := by
-  have h := fun v => glws_lattice_limit hd ηmin hηmin L hL P hP hstat hKing hG hC hloc hmix v
+  have h := fun v => glws_lattice_limit hd ηmin hηmin L hL P hP hstat hG hC hloc hmix v
   exact ⟨fun v => (h v).choose, fun v => (h v).choose_spec⟩
 
 /-- A single background on which everything holds. -/

@@ -14,12 +14,6 @@ namespace Exploding
 
 variable {d : ℕ}
 
-theorem glws_g_eq_of_mem {ηmin : ℤ} {L : AddSubgroup (Site d)} {η : Site d → ℤ}
-    (hη : η ∈ glws_G d ηmin L) (y : Site d)
-    (n : ℕ) : glws_g ηmin L y n η = glws_f η ((n : ℤ) • y) := by
-  unfold glws_g
-  rw [if_pos hη]
-
 /-- The pointwise cocycle inequality along a pair of directions. -/
 theorem glws_f_add_shift (hd : 2 ≤ d) (ηmin : ℤ) (hηmin : 0 ≤ ηmin) {L : AddSubgroup (Site d)}
     {η : Site d → ℤ} (hη : η ∈ glws_G d ηmin L) {a : Site d} (ha : a ∈ L) (b : Site d) (n : ℕ) :

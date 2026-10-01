@@ -5,7 +5,6 @@ theorem and the closeness of the two arrival times (`glws_Close`); and `glw2_Sec
 from the stronger local bound of `glw2_LipschitzLocal`.
 -/
 import Exploding.Support.GLWSec3G
-import Exploding.Support.MKingman
 
 open Exploding LatticeProb MeasureTheory Filter
 open scoped Classical
@@ -29,12 +28,13 @@ def glws_Origin (d : ℕ) (ηmin : ℤ) (P : Measure (Site d → ℤ)) : Prop :=
   Exploding.External.AntalPisztoraChemicalDistance →
   ∃ γ C : ℝ, 0 < γ ∧ 0 < C ∧ ∀ᵐ η ∂P, glws_Loc0 d γ C η
 
-/-- **The Section-3 assembly, core form.**  The paper's local bound, the moment-free Kingman
-theorem and the closeness of the two arrival times give the conclusion of Proposition 5.1. -/
+/-- **The Section-3 assembly, core form.**  The paper's local bound (through the Kingman theorem with
+a Lipschitz transfer, `king_lipKingman`) and the closeness of the two arrival times give the
+conclusion of Proposition 5.1. -/
 theorem glws_core (d : ℕ) (hd : 2 ≤ d) (ηmin : ℤ) (hηmin : 0 ≤ ηmin)
     (L : AddSubgroup (Site d)) (hL : L.index ≠ 0) (P : Measure (Site d → ℤ))
     (hP : IsProbabilityMeasure P) (hsupp : ∀ᵐ η ∂P, InOmega d ηmin η)
-    (hstat : StationaryOn d L P) (hmix : glws_Mix d L P) (hKing : glw2_KingmanCore)
+    (hstat : StationaryOn d L P) (hmix : glws_Mix d L P)
     {γ C : ℝ} (hγ : 0 < γ) (hC : 0 < C) (hlocae : ∀ᵐ η ∂P, glws_Loc0 d γ C η)
     {γ' : ℝ} (hcl : ∀ᵐ η ∂P, ∃ n0 : ℕ, ∀ n : ℕ, n0 ≤ n → ∀ x : Site d, mnorm x ≤ (n : ℤ) →
       lastArrival η (0 : Site d) x ≤ clusterArrival η (0 : Site d) x ∧
@@ -59,7 +59,7 @@ theorem glws_core (d : ℕ) (hd : 2 ≤ d) (ηmin : ℤ) (hηmin : 0 ≤ ηmin)
       ae_all_iff.mpr hshift
     filter_upwards [hlocae, hsupp, hall] with η h h' h''
     exact ⟨h', h.1, h''⟩
-  obtain ⟨N0, hN0⟩ := glws_lattice_data hd ηmin hηmin L hL P hP hstat hKing hGae hC.le hlocae hmix
+  obtain ⟨N0, hN0⟩ := glws_lattice_data hd ηmin hηmin L hL P hP hstat hGae hC.le hlocae hmix
   obtain ⟨η₀, hη₀G, hη₀loc, hη₀lat⟩ :=
     glws_exists_good L P hP ηmin hGae hlocae N0 hN0
   have hlipN0 := glws_N0_lip hη₀loc hη₀lat
@@ -94,9 +94,10 @@ theorem glws_core (d : ℕ) (hd : 2 ≤ d) (ηmin : ℤ) (hηmin : 0 ≤ ηmin)
   obtain ⟨n, hn, hns⟩ := hG.2.1 (0 : Site d)
   exact ⟨glws_explosive hd η hlow hhigh ⟨n, hn, hns⟩, hη⟩
 
-/-- **The conclusion of Proposition 5.1** from the paper's local bound, the moment-free Kingman
-theorem and the closeness of the two arrival times.  The finite-range mixing (B) is derived
-here from Hypothesis 5.1, and the standing hypotheses are those of the frozen statement. -/
+/-- **The conclusion of Proposition 5.1** from the paper's local bound and the closeness of the two
+arrival times.  The finite-range mixing (B) is derived here from Hypothesis 5.1, the standing
+hypotheses are those of the frozen statement, and no moment-free Kingman proposition is assumed:
+the subadditive ergodic step is `king_lipKingman`, fed by the local bound. -/
 theorem glws_conclusion (d : ℕ) (hd : 2 ≤ d) (ηmin : ℤ) (hηmin : 0 ≤ ηmin)
     (L : AddSubgroup (Site d)) (hL : L.index ≠ 0) (P : Measure (Site d → ℤ))
     (hP : IsProbabilityMeasure P) (hsupp : ∀ᵐ η ∂P, InOmega d ηmin η)
@@ -107,30 +108,49 @@ theorem glws_conclusion (d : ℕ) (hd : 2 ≤ d) (ηmin : ℤ) (hηmin : 0 ≤ �
     (hLSSB : Exploding.External.LiggettSchonmannStaceyBoundedDegree)
     (hHole : Exploding.External.MathieuHoleVolume)
     (hChem : Exploding.External.AntalPisztoraChemicalDistance)
-    (hmk : mk_kingman_linear) (horig : glws_Origin d ηmin P) (hclose : glws_Close d ηmin P) :
+    (horig : glws_Origin d ηmin P) (hclose : glws_Close d ηmin P) :
     glw_Conclusion d P := by
   obtain ⟨γ, C, hγ, hC, hloc⟩ := horig hP hsupp h1 h3 h4 hLSS hLSSB hHole hChem
   obtain ⟨γ', _, hcl⟩ := hclose hP hsupp h1 h3 h4 hLSS hLSSB hHole hChem
   have hmix : glws_Mix d L P := fun y hy hy0 s S hS =>
     glw2_shift_mixing d P h1 y (glw_shift_ergodic_meas_pres d L P hstat y hy) hy0 s S hS
-  exact glws_core d hd ηmin hηmin L hL P hP hsupp hstat hmix (glw2_KingmanCore_of_mk hmk)
-    hγ hC hloc hcl
+  exact glws_core d hd ηmin hηmin L hL P hP hsupp hstat hmix hγ hC hloc hcl
 
-/-- **The Section-3 assembly of Proposition 5.1**, in the form of `glw2_Section3Convergence`:
-given the closeness of the penultimate-cluster and last-wave arrival times, the conclusion follows
-from the subadditive ergodic core and the local Lipschitz bound `glw2_LipschitzLocal`, the
-finite-range facts (A) and (B) and the setting.  The local bound is used only through the paper's
+/-- The Section-3 assembly, as an implication from the standing hypotheses of Proposition 5.1, the
+finite-range facts (A) and (B) and the local Lipschitz bound `glw2_LipschitzLocal`.  This is
+`glw2_Section3Convergence` without its premise `glw2_KingmanCore`, which is false. -/
+def glws_Section3 (d : ℕ) (_hd : 2 ≤ d) (ηmin : ℤ) (_hηmin : 0 ≤ ηmin)
+    (L : AddSubgroup (Site d)) (_hL : L.index ≠ 0) (P : Measure (Site d → ℤ)) : Prop :=
+  IsProbabilityMeasure P → (∀ᵐ η ∂P, InOmega d ηmin η) → StationaryOn d L P → ErgodicOn d L P →
+  FiniteRangeOfDependence d P → PathFillingHyp d P → StronglyBoxCrossingHyp d P →
+  Exploding.External.LiggettSchonmannStacey →
+  Exploding.External.LiggettSchonmannStaceyBoundedDegree →
+  Exploding.External.MathieuHoleVolume →
+  Exploding.External.AntalPisztoraChemicalDistance →
+  (∀ (k : Fin d → ℕ), (∀ i, 0 < k i) →
+    ∃ m : ℕ, KDependent m (P.map fun η (j : Site d) => decide (StronglyBoxCrossed η k j))) →
+  (∀ (y : Site d), y ∈ L → y ≠ 0 →
+    ∀ (s : Finset (Site d)) (S : Set (s → ℤ)), MeasurableSet S →
+      ∃ n : ℕ, P (cylinder s S ∩
+        (fun η : Site d → ℤ => fun z => η (y + z))^[n] ⁻¹' cylinder s S) =
+        P (cylinder s S) * P (cylinder s S)) →
+  glw2_LipschitzLocal d ηmin P → glw_Conclusion d P
+
+/-- **The Section-3 assembly of Proposition 5.1.**  Given the closeness of the
+penultimate-cluster and last-wave arrival times, the conclusion follows from the local Lipschitz
+bound `glw2_LipschitzLocal`, the finite-range facts (A) and (B) and the setting, through the
+Kingman theorem with a Lipschitz transfer.  The local bound is used only through the paper's
 weaker form `glws_Loc0`. -/
 theorem glws_section3 (d : ℕ) (hd : 2 ≤ d) (ηmin : ℤ) (hηmin : 0 ≤ ηmin)
     (L : AddSubgroup (Site d)) (hL : L.index ≠ 0) (P : Measure (Site d → ℤ))
     (hclose : glws_Close d ηmin P) :
-    glw2_Section3Convergence d hd ηmin hηmin L hL P := by
-  intro hP hsupp hstat _herg h1 h3 h4 hLSS hLSSB hHole hChem _hA hB hKing hlips
+    glws_Section3 d hd ηmin hηmin L hL P := by
+  intro hP hsupp hstat _herg h1 h3 h4 hLSS hLSSB hHole hChem _hA hB hlips
   obtain ⟨γ, C, hγ, hC, hloc⟩ := hlips hP hsupp h1 h3 h4 hLSS hLSSB hHole hChem
   obtain ⟨γ', _, hcl⟩ := hclose hP hsupp h1 h3 h4 hLSS hLSSB hHole hChem
   have hloc0 : ∀ᵐ η ∂P, glws_Loc0 d γ C η := by
     filter_upwards [hloc, hsupp] with η h h'
     exact glws_Loc_to_Loc0 hd (fun x => le_trans hηmin (h' x).1) (fun x => (h' x).2) h
-  exact glws_core d hd ηmin hηmin L hL P hP hsupp hstat hB hKing hγ hC hloc0 hcl
+  exact glws_core d hd ηmin hηmin L hL P hP hsupp hstat hB hγ hC hloc0 hcl
 
 end Exploding

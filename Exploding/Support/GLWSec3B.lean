@@ -4,6 +4,7 @@ the subadditive cocycle `n ↦ T̃(0, n y)` over the translation by `y ∈ L`, i
 bound, and the almost sure limit along `y` from the moment-free Kingman theorem.
 -/
 import Exploding.Support.GLWSec3A
+import Exploding.Support.KingmanBALip
 
 open Exploding LatticeProb MeasureTheory Filter
 open scoped Classical
@@ -57,85 +58,74 @@ theorem glws_g_subadd (hd : 2 ≤ d) (ηmin : ℤ) (hηmin : 0 ≤ ηmin) (L : A
     rw [h0]
     linarith
 
-/-- `(log t)^γ ≤ t + B` for all natural `t`, for some constant `B`. -/
-theorem glws_log_pow_le (γ : ℝ) : ∃ B : ℝ, ∀ t : ℕ, Real.log t ^ γ ≤ (t : ℝ) + B := by
-  have hlo : (fun x : ℝ => Real.log x ^ γ) =o[atTop] fun x : ℝ => x ^ (1 : ℝ) :=
-    isLittleO_log_rpow_rpow_atTop γ one_pos
-  have hdiv := hlo.bound (by norm_num : (0 : ℝ) < 1)
-  simp only [Real.rpow_one, Real.norm_eq_abs, one_mul] at hdiv
-  obtain ⟨T0, hT0⟩ := Filter.eventually_atTop.mp hdiv
-  refine ⟨∑ t ∈ Finset.range (⌈T0⌉₊ + 1), |Real.log (t : ℝ) ^ γ|, fun t => ?_⟩
-  by_cases ht : ⌈T0⌉₊ + 1 ≤ t
-  · have hge : T0 ≤ (t : ℝ) := by
-      have h1 : T0 ≤ (⌈T0⌉₊ : ℝ) := Nat.le_ceil T0
-      have h2 : ((⌈T0⌉₊ + 1 : ℕ) : ℝ) ≤ (t : ℝ) := by exact_mod_cast ht
-      push_cast at h2
-      linarith
-    have h := hT0 (t : ℝ) hge
-    have hnn : 0 ≤ ∑ t ∈ Finset.range (⌈T0⌉₊ + 1), |Real.log (t : ℝ) ^ γ| :=
-      Finset.sum_nonneg fun _ _ => abs_nonneg _
-    have h3 : Real.log (t : ℝ) ^ γ ≤ |Real.log (t : ℝ) ^ γ| := le_abs_self _
-    have h4 : |(t : ℝ)| = (t : ℝ) := abs_of_nonneg (Nat.cast_nonneg t)
-    rw [h4] at h
-    linarith
-  · have hmem : t ∈ Finset.range (⌈T0⌉₊ + 1) := Finset.mem_range.mpr (by omega)
-    have h1 : |Real.log (t : ℝ) ^ γ| ≤ ∑ t ∈ Finset.range (⌈T0⌉₊ + 1), |Real.log (t : ℝ) ^ γ| :=
-      Finset.single_le_sum (f := fun t : ℕ => |Real.log (t : ℝ) ^ γ|)
-        (fun _ _ => abs_nonneg _) hmem
-    have h2 : Real.log (t : ℝ) ^ γ ≤ |Real.log (t : ℝ) ^ γ| := le_abs_self _
-    have h3 : (0 : ℝ) ≤ (t : ℝ) := Nat.cast_nonneg t
-    linarith
-
-/-- The linear upper bound of the cocycle, on the local good event. -/
-theorem glws_g_linear {γ C : ℝ} (ηmin : ℤ) {L : AddSubgroup (Site d)} {η : Site d → ℤ}
-    (hG : η ∈ glws_G d ηmin L) (hloc : glws_Loc0 d γ C η) (y : Site d) :
-    ∃ K : ℝ, ∀ n : ℕ, glws_g ηmin L y n η ≤
-      (C * (mnorm y : ℝ) + ((mnorm y).toNat + 1 : ℕ)) * n + K := by
-  obtain ⟨B, hB⟩ := glws_log_pow_le γ
-  obtain ⟨_, n0, hn0⟩ := hloc
-  refine ⟨(n0 : ℝ) + B, fun n => ?_⟩
-  set Y : ℕ := (mnorm y).toNat + 1 with hY
-  set n' : ℕ := max n0 (n * Y) with hn'
-  have hn0le : n0 ≤ n' := le_max_left _ _
-  have hcentx : ((n : ℤ) • y) ∈ cent d (n * Y) := by
-    intro i
-    have h1 : |((n : ℤ) • y) i| = (n : ℤ) * |y i| := by
-      rw [Pi.smul_apply, smul_eq_mul, abs_mul, abs_of_nonneg (Int.natCast_nonneg n)]
-    have h2 : |y i| ≤ mnorm y := glws_abs_le_mnorm y i
-    have h3 : mnorm y ≤ (Y : ℤ) := by rw [hY]; push_cast; omega
-    have h4 : (n : ℤ) * |y i| ≤ (n : ℤ) * (Y : ℤ) :=
-      mul_le_mul_of_nonneg_left (le_trans h2 h3) (Int.natCast_nonneg n)
-    rw [h1]
+/-- A natural multiple `k ≤ n` of a site `v` lies in the box of radius `((|v|)+1) n`. -/
+theorem glws_smul_mem_cent (v : Site d) (k n : ℕ) (hk : k ≤ n) :
+    ((k : ℤ) • v) ∈ cent d (((mnorm v).toNat + 1) * n) := by
+  intro i
+  have hA : 0 ≤ mnorm v := lwc2_mnorm_nonneg v
+  have hAtoNat : (((mnorm v).toNat : ℤ)) = mnorm v := Int.toNat_of_nonneg hA
+  have hvi : |v i| ≤ mnorm v := lwc2_abs_coord_le_mnorm v i
+  have h1 : |(k : ℤ) * v i| ≤ (n : ℤ) * mnorm v := by
+    rw [abs_mul, abs_of_nonneg (Int.natCast_nonneg _)]
+    have hkn : (k : ℤ) ≤ (n : ℤ) := by exact_mod_cast hk
+    have hv0 : 0 ≤ |v i| := abs_nonneg _
+    nlinarith
+  have h2 : (n : ℤ) * mnorm v ≤ ((((mnorm v).toNat + 1) * n : ℕ) : ℤ) := by
     push_cast
-    exact h4
-  have hcentx' : ((n : ℤ) • y) ∈ cent d n' := lwc3_cent_mono (le_max_right _ _) hcentx
-  obtain ⟨c, hc, hcb, _⟩ := hn0 n' hn0le ((n : ℤ) • y) hcentx'
+    rw [hAtoNat]
+    have hn0 : (0 : ℤ) ≤ n := Int.natCast_nonneg n
+    nlinarith
+  calc |(((k : ℤ) • v) i)| = |(k : ℤ) * v i| := rfl
+    _ ≤ (n : ℤ) * mnorm v := h1
+    _ ≤ _ := h2
+
+theorem glws_g_eq_of_mem {ηmin : ℤ} {L : AddSubgroup (Site d)} {η : Site d → ℤ}
+    (hη : η ∈ glws_G d ηmin L) (y : Site d)
+    (n : ℕ) : glws_g ηmin L y n η = glws_f η ((n : ℤ) • y) := by
   unfold glws_g
-  rw [if_pos hG]
-  unfold glws_f
-  rw [hc, ENat.toNat_coe]
-  rw [lwc2_mnorm_nat_smul] at hcb
-  have hlog := hB n'
-  have hn'le : (n' : ℝ) ≤ (n0 : ℝ) + (n : ℝ) * (Y : ℝ) := by
-    rcases le_total n0 (n * Y) with h | h
-    · rw [hn', max_eq_right h]
-      have : ((n * Y : ℕ) : ℝ) = (n : ℝ) * (Y : ℝ) := by push_cast; ring
-      rw [this]
-      have : (0 : ℝ) ≤ (n0 : ℝ) := Nat.cast_nonneg _
-      linarith
-    · rw [hn', max_eq_left h]
-      have : ((n * Y : ℕ) : ℝ) ≤ (n : ℝ) * (Y : ℝ) := by push_cast; exact le_refl _
-      have h' : (n0 : ℝ) ≤ (n0 : ℝ) + (n : ℝ) * (Y : ℝ) := by
-        have : (0 : ℝ) ≤ (n : ℝ) * (Y : ℝ) := by positivity
-        linarith
-      exact h'
-  have hcb' : (c : ℝ) ≤ C * ((n : ℝ) * (mnorm y : ℝ)) + Real.log (n' : ℝ) ^ γ := by
-    have : (((n : ℤ) * mnorm y : ℤ) : ℝ) = (n : ℝ) * (mnorm y : ℝ) := by push_cast; ring
-    rw [this] at hcb
-    exact hcb
-  have hY' : ((Y : ℕ) : ℝ) = (((mnorm y).toNat + 1 : ℕ) : ℝ) := by rw [hY]
-  rw [← hY']
-  nlinarith [hcb', hlog, hn'le]
+  rw [if_pos hη]
+
+/-- **The upward Lipschitz bound of the cocycle.**  On the local good event the paper's second bound
+`T̃(x') ≤ T̃(x) + C |x - x'| + (log N)^γ` along the ray `n ↦ n y` gives the hypothesis of the
+Lipschitz-transfer Kingman theorem. -/
+theorem glws_g_lip {γ C : ℝ} (ηmin : ℤ) {L : AddSubgroup (Site d)} {η : Site d → ℤ}
+    (hG : η ∈ glws_G d ηmin L) (hloc : glws_Loc0 d γ C η) (y : Site d) :
+    ∃ C' : ℝ, ∀ ε : ℝ, 0 < ε → ∀ᶠ n : ℕ in atTop, ∀ n' : ℕ, n ≤ n' → n' ≤ 2 * n →
+      glws_g ηmin L y n' η ≤ glws_g ηmin L y n η + C' * ((n' : ℝ) - n) + ε * n := by
+  obtain ⟨_, n0, hn0⟩ := hloc
+  refine ⟨C * (mnorm y : ℝ), ?_⟩
+  refine king_lip_of_log (fun n => glws_g ηmin L y n η) (C * (mnorm y : ℝ)) γ
+    ((mnorm y).toNat + 1) (by omega) n0 ?_
+  intro N hN n₁ n₂ h12 hmN
+  have hx1 : ((n₁ : ℤ) • y) ∈ cent d N := by
+    have := glws_smul_mem_cent y n₁ n₂ h12
+    exact lwc3_cent_mono (by rw [mul_comm]; exact hmN) this
+  have hx2 : ((n₂ : ℤ) • y) ∈ cent d N := by
+    have := glws_smul_mem_cent y n₂ n₂ le_rfl
+    exact lwc3_cent_mono (by rw [mul_comm]; exact hmN) this
+  obtain ⟨a, ha, _, hloc2⟩ := hn0 N hN _ hx1
+  obtain ⟨b, hb, hbb⟩ := hloc2 _ hx2
+  have hnorm : mnorm ((n₁ : ℤ) • y - (n₂ : ℤ) • y) = ((n₂ : ℤ) - n₁) * mnorm y := by
+    unfold mnorm
+    rw [Finset.mul_sum]
+    refine Finset.sum_congr rfl fun i _ => ?_
+    simp only [Pi.sub_apply, Pi.smul_apply, smul_eq_mul]
+    rw [← sub_mul, abs_mul]
+    have h12' : (n₁ : ℤ) ≤ n₂ := by exact_mod_cast h12
+    have : (0 : ℤ) ≤ (n₂ : ℤ) - n₁ := by linarith
+    rw [abs_sub_comm, abs_of_nonneg this]
+  rw [hnorm] at hbb
+  have hga : glws_g ηmin L y n₁ η = (a : ℝ) := by
+    rw [glws_g_eq_of_mem hG _ _]; unfold glws_f; rw [ha, ENat.toNat_coe]
+  have hgb : glws_g ηmin L y n₂ η = (b : ℝ) := by
+    rw [glws_g_eq_of_mem hG _ _]; unfold glws_f; rw [hb, ENat.toNat_coe]
+  show glws_g ηmin L y n₂ η ≤ glws_g ηmin L y n₁ η + C * (mnorm y : ℝ) * ((n₂ : ℝ) - n₁) +
+    Real.log N ^ γ
+  rw [hga, hgb]
+  have : ((((n₂ : ℤ) - n₁) * mnorm y : ℤ) : ℝ) = ((n₂ : ℝ) - n₁) * (mnorm y : ℝ) := by
+    push_cast; ring
+  rw [this] at hbb
+  nlinarith [hbb]
 
 /-- A single translation by `y ∈ L` is ergodic: the mixing hypothesis `(B)` is only needed
 for this `y`. -/
@@ -158,10 +148,10 @@ theorem glws_shift_ergodic (d : ℕ) (L : AddSubgroup (Site d))
     obtain ⟨n, hn⟩ := hmix s S hS
     exact ⟨n, hn⟩
 
-/-- **The limit along a lattice vector `y ∈ L`, `y ≠ 0`.** -/
+/-- **The limit along a lattice vector `y ∈ L`.** -/
 theorem glws_direction_limit (hd : 2 ≤ d) (ηmin : ℤ) (hηmin : 0 ≤ ηmin)
     (L : AddSubgroup (Site d)) (P : Measure (Site d → ℤ)) (hP : IsProbabilityMeasure P)
-    (hstat : StationaryOn d L P) (hKing : glw2_KingmanCore)
+    (hstat : StationaryOn d L P)
     (hG : ∀ᵐ η ∂P, η ∈ glws_G d ηmin L) {γ C : ℝ} (hloc : ∀ᵐ η ∂P, glws_Loc0 d γ C η)
     (y : Site d) (hy : y ∈ L)
     (hmix : ∀ (s : Finset (Site d)) (S : Set (s → ℤ)),
@@ -173,15 +163,11 @@ theorem glws_direction_limit (hd : 2 ≤ d) (ηmin : ℤ) (hηmin : 0 ≤ ηmin)
   haveI := hP
   have hmp := glw_shift_ergodic_meas_pres d L P hstat y hy
   have herg := glws_shift_ergodic d L P hP hstat y hy hmix
-  set C' : ℝ := C * (mnorm y : ℝ) + (((mnorm y).toNat + 1 : ℕ) : ℝ) with hC'
-  have hlin : ∀ᵐ η ∂P, ∃ K : ℝ, ∀ n : ℕ, glws_g ηmin L y n η ≤ C' * n + K := by
-    filter_upwards [hG, hloc] with η h1 h2
-    exact glws_g_linear ηmin h1 h2 y
-  obtain ⟨K, hA, hApos⟩ := glw_kingman_linear_setA P (glws_g ηmin L y)
-    (glws_g_measurable ηmin L y) C' hlin
-  obtain ⟨ℓ, hℓ⟩ := hKing (μ := P) (fun η z => η (y + z)) hmp herg (glws_g ηmin L y)
-    (glws_g_subadd hd ηmin hηmin L hy) (glws_g_nonneg ηmin L y) (glws_g_measurable ηmin L y) C' hlin
-    K hA hApos
+  obtain ⟨ℓ, hℓ⟩ := king_lipKingman P (fun η z => η (y + z)) hmp herg (glws_g ηmin L y)
+    (glws_g_subadd hd ηmin hηmin L hy) (glws_g_nonneg ηmin L y) (glws_g_measurable ηmin L y)
+    (by
+      filter_upwards [hG, hloc] with η h1 h2
+      exact glws_g_lip ηmin h1 h2 y)
   refine ⟨ℓ, ?_⟩
   filter_upwards [hℓ, hG] with η h1 h2
   refine h1.congr (fun n => ?_)

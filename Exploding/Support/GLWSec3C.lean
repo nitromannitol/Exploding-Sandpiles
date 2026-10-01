@@ -12,27 +12,6 @@ namespace Exploding
 
 variable {d : ℕ}
 
-/-- A natural multiple `k ≤ n` of a site `v` lies in the box of radius `((|v|)+1) n`. -/
-theorem glws_smul_mem_cent (v : Site d) (k n : ℕ) (hk : k ≤ n) :
-    ((k : ℤ) • v) ∈ cent d (((mnorm v).toNat + 1) * n) := by
-  intro i
-  have hA : 0 ≤ mnorm v := lwc2_mnorm_nonneg v
-  have hAtoNat : (((mnorm v).toNat : ℤ)) = mnorm v := Int.toNat_of_nonneg hA
-  have hvi : |v i| ≤ mnorm v := lwc2_abs_coord_le_mnorm v i
-  have h1 : |(k : ℤ) * v i| ≤ (n : ℤ) * mnorm v := by
-    rw [abs_mul, abs_of_nonneg (Int.natCast_nonneg _)]
-    have hkn : (k : ℤ) ≤ (n : ℤ) := by exact_mod_cast hk
-    have hv0 : 0 ≤ |v i| := abs_nonneg _
-    nlinarith
-  have h2 : (n : ℤ) * mnorm v ≤ ((((mnorm v).toNat + 1) * n : ℕ) : ℤ) := by
-    push_cast
-    rw [hAtoNat]
-    have hn0 : (0 : ℤ) ≤ n := Int.natCast_nonneg n
-    nlinarith
-  calc |(((k : ℤ) • v) i)| = |(k : ℤ) * v i| := rfl
-    _ ≤ (n : ℤ) * mnorm v := h1
-    _ ≤ _ := h2
-
 /-- **Convergence along a subsequence of multiples.**  If the rescaled values converge along the
 multiples of `q • v`, the Lipschitz bound makes them converge along all multiples of `v`. -/
 theorem glws_subseq_conv {f : Site d → ℝ} {C γ : ℝ} (hC : 0 ≤ C)

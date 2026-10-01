@@ -110,8 +110,8 @@ theorem glws_close_of (d : ℕ) (hd : 2 ≤ d) (ηmin : ℤ) (hηmin : 0 ≤ ηm
   have hhigh : ∀ x, η x ≤ 2 * (d : ℤ) - 1 := fun x => (hη3 x).2
   exact (hdet η hlow hhigh hη2 hη1).2
 
-/-- **Proposition 5.1 from the probabilistic claim, the deterministic claim and the moment-free
-Kingman theorem.** -/
+/-- **Proposition 5.1 from the probabilistic claim and the deterministic claim.**  No Kingman
+proposition is assumed: the subadditive ergodic step is `king_lipKingman`. -/
 theorem glws_conclusion_of (d : ℕ) (hd : 2 ≤ d) (ηmin : ℤ) (hηmin : 0 ≤ ηmin)
     (L : AddSubgroup (Site d)) (hL : L.index ≠ 0) (P : Measure (Site d → ℤ))
     (hP : IsProbabilityMeasure P) (hsupp : ∀ᵐ η ∂P, InOmega d ηmin η)
@@ -122,9 +122,9 @@ theorem glws_conclusion_of (d : ℕ) (hd : 2 ≤ d) (ηmin : ℤ) (hηmin : 0 �
     (hLSSB : Exploding.External.LiggettSchonmannStaceyBoundedDegree)
     (hHole : Exploding.External.MathieuHoleVolume)
     (hChem : Exploding.External.AntalPisztoraChemicalDistance)
-    (hmk : mk_kingman_linear) (hR : glws_Renorm d P) (hD : glws_Det d) :
+    (hR : glws_Renorm d P) (hD : glws_Det d) :
     glw_Conclusion d P :=
-  glws_conclusion d hd ηmin hηmin L hL P hP hsupp hstat h1 h3 h4 hLSS hLSSB hHole hChem hmk
+  glws_conclusion d hd ηmin hηmin L hL P hP hsupp hstat h1 h3 h4 hLSS hLSSB hHole hChem
     (glws_origin_of d hd ηmin hηmin P hR hD) (glws_close_of d hd ηmin hηmin P hR hD)
 
 /-- **The uniform-origin form of the deterministic bound** (the second bound of

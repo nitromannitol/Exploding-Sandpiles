@@ -35,6 +35,8 @@ import Exploding.Support.SubOdo
 import Exploding.Support.SubCrossTime
 import Exploding.Support.ReductionShift
 import Exploding.Support.LWCProof
+import Exploding.Support.ASProof6
+import Exploding.Support.MKingman3
 import Exploding.Support.PCloseProofAsymp
 import Exploding.Support.PCloseProofCube
 import Exploding.Support.PCloseProofFar

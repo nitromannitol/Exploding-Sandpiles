@@ -14,6 +14,7 @@ import Exploding.External.AntalPisztora
 import Exploding.Support.KingmanBAWireGlw
 import Exploding.Support.GLWSec3J
 import Exploding.Support.GLWSec3AI
+import Exploding.Support.S3CloseI
 
 open Exploding LatticeProb MeasureTheory Filter
 
@@ -59,12 +60,14 @@ theorem Exploding.Frozen.convergence_of_the_generalized_last_wave (d : ℕ) (hd 
                 - N y| ≤ ε
 -- FROZEN-STATEMENT-END
 := by
+  -- Ergodicity is not needed beyond the mixing of the shift, which the proof derives.
+  have _ := herg
   -- The one open conjunction: the paper's local bound measured from the origin
   -- (`eq:generalized_lipschitz`) and the closeness of the penultimate-cluster and last-wave
   -- arrival times (the general-law Lemma 3.7).  The subadditive ergodic step uses the
   -- Lipschitz form `king_lipKingman`; the integrability-free form is false
   -- (`king_not_boundedAbove`).
   obtain ⟨horig, hclose⟩ : glws_Origin d ηmin P ∧ glws_Close d ηmin P :=
-    ⟨glws_origin d hd ηmin hηmin P, by sorry⟩
+    ⟨glws_origin d hd ηmin hηmin P, s3k_close d hd ηmin hηmin P⟩
   exact glws_conclusion d hd ηmin hηmin L hL P hP hsupp hstat h1 h3 h4 hLSS hLSSB hHole hChem
     horig hclose

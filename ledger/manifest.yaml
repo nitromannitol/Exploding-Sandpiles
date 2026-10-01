@@ -133,7 +133,7 @@ nodes:
     source: exploding.tex:1203-1207 (label prop:convergence_of_the_generalized_last_wave)
     file: Exploding/Frozen/GeneralizedLastWave.lean
     export: Exploding.Frozen.convergence_of_the_generalized_last_wave
-    state: DRAFT_SORRY
+    state: SEALED
     frozen_sha256: 63edbd1a3a9902f41df41c9c3efbe3e73ae7802ffacce176582e67f10b0cf8f3
     provider: Exploding.Frozen.convergence_of_the_generalized_last_wave
     approved: "2026-09-24"
@@ -144,7 +144,7 @@ nodes:
     source: exploding.tex:1249-1253 (Convergence of the exploding sandpile)
     file: Exploding/Frozen/GeneralizedConvergence.lean
     export: Exploding.Frozen.generalized_convergence
-    state: CONDITIONAL
+    state: SEALED
     frozen_sha256: d81928d9c4ec6e2469184bd5c807767999597eacb970ea31d10a3458fd5f9e75
     provider: Exploding.Frozen.generalized_convergence
     approved: "2026-09-24"

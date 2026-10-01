@@ -46,6 +46,7 @@ import Exploding.Support.ExtLSSProofContent
 import Exploding.Support.ExtLSSProofFinal
 import Exploding.Support.ExtLSSProofCouple
 import Exploding.Support.ExtLSSProofGlobal
+import Exploding.Support.ExtLSSProofGlobal2
 import Exploding.Support.ExtLSSCyl
 import Exploding.Support.ExtLSSUpHull
 import Exploding.Support.ExtLSSReg
@@ -66,6 +67,7 @@ import Exploding.Support.ExtMHProof11
 import Exploding.Support.ExtMHProof12
 import Exploding.Support.ExtMHProof13
 import Exploding.Support.ExtMHProof14
+import Exploding.Support.ExtMHProof15
 import Exploding.Support.ExtAPDefs
 import Exploding.Support.ExtAPProof
 import Exploding.Support.ExtAPProof2
@@ -82,6 +84,7 @@ import Exploding.Support.ExtAPProof12
 import Exploding.Support.ExtAPProof13
 import Exploding.Support.ExtAPProof14
 import Exploding.Support.ExtAPProof15
+import Exploding.Support.ExtAPProof16
 import Exploding.Support.ExtSchTop
 import Exploding.Support.ExtSchProb
 import Exploding.Support.ExtSchProof
@@ -100,6 +103,7 @@ import Exploding.Support.ExtSchProof13
 import Exploding.Support.ExtSchProof14
 import Exploding.Support.ExtSchProof15
 import Exploding.Support.ExtSchProof16
+import Exploding.Support.ExtSchProof17
 import Exploding.Support.S3CloseA
 import Exploding.Support.S3CloseB
 import Exploding.Support.S3CloseC

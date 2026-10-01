@@ -263,6 +263,54 @@ theorem lwc6_infN_smul {L : Site d → ℝ} (hnonneg : ∀ v, 0 ≤ L v) (y : Fi
       change c * lwc6_infN L y ≤ lwc6_infN L (c • y) at h
       exact h
 
+/-- `lwc2_toReal` is additive. -/
+theorem lwc6_toReal_add (a b : Site d) :
+    lwc2_toReal (a + b) = lwc2_toReal a + lwc2_toReal b := by
+  funext i; simp [lwc2_toReal]
+
+/-- `lwc2_toReal` is `ℤ`-linear. -/
+theorem lwc6_toReal_zsmul (k : ℤ) (a : Site d) :
+    lwc2_toReal (k • a) = (k : ℝ) • lwc2_toReal a := by
+  funext i; simp [lwc2_toReal]
+
+/-- `lwc2_toReal` of an integer sum. -/
+theorem lwc6_toReal_sum (s : Finset (Site d)) (n : Site d → ℤ) :
+    lwc2_toReal (∑ w ∈ s, n w • w) = ∑ w ∈ s, (n w : ℝ) • lwc2_toReal w := by
+  classical
+  induction s using Finset.induction with
+  | empty => funext i; simp [lwc2_toReal]
+  | @insert a s ha ih =>
+      rw [Finset.sum_insert ha, Finset.sum_insert ha, lwc6_toReal_add, ih,
+        lwc6_toReal_zsmul]
+
+/-- Integer-coefficient subadditivity of `L`. -/
+theorem lwc6_L_int_sum {L : Site d → ℝ} (hsub : ∀ u v, L (u + v) ≤ L u + L v)
+    (hhom : ∀ (k : ℕ) (v : Site d), L ((k : ℤ) • v) = (k : ℝ) * L v)
+    (s : Finset (Site d)) (n : Site d → ℤ) (hn : ∀ w ∈ s, 0 ≤ n w) :
+    L (∑ w ∈ s, n w • w) ≤ ∑ w ∈ s, (n w : ℝ) * L w := by
+  classical
+  induction s using Finset.induction with
+  | empty =>
+      have h0 : L 0 = 0 := by simpa using hhom 0 0
+      simp [h0]
+  | @insert a s ha ih =>
+      rw [Finset.sum_insert ha, Finset.sum_insert ha]
+      have hna : 0 ≤ n a := hn a (Finset.mem_insert_self a s)
+      have hns : ∀ w ∈ s, 0 ≤ n w := fun w hw => hn w (Finset.mem_insert_of_mem hw)
+      have hta : L (n a • a) = (n a : ℝ) * L a := by
+        have h := hhom (n a).toNat a
+        have hcast : (((n a).toNat : ℤ)) = n a := Int.toNat_of_nonneg hna
+        rw [hcast] at h
+        have hcastR : (((n a).toNat : ℕ) : ℝ) = (n a : ℝ) := by
+          rw [← Int.cast_natCast]
+          exact congrArg (fun z : ℤ => (z : ℝ)) hcast
+        rwa [hcastR] at h
+      calc L (n a • a + ∑ w ∈ s, n w • w)
+          ≤ L (n a • a) + L (∑ w ∈ s, n w • w) := hsub _ _
+        _ ≤ (n a : ℝ) * L a + ∑ w ∈ s, (n w : ℝ) * L w := by
+            rw [hta]
+            exact add_le_add le_rfl (ih hns)
+
 /-- `lwc6_infN` is convex (subadditivity plus positive homogeneity). -/
 theorem lwc6_infN_convex {L : Site d → ℝ} (hnonneg : ∀ v, 0 ≤ L v) :
     ConvexOn ℝ Set.univ (lwc6_infN L) :=

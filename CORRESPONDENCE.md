@@ -45,6 +45,8 @@ explicit hypothesis of the nodes whose proofs use it.
 | the floor `⌊·⌋` of `(2.1)`, `(2.4)` and `(3.1)` | integer division `/` on `ℤ` | `/` on `ℤ` is `Int.ediv`, which rounds towards `-∞` |
 | `lemma:square_lower_bound` | "the support of the `m`-wave" is `∃ t, 0 < u_t x` | the wave odometer is nondecreasing in time on a nonnegative background, so this is the support of the terminal odometer when the wave stabilizes, and is the right reading when it does not |
 | every statement of Sections 1 to 4 | carries `2 ≤ d` | the standing hypothesis of "Main results", `Suppose d ≥ 2 and η is drawn from a product measure ...` |
+| `s_0' = η` in the frozen-toppling convention (2.3), in Lemma 2.1, the crossing time, Hypotheses 5.2–5.4 and recurrence | the `S`-frozen toppling `fodo S η w₀` evolves `s_t' = η + Δ w_t`, i.e. `s_0 = η` | (2.3) writes `s_0' = s_0 + Δ w_0`, but the paper's later uses and its proofs need the initial firing's chips delivered (`exploding.tex:447`: a `(2d-1)`-site next to a toppled line topples at the next step); the paper's own (2.4) is inconsistent with (2.3) here |
+| the Bernoulli probability `p` of `(1.2)` | `0 < p ∧ p < 1` on every node that names it, although the paper writes `Fix p > 0` | the paper's `Fix p > 0` does not exclude the endpoint `p = 1`, which is the deterministic background `η ≡ 2d - 1` and lies outside the estimates the proofs use; recorded here rather than changed in a frozen statement |
 
 ## Main results
 

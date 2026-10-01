@@ -43,6 +43,7 @@ import Exploding.Support.ExtLSSProofThin
 import Exploding.Support.ExtLSSProof
 import Exploding.Support.ExtLSSProofDom
 import Exploding.Support.ExtLSSProofContent
+import Exploding.Support.ExtLSSProofFinal
 import Exploding.Support.ExtMHBase
 import Exploding.Support.ExtMHProof
 import Exploding.Support.ExtMHCount
@@ -62,6 +63,7 @@ import Exploding.Support.ExtAPProof5
 import Exploding.Support.ExtAPProof6
 import Exploding.Support.ExtAPProof7
 import Exploding.Support.ExtAPProof8
+import Exploding.Support.ExtAPProof9
 import Exploding.Support.ExtSchTop
 import Exploding.Support.ExtSchProb
 import Exploding.Support.ExtSchProof

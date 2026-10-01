@@ -136,3 +136,54 @@ theorem xmh_proved
     xmh4_hole_small (hDet d hd q h1 h2) (xmh4_ae_no_bad (hsum d hd q h1 h2))⟩
 
 end Exploding
+
+namespace Exploding
+
+open LatticeProb MeasureTheory Filter
+open scoped BigOperators
+
+variable {d : ℕ}
+
+theorem xmh4_log_block (c : ENNReal) (i : ℕ) :
+    ∑ n ∈ Finset.range (2 ^ i), c ^ (Nat.log 2 (2 ^ i + n)) = (c * 2) ^ i := by
+  have h : ∀ n ∈ Finset.range (2 ^ i), c ^ (Nat.log 2 (2 ^ i + n)) = c ^ i := by
+    intro n hn
+    rw [Finset.mem_range] at hn
+    congr 1
+    rw [Nat.log_eq_iff (Or.inr ⟨by norm_num, by positivity⟩)]
+    exact ⟨by omega, by have := pow_succ 2 i; omega⟩
+  rw [Finset.sum_congr rfl h, Finset.sum_const, Finset.card_range, nsmul_eq_mul]
+  rw [mul_pow, Nat.cast_pow, Nat.cast_ofNat, mul_comm]
+
+theorem xmh4_tsum_log_ne_top (c : ENNReal) (hc2 : c * 2 < 1) :
+    (∑' n : ℕ, c ^ (Nat.log 2 n)) ≠ ⊤ := by
+  have hstep : ∀ i, ∑ n ∈ Finset.range (2 ^ (i + 1)), c ^ (Nat.log 2 n)
+      = (∑ n ∈ Finset.range (2 ^ i), c ^ (Nat.log 2 n)) + (c * 2) ^ i := by
+    intro i
+    rw [show 2 ^ (i + 1) = 2 ^ i + 2 ^ i by rw [pow_succ]; ring]
+    rw [Finset.sum_range_add, xmh4_log_block]
+  have hS : ∀ i, ∑ n ∈ Finset.range (2 ^ i), c ^ (Nat.log 2 n)
+      = 1 + ∑ j ∈ Finset.range i, (c * 2) ^ j := by
+    intro i
+    induction i with
+    | zero => simp
+    | succ i ih => rw [hstep i, ih, Finset.sum_range_succ]; ring
+  have hle : ∀ i, ∑ n ∈ Finset.range (2 ^ i), c ^ (Nat.log 2 n)
+      ≤ 1 + (1 - c * 2)⁻¹ := by
+    intro i
+    rw [hS i]
+    gcongr
+    rw [← ENNReal.tsum_geometric (c * 2)]
+    exact ENNReal.sum_le_tsum _
+  have hne : (1 - c * 2) ≠ 0 := by
+    intro h
+    exact absurd (tsub_eq_zero_iff_le.mp h) (not_le_of_gt hc2)
+  have hfin : (1 + (1 - c * 2)⁻¹ : ENNReal) ≠ ⊤ := by
+    rw [ENNReal.add_ne_top]
+    exact ⟨by simp, ENNReal.inv_ne_top.mpr hne⟩
+  rw [ENNReal.tsum_eq_iSup_nat' (N := fun i => 2 ^ i)
+    (tendsto_pow_atTop_atTop_of_one_lt (by norm_num : (1:ℕ) < 2))]
+  intro htop
+  exact hfin (top_le_iff.mp (htop ▸ iSup_le hle))
+
+end Exploding

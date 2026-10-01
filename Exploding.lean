@@ -40,6 +40,7 @@ import Exploding.Support.ExtFMR
 import Exploding.Support.ExtLSSLLL
 import Exploding.Support.ExtLSSProofLLL
 import Exploding.Support.ExtLSSProofThin
+import Exploding.Support.ExtLSSProof
 import Exploding.Support.ExtMHBase
 import Exploding.Support.ExtMHProof
 import Exploding.Support.ExtMHCount

@@ -150,3 +150,104 @@ theorem xmh9_conn_compl_cent (hd : 2 ≤ d) (N : ℕ) :
   exact (key u hu).trans (xmh_rtg_symm hsymm (key v hv))
 
 end Exploding
+
+namespace Exploding
+
+open LatticeProb MeasureTheory Filter Relation
+open scoped BigOperators
+
+variable {d : ℕ}
+
+/-- A finite set of sites is contained in a box. -/
+theorem xmh9_finite_subset_cent (S : Set (Site d)) (hS : S.Finite) : ∃ N : ℕ, S ⊆ cent d N := by
+  refine ⟨hS.toFinset.sup (fun y => Finset.univ.sup (fun i : Fin d => (y i).natAbs)), ?_⟩
+  intro y hy i
+  have h1 : (y i).natAbs ≤ hS.toFinset.sup
+      (fun y => Finset.univ.sup (fun i : Fin d => (y i).natAbs)) :=
+    le_trans (Finset.le_sup (f := fun i : Fin d => (y i).natAbs) (Finset.mem_univ i))
+      (Finset.le_sup (f := fun y => Finset.univ.sup (fun i : Fin d => (y i).natAbs))
+        ((hS.mem_toFinset).mpr hy))
+  have h2 : (|y i| : ℤ) = ((y i).natAbs : ℤ) := by simp
+  show |y i| ≤ _
+  rw [h2]
+  exact_mod_cast h1
+
+/-- The box is finite. -/
+theorem xmh9_cent_finite (N : ℕ) : (cent d N).Finite := by
+  rw [show cent d N = (xmh4_centFinset d N : Set (Site d)) from by
+    ext x; exact (xmh4_mem_centFinset).symm]
+  exact (xmh4_centFinset d N).finite_toSet
+
+/-- **An infinite complementary component has infinite inner boundary.** -/
+theorem xmh9_boundary_infinite (hd : 2 ≤ d) (ω : Site d → Bool) {C : Set (Site d)}
+    {x : Site d} (hC : IsInfiniteOpenCluster ω C) (_hxC : x ∉ C)
+    (hBinf : (componentIn Cᶜ x).Infinite) :
+    (innerBoundary (componentIn Cᶜ x)).Infinite := by
+  classical
+  set B := componentIn Cᶜ x with hBdef
+  by_contra hfin
+  have hdfin : (innerBoundary B).Finite := Set.not_infinite.mp hfin
+  set F : Set (Site d) := {y | y ∉ B ∧ ∃ b ∈ B, (lattice d).Adj b y} with hFdef
+  have hFsub : F ⊆ {y : Site d | ∃ b ∈ innerBoundary B, (lattice d).Adj b y} := by
+    rintro y ⟨hyB, b, hbB, hby⟩
+    exact ⟨b, ⟨hbB, y, hyB, hby⟩, hby⟩
+  obtain ⟨N, hN⟩ := xmh9_finite_subset_cent _ hdfin
+  have hunit : ∀ (k : Fin d) (i : Fin d), |(unit k : Site d) i| ≤ 1 := by
+    intro k i
+    by_cases h : i = k
+    · subst h; simp [unit, Pi.single_eq_same]
+    · simp [unit, Pi.single_eq_of_ne h]
+  have hFcent : F ⊆ cent d (N + 1) := by
+    refine hFsub.trans ?_
+    rintro y ⟨b, hbd, hby⟩
+    intro i
+    have hbi : |b i| ≤ (N : ℤ) := hN hbd i
+    have hy : |y i| ≤ |b i| + 1 := by
+      rcases hby with ⟨k, hk | hk⟩
+      · have hyi : y i = b i + unit k i := by rw [hk, Pi.add_apply]
+        rw [hyi]
+        exact (abs_add_le _ _).trans (by linarith [hunit k i])
+      · have hyi : y i = b i - unit k i := by rw [hk, Pi.add_apply]; ring
+        rw [hyi, sub_eq_add_neg]
+        exact (abs_add_le _ _).trans (by rw [abs_neg]; linarith [hunit k i])
+    push_cast
+    linarith
+  have hclosed : ∀ s ∈ B, ∀ t ∉ cent d (N + 1), (lattice d).Adj s t → t ∈ B := by
+    intro s hs t ht hst
+    by_contra htB
+    exact ht (hFcent ⟨htB, s, hs, hst⟩)
+  obtain ⟨b, hbB, hbnot⟩ : ∃ b ∈ B, b ∉ cent d (N + 1) := by
+    obtain ⟨b, hb⟩ := (hBinf.sdiff (xmh9_cent_finite (d := d) (N + 1))).nonempty
+    exact ⟨b, hb.1, hb.2⟩
+  obtain ⟨c, hcC, hcnot⟩ : ∃ c ∈ C, c ∉ cent d (N + 1) := by
+    obtain ⟨c, hc⟩ := (hC.1.sdiff (xmh9_cent_finite (d := d) (N + 1))).nonempty
+    exact ⟨c, hc.1, hc.2⟩
+  have hpath := xmh9_conn_compl_cent hd (N + 1) b hbnot c hcnot
+  have hcB : c ∈ B := xmh9_closed_rtg hclosed hbB hpath
+  exact (hBdef ▸ hcB).2.1 hcC
+
+end Exploding
+
+namespace Exploding
+
+open LatticeProb MeasureTheory Filter
+
+variable {d : ℕ}
+variable {q : ℝ}
+
+/-- **Uniqueness of the infinite cluster**, from `xmh9_boundary_infinite`. -/
+theorem xmh9_UniqueOpen (hd : 2 ≤ d) (h : xmh6_Summability d q) : xmh8_UniqueOpen d q :=
+  xmh8_unique_of_boundaryInfinite (xmh6_K d) (xmh6_K_spec d) h.1 h.2.1 h.2.2
+    (Filter.Eventually.of_forall fun ω C hC x hxC hBinf =>
+      @xmh9_boundary_infinite d hd ω C x hC hxC hBinf)
+
+/-- **Mathieu's hole-volume bound**, with the uniqueness of the infinite cluster discharged. -/
+theorem xmh9_proved (q₀ : ∀ d : ℕ, 2 ≤ d → ℝ) (hq₀ : ∀ d hd, q₀ d hd < 1)
+    (hgood : ∀ (d : ℕ) (hd : 2 ≤ d) (q : ℝ), q₀ d hd < q → q ≤ 1 → xmh6_Summability d q)
+    (hloc : ∀ (d : ℕ) (hd : 2 ≤ d) (q : ℝ), q₀ d hd < q → q ≤ 1 → xmh7_Localized d q)
+    (hsize : ∀ (d : ℕ) (hd : 2 ≤ d) (q : ℝ), q₀ d hd < q → q ≤ 1 → xmh7_Size d q) :
+    External.MathieuHoleVolume :=
+  xmh8_proved q₀ hq₀ hgood
+    (fun d hd q h1 h2 => xmh9_UniqueOpen hd (hgood d hd q h1 h2)) hloc hsize
+
+end Exploding

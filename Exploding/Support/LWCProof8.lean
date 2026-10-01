@@ -229,3 +229,63 @@ theorem lwc8_gv_sub (d : ℕ) (hd : 2 ≤ d) (E : Set (Site d → ℤ))
     simp [lwc8_gv, hη, hηm]
 
 end Exploding
+
+namespace Exploding
+
+variable {d : ℕ}
+
+/-- The per-direction limit of the cocycle, from `mk_kingman_linear`. -/
+theorem lwc8_dir_limit (hmk : mk_kingman_linear) (d : ℕ) (hd : 2 ≤ d) (p : ℝ) (hp : 0 < p)
+    (hp1 : p < 1)
+    (hLSSB : Exploding.External.LiggettSchonmannStaceyBoundedDegree)
+    (hHole : Exploding.External.MathieuHoleVolume)
+    (hChem : Exploding.External.AntalPisztoraChemicalDistance)
+    (E : Set (Site d → ℤ)) (hEmeas : MeasurableSet E) (hEfull : toyLaw d p Eᶜ = 0)
+    (hEshift : ∀ v, ∀ η ∈ E, (fun z => η (v + z)) ∈ E)
+    (hEmem : ∀ η ∈ E, (∀ x, 2 * (d : ℤ) - 2 ≤ η x ∧ η x ≤ 2 * (d : ℤ) - 1) ∧
+      (∀ y, ∃ n : ℕ, 1 ≤ n ∧ ¬ WaveStabilizable η n y) ∧
+      ∀ a b : Site d, clusterArrival η a b ≠ ⊤)
+    (v : Site d) :
+    ∃ Lv : ℝ, ∀ᵐ η ∂(toyLaw d p),
+      Tendsto (fun n : ℕ => lwc8_gv E v η n / (n : ℝ)) atTop (nhds Lv) := by
+  classical
+  haveI : IsProbabilityMeasure (toyLaw d p) := by
+    haveI : IsProbabilityMeasure (chipLaw (2 * (d : ℤ) - 1) (2 * (d : ℤ) - 2) p) :=
+      lwc_isProbabilityMeasure_chipLaw _ _ p hp.le hp1.le
+    change IsProbabilityMeasure
+      (Measure.infinitePi (fun _ : Site d => chipLaw (2 * (d : ℤ) - 1) (2 * (d : ℤ) - 2) p))
+    infer_instance
+  rcases eq_or_ne v 0 with rfl | hv
+  · refine ⟨0, ?_⟩
+    filter_upwards with η
+    have hz : ∀ n, lwc8_gv E 0 η n = lwc8_gv E 0 η 0 := by
+      intro n
+      by_cases h : η ∈ E <;> simp [lwc8_gv, h]
+    have htend : Tendsto (fun n : ℕ => lwc8_gv E 0 η 0 / (n : ℝ)) atTop (nhds 0) :=
+      tendsto_const_nhds.div_atTop tendsto_natCast_atTop_atTop
+    refine htend.congr' ?_
+    filter_upwards with n
+    rw [hz n]
+  · have hT : MeasurePreserving (fun η : Site d → ℤ => fun z => η (v + z))
+        (toyLaw d p) (toyLaw d p) :=
+      (lwc_shift_ergodic d p hp hp1 v hv).toMeasurePreserving
+    have herg : Ergodic (fun η : Site d → ℤ => fun z => η (v + z)) (toyLaw d p) :=
+      lwc_shift_ergodic d p hp hp1 v hv
+    have hmeas : ∀ n, Measurable (fun η : Site d → ℤ => lwc8_gv E v η n) := by
+      intro n
+      unfold lwc8_gv
+      exact Measurable.ite hEmeas (lwc_measurable d 0 ((n : ℤ) • v)) measurable_const
+    have hnonneg : ∀ n η, 0 ≤ lwc8_gv E v η n := by
+      intro n η
+      by_cases h : η ∈ E <;> simp only [lwc8_gv, h, if_true, if_false]
+      · positivity
+      · linarith
+    have hsub : ∀ m n η, lwc8_gv E v η (m + n)
+        ≤ lwc8_gv E v η m
+          + lwc8_gv E v ((fun η : Site d → ℤ => fun z => η (v + z))^[m] η) n :=
+      lwc8_gv_sub d hd E hEshift hEmem v
+    have hlin := lwc8_gv_linear d hd p hp hp1 hLSSB hHole hChem E hEfull v
+    exact hmk (toyLaw d p) (fun η : Site d → ℤ => fun z => η (v + z)) hT herg
+      (fun n η => lwc8_gv E v η n) hsub hnonneg hmeas hlin
+
+end Exploding

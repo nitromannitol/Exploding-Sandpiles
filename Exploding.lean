@@ -38,8 +38,10 @@ import Exploding.Support.LWCProof
 import Exploding.Support.ExtLSSG
 import Exploding.Support.ExtFMR
 import Exploding.Support.ExtLSSLLL
+import Exploding.Support.ExtLSSProofLLL
 import Exploding.Support.ExtMHBase
 import Exploding.Support.ExtMHProof
+import Exploding.Support.ExtMHCount
 import Exploding.Support.ExtAPDefs
 import Exploding.Support.ExtAPProof
 import Exploding.Support.ExtAPProof2

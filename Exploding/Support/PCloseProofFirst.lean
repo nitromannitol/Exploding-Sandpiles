@@ -47,7 +47,6 @@ theorem pclose_update_add_smul (x : Site d) (i : Fin d) (u r : ℤ) :
   · subst hl; simp [unit]
   · simp [unit, hl]
 
-set_option maxHeartbeats 1000000 in
 /-- **The first fired good cube.**  If the wave is positive at `x` at time `t`, and `x`
 is far from the centre, then some good cube `Q_k(Q)` of the infinite cluster, at
 macroscopic distance at most `L` from the macroscopic index of `x`, has fired by time

@@ -656,7 +656,7 @@ theorem aux_ct_off_step4 {d k : ℕ} (i : Fin d) (x y : Site d)
 
 -- GAP-closing piece for the domino mechanism (`exploding.tex:446-447`), the
 -- crux of the whole propagation lemma.
-/-- **New, sorry** (real content, not a literature gap: this is the paper's
+/-- **The peel step** (real content, not a literature gap: this is the paper's
 own one-paragraph mechanism, made precise).  If the off-axis-adjacent line
 through `Yref` (agreeing with `Y` on axis `i`, `(lattice d).Adj Y Yref`) is
 already entirely toppled by time `T`, and `Y`'s own off-axis coordinates are a
@@ -1174,7 +1174,7 @@ theorem aux_ct_propagate_line_fill (d k : ℕ) (hd : 2 ≤ d) (η : Site d → �
 -- GAP-closing piece: the paper's own chain-length count
 -- (`exploding.tex:447-449`, "every line in `Q_k` is joined to `L_k^{(1,z)}`
 -- by a chain of at most `(d-1)(k-1)+1` neighbouring lines").
-/-- **New, sorry** (elementary case analysis on `closureN`/`outerBoundary`,
+/-- **The off-axis distance bound** (elementary case analysis on `closureN`/`outerBoundary`,
 not a literature gap).  For `x` a genuine row of the cube and `z` anywhere in
 its closed neighbourhood, the off-axis `ℓ¹` distance from `z` to `x` is at
 most `(d-1)(k-1) + 1`: on the (at most one) coordinate where `z` strays

@@ -5,13 +5,16 @@ defined.  The paper's argument: the `n`-wave for large `n` covers a centred box
 (Proposition 2.2), and once the wave's support covers a good cube it never
 stabilizes.
 
-The one step still open is `aux_finite_exploding_step`: covering a good cube
-`Q_k(i)` propagates to an adjacent good cube `Q_k(j)`.  The paper's mechanism is
-the crossing property of a good cube: a line of `Q_k(j)` that is already fired
-fills `Q_k(j)` within `k^d` steps, and the wave dominates that frozen process
-(`aux_finite_exploding_wave_dominates_fodo`).  What remains is the geometric
-bookkeeping that produces a fired line of `Q_k(j)` from the coverage of
-`Q_k(i)`.
+This file supplies the auxiliary lemmas of that argument: the a.e. bounds on
+`η` (`aux_finite_exploding_bounds`), the finiteness and connectivity of centred
+boxes (`aux_finite_exploding_cent_card`, `aux_finite_exploding_box_connected`),
+the meeting of the infinite cluster (`aux_finite_exploding_meets_cluster`), the
+finite-speed bound (`aux_finite_exploding_speed`), the wave-versus-frozen
+comparison (`aux_finite_exploding_wave_dominates_fodo`), and the propagation of
+coverage along a walk of good cubes (`aux_finite_exploding_walk_prop`,
+`aux_finite_exploding_propagate_walk`, `aux_finite_exploding_propagate`), which
+concludes that covering one good cube of the infinite cluster makes the wave
+non-stabilizable.
 -/
 import Exploding.Support.Vocab
 import Exploding.Support.Wave

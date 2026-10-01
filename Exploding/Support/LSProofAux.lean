@@ -2,19 +2,16 @@
 Theorem 1.2 of the paper: the support of the exploding sandpile, rescaled by
 time, converges in measure to a convex domain.
 
-DECOMPOSITION (not a proof attempt).  UNUSUAL AMONG THE 16 TARGETS: the paper
-gives NO proof of this theorem at all.  It is stated at exploding.tex:246-254,
+The paper gives NO proof of this theorem.  It is stated at exploding.tex:246-254,
 immediately followed (255-257) by "In fact, we prove something stronger. Not
 only does the support of the explosion converge, but the rate at which the
 explosion spreads also converges" -- i.e. Theorem 1.3
-(`theorem:convergence_of_time_constant`, node `thm-time-constant`, already
-SEALED-modulo-its-own-dependencies as a CONDITIONAL node in the manifest) is
-presented as the stronger statement from which Theorem 1.2 should follow, but
-the actual derivation ("locally uniform convergence of rescaled arrival times
-to a homogeneous convex gauge implies convergence in measure of the
-corresponding super-level sets") is never written down anywhere in the paper.
-This decomposition reconstructs that standard-but-unwritten real-analysis
-argument.
+(`theorem:convergence_of_time_constant`) is presented as the stronger statement
+from which Theorem 1.2 should follow, but the derivation ("locally uniform
+convergence of rescaled arrival times to a homogeneous convex gauge implies
+convergence in measure of the corresponding super-level sets") is never written
+down.  This file reconstructs that standard real-analysis argument and proves it,
+culminating in `ls_assemble`.
 
 The key geometric fact needed to make sense of `|{v̄_t > 0} △ B(p)| → 0` at all
 (a symmetric-difference measure tending to a REAL number `0`, so in
@@ -441,7 +438,7 @@ theorem ls_shell_inclusion (η : Site d → ℤ) (N : (Fin d → ℝ) → ℝ)
     exact ⟨by linarith, by linarith⟩
 
 /-- Step 6, piece (a) (TRUE, general topology, no gap): the level set `{N=1}`
-sits in the frontier of `B := {N<1}`.  PROOF PLAN: `{N=1} ⊆ closure B` because
+sits in the frontier of `B := {N<1}`.  Proof: `{N=1} ⊆ closure B` because
 `y` with `N y = 1` is the limit as `c ↑ 1` of `c • y ∈ B` (`N (c•y) = c*N y =
 c < 1` by `hhom`, and `c•y → y` by continuity of scalar multiplication); and
 `{N=1} ∩ interior B = ∅` because `interior B = B` (`hBopen`) and `N y = 1`
@@ -501,7 +498,7 @@ theorem ls_levelset_subset_frontier (N : (Fin d → ℝ) → ℝ)
   exact h_frontier
 
 /-- Step 6, piece (b) (real analysis, from (a)): the shells `{1 - 1/(n+1) ≤ N
-≤ 1 + 1/(n+1)}` shrink in volume to `0`.  PROOF PLAN: the shells are an
+≤ 1 + 1/(n+1)}` shrink in volume to `0`.  Proof: the shells are an
 antitone (in `n`) sequence of sets with `⋂ n, shell n = {N = 1}` (pure set
 algebra: `y` is in every shell iff `N y = 1`, since `1/(n+1) → 0`); by
 `ls_levelset_subset_frontier` and `hfrontier`, `{N=1}` is `volume`-null;
@@ -706,7 +703,7 @@ theorem ls_shell_volume_tendsto (N : (Fin d → ℝ) → ℝ)
 /-- Step 6, piece (c) (finite propagation speed, from `ls_speed_bound`):
 for any fixed `R > 1`, eventually (in `t`) the rescaled support `{v̄_t > 0}` is
 confined to the `ℓ¹` ball of radius `R`.  (`R = 1` is not claimed: the speed
-bound only gives `∑|y_i| ≤ 1 + d/t`.)  PROOF PLAN: `ls_speed_bound hη t
+bound only gives `∑|y_i| ≤ 1 + d/t`.)  Proof: `ls_speed_bound hη t
 (nearestSite (t•y))` gives `mnorm (nearestSite (t•y)) ≤ t` whenever `v̄_t(y) >
 0`; `ls_smul_mnorm_sum_le` gives `t * ∑|y_i| ≤ mnorm (nearestSite (t•y)) + d`;
 combining, `t * ∑|y_i| ≤ t + d`, i.e. `∑|y_i| ≤ 1 + d/t ≤ R` once
@@ -752,7 +749,7 @@ theorem ls_A_ball_eventually (η : Site d → ℤ) (hη : ∀ x : Site d, η x �
 /-- Step 6, piece (d) (THE hard real-analysis core the paper skips; "needs
 further split" in the original decomposition, kept as one lemma here since it
 is genuinely the content of Step 6, not a further mechanical reduction).
-PROOF PLAN: fix `δ > 0`.  By (b) pick `n` with the shell volume `<
+Proof: fix `δ > 0`.  By (b) pick `n` with the shell volume `<
 ENNReal.ofReal (δ/2)`, set `ε := 1/(n+1)`.  By `hBR` and (c) with `R := 2`,
 `B ⊆ {∑|y_i|≤2}` and eventually `A_t ⊆ {∑|y_i|≤2}`, so `symmDiff A_t B ⊆
 {∑|y_i|≤2} =: K'` eventually; take `K := Metric.closedBall 0 2` (compact,
@@ -885,7 +882,7 @@ theorem ls_chipLaw_up (a b c : ℤ) (p : ℝ) (hp : 0 ≤ p) (hp1 : p ≤ 1)
 `≤ 2d-1` with probability `1` under the one-site law (`ls_chipLaw_up`
 with `a := 2d-1, b := 2d-2, c := 2d-1`), and `Site d = Fin d → ℤ` is
 countable, the countable intersection of these full-measure per-coordinate
-events is again full measure.  PROOF PLAN: `toyLaw d p = Measure.infinitePi
+events is again full measure.  Proof: `toyLaw d p = Measure.infinitePi
 (fun _ => chipLaw (2d-1) (2d-2) p)`; the pushforward of `Measure.infinitePi`
 under evaluation at a fixed coordinate `x` is that coordinate's own law
 (the marginal fact used identically, for a lower bound instead of an upper
@@ -930,7 +927,7 @@ regularity, and the a.s. locally-uniform convergence; feed the `N`,
 `hcont`, `hconv`, `hhom` into Steps 3-4 to get `B := {N < 1}` is a domain
 with null frontier; feed `hloc`/`hexp` into Steps 5-6 to get the measure
 convergence; assemble into the target's `∃ B, ...`.  Pure bookkeeping given
-Steps 1-6; not attempted here since it inherits their `sorry`s. -/
+Steps 1-6. -/
 theorem ls_assemble (d : ℕ) (hd : 2 ≤ d) (p : ℝ) (hp : 0 < p) (hp1 : p < 1)
     (hFLP : Exploding.External.FeyLevinePeresExplosive)
     (hLSSB : Exploding.External.LiggettSchonmannStaceyBoundedDegree) (hHole : Exploding.External.MathieuHoleVolume)

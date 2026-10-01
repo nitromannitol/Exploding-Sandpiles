@@ -26,7 +26,6 @@ def pcloseW (d Cc Z Δ : ℕ) : ℕ := Cc * (d * ((Δ + Z) + Z) + Δ)
 /-- The radius of the box containing the path through the corners. -/
 def pcloseR2 (d k Cc Z Δ : ℕ) : ℕ := k * (pcloseW d Cc Z Δ + Δ) + 2 * k
 
-set_option maxHeartbeats 1000000 in
 /-- **The spreading step.**  If the good cube `Q_k(Q)`, `Q` in the infinite cluster and
 within macroscopic distance `Δ` of the macroscopic index of `x`, has fired by time `T2`,
 then the wave is positive on the box of radius `R ≤ Z` about `x` by time

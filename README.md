@@ -273,31 +273,7 @@ tools/                the checkers and generators listed under Building
 
 ## How this was built
 
-The Lean code in this repository was written by AI models under the supervision of the
-author, in a private working repository whose history is this one.  A supervising Claude
-Code session launched the agents below, wrote briefs, recorded the author's decisions and
-merged their branches; for this repository it ran on Claude Fable 5.1 from 2026-09-10 to
-2026-09-16, on Claude Opus 5 on 2026-09-20, and on Claude Opus 5.5 on 2026-09-23 and
-2026-09-24.  On 2026-09-10 a Claude Opus 5 general, a Claude Code subagent,
-froze all twenty-four statements, including the two cited results, wrote the model and
-sealed Lemmas 3.3 and 3.4 and Proposition 7.2; GLM-5.3-flash drafted compile-filtered proof
-candidates for it, some of which became support lemmas, and GLM-5.3 and GLM-5.3-flash
-audited every frozen statement against the paper.  On 2026-09-13 and 2026-09-14
-DeepSeek-v4.1-flash generals, through a custom driver, sealed Proposition 7.3 and wrote the
-proofs of Theorems 1.3 and 5.1 from the propositions they use.  On 2026-09-23 the supervising
-session repaired two of the paper checkers, whose patterns named a different paper.  Claude
-Sonnet 5 generals (2026-09-16 and 2026-09-17), a Kimi k3 general (2026-09-16), Mistral's
-Leanstral (2026-09-20 and 2026-09-23), DeepSeek-v4.1-flash agents (2026-09-23 and
-2026-09-24) and Claude Sonnet 5 subagents (2026-09-23 and 2026-09-24) also worked on the open
-nodes; none of that work is in this repository.  One Sonnet branch registered the statements
-of two open nodes as cited results, which would have sealed them by assumption; the
-supervising session rejected it.  Claude Opus 5.5 wrote `Exploding/MainTheorems.lean`, the
-axiom audit and this documentation on 2026-09-24; on the same day it stated the results the
-paper cites as explicit hypotheses, corrected the paper copy as listed in
-`paper/CHANGES_FROM_ARXIV.md`, restated the affected statements to match, and proved
-Lemma 3.1.  The models, tooling, cost, and review
-status are disclosed in full in [`formalization.yaml`](formalization.yaml), following the
-[mathlib-initiative](https://github.com/mathlib-initiative/formalization.yaml) standard.
+The Lean code was written by claude-fable-5-1, claude-opus-5, claude-opus-5-5, claude-sonnet-5, deepseek-v4.1-flash, glm-5.3, glm-5.3-flash, kimi-k3, labs-leanstral-1-5 under the close supervision of the author; models, tooling and cost are disclosed in `formalization.yaml`.
 
 ## Authors and citation
 

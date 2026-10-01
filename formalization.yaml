@@ -1,241 +1,186 @@
-version: "v0.3"
-
+version: v0.4
 project:
-  name: "Exploding-Sandpiles"
+  name: Exploding-Sandpiles
+  description: A Lean 4/Mathlib formalization of *A shape theorem for exploding sandpiles* (Bou-Rabee,
+    Ann. Appl. Probab.
   authors:
-    - "Ahmed Bou-Rabee"
-  license: "Apache-2.0"
-
+  - Ahmed Bou-Rabee
+  license: Apache-2.0
+classification:
+  arxiv:
+  - math.PR
+  msc2020:
+  - 60K35
+  - 60K37
 sources:
-  - title: "A shape theorem for exploding sandpiles"
-    authors:
-      - "Ahmed Bou-Rabee"
-    id: "arXiv:2102.04422"
-    url: "https://arxiv.org/abs/2102.04422"
-    type: "journal article"
-    license: ""                 # TODO(author): the license under which the paper is posted
-    author_contacted: "n/a"     # the formalizer is the author of the source
-    prior_work: ""
-
+- title: A shape theorem for exploding sandpiles
+  authors:
+  - Ahmed Bou-Rabee
+  id: arXiv:2102.04422
+  url: https://arxiv.org/abs/2102.04422
+  type: journal article
+  license: ''
+  author_contacted: n/a
+  prior_work: ''
 status:
-  scope: >-
-    A Lean 4 / Mathlib formalization of every theorem, lemma and
-    proposition of the paper, 24 statements, and of seven further results the
-    paper cites in its proofs, 29 registered statements in all: the limit
-    shape theorem (Theorem 1.2), the convergence of the rescaled arrival times
-    (Theorem 1.3), the explosion criterion for product backgrounds (Theorem
-    1.4), the convergence under general hypotheses (Theorem 5.1), the
-    counterexample (Theorem 6.1), and the lemmas and propositions of Sections
-    2 to 7.  SEALED (22): all of the paper's results, each with axiom closure
-    exactly propext, Classical.choice and Quot.sound, taking the cited results
-    as explicit hypotheses.  Four cited results are also proved here: the
-    least-action principle of Fey, Meester and Redig, both domination
-    theorems of Liggett, Schonmann and Stacey, and the explosion theorem of
-    Fey, Levine and Peres from Schonmann's bound.  SCOPE BOUNDARY:
-    seven results the paper cites are stated as propositions in
-    Exploding/External/ and assumed, not proved, each taken as an explicit
-    hypothesis by the statements whose proofs use it: the explosion theorem of
-    Fey, Levine and Peres (Theorem 1.1), Schonmann's bound for bootstrap
-    percolation (Proposition 7.4), Theorem 0.0 and Corollary 1.4 of Liggett,
-    Schonmann and Stacey, Theorem 1.1 of Antal and Pisztora, Lemma 5.2 of
-    Mathieu and Theorem 2.8 of Fey, Meester and Redig (ASSUMPTIONS.md).  The
-    formalized paper is the corrected copy paper/exploding.tex;
-    paper/CHANGES_FROM_ARXIV.md lists its differences from
-    arXiv:2102.04422v2.  Not formalized: the proof outline of Section 1, the
-    examples of Section 5.2 and the figures.  Every proved result is stated in
-    full in Exploding/MainTheorems.lean; no Mathlib-only comparator challenge
-    exists yet (Audit/README.md).
+  scope: 'SEALED (22): all of the paper''s results, each with axiom closure exactly propext, Classical.choice
+    and Quot.sound, taking the cited results as explicit hypotheses. Four cited results are also proved
+    here: the least-action principle of Fey, Meester and Redig, both domination theorems of Liggett, Schonmann
+    and Stacey, and the explosion theorem of Fey, Levine and Peres from Schonmann''s bound. SCOPE BOUNDARY:
+    seven results the paper cites are stated as propositions in Exploding/External/ and assumed, not proved,
+    each taken as an explicit hypothesis by the statements whose proofs use it: the explosion theorem
+    of Fey, Levine and Peres (Theorem 1.1), Schonmann''s bound for bootstrap percolation (Proposition
+    7.4), Theorem 0.0 and Corollary 1.4 of Liggett, Schonmann and Stacey, Theorem 1.1 of Antal and Pisztora,
+    Lemma 5.2 of Mathieu and Theorem 2.8 of Fey, Meester and Redig (ASSUMPTIONS.md). The formalized paper
+    is the corrected copy paper/exploding.tex; paper/CHANGES_FROM_ARXIV.md lists its differences from
+    arXiv:2102.04422v2. Not formalized: the proof outline of Section 1, the examples of Section 5.2 and
+    the figures. Every proved result is stated in full in Exploding/MainTheorems.lean; no Mathlib-only
+    comparator challenge exists yet (Audit/README.md).'
   sorry_count: 0
   sorry_in_definitions: 0
   axioms:
-    - "propext"
-    - "Classical.choice"
-    - "Quot.sound"
+  - propext
+  - Classical.choice
+  - Quot.sound
   main_results:
-    - declaration: "Exploding.Frozen.limit_shape"
-      file: "Exploding/Frozen/LimitShape.lean"
-      sorry_count: 0
-      axioms: ["propext", "Classical.choice", "Quot.sound"]
-      comparator_config: ""
-      literature_dependencies:
-        - "Liggett, Schonmann and Stacey, Domination by product measures, Corollary 1.4 (Exploding.External.LiggettSchonmannStaceyBoundedDegree, an explicit hypothesis)"
-        - "Mathieu, Quenched invariance principles for random walks with random conductances, Lemma 5.2 (Exploding.External.MathieuHoleVolume, an explicit hypothesis)"
-        - "Antal and Pisztora, On the chemical distance for supercritical Bernoulli percolation, Theorem 1.1 (Exploding.External.AntalPisztoraChemicalDistance, an explicit hypothesis)"
-        - "Schonmann, On the behavior of some cellular automata related to bootstrap percolation (Exploding.External.SchonmannBootstrap, an explicit hypothesis)"
-    - declaration: "Exploding.Frozen.convergence_of_time_constant"
-      file: "Exploding/Frozen/TimeConstant.lean"
-      sorry_count: 0
-      axioms: ["propext", "Classical.choice", "Quot.sound"]
-      comparator_config: ""
-      literature_dependencies:
-        - "Fey, Levine and Peres, Growth rates and explosions in sandpiles, Proposition 1.4 (Exploding.External.FeyLevinePeresExplosive, an explicit hypothesis)"
-        - "Liggett, Schonmann and Stacey, Domination by product measures, Corollary 1.4 (Exploding.External.LiggettSchonmannStaceyBoundedDegree, an explicit hypothesis)"
-        - "Mathieu, Quenched invariance principles for random walks with random conductances, Lemma 5.2 (Exploding.External.MathieuHoleVolume, an explicit hypothesis)"
-        - "Antal and Pisztora, On the chemical distance for supercritical Bernoulli percolation, Theorem 1.1 (Exploding.External.AntalPisztoraChemicalDistance, an explicit hypothesis)"
-    - declaration: "Exploding.Frozen.explosive"
-      file: "Exploding/Frozen/Explosive.lean"
-      sorry_count: 0
-      axioms: ["propext", "Classical.choice", "Quot.sound"]
-      comparator_config: ""
-      literature_dependencies:
-        - "Schonmann, On the behavior of some cellular automata related to bootstrap percolation (Exploding.External.SchonmannBootstrap, an explicit hypothesis)"
-    - declaration: "Exploding.Frozen.generalized_convergence"
-      file: "Exploding/Frozen/GeneralizedConvergence.lean"
-      sorry_count: 0
-      axioms: ["propext", "Classical.choice", "Quot.sound"]
-      comparator_config: ""
-      literature_dependencies:
-        - "Liggett, Schonmann and Stacey, Domination by product measures, Theorem 0.0 (Exploding.External.LiggettSchonmannStacey, an explicit hypothesis)"
-        - "Liggett, Schonmann and Stacey, Domination by product measures, Corollary 1.4 (Exploding.External.LiggettSchonmannStaceyBoundedDegree, an explicit hypothesis)"
-        - "Mathieu, Quenched invariance principles for random walks with random conductances, Lemma 5.2 (Exploding.External.MathieuHoleVolume, an explicit hypothesis)"
-        - "Antal and Pisztora, On the chemical distance for supercritical Bernoulli percolation, Theorem 1.1 (Exploding.External.AntalPisztoraChemicalDistance, an explicit hypothesis)"
-    - declaration: "Exploding.Frozen.counterexample"
-      file: "Exploding/Frozen/Counterexample.lean"
-      sorry_count: 0
-      axioms: ["propext", "Classical.choice", "Quot.sound"]
-      comparator_config: ""
-      literature_dependencies:
-        - "Fey, Meester and Redig, Stabilizability and percolation in the infinite volume sandpile model, Theorem 2.8 (Exploding.External.FeyMeesterRedigLeastAction, an explicit hypothesis)"
-
+  - declaration: Exploding.Frozen.limit_shape
+    file: Exploding/Frozen/LimitShape.lean
+    sorry_count: 0
+    axioms:
+    - propext
+    - Classical.choice
+    - Quot.sound
+    comparator_config: ''
+    literature_dependencies:
+    - statement: Liggett, Schonmann and Stacey, Domination by product measures, Corollary 1.4 (Exploding.External.LiggettSchonmannStaceyBoundedDegree,
+        an explicit hypothesis)
+    - statement: Mathieu, Quenched invariance principles for random walks with random conductances, Lemma
+        5.2 (Exploding.External.MathieuHoleVolume, an explicit hypothesis)
+    - statement: Antal and Pisztora, On the chemical distance for supercritical Bernoulli percolation,
+        Theorem 1.1 (Exploding.External.AntalPisztoraChemicalDistance, an explicit hypothesis)
+    - statement: Schonmann, On the behavior of some cellular automata related to bootstrap percolation
+        (Exploding.External.SchonmannBootstrap, an explicit hypothesis)
+  - declaration: Exploding.Frozen.convergence_of_time_constant
+    file: Exploding/Frozen/TimeConstant.lean
+    sorry_count: 0
+    axioms:
+    - propext
+    - Classical.choice
+    - Quot.sound
+    comparator_config: ''
+    literature_dependencies:
+    - statement: Fey, Levine and Peres, Growth rates and explosions in sandpiles, Proposition 1.4 (Exploding.External.FeyLevinePeresExplosive,
+        an explicit hypothesis)
+    - statement: Liggett, Schonmann and Stacey, Domination by product measures, Corollary 1.4 (Exploding.External.LiggettSchonmannStaceyBoundedDegree,
+        an explicit hypothesis)
+    - statement: Mathieu, Quenched invariance principles for random walks with random conductances, Lemma
+        5.2 (Exploding.External.MathieuHoleVolume, an explicit hypothesis)
+    - statement: Antal and Pisztora, On the chemical distance for supercritical Bernoulli percolation,
+        Theorem 1.1 (Exploding.External.AntalPisztoraChemicalDistance, an explicit hypothesis)
+  - declaration: Exploding.Frozen.explosive
+    file: Exploding/Frozen/Explosive.lean
+    sorry_count: 0
+    axioms:
+    - propext
+    - Classical.choice
+    - Quot.sound
+    comparator_config: ''
+    literature_dependencies:
+    - statement: Schonmann, On the behavior of some cellular automata related to bootstrap percolation
+        (Exploding.External.SchonmannBootstrap, an explicit hypothesis)
+  - declaration: Exploding.Frozen.generalized_convergence
+    file: Exploding/Frozen/GeneralizedConvergence.lean
+    sorry_count: 0
+    axioms:
+    - propext
+    - Classical.choice
+    - Quot.sound
+    comparator_config: ''
+    literature_dependencies:
+    - statement: Liggett, Schonmann and Stacey, Domination by product measures, Theorem 0.0 (Exploding.External.LiggettSchonmannStacey,
+        an explicit hypothesis)
+    - statement: Liggett, Schonmann and Stacey, Domination by product measures, Corollary 1.4 (Exploding.External.LiggettSchonmannStaceyBoundedDegree,
+        an explicit hypothesis)
+    - statement: Mathieu, Quenched invariance principles for random walks with random conductances, Lemma
+        5.2 (Exploding.External.MathieuHoleVolume, an explicit hypothesis)
+    - statement: Antal and Pisztora, On the chemical distance for supercritical Bernoulli percolation,
+        Theorem 1.1 (Exploding.External.AntalPisztoraChemicalDistance, an explicit hypothesis)
+  - declaration: Exploding.Frozen.counterexample
+    file: Exploding/Frozen/Counterexample.lean
+    sorry_count: 0
+    axioms:
+    - propext
+    - Classical.choice
+    - Quot.sound
+    comparator_config: ''
+    literature_dependencies:
+    - statement: Fey, Meester and Redig, Stabilizability and percolation in the infinite volume sandpile
+        model, Theorem 2.8 (Exploding.External.FeyMeesterRedigLeastAction, an explicit hypothesis)
 automation:
   methods:
-    - method: "agent"
-      models:
-        - "claude-fable-5-1"
-        - "claude-opus-5"
-        - "glm-5.3"
-        - "glm-5.3-flash"
-        - "deepseek-v4.1-flash"
-        - "claude-sonnet-5"
-        - "kimi-k3"
-        - "labs-leanstral-1-5"
-        - "claude-opus-5-5"
-      framework: >-
-        Claude Code (Anthropic) as the supervising harness and for the Claude
-        subagents; a custom driver (glm_general.py) for the DeepSeek generals
-        and scripted API fan-outs on the ollama cloud (glm_lean.py,
-        glm_ask.py) for the GLM models; the Kimi Code CLI for the Kimi
-        general; Mistral's vibe agent (vibe --agent lean) for Leanstral
-      tool_setup: >-
-        Lean leanprover/lean4:v4.32.0, Mathlib at revision
-        81a5d257c8e410db227a6665ed08f64fea08e997, and the shared library
-        Lattice-Probability, now pinned at commit bbe0b90.  Division of
-        labour: a supervising Claude Code session launched the agents, wrote
-        their briefs, recorded the author's decisions and merged their branches;
-        for this repository it ran on claude-fable-5-1 (2026-09-10 to
-        2026-09-16), claude-opus-5 (2026-09-20) and claude-opus-5-5
-        (2026-09-23 and 2026-09-24).  A claude-opus-5 general (Claude Code
-        subagent) froze all twenty-four statements, including the two cited
-        results, wrote the model and sealed Lemmas 3.3 and 3.4 and
-        Proposition 7.2 (2026-09-10); glm-5.3-flash drafted compile-filtered
-        proof candidates for it, some of which became support lemmas, and
-        glm-5.3 and glm-5.3-flash audited every frozen statement against the
-        paper (2026-09-10).  deepseek-v4.1-flash generals sealed Proposition
-        7.3 and wrote the proofs of Theorems 1.3 and 5.1 from the propositions
-        they use (2026-09-13 and 2026-09-14).  The supervising session
-        repaired two of the paper checkers (2026-09-23).  claude-sonnet-5
-        generals (2026-09-16 and 2026-09-17), a kimi-k3 general (Kimi Code,
-        2026-09-16), labs-leanstral-1-5 (2026-09-20
-        and 2026-09-23), deepseek-v4.1-flash agents (2026-09-23 and
-        2026-09-24) and claude-sonnet-5 subagents (2026-09-23 and 2026-09-24)
-        also worked on the open nodes, and none of that work is in the
-        repository; one claude-sonnet-5 branch registered the statements of
-        two open nodes as cited results, which the supervising session
-        rejected (2026-09-16).  claude-opus-5-5 wrote
-        Exploding/MainTheorems.lean, the axiom audit and the release
-        documentation, stated the cited results as explicit hypotheses,
-        corrected the paper copy as listed in paper/CHANGES_FROM_ARXIV.md,
-        restated the affected statements to match and proved Lemma 3.1
-        (2026-09-24).  A frozen-statement manifest
-        (ledger/manifest.yaml) pins each registered statement by the SHA-256
-        of its text, and the tools/ checkers verify the hashes, the axiom
-        closure of every node against its recorded state, a build whose only
-        warnings are the registered sorries, coverage of every statement of
-        the paper and quantifier order.
-      cost:
-        wall_time: >-
-          the statements were frozen on 2026-09-10; proof work ran from
-          2026-09-10 to 2026-10-01, with attempts that did not land from
-          2026-09-16 to 2026-09-24
-        spend_usd: "not tracked (subscription and API accounts)"
-        hardware: "a 20-thread Intel i9-9900X / 125 GB RAM Ubuntu machine"
-      prompting_notes: >-
-        Human-directed agent work, supervised by the author, with the author's
-        decisions on statements recorded.  Every statement was
-        pinned before its proof was attempted, and proofs were accepted only
-        through the manifest and axiom gates.
-  spend_usd: "not tracked (subscription and API accounts)"
-  notes: >-
-    All Lean code in this repository was written by the listed models under the
-    supervision of the author.  All 22 of the paper's registered results are
-    proved, each with axiom closure exactly propext, Classical.choice and
-    Quot.sound; the remaining 7 registered statements are cited results that
-    are assumed as explicit hypotheses, four of them also proved in the
-    repository.  No custom axiom is declared; cited results enter only as
-    explicit hypotheses.
-
+  - method: agent
+    models:
+    - claude-fable-5-1
+    - claude-opus-5
+    - claude-opus-5-5
+    - claude-sonnet-5
+    - deepseek-v4.1-flash
+    - glm-5.3
+    - glm-5.3-flash
+    - kimi-k3
+    - labs-leanstral-1-5
+  spend_usd: not tracked (subscription and API accounts)
 fidelity:
-  divergences: >-
-    The formalized paper is the corrected copy paper/exploding.tex, and
-    paper/CHANGES_FROM_ARXIV.md lists each difference from the arXiv version.
-    CORRESPONDENCE.md records how each statement of the paper is read in
-    Lean.  In summary: arrival and crossing times are valued in the
-    extended naturals, so that the paper's infinity is not a junk value, and
-    bounds against real quantities assert a natural number equal to the time;
-    locally uniform convergence is written in its epsilon form; the
-    finiteness of a component or of a bounding rectangle is carried where a
-    cardinality would otherwise absorb it; the standing hypotheses of
-    Sections 2 to 4 are explicit hypotheses of the deterministic lemmas;
-    "convex domain" is a nonempty open convex set; and Proposition 7.2 writes
-    the paper's d as d + 1.
-
+  divergences: 'The formalized paper is the corrected copy paper/exploding.tex, and paper/CHANGES_FROM_ARXIV.md
+    lists each difference from the arXiv version. CORRESPONDENCE.md records how each statement of the
+    paper is read in Lean.  In summary: arrival and crossing times are valued in the extended naturals,
+    so that the paper''s infinity is not a junk value, and bounds against real quantities assert a natural
+    number equal to the time; locally uniform convergence is written in its epsilon form; the finiteness
+    of a component or of a bounding rectangle is carried where a cardinality would otherwise absorb it;
+    the standing hypotheses of Sections 2 to 4 are explicit hypotheses of the deterministic lemmas; "convex
+    domain" is a nonempty open convex set; and Proposition 7.2 writes the paper''s d as d + 1.'
 review:
-  status: "author-verified"
+  status: author-verified
   reviewers:
-    - "Ahmed Bou-Rabee"
-  notes: >-
-    Correctness of every proved result is guaranteed by the Lean kernel and
-    Mathlib; the cited results are assumed rather than proved.  The author
-    decided the statement-level questions recorded during development.  The
-    statements were audited against the paper by glm-5.3 and glm-5.3-flash
-    auditors during development.  This is not external peer review.
-
+  - Ahmed Bou-Rabee
+  notes: Correctness of every proved result is guaranteed by the Lean kernel and Mathlib; the cited results
+    are assumed rather than proved. The author decided the statement-level questions recorded during development.
+    This is not external peer review.
 alignment:
-  namespace: "Exploding"
+  namespace: Exploding
   statements:
-    - source: "Theorem 1.2 (theorem:limit_shape)"
-      lean: "Exploding.Frozen.limit_shape"
-      module: "Exploding.Frozen.LimitShape"
-      status: "proved"
-      note: "Sealed; takes the three percolation results behind Proposition 2.2 and Schonmann's bound as explicit hypotheses."
-    - source: "Theorem 1.3 (theorem:convergence_of_time_constant)"
-      lean: "Exploding.Frozen.convergence_of_time_constant"
-      module: "Exploding.Frozen.TimeConstant"
-      status: "proved"
-      note: "Sealed; takes the cited Theorem 1.1 and the three percolation results as explicit hypotheses."
-    - source: "Theorem 1.4 (theorem:explosive)"
-      lean: "Exploding.Frozen.explosive"
-      module: "Exploding.Frozen.Explosive"
-      status: "proved"
-      note: "Sealed; takes Schonmann's bound as an explicit hypothesis."
-    - source: "Theorem 5.1 (Convergence of the exploding sandpile)"
-      lean: "Exploding.Frozen.generalized_convergence"
-      module: "Exploding.Frozen.GeneralizedConvergence"
-      status: "proved"
-      note: "Sealed; takes the general domination theorem and the three percolation results as explicit hypotheses."
-    - source: "Theorem 6.1 (theorem:counterexample)"
-      lean: "Exploding.Frozen.counterexample"
-      module: "Exploding.Frozen.Counterexample"
-      status: "proved"
-      note: "Sealed; its least-action hypothesis is discharged by Exploding.xfmr_proved."
-    - source: "The paper's other propositions and lemmas and Propositions 7.2, 7.3"
-      lean: "Exploding.* in Exploding/MainTheorems.lean"
-      module: "Exploding.MainTheorems"
-      status: "proved"
-      note: "Each of the 22 sealed results restates its certified counterpart Exploding.Frozen.* unchanged; the full map is in README.md and CORRESPONDENCE.md."
-
-acknowledgements: >-
-  Built on Lean 4, Mathlib, Lake and the shared library Lattice-Probability.
-  The seven assumed results are due to Fey, Levine and Peres; Schonmann;
-  Liggett, Schonmann and Stacey; Antal and Pisztora; Mathieu; and Fey,
-  Meester and Redig.
+  - source: Theorem 1.2 (theorem:limit_shape)
+    lean: Exploding.Frozen.limit_shape
+    module: Exploding.Frozen.LimitShape
+    status: proved
+    note: Sealed; takes the three percolation results behind Proposition 2.2 and Schonmann's bound as
+      explicit hypotheses.
+  - source: Theorem 1.3 (theorem:convergence_of_time_constant)
+    lean: Exploding.Frozen.convergence_of_time_constant
+    module: Exploding.Frozen.TimeConstant
+    status: proved
+    note: Sealed; takes the cited Theorem 1.1 and the three percolation results as explicit hypotheses.
+  - source: Theorem 1.4 (theorem:explosive)
+    lean: Exploding.Frozen.explosive
+    module: Exploding.Frozen.Explosive
+    status: proved
+    note: Sealed; takes Schonmann's bound as an explicit hypothesis.
+  - source: Theorem 5.1 (Convergence of the exploding sandpile)
+    lean: Exploding.Frozen.generalized_convergence
+    module: Exploding.Frozen.GeneralizedConvergence
+    status: proved
+    note: Sealed; takes the general domination theorem and the three percolation results as explicit hypotheses.
+  - source: Theorem 6.1 (theorem:counterexample)
+    lean: Exploding.Frozen.counterexample
+    module: Exploding.Frozen.Counterexample
+    status: proved
+    note: Sealed; its least-action hypothesis is discharged by Exploding.xfmr_proved.
+  - source: The paper's other propositions and lemmas and Propositions 7.2, 7.3
+    lean: Exploding.* in Exploding/MainTheorems.lean
+    module: Exploding.MainTheorems
+    status: proved
+    note: Each of the 22 sealed results restates its certified counterpart Exploding.Frozen.* unchanged;
+      the full map is in README.md and CORRESPONDENCE.md.
+acknowledgements: Built on Lean 4, Mathlib, Lake and the shared library Lattice-Probability. The seven
+  assumed results are due to Fey, Levine and Peres; Schonmann; Liggett, Schonmann and Stacey; Antal and
+  Pisztora; Mathieu; and Fey, Meester and Redig.

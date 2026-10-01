@@ -6,6 +6,7 @@ import Exploding.Support.Vocab
 import Exploding.Support.ASProof2
 import Exploding.Support.ASProof3
 import Exploding.Support.ASProof4
+import Exploding.Support.ASProof7
 import Exploding.Support.ASSpecial
 import Exploding.External.LiggettSchonmannStaceyBoundedDegree
 import Exploding.External.MathieuHoles
@@ -39,15 +40,22 @@ theorem Exploding.Frozen.approximate_subadditive (d : ℕ) (hd : 2 ≤ d) (p : �
         lastArrival η (0 : Site d) x ≤ arrival η x + (C2 : ℕ∞)
 -- FROZEN-STATEMENT-END
 := by
-  -- The remaining open claim is finite-sink stabilization; the finiteness of
-  -- `P̃`, the last-wave reach and robustness are proved in
-  -- `Exploding/Support/ASProof3.lean` and `Exploding/Support/ASProof4.lean`.
+  -- The remaining open claim is the sharper double-toppling statement of
+  -- `Exploding/Support/ASProof6.lean` in the case where no site topples
+  -- infinitely often; the finite-sink case is `as7_hpodo_of_infTopple` and the
+  -- assembly is `as7_hpodo_of_double`, both in
+  -- `Exploding/Support/ASProof7.lean`.
   have hpodo : ∀ η : Site d → ℤ, (∀ x, 2 * (d : ℤ) - 2 ≤ η x) →
       (∀ x, η x ≤ 2 * (d : ℤ) - 1) → ¬ Robust η →
         (penultimateCluster η (0 : Site d)).Finite →
           ∃ t0 : ℕ, ∀ x ∈ penultimateCluster η (0 : Site d),
             1 ≤ podo (explodingPile η) t0 x := by
     intro η hlow hhigh hnr hfin
-    sorry
+    by_cases hinf : ∃ x : Site d, as2_InfTopple (explodingPile η) x
+    · exact as7_hpodo_of_infTopple (by omega : 1 ≤ d) η hfin hinf
+    · have hdouble : ∃ T : ℕ, ∀ y : Site d, 0 < penultimateWave η (0 : Site d) y →
+          2 ≤ podo (explodingPile η) T y := by
+        sorry
+      exact as7_hpodo_of_double hd η hlow hhigh hnr hdouble
   exact as3_approximate_subadditive_of_gaps d hd p hp hp1 hLSSB hHole hChem
     (as4_hrobust d hd) hpodo

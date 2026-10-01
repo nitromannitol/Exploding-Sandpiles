@@ -245,3 +245,45 @@ theorem xmh_posList_replicate_zero (p : Site d) (n : ℕ) :
     simp [List.replicate_succ, Nat.add_assoc]
 
 end Exploding
+
+namespace Exploding
+
+open LatticeProb MeasureTheory SimpleGraph Relation
+
+variable {d : ℕ}
+
+/-- A `ReflTransGen` chain of `*`-moves in a set projects to a chain in the induced subtype. -/
+theorem xmh_rtg_val {F : Set (Site d)} {a b : Site d} (ha : a ∈ F) (hb : b ∈ F)
+    (h : ReflTransGen (fun u v => u ∈ F ∧ v ∈ F ∧ xmh_star u v) a b) :
+    ReflTransGen (fun x y : ↥F => xmh_star x.val y.val) ⟨a, ha⟩ ⟨b, hb⟩ := by
+  revert hb
+  refine ReflTransGen.rec (motive := fun (x : Site d) _ => ∀ hx : x ∈ F,
+      ReflTransGen (fun x y : ↥F => xmh_star x.val y.val) ⟨a, ha⟩ ⟨x, hx⟩) ?_ ?_ h
+  · intro hx
+    simpa using (ReflTransGen.refl :
+      ReflTransGen (fun x y : ↥F => xmh_star x.val y.val) ⟨a, ha⟩ ⟨a, ha⟩)
+  · intro b c hab hbc ih hc
+    simpa using (ReflTransGen.tail (ih hbc.1) hbc.2.2)
+
+/-- A chain in the induced subtype yields a chain of `*`-moves in the ambient set. -/
+theorem xmh_rtg_val_inv {F : Set (Site d)} {a b : Site d} (ha : a ∈ F) (hb : b ∈ F)
+    (h : ReflTransGen (fun x y : ↥F => xmh_star x.val y.val) ⟨a, ha⟩ ⟨b, hb⟩) :
+    ReflTransGen (fun u v => u ∈ F ∧ v ∈ F ∧ xmh_star u v) a b := by
+  refine ReflTransGen.rec (motive := fun (x : ↥F) _ =>
+      ReflTransGen (fun u v => u ∈ F ∧ v ∈ F ∧ xmh_star u v) a x.val) ?_ ?_ h
+  · exact ReflTransGen.refl
+  · intro b c hab hbc ih
+    exact ReflTransGen.tail ih ⟨b.property, c.property, hbc⟩
+
+/-- `*`-connectedness of a set is preconnectedness of the induced king graph. -/
+theorem xmh_SConn_iff_preconnected (F : Set (Site d)) :
+    xmh_SConn F ↔ ((xmh_kingGraph d).induce F).Preconnected := by
+  constructor
+  · intro h a b
+    exact (reachable_iff_reflTransGen a b).mpr
+      (xmh_rtg_val a.property b.property (h a.val a.property b.val b.property))
+  · intro h x hx y hy
+    exact xmh_rtg_val_inv hx hy
+      ((reachable_iff_reflTransGen (G := (xmh_kingGraph d).induce F) ⟨x, hx⟩ ⟨y, hy⟩).mp (h ⟨x, hx⟩ ⟨y, hy⟩))
+
+end Exploding

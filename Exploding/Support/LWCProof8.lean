@@ -152,3 +152,80 @@ theorem lwc8_gv_linear (d : ℕ) (hd : 2 ≤ d) (p : ℝ) (hp : 0 < p) (hp1 : p 
       nlinarith [hbound, hlog', hKnonneg]
 
 end Exploding
+
+namespace Exploding
+
+variable {d : ℕ}
+
+/-- On the good event the `m`-fold shift stays in the good event. -/
+theorem lwc8_shift_mem {E : Set (Site d → ℤ)} (hEshift : ∀ v, ∀ η ∈ E, (fun z => η (v + z)) ∈ E)
+    (v : Site d) (m : ℕ) {η : Site d → ℤ} (hη : η ∈ E) :
+    (fun η : Site d → ℤ => fun z => η (v + z))^[m] η ∈ E := by
+  rw [lwc8_shift_iterate]
+  exact hEshift ((m : ℤ) • v) η hη
+
+/-- Off the good event the `m`-fold shift stays off it. -/
+theorem lwc8_shift_notMem {E : Set (Site d → ℤ)} (hEshift : ∀ v, ∀ η ∈ E, (fun z => η (v + z)) ∈ E)
+    (v : Site d) (m : ℕ) {η : Site d → ℤ} (hη : η ∉ E) :
+    (fun η : Site d → ℤ => fun z => η (v + z))^[m] η ∉ E := by
+  intro h
+  apply hη
+  rw [lwc8_shift_iterate] at h
+  have h2 := hEshift (-((m : ℤ) • v)) (fun z => η ((m : ℤ) • v + z)) h
+  simpa [Function.comp_def, add_assoc] using h2
+
+/-- The per-direction cocycle is subadditive along the shift. -/
+theorem lwc8_gv_sub (d : ℕ) (hd : 2 ≤ d) (E : Set (Site d → ℤ))
+    (hEshift : ∀ v, ∀ η ∈ E, (fun z => η (v + z)) ∈ E)
+    (hEmem : ∀ η ∈ E, (∀ x, 2 * (d : ℤ) - 2 ≤ η x ∧ η x ≤ 2 * (d : ℤ) - 1) ∧
+      (∀ y, ∃ n : ℕ, 1 ≤ n ∧ ¬ WaveStabilizable η n y) ∧
+      ∀ a b : Site d, clusterArrival η a b ≠ ⊤)
+    (v : Site d) (m n : ℕ) (η : Site d → ℤ) :
+    lwc8_gv E v η (m + n)
+      ≤ lwc8_gv E v η m
+        + lwc8_gv E v ((fun η : Site d → ℤ => fun z => η (v + z))^[m] η) n := by
+  classical
+  by_cases hη : η ∈ E
+  · have hηm : (fun η : Site d → ℤ => fun z => η (v + z))^[m] η ∈ E :=
+      lwc8_shift_mem hEshift v m hη
+    have hlow : ∀ x, 2 * (d : ℤ) - 2 ≤ η x := fun x => ((hEmem η hη).1 x).1
+    have hhigh : ∀ x, η x ≤ 2 * (d : ℤ) - 1 := fun x => ((hEmem η hη).1 x).2
+    have hlast : ∀ y, ∃ n : ℕ, 1 ≤ n ∧ ¬ WaveStabilizable η n y := (hEmem η hη).2.1
+    have hfin : ∀ a b : Site d, clusterArrival η a b ≠ ⊤ := (hEmem η hη).2.2
+    have hfinm : ∀ a b : Site d,
+        clusterArrival ((fun η : Site d → ℤ => fun z => η (v + z))^[m] η) a b ≠ ⊤ :=
+      (hEmem _ hηm).2.2
+    have hineq := Exploding.Frozen.approx_subadditivity d hd η hlow hhigh hlast (0 : Site d)
+      ((m : ℤ) • v) ((((m + n : ℕ) : ℤ)) • v)
+    have hvadd : ((m : ℤ) • v + (n : ℤ) • v) = (((m + n : ℕ) : ℤ)) • v := by
+      rw [← add_smul]; norm_num
+    have hshift := lwc_cluster_shift d η ((m : ℤ) • v) 0 ((n : ℤ) • v)
+    have hshift' : clusterArrival ((fun η : Site d → ℤ => fun z => η (v + z))^[m] η) 0
+          ((n : ℤ) • v)
+        = clusterArrival η ((m : ℤ) • v) ((((m + n : ℕ) : ℤ)) • v) := by
+      rw [lwc8_shift_iterate, ← hvadd]
+      simpa using hshift
+    rw [← hshift'] at hineq
+    have hfin2 : clusterArrival η 0 ((m : ℤ) • v) ≠ ⊤ := hfin 0 _
+    have hfin3 : clusterArrival ((fun η : Site d → ℤ => fun z => η (v + z))^[m] η) 0
+        ((n : ℤ) • v) ≠ ⊤ := hfinm 0 _
+    have hfin23 : clusterArrival η 0 ((m : ℤ) • v)
+        + clusterArrival ((fun η : Site d → ℤ => fun z => η (v + z))^[m] η) 0
+          ((n : ℤ) • v) ≠ ⊤ := by
+      intro h
+      rw [ENat.add_eq_top] at h
+      exact h.elim hfin2 hfin3
+    have htoNat := ENat.toNat_le_toNat hineq hfin23
+    rw [ENat.toNat_add hfin2 hfin3] at htoNat
+    have htoNatR : (((clusterArrival η 0 ((((m + n : ℕ) : ℤ)) • v)).toNat : ℝ)
+        ≤ ((clusterArrival η 0 ((m : ℤ) • v)).toNat : ℝ)
+          + ((clusterArrival ((fun η : Site d → ℤ => fun z => η (v + z))^[m] η) 0
+              ((n : ℤ) • v)).toNat : ℝ)) := by
+      exact_mod_cast htoNat
+    rw [lwc8_gv_of_mem hη (m + n), lwc8_gv_of_mem hη m, lwc8_gv_of_mem hηm n]
+    exact htoNatR
+  · have hηm : (fun η : Site d → ℤ => fun z => η (v + z))^[m] η ∉ E :=
+      lwc8_shift_notMem hEshift v m hη
+    simp [lwc8_gv, hη, hηm]
+
+end Exploding

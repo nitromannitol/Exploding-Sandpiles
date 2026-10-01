@@ -10,12 +10,11 @@ library; and a `comparator.json` for
 two statements have identical elaborated types and that the proof reduces to the three
 standard axioms.
 
-**It holds none yet.**  None of the paper's main results is proved.  Theorems 1.2, 1.4 and
-6.1 are registered as frozen statements whose proofs are still open.  Theorems 1.3 and 5.1
-have written proofs, but those proofs use propositions that are still open, so their axiom
-closures contain `sorryAx`.  A challenge whose solution rests on a `sorry` would certify
-nothing, so the challenges will be added when the main theorems are sealed.  Until then there
-is no `Audit` library in `lakefile.lean` and no comparator workflow.
+**It holds none yet.**  All of the paper's main results are now sealed, so every challenge
+can be built: for each of Theorems 1.2, 1.3, 1.4, 5.1 and 6.1, a `Challenge.lean`, a
+`Solution.lean` and a `comparator.json`.  Each solution takes the cited results as explicit
+hypotheses, exactly as the frozen statement does.  Until the challenges are added there is no
+`Audit` library in `lakefile.lean` and no comparator workflow.
 
 What is proved so far is restated in full in
 [`Exploding/MainTheorems.lean`](../Exploding/MainTheorems.lean), and

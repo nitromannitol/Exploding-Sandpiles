@@ -48,17 +48,18 @@ explicit hypothesis of the nodes whose proofs use it.
 
 ## Main results
 
-None of the paper's main results is proved yet.  Their frozen statements are registered, and
-[`Exploding/MainTheorems.lean`](Exploding/MainTheorems.lean) names them in its docstring
-without restating them; it states in full only the five results that are proved.
+Every result of the paper is proved.  [`Exploding/MainTheorems.lean`](Exploding/MainTheorems.lean)
+restates each proved result in full, by `exact` of its certified counterpart in
+`Exploding/Frozen/`; a statement whose proof uses a cited result takes it as an explicit
+hypothesis.  The paper's main theorems are:
 
 | Source | Frozen statement | State |
 |---|---|---|
-| Theorem 1.2, `theorem:limit_shape` | `Exploding.Frozen.limit_shape` | open |
-| Theorem 1.3, `theorem:convergence_of_time_constant` | `Exploding.Frozen.convergence_of_time_constant` | `CONDITIONAL`: proved from Propositions 3.1 and 4.1, which are open, and the cited Theorem 1.1 |
-| Theorem 1.4, `theorem:explosive` | `Exploding.Frozen.explosive` | open |
-| Theorem 5.1, "Convergence of the exploding sandpile" | `Exploding.Frozen.generalized_convergence` | `CONDITIONAL`: proved from Proposition 5.1, which is open |
-| Theorem 6.1, `theorem:counterexample` | `Exploding.Frozen.counterexample` | open |
+| Theorem 1.2, `theorem:limit_shape` | `Exploding.Frozen.limit_shape` | `SEALED`, from the three percolation results behind Proposition 2.2 and Schonmann's bound |
+| Theorem 1.3, `theorem:convergence_of_time_constant` | `Exploding.Frozen.convergence_of_time_constant` | `SEALED`, from the cited Theorem 1.1 and the three percolation results |
+| Theorem 1.4, `theorem:explosive` | `Exploding.Frozen.explosive` | `SEALED`, from Schonmann's bound |
+| Theorem 5.1, "Convergence of the exploding sandpile" | `Exploding.Frozen.generalized_convergence` | `SEALED`, from the general domination theorem and the three percolation results |
+| Theorem 6.1, `theorem:counterexample` | `Exploding.Frozen.counterexample` | `SEALED`; its least-action hypothesis is discharged by `Exploding.xfmr_proved` |
 
 No comparator challenge exists yet; see [`Audit/README.md`](Audit/README.md).
 

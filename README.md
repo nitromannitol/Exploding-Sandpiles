@@ -26,43 +26,40 @@ renormalization (Section 2), the last wave (Section 3), the proof of Theorem 1.3
 explosive backgrounds with no limit shape (Section 6, Theorem 6.1), and a criterion for
 explosion through dimensional reduction and bootstrap percolation (Section 7).
 
-**This is a work in progress.**  Every theorem, lemma and proposition of the paper is
-registered as a frozen Lean statement (`tools/check_coverage.py`), and five further results
-that the paper cites are registered as assumptions, 29 registered statements in all.
-**None of the paper's main results is proved yet.**
+**Every theorem, lemma and proposition of the paper is** registered as a frozen Lean
+statement (`tools/check_coverage.py`), and the seven further results that the paper cites
+are registered as assumptions, 29 registered statements in all.  **Every result of the
+paper is proved**, from the cited results as explicit hypotheses.
 
-- **5 are proved:** Lemma 3.1 (a wave of order `(2d)^{dn}` covers the box of radius `n`),
-  Lemma 3.3 (the last wave exceeds the penultimate wave by at most one), Lemma 3.4
-  (subadditivity of the penultimate-cluster arrival times), Proposition 7.2 (dimensional
-  reduction on a face of the box) and Proposition 7.3 (recurrence of the constant
-  background `d`).
-- **2 have written proofs that rest on open statements:** Theorem 1.3, proved from
-  Propositions 3.1 and 4.1, and Theorem 5.1, proved from Proposition 5.1.  Their axiom
-  closures contain `sorryAx` until those propositions are proved.
-- **15 are open**, each a frozen statement whose proof is a single registered `sorry`:
-  Theorems 1.2, 1.4 and 6.1, Propositions 2.1, 2.2, 3.1, 4.1, 5.1, 7.1 and 7.5, and Lemmas
-  2.1, 3.2, 3.5, 3.6 and 3.7.
+- **22 are proved** (`SEALED`), each reducing to only the three standard axioms `propext`,
+  `Classical.choice` and `Quot.sound`: the paper's Theorems 1.2, 1.3, 1.4, 5.1 and 6.1, its
+  Propositions 2.1, 2.2, 3.1, 4.1, 5.1, 7.1, 7.2, 7.3 and 7.5, and its Lemmas 2.1 and 3.1
+  to 3.7.  A proof that uses a cited result takes it as an explicit hypothesis, so a main
+  theorem displays exactly what it rests on.
 - **7 are cited results** that the paper quotes and does not prove: the explosion theorem of
   Fey, Levine and Peres (Theorem 1.1), Schonmann's bound for bootstrap percolation
   (Proposition 7.4), and five results cited in proofs: Theorem 0.0 and Corollary 1.4 of
   Liggett, Schonmann and Stacey (domination by product measures), Theorem 1.1 of Antal and
   Pisztora (the chemical distance in supercritical bond percolation), Lemma 5.2 of Mathieu
   (the holes of the infinite cluster) and Theorem 2.8 of Fey, Meester and Redig (the least
-  action principle).
+  action principle).  Two of the seven are also proved here: the least-action principle of
+  Fey, Meester and Redig, and, from Schonmann's bound, the explosion theorem of Fey, Levine
+  and Peres.
 
 Not formalized: the proof outline of Section 1, the examples of Section 5.2 and the figures.
 
-**What is assumed.**  The seven cited results are stated in Lean as propositions in
-`Exploding/External/` and are **not proved here**; a theorem whose proof uses one takes it as
-an explicit hypothesis, so its statement shows what it rests on.  For example, Theorem 1.3
-takes the theorem of Fey, Levine and Peres and the three percolation results behind
-Proposition 2.2.  [`ASSUMPTIONS.md`](ASSUMPTIONS.md) lists all seven with their verbatim Lean
-statements.
+**What is assumed.**  Seven cited results are stated in Lean as propositions in
+`Exploding/External/` and are carried as explicit hypotheses rather than proved here, so a
+theorem whose proof uses one shows exactly what it rests on.  For example, Theorem 1.3 takes
+the theorem of Fey, Levine and Peres and the three percolation results behind Proposition
+2.2.  Two of the seven are nevertheless proved in this repository: the least-action
+principle of Fey, Meester and Redig unconditionally, and the explosion theorem of Fey,
+Levine and Peres from Schonmann's bound.  [`ASSUMPTIONS.md`](ASSUMPTIONS.md) lists all seven
+with their verbatim Lean statements.
 
-- **`sorry`:** 15 registered statements are still open, each a single registered `sorry`;
-  everything else is proved with only the three standard axioms, except that the two
-  written proofs above rest on open statements.  `tools/check_warnings.py` fails on any
-  other `sorry` or warning.
+- **`sorry`:** none.  Every registered statement is proved except the seven cited results,
+  which are propositions assumed as hypotheses, not `sorry`.  `tools/check_warnings.py`
+  fails on any `sorry` or warning.
 - **No custom `axiom`.**  The proved results reduce to `mathlib`'s three standard
   foundational axioms `propext`, `Classical.choice` and `Quot.sound`, verified by
   [`Exploding/Meta/AxiomsAudit.lean`](Exploding/Meta/AxiomsAudit.lean) for the results
@@ -87,14 +84,15 @@ from `ledger/manifest.yaml` by `python3 tools/sync_docs.py`.
 
 ## Main results
 
-None of the paper's main results is proved yet.  [`Exploding/MainTheorems.lean`](Exploding/MainTheorems.lean)
-names their frozen statements in its docstring (`Exploding.Frozen.limit_shape` for Theorem
-1.2, `Exploding.Frozen.convergence_of_time_constant` for Theorem 1.3,
-`Exploding.Frozen.explosive` for Theorem 1.4, `Exploding.Frozen.generalized_convergence`
-for Theorem 5.1 and `Exploding.Frozen.counterexample` for Theorem 6.1), and states in full
-only the results that are proved, each by `exact` of its certified counterpart in
-`Exploding/Frozen/`, so the statements displayed there are the certified ones.  None of
-them takes a cited result as a hypothesis.
+All five of the paper's main theorems are proved.  [`Exploding/MainTheorems.lean`](Exploding/MainTheorems.lean)
+restates every proved result of the paper, each by `exact` of its certified counterpart in
+`Exploding/Frozen/`, so the statements displayed there are the certified ones.  A statement
+that uses a cited result takes it as an explicit hypothesis.  The main theorems are
+`Exploding.limit_shape` (Theorem 1.2), `Exploding.convergence_of_time_constant` (Theorem
+1.3), `Exploding.explosive` (Theorem 1.4), `Exploding.generalized_convergence` (Theorem 5.1)
+and `Exploding.counterexample` (Theorem 6.1).
+
+Highlights among the proved results:
 
 * **`Exploding.square_lower_bound`** (Lemma 3.1): on a nonnegative background, for `n ≥ 1`
   and `m ≥ (2d)^{dn}`, the `m`-wave from the origin reaches every site of `[-n, n]^d`.
@@ -208,8 +206,7 @@ lake exe cache get   # prebuilt Mathlib
 lake build           # compile the project
 ```
 
-The build emits exactly one `declaration uses 'sorry'` warning for each open registered
-statement, 16 in all, and no other warning.
+The build emits no `declaration uses 'sorry'` warning and no other warning.
 
 ```bash
 lake build Exploding.Meta.AxiomsAudit   # print the axioms of the proved results
@@ -253,7 +250,7 @@ lists every difference between the two.
 Exploding/
   MainTheorems.lean   the proved results, stated in full; the main theorems named
   Frozen/             the frozen statement surface, one frozen statement per file
-  External/           the two cited results, stated as propositions and assumed
+  External/           the seven cited results, stated as propositions and assumed
   Support/            the model and the lemmas the frozen statements are proved from
     Toppling.lean     parallel toppling, the n-wave, stabilizable, robust and explosive
     Vocab.lean        boxes, crossing times, good cubes, the last wave, the background law
@@ -311,8 +308,9 @@ formalizes.  If you use this formalization, please cite it using the metadata in
 
 This formalization is built on [Lean 4](https://lean-lang.org),
 [Mathlib](https://github.com/leanprover-community/mathlib4) and the shared library
-[`Lattice-Probability`](https://github.com/nitromannitol/Lattice-Probability).  The two
-results it assumes are due to Fey, Levine and Peres and to Schonmann.
+[`Lattice-Probability`](https://github.com/nitromannitol/Lattice-Probability).  The seven
+cited results it records as hypotheses are due to Fey, Levine and Peres; Schonmann;
+Liggett, Schonmann and Stacey; Antal and Pisztora; Mathieu; and Fey, Meester and Redig.
 
 ## License
 

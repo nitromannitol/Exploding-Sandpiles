@@ -1,7 +1,7 @@
 /-
-Continuation of `MKingman3.lean`, packet ds4g.
+Continuation of `MKingman3.lean`.
 
-The induced-system route (R2) of `MKingman2`/`MKingman3` reduces the general
+The induced-system route of `MKingman2`/`MKingman3` reduces the general
 moment-free Kingman theorem `mk_kingman_linear` to two independent pieces:
 
 * the measure-theoretic Kac package `mk3_kac` for the induced map, assembled from

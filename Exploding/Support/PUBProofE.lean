@@ -1,5 +1,5 @@
 /-
-Support for Lemma 3.6 of `paper/exploding.tex` (packet PUB): the deterministic core.  On a
+Support for Lemma 3.6 of `paper/exploding.tex`: the deterministic core.  On a
 background carrying a non-stabilizing wave, an infinite cluster of good cubes with small holes and a
 linear chemical distance, the wave is positive at every site `x` by a time at most
 `K + k^d C |x| + C' (log n)^3`, for all large `n` and `|x| ≤ n`.

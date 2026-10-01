@@ -1,5 +1,5 @@
 /-
-Support for Lemma 3.6 of `paper/exploding.tex` (packet PUB): the hole step.  A finite component
+Support for Lemma 3.6 of `paper/exploding.tex`: the hole step.  A finite component
 of the complement of the infinite cluster is surrounded by cubes of the cluster; once those are
 lit, the region inside is lit within its own diameter.
 -/

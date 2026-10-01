@@ -37,28 +37,24 @@ namespace Exploding.LSProof
 
 variable {d : ℕ}
 
-/-- Step 1 (elementary, NOT a literature gap, but not yet in
-`Exploding/Support/Toppling.lean` -- should be a short induction on `t`: the
+/-- Step 1 (elementary; a short induction on `t`): the
 parallel-toppling odometer for any initial sandpile `s₀` can only become
-positive at `x` after at least `|x|₁` (Manhattan-distance-from-the-origin-of-
-firing, here the origin of firing is `0` since `s₀ - η` is supported at `0`)
+positive at `x` after at least `|x|₁` (Manhattan distance from the origin of
+firing; here the origin of firing is `0` since `s₀ - η` is supported at `0`)
 time steps, because each step of `(1.1)` only lets a site fire using
-information from its immediate neighbours. Stated for `podo (explodingPile
+information from its immediate neighbours.  Stated for `podo (explodingPile
 η)`, the object `arrival` is built from.
 
-FALSE-STATEMENT FIX (found while carving `ls_measure_convergence`):
-as originally designed this lemma had NO hypothesis on `η`, and is FALSE
-without one.  Counterexample (formerly `ls_speed_bound_false`, now
-removed since it is no longer constructible): `d = 1`, `η ≡ 2`; then
-`explodingPile η = η` (`dirac 0 x = 0` at `x = 2 ≠ 0`... in fact for EVERY
-`x`, since `2 * 1 - 1 = 1 < 2 = η x`, `η` already meets the firing threshold
-`2d` on its own, so `podo (explodingPile η) 1 x > 0` at `x` with `mnorm x = 2
-> 1 = t`.  The fix, matching every other use of this speed bound in the
-repository (e.g. `ceEta`'s `aux_ceEta_bounds` in `thm-counterexample-dec`),
-is the standing assumption that `η` alone is stable off the origin: `η ≤
-2d - 1` everywhere, so firing can only ever be triggered by a chain of
-neighbours ultimately traced back to the extra chips `explodingPile η - η`
-at `0`. -/
+The statement needs a hypothesis on `η`: without one it is FALSE.
+Counterexample: `d = 1`, `η ≡ 2`; then `explodingPile η x = η x = 2` at every
+`x ≠ 0` (since `dirac 0 x = 0` there), and `2 * 1 - 1 = 1 < 2 = η x`, so `η`
+already meets the firing threshold `2d` on its own, so `podo (explodingPile η) 1 x > 0`
+at `x` with `mnorm x = 2 > 1 = t`.  The hypothesis, as in every other use of this
+speed bound in the repository (e.g. `ceEta`'s `aux_ceEta_bounds` in
+`Exploding/Support/SubRelay.lean`), is the standing assumption that `η` alone is
+stable off the origin: `η ≤ 2d - 1` everywhere, so firing can only ever be
+triggered by a chain of neighbours ultimately traced back to the extra chips
+`explodingPile η - η` at `0`. -/
 theorem ls_speed_bound_tri_add (a b : ℤ) : |a + b| ≤ |a| + |b| := by
   calc
     |a + b| = |a - (-b)| := by ring
@@ -746,9 +742,8 @@ theorem ls_A_ball_eventually (η : Site d → ℤ) (hη : ∀ x : Site d, η x �
   show (∑ i, |y i|) ≤ R
   linarith
 
-/-- Step 6, piece (d) (THE hard real-analysis core the paper skips; "needs
-further split" in the original decomposition, kept as one lemma here since it
-is genuinely the content of Step 6, not a further mechanical reduction).
+/-- Step 6, piece (d) (the hard real-analysis core that the paper skips;
+it is the content of Step 6, not a further mechanical reduction).
 Proof: fix `δ > 0`.  By (b) pick `n` with the shell volume `<
 ENNReal.ofReal (δ/2)`, set `ε := 1/(n+1)`.  By `hBR` and (c) with `R := 2`,
 `B ⊆ {∑|y_i|≤2}` and eventually `A_t ⊆ {∑|y_i|≤2}`, so `symmDiff A_t B ⊆
@@ -841,12 +836,10 @@ theorem ls_measure_convergence (η : Site d → ℤ) (N : (Fin d → ℝ) → �
           ({y : Fin d → ℝ | N y < 1} ∩ K)
           ⊆ {y : Fin d → ℝ | 1 - ε ≤ N y ∧ N y ≤ 1 + ε})
     (hfrontier : volume (frontier {y : Fin d → ℝ | N y < 1}) = 0)
-    -- UNDER-SPECIFICATION FIX: the design's hypothesis list was too thin to
-    -- carve Step 6 at all (see `ls_levelset_subset_frontier`'s need for
-    -- openness/homogeneity of `N`, and `ls_A_ball_eventually`'s need for
-    -- `η`'s standing bound).  Both are already computed at this lemma's only
-    -- call site (`ls_assemble`), so this only widens an internal
-    -- assembly lemma, not the frozen top-level theorem.
+    -- The next three hypotheses are needed for Step 6 (see
+    -- `ls_levelset_subset_frontier`'s need for openness/homogeneity of `N`, and
+    -- `ls_A_ball_eventually`'s need for `η`'s standing bound).  All of them are
+    -- available at this lemma's only call site (`ls_assemble`).
     (hBopen : IsOpen {y : Fin d → ℝ | N y < 1})
     (hhom : ∀ c : ℝ, 0 ≤ c → ∀ y : Fin d → ℝ, N (c • y) = c * N y)
     (hη : ∀ x : Site d, η x ≤ 2 * (d : ℤ) - 1) :
@@ -886,7 +879,7 @@ events is again full measure.  Proof: `toyLaw d p = Measure.infinitePi
 (fun _ => chipLaw (2d-1) (2d-2) p)`; the pushforward of `Measure.infinitePi`
 under evaluation at a fixed coordinate `x` is that coordinate's own law
 (the marginal fact used identically, for a lower bound instead of an upper
-one, by `aux_te_recurrent_law`'s docstring in `thm-explosive-dec`); combine
+one, in `aux_finite_exploding_bounds` of `Exploding/Support/SubFinite.lean`); combine
 `∀ x, ∀ᵐ η, η x ≤ 2d-1` (one instance of `ls_chipLaw_up` per `x`, read
 through the marginal) into `∀ᵐ η, ∀ x, η x ≤ 2d-1` via
 `MeasureTheory.ae_all_iff` (valid since `Site d` is countable). -/
@@ -956,15 +949,14 @@ theorem ls_assemble (d : ℕ) (hd : 2 ≤ d) (p : ℝ) (hp : 0 < p) (hp1 : p < 1
       hBopen hhom hηub
 
 
-/-- Step 8 (closes the gap the previous docstring flagged: `hFLP` is not
+/-- Step 8 (the hypothesis `hFLP` is not
 actually a free assumption). `Exploding.Frozen.explosive` (Theorem 1.4, node
-`thm-explosive`, this campaign) applied to `η ∼ Bernoulli(2d-1, 2d-2, p) =
+`thm-explosive`) applied to `η ∼ Bernoulli(2d-1, 2d-2, p) =
 Measure.infinitePi (chipLaw (2d-1) (2d-2) p)` proves exactly
 `Exploding.External.FeyLevinePeresExplosive`: the hypothesis `β ≥ d` holds
 since `2d - 2 ≥ d` when `d ≥ 2`, and `P(β(0) = 2d-1) = p > 0`. This is
 literally the relationship the paper itself describes ("we use this ... to
-extend Theorem 1.1", `exploding.tex:264`), so `hFLP` should be DISCHARGED
-here rather than left as an unresolved assembly-level gap. -/
+extend Theorem 1.1", `exploding.tex:264`), so `hFLP` is discharged by it. -/
 theorem ls_chipLaw_isProb (a b : ℤ) (p : ℝ) (hp : 0 ≤ p) (hp1 : p ≤ 1) :
     IsProbabilityMeasure (chipLaw a b p) := by
   refine ⟨?_⟩

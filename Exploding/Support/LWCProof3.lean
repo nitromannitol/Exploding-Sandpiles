@@ -1,5 +1,5 @@
 /-
-Follow-up to `Exploding/Support/LWCProof2.lean` (packet LWC-3).
+Follow-up to `Exploding/Support/LWCProof2.lean`.
 
 Conjunct (2) of the last-wave reduction: the lattice-direction convergence, the continuity and
 homogeneity of the limit shape `N` and the Lipschitz bound on `f` upgrade to locally uniform

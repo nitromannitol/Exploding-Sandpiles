@@ -214,7 +214,7 @@ theorem cylLap_le_of_le_add {v w u : ℤ × Fin 4 → ℤ} (h : ∀ y, v y ≤ w
   linarith
 
 /-- **Step 3b of `exploding.tex:1506-1513`** (`eq:topple_compare_induc`), in the
-corrected general form the packet asks for: for an arbitrary cylinder background
+corrected general form needed here: for an arbitrary cylinder background
 `ζ` and `ũ ≥ 0`, with `ζ' := ζ + Δũ`, the odometer for `ζ` is dominated by the
 odometer for `ζ'` plus `ũ`.  The displayed tables of `exploding.tex` are used only
 in Step 4. -/

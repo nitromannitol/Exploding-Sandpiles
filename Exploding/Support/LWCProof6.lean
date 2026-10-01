@@ -1,5 +1,5 @@
 /-
-Packet LWC-6 (`lwc6_`) — Proposition 3.1's moment-free Kingman conjunct.
+Proposition 3.1's moment-free Kingman conjunct (declarations `lwc6_*`).
 
 This file isolates the purely analytic step and the Kingman step.  The analytic step
 extends a subadditive, naturally homogeneous, linearly bounded function on the

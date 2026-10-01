@@ -1,5 +1,5 @@
 /-
-Packet LWC-8 (`lwc8_`) — the Kingman conjunct of Proposition 3.1, taking
+The Kingman conjunct of Proposition 3.1 (declarations `lwc8_*`), taking
 `mk_kingman_linear` as a hypothesis.
 
 `LWCProof6/7` built the extension `lwc6_infN L` of a subadditive, homogeneous,

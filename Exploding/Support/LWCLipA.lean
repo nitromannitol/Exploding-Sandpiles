@@ -1,6 +1,6 @@
 /-
-Support for the far Lipschitz bound of Proposition 3.1 (`eq:lastwave_lipschitz`, second bound),
-packet LIP.  Two ingredients that carry a lit good cube of the infinite cluster to a distant site:
+Support for the far Lipschitz bound of Proposition 3.1 (`eq:lastwave_lipschitz`, second bound).
+Two ingredients that carry a lit good cube of the infinite cluster to a distant site:
 
 * the macroscopic index is `1`-Lipschitz up to an additive constant;
 * a lit good cube `Q_k(z0)` of the cluster, with `z0` at macroscopic distance `D` from the cube of

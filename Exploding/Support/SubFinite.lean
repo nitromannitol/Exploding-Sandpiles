@@ -29,17 +29,11 @@ open Exploding LatticeProb MeasureTheory
 
 
 /-- `aux_finite_exploding_bounds`: `toyLaw`-almost every background lies
-pointwise in `[2d-2, 2d-1]`.  This is real (not a literature gap) but
-genuinely measure-theoretic work: `toyLaw d p` is the countable product
-`Measure.infinitePi (fun _ => chipLaw (2d-1) (2d-2) p)`, each one-site marginal
-gives full mass to `{2d-2, 2d-1}` by construction of `chipLaw`, and the
-intersection over the countably many sites of these full-measure events is
-still full measure.  (A structurally identical lemma was attempted, but not
-finished, by the fleet in `scratch/leanstral/work/lem-penultimate-cluster/node.lean`
-under the name `toyLaw_eta_bounds`; the same lemma is needed here, for
-`lem-penultimate-cluster`, and anywhere else that needs a.e. bounds on `η`.
-Since it is used by several nodes it may be worth adding to `Support/Vocab.lean`
-directly rather than re-deriving per node.) -/
+pointwise in `[2d-2, 2d-1]`.  This is a measure-theoretic fact: `toyLaw d p` is the
+countable product `Measure.infinitePi (fun _ => chipLaw (2d-1) (2d-2) p)`, each
+one-site marginal gives full mass to `{2d-2, 2d-1}` by construction of `chipLaw`,
+and the intersection over the countably many sites of these full-measure events is
+still full measure. -/
 theorem aux_finite_exploding_bounds (d : ℕ) (p : ℝ) (hp : 0 < p) (hp1 : p < 1) :
     ∀ᵐ η ∂(toyLaw d p), ∀ x : Site d, 2 * (d : ℤ) - 2 ≤ η x ∧ η x ≤ 2 * (d : ℤ) - 1 := by
   have hpos_p : (0 : ℝ) ≤ p := by linarith
@@ -91,21 +85,21 @@ themselves nontrivial:
     covered by (finitely many, boundedly sized) components of `Cinfᶜ` once
     `m` is large, since those components have cardinality `< (log m)^{5/2} ≪
     m^d`; hence some macroscopic site `i` with `|i| ≤ m` lies in `Cinf`;
-(iii) apply `Exploding.Frozen.square_lower_bound` (real project file, fully
-    PROVEN, no gap: `Exploding/Frozen/SquareLowerBound.lean`) with `n` large
+(iii) apply `Exploding.Frozen.square_lower_bound` (proved in
+    `Exploding/Frozen/SquareLowerBound.lean`) with `n` large
     enough that `cent d n` contains the microscopic cube `Q_k(i) = Q_k + k•i`
     entirely, so the resulting wave's support covers `Q_k(i)`.
 Step (ii) is split out below as `aux_finite_exploding_meets_cluster`; the
 The theorem itself, needing both (ii) and `square_lower_bound`, is placed after it
 (a forward reference from here would not compile).
 
--- FIDELITY NOTE: an earlier draft of this decomposition stated the conclusion
--- with `GoodAt η k i` alone (no cluster membership).  That is not enough for
+-- NOTE: the conclusion cannot be stated with `GoodAt η k i` alone (no cluster
+-- membership).  That is not enough for
 -- `aux_finite_exploding_propagate` to be true: a single good cube surrounded
 -- entirely by bad ones is stable on its own, and never causes an explosion.
 -- The paper's proof needs `Q_k(i) ⊂ C_∞`, i.e. `i` in the *infinite* cluster,
 -- which is what lets propagation continue forever; that membership is
--- restored below (`Cinf`, `IsInfiniteConnectedGoodSet η k Cinf`, `i ∈ Cinf`). -/
+-- part of the statement below (`Cinf`, `IsInfiniteConnectedGoodSet η k Cinf`, `i ∈ Cinf`). -/
 
 /- `aux_finite_exploding_meets_cluster`: step (ii) of `aux_finite_exploding_covers`,
 made a standalone deterministic fact.  A sufficiently large centred box always
@@ -121,12 +115,11 @@ then lie inside a single connected component of `Cinfᶜ`, namely
 cardinality at least `|cent d m| = (2m+1)^d`, contradicting `hcomp` once `m` is
 large enough that `(2m+1)^d` exceeds `(log m)^{5/2}`.
 
--- Provable in principle from the stated hypotheses (no literature gap): it
--- needs two combinatorial facts not yet in `Support/` — that `cent d m` is
--- connected under `lattice d`, and that a connected subset of `S` containing
--- `x` lies inside `componentIn S x` — plus the elementary count
--- `Set.ncard (cent d m) = (2 * m + 1) ^ d`. None of these needs anything
--- outside the definitions already in `Support/Vocab.lean`. Split below. -/
+The proof needs two combinatorial facts — that `cent d m` is
+connected under `lattice d`, and that a connected subset of `S` containing
+`x` lies inside `componentIn S x` — plus the elementary count
+`Set.ncard (cent d m) = (2 * m + 1) ^ d`.  None of these needs anything
+outside the definitions in `Support/Vocab.lean`; they are split out below. -/
 
 /-- `cent d m` equals a `Fintype.piFinset` of integer intervals, so it is
 finite with exactly `(2m+1)^d` points: `abs_le` identifies `cent d m` with
@@ -331,15 +324,14 @@ per-`x` time witness (over the finite set `cube d k0`,
 `aux_finite_exploding_cube_finite`) into the single shared time the goal
 asks for.
 
-FIDELITY NOTE: the design's original conclusion asserted only `1 ≤ N` (not
-`1 ≤ k`); `renormalization_properties`'s own `k0` could in principle be `0`
-(its statement is `∃ k0, ∀ k ≥ k0, …`, so nothing stops `k0 = 0`), and a
-`k = 0` cube gives `aux_finite_exploding_propagate` (below, whose FIDELITY
-NOTE has the matching counterexample) nothing to work with. Not a falsity in
-`aux_finite_exploding_covers` itself, but a strengthening: the scale actually
-picked is `max k0 1` rather than `k0`, valid for the same reason
-(`renormalization_properties` holds for every `k ≥ k0`), and the added
-conjunct `1 ≤ k` is threaded through so `propagate` has what it needs. -/
+NOTE: the conclusion includes the conjunct `1 ≤ k`.  The `k0` of
+`renormalization_properties` could in principle be `0` (its statement is
+`∃ k0, ∀ k ≥ k0, …`, so nothing stops `k0 = 0`), and a `k = 0` cube gives
+`aux_finite_exploding_propagate` (below, whose note has the matching
+counterexample) nothing to work with.  So the scale actually picked is
+`max k0 1` rather than `k0`, valid for the same reason
+(`renormalization_properties` holds for every `k ≥ k0`), and the conjunct
+`1 ≤ k` is threaded through so `propagate` has what it needs. -/
 theorem aux_finite_exploding_covers (d : ℕ) (hd : 2 ≤ d) (p : ℝ) (hp : 0 < p) (hp1 : p < 1)
     (hLSSB : Exploding.External.LiggettSchonmannStaceyBoundedDegree) (hHole : Exploding.External.MathieuHoleVolume)
     (hChem : Exploding.External.AntalPisztoraChemicalDistance) :
@@ -457,23 +449,16 @@ theorem aux_finite_exploding_speed {d : ℕ} (η : Site d → ℤ) (hlow : ∀ x
     exact Int.ediv_eq_zero_of_lt (hlow x) (by linarith [hhigh x])
 
 /-- **General wave-dominates-`S`-frozen-odometer comparison, time-shifted from
-`t0`.** Generalizes `aux_square_lower_bound_compare`
-(`lem-square-lower-bound-dec/node.lean`, PROVEN there for `S = ∅`, `t0 = 0`) to
-an arbitrary frozen set `S` and a process started at `t0` rather than `0`
-(needed since `S`'s seed is typically only known dominated by the wave from
-*some* later time on, not from `t0 = 0`). Same induction on `s` as that
-lemma's proof: at `x ∈ S`, `fodo S η w0 (s+1) x = w0 x ≤ wave η N z (t0+s+1)
+`t0`.** The comparison holds for an arbitrary frozen set `S` and a process
+started at `t0` rather than `0` (needed since `S`'s seed is typically only known
+to be dominated by the wave from *some* later time on, not from `t0 = 0`).
+Induction on `s`: at `x ∈ S`, `fodo S η w0 (s+1) x = w0 x ≤ wave η N z (t0+s+1)
 x` directly from `hSdom` (quantified over every `s`, so it covers `s+1` too,
 including the case `s=0` via `hw0`); off `S`, compare via `nbrSumZ_mono` on
-the induction hypothesis and `Int.ediv_le_ediv`, exactly as in the cited
-lemma's own proof — `fodo` and `podo` share the identical "increment by
-`1{config ≥ 2d}`" recursion (`fodo_succ`/`podo_succ`), so the same
+the induction hypothesis and `Int.ediv_le_ediv`.  The `fodo` and `podo` recursions share
+the identical "increment by `1{config ≥ 2d}`" form (`fodo_succ`/`podo_succ`), so the
 "floor dominates the capped increment" algebra applies with `wave η N z
-(t0+s+1)`'s direct floor formula (`wave_of_ne`) in place of `podo`'s target.
-Addresses the "genuine multi-node foundational gap" flagged in
-`lem-square-lower-bound-dec/node.lean`'s `aux_square_lower_bound_compare`;
-restated here (not there, since only this node's `-dec/` file may be edited),
-and usable by any future node that needs it. -/
+(t0+s+1)`'s direct floor formula (`wave_of_ne`) in place of `podo`'s target. -/
 theorem aux_finite_exploding_wave_dominates_fodo {d : ℕ} (hd0 : (0 : ℤ) < 2 * (d : ℤ))
     (S : Set (Site d)) (η : Site d → ℤ) (hη : ∀ y, 0 ≤ η y) (N : ℕ) (z : Site d)
     (hz : z ∈ S)
@@ -502,7 +487,7 @@ theorem aux_finite_exploding_infinite_meets_box {d : ℕ} (C : Set (Site d)) (hC
 steps: if `i` and `y` lie in the same component of `S ⊆ goodSites η k`
 (`componentIn`/`Reachable`, unfolded via `Classical.choice` on the
 `Nonempty (Walk …)` witness and structural induction — `SimpleGraph.Walk.rec`
-or `SimpleGraph.Walk.ind` — on that walk, applying `aux_finite_exploding_step`
+or `SimpleGraph.Walk.ind` — on that walk, applying the hypothesis `hstep`
 once per edge, i.e. once per `Walk.cons`, and `GoodAt` from `hS` at each
 visited vertex) and `Q_k(i)` is covered by time `t`, then `Q_k(y)` is covered
 by *some* finite time. -/
@@ -633,15 +618,16 @@ time (`wave_mono_time`), `Q_k(y)` is then also covered at time
 at time `T` at every point of `Q_k(y)` (all farther than `T` from the
 origin). Stabilization at `T` would force these two to agree, contradiction.
 
-FIDELITY NOTE: the design's original statement had no lower bound on `k`.
-That is FALSE at `k = 0`: `cube d 0 = ∅` makes `hcover` vacuous, so take
-`η ≡ 0` (satisfies `hlow`/`hhigh`) and `Cinf := Set.univ \ {0, unit 0}` (as in
-`aux_close_long_path`'s counterexample, `k = 0` makes `GoodCube` vacuous for
+NOTE: the hypothesis `hk : 1 ≤ k` is necessary.
+Without a lower bound on `k` the statement is FALSE at `k = 0`: `cube d 0 = ∅`
+makes `hcover` vacuous, so take
+`η ≡ 0` (satisfies `hlow`/`hhigh`) and `Cinf := Set.univ \ {0, unit 0}` (for
+`k = 0` the predicate `GoodCube` is vacuous for
 every `η`, so `hCinf` holds); the `N`-wave for the zero background carries
 only its initial finite mass `N` and dissipates it via a strictly decreasing
 "unstable-site" potential exactly as in a finite sandpile, so it stabilizes,
 i.e. `WaveStabilizable η N 0` holds, contradicting the claimed conclusion.
-Restored here as `hk : 1 ≤ k`, so `cube d k` is nonempty
+With `hk : 1 ≤ k`, `cube d k` is nonempty
 (the all-`1`s point `fun _ => (1:ℤ)`, or any point of it, witnesses this in
 the proof) and `hcover`/`aux_finite_exploding_speed` carry real content. -/
 theorem aux_finite_exploding_propagate (d : ℕ) (hd : 2 ≤ d) (η : Site d → ℤ)

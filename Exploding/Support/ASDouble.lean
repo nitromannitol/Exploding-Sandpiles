@@ -1,5 +1,5 @@
 /-
-Packet ASD: the last open claim of `Exploding.Frozen.approximate_subadditive`.
+The last open claim of `Exploding.Frozen.approximate_subadditive`.
 
 ## The double-toppling claim is false
 

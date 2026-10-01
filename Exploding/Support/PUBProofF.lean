@@ -1,5 +1,5 @@
 /-
-Support for Lemma 3.6 of `paper/exploding.tex` (packet PUB): the almost sure statement.  On the
+Support for Lemma 3.6 of `paper/exploding.tex`: the almost sure statement.  On the
 almost sure event of Proposition 2.2, on which the last wave is well defined, the deterministic core
 gives the linear bound on the last-wave arrival times.
 -/

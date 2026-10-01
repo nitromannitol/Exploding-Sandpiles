@@ -1,5 +1,5 @@
 /-
-Packet AS-7: the last claim `hpodo` of
+The last claim `hpodo` of
 `Exploding.Frozen.approximate_subadditive`.  Sorry-free support file.
 
 ## What is added

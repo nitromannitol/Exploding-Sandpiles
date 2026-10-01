@@ -1,5 +1,5 @@
 /-
-Support for the far Lipschitz bound of Proposition 3.1, packet LIP: the polynomial bookkeeping.
+Support for the far Lipschitz bound of Proposition 3.1: the polynomial bookkeeping.
 The total polylogarithmic overhead of the far case, written in the scale `Z`, is at most a fixed
 power of `Z`.
 -/

@@ -1,5 +1,5 @@
 /-
-Continuation of `MKingman4.lean`, packet ds4h.
+Continuation of `MKingman4.lean`.
 
 The frozen body of `GeneralizedLastWave.lean` names the exact missing theorem as
 `mk4_boundedAboveKingman` (a subadditive process bounded above by an a.s. finite
@@ -14,7 +14,7 @@ library's machinery: the case of a *uniform* upper bound `h n ≤ M` (with `M` a
 constant, not a random variable).  There the shifted process
 `g n = h n + c n` is nonnegative, bounded above by `c n + M`, and `g 1` is
 bounded hence integrable, so `mk_kingman_linear_uniform` applies.  The general
-case needs the Akcoglu-Krengel filling scheme, which the workspace does not
+case needs the Akcoglu-Krengel filling scheme, which the library does not
 contain.
 -/
 import Exploding.Support.MKingman4

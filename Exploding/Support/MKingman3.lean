@@ -6,7 +6,7 @@ induced (first-return) system, and the Kingman step on the induced cocycle.
 induced cocycle `G k y = g (r_k y) y`.  This file adds the normalised restricted
 measure `μ_A = μ(A)⁻¹ • μ|A`, records the Kac/ergodicity package as
 `mk3_kac`, and derives convergence along return times from it.  The remaining
-transfer from return times to all `n` is the open step (see the report).
+transfer from return times to all `n` is the open step.
 -/
 import Exploding.Support.MKingman2
 import Mathlib.Dynamics.Ergodic.Function

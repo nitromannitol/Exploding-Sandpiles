@@ -75,17 +75,13 @@ first-positive-time is `0`).  By monotonicity in time (`wave_mono_t`) every
 site visited along the resulting chain, once positive, stays positive forever,
 in particular in the terminal `penultimateWave`.
 
--- GAP (real, not literature): needs a well-founded induction on
--- `sInf {t | 0 < wave η (waveThreshold η zc - 1) zc t y}` that is not yet in
--- `Support/Wave.lean`.  I am confident the statement is true and the sketch
--- above is correct; formalizing the strong induction is genuine additional
--- work.  Split below: `aux_penultimate_hlast` recovers the missing `hlast`
--- witness that `Support/Wave.lean`'s own lemmas need from bare positivity of
--- `penultimateWave`, and `aux_penultimate_wave_pos_implies_terminal` upgrades
--- a positive value at *some* finite time to positivity of the terminal
--- `penultimateWave`; the strong induction itself is assembled directly in
--- this lemma's own proof (it is the natural home for it, not a separable
--- ≤15-line fact). -/
+The proof is a well-founded induction on
+`sInf {t | 0 < wave η (waveThreshold η zc - 1) zc t y}`, carried out directly in
+this lemma's own proof.  Two facts are split out below: `aux_penultimate_hlast`
+recovers the `hlast` witness that the lemmas of `Support/Wave.lean` need from bare
+positivity of `penultimateWave`, and `aux_penultimate_wave_pos_implies_terminal`
+upgrades a positive value at *some* finite time to positivity of the terminal
+`penultimateWave`. -/
 
 /-- If the penultimate wave is positive anywhere, `waveThreshold η zc ≥ 2`
 and in particular the `hlast` witness that `penultimateWave_fixed`/
@@ -287,20 +283,20 @@ Sketch, citing `Exploding.Frozen.local_convexity` exactly as the paper's
 one-line proof does: let `A` be the path's image.  Since `penultimateWave η zc`
 is `≥ 1` on `A` and satisfies the *same* recursion off `zc` that
 `fodo A η (Set.indicator A 1)` satisfies off `A` (`penultimateWave_fixed`), a
-domination induction exactly like `aux_square_lower_bound_compare` in
-`lem-square-lower-bound-dec/node.lean` (there for `podo` against `wave`; here
-for `fodo A` against `penultimateWave η zc`) gives
+domination induction like the one comparing the wave with a frozen odometer
+(`aux_finite_exploding_wave_dominates_fodo` in `Exploding/Support/SubFinite.lean`;
+here for `fodo A` against `penultimateWave η zc`) gives
 `fodo A η (Set.indicator A 1) t ≤ penultimateWave η zc` pointwise for every
 `t`.  `local_convexity` gives `fodo A η (Set.indicator A 1) t = 1` throughout
 `br A` once `t ≥ |br A|`, so `penultimateWave η zc ≥ 1` throughout `br A` too.
--- GAP (real, not literature): the domination induction is not yet written;
--- it is the same recipe as `aux_square_lower_bound_compare`, adapted from a
--- single frozen point to a frozen path `A`, so I rate this the same
--- provable-but-unformalized confidence as that lemma. -/
+The domination induction is carried out in
+`aux_penultimate_path_box_closure_dominates` below, by the same recipe as the
+comparison of the wave with a frozen odometer, with a frozen path `A` in place
+of a single frozen point. -/
 /-- `fodo A η (indicator A 1)` is dominated by `penultimateWave η zc`
-pointwise at every time: the domination induction of `aux_square_lower_bound_
-compare` (`lem-square-lower-bound-dec/node.lean`, there for `podo` against
-`wave`), adapted from a single frozen point to a frozen set `A`.  At `x ∈ A`
+pointwise at every time: the domination induction comparing the wave with a
+frozen odometer (`aux_finite_exploding_wave_dominates_fodo`), here for
+`fodo A` against `penultimateWave η zc` with a frozen set `A`.  At `x ∈ A`
 the frozen odometer is pinned at `w0 x = 1 ≤ penultimateWave η zc x`
 (`hApos`); at `x = zc ∉ A` (if any) the global cap `fodo_le_one`
 (`Support/SubFodo.lean`, needs `η ≤ 2d - 1`, `w0 ≤ 1`, `w0 ≥ 0`, all
@@ -471,80 +467,53 @@ theorem aux_penultimate_path_box_closure {d : ℕ} (hd : 2 ≤ d) (η : Site d �
 /-! ### (b) A long straight run of positivity overlaps the infinite cluster and
 contradicts stability -/
 
-/- `aux_penultimate_overlap_contradiction`: the mechanism named in the task
-(and in the one-sentence paper proof): if the penultimate wave centred at `zc`
-(which *does* stabilize, by `penultimate_stabilizable`, since `zc`'s last-wave
-index is one more than its own) is positive along an entire straight run of
-`> (log n)^{5/2}` consecutive *macroscopic good cubes* in direction `i`, that
-run cannot lie entirely in a single finite complementary component of `Cinf`
-(clause (2) of `renormalization_properties` bounds every such component's
-cardinality by `(log n)^{5/2}`, exactly as in
-`aux_finite_exploding_meets_cluster` of `lem-finite-exploding-dec/node.lean`,
-applied to a line instead of a box), so the run must contain a macroscopic
-site of `Cinf` itself; combined with `aux_penultimate_path_box_closure`, the
-whole macroscopic cube there is then forced positive, and the *same*
-propagation mechanism as `lem-finite-exploding`'s
-`aux_finite_exploding_step`/`aux_finite_exploding_propagate`
-(`lem-finite-exploding-dec/node.lean`) forces `¬ WaveStabilizable η
-(waveThreshold η zc - 1) zc`, contradicting `hstab`.
+/- The mechanism behind the side-length bound of Lemma 3.5: if the penultimate
+wave centred at `zc` (which *does* stabilize, by `penultimate_stabilizable`, since
+`zc`'s last-wave index is one more than its own) is positive along an entire straight
+run of `> (log n)^{5/2}` consecutive *macroscopic good cubes* in direction `i`, that
+run cannot lie entirely in a single finite complementary component of `Cinf` (clause (2)
+of `renormalization_properties` bounds every such component's cardinality by
+`(log n)^{5/2}`, exactly as in `aux_finite_exploding_meets_cluster`, applied to a line
+instead of a box), so the run must contain a macroscopic site of `Cinf` itself;
+combined with `aux_penultimate_path_box_closure`, the whole macroscopic cube there is
+then forced positive, and the *same* propagation mechanism as
+`aux_finite_exploding_propagate` forces `¬ WaveStabilizable η
+(waveThreshold η zc - 1) zc`, contradicting stabilizability.
 
-`a`/`b` bound the run along axis `i`, based at `zc`. -/
+`a`/`b` bound the run along axis `i`, based at `zc`.  By Lemma `local_convexity`,
+`1{ũ > 0}` is a rectangle (not merely a set containing one), so it suffices to bound its
+maximal side length; if any side length exceeds `(2k log n)^{5/2}`, the rectangle
+must overlap a good cube of the infinite cluster, contradicting stability.  So `a`, `b`
+are the minimum and maximum, along axis `i`, of the bounding rectangle of the positive
+set `P(zc)` of the penultimate wave.  This set equals its own bounding rectangle: it is
+connected through `zc` (`aux_penultimate_connected_to_centre`), and
+`aux_penultimate_path_box_closure` forces the whole bounding rectangle positive.  Since
+`zc ∈ P(zc)`, we get `a ≤ zc i ∧ zc i ≤ b`.
 
--- PINNED DOWN (this pass), from the paper's ACTUAL proof of Lemma 3.5
--- (exploding.tex:799-804, the short one, no `Hypothesis path_filling`):
--- "By Lemma [local_convexity], `1{ũ^(x) > 0}` IS a rectangle [not merely
--- CONTAINS one], therefore it suffices to bound the maximal side length. By
--- Proposition [renormalization_properties], ... if any side length of the
--- rectangle exceeds `(2k log n)^{5/2}` then it must overlap a good cube,
--- contradicting stability." So `a`, `b` are meant to be the ACTUAL min/max
--- of `P(zc)`'s own bounding rectangle along axis `i` (`P(zc) = br(P(zc))`,
--- since `P(zc)` is connected through `zc` by `aux_penultimate_connected_to_
--- centre` and `aux_penultimate_path_box_closure` then forces the whole
--- bounding rectangle positive, so `P(zc)` cannot be a PROPER subset of its
--- own `br`). This pins down `a ≤ zc i ∧ zc i ≤ b` (since `zc ∈ P(zc)`, a
--- point of its own bounding rectangle) as the "based at `zc`" relation the
--- original doc-comment named but never wrote down -- CONFIRMED needed by a
--- future assembly of `Exploding.Frozen.last_penultimate_cluster` (to build
--- `a`, `b`, `hline` in the first place), though NOT needed by the internal
--- logic of `aux_penultimate_overlap_contradiction` itself (see below).
---
--- FALSE/UNDER-SPECIFIED STATEMENT FIX: the design's `hnz : (0 < mnorm zc) →
--- (mnorm zc : ℝ) ≤ n` is genuinely insufficient to discharge (i)'s `hin`
--- (`∀ v, a ≤ v → v ≤ b → (shifted point) ∈ cent d n`): `mnorm zc ≤ n` bounds
--- `zc` alone, not `a` or `b`, and `hab` only bounds the DIFFERENCE `b - a`,
--- not either endpoint individually, so no combination of `hnz`, `hab`, and a
--- hypothetical `a ≤ zc i ≤ b` forces `|a| ≤ n` or `|b| ≤ n`. (The paper's own
--- proof is silent on this because, read literally, its "if any side length
--- exceeds `(2k log n)^{5/2}`" already implicitly re-chooses which radius
--- `renormalization_properties` is applied at, e.g. `n' := n + (b - a)`, a
--- genuinely separate, self-referential radius-choice argument -- since
--- `log(n + (b-a))` still grows far slower than `b - a` once `b - a` is large
--- -- that this pass does not carry out.) FIXED by replacing `hnz` with the
--- SAME direct `hin` hypothesis `aux_penultimate_overlap_line_meets_cinf`
--- already needs: this is exactly, precisely, what is needed here, with no
--- guessing about the radius trade-off; discharging `hin` itself (via the
--- `n' := n + (b - a)` argument sketched above, or otherwise) is left to
--- whichever future pass assembles `Exploding.Frozen.last_penultimate_
--- cluster`, which is where the genuine remaining difficulty lives.
---
--- Split into the two genuinely separable halves below: (i)
--- `aux_penultimate_overlap_line_meets_cinf`, the pigeonhole argument (a line
--- longer than the hole bound cannot avoid `Cinf`, no positivity involved,
--- purely the geometry of `Cinfᶜ`'s components -- same recipe as
--- `aux_close_long_path`/`aux_finite_exploding_meets_cluster`); and (ii) the
--- propagation step, `aux_penultimate_overlap_propagate`, a re-centred
--- instance of `aux_finite_exploding_propagate`'s own mechanism
--- (`lem-finite-exploding-dec/node.lean`, itself still open at
--- `aux_finite_exploding_step`) and rated at the same difficulty. With `hin`
--- now correctly in the signature, `aux_penultimate_overlap_contradiction`
--- ITSELF is real (not `sorry`): a direct two-line composition of (i) and
--- (ii), needing no dynamics reasoning of its own.
+The bound `mnorm zc ≤ n` is not sufficient to place the run
+inside `cent d n` (the hypothesis `hin : ∀ v, a ≤ v → v ≤ b → (shifted point) ∈ cent d n`):
+it bounds `zc` alone, not `a` or `b`, and `hab` bounds only the difference
+`b - a`, not either endpoint individually, so no combination of `mnorm zc ≤ n`, `hab` and
+`a ≤ zc i ≤ b` forces `|a| ≤ n` or `|b| ≤ n`.  Read literally, the phrase "if any side
+length exceeds `(2k log n)^{5/2}`" implicitly re-chooses the radius at which
+`renormalization_properties` is applied, for instance `n' := n + (b - a)` (the quantity
+`log (n + (b - a))` still grows far slower than `b - a` once `b - a` is large).  The
+bound `aux_penultimate_overlap_line_meets_cinf` therefore takes `hin` itself as a
+hypothesis; discharging `hin` by such a radius re-choice is the content of
+`aux_length_bound` and `aux_penultimate_segment_length_bound`.
 
-/-- The pigeonhole half of `aux_penultimate_overlap_contradiction`: a line
+The argument splits into two halves: (i) `aux_penultimate_overlap_line_meets_cinf`, the
+pigeonhole argument (a line longer than the hole bound cannot avoid `Cinf`; no positivity
+is involved, only the geometry of the components of `Cinfᶜ`, as in
+`aux_finite_exploding_meets_cluster`); and (ii) the propagation step
+`aux_penultimate_overlap_propagate_line`, a re-centred instance of the mechanism of
+`aux_finite_exploding_propagate`.  `aux_penultimate_side_bound` composes the two. -/
+
+/-- The pigeonhole half of `aux_penultimate_side_bound`: a line
 longer than the hole bound cannot avoid `Cinf`.  Same recipe as
-`aux_close_long_path`/`aux_finite_exploding_meets_cluster`: if it did, all its
+`aux_finite_exploding_meets_cluster`: if it did, all its
 (integer, hence `⌈b-a⌉+1`-many distinct) points would lie in a single
-component of `Cinfᶜ` (`aux_close_long_path_chain`-style connectivity along
+component of `Cinfᶜ` (connectivity along
 the `i`-direction unit steps, `componentIn`), whose cardinality `hcomp`
 bounds by `Real.log n ^ (5/2) ≤ b - a`, a contradiction via
 `Set.le_ncard_of_inj_on_range` on `v ↦ (fun j => if j = i then v else zc j)`

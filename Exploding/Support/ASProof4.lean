@@ -1,5 +1,5 @@
 /-
-Packet AS-4: discharge the last two claims of
+Discharge of the last two claims of
 `Exploding.Frozen.approximate_subadditive`.  Sorry-free support file.
 
 ## `hrobust`: robustness forbids a non-stabilizable centred wave

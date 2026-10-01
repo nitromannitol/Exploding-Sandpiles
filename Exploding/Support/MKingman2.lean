@@ -9,7 +9,7 @@ The general statement `mk_kingman_linear` of `MKingman.lean` is too strong as
 written: the a.s. linear bound `g n ≤ C n + K(ω)` bounds `g` at a point, but the
 paper's transfer from convergence along the return times `r_j` to convergence
 along every `n` additionally uses the second bound of `eq:generalized_lipschitz`
-(a Lipschitz transfer); see the report.  This file supplies the induced-map
+(a Lipschitz transfer).  This file supplies the induced-map
 infrastructure on which that route rests, including the induced cocycle.
 -/
 import Exploding.Support.MKingman

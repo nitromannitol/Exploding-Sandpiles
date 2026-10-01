@@ -1,5 +1,5 @@
 /-
-Support for the far Lipschitz bound of Proposition 3.1, packet LIP: the deterministic core.  On a
+Support for the far Lipschitz bound of Proposition 3.1: the deterministic core.  On a
 background carrying an infinite cluster of good cubes with small holes and a linear chemical
 distance, if the last wave reaches `x` at time `a`, it reaches every site `x'` of the box by time
 `a + C |x - x'| + Z^{E1}`, where `Z` is a polylogarithmic scale: a good cube of the cluster near

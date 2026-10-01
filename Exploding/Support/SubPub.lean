@@ -184,8 +184,8 @@ inductive hypothesis `macroIdx k y ∈ componentIn Cinfᶜ (macroIdx k 0)`, and
 `macroIdx_adj` plus `havoid` at `(t+1, x)` (giving `macroIdx k x ∈ Cinfᶜ`)
 extend the reachability by one edge (`SimpleGraph.induce_adj`,
 `SimpleGraph.Adj.reachable`, `SimpleGraph.Reachable.trans`, exactly the
-technique named in `lem-finite-exploding-dec/node.lean`'s
-`aux_finite_exploding_box_connected`) to `macroIdx k x`. -/
+technique of `aux_finite_exploding_box_connected` in
+`Exploding/Support/SubFinite.lean`) to `macroIdx k x`. -/
 theorem aux_pub_reach_macro_reach {d : ℕ} (η : Site d → ℤ) (hlow : ∀ x, 0 ≤ η x)
     (hhigh : ∀ x, η x ≤ 2 * (d : ℤ) - 1) (hd0 : (0 : ℤ) < 2 * (d : ℤ))
     (k : ℕ) (hk : 1 ≤ k) (n : ℕ) (hn : 1 ≤ n) (Cinf : Set (Site d))
@@ -366,10 +366,10 @@ theorem aux_pub_nearest_pigeonhole {d : ℕ} (S : Set (Site d)) (x : Site d) (i0
     _ ≤ hfin.toFinset.card := Finset.card_le_card hsub
 
 
--- GAP (closed by the three lemmas above): turning "the component of `Cinfᶜ`
+-- Turning "the component of `Cinfᶜ`
 -- containing `x` (if any) is finite of cardinality `< (log n)^{5/2}`" into
 -- "there is `y ∈ Cinf` with `mnorm (x - y)` bounded by the same quantity" is
--- an isoperimetric-type step (a finite subset of `ℤ^d` of cardinality `< V`
+-- an isoperimetric-type step, carried out with the three lemmas above.
 theorem aux_pub_nearest (d : ℕ) (hd : 2 ≤ d) (k0 : ℕ) (η : Site d → ℤ) (Cinf : Set (Site d))
     (_hCinf : IsInfiniteConnectedGoodSet η k0 Cinf) (n0 : ℕ)
     (hhole : ∀ n : ℕ, n0 ≤ n → ∀ x ∈ (cent d n : Set (Site d)), x ∉ Cinf →
@@ -624,7 +624,7 @@ theorem measurableSet_not_stabilizable {d : ℕ} (n : ℕ) (z : Site d) :
     (measurable_pi_lambda _ fun y => measurable_wave n z T y)
 
 
-/-- **The last wave is well defined at every site.**  The sealed node
+/-- **The last wave is well defined at every site.**  The theorem
 `Exploding.Frozen.finite_exploding` gives this at the origin; the translation
 invariance of the toy law and the wave's equivariance transfer it to every `x`. -/
 theorem finite_exploding_at (d : ℕ) (hd : 2 ≤ d) (p : ℝ) (hp : 0 < p) (hp1 : p < 1)

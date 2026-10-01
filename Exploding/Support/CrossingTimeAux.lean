@@ -38,18 +38,14 @@ paper's display `(eq:crossing_time_bound)`'s exact rate is not reproduced,
 which the target theorem does not ask for (it only asserts *existence* of a
 good `k`).
 
-Prior full-proof attempt at `scratch/leanstral/work/prop-crossing-time/node.lean`
-got stuck at exactly the boundary between (c)/(e) [fully worked, down to a
-correct real-analysis decay argument] and (a) [left as an unstarted `sorry`,
-the fleet's own log noting "I cannot complete any of these. The key missing
-piece is the deterministic inclusion"]. It also has a fully proved *exact*
-alternative to (b): `prob_line_no_high_chip` computes the no-catalyst
-probability on a line exactly as `(1-p)^k` via `Measure.infinitePi_pi`, which
-is simpler than Hoeffding and already closes the gap between "no catalyst"
-and the tail event without invoking a concentration inequality at all. That
-route is a legitimate, easier substitute for (b)+(c) below if a prover finds
-it more tractable; both are stated here since the task calls specifically for
-the paper's own Hoeffding argument.
+The boundary between (c)/(e) and (a) is the delicate step: (c)/(e) reduce to a
+real-analysis decay estimate, while (a) needs the deterministic inclusion. A
+second, exact route for (b) is available: `prob_line_no_high_chip` computes the
+no-catalyst probability on a line exactly as `(1-p)^k` via
+`Measure.infinitePi_pi`, which is simpler than Hoeffding and closes the gap
+between "no catalyst" and the tail event without a concentration inequality.
+That route is a legitimate, easier substitute for (b)+(c) below; both are
+stated here since the paper's own argument is the Hoeffding one.
 -/
 import Exploding.Support.Vocab
 import Exploding.Support.Wave

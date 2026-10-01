@@ -28,15 +28,15 @@ may not coincide with it" (Toppling.lean's own docstring, `(2.9)`/
 principle between `wave`/`WaveStabilizable` and `podo`/`Stabilizable`/
 `Robust` is NOT formalised anywhere in Exploding/Support/*.lean (confirmed
 by grep); it is also needed by `lem-square-lower-bound`'s decomposition
-(see scratch/leanstral/work/lem-square-lower-bound-dec/), so is flagged here
-as shared foundational work rather than duplicated.
+(it is also needed by `lem-square-lower-bound`'s decomposition), so it is
+flagged here as shared foundational work rather than duplicated.
 
 Given the "almost exactly Section 3" instruction, glw_section3_bundle
 below is NOT further split into the seven Section-3-style sub-lemmas
 (square_lower_bound, finite_exploding, penultimate_cluster,
 penultimate_upper_bound, penultimate_close, last_wave_convergence analogues)
 -- that would mean re-doing the entire six-node decomposition already
-produced elsewhere in this campaign, parametrised by hypotheses instead of
+produced elsewhere in this development, parametrised by hypotheses instead of
 the toy law.  It is left as ONE explicitly flagged "needs further split"
 lemma with a comment pointing at exactly which six nodes it mirrors.
 -/
@@ -376,7 +376,7 @@ carries `2d - 2 ≤ η` from Section 3, but its proof uses only `0 ≤ η ≤ 2d
 penultimate wave is the terminal odometer of a stabilizable wave, so
 `Δ ũ x + η x ≤ 2d - 1` for `x ≠ z` (`waveTerminal_fixed`), and when `M̂_η(z) = 1` this
 is `η x ≤ 2d - 1`.  Checked numerically on backgrounds with values in `{0,1,2,3}`
-(d = 2, scratch/prop51-2026-09-24/sim.py, test A). -/
+(d = 2). -/
 theorem glw_last_wave_bound (d : ℕ) (hd : 2 ≤ d) (η : Site d → ℤ)
     (hlow : ∀ x, 0 ≤ η x) (hhigh : ∀ x, η x ≤ 2 * (d : ℤ) - 1)
     (z : Site d) (hlast : ∃ n : ℕ, 1 ≤ n ∧ ¬ WaveStabilizable η n z)
@@ -440,12 +440,10 @@ theorem glw_last_wave_bound (d : ℕ) (hd : 2 ≤ d) (η : Site d → ℤ)
 
 /-! ### Helper lemmas for Lemma 3.4 in the Section 5 setting
 
-Spliced in from `scratch/leanstral/single/glw_approx_subadditivity/node.lean`, where
-flash produced a complete, already-checked proof of `glw_approx_subadditivity`
-(no `sorry` anywhere in that file; recompiled here byte-for-byte to confirm before
-splicing).  These are the helper lemmas it built along the way, needed only for that
-theorem's own proof; `glw_last_wave_bound` itself is NOT redeclared, since the copy
-above already has a complete proof. -/
+These are the helper lemmas used by the complete proof of
+`glw_approx_subadditivity`; they are needed only for that theorem's own proof, and
+`glw_last_wave_bound` itself is not redeclared, since the copy above already has a
+complete proof. -/
 
 /-- `x + e_i` is a neighbour of `x`. -/
 theorem glw_adj_add_unit (x : Site d) (i : Fin d) : (lattice d).Adj (x + unit i) x :=
@@ -670,11 +668,10 @@ theorem glw_lastWave_dominates (η : Site d → ℤ) (hd : 2 ≤ d)
 
 /-- Lemma 3.4 in the Section 5 setting.  The proof of `Exploding.Frozen.approx_subadditivity`
 uses the background only through Lemma 3.3 and the monotonicity of the last wave in time,
-so it needs only `0 ≤ η ≤ 2d - 1`, through `glw_last_wave_bound`.  Checked
-numerically (scratch/prop51-2026-09-24/sim.py, test B; the bound with one unit of slack
-fails, so the test is sensitive).  Proof spliced in from flash's already-checked
-`scratch/leanstral/single/glw_approx_subadditivity/node.lean` (fully discharges the
-`sorry`; not left as `glw_<lemma>_<k>` sub-pieces, since it already compiled). -/
+so it needs only `0 ≤ η ≤ 2d - 1`, through `glw_last_wave_bound`.  The bound is
+sharp: a numerical check shows that the analogue with one unit of slack fails, so the
+test is sensitive.  The proof is the complete one, not split into `glw_<lemma>_<k>`
+sub-pieces. -/
 theorem glw_approx_subadditivity (d : ℕ) (hd : 2 ≤ d) (η : Site d → ℤ)
     (hlow : ∀ x, 0 ≤ η x) (hhigh : ∀ x, η x ≤ 2 * (d : ℤ) - 1)
     (hlast : ∀ y : Site d, ∃ n : ℕ, 1 ≤ n ∧ ¬ WaveStabilizable η n y)
@@ -864,10 +861,9 @@ theorem glw_kingman_linear_setA {Ω : Type*} [MeasurableSpace Ω] (μ : Measure 
   refine ⟨(K : ℝ), hA_meas K, hKpos⟩
 
 /-- Steps (ii)-(vi) (**GAP**, needs Kac's lemma and induced-transformation ergodicity, neither
-present in `~/Lattice-Probability/LatticeProb/Prob/Kingman.lean` -- only the WITH-moment-bound
-`LatticeProb.ae_tendsto_div` is proved there; this is a genuinely new piece of subadditive
-ergodic theory this campaign's library does not yet contain, flagged rather than silently
-assumed, not closed here).  Given the positive-measure set `A` of `glw_kingman_linear_setA`,
+yet available: only the with-moment-bound `LatticeProb.ae_tendsto_div` is proved.  This is a
+genuinely new piece of subadditive ergodic theory, flagged rather than silently assumed, not
+closed here).  Given the positive-measure set `A` of `glw_kingman_linear_setA`,
 the first-return map to `A` is measure-preserving for the induced (normalised) measure and
 ergodic (standard facts about induced transformations of an ergodic system, e.g. Kac 1947 /
 Cornfeld-Fomin-Sinai Ch. 2); the return time `r_1` is integrable on `A` by Kac's lemma

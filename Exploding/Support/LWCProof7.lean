@@ -1,5 +1,5 @@
 /-
-Packet LWC-7 (`lwc7_`) — the Kingman conjunct of Proposition 3.1, taking
+The Kingman conjunct of Proposition 3.1 (declarations `lwc7_*`), taking
 `mk_kingman_linear` as a hypothesis.
 
 `LWCProof6.lean` built the extension `lwc6_infN` of a lattice bound `L` and proved

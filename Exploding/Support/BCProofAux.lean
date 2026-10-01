@@ -60,10 +60,8 @@ the pushed-forward law `ν.map T`. Proof: `MeasureTheory.eq_infinitePi`, checkin
 projective-limit property against `Measure.pi (fun i : I => ν.map T)` for each finite `I` -- the
 finite marginal of the LHS is `(Measure.pi (fun _ : I => ν)).map (fun f i => T (f i))`
 (`MeasureTheory.Measure.infinitePi_map_restrict` composed with `Measure.map_map`), which equals
-`Measure.pi (fun _ : I => ν.map T)` by a finite-product-pushforward identity (grep the library
-index for the exact Mathlib name -- e.g. a `Measure.pi`/`Measure.map` composition lemma, or an
-explicit induction over `I` using `Measure.map_map`/`Measure.pi_pi` if no single named lemma
-matches). -/
+`Measure.pi (fun _ : I => ν.map T)` by a finite-product-pushforward identity (a `Measure.pi`/`Measure.map`
+composition, or an explicit induction over `I` using `Measure.map_map`/`Measure.pi_pi`). -/
 theorem bc_infinitePi_map_coord {V : Type*} [MeasurableSpace V] [Countable V]
     (ν : Measure ℤ) [IsProbabilityMeasure ν] (T : ℤ → ℤ) (hT : Measurable T) :
     (Measure.infinitePi fun _ : V => ν).map (fun (η : V → ℤ) x => T (η x))
@@ -221,8 +219,8 @@ theorem bc_boxcrossed_measurable {d : ℕ} (k : Fin d → ℕ) (j : Site d) :
 
 /-- `ν`-a.e. every coordinate of an `ν`-i.i.d. field is `≥ d`: each one-site
 marginal `(Measure.infinitePi fun _ => ν).map (fun η => η x)` equals `ν` (`Measure.infinitePi_
-map_restrict'`/an evaluation-map special case, matching `aux_finite_exploding_bounds`'s technique
-in `lem-finite-exploding-dec/node.lean`, restated here), so `hlow` gives each single-coordinate
+map_restrict'`/an evaluation-map special case, matching the technique of `aux_finite_exploding_bounds`
+in `Exploding/Support/SubFinite.lean`), so `hlow` gives each single-coordinate
 event `{η | (d:ℤ) ≤ η x}` full measure, and `MeasureTheory.ae_all_iff` over the countable index
 `Site d` combines them into full measure for the intersection. -/
 theorem bc_nu_good (d : ℕ) (ν : Measure ℤ) [IsProbabilityMeasure ν]

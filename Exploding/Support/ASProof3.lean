@@ -1,5 +1,5 @@
 /-
-Packet AS-3: further discharge of the remaining claims of
+Further discharge of the remaining claims of
 `Exploding.Frozen.approximate_subadditive`.  Sorry-free support file.
 
 The first claim settled here is the finiteness of the touched set `P̃ = as_tildeP`

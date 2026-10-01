@@ -1,5 +1,5 @@
 /-
-Packet AS-5: the last claim `hpodo` of
+The last claim `hpodo` of
 `Exploding.Frozen.approximate_subadditive`.  Sorry-free support file.
 
 The pile `σ = explodingPile η` has `σ x = η x ≤ 2d - 1` off the origin, so no

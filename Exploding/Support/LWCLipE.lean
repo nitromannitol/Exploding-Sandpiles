@@ -1,5 +1,5 @@
 /-
-The far Lipschitz bound of Proposition 3.1 (`eq:lastwave_lipschitz`), packet LIP, as a standalone
+The far Lipschitz bound of Proposition 3.1 (`eq:lastwave_lipschitz`) as a standalone
 theorem.  The bound for the last-wave arrival times `T̂` (`lwcl_lastArrival_lip`) is transferred to
 the penultimate-cluster arrival times `T̃` through Lemma 3.7:
 `T̂ ≤ T̃ ≤ T̂ + (log n)^γ`.  Only the second bound of `eq:lastwave_lipschitz` is needed in the

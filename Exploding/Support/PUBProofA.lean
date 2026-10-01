@@ -1,5 +1,5 @@
 /-
-Support for Lemma 3.6 of `paper/exploding.tex` (packet PUB): the last wave is a connected,
+Support for Lemma 3.6 of `paper/exploding.tex`: the last wave is a connected,
 monotone, bounded process; a good cube converts a lit line, or a lit adjacent cube, into a lit
 cube within `k^d` steps, for every wave mass `N ≥ 1`; a walk of good cubes carries a lit cube
 along it at `k^d` steps per edge; and a finite region whose outer boundary is lit is lit.

@@ -1,6 +1,6 @@
 /-
 Proposition 4.1 of the paper: the last-wave is a bounded approximation of the
-exploding sandpile.  Support file for the packet's proof of
+exploding sandpile.  Support file for the proof of
 `Exploding.Frozen.approximate_subadditive`, sorry-free.
 
 It contains
@@ -41,8 +41,7 @@ set_option linter.unusedVariables false
 /-! ### Setup: the a.e. bound on `η` -/
 
 /-- **Near-trivial, real.** The standing bound of `(1.2)`: `η ∼ toyLaw d p`
-takes only the two values `2d-2` and `2d-1`, almost surely. Reused verbatim
-(and re-verified) from the earlier fleet attempt at this node. -/
+takes only the two values `2d-2` and `2d-1`, almost surely. -/
 lemma as_eta_bounds (d : ℕ) (hd : 2 ≤ d) (p : ℝ)
     (hp : 0 < p) (hp1 : p < 1) :
     ∀ᵐ η ∂(toyLaw d p), ∀ x : Site d, 2 * (d : ℤ) - 2 ≤ η x ∧ η x ≤ 2 * (d : ℤ) - 1 := by

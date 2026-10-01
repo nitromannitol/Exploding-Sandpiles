@@ -115,4 +115,26 @@ theorem xap7_gen_closed_walk : ∀ (n : ℕ) (V : Type u) [Fintype V] [Decidable
       · rw [SimpleGraph.Walk.length_rotate]
         exact hq2len
 
+variable {d : ℕ}
+
+/-- The king-graph version: a finite `*`-connected set through the origin is the
+support of a closed star-walk from the origin of length at most twice its size. -/
+theorem xap7_coveringWalk (S : Finset (Site d)) (h0 : (0 : Site d) ∈ S)
+    (hconn : ((xap2_kingGraph d).induce (↑S : Set (Site d))).Connected) :
+    ∃ p : (xap2_kingGraph d).Walk (0 : Site d) (0 : Site d),
+      p.support.toFinset = S ∧ p.length ≤ 2 * S.card := by
+  obtain ⟨q, hqsup, hqlen⟩ := xap7_gen_closed_walk (Fintype.card ↥S) ↥S
+    ((xap2_kingGraph d).induce (↑S)) ⟨0, h0⟩ rfl hconn
+  rw [Fintype.card_coe] at hqlen
+  refine ⟨q.map ⟨Subtype.val, fun h => h⟩, ?_, ?_⟩
+  · rw [SimpleGraph.Walk.support_map]
+    apply Finset.ext
+    intro x
+    rw [List.mem_toFinset, List.mem_map]
+    constructor
+    · rintro ⟨a, -, rfl⟩; exact a.prop
+    · intro hx
+      exact ⟨⟨x, hx⟩, by rw [← List.mem_toFinset, hqsup]; exact Finset.mem_univ _, rfl⟩
+  · rw [SimpleGraph.Walk.length_map]; exact hqlen
+
 end Exploding

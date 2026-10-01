@@ -59,4 +59,34 @@ theorem xlss_projectiveFamilyContent_isSigmaSubadditive {ι : Type*}
     (fun s hs hanti hinter => xlss_projectiveFamilyContent_tendsto_zero P hP hs hanti hinter)
     hf hf_Union hf'
 
+/-- The projective limit measure of a projective family of probability measures on `ι → Bool`,
+built from the σ-subadditive projective family content by Carathéodory's extension theorem. -/
+noncomputable def xlss_projectiveLimit {ι : Type*}
+    (P : ∀ J : Finset ι, Measure (J → Bool))
+    (hP : IsProjectiveMeasureFamily (α := fun _ : ι => Bool) P)
+    [∀ J, IsProbabilityMeasure (P J)] : Measure (ι → Bool) :=
+  (projectiveFamilyContent (α := fun _ : ι => Bool) hP).measure
+    isSetSemiring_measurableCylinders generateFrom_measurableCylinders.ge
+    (xlss_projectiveFamilyContent_isSigmaSubadditive P hP)
+
+/-- The measure `xlss_projectiveLimit` is the projective limit of the family. -/
+theorem xlss_isProjectiveLimit_projectiveLimit {ι : Type*}
+    (P : ∀ J : Finset ι, Measure (J → Bool))
+    (hP : IsProjectiveMeasureFamily (α := fun _ : ι => Bool) P)
+    [∀ J, IsProbabilityMeasure (P J)] :
+    IsProjectiveLimit (xlss_projectiveLimit P hP) P := by
+  intro I
+  refine Measure.ext fun S hS => ?_
+  have hmeas : Measurable (Finset.restrict I : (ι → Bool) → (I → Bool)) :=
+    measurable_pi_lambda _ fun i => measurable_pi_apply (i : ι)
+  rw [Measure.map_apply hmeas hS]
+  change xlss_projectiveLimit P hP (cylinder I S) = P I S
+  rw [show xlss_projectiveLimit P hP (cylinder I S) =
+      projectiveFamilyContent (α := fun _ : ι => Bool) hP (cylinder I S) from
+    AddContent.measure_eq _ isSetSemiring_measurableCylinders
+      generateFrom_measurableCylinders.symm
+      (xlss_projectiveFamilyContent_isSigmaSubadditive P hP)
+      ((mem_measurableCylinders _).mpr ⟨I, S, hS, rfl⟩)]
+  exact projectiveFamilyContent_cylinder hP hS
+
 end Exploding

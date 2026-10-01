@@ -65,6 +65,7 @@ import Exploding.Support.ExtMHProof10
 import Exploding.Support.ExtMHProof11
 import Exploding.Support.ExtMHProof12
 import Exploding.Support.ExtMHProof13
+import Exploding.Support.ExtMHProof14
 import Exploding.Support.ExtAPDefs
 import Exploding.Support.ExtAPProof
 import Exploding.Support.ExtAPProof2
@@ -80,6 +81,7 @@ import Exploding.Support.ExtAPProof11
 import Exploding.Support.ExtAPProof12
 import Exploding.Support.ExtAPProof13
 import Exploding.Support.ExtAPProof14
+import Exploding.Support.ExtAPProof15
 import Exploding.Support.ExtSchTop
 import Exploding.Support.ExtSchProb
 import Exploding.Support.ExtSchProof

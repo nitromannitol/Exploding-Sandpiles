@@ -8,6 +8,7 @@ sub-cube is high there, upper otherwise) lies inside a *good* sub-cube, hence is
 toppled, and the mixed-face corner-growth seed `xsch9_corner_growth` fills the
 cube.
 -/
+import Exploding.Support.ExtSchProof8
 import Exploding.Support.ExtSchProof9
 import Exploding.Support.ExtSchProb
 
@@ -118,5 +119,77 @@ theorem xsch10_sub_disjoint (n : ℕ) {σ σ' : Fin d → Bool} (h : σ ≠ σ')
     have hs2 : xsch10_shift σ' n i = 0 := by simp [xsch10_shift, hσ']
     rw [hs1] at c1; rw [hs2] at c2; omega
   · rfl
+
+
+/-- The one-site law factors are identical, so the i.i.d. field is invariant under
+translations. -/
+theorem xsch10_map_shift {p : ℝ} [Fact (0 ≤ p ∧ p ≤ 1)] (s : Site d) :
+    (xsch_mu d p).map (fun η : Site d → ℤ => fun i => η (i + s)) = xsch_mu d p := by
+  haveI := xsch_chip_isProb (2 * (d : ℤ)) (d : ℤ) (Fact.out : 0 ≤ p ∧ p ≤ 1).1
+    (Fact.out : 0 ≤ p ∧ p ≤ 1).2
+  have h := Measure.infinitePi_map_piCongrLeft
+    (fun _ : Site d => chipLaw (2 * (d : ℤ)) (d : ℤ) p) (Equiv.addRight (-s))
+  have hfun : (⇑(MeasurableEquiv.piCongrLeft (fun _ : Site d => ℤ) (Equiv.addRight (-s))))
+      = fun (η : Site d → ℤ) (i : Site d) => η (i + s) := by
+    funext η i
+    simp [MeasurableEquiv.piCongrLeft, Equiv.piCongrLeft, Equiv.addRight]
+  rw [hfun] at h
+  simpa [xsch_mu, productLaw] using h
+
+/-- Spanning a translated sub-cube is the same as spanning the cube with the shifted
+background. -/
+theorem xsch10_sp_shift (n : ℕ) (σ : Fin d → Bool) (η : Site d → ℤ) :
+    xsch_Sp (Finset.univ : Finset (Fin d)) (xsch10_sub σ n) η ↔
+      xsch_Sp (Finset.univ : Finset (Fin d)) (cube d n)
+        (fun y => η (y - (-(xsch10_shift σ n)))) := by
+  constructor
+  · intro h z hz
+    have hx : z + xsch10_shift σ n ∈ xsch10_sub σ n := by
+      show z + xsch10_shift σ n - xsch10_shift σ n ∈ cube d n
+      rwa [add_sub_cancel_right]
+    have hh := (xsch2_Top_shift (Finset.univ : Finset (Fin d)) (cube d n) η
+      (-(xsch10_shift σ n)) (z + xsch10_shift σ n)).mp (h _ hx)
+    simpa using hh
+  · intro h x hx
+    have hx' : x - xsch10_shift σ n ∈ cube d n := hx
+    exact (xsch2_Top_shift (Finset.univ : Finset (Fin d)) (cube d n) η
+      (-(xsch10_shift σ n)) x).mpr (h _ hx')
+
+theorem xsch10_cube_finite (n : ℕ) : (cube d n).Finite := by
+  have : cube d n ⊆ Set.Icc (fun _ : Fin d => (1 : ℤ)) (fun _ => (n : ℤ)) := by
+    intro y hy
+    exact ⟨fun i => (hy i).1, fun i => (hy i).2⟩
+  exact (Set.finite_Icc _ _).subset this
+
+/-- Every corner sub-cube has the same probability of being non-internally-spanned. -/
+theorem xsch10_bad_prob {p : ℝ} [Fact (0 ≤ p ∧ p ≤ 1)] (n : ℕ) (σ : Fin d → Bool) :
+    (xsch_mu d p).real {η | ¬ xsch_Sp (Finset.univ : Finset (Fin d)) (xsch10_sub σ n) η}
+      = xsch8_a d p n := by
+  set s := xsch10_shift σ n with hs
+  set f : (Site d → ℤ) → (Site d → ℤ) := fun η i => η (i + s)
+  have hmap : (xsch_mu d p).map f = xsch_mu d p := xsch10_map_shift (d := d) (p := p) s
+  have hf_meas : Measurable f := by
+    apply measurable_pi_lambda
+    intro i
+    exact measurable_pi_apply (i + s)
+  have hS : MeasurableSet {η : Site d → ℤ |
+      ¬ xsch_Sp (Finset.univ : Finset (Fin d)) (cube d n) η} :=
+    ((xsch_det_Sp (Finset.univ : Finset (Fin d)) (cube d n)).measurableSet
+      (xsch10_cube_finite n)).compl
+  have hT : {η | ¬ xsch_Sp (Finset.univ : Finset (Fin d)) (xsch10_sub σ n) η}
+      = f ⁻¹' {η | ¬ xsch_Sp (Finset.univ : Finset (Fin d)) (cube d n) η} := by
+    ext η
+    simp only [Set.mem_setOf_eq, Set.mem_preimage]
+    have hb : (fun y : Site d => η (y - (-(xsch10_shift σ n)))) = f η := by
+      funext y
+      simp [f, hs, sub_eq_add_neg, neg_neg]
+    have hiff := xsch10_sp_shift n σ η
+    rw [hb] at hiff
+    exact not_congr hiff
+  rw [hT]
+  have hthis : (xsch_mu d p).real (f ⁻¹' {η | ¬ xsch_Sp (Finset.univ : Finset (Fin d)) (cube d n) η})
+      = ((xsch_mu d p).map f).real {η | ¬ xsch_Sp (Finset.univ : Finset (Fin d)) (cube d n) η} := by
+    rw [measureReal_def, measureReal_def, Measure.map_apply hf_meas hS]
+  rw [hthis, hmap, xsch8_a]
 
 end Exploding

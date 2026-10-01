@@ -46,6 +46,7 @@ import Exploding.Support.ExtMHBase
 import Exploding.Support.ExtMHProof
 import Exploding.Support.ExtMHCount
 import Exploding.Support.ExtMHProof2
+import Exploding.Support.ExtMHProof3
 import Exploding.Support.ExtAPDefs
 import Exploding.Support.ExtAPProof
 import Exploding.Support.ExtAPProof2
@@ -59,6 +60,7 @@ import Exploding.Support.ExtSchProof3
 import Exploding.Support.ExtSchProof4
 import Exploding.Support.ExtSchProof5
 import Exploding.Support.ExtSchProof6
+import Exploding.Support.ExtSchProof7
 import Exploding.Support.S3CloseA
 import Exploding.Support.S3CloseB
 import Exploding.Support.S3CloseC

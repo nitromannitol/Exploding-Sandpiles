@@ -76,6 +76,30 @@ theorem xap5_misses_le_small_add_large (ω : Site d × Fin d → Bool) (y : Site
   · exact Or.inl hs
   · exact Or.inr ⟨hs, h⟩
 
+/-- A good star-walk of length at most `M` bounds the chemical distance by
+`2 d (M + 2)`.  Hence the event that the chemical distance is large is contained
+in the event that there is no short good walk, which is what the finite-cluster /
+infinite-cluster split of the Peierls estimate has to control. -/
+theorem xap5_goodWalk_edist_le {ω : Site d × Fin d → Bool} {y : Site d} {M : ℕ}
+    (h : ∃ p : (xap2_kingGraph d).Walk (0 : Site d) y,
+      (∀ z ∈ p.support, xap_Good ω z) ∧ p.length ≤ M) :
+    (openBondGraph ω).edist (0 : Site d) y ≤ ((2 * d * (M + 2) : ℕ) : ℕ∞) := by
+  obtain ⟨p, hgood, hlen⟩ := h
+  have hle := xap2_edist_le_of_goodWalk p hgood (xap_mem_cube_self (0 : Site d))
+    (xap_mem_cube_self y)
+  have hcast : ((2 * d : ℕ) : ℕ∞) * ((p.length : ℕ∞) + 2)
+      = ((2 * d * (p.length + 2) : ℕ) : ℕ∞) := by push_cast; ring
+  rw [hcast] at hle
+  exact hle.trans (by exact_mod_cast Nat.mul_le_mul_left (2 * d) (Nat.add_le_add_right hlen 2))
+
+/-- Concretely, a chemical distance larger than `2 d (M + 2)` forbids any good
+star-walk of length at most `M` from the origin to `y`. -/
+theorem xap5_no_goodWalk_of_edist_gt {ω : Site d × Fin d → Bool} {y : Site d} {M : ℕ}
+    (h : ((2 * d * (M + 2) : ℕ) : ℕ∞) < (openBondGraph ω).edist (0 : Site d) y) :
+    ¬ ∃ p : (xap2_kingGraph d).Walk (0 : Site d) y,
+      (∀ z ∈ p.support, xap_Good ω z) ∧ p.length ≤ M :=
+  fun hh => absurd (xap5_goodWalk_edist_le hh) (not_le.mpr h)
+
 /-- The covering-walk input: every finite `*`-connected set containing the origin
 is the support of a closed star-walk from the origin of length at most twice its
 cardinality.  This is a depth-first traversal of a spanning tree, and it is what

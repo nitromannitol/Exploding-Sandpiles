@@ -60,12 +60,12 @@ theorem glws_tile_coord_le (k : Fin d → ℕ) (hk : ∀ i, 0 < k i) (j y : Site
   constructor <;> nlinarith [hym.1, hym.2, abs_nonneg (j m)]
 
 /-- The arithmetic of the time bound of the lighting. -/
-theorem glws_time_arith (Cn K d kmax Z Λ m1 m2 aj av : ℕ) (hd : 1 ≤ d) (hZ1 : 1 ≤ Z)
-    (hΛ3 : Λ ≤ 3 * Z) (hm1 : m1 ≤ Cn * (aj + av + d * Λ)) (hm2 : m2 ≤ Cn * (d * (2 * Λ))) :
+theorem glws_time_arith (Cn K d kmax Z Λ m1 m2 a : ℕ) (hd : 1 ≤ d) (hZ1 : 1 ≤ Z)
+    (hΛ3 : Λ ≤ 3 * Z) (hm1 : m1 ≤ Cn * (a + d * Λ)) (hm2 : m2 ≤ Cn * (d * (2 * Λ))) :
     (m1 + m2) * K + ((m2 + 1) * kmax ^ d) ^ d ≤
-      Cn * K * (aj + av) + (9 * Cn * K * d + ((6 * Cn * d + 1) * kmax ^ d) ^ d) * Z ^ d := by
+      Cn * K * a + (9 * Cn * K * d + ((6 * Cn * d + 1) * kmax ^ d) ^ d) * Z ^ d := by
   have hZd : Z ≤ Z ^ d := Nat.le_self_pow (by omega) Z
-  have h1 : (m1 + m2) * K ≤ (Cn * (aj + av) + 3 * (Cn * d * Λ)) * K := by
+  have h1 : (m1 + m2) * K ≤ (Cn * a + 3 * (Cn * d * Λ)) * K := by
     apply Nat.mul_le_mul_right
     nlinarith
   have h2 : 3 * (Cn * d * Λ) ≤ 9 * (Cn * d) * Z := by
@@ -80,8 +80,8 @@ theorem glws_time_arith (Cn K d kmax Z Λ m1 m2 aj av : ℕ) (hd : 1 ≤ d) (hZ1
     calc ((m2 + 1) * kmax ^ d) ^ d ≤ (((6 * Cn * d + 1) * kmax ^ d) * Z) ^ d :=
           Nat.pow_le_pow_left h3 d
       _ = ((6 * Cn * d + 1) * kmax ^ d) ^ d * Z ^ d := mul_pow _ _ _
-  have h5 : (Cn * (aj + av) + 3 * (Cn * d * Λ)) * K ≤
-      Cn * K * (aj + av) + 9 * Cn * K * d * Z ^ d := by
+  have h5 : (Cn * a + 3 * (Cn * d * Λ)) * K ≤
+      Cn * K * a + 9 * Cn * K * d * Z ^ d := by
     have : 3 * (Cn * d * Λ) * K ≤ 9 * (Cn * d) * Z * K := Nat.mul_le_mul_right _ h2
     have h6 : 9 * (Cn * d) * Z * K ≤ 9 * (Cn * d) * Z ^ d * K := by
       apply Nat.mul_le_mul_right

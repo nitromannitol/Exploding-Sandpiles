@@ -267,7 +267,7 @@ theorem glws_penultimate_small (hd : 2 ≤ d) (η : Site d → ℤ) (hlow : ∀ 
     obtain ⟨μ, hrowc, hline⟩ := glws_row_geom k hk l₁ lo hi hbox n' hlo_abs hhi_abs r hlenk
     obtain ⟨t', ht', hj⟩ := glws_row_hole Cinf (n' + 1) (hole (n' + 1) (by omega)) l₁ μ r
       (Nat.le_ceil _) hrowc
-    obtain ⟨zz, hzz, hlinezz⟩ := hline t' ht'
+    obtain ⟨zz, hzz, hlinezz, _⟩ := hline t' ht'
     have hpos : ∀ w ∈ rline k (μ + (t' : ℤ) • unit l₁) l₁ zz,
         0 < wave η N x (t + (p + 1) ^ d) w := fun w hw => hfill w (hbr w (hlinezz w hw))
     have hfired := glws_tile_of_line hd0 η hlow hhigh N hN x k (μ + (t' : ℤ) • unit l₁)

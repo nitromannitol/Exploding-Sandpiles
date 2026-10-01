@@ -95,7 +95,9 @@ theorem glws_row_geom (k : Fin d → ℕ) (hk : ∀ i, 0 < k i) (l : Fin d) (lo 
     ∃ μ : Site d, (∀ t : ℕ, t ≤ r → μ + (t : ℤ) • unit l ∈ cent d (n + 1)) ∧
       ∀ t : ℕ, t ≤ r → ∃ z : Site d,
         z ∈ closureN (rboxShift k (μ + (t : ℤ) • unit l)) ∧
-        ∀ w ∈ rline k (μ + (t : ℤ) • unit l) l z, ∀ m, lo m ≤ w m ∧ w m ≤ hi m := by
+        (∀ w ∈ rline k (μ + (t : ℤ) • unit l) l z, ∀ m, lo m ≤ w m ∧ w m ≤ hi m) ∧
+        ∀ y ∈ rboxShift k (μ + (t : ℤ) • unit l), (lo l ≤ y l ∧ y l ≤ hi l) ∧
+          ∀ m, m ≠ l → lo m - (k m : ℤ) + 1 ≤ y m ∧ y m ≤ lo m + (k m : ℤ) - 1 := by
   set μ : Site d := fun m => if m = l then (lo l - 1 + (k l : ℤ) - 1) / (k l : ℤ)
     else (lo m - 1) / (k m : ℤ) with hμ
   have hk1 : ∀ m, (1 : ℤ) ≤ (k m : ℤ) := fun m => by exact_mod_cast hk m
@@ -106,7 +108,9 @@ theorem glws_row_geom (k : Fin d → ℕ) (hk : ∀ i, 0 < k i) (l : Fin d) (lo 
   rw [← hμl] at hf1 hf2
   have key : ∀ t : ℕ, t ≤ r → (μ + (t : ℤ) • unit l ∈ cent d (n + 1)) ∧ ∃ z : Site d,
       z ∈ closureN (rboxShift k (μ + (t : ℤ) • unit l)) ∧
-      ∀ w ∈ rline k (μ + (t : ℤ) • unit l) l z, ∀ m, lo m ≤ w m ∧ w m ≤ hi m := by
+      (∀ w ∈ rline k (μ + (t : ℤ) • unit l) l z, ∀ m, lo m ≤ w m ∧ w m ≤ hi m) ∧
+      ∀ y ∈ rboxShift k (μ + (t : ℤ) • unit l), (lo l ≤ y l ∧ y l ≤ hi l) ∧
+        ∀ m, m ≠ l → lo m - (k m : ℤ) + 1 ≤ y m ∧ y m ≤ lo m + (k m : ℤ) - 1 := by
     intro t ht
     set j : Site d := μ + (t : ℤ) • unit l with hj
     have hjl : j l = μ l + (t : ℤ) := by simp [hj, glws_unit_apply]
@@ -123,7 +127,7 @@ theorem glws_row_geom (k : Fin d → ℕ) (hk : ∀ i, 0 < k i) (l : Fin d) (lo 
       rw [hjl]
       have : (k l : ℤ) * (μ l + t) ≤ (k l : ℤ) * μ l + (k l : ℤ) * r := by nlinarith
       nlinarith
-    refine ⟨?_, fun m => if m = l then 1 + (k l : ℤ) * j l else lo m, ?_, ?_⟩
+    refine ⟨?_, fun m => if m = l then 1 + (k l : ℤ) * j l else lo m, ?_, ?_, ?_⟩
     · intro m
       by_cases hm : m = l
       · subst hm
@@ -164,6 +168,16 @@ theorem glws_row_geom (k : Fin d → ℕ) (hk : ∀ i, 0 < k i) (l : Fin d) (lo 
         simp only [hm, if_false] at this
         rw [this]
         exact ⟨le_rfl, hbox m⟩
+    · intro y hy
+      refine ⟨?_, fun m hm => ?_⟩
+      · have := hy l
+        constructor <;> linarith [this.1, this.2]
+      · have := hy m
+        obtain ⟨g1, g2⟩ := glws_floor_div (lo m - 1) (k m) (hk m)
+        rw [← hμm m hm] at g1 g2
+        rw [hjm m hm] at this
+        have hkm := hk1 m
+        constructor <;> linarith [this.1, this.2]
   exact ⟨μ, fun t ht => (key t ht).1, fun t ht => (key t ht).2⟩
 
 end Exploding

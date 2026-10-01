@@ -75,7 +75,7 @@ theorem glws_light_near_key (hd : 2 ≤ d) (η : Site d → ℤ) (hlow : ∀ x, 
           (k m : ℤ) * (ν m - (glws_Zn γp n : ℤ)) + 1 ∧
         (k m : ℤ) * (ν m + (glws_Zn γp n : ℤ) + 1) ≤
           max (glws_corner k Mf m) (glws_corner k Mo m)) →
-      0 < wave η N zc (τ + A * ((mnorm j).toNat + (mnorm ν).toNat) + B * (glws_Zn γp n) ^ d) y := by
+      0 < wave η N zc (τ + A * ((mnorm (j - ν)).toNat) + B * (glws_Zn γp n) ^ d) y := by
   classical
   have hd0 : (0 : ℤ) < 2 * (d : ℤ) := by
     have : (2 : ℤ) ≤ (d : ℤ) := by exact_mod_cast hd
@@ -107,8 +107,6 @@ theorem glws_light_near_key (hd : 2 ≤ d) (η : Site d → ℤ) (hlow : ∀ x, 
         apply Nat.mul_le_mul_right
         apply Nat.mul_le_mul_right
         omega
-  have hjnn : 0 ≤ mnorm j := by unfold mnorm; exact Finset.sum_nonneg fun _ _ => abs_nonneg _
-  have hνnn : 0 ≤ mnorm ν := by unfold mnorm; exact Finset.sum_nonneg fun _ _ => abs_nonneg _
   have hn2 : (n : ℤ) ≤ ((2 * n : ℕ) : ℤ) := by push_cast; omega
   -- sizes
   have hMfn : mnorm Mf ≤ mnorm ν + (d : ℤ) * Λ := by
@@ -147,22 +145,23 @@ theorem glws_light_near_key (hd : 2 ≤ d) (η : Site d → ℤ) (hlow : ∀ x, 
   obtain ⟨c1, hc10, hc1m, hc1S, hc1adj⟩ := pclose_chem_walk Cinf j Mf m1 hm1
   obtain ⟨c2, hc20, hc2m, hc2S, hc2adj⟩ := pclose_chem_walk Cinf Mf Mo m2 hm2
   -- the bounds on the lengths of the walks
-  have hm1N : m1 ≤ Cn * ((mnorm j).toNat + (mnorm ν).toNat + d * Λ) := by
-    have h1 : mnorm (j - Mf) ≤ mnorm j + mnorm Mf := glw2_mnorm_sub_le _ _
-    have h2 : mnorm (j - Mf) ≤ ((mnorm j).toNat : ℤ) + ((mnorm ν).toNat : ℤ) + (d : ℤ) * Λ := by
-      have e1 : (((mnorm j).toNat : ℕ) : ℤ) = mnorm j := Int.toNat_of_nonneg hjnn
-      have e2 : (((mnorm ν).toNat : ℕ) : ℤ) = mnorm ν := Int.toNat_of_nonneg hνnn
-      have : mnorm ν ≤ mnorm ν := le_rfl
+  have hm1N : m1 ≤ Cn * ((mnorm (j - ν)).toNat + d * Λ) := by
+    have h1 : mnorm (j - Mf) ≤ mnorm (j - ν) + mnorm (ν - Mf) := pub_mnorm_sub_le j ν Mf
+    have h1' : mnorm (ν - Mf) = mnorm (Mf - ν) := pub_mnorm_sub_comm ν Mf
+    have h1'' : mnorm (Mf - ν) ≤ (d : ℤ) * Λ := glws_mnorm_le_coord _ _ hMfν
+    have hnn : 0 ≤ mnorm (j - ν) := by
+      unfold mnorm; exact Finset.sum_nonneg fun _ _ => abs_nonneg _
+    have h2 : mnorm (j - Mf) ≤ (((mnorm (j - ν)).toNat + d * Λ : ℕ) : ℤ) := by
+      have e1 : (((mnorm (j - ν)).toNat : ℕ) : ℤ) = mnorm (j - ν) := Int.toNat_of_nonneg hnn
+      push_cast
       linarith
-    have h3 : (mnorm (j - Mf) : ℝ) ≤ (((mnorm j).toNat + (mnorm ν).toNat + d * Λ : ℕ) : ℝ) := by
-      have : (mnorm (j - Mf)) ≤ (((mnorm j).toNat + (mnorm ν).toNat + d * Λ : ℕ) : ℤ) := by
-        push_cast; exact h2
-      exact_mod_cast this
-    have h4 : (m1 : ℝ) ≤ (Cn : ℝ) * (((mnorm j).toNat + (mnorm ν).toNat + d * Λ : ℕ) : ℝ) := by
+    have h3 : (mnorm (j - Mf) : ℝ) ≤ (((mnorm (j - ν)).toNat + d * Λ : ℕ) : ℝ) := by
+      exact_mod_cast h2
+    have h4 : (m1 : ℝ) ≤ (Cn : ℝ) * (((mnorm (j - ν)).toNat + d * Λ : ℕ) : ℝ) := by
       calc (m1 : ℝ) ≤ Cch * (mnorm (j - Mf) : ℝ) := hm1b
-        _ ≤ Cch * (((mnorm j).toNat + (mnorm ν).toNat + d * Λ : ℕ) : ℝ) :=
+        _ ≤ Cch * (((mnorm (j - ν)).toNat + d * Λ : ℕ) : ℝ) :=
             mul_le_mul_of_nonneg_left h3 hCch
-        _ ≤ (Cn : ℝ) * (((mnorm j).toNat + (mnorm ν).toNat + d * Λ : ℕ) : ℝ) :=
+        _ ≤ (Cn : ℝ) * (((mnorm (j - ν)).toNat + d * Λ : ℕ) : ℝ) :=
             mul_le_mul_of_nonneg_right hCnR (Nat.cast_nonneg _)
     exact_mod_cast h4
   have hm2N : m2 ≤ Cn * (d * (2 * Λ)) := by
@@ -215,12 +214,12 @@ theorem glws_light_near_key (hd : 2 ≤ d) (η : Site d → ℤ) (hlow : ∀ x, 
   have hlit := hcore (kmax * (2 * n + 1)) hnm N hN zc τ j hfired Mf Mo m1 m2 c1 c2
     hc10 hc1m hc1S hc1adj hc20 hc2m hc2S hc2adj (glws_corner k Mf) (glws_corner k Mo)
     (glws_corner_mem k hk Mf) (glws_corner_mem k hk Mo) hcent hlen y hbox
-  have harith := glws_time_arith Cn K d kmax Z Λ m1 m2 (mnorm j).toNat (mnorm ν).toNat hdpos hZ1
+  have harith := glws_time_arith Cn K d kmax Z Λ m1 m2 (mnorm (j - ν)).toNat hdpos hZ1
     hΛ3 hm1N hm2N
   have hd0' : (0 : ℤ) < 2 * (d : ℤ) := hd0
   have hmono := pclose_pos_mono hd0' η hlow N zc
     (show τ + (m1 + m2) * ∏ l, k l + ((m2 + 1) * (∑ i, k i) ^ d) ^ d ≤
-      τ + (Cn * K) * ((mnorm j).toNat + (mnorm ν).toNat) +
+      τ + (Cn * K) * ((mnorm (j - ν)).toNat) +
       (9 * Cn * K * d + ((6 * Cn * d + 1) * kmax ^ d) ^ d) * Z ^ d by
       have := harith
       simp only [hK, hkmax] at this ⊢
@@ -243,7 +242,7 @@ theorem glws_light_near (hd : 2 ≤ d) (η : Site d → ℤ) (hlow : ∀ x, 0 �
       mnorm ν ≤ (n : ℤ) → ∀ y : Site d,
       (∀ m, (k m : ℤ) * (ν m - (glws_Zn γp n : ℤ)) + 1 ≤ y m ∧
         y m ≤ (k m : ℤ) * (ν m + (glws_Zn γp n : ℤ) + 1)) →
-      0 < wave η N zc (τ + A * ((mnorm j).toNat + (mnorm ν).toNat) + B * (glws_Zn γp n) ^ d) y := by
+      0 < wave η N zc (τ + A * ((mnorm (j - ν)).toNat) + B * (glws_Zn γp n) ^ d) y := by
   classical
   have hdpos : 0 < d := by omega
   set kmax : ℕ := ∑ i, k i with hkmax

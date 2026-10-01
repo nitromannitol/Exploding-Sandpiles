@@ -94,4 +94,64 @@ theorem xsch5_sp_one (n : ℕ) (η : Site 1 → ℤ) (h : ∃ x ∈ cube 1 n, η
   · exact key1 ((y 0 - x 0).toNat) y hy (by omega)
   · exact key2 ((x 0 - y 0).toNat) y hy (by omega)
 
+
+/-- The one-dimensional cube as a finite set of sites. -/
+def xsch5_cubeFin (n : ℕ) : Finset (Site 1) :=
+  (Finset.range n).image (fun k : ℕ => fun _ : Fin 1 => (k : ℤ) + 1)
+
+theorem xsch5_cubeFin_card (n : ℕ) : (xsch5_cubeFin n).card = n := by
+  rw [xsch5_cubeFin, Finset.card_image_of_injective]
+  · simp
+  · intro k l hkl
+    have h := congrFun hkl 0
+    simp at h
+    omega
+
+theorem xsch5_cubeFin_eq (n : ℕ) (x : Site 1) :
+    x ∈ xsch5_cubeFin n ↔ x ∈ cube 1 n := by
+  rw [xsch5_cube_one_iff]
+  constructor
+  · intro hx
+    rw [xsch5_cubeFin, Finset.mem_image] at hx
+    obtain ⟨k, hk, rfl⟩ := hx
+    rw [Finset.mem_range] at hk
+    constructor
+    · simp
+    · simp; omega
+  · intro hx
+    rw [xsch5_cubeFin, Finset.mem_image]
+    refine ⟨(x 0 - 1).toNat, ?_, ?_⟩
+    · rw [Finset.mem_range]; omega
+    · funext i; fin_cases i; simp; omega
+
+/-- **Percolation estimate in one dimension.** -/
+theorem xsch5_percolation_one {p : ℝ} [Fact (0 ≤ p ∧ p ≤ 1)] (hp : 0 < p) :
+    xsch3_PercolationBound 1 p := by
+  refine ⟨1, p, by norm_num, hp, fun n => ?_⟩
+  have hdet : xsch_Det (↑(xsch5_cubeFin n) : Set (Site 1))
+      {η : Site 1 → ℤ | ∀ x ∈ xsch5_cubeFin n, η x ≠ 2 * ((1 : ℕ) : ℤ)} := by
+    intro η η' h
+    constructor <;> intro hη x hx
+    · rw [← h x hx]; exact hη x hx
+    · rw [h x hx]; exact hη x hx
+  have hmeas := hdet.measurableSet (xsch5_cubeFin n).finite_toSet
+  have hsub : {η : Site 1 → ℤ | ¬ xsch_Sp (Finset.univ : Finset (Fin 1)) (cube 1 n) η}
+      ⊆ {η : Site 1 → ℤ | ∀ x ∈ xsch5_cubeFin n, η x ≠ 2 * ((1 : ℕ) : ℤ)} := by
+    intro η hη x hx hx2
+    exact hη (xsch5_sp_one n η ⟨x, (xsch5_cubeFin_eq n x).mp hx, by simpa using hx2⟩)
+  calc (xsch_mu 1 p).real {η : Site 1 → ℤ |
+        ¬ xsch_Sp (Finset.univ : Finset (Fin 1)) (cube 1 n) η}
+      ≤ (xsch_mu 1 p).real {η : Site 1 → ℤ |
+          ∀ x ∈ xsch5_cubeFin n, η x ≠ 2 * ((1 : ℕ) : ℤ)} := measureReal_mono hsub (measure_ne_top _ _)
+    _ = (1 - p) ^ n := by
+        rw [xsch5_not_occ_prob (d := 1) (p := p) le_rfl (xsch5_cubeFin n),
+          xsch5_cubeFin_card]
+    _ ≤ 1 * Real.exp (-(p * (n : ℝ))) := by
+        rw [one_mul]
+        have h1 : (0 : ℝ) ≤ 1 - p := by linarith [(Fact.out : 0 ≤ p ∧ p ≤ 1).2]
+        have h2 : 1 - p ≤ Real.exp (-p) := by
+          have := Real.add_one_le_exp (-p); linarith
+        calc (1 - p) ^ n ≤ (Real.exp (-p)) ^ n := pow_le_pow_left₀ h1 h2 n
+          _ = Real.exp (-(p * (n : ℝ))) := by rw [← Real.exp_nat_mul]; ring_nf
+
 end Exploding

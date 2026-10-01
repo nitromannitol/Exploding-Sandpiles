@@ -204,4 +204,28 @@ theorem xlss_Vof_ind [DecidableEq S] (T : Finset S) (V : Finset S) (hV : V ⊆ T
   · intro hsV
     exact ⟨hV hsV, by simp [hsV]⟩
 
+/-- The map sending a `T`-configuration to the indicator of its occupied subset is measurable. -/
+theorem xlss_meas_Phi [DecidableEq S] (T : Finset S) :
+    Measurable (fun v : T → Bool => fun s : S => decide (s ∈ xlss_Vof T v)) := by
+  refine measurable_pi_lambda _ fun s => ?_
+  by_cases hs : s ∈ T
+  · have hcoord : (fun v : T → Bool => decide (s ∈ xlss_Vof T v)) =
+        fun v => v ⟨s, hs⟩ := by
+      funext v
+      have hmem : s ∈ xlss_Vof T v ↔ v ⟨s, hs⟩ = true := by
+        rw [xlss_mem_Vof]
+        exact ⟨fun ⟨_, hv⟩ => hv, fun hv => ⟨hs, hv⟩⟩
+      by_cases hv : v ⟨s, hs⟩ = true
+      · have : s ∈ xlss_Vof T v := hmem.mpr hv
+        simp [hv, this]
+      · have hv' : v ⟨s, hs⟩ = false := by cases h : v ⟨s, hs⟩ <;> simp_all
+        have : ¬ (s ∈ xlss_Vof T v) := fun hc => hv (hmem.mp hc)
+        simp [hv', this]
+    simpa only [hcoord] using (show Measurable (fun v : T → Bool => v ⟨s, hs⟩) from by fun_prop)
+  · have hconst : (fun v : T → Bool => decide (s ∈ xlss_Vof T v)) = fun _ => false := by
+      funext v
+      have : s ∉ xlss_Vof T v := fun h => hs (xlss_Vof_subset T v h)
+      simp [this]
+    simpa only [hconst] using (measurable_const : Measurable fun _ : T → Bool => false)
+
 end Exploding

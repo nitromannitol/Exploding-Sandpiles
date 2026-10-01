@@ -34,8 +34,9 @@ def xsch8_Recursion (d : ℕ) (p : ℝ) : Prop :=
 def xsch8_Base (d : ℕ) (p : ℝ) : Prop :=
   ∃ n0 : ℕ, (2 : ℝ) ^ (2 * d) * xsch8_a d p n0 < 1
 
-/-- **Iteration.**  A recursion `a (2n) ≤ C a n ^ 2` with a base scale
-`C a n0 < 1` decays doubly fast along the dyadic scales through `n0`. -/
+/-- **Iteration.**  A recursion `a (2n) ≤ C a n ^ 2` bounds `a` at the dyadic
+scales through `n0` by the powers of `C a n0`; when `C a n0 < 1` this decays
+doubly fast, and hence exponentially along the scale. -/
 theorem xsch8_dyadic_bound {a : ℕ → ℝ} {C : ℝ} {n0 : ℕ} (hC : 0 < C)
     (ha : ∀ n : ℕ, 0 ≤ a n)
     (hrec : ∀ n : ℕ, a (2 * n) ≤ C * (a n) ^ 2) :

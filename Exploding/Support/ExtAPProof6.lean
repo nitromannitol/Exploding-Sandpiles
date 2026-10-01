@@ -38,4 +38,26 @@ theorem xap6_badSet_prob_le {q : ℝ} (h0 : 0 ≤ q) (h1 : q ≤ 1) (Γ : Finset
     _ ≤ (1 - xap6_delta d q) ^ (Γ.card / 3 ^ d) :=
         pow_le_pow_of_le_one (show (0 : ENNReal) ≤ 1 - xap6_delta d q by simp) hbase hexp
 
+/-- The probability that some member of a finite family of `*`-connected sets of
+equal size is all bad is at most the family size times `(1 - δ)^{s/3^d}`. -/
+theorem xap6_biUnion_bad_prob_le {q : ℝ} (h0 : 0 ≤ q) (h1 : q ≤ 1)
+    (S : Finset (Finset (Site d))) (s : ℕ) (hcard : ∀ Γ ∈ S, Γ.card = s) :
+    bondPercolation d q {ω | ∃ Γ ∈ S, ∀ z ∈ Γ, ¬ xap_Good ω z} ≤
+      (S.card : ENNReal) * (1 - xap6_delta d q) ^ (s / 3 ^ d) := by
+  have hsub : {ω : Site d × Fin d → Bool | ∃ Γ ∈ S, ∀ z ∈ Γ, ¬ xap_Good ω z}
+      ⊆ ⋃ Γ ∈ S, {ω | ∀ z ∈ Γ, ¬ xap_Good ω z} := by
+    intro ω hω
+    rcases hω with ⟨Γ, hΓ, hbad⟩
+    exact Set.mem_iUnion.2 ⟨Γ, Set.mem_iUnion.2 ⟨hΓ, hbad⟩⟩
+  calc bondPercolation d q {ω | ∃ Γ ∈ S, ∀ z ∈ Γ, ¬ xap_Good ω z}
+      ≤ bondPercolation d q (⋃ Γ ∈ S, {ω | ∀ z ∈ Γ, ¬ xap_Good ω z}) := measure_mono hsub
+    _ ≤ ∑ Γ ∈ S, bondPercolation d q {ω | ∀ z ∈ Γ, ¬ xap_Good ω z} :=
+        measure_biUnion_finset_le _ _
+    _ ≤ ∑ _Γ ∈ S, (1 - xap6_delta d q) ^ (s / 3 ^ d) := by
+        refine Finset.sum_le_sum fun Γ hΓ => ?_
+        rw [← hcard Γ hΓ]
+        exact xap6_badSet_prob_le h0 h1 Γ
+    _ = (S.card : ENNReal) * (1 - xap6_delta d q) ^ (s / 3 ^ d) := by
+        rw [Finset.sum_const, nsmul_eq_mul]
+
 end Exploding

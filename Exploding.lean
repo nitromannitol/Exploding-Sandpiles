@@ -37,6 +37,10 @@ import Exploding.Support.ReductionShift
 import Exploding.Support.LWCProof
 import Exploding.Support.ExtLSSG
 import Exploding.Support.ExtFMR
+import Exploding.Support.ExtLSSLLL
+import Exploding.Support.ExtMHBase
+import Exploding.Support.ExtAPDefs
+import Exploding.Support.ExtSchTop
 import Exploding.Support.S3CloseA
 import Exploding.Support.S3CloseB
 import Exploding.Support.S3CloseC

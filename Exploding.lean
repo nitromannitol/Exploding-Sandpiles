@@ -123,6 +123,8 @@ import Exploding.Support.ExtSchBox
 import Exploding.Support.ExtSchSched
 import Exploding.Support.ExtSchSeed
 import Exploding.Support.ExtSchSchedGeom
+import Exploding.Support.ExtSchOne
+import Exploding.Support.ExtSchNum
 import Exploding.Support.S3CloseA
 import Exploding.Support.S3CloseB
 import Exploding.Support.S3CloseC

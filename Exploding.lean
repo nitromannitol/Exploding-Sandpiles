@@ -77,6 +77,8 @@ import Exploding.Support.ExtMHNumeric
 import Exploding.Support.ExtMHPeierls
 import Exploding.Support.ExtMHThreshold
 import Exploding.Support.ExtMHDet
+import Exploding.Support.ExtMHFinal
+import Exploding.Support.ExtMHHoleVolume
 import Exploding.Support.ExtAPDefs
 import Exploding.Support.ExtAPProof
 import Exploding.Support.ExtAPProof2

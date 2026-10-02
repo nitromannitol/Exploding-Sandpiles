@@ -2,6 +2,7 @@ import Exploding.MainTheorems
 import Exploding.Support.ExtFMR
 import Exploding.Support.LSProofAux
 import Exploding.Support.ExtLSSCountable
+import Exploding.Support.ExtMHHoleVolume
 
 /-!
 # Axioms audit
@@ -18,11 +19,12 @@ Lemmas 2.1 and 3.1 to 3.7.  No registered statement is open, so none depends on 
 
 No `axiom` is declared in this development.  The seven cited results are stated as
 propositions in `Exploding/External/` and taken as explicit hypotheses by the theorems that
-use them (see `ASSUMPTIONS.md`), so they never appear as axioms here.  Four of them are
-discharged by proofs in the repository, and the last four lines audit those proofs:
+use them (see `ASSUMPTIONS.md`), so they never appear as axioms here.  Five of them are
+discharged by proofs in the repository, and the last five lines audit those proofs:
 `Exploding.xfmr_proved` proves the least-action principle of Fey, Meester and Redig,
 `Exploding.xlse_lss_bounded_degree` and `Exploding.xlse_lss_general` prove the two
-domination theorems of Liggett, Schonmann and Stacey, and
+domination theorems of Liggett, Schonmann and Stacey, `Exploding.xmf_proved` proves the hole
+bound of Mathieu, and
 `Exploding.LSProof.ls_flp_from_explosive` derives the theorem of Fey, Levine and Peres
 (Theorem 1.1) from Schonmann's bootstrap bound.
 
@@ -59,8 +61,9 @@ This file is not imported by the library root; the report runs when it is built 
 #print axioms Exploding.dimensional_reduction
 #print axioms Exploding.recurrence
 #print axioms Exploding.box_crossing
--- The proofs that discharge four of the cited results
+-- The proofs that discharge five of the cited results
 #print axioms Exploding.xfmr_proved
 #print axioms Exploding.xlse_lss_bounded_degree
 #print axioms Exploding.xlse_lss_general
+#print axioms Exploding.xmf_proved
 #print axioms Exploding.LSProof.ls_flp_from_explosive

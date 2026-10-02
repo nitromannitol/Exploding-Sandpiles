@@ -119,6 +119,8 @@ import Exploding.Support.ExtSchProof16
 import Exploding.Support.ExtSchProof17
 import Exploding.Support.ExtSchProof18
 import Exploding.Support.ExtSchProof19
+import Exploding.Support.ExtSchBox
+import Exploding.Support.ExtSchSched
 import Exploding.Support.S3CloseA
 import Exploding.Support.S3CloseB
 import Exploding.Support.S3CloseC

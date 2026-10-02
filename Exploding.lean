@@ -127,6 +127,10 @@ import Exploding.Support.ExtSchOne
 import Exploding.Support.ExtSchNum
 import Exploding.Support.ExtSchSchedLayer
 import Exploding.Support.ExtSchCorner
+import Exploding.Support.ExtSchGrow
+import Exploding.Support.ExtSchGrowProb
+import Exploding.Support.ExtSchHalf
+import Exploding.Support.ExtSchExp
 import Exploding.Support.S3CloseA
 import Exploding.Support.S3CloseB
 import Exploding.Support.S3CloseC

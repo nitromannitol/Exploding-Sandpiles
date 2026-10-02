@@ -1,6 +1,10 @@
 name: CI
 
-# Manual trigger only: these builds are Mathlib-scale, so they run on request.
+# Builds the project and the Mathlib-only comparator surface on GitHub-hosted runners
+# (`ubuntu-latest`).  No `pull_request` trigger: a fork's pull request would run with this
+# repository's Actions cache in scope.  Manual dispatch only until the public release, so that
+# pushes to the private repository do not start Mathlib-scale runs; the release adds
+# `push: branches: [main]`.
 on:
   workflow_dispatch:
 
@@ -11,19 +15,12 @@ concurrency:
 
 jobs:
   build:
+    name: Build, axiom audit, checkers
     runs-on: ubuntu-latest
+    timeout-minutes: 350
     steps:
       - name: Checkout
         uses: actions/checkout@v5
-
-      # Lattice-Probability is private: read it with the repository's deploy key.
-      - name: Read access to Lattice-Probability
-        uses: webfactory/ssh-agent@v0.9.0
-        with:
-          ssh-private-key: ${{ secrets.LP_DEPLOY_KEY }}
-      - name: Fetch Lattice-Probability over SSH
-        run: |
-          git config --global url."git@github.com:nitromannitol/Lattice-Probability".insteadOf "https://github.com/nitromannitol/Lattice-Probability"
 
       - name: Install elan
         run: |
@@ -33,12 +30,18 @@ jobs:
       - name: Get the Mathlib cache
         run: lake exe cache get
 
-      # This formalization is a work in progress: the build emits one
-      # "declaration uses sorry" warning for each open registered statement.
-      # tools/check_warnings.py (run by tools/verify.py below) fails on any
-      # other warning, and on any sorry warning the manifest does not register.
+      # The production build emits no warning: the library contains no `sorry`.
+      # tools/check_warnings.py (run by tools/verify.py below) fails on any warning.
       - name: Build
         run: lake build
+
+      # Build the Mathlib-only comparator surface: the challenge elaborates with its one
+      # intentional `sorry`, and its vocabulary block is byte-identical to the solution's.
+      - name: Build the Mathlib-only comparator surface
+        run: lake build ExplodingAudit
+
+      - name: Check the challenge vocabulary is self-consistent
+        run: bash ExplodingAudit/check_standalone.sh --vocabulary
 
       # Build the axiom audit and surface its `#print axioms` output in the log,
       # confirming the proved results use only the standard Mathlib axioms.

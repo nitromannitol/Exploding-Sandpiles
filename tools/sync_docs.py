@@ -88,13 +88,13 @@ STATE_ORDER = ["SEALED", "CONDITIONAL", "FROZEN", "DRAFT_SORRY"]
 STATE_WORDS = {
     "SEALED": "proved here",
     "CONDITIONAL": "proofs written that rest on open statements",
-    "FROZEN": "cited results that are assumed",
+    "FROZEN": "cited results carried as hypotheses",
     "DRAFT_SORRY": "open",
 }
 STATE_CELL = {
     "SEALED": "proved",
     "CONDITIONAL": "proof written; rests on open statements",
-    "FROZEN": "cited result, assumed",
+    "FROZEN": "cited result, hypothesis",
     "DRAFT_SORRY": "open",
 }
 
@@ -203,7 +203,8 @@ def status_block(nodes: list[dict]) -> str:
         body.append(
             f"The {counts['FROZEN']} `FROZEN` nodes, {ids('FROZEN')}, are cited results,\n"
             f"stated in `{PKG}/External/` and carried as explicit hypotheses by the\n"
-            f"theorems that use them; they are assumed here, not proved.")
+            f"theorems that use them; those theorems do not prove them, and ASSUMPTIONS.md\n"
+            f"marks which are also proved elsewhere in this repository.")
     if counts["DRAFT_SORRY"]:
         body.append(
             f"Still open: {ids('DRAFT_SORRY')}.  Each has a frozen statement and a\n"

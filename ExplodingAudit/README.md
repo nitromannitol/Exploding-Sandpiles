@@ -54,6 +54,11 @@ hypotheses; each is a `Prop`-valued definition in the challenge.
 - `SchonmannBootstrap`: Schonmann's large-deviation bound for bootstrap percolation
   (Proposition 7.4 of the paper).
 
+The library proves three of them, as `Exploding.xlse_lss_bounded_degree`,
+`Exploding.xmf_proved` and `Exploding.xsr_schonmann`; only `AntalPisztoraChemicalDistance` is
+assumed outright.  The challenge keeps all four as hypotheses, the form of the library's
+certified statement.
+
 The library's certified statement is `Exploding.Frozen.limit_shape`
 (`Exploding/Frozen/LimitShape.lean`), proved by `Exploding.LSProof.ls_assemble`
 (`Exploding/Support/LSProofAux.lean`).  The challenge states the same theorem over the copied
@@ -126,10 +131,10 @@ bash ExplodingAudit/check_standalone.sh --vocabulary   # Challenge vs SolutionBa
 
 with expected outcome `rc=0` and exactly one `declaration uses 'sorry'` warning.  The solution
 builds with `lake build ExplodingAudit`.  Then, with `leanprover/comparator`, `lean4export` (at
-the toolchain's tag) and `landrun` built at the pins below, from the repository root:
+the toolchain's tag), nanoda and `landrun` built at the pins below, from the repository root:
 
 ```bash
-COMPARATOR_LANDRUN=<landrun> COMPARATOR_LEAN4EXPORT=<lean4export> \
+COMPARATOR_LANDRUN=<landrun> COMPARATOR_LEAN4EXPORT=<lean4export> COMPARATOR_NANODA=<nanoda_bin> \
   lake env <comparator>/.lake/build/bin/comparator ExplodingAudit/LimitShape/comparator.json
 ```
 

@@ -1,16 +1,20 @@
 cff-version: 1.2.0
 message: "If you use this formalization, please cite it as below."
-title: "Exploding-Sandpiles: a Lean 4 formalization, in progress, of A shape theorem for exploding sandpiles"
+title: "Exploding-Sandpiles: a Lean 4 formalization of A shape theorem for exploding sandpiles"
 abstract: >-
-  A Lean 4 / mathlib formalization, in progress, of the paper "A shape theorem
-  for exploding sandpiles" (Bou-Rabee).  Every theorem, lemma and proposition
-  of the paper is registered as a frozen statement, together with five further
-  results the paper cites in its proofs, 29 in all.  Five are proved, with no
-  custom axiom and no cited result taken as a hypothesis; two, among them the
-  convergence of the rescaled arrival times, have written proofs that rest on
-  open statements; seven are results the paper cites, stated as propositions
-  and assumed; and fifteen, among them the limit shape theorem, are open,
-  each a single registered sorry.
+  A machine-checked Lean 4 / mathlib formalization of the paper "A shape theorem
+  for exploding sandpiles" (Bou-Rabee): the limit shape theorem, the convergence
+  of the rescaled arrival times, the explosion criterion for product backgrounds,
+  the convergence of the exploding sandpile under general hypotheses, and
+  explosive backgrounds without a limit shape (Theorems 1.2, 1.3, 1.4, 5.1 and
+  6.1), together with every lemma and proposition that the paper proves.  The
+  results are proved from the seven results the paper cites from the literature,
+  which enter as explicit hypotheses; six of the seven are also proved in the
+  repository, and only the chemical-distance bound of Antal and Pisztora is
+  assumed.  The library contains
+  no sorry and no custom axiom; the Mathlib-only comparator challenge for the
+  limit shape theorem contains one intentional statement-level sorry whose
+  completed solution is checked separately.
 type: software
 authors:
   - family-names: Bou-Rabee
@@ -24,7 +28,7 @@ keywords:
   - limit shape
   - probability
 license: Apache-2.0
-# Add a Zenodo DOI here once an archived release is minted.
+# TODO(author): add a Zenodo DOI once an archived release is minted.
 repository-code: "https://github.com/nitromannitol/Exploding-Sandpiles"
 references:
   - type: article
@@ -39,4 +43,8 @@ references:
     end: 742
     year: 2024
     doi: "10.1214/23-AAP1976"
-    notes: "The paper formalized by this repository; arXiv:2102.04422."
+    url: "https://arxiv.org/abs/2102.04422"
+    identifiers:
+      - type: other
+        value: "arXiv:2102.04422"
+    notes: "The paper formalized by this repository."

@@ -173,8 +173,8 @@ def render():
                 "registered `sorry` (see README.md).", ""]
         return "\n".join(out)
     out += [
-        "The results below are quoted by the paper from the literature and are **not",
-        "proved here**.  Each is a proposition carried as an explicit hypothesis by",
+        "The results below are quoted by the paper from the literature; the paper does",
+        "not prove them.  Each is a proposition carried as an explicit hypothesis by",
         "every theorem whose proof uses it, so a theorem's statement shows exactly",
         "which of these it rests on.",
         "",
@@ -205,7 +205,9 @@ def render():
                  if len(withproof) > 1 else
                  "Of these, **one is also proved in this repository** and so need not "
                  "be taken on trust; it is marked below with the theorem that proves it. ") +
-                f"The remaining **{len(assumed) - len(withproof)}** are assumed outright.", ""]
+                f"The remaining **{len(assumed) - len(withproof)}** "
+                + ("is" if len(assumed) - len(withproof) == 1 else "are")
+                + " assumed outright.", ""]
         ncond = sum(1 for n in withproof if bridge_condition(comp[pathlib.Path(n["file"]).stem]))
         if ncond:
             out[-2] += ((f" Of the {len(withproof)} proofs, **{ncond}** hold only under hypotheses "

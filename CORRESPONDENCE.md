@@ -30,6 +30,15 @@ explicit hypothesis of the nodes whose proofs use it.
 | `ext-mathieu-holes` | Mathieu, *Quenched invariance principles for random walks with random conductances*, Lemma 5.2 | Proposition 2.2 and every statement that uses it |
 | `ext-fey-meester-redig` | Fey, Meester and Redig, *Stabilizability and percolation in the infinite volume sandpile model*, Theorem 2.8 | `thm-counterexample` |
 
+Six of the seven are proved in this repository, so the hypothesis can be discharged:
+`ext-fey-meester-redig` by `Exploding.xfmr_proved`, `ext-lss-bounded-degree` by
+`Exploding.xlse_lss_bounded_degree`, `ext-liggett-schonmann-stacey` by
+`Exploding.xlse_lss_general`, `ext-mathieu-holes` by `Exploding.xmf_proved`,
+`ext-schonmann-bootstrap` by `Exploding.xsr_schonmann`, and `ext-fey-levine-peres` by
+`Exploding.xsr_flp`, which applies `Exploding.LSProof.ls_flp_from_explosive` to
+`Exploding.xsr_schonmann`.  Only `ext-antal-pisztora` is assumed outright;
+[`ASSUMPTIONS.md`](ASSUMPTIONS.md) gives the statements.
+
 ## How a statement of the paper is read in Lean
 
 | paper | Lean reading | why |
@@ -46,24 +55,26 @@ explicit hypothesis of the nodes whose proofs use it.
 | `lemma:square_lower_bound` | "the support of the `m`-wave" is `∃ t, 0 < u_t x` | the wave odometer is nondecreasing in time on a nonnegative background, so this is the support of the terminal odometer when the wave stabilizes, and is the right reading when it does not |
 | every statement of Sections 1 to 4 | carries `2 ≤ d` | the standing hypothesis of "Main results", `Suppose d ≥ 2 and η is drawn from a product measure ...` |
 | `s_0' = η` in the frozen-toppling convention (2.3), in Lemma 2.1, the crossing time, Hypotheses 5.2–5.4 and recurrence | the `S`-frozen toppling `fodo S η w₀` evolves `s_t' = η + Δ w_t`, i.e. `s_0 = η` | (2.3) writes `s_0' = s_0 + Δ w_0`, but the paper's later uses and its proofs need the initial firing's chips delivered (`exploding.tex:447`: a `(2d-1)`-site next to a toppled line topples at the next step); the paper's own (2.4) is inconsistent with (2.3) here |
-| the Bernoulli probability `p` of `(1.2)` | `0 < p ∧ p < 1` on every node that names it, although the paper writes `Fix p > 0` | the paper's `Fix p > 0` does not exclude the endpoint `p = 1`, which is the deterministic background `η ≡ 2d - 1` and lies outside the estimates the proofs use; recorded here rather than changed in a frozen statement |
+| the Bernoulli probability `p` of `(1.2)` | `0 < p ∧ p < 1` on every node that names it, although the paper writes `Fix p > 0` | the paper's `Fix p > 0` does not exclude the endpoint `p = 1`, which is the deterministic background `η ≡ 2d - 1` and lies outside the estimates the proofs use, so the frozen statements assume `p < 1` |
 
 ## Main results
 
-Every result of the paper is proved.  [`Exploding/MainTheorems.lean`](Exploding/MainTheorems.lean)
+Every result that the paper proves is proved.  [`Exploding/MainTheorems.lean`](Exploding/MainTheorems.lean)
 restates each proved result in full, by `exact` of its certified counterpart in
 `Exploding/Frozen/`; a statement whose proof uses a cited result takes it as an explicit
 hypothesis.  The paper's main theorems are:
 
-| Source | Frozen statement | State |
+| Source | Frozen statement | State and cited hypotheses carried |
 |---|---|---|
-| Theorem 1.2, `theorem:limit_shape` | `Exploding.Frozen.limit_shape` | `SEALED`, from the three percolation results behind Proposition 2.2 and Schonmann's bound |
-| Theorem 1.3, `theorem:convergence_of_time_constant` | `Exploding.Frozen.convergence_of_time_constant` | `SEALED`, from the cited Theorem 1.1 and the three percolation results |
-| Theorem 1.4, `theorem:explosive` | `Exploding.Frozen.explosive` | `SEALED`, from Schonmann's bound |
-| Theorem 5.1, "Convergence of the exploding sandpile" | `Exploding.Frozen.generalized_convergence` | `SEALED`, from the general domination theorem and the three percolation results |
-| Theorem 6.1, `theorem:counterexample` | `Exploding.Frozen.counterexample` | `SEALED`; its least-action hypothesis is discharged by `Exploding.xfmr_proved` |
+| Theorem 1.2, `theorem:limit_shape` | `Exploding.Frozen.limit_shape` | proved; carries the three percolation results behind Proposition 2.2 (`hLSSB`, `hHole`, `hChem`) and Schonmann's bound (`hSch`), which `Exploding.xsr_schonmann` proves |
+| Theorem 1.3, `theorem:convergence_of_time_constant` | `Exploding.Frozen.convergence_of_time_constant` | proved; carries the cited Theorem 1.1 (`hFLP`), which `Exploding.xsr_flp` proves, and the three percolation results |
+| Theorem 1.4, `theorem:explosive` | `Exploding.Frozen.explosive` | proved; carries Schonmann's bound (`hSch`), which `Exploding.xsr_schonmann` proves |
+| Theorem 5.1, "Convergence of the exploding sandpile" | `Exploding.Frozen.generalized_convergence` | proved; carries the general domination theorem (`hLSS`) and the three percolation results |
+| Theorem 6.1, `theorem:counterexample` | `Exploding.Frozen.counterexample` | proved; carries the least-action principle (`hFMR`), which `Exploding.xfmr_proved` proves |
 
-No comparator challenge exists yet; see [`Audit/README.md`](Audit/README.md).
+The limit shape theorem (Theorem 1.2) is also restated over Mathlib alone and checked with
+`leanprover/comparator`, with its four cited hypotheses stated in the challenge; see
+[`ExplodingAudit/README.md`](ExplodingAudit/README.md).
 
 ## Frozen surface
 

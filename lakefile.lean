@@ -13,3 +13,18 @@ require mathlib from git
 @[default_target]
 lean_lib «Exploding» where
   globs := #[.andSubmodules `Exploding]
+
+/-- The comparator audit surface (`ExplodingAudit/*/Challenge.lean`,
+`ExplodingAudit/*/Solution.lean`).  Deliberately **not** a default target: it builds only on
+demand (`lake build ExplodingAudit`), so the ordinary project build is unchanged. -/
+lean_lib «ExplodingAudit» where
+  globs := #[.submodules `ExplodingAudit]
+  leanOptions := #[
+    ⟨`autoImplicit, false⟩,
+    ⟨`relaxedAutoImplicit, false⟩,
+    ⟨`linter.unusedVariables, true⟩,
+    ⟨`linter.unusedSectionVars, true⟩,
+    ⟨`linter.unusedSimpArgs, true⟩,
+    ⟨`linter.unnecessarySimpa, true⟩,
+    ⟨`linter.deprecated, true⟩
+  ]

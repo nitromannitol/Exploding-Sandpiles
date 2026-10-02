@@ -1,0 +1,14 @@
+{
+  "challenge_module": "ExplodingAudit.LimitShape.Challenge",
+  "solution_module": "ExplodingAudit.LimitShape.Solution",
+  "theorem_names": [
+    "Exploding.StatementAudit.LimitShape.limit_shape"
+  ],
+  "definition_names": [],
+  "permitted_axioms": [
+    "propext",
+    "Quot.sound",
+    "Classical.choice"
+  ],
+  "enable_nanoda": true
+}

@@ -359,9 +359,9 @@ lakefile.lean, lake-manifest.json, lean-toolchain
 
 ## How this was built
 
-The Lean code was written by Claude (claude-fable-5-1, claude-opus-5, claude-opus-5-5 and
-claude-sonnet-5), DeepSeek (deepseek-v4.1-flash), GLM (glm-5.3 and glm-5.3-flash), Kimi
-(kimi-k3) and Leanstral (labs-leanstral-1-5) under the close supervision of the author;
+The Lean code was written by Claude (Fable 5.1, Opus 5, Opus 5.5 and Sonnet 5),
+DeepSeek-v4.1-flash, GLM-5.3 and GLM-5.3-flash, Kimi k3 and Leanstral 1.5 under the close
+supervision of the author;
 models, tooling, cost and review status are disclosed in
 [`formalization.yaml`](formalization.yaml), following the
 [mathlib-initiative](https://github.com/mathlib-initiative/formalization.yaml) standard.

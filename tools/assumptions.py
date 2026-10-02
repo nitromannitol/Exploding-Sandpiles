@@ -210,8 +210,11 @@ def render():
                 + " assumed outright.", ""]
         ncond = sum(1 for n in withproof if bridge_condition(comp[pathlib.Path(n["file"]).stem]))
         if ncond:
-            out[-2] += ((f" Of the {len(withproof)} proofs, **{ncond}** hold only under hypotheses "
-                         "of their own, shown with them; where those fail, the result is still assumed.")
+            out[-2] += ((f" Of the {len(withproof)} proofs, **{ncond}** "
+                         + ("holds only under hypotheses of its own, shown with it"
+                            if ncond == 1 else
+                            "hold only under hypotheses of their own, shown with them")
+                         + "; where those fail, the result is still assumed.")
                         if len(withproof) > 1 else
                         (" That proof holds only under hypotheses of its own, shown with it; where "
                          "those fail, the result is still assumed."))

@@ -141,4 +141,12 @@ theorem xsb_grow_down {J : Finset (Fin d)} {i : Fin d} (hiJ : i ∈ J) {B : Set 
       rw [h3]
       exact h1
 
+/-- **The induction hypothesis of the dimension induction.**  The probability that a near-cube box
+along `k` directions is not internally spanned decays faster than any polynomial in its size,
+with constants independent of the position and of the set of directions. -/
+def xsb_Decay (d : ℕ) (p : ℝ) (k : ℕ) : Prop :=
+  ∀ Q : ℕ, ∃ c : ℝ, 0 < c ∧ ∀ (J : Finset (Fin d)) (lo hi : Site d) (s : ℕ),
+    J.card = k → 1 ≤ s → xsb_Near J s lo hi →
+      (xsch_mu d p).real {η | ¬ xsch_Sp J (xsb_box lo hi) η} ≤ c / (s : ℝ) ^ Q
+
 end Exploding

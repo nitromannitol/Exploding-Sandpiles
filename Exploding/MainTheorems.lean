@@ -66,7 +66,7 @@ assumptions.  Each is stated as a proposition in `Exploding/External/` and regis
 * `FeyMeesterRedigLeastAction`, Theorem 2.8 of Fey, Meester and Redig, cited in the proof of
   Theorem 6.1, `hFMR`.
 
-Five of the seven are discharged by proofs in this repository:
+Six of the seven are discharged by proofs in this repository:
 
 * `FeyMeesterRedigLeastAction` is proved by `Exploding.xfmr_proved`
   (`Exploding/Support/ExtFMR.lean`), so Theorem 6.1 holds with `hFMR := Exploding.xfmr_proved`;
@@ -76,12 +76,17 @@ Five of the seven are discharged by proofs in this repository:
   everywhere they occur;
 * `MathieuHoleVolume` is proved by `Exploding.xmf_proved`
   (`Exploding/Support/ExtMHHoleVolume.lean`), so `hHole` may be discharged everywhere it occurs;
+* `SchonmannBootstrap` is proved by `Exploding.xsr_schonmann`
+  (`Exploding/Support/ExtSchFinal.lean`), so `hSch` may be discharged everywhere it occurs;
 * `FeyLevinePeresExplosive` follows from `SchonmannBootstrap` by
   `Exploding.LSProof.ls_flp_from_explosive` (`Exploding/Support/LSProofAux.lean`), because
-  Theorem 1.4 strengthens Theorem 1.1, so `hFLP` of Theorem 1.3 may be replaced by `hSch`.
-  Theorem 1.2 already does so in its proof.
+  Theorem 1.4 strengthens Theorem 1.1, so `hFLP` of Theorem 1.3 may be replaced by `hSch`;
+  `Exploding.xsr_flp` (`Exploding/Support/ExtSchFLP.lean`) applies it to
+  `Exploding.xsr_schonmann`, so `hFLP` may be discharged everywhere it occurs.  Theorem 1.2
+  already does so in its proof.
 
-The other two are assumed.  The results below take them as follows, `perc` standing for the
+The other one, `AntalPisztoraChemicalDistance`, is assumed.  The results below take the
+cited results as follows, `perc` standing for the
 three percolation results `hLSSB`, `hHole`, `hChem`:
 
 | result | cited hypotheses taken |

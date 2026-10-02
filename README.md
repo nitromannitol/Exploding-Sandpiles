@@ -42,10 +42,11 @@ paper is proved**, from the cited results as explicit hypotheses.
   Liggett, Schonmann and Stacey (domination by product measures), Theorem 1.1 of Antal and
   Pisztora (the chemical distance in supercritical bond percolation), Lemma 5.2 of Mathieu
   (the holes of the infinite cluster) and Theorem 2.8 of Fey, Meester and Redig (the least
-  action principle).  Five of the seven are also proved here: the least-action principle of
+  action principle).  Six of the seven are also proved here: the least-action principle of
   Fey, Meester and Redig, both domination theorems of Liggett, Schonmann and Stacey, the hole
-  bound of Mathieu, and, from Schonmann's bound, the explosion theorem of Fey, Levine and
-  Peres.
+  bound of Mathieu, Schonmann's bound for bootstrap percolation, and, from it, the explosion
+  theorem of Fey, Levine and Peres.  Only the chemical distance of Antal and Pisztora is
+  assumed.
 
 Not formalized: the proof outline of Section 1, the examples of Section 5.2 and the figures.
 
@@ -53,11 +54,12 @@ Not formalized: the proof outline of Section 1, the examples of Section 5.2 and 
 `Exploding/External/` and are carried as explicit hypotheses rather than proved here, so a
 theorem whose proof uses one shows exactly what it rests on.  For example, Theorem 1.3 takes
 the theorem of Fey, Levine and Peres and the three percolation results behind Proposition
-2.2.  Five of the seven are nevertheless proved in this repository: the least-action
+2.2.  Six of the seven are nevertheless proved in this repository: the least-action
 principle of Fey, Meester and Redig, both domination theorems of Liggett, Schonmann and
-Stacey, and the hole bound of Mathieu unconditionally, and the explosion theorem of Fey,
-Levine and Peres from Schonmann's bound.  [`ASSUMPTIONS.md`](ASSUMPTIONS.md) lists all seven
-with their verbatim Lean statements.
+Stacey, the hole bound of Mathieu and Schonmann's bound for bootstrap percolation
+unconditionally, and the explosion theorem of Fey, Levine and Peres from Schonmann's bound.
+Only the chemical distance of Antal and Pisztora is assumed.
+[`ASSUMPTIONS.md`](ASSUMPTIONS.md) lists all seven with their verbatim Lean statements.
 
 - **`sorry`:** none.  Every registered statement is proved except the seven cited results,
   which are propositions assumed as hypotheses, not `sorry`.  `tools/check_warnings.py`

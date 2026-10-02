@@ -134,6 +134,9 @@ import Exploding.Support.ExtSchExp
 import Exploding.Support.ExtSchBlock
 import Exploding.Support.ExtSchGrid
 import Exploding.Support.ExtSchLevel
+import Exploding.Support.ExtSchDouble
+import Exploding.Support.ExtSchFinal
+import Exploding.Support.ExtSchFLP
 import Exploding.Support.S3CloseA
 import Exploding.Support.S3CloseB
 import Exploding.Support.S3CloseC

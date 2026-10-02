@@ -24,12 +24,14 @@ sources:
   prior_work: ''
 status:
   scope: 'SEALED (22): all of the paper''s results, each with axiom closure exactly propext, Classical.choice
-    and Quot.sound, taking the cited results as explicit hypotheses. Five cited results are also proved
+    and Quot.sound, taking the cited results as explicit hypotheses. Six cited results are also proved
     here: the least-action principle of Fey, Meester and Redig, both domination theorems of Liggett, Schonmann
-    and Stacey, the hole bound of Mathieu, and the explosion theorem of Fey, Levine and Peres from Schonmann''s
-    bound. SCOPE BOUNDARY:
-    seven results the paper cites are stated as propositions in Exploding/External/ and assumed, not proved,
-    each taken as an explicit hypothesis by the statements whose proofs use it: the explosion theorem
+    and Stacey, the hole bound of Mathieu, Schonmann''s bound for bootstrap percolation, and the explosion
+    theorem of Fey, Levine and Peres from it; only the chemical distance of Antal and Pisztora is assumed.
+    SCOPE BOUNDARY:
+    seven results the paper cites are stated as propositions in Exploding/External/ and taken as explicit hypotheses
+    by the statements whose proofs use them, of which only the chemical distance of Antal and Pisztora is not
+    proved here: the explosion theorem
     of Fey, Levine and Peres (Theorem 1.1), Schonmann''s bound for bootstrap percolation (Proposition
     7.4), Theorem 0.0 and Corollary 1.4 of Liggett, Schonmann and Stacey, Theorem 1.1 of Antal and Pisztora,
     Lemma 5.2 of Mathieu and Theorem 2.8 of Fey, Meester and Redig (ASSUMPTIONS.md). The formalized paper

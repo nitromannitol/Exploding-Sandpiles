@@ -53,6 +53,8 @@ import Exploding.Support.ExtLSSUpHull
 import Exploding.Support.ExtLSSReg
 import Exploding.Support.ExtLSSCountable
 import Exploding.Support.ExtBCBernoulli
+import Exploding.Support.ExtBCBernoulli2
+import Exploding.Support.ExtBCBernoulli3
 import Exploding.Support.ExtMHBase
 import Exploding.Support.ExtMHProof
 import Exploding.Support.ExtMHCount

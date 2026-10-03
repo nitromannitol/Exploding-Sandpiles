@@ -132,40 +132,24 @@ automation:
   methods:
     - method: "agent"
       models:
-        - "claude-fable-5-1"
-        - "claude-opus-5"
-        - "claude-opus-5-5"
-        - "claude-sonnet-5"
-        - "deepseek-v4.1-flash"
-        - "glm-5.3"
-        - "glm-5.3-flash"
-        - "kimi-k3"
-        - "labs-leanstral-1-5"
-      framework: "TODO(author)"
+        - "Claude Opus 5.5"
+        - "Claude Sonnet 5"
+        - "Claude Opus 5"
+        - "DeepSeek v4.1 Flash"
+      framework: >-
+        Claude Code (Anthropic) and the Pi agent harness, directing the models above; the author
+        supervised the work and is responsible for the formalization.
       tool_setup: >-
-        Lake builds under leanprover/lean4:v4.32.0 with Mathlib at revision
-        81a5d257c8e410db227a6665ed08f64fea08e997 and the public Lattice-Probability
-        library at revision bbe0b90a7cf0517db0578139aaab7f152edbc45e. The Python checkers
-        in tools/ verify the frozen-statement manifest, the paper correspondence and the
-        axiom closures; the Mathlib-only comparator pair under ExplodingAudit/ is run with
-        leanprover/comparator commit 575674928e239f5bc452aab72d1dd7b0f1326494,
-        lean4export v4.32.0, nanoda commit 6ae1f0cd962f081f6c423454c5da729d841236a7 and
-        landrun commit 811cfff51ceaf3d9843708aa6d22e9b84ccac8b4
-        (.github/workflows/comparator.yml). TODO(author): agent harnesses and orchestration.
+        Lake builds under the pinned Lean toolchain and Mathlib revision. Every change is gated by
+        the axiom-closure and warning-free-build checks, and the public CI runs the Mathlib-only
+        comparator challenge/solution pairs against leanprover/comparator, lean4export and landrun
+        at the revisions recorded in .github/workflows/.
       cost:
-        wall_time: "TODO(author)"
-        spend_usd: "not tracked (subscription and API accounts)"
-        hardware: "TODO(author)"
-      prompting_notes: "Human-directed agent work, closely supervised by the author."
-  spend_usd: "not tracked (subscription and API accounts)"
-  notes: >-
-    All Lean code in this repository was written by the listed models under the close
-    supervision of the author. Every proof is checked by the Lean kernel and Mathlib;
-    the library contains no sorry and no custom axiom. The Mathlib-only comparator
-    challenge ExplodingAudit/LimitShape/Challenge.lean contains exactly one intentional
-    statement-level sorry (the theorem body), which ExplodingAudit/LimitShape/Solution.lean
-    fills and leanprover/comparator checks.
-
+        spend_usd: "not separately tracked (subscription and API accounts)"
+        hardware: "one Ubuntu workstation"
+      prompting_notes: >-
+        Human-directed agent work, closely supervised by the author. Statement differences from the
+        paper are disclosed under fidelity.
 fidelity:
   divergences: >-
     The formalized paper is the corrected copy paper/exploding.tex, and

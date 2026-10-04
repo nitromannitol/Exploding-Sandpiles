@@ -279,6 +279,7 @@ import Exploding.External.LiggettSchonmannStacey
 import Exploding.External.AntalPisztora
 import Exploding.External.MathieuHoles
 import Exploding.External.FeyMeesterRedig
+import Exploding.External.LSSBoundedDegreeProved
 
 import Exploding.Frozen.LimitShape
 import Exploding.Frozen.TimeConstant

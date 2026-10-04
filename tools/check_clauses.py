@@ -110,6 +110,12 @@ REVIEWED: dict[str, str] = {
         "with the two-line cases definition of η' counted as the extra relation; Lean "
         "carries the inequality as ofReal(1 − c e^{−Cn}) ≤ productLaw d (2d) d p "
         "{InternallySpanned η n}",
+    "ext-fey-levine-peres-proved":
+        "in-repo discharge of the same frozen statement as ext-fey-levine-peres, so the "
+        "correspondence recorded there applies verbatim",
+    "ext-schonmann-bootstrap-proved":
+        "in-repo discharge of the same frozen statement as ext-schonmann-bootstrap, so "
+        "the correspondence recorded there applies verbatim",
     "lem-last-wave-bound":
         "one display (u_t^{(z)}(x) ≤ 1 + ũ^{(z)}(x)); the first sentence is its case "
         "'outside the penultimate cluster', where penultimateWave vanishes "

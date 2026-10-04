@@ -111,5 +111,11 @@ The limit shape theorem (Theorem 1.2) is also restated over Mathlib alone and ch
 | `lem-local-convexity` | [Exploding.Frozen.local_convexity](Exploding/Frozen/LocalConvexity.lean#L20) | exploding.tex:531-535 (label lemma:local_convexity) | PROVED |
 | `lem-finite-exploding` | [Exploding.Frozen.finite_exploding](Exploding/Frozen/FiniteExploding.lean#L27) | exploding.tex:720-722 (label lemma:finite_exploding) | PROVED |
 | `prop-crossing-time` | [Exploding.Frozen.crossing_time](Exploding/Frozen/CrossingTime.lean#L20) | exploding.tex:416-422 (label prop:crossing_time) | PROVED |
+| `ext-fey-levine-peres-proved` | [Exploding.xsr_flp](Exploding/Support/ExtSchFLP.lean#L8) | exploding.tex:238-240 (label prop:fey_levine_peres_explode) | PROVED |
+| `ext-schonmann-bootstrap-proved` | [Exploding.xsr_schonmann](Exploding/Support/ExtSchFinal.lean#L72) | exploding.tex:1969-1981 (label prop:schonnmann_bootstrap) | PROVED |
+| `ext-liggett-schonmann-stacey-proved` | [Exploding.xlse_lss_general](Exploding/Support/ExtLSSCountable.lean#L120) | in-repo discharge of ext-liggett-schonmann-stacey; liggett1997domination Theorem 0.0, cited at exploding.tex:1215-1217 in the proof of prop:convergence_of_the_generalized_last_wave | PROVED |
+| `ext-lss-bounded-degree-proved` | [Exploding.lssBoundedDegree](Exploding/External/LSSBoundedDegreeProved.lean#L8) | in-repo discharge of ext-lss-bounded-degree; liggett1997domination Corollary 1.4, cited at exploding.tex:478 for prop:renormalization_properties | PROVED |
+| `ext-mathieu-holes-proved` | [Exploding.xmf_proved](Exploding/Support/ExtMHHoleVolume.lean#L14) | in-repo discharge of ext-mathieu-holes; mathieu2008quenched Lemma 5.2, cited at exploding.tex:478 for prop:renormalization_properties | PROVED |
+| `ext-fey-meester-redig-proved` | [Exploding.xfmr_proved](Exploding/Support/ExtFMR.lean#L58) | in-repo discharge of ext-fey-meester-redig; fey2009stabilizability Theorem 2.8, cited at exploding.tex:1415-1424 in the proof of theorem:counterexample | PROVED |
 
 <!-- FROZEN-SURFACE-END -->

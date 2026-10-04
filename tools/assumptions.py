@@ -55,7 +55,10 @@ def bridge_proof(n):
         rel = f.relative_to(ROOT)
         if "External" in rel.parts or "Frozen" in rel.parts:
             continue
-        m = pat.search(f.read_text(encoding="utf-8"))
+        text = f.read_text(encoding="utf-8")
+        text = text.replace("-- FROZEN-STATEMENT-BEGIN", "").replace(
+            "-- FROZEN-STATEMENT-END", "")
+        m = pat.search(text)
         if m:
             return {"id": m.group(1), "file": str(rel)}
     return None

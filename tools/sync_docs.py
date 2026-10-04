@@ -80,6 +80,12 @@ DESCRIPTIONS = {
     "ext-antal-pisztora": "The chemical distance in supercritical bond percolation (Antal and Pisztora), cited",
     "ext-mathieu-holes": "The holes of the infinite cluster of site percolation (Mathieu), cited",
     "ext-fey-meester-redig": "The least action principle (Fey, Meester and Redig), cited",
+    "ext-fey-levine-peres-proved": "In-repo discharge of the Fey, Levine and Peres explosion theorem",
+    "ext-schonmann-bootstrap-proved": "In-repo discharge of Schonmann's bootstrap bound",
+    "ext-liggett-schonmann-stacey-proved": "In-repo discharge of the Liggett, Schonmann and Stacey domination theorem",
+    "ext-lss-bounded-degree-proved": "In-repo discharge of the bounded-degree Liggett, Schonmann and Stacey corollary",
+    "ext-mathieu-holes-proved": "In-repo discharge of Mathieu's hole-volume bound",
+    "ext-fey-meester-redig-proved": "In-repo discharge of the Fey, Meester and Redig least action principle",
     "prop-box-crossing": "The background of Theorem 1.4 is box-crossing",
 }
 

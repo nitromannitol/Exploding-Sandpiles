@@ -365,3 +365,81 @@ nodes:
     provider: Exploding.Frozen.crossing_time
     approved: "2026-09-27"
 
+  - id: ext-fey-levine-peres-proved
+    version: 3
+    kind: theorem
+    source: exploding.tex:238-240 (label prop:fey_levine_peres_explode)
+    file: Exploding/Support/ExtSchFLP.lean
+    export: Exploding.xsr_flp
+    state: PROVED
+    frozen_sha256: a25c10e2f66ff0a1141aea2274ab888744e3a0a24b8e65077a671b3ea60ecb7a
+    closure_sha256: 7d32df49d39e9a46798ae2c7fded657a853975017764efa694fa53e31947d473
+    provider: Exploding.xsr_flp
+    note: \"DISCHARGED at Exploding/Support/ExtSchFLP.lean:11; axiom closure [propext, Classical.choice, Quot.sound]"
+    approved: "2026-10-04"
+
+  - id: ext-schonmann-bootstrap-proved
+    version: 3
+    kind: theorem
+    source: exploding.tex:1969-1981 (label prop:schonnmann_bootstrap)
+    file: Exploding/Support/ExtSchFinal.lean
+    export: Exploding.xsr_schonmann
+    state: PROVED
+    frozen_sha256: b2f9d167d3cbd4c150d94c771f06b6055ed809a62378fb549e2c0b7422c1ce89
+    closure_sha256: 6fca9aa8f47b3d1b8ec861362ad6e79194487dc5568bdf6282488fd312e76925
+    provider: Exploding.xsr_schonmann
+    note: \"DISCHARGED at Exploding/Support/ExtSchFinal.lean:65; axiom closure [propext, Classical.choice, Quot.sound]"
+    approved: "2026-10-04"
+
+  - id: ext-liggett-schonmann-stacey-proved
+    version: 3
+    kind: theorem
+    source: in-repo discharge of ext-liggett-schonmann-stacey; liggett1997domination Theorem 0.0, cited at exploding.tex:1215-1217 in the proof of prop:convergence_of_the_generalized_last_wave
+    file: Exploding/Support/ExtLSSCountable.lean
+    export: Exploding.xlse_lss_general
+    state: PROVED
+    frozen_sha256: 6e609b780ea329e70e990e77907f747ada26a64305328c08706a8485063f25a8
+    closure_sha256: 9ea0611d9fc14746b5411b138a27df13a147c43708c92de8a0c7756f227a0da1
+    provider: Exploding.xlse_lss_general
+    note: \"DISCHARGED at Exploding/Support/ExtLSSCountable.lean:116; axiom closure [propext, Classical.choice, Quot.sound]"
+    approved: "2026-10-04"
+
+  - id: ext-lss-bounded-degree-proved
+    version: 3
+    kind: theorem
+    source: in-repo discharge of ext-lss-bounded-degree; liggett1997domination Corollary 1.4, cited at exploding.tex:478 for prop:renormalization_properties
+    file: Exploding/External/LSSBoundedDegreeProved.lean
+    export: Exploding.lssBoundedDegree
+    state: PROVED
+    frozen_sha256: 9aa2a465b3b5605a385b58bd5f10bd797dfe19b79ad879443b55c89edcec591c
+    closure_sha256: 1d4f6fd2c31b276b7698ba40d8bfd39d6a81032b0ceb93a14a5eddf8e721116c
+    provider: Exploding.lssBoundedDegree
+    note: \"DISCHARGED at Exploding/Support/ExtLSSCountable.lean:111 (xlse_lss_bounded_degree); axiom closure [propext, Classical.choice, Quot.sound]"
+    approved: "2026-10-04"
+
+  - id: ext-mathieu-holes-proved
+    version: 3
+    kind: theorem
+    source: in-repo discharge of ext-mathieu-holes; mathieu2008quenched Lemma 5.2, cited at exploding.tex:478 for prop:renormalization_properties
+    file: Exploding/Support/ExtMHHoleVolume.lean
+    export: Exploding.xmf_proved
+    state: PROVED
+    frozen_sha256: a4e5f4c96380f1c0cb7ea3486a314a7a34642385542f07711499380586dc9c72
+    closure_sha256: 1f890c0c3f3ffa37fae313b9514e8a14ef983cb6dfeb6f097a2afb4dda458be6
+    provider: Exploding.xmf_proved
+    note: \"DISCHARGED at Exploding/Support/ExtMHHoleVolume.lean:16; axiom closure [propext, Classical.choice, Quot.sound]"
+    approved: "2026-10-04"
+
+  - id: ext-fey-meester-redig-proved
+    version: 3
+    kind: theorem
+    source: in-repo discharge of ext-fey-meester-redig; fey2009stabilizability Theorem 2.8, cited at exploding.tex:1415-1424 in the proof of theorem:counterexample
+    file: Exploding/Support/ExtFMR.lean
+    export: Exploding.xfmr_proved
+    state: PROVED
+    frozen_sha256: 07eb5a1029975901b972459f3aaf76af37efeaac0c826a5f606ed573367f7141
+    closure_sha256: 66b134f67c410f8bd472baa957db30202ef9066e0d3fafbb52ed62e177c28604
+    provider: Exploding.xfmr_proved
+    note: \"DISCHARGED at Exploding/Support/ExtFMR.lean:53; axiom closure [propext, Classical.choice, Quot.sound]"
+    approved: "2026-10-04"
+

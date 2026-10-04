@@ -34,7 +34,7 @@ def Exploding.External.AntalPisztoraChemicalDistance : Prop :=
 * **Lean name** `Exploding.External.FeyLevinePeresExplosive`
 * **File** `Exploding/External/FeyLevinePeres.lean`
 * **Cited at** exploding.tex:238-240 (label prop:fey_levine_peres_explode)
-* **Also proved here** by `xsr_flp` in `Exploding/Support/ExtSchFLP.lean`, so this hypothesis can be discharged rather than assumed
+* **Also proved here** by `Exploding.xsr_flp` in `Exploding/Support/ExtSchFLP.lean`, so this hypothesis can be discharged rather than assumed
 
 ```lean
 def Exploding.External.FeyLevinePeresExplosive : Prop :=
@@ -46,7 +46,7 @@ def Exploding.External.FeyLevinePeresExplosive : Prop :=
 * **Lean name** `Exploding.External.FeyMeesterRedigLeastAction`
 * **File** `Exploding/External/FeyMeesterRedig.lean`
 * **Cited at** fey2009stabilizability Theorem 2.8, cited at exploding.tex:1415-1424 in the proof of theorem:counterexample
-* **Also proved here** by `xfmr_proved` in `Exploding/Support/ExtFMR.lean`, so this hypothesis can be discharged rather than assumed
+* **Also proved here** by `Exploding.xfmr_proved` in `Exploding/Support/ExtFMR.lean`, so this hypothesis can be discharged rather than assumed
 
 ```lean
 def Exploding.External.FeyMeesterRedigLeastAction : Prop :=
@@ -63,7 +63,7 @@ def Exploding.External.FeyMeesterRedigLeastAction : Prop :=
 * **Lean name** `Exploding.External.LiggettSchonmannStacey`
 * **File** `Exploding/External/LiggettSchonmannStacey.lean`
 * **Cited at** liggett1997domination Theorem 0.0, cited at exploding.tex:1215-1217 in the proof of prop:convergence_of_the_generalized_last_wave
-* **Also proved here** by `xlse_lss_general` in `Exploding/Support/ExtLSSCountable.lean`, so this hypothesis can be discharged rather than assumed
+* **Also proved here** by `Exploding.xlse_lss_general` in `Exploding/Support/ExtLSSCountable.lean`, so this hypothesis can be discharged rather than assumed
 
 ```lean
 def Exploding.External.LiggettSchonmannStacey : Prop :=
@@ -99,7 +99,7 @@ def Exploding.External.LiggettSchonmannStaceyBoundedDegree : Prop :=
 * **Lean name** `Exploding.External.MathieuHoleVolume`
 * **File** `Exploding/External/MathieuHoles.lean`
 * **Cited at** mathieu2008quenched Lemma 5.2, cited at exploding.tex:478 for prop:renormalization_properties
-* **Also proved here** by `xmf_proved` in `Exploding/Support/ExtMHHoleVolume.lean`, so this hypothesis can be discharged rather than assumed
+* **Also proved here** by `Exploding.xmf_proved` in `Exploding/Support/ExtMHHoleVolume.lean`, so this hypothesis can be discharged rather than assumed
 
 ```lean
 def Exploding.External.MathieuHoleVolume : Prop :=
@@ -115,7 +115,7 @@ def Exploding.External.MathieuHoleVolume : Prop :=
 * **Lean name** `Exploding.External.SchonmannBootstrap`
 * **File** `Exploding/External/Schonmann.lean`
 * **Cited at** exploding.tex:1969-1981 (label prop:schonnmann_bootstrap)
-* **Also proved here** by `xsr_schonmann` in `Exploding/Support/ExtSchFinal.lean`, so this hypothesis can be discharged rather than assumed
+* **Also proved here** by `Exploding.xsr_schonmann` in `Exploding/Support/ExtSchFinal.lean`, so this hypothesis can be discharged rather than assumed
 
 ```lean
 def Exploding.External.SchonmannBootstrap : Prop :=

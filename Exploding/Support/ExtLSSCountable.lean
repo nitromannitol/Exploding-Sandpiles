@@ -16,6 +16,7 @@ import Exploding.Support.ExtLSSReg
 import Exploding.Support.ExtLSSG
 
 open MeasureTheory Set Filter
+open Exploding
 open scoped Topology ENNReal
 
 namespace Exploding
@@ -111,9 +112,11 @@ dependent field of bits by a product measure, with no remaining hypothesis. -/
 theorem xlse_lss_bounded_degree : Exploding.External.LiggettSchonmannStaceyBoundedDegree :=
   xlss_proved xlse_finite_to_countable
 
+end Exploding
+
 /-- **Theorem 0.0 of Liggett, Schonmann and Stacey**, the domination of a finitely dependent
 field of bits on `ℤ^d` by a product measure, with no remaining hypothesis. -/
-theorem xlse_lss_general : Exploding.External.LiggettSchonmannStacey :=
-  xlssg_of_bd xlse_lss_bounded_degree
-
-end Exploding
+-- FROZEN-STATEMENT-BEGIN
+theorem Exploding.xlse_lss_general : Exploding.External.LiggettSchonmannStacey
+-- FROZEN-STATEMENT-END
+  := xlssg_of_bd xlse_lss_bounded_degree

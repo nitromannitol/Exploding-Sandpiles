@@ -9,6 +9,8 @@ that of `w`, a stable configuration.
 -/
 import Exploding.External.FeyMeesterRedig
 
+open Exploding
+
 namespace Exploding
 
 open LatticeProb
@@ -49,8 +51,13 @@ theorem xfmr_legal_le {d : ℕ} {s0 w : Site d → ℤ} {u : ℕ → Site d → 
       have := xfmr_unstable_lt hw ih hx
       omega
 
+end Exploding
+
 /-- The least action principle of Fey, Meester and Redig. -/
-theorem xfmr_proved : Exploding.External.FeyMeesterRedigLeastAction := by
+-- FROZEN-STATEMENT-BEGIN
+theorem Exploding.xfmr_proved : Exploding.External.FeyMeesterRedigLeastAction
+-- FROZEN-STATEMENT-END
+  := by
   intro d _ s0 _ u v hu hv w hvw hw k x
   have hw0 : ∀ y, 0 ≤ w y := by
     intro y
@@ -58,5 +65,3 @@ theorem xfmr_proved : Exploding.External.FeyMeesterRedigLeastAction := by
     rw [← hK K le_rfl]
     exact xfmr_legal_nonneg hv K y
   exact xfmr_legal_le hu hw0 hw k x
-
-end Exploding

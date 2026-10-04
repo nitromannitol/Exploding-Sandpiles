@@ -11,6 +11,8 @@ import Exploding.Support.ExtSchDouble
 import Exploding.Support.ExtSchExp
 import Exploding.Support.ExtSchProof3
 
+open Exploding
+
 namespace Exploding
 
 open LatticeProb MeasureTheory
@@ -61,12 +63,15 @@ theorem xsr_percolation (hd : 1 ≤ d) (hp : 0 < p) : xsch3_PercolationBound d p
       (by simp) hnear
     exact hge.trans (hexp n hn)
 
-/-- **Schonmann's bootstrap bound.** -/
-theorem xsr_schonmann : Exploding.External.SchonmannBootstrap :=
-  xsch3_schonmann_of_percolation fun _ hd p hp hp1 => by
-    haveI : Fact (0 ≤ p ∧ p ≤ 1) := ⟨⟨hp.le, hp1.le⟩⟩
-    exact xsr_percolation hd hp
-
 end Final
 
 end Exploding
+
+/-- **Schonmann's bootstrap bound.** -/
+-- FROZEN-STATEMENT-BEGIN
+theorem Exploding.xsr_schonmann : Exploding.External.SchonmannBootstrap
+-- FROZEN-STATEMENT-END
+  :=
+  xsch3_schonmann_of_percolation fun _ hd p hp hp1 => by
+    haveI : Fact (0 ≤ p ∧ p ≤ 1) := ⟨⟨hp.le, hp1.le⟩⟩
+    exact xsr_percolation hd hp

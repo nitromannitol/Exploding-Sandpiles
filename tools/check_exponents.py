@@ -76,6 +76,9 @@ EXPECTED_ABSENT: dict[str, dict[str, str]] = {
     "ext-schonmann-bootstrap": {
         "(d)": "dimension label superscript on Q_n^{(d)}, not an exponent of a quantity"},
     "ext-liggett-schonmann-stacey": {"d": "dimension superscript from ℤ^d, not an exponent of a quantity"},
+    "ext-schonmann-bootstrap-proved": {
+        "(d)": "dimension label superscript on Q_n^{(d)}, not an exponent of a quantity"},
+    "ext-liggett-schonmann-stacey-proved": {"d": "dimension superscript from ℤ^d, not an exponent of a quantity"},
     "lem-last-wave-bound": {
         "(z)": "starting-site label superscript on u_t^{(z)}, not an exponent of a quantity",
         "d": "dimension superscript from ℤ^d, not an exponent of a quantity"},

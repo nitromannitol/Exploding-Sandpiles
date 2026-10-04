@@ -458,4 +458,111 @@ theorem xmb_coboundary_aug (n : ℕ) (i : Fin d) {Fneg A B D1 : Set (Site d)}
     have h2 := (add_eq_zero_iff_eq_neg).mp hsum
     rwa [CharTwo.neg_eq] at h2
 
+/-! ### The boundary of the augmented box is `*`-connected -/
+
+theorem xmb_boundaryStar (n : ℕ) (i : Fin d) {A B : Set (Site d)}
+    (hAcent : ∀ z ∈ A, z ∈ cent d n)
+    (hB_eq : ∀ z, z ∈ B ↔ (z ∈ cent d n ∧ z ∉ A))
+    (hBcon : ∀ u ∈ B, ∀ v ∈ B,
+      ReflTransGen (fun a b => a ∈ B ∧ b ∈ B ∧ (lattice d).Adj a b) u v)
+    (hAmeets : ∀ u ∈ A, ∃ f1 ∈ A, f1 ∈ xmc_Fneg d n i ∧
+      ReflTransGen (fun a b => a ∈ A ∧ b ∈ A ∧ (lattice d).Adj a b) u f1)
+    {z0 : Site d} (hz0 : z0 ∈ xmc_Fneg d n i)
+    (x y : Site d)
+    (hx : x ∈ B ∧ xmb_Bdry (xmc_Fneg d n i) A x)
+    (hy : y ∈ B ∧ xmb_Bdry (xmc_Fneg d n i) A y) :
+    ReflTransGen (fun a b => (a ∈ B ∧ xmb_Bdry (xmc_Fneg d n i) A a) ∧
+      (b ∈ B ∧ xmb_Bdry (xmc_Fneg d n i) A b) ∧ xmh_star a b) x y := by
+  classical
+  by_contra hne
+  set R : Site d → Site d → Prop := fun a b =>
+    (a ∈ B ∧ xmb_Bdry (xmc_Fneg d n i) A a) ∧
+    (b ∈ B ∧ xmb_Bdry (xmc_Fneg d n i) A b) ∧ xmh_star a b with hR
+  set D1 : Set (Site d) := {z | (z ∈ B ∧ xmb_Bdry (xmc_Fneg d n i) A z) ∧
+    ReflTransGen R x z} with hD1def
+  have hyD1 : y ∉ D1 := fun h => hne h.2
+  have hxD1 : x ∈ D1 := ⟨hx, ReflTransGen.refl⟩
+  have hD1 : ∀ z ∈ D1, z ∈ B ∧ xmb_Bdry (xmc_Fneg d n i) A z := fun z hz => hz.1
+  have hsep : ∀ x' ∈ D1, ∀ y', y' ∈ B → xmb_Bdry (xmc_Fneg d n i) A y' → y' ∉ D1 →
+      ¬ xmh3_near x' y' := by
+    intro x' hx' y' hy'B hy'c hy'D hnear
+    apply hy'D
+    refine ⟨⟨hy'B, hy'c⟩, hx'.2.tail ?_⟩
+    exact ⟨hx'.1, ⟨hy'B, hy'c⟩, (fun heq => hy'D (heq ▸ hx')), hnear⟩
+  have hclose : ∀ b ∈ B, ∀ z, (lattice d).Adj b z → b ∈ cent d n → z ∈ cent d n →
+      z ∉ A → z ∈ B :=
+    fun b _ z _ _ hzc hzA => (hB_eq z).mpr ⟨hzc, hzA⟩
+  obtain ⟨f, hfbox, hfsigma⟩ := xmb_coboundary_aug n i rfl hclose hD1 hsep
+    (fun z hz hzA => (hB_eq z).mpr ⟨hz, hzA⟩) hz0
+  have char2 : ∀ a b : ZMod 2, a + b = 0 → a = b := by decide
+  have hxA : x ∉ A := ((hB_eq x).mp hx.1).2
+  have hyA : y ∉ A := ((hB_eq y).mp hy.1).2
+  have hstx : xmb_st (xmc_Fneg d n i) A B D1 x = .d1 := xmb_st_d1 hxA hxD1
+  have hsty : xmb_st (xmc_Fneg d n i) A B D1 y = .d2 :=
+    xmb_st_d2 hyA hyD1 hy.1 hy.2
+  have hfB : ∀ u ∈ B, ∀ v ∈ B, f (some u) = f (some v) := by
+    intro u hu v hv
+    have hstep : ∀ v, ReflTransGen (fun a b => a ∈ B ∧ b ∈ B ∧ (lattice d).Adj a b) u v →
+        f (some u) = f (some v) := by
+      intro v h
+      induction h with
+      | refl => rfl
+      | tail _ hbc ih =>
+        refine ih.trans (char2 _ _ ?_)
+        rw [hfbox _ _ hbc.2.2 ((hB_eq _).mp hbc.1).1 ((hB_eq _).mp hbc.2.1).1,
+          ECSt.cross_eq_zero_of_ne_a (xmb_st_ne_a ((hB_eq _).mp hbc.1).2)
+            (xmb_st_ne_a ((hB_eq _).mp hbc.2.1).2)]
+    exact hstep v (hBcon u hu v hv)
+  have hfA_none : ∀ c ∈ A, f (some c) = f none := by
+    intro c hc
+    obtain ⟨f1, hf1A, hf1F, hpath⟩ := hAmeets c hc
+    have hpath' : f (some c) = f (some f1) := by
+      have hstepA : ∀ a b, a ∈ A → b ∈ A → (lattice d).Adj a b →
+          f (some a) = f (some b) := by
+        intro a b ha hb hab
+        have h := hfbox a b hab (hAcent a ha) (hAcent b hb)
+        rw [xmb_st_of_mem ha, xmb_st_of_mem hb] at h
+        exact char2 _ _ h
+      have key : ∀ w, ReflTransGen (fun a b => a ∈ A ∧ b ∈ A ∧ (lattice d).Adj a b) c w →
+          f (some c) = f (some w) := by
+        intro w hw
+        induction hw with
+        | refl => rfl
+        | tail _ hbc ih => exact ih.trans (hstepA _ _ hbc.1 hbc.2.1 hbc.2.2)
+      exact key f1 hpath
+    have hsig := hfsigma f1 hf1F
+    rw [xmb_st_of_mem hf1A] at hsig
+    exact hpath'.trans (char2 _ _ hsig).symm
+  have hfA : ∀ u ∈ A, ∀ v ∈ A, f (some u) = f (some v) :=
+    fun u hu v hv => (hfA_none u hu).trans (hfA_none v hv).symm
+  have hA_opt : ∀ u v : Option (Site d),
+      (u = none ∨ ∃ c, u = some c ∧ c ∈ A) →
+      (v = none ∨ ∃ c, v = some c ∧ c ∈ A) → f u = f v := by
+    intro u v hu hv
+    rcases hu with rfl | ⟨cu, rfl, hcu⟩ <;> rcases hv with rfl | ⟨cv, rfl, hcv⟩
+    · rfl
+    · exact (hfA_none cv hcv).symm
+    · exact hfA_none cu hcu
+    · exact hfA cu hcu cv hcv
+  obtain ⟨a1, ha1, he1⟩ : ∃ a1 : Option (Site d),
+      (a1 = none ∨ ∃ c, a1 = some c ∧ c ∈ A) ∧
+      f a1 + f (some x) = ECSt.cross .a (xmb_st (xmc_Fneg d n i) A B D1 x) := by
+    rcases hx.2 with ⟨c, hcA, hadj⟩ | hxF
+    · refine ⟨some c, Or.inr ⟨c, rfl, hcA⟩, ?_⟩
+      rw [hfbox c x hadj (hAcent c hcA) ((hB_eq x).mp hx.1).1, xmb_st_of_mem hcA]
+    · exact ⟨none, Or.inl rfl, by rw [hfsigma x hxF]⟩
+  obtain ⟨a2, ha2, he2⟩ : ∃ a2 : Option (Site d),
+      (a2 = none ∨ ∃ c, a2 = some c ∧ c ∈ A) ∧
+      f a2 + f (some y) = ECSt.cross .a (xmb_st (xmc_Fneg d n i) A B D1 y) := by
+    rcases hy.2 with ⟨c, hcA, hadj⟩ | hyF
+    · refine ⟨some c, Or.inr ⟨c, rfl, hcA⟩, ?_⟩
+      rw [hfbox c y hadj (hAcent c hcA) ((hB_eq y).mp hy.1).1, xmb_st_of_mem hcA]
+    · exact ⟨none, Or.inl rfl, by rw [hfsigma y hyF]⟩
+  have he1' : f a1 + f (some x) = 1 := by rw [he1, hstx]; rfl
+  have he2' : f a2 + f (some y) = 0 := by rw [he2, hsty]; rfl
+  have h3 : f a1 = f a2 := hA_opt a1 a2 ha1 ha2
+  have h4 : f (some x) = f (some y) := hfB x hx.1 y hy.1
+  rw [h3, h4, he2'] at he1'
+  exact absurd he1' (by decide)
+
 end Exploding

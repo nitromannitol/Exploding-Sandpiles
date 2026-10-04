@@ -57,6 +57,7 @@ import Exploding.Support.ExtBCBernoulli2
 import Exploding.Support.ExtAPBarrier
 import Exploding.Support.ExtAPBarrierStar
 import Exploding.Support.ExtAPBridge
+import Exploding.Support.ExtAPStarDuality
 import Exploding.Support.ExtBCBernoulli3
 import Exploding.Support.ExtMHBase
 import Exploding.Support.ExtMHProof

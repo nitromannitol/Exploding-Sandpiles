@@ -54,6 +54,42 @@ EXPECTED_ABSENT: dict[str, dict[str, str]] = {
     "prop-square-passage": {"-cR": "notation: the paper's e^{-cR} is Lean's Real.exp (-c * R)"},
     "lem-square-constrained-bonds": {"-cr": "notation: the paper's e^{-cr} is Lean's Real.exp (-c * r)"},
     "lem-square-forced-tests": {"-cm": "notation: the paper's e^{-cm} is Lean's explicit (3/4)^(m/3)"},
+    "thm-limit-shape": {"d": "dimension superscript from ℝ^d, not an exponent of a quantity"},
+    "thm-time-constant": {"d": "dimension superscript from ℝ^d, not an exponent of a quantity"},
+    "thm-explosive": {"d": "dimension superscript from ℤ^d, not an exponent of a quantity"},
+    "prop-renormalization": {
+        "c": "set-complement superscript in C_∞^c, not an exponent of a quantity",
+        "d": "dimension superscript from ℤ^d, not an exponent of a quantity"},
+    "lem-square-lower-bound": {
+        "d": "box superscript from [-n,n]^d, the dimension, not an exponent of a quantity",
+        "dn": "notation: the paper's (2d)^{d n} is Lean's (2*d)^(d*n)"},
+    "lem-penultimate-cluster": {
+        "\\gamma": "notation: the paper writes \\gamma, Lean writes γ",
+        "d": "box superscript from [-1,1]^d, the dimension, not an exponent of a quantity"},
+    "lem-penultimate-upper-bound": {"\\gamma": "notation: the paper writes \\gamma, Lean writes γ"},
+    "lem-penultimate-close": {"\\gamma": "notation: the paper writes \\gamma, Lean writes γ"},
+    "prop-last-wave-convergence": {"d": "dimension superscript from ℝ^d, not an exponent of a quantity"},
+    "prop-approximate-subadditive": {"d": "dimension superscript from ℤ^d, not an exponent of a quantity"},
+    "prop-generalized-last-wave": {"d": "dimension superscript from ℝ^d, not an exponent of a quantity"},
+    "thm-generalized-convergence": {"d": "dimension superscript from ℝ^d, not an exponent of a quantity"},
+    "thm-counterexample": {"d": "dimension superscript from ℤ^d, not an exponent of a quantity"},
+    "ext-schonmann-bootstrap": {
+        "(d)": "dimension label superscript on Q_n^{(d)}, not an exponent of a quantity"},
+    "ext-liggett-schonmann-stacey": {"d": "dimension superscript from ℤ^d, not an exponent of a quantity"},
+    "lem-last-wave-bound": {
+        "(z)": "starting-site label superscript on u_t^{(z)}, not an exponent of a quantity",
+        "d": "dimension superscript from ℤ^d, not an exponent of a quantity"},
+    "prop-dimensional-reduction": {
+        "(d)": "dimension label superscript on u_t^{(d)}, not an exponent of a quantity",
+        "(d-1)": "dimension label superscript on u_t^{(d-1)}, not an exponent of a quantity"},
+    "lem-approx-subadditivity": {"d": "dimension superscript from ℤ^d, not an exponent of a quantity"},
+    "prop-recurrence": {"d": "dimension superscript from ℤ^d, not an exponent of a quantity"},
+    "lem-local-convexity": {
+        "(i)": "path-index label superscript on z^{(i)}, not an exponent of a quantity",
+        "(i+1)": "path-index label superscript on z^{(i+1)}, not an exponent of a quantity"},
+    "prop-crossing-time": {
+        "(i,z)": "direction/site label superscript on the crossing time C_k^{(i,z)}, not an exponent of a quantity",
+        "d": "the exponent k^d is carried by the definition GoodCube (GoodCube η k ≜ max crossing time ≤ k^d), not repeated in the frozen block"},
 }
 
 
@@ -123,7 +159,7 @@ def main() -> int:
     compared = 0
 
     for node in manifest.get("nodes") or []:
-        rng = re.search(r"rotor\.tex:(\d+)-(\d+)", node["source"])
+        rng = re.search(rf"{re.escape(paper_path().name)}:(\d+)-(\d+)", node["source"])
         if not rng:
             continue
         a, b = int(rng.group(1)), int(rng.group(2))

@@ -118,6 +118,16 @@ theorem xmi_infiniteClusterBound_of_largeDeviation (h : xmi_OpenDistanceLargeDev
   exact ⟨ρ, c, hρ, hc, R, fun y hy =>
     (measure_mono fun _ hω => hω.2).trans (hR y hy)⟩
 
+/-- The corrected infinite-cluster bound from the named high-density bound on the
+open distance (`xap12_HighDensityBound`), which is the sharpest named input that
+implies it: the infinite-cluster event is a sub-event of the `BigDistance` event,
+and no sharper named statement is available -- the Peierls count controls only the
+finite cluster, and the old `ShortWalkFails` formulation contains the
+constant-probability event that `y` lies outside the infinite good cluster. -/
+theorem xmi_infiniteClusterBound_of_highDensity (h : xap12_HighDensityBound) :
+    xap13_InfiniteClusterBound :=
+  xmi_infiniteClusterBound_of_largeDeviation h
+
 /-- The frozen Antal--Pisztora node supplies the missing large deviation, because
 the density range of the corrected bound lies above `bondCritical d`. -/
 theorem xmi_largeDeviation_of_antalPisztora

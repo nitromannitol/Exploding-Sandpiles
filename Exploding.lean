@@ -62,6 +62,7 @@ import Exploding.Support.ExtAPMinCut
 import Exploding.Support.ExtAPMinCutLine
 import Exploding.Support.ExtAPMinCutDuality
 import Exploding.Support.ExtAPMinCutTwo
+import Exploding.Support.ExtAPFiniteCluster
 import Exploding.Support.ExtBCBernoulli3
 import Exploding.Support.ExtMHBase
 import Exploding.Support.ExtMHProof

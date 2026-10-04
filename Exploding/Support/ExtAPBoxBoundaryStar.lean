@@ -565,4 +565,123 @@ theorem xmb_boundaryStar (n : ℕ) (i : Fin d) {A B : Set (Site d)}
   rw [h3, h4, he2'] at he1'
   exact absurd he1' (by decide)
 
+/-! ### Connectivity of a fixed-coordinate face -/
+
+def xmb_face (d n : ℕ) (i : Fin d) (c : ℤ) : Set (Site d) := {z | z ∈ cent d n ∧ z i = c}
+
+theorem xmb_faceC_update_mem {n : ℕ} {i : Fin d} {c : ℤ} {z : Site d}
+    (hz : z ∈ xmb_face d n i c) {j : Fin d} (hji : j ≠ i) {s : ℤ} (hs : |s| ≤ (n : ℤ)) :
+    Function.update z j s ∈ xmb_face d n i c := by
+  refine ⟨?_, ?_⟩
+  · intro k
+    by_cases hk : k = j
+    · subst hk; rw [Function.update_self]; exact hs
+    · rw [Function.update_of_ne hk]; exact hz.1 k
+  · rw [Function.update_of_ne (Ne.symm hji)]; exact hz.2
+
+theorem xmb_faceC_path_up {n : ℕ} {i : Fin d} {c : ℤ} {z : Site d}
+    (hz : z ∈ xmb_face d n i c) {j : Fin d} (hji : j ≠ i) {b : ℤ} (hb : |b| ≤ (n : ℤ)) :
+    ReflTransGen (fun a b => a ∈ xmb_face d n i c ∧ b ∈ xmb_face d n i c ∧
+      (lattice d).Adj a b) z (Function.update z j b) := by
+  have hzj : |z j| ≤ (n : ℤ) := hz.1 j
+  have hzj_lo : -(n : ℤ) ≤ z j := (abs_le.mp hzj).1
+  have hzj_hi : z j ≤ (n : ℤ) := (abs_le.mp hzj).2
+  have hb_lo : -(n : ℤ) ≤ b := (abs_le.mp hb).1
+  have hb_hi : b ≤ (n : ℤ) := (abs_le.mp hb).2
+  rcases le_total (z j) b with hab | hba
+  · have key : ∀ k : ℕ, (z j) + (k : ℤ) ≤ b →
+        ReflTransGen (fun a b => a ∈ xmb_face d n i c ∧ b ∈ xmb_face d n i c ∧
+          (lattice d).Adj a b) z (Function.update z j ((z j) + (k : ℤ))) := by
+      intro k
+      induction k with
+      | zero => intro _; simpa using ReflTransGen.refl
+      | succ k ih =>
+        intro hk
+        have hk' : (z j) + (k : ℤ) ≤ b := by omega
+        have hb1 : |(z j) + (k : ℤ)| ≤ (n : ℤ) := by rw [abs_le]; constructor <;> omega
+        have hb2 : |(z j) + (k : ℤ) + 1| ≤ (n : ℤ) := by rw [abs_le]; constructor <;> omega
+        have hstep : (fun a b => a ∈ xmb_face d n i c ∧ b ∈ xmb_face d n i c ∧
+            (lattice d).Adj a b) (Function.update z j ((z j) + (k : ℤ)))
+            (Function.update z j ((z j) + ((k + 1 : ℕ) : ℤ))) := by
+          rw [show (z j) + ((k + 1 : ℕ) : ℤ) = (z j) + (k : ℤ) + 1 by push_cast; ring]
+          exact ⟨xmb_faceC_update_mem hz hji hb1, xmb_faceC_update_mem hz hji hb2,
+            xmb_adj_update_succ z j ((z j) + (k : ℤ))⟩
+        exact (ih hk').tail hstep
+    have hb' : b = (z j) + ((b - z j).toNat : ℤ) := by
+      rw [Int.toNat_of_nonneg (by omega)]; ring
+    rw [hb']
+    exact key ((b - z j).toNat) (by rw [Int.toNat_of_nonneg (by omega)]; omega)
+  · have key : ∀ k : ℕ, b ≤ (z j) - (k : ℤ) →
+        ReflTransGen (fun a b => a ∈ xmb_face d n i c ∧ b ∈ xmb_face d n i c ∧
+          (lattice d).Adj a b) z (Function.update z j ((z j) - (k : ℤ))) := by
+      intro k
+      induction k with
+      | zero => intro _; simpa using ReflTransGen.refl
+      | succ k ih =>
+        intro hk
+        have hk' : b ≤ (z j) - (k : ℤ) := by omega
+        have hb1 : |(z j) - (k : ℤ)| ≤ (n : ℤ) := by rw [abs_le]; constructor <;> omega
+        have hb2 : |(z j) - (k : ℤ) - 1| ≤ (n : ℤ) := by rw [abs_le]; constructor <;> omega
+        have hstep : (fun a b => a ∈ xmb_face d n i c ∧ b ∈ xmb_face d n i c ∧
+            (lattice d).Adj a b) (Function.update z j ((z j) - (k : ℤ)))
+            (Function.update z j ((z j) - ((k + 1 : ℕ) : ℤ))) := by
+          rw [show (z j) - ((k + 1 : ℕ) : ℤ) = (z j) - (k : ℤ) - 1 by push_cast; ring]
+          have hadj := xmb_adj_update_succ z j ((z j) - (k : ℤ) - 1)
+          rw [show (z j) - (k : ℤ) - 1 + 1 = (z j) - (k : ℤ) by ring] at hadj
+          exact ⟨xmb_faceC_update_mem hz hji hb1, xmb_faceC_update_mem hz hji hb2, hadj.symm⟩
+        exact (ih hk').tail hstep
+    have hb' : b = (z j) - ((z j - b).toNat : ℤ) := by
+      rw [Int.toNat_of_nonneg (by omega)]; ring
+    rw [hb']
+    exact key ((z j - b).toNat) (by rw [Int.toNat_of_nonneg (by omega)]; omega)
+
+theorem xmb_face_connected (n : ℕ) (i : Fin d) {c : ℤ} (_hc : |c| ≤ (n : ℤ))
+    {u v : Site d} (hu : u ∈ xmb_face d n i c) (hv : v ∈ xmb_face d n i c) :
+    ReflTransGen (fun a b => a ∈ xmb_face d n i c ∧ b ∈ xmb_face d n i c ∧
+      (lattice d).Adj a b) u v := by
+  have key : ∀ T : Finset (Fin d), i ∉ T →
+      ReflTransGen (fun a b => a ∈ xmb_face d n i c ∧ b ∈ xmb_face d n i c ∧
+        (lattice d).Adj a b) u (fun j => if j ∈ T then v j else u j) := by
+    intro T
+    induction T using Finset.induction_on with
+    | empty =>
+      intro _
+      simpa only [Finset.notMem_empty, if_false] using
+        (ReflTransGen.refl : ReflTransGen (fun a b => a ∈ xmb_face d n i c ∧
+          b ∈ xmb_face d n i c ∧ (lattice d).Adj a b) u u)
+    | insert j T' hj ih =>
+      intro hiT
+      have hiT' : i ∉ T' := fun h => hiT (Finset.mem_insert_of_mem h)
+      have hji : j ≠ i := fun h => hiT (h ▸ Finset.mem_insert_self j T')
+      have hprev := ih hiT'
+      have hs'mem : (fun k => if k ∈ T' then v k else u k) ∈ xmb_face d n i c := by
+        refine ⟨?_, ?_⟩
+        · intro k
+          show |(if k ∈ T' then v k else u k)| ≤ (n : ℤ)
+          by_cases hk : k ∈ T'
+          · rw [if_pos hk]; exact hv.1 k
+          · rw [if_neg hk]; exact hu.1 k
+        · show (if i ∈ T' then v i else u i) = c
+          rw [if_neg hiT']; exact hu.2
+      have hfinal : (fun k => if k ∈ insert j T' then v k else u k)
+          = Function.update (fun k => if k ∈ T' then v k else u k) j (v j) := by
+        funext k
+        by_cases hk : k = j
+        · subst hk; rw [Function.update_self, if_pos (Finset.mem_insert_self k T')]
+        · rw [Function.update_of_ne hk]
+          by_cases hkT : k ∈ T'
+          · rw [if_pos (Finset.mem_insert_of_mem hkT), if_pos hkT]
+          · rw [if_neg (fun h => hkT ((Finset.mem_insert.mp h).resolve_left hk)), if_neg hkT]
+      rw [hfinal]
+      exact hprev.trans (xmb_faceC_path_up hs'mem hji (b := v j) (hv.1 j))
+  have hfinal : (fun j => if j ∈ (Finset.univ.erase i) then v j
+      else u j) = v := by
+    funext k
+    by_cases hk : k = i
+    · rw [hk, if_neg (Finset.notMem_erase i Finset.univ)]
+      exact hu.2.trans hv.2.symm
+    · rw [if_pos (Finset.mem_erase.mpr ⟨hk, Finset.mem_univ k⟩)]
+  rw [← hfinal]
+  exact key (Finset.univ.erase i) (Finset.notMem_erase i Finset.univ)
+
 end Exploding

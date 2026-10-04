@@ -68,6 +68,7 @@ import Exploding.Support.ExtAPBoxBoundaryStar
 import Exploding.Support.ExtAPInfiniteCluster
 import Exploding.Support.ExtAPSupercritical
 import Exploding.Support.ExtAPKingConnected
+import Exploding.Support.ExtAPMinCutStar
 import Exploding.Support.ExtBCBernoulli3
 import Exploding.Support.ExtMHBase
 import Exploding.Support.ExtMHProof

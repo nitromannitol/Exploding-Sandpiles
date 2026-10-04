@@ -1,95 +1,155 @@
-# Independent promotion verification — Exploding-Sandpiles (2026-10-04)
+# Independent verification — Exploding-Sandpiles full promotion (28 PROVED / 0 SEALED)
 
-* **Auditor:** DeepSeek fleet, independent verification of the 2026-10-04 promotion.
-* **Repository:** `~/lean/Exploding-Sandpiles` (working tree as read; **no `git` and no `lake build` run**, per instructions).
+* **Auditor:** independent verification pass (this report only; no other file written).
+* **Repository:** `~/lean/Exploding-Sandpiles` (working tree as read).
+* **Constraints observed:** no `git`, no `lake build`. `tools/verify.py` was run, which internally
+  invokes `python3 tools/check_axioms.py` (`lake env lean` on one scratch audit file); that is the
+  standard gate and not a `lake build`.
 * **Paper pin:** `paper/exploding.tex`, sha256 `1d7c2010d8bd29e7fb83e93f19c9ebe0e8aef201f93559b2b18f5ca0dc049b44` (matches `ledger/manifest.yaml:source_pin`).
-* **Scope:** (1) run `tools/verify.py`; (2) confirm the manifest tally; (3) spot-check the batch-A/B reports and the triage against the frozen blocks of three nodes; (4) confirm `check_clauses`/`check_exponents` are non-vacuous. Wrote no file except this report.
+* **Scope:** (1) run `tools/verify.py`; (2) confirm the 28/0 tally; (3) confirm
+  `check_clauses`/`check_exponents` are non-vacuous; (4) spot-check `lem-finite-exploding` v6 against
+  `exploding.tex:720-722` and its axiom closure.
 
 ## 1. Gate suite
 
 ```
 $ cd ~/lean/Exploding-Sandpiles && export PATH=$HOME/.elan/bin:$PATH && python3 tools/verify.py
-check_manifest: OK (29 nodes, 0 unsealed; closure 29 checked, 0 skipped; 460 Exploding declarations indexed)
+check_manifest: OK (35 nodes, 0 unsealed; closure 35 checked, 0 skipped; 469 Exploding declarations indexed)
 check_coverage: 24 statements in the paper, 24 formalized
-check_clauses: OK (22 statements, each read against the paper and its correspondence recorded; 4 where the paper is recorded as asserting more, all explained above)
-check_exponents: OK (26 statements; every paper exponent appears in its Lean statement or is explained above)
-check_axioms: 29 clean, 0 depend on sorryAx, 0 unresolved
+check_constants: OK (35 statements; every existential constant is bound before every paper parameter, so it is a genuine constant)
+check_clauses: OK (24 statements, each read against the paper and its correspondence recorded; 5 where the paper is recorded as asserting more, all explained above)
+check_exponents: OK (30 statements; every paper exponent appears in its Lean statement or is explained above)
+paper_anchors: OK (24 anchors resolved, 11 nodes carry no paper label)
+paper_citations: 20 correct, 0 stale, 59 not anchored to a label, 0 unresolvable
+sync_docs: OK (35 nodes; README.md and CORRESPONDENCE.md agree with the manifest)
 check_warnings: OK (0 registered sorry warnings)
-verify: axiom closures agree with the manifest (29 clean, 0 open or resting on open nodes)
+check_axioms: 35 clean, 0 depend on sorryAx, 0 unresolved
+verify: axiom closures agree with the manifest (35 clean, 0 open or resting on open nodes)
 verify: all checks passed
 ```
-
-`#print axioms` on all 29 exports remains exactly `[propext, Classical.choice, Quot.sound]`; no `sorryAx`. **PASS.**
+Exit code 0. **PASS.**
 
 ## 2. Manifest tally
 
-Parsed `ledger/manifest.yaml` directly:
+Parsed `ledger/manifest.yaml` directly (`grep -c 'state: …'`):
 
 | state | count |
 |---|---|
-| `PROVED` | **22** |
+| `PROVED` | **28** |
 | `SEALED` | **0** |
-| `FROZEN` | **7** |
+| `FROZEN` | 7 |
 | `DRAFT_SORRY` | 0 |
 | `CONDITIONAL` | 0 |
+| total `- id:` entries | 35 |
 
-The 7 `FROZEN` entries are the registered `Exploding.External.*` inputs `ext-fey-levine-peres`, `ext-schonmann-bootstrap`, `ext-liggett-schonmann-stacey`, `ext-lss-bounded-degree`, `ext-antal-pisztora`, `ext-mathieu-holes`, `ext-fey-meester-redig`; the 22 `PROVED` entries are all theorem nodes. **PASS.**
+* The 28 `PROVED` are the 22 theorem nodes already audited in batches A–D plus the 6 new in-repo
+  discharges `ext-fey-levine-peres-proved`, `ext-schonmann-bootstrap-proved`,
+  `ext-liggett-schonmann-stacey-proved`, `ext-lss-bounded-degree-proved`,
+  `ext-mathieu-holes-proved`, `ext-fey-meester-redig-proved`. Each of the 6 carries a manifest
+  `note` naming the discharging Lean declaration and its clean closure.
+* The 7 `FROZEN` are the registered `Exploding.External.*` inputs `ext-fey-levine-peres`,
+  `ext-schonmann-bootstrap`, `ext-liggett-schonmann-stacey`, `ext-lss-bounded-degree`,
+  `ext-antal-pisztora`, `ext-mathieu-holes`, `ext-fey-meester-redig`.
+* `ext-antal-pisztora` is the **only** External with no `-proved` counterpart; it remains a carried
+  hypothesis (`hChem`) in the conditional nodes, as documented. This is consistent with the 28/0
+  tally: the promotion counts theorem nodes and the six discharged externals, not the one unproved
+  cited input.
 
-## 3. Spot-check of batch-A/B reports and triage vs the frozen blocks (3 nodes + the triage flag)
+**PASS** (tally matches 28 `PROVED` / 0 `SEALED`).
 
-Frozen-block SHA-256 recomputed independently for each checked node and matched the manifest (`match=True`); each node is `PROVED`.
+## 3. `check_clauses` / `check_exponents` non-vacuity
 
-| node | source | report/triage claim | frozen block | verdict |
-|---|---|---|---|---|
-| `thm-time-constant` | batch A + triage | A report: `N` bound before `η`; `Continuous ∧ ConvexOn ∧` one-homogeneity; `ε`-form convergence; a.s. event `Explosive η ∧ ∀x, arrival η x ≠ ⊤`. Triage: "benign explicit rendering"; the added conjuncts are the a.s. content of `hFLP` and the finiteness implicit in convergence. | `TimeConstant.lean:38-46`: exactly `∃N, Continuous N ∧ ConvexOn ℝ Set.univ N ∧ (∀c≥0, N(c•y)=c·N y) ∧ ∀ᵐη ∂(toyLaw d p), Explosive η ∧ (∀x, arrival η x ≠ ⊤) ∧ …` | **MATCH** |
-| `prop-renormalization` | batch A + `check_clauses` flag | A report: quantifier order `∃k0, ∀k≥k0, ∃c C>0`, then a.s. `η`; clause (1) `IsInfiniteConnectedGoodSet`; clause (2) finiteness + `< (log n)^{5/2}`; clause (3) `ℕ∞` + `∃m` + two-sided bound. `check_clauses` REVIEWED: three Lean conjuncts; paper count 5 = three items plus the two relations of item 3 (count artifact). | `Renormalization.lean:41-51`: exactly three top-level conjuncts — `IsInfiniteConnectedGoodSet … ∧ (∃n0 … (componentIn …).Finite ∧ ncard < (log n)^{5/2}) ∧ (∃n0 … ∃m, chemDist = m ∧ c·mnorm ≤ m ≤ C·mnorm)` | **MATCH** |
-| `prop-generalized-last-wave` | batch B + `check_clauses` REVIEWED | B report: `hηmin`/`hsupp`/`hstat`/`herg`/`h1`/`h3`/`h4` are the paper's own Section 5 hypotheses; `hLSS`, `hLSSB`, `hHole`, `hChem` registered Externals; `N` before `η`; a.s. event carries `Explosive η` and finiteness of `lastArrival`. REVIEWED: same. | `GeneralizedLastWave.lean:40-60`: binders `ηmin, hηmin, L, hL, P, hP, hsupp, hstat, herg, h1, h3, h4, hLSS, hLSSB, hHole, hChem`; conclusion `∃N, Continuous ∧ ConvexOn ∧ one-homog ∧ ∀ᵐη ∂P, Explosive η ∧ (∀x, lastArrival η 0 x ≠ ⊤) ∧ ε-convergence` | **MATCH** |
-| `lem-finite-exploding` (triage flag) | triage + `check_clauses` `FLAGGED` | Triage: "Lean conclusion is `∀ᵐ η ∂(toyLaw d p), ∃ n ≥ 1, ¬ WaveStabilizable η n 0` … does **not** assert `\hat M_η(0) < ∞`". | `FiniteExploding.lean:31`: `∀ᵐ η ∂(toyLaw d p), ∃ n : ℕ, 1 ≤ n ∧ ¬ WaveStabilizable η n (0 : Site d)` | **MATCH (flag is real)** |
-
-No source-fidelity mismatch was found between the two audit reports, the `check_clauses` REVIEWED lines, and the frozen blocks for these nodes. The `lem-finite-exploding` partial-transcription flag is correctly wired (`check_clauses.FLAGGED` contains it) and matches the frozen bytes; it is a recorded weakening, not a hidden one.
-
-## 4. `check_clauses` / `check_exponents` non-vacuity
-
-Both gates now derive the paper stem from `paper_path().name`; `grep -n rotor tools/check_clauses.py tools/check_exponents.py` returns nothing.
+Both gates derive the paper stem from `paper_path().name`; `grep -n rotor tools/check_clauses.py tools/check_exponents.py` returns nothing.
 
 ```
 $ python3 tools/check_clauses.py
-  ... 22 node rows ...
-check_clauses: OK (22 statements, each read against the paper and its correspondence recorded; 4 where the paper is recorded as asserting more, all explained above)
+  ... 24 node rows ...
+check_clauses: OK (24 statements, each read against the paper and its correspondence recorded; 5 where the paper is recorded as asserting more, all explained above)
 
 $ python3 tools/check_exponents.py
-  ... 26 node rows ...
-check_exponents: OK (26 statements; every paper exponent appears in its Lean statement or is explained above)
+  ... 30 node rows ...
+check_exponents: OK (30 statements; every paper exponent appears in its Lean statement or is explained above)
 ```
 
-`check_clauses` inspects **22** paper-bearing statements (its `REVIEWED` table is populated for all of them) and `check_exponents` inspects **26** statements with `EXPECTED_ABSENT` reasons for every notation-only superscript (`d`, `(d)`, `(i)`, `(z)`, `c` in `C_∞^c`, etc.). **Both gates are non-vacuous. PASS.** This supersedes the "vacuous gate" notes in the batch-A report (N5) and the batch-B report (N3), which were written before `2026-10-04-gates-repaired.md`.
+`check_clauses` inspects **24** paper-bearing statements with a populated `REVIEWED` line for each
+(the count grew from 22 with the two new `-proved` nodes that carry a paper label), and
+`check_exponents` inspects **30** statements with `EXPECTED_ABSENT` reasons for every notation-only
+superscript. Both counts are non-zero; neither gate is vacuous. The five printed flags are
+`prop-renormalization`, `ext-schonmann-bootstrap`, `prop-dimensional-reduction`,
+`lem-finite-exploding`, and `ext-schonmann-bootstrap-proved`, all explained in their `REVIEWED`
+lines (the last two are count artifacts of the two-sided display / the `η'` cases definition; the
+first three are the recorded count-heuristic flags). **PASS (non-vacuous).**
 
-## 5. Findings
+## 4. Spot-check — `lem-finite-exploding` v6
 
-1. **DEFECT (documentation only) — the triage names a non-existent External.** `ledger/audits/2026-10-03-script-audit-triage.md:13` lists the carried binders as `Exploding.External.{LiggettSchonmannStacey, LiggettSchonmannStaceyBoundedDegree, MathieuHoleVolume, AntalPisztoraChemicalDistance, FeyMeesterRedigLeastAction, SchonmannBootstrap, Schauder}`. There is **no `Exploding.External.Schauder`** anywhere: the production tree defines exactly seven `External` `Prop`s (`AntalPisztoraChemicalDistance`, `FeyLevinePeresExplosive`, `FeyMeesterRedigLeastAction`, `LiggettSchonmannStacey`, `LiggettSchonmannStaceyBoundedDegree`, `MathieuHoleVolume`, `SchonmannBootstrap`), the manifest has exactly those 7 `FROZEN` nodes, and `grep -rin schauder` matches only that one triage line. Reproducer:
-   ```
-   $ grep -rho "def Exploding\.External\.[A-Za-z]*" Exploding/External/*.lean | sort -u
-   def Exploding.External.AntalPisztoraChemicalDistance
-   def Exploding.External.FeyLevinePeresExplosive
-   def Exploding.External.FeyMeesterRedigLeastAction
-   def Exploding.External.LiggettSchonmannStacey
-   def Exploding.External.LiggettSchonmannStaceyBoundedDegree
-   def Exploding.External.MathieuHoleVolume
-   def Exploding.External.SchonmannBootstrap
-   $ grep -rin schauder . --include=*.lean --include=*.md --include=*.yaml --include=*.py | grep -v '^./.lake'
-   ./ledger/audits/2026-10-03-script-audit-triage.md:13:Schauder}`, every one a registered ...
-   ```
-   This does not affect any frozen statement or proof (no node uses a `Schauder` binder); it is a stale name in the triage's prose and should be struck from that document.
-2. **Conditionality still stands (recorded, unchanged).** `thm-limit-shape`, `thm-time-constant`, `prop-renormalization`, all six batch-B nodes and `prop-generalized-last-wave` remain conditional on the one registered-but-unproved External `ext-antal-pisztora` (`hChem`), and `prop-generalized-last-wave` additionally on Hypotheses 5.1/5.3/5.4. This is the documented design and is not a promotion blocker; the 22 `PROVED` states record a proved conditional theorem, as the promotion note says.
-3. **`lem-finite-exploding`** is `PROVED` while carrying the triage's partial-transcription flag (existence half of the paper's last-wave lemma, without `\hat M_\eta(0) < ∞`). The flag is correctly recorded and printed by `check_clauses`; it is a tracked weakening for the owner, not a hidden one.
+Manifest entry: `version: 6`, `state: PROVED`, `source: exploding.tex:720-722 (label lemma:finite_exploding)`,
+`frozen_sha256: 2bdfdb526cdb4146e9765019df878274f2d3d49991244591748bbce579ac9772`,
+`closure_sha256: 77673f7e7668fc185b4aa41a865f2abe3a7deca9485e1c58d58353968b2ca7f5`.
 
-## 6. What I could not verify
+Paper `exploding.tex:720-722` (exact):
+```
+\begin{lemma} \label{lemma:finite_exploding}
+	The last-wave is well-defined, $\hat{M}_{\eta}(0) < \infty$.
+\end{lemma}
+```
+Frozen block `Exploding/Frozen/FiniteExploding.lean:27-31` (exact):
+```
+theorem Exploding.Frozen.finite_exploding (d : ℕ) (hd : 2 ≤ d) (p : ℝ) (hp : 0 < p) (hp1 : p < 1)
+    (hLSSB : Exploding.External.LiggettSchonmannStaceyBoundedDegree)
+    (hHole : Exploding.External.MathieuHoleVolume)
+    (hChem : Exploding.External.AntalPisztoraChemicalDistance) :
+    ∀ᵐ η ∂(toyLaw d p), ∃ n : ℕ, 1 ≤ n ∧ ¬ WaveStabilizable η n (0 : Site d)
+```
 
-* The exact commit id: instructions forbade `git`, so I did not read `HEAD`; the verification is of the working tree as read (the manifest, paper pin and all 29 frozen hashes are self-consistent).
-* I did not re-run `lake build` (forbidden); the clean closures come from `check_axioms`/`check_warnings`, which invoke `lake env lean` on the audit file.
-* I re-read 3 nodes' reports/triage against their frozen blocks in detail, not all 22; the other 19 `check_clauses` `REVIEWED` lines and the batch reports were read for consistency but not byte-diffed line by line in this pass.
-* I did not adjudicate the truth of the unproved External `ext-antal-pisztora` or the satisfiability of Hypotheses 5.1/5.3/5.4.
+* **Integrity.** Recomputing SHA-256 over the bytes strictly between the markers gives
+  `2bdfdb526cdb4146e9765019df878274f2d3d49991244591748bbce579ac9772`, matching the manifest
+  (`match=True`); no `axiom`, `admit`, `sorry`, `native_decide` or `set_option` in the block;
+  `check_manifest` reports `closure 35 checked, 0 skipped`, so the recorded `closure_sha256`
+  matches too.
+* **Closure.** `check_axioms` prints `clean lem-finite-exploding`; `check_warnings` replays
+  `Exploding/Meta/AxiomsAudit.lean` and prints
+  `'Exploding.finite_exploding' depends on axioms: [propext, Classical.choice, Quot.sound]`,
+  with `check_warnings: OK (0 registered sorry warnings)`. No `sorryAx`. **Closure is clean.**
+* **Statement fidelity.** The frozen conclusion is the existence half. In the library,
+  `Exploding.waveThreshold η z : ℕ := sInf {n : ℕ | 1 ≤ n ∧ ¬ WaveStabilizable η n z}`
+  (`Exploding/Support/Toppling.lean:224`) is the paper's `M̂_η(z)`; because its codomain is `ℕ`,
+  `M̂_η(0) < ∞` is automatic and the mathematical content of the paper's display is exactly that
+  the defining set is non-empty, which is the frozen conclusion (and the file docstring states this
+  reading). So under the documented `ℕ`-valued reading the frozen block captures the paper's
+  assertion. It is **not** a literal reproduction of the display `M̂_η(0) < ∞`, and
+  `check_clauses` still prints `lem-finite-exploding … <-- paper asserts more` with the `REVIEWED`
+  line `… not the finiteness of M̂ (flagged: partial transcription, triage)`. This is the same
+  partial-transcription concern recorded in `2026-10-03-script-audit-triage.md`,
+  `2026-10-03-refute-first-D.md`, and the proposal `2026-10-04-finite-exploding-erratum.md`.
+* **Tally discrepancy to note (documentation, not proof).** `2026-10-04-finite-exploding-erratum.md`
+  proposed reverting this node to `SEALED` "until a ruling"; the current manifest instead records
+  `PROVED` (v6, frozen bytes unchanged). Either the erratum is superseded by a later ruling accepting
+  the `ℕ`-valued reading, or it was not applied. No frozen statement was edited, and the proof and
+  closure are clean either way; the only open item is the fidelity ruling.
 
-## Conclusion
+**Verdict:** closure clean and the theorem is proved (PASS); statement fidelity is a **CONCERN**
+(documented partial transcription / modelling choice, correctly flagged by `check_clauses` and the
+erratum), not a proof defect.
 
-The promotion is **verified**: `tools/verify.py` passes; the manifest is exactly **22 `PROVED` / 0 `SEALED` / 7 `FROZEN`**; the three spot-checked nodes (`thm-time-constant`, `prop-renormalization`, `prop-generalized-last-wave`) and the `lem-finite-exploding` flag match their frozen blocks and the batch-A/B reports and triage; and `check_clauses` (22 statements) and `check_exponents` (26 statements) are non-vacuous. The only discrepancy found is a documentation-only stale name (`Schauder`) in the triage's External list, which names no existing node and affects neither the frozen statements nor the proofs.
+## 5. What I could not verify
+
+* The exact commit id: instructions forbade `git`, so `HEAD` was not read; the verification is of the
+  working tree as read (manifest, paper pin and all 35 frozen hashes are self-consistent).
+* I did not re-run `lake build` (forbidden). The clean closures come from `check_axioms` /
+  `check_warnings`, which compile the audit file with `lake env lean`.
+* I did not adjudicate the truth of the one unproved External `ext-antal-pisztora`, nor the
+  satisfiability of the Section-5 hypotheses carried by `prop-generalized-last-wave`; the promotion
+  records proved conditional theorems, as before.
+* I spot-checked `lem-finite-exploding` in detail and re-read the 24 `check_clauses` rows for
+  consistency, but did not byte-diff every `REVIEWED` line against the paper.
+
+## 6. Conclusion
+
+The full promotion is **verified as to its machine-checkable content**: `python3 tools/verify.py`
+passes; the manifest is exactly **28 `PROVED` / 0 `SEALED` / 7 `FROZEN`**; `check_clauses` (24
+statements) and `check_exponents` (30 statements) are non-vacuous; and `lem-finite-exploding` v6 has
+a matching frozen hash and a clean axiom closure `[propext, Classical.choice, Quot.sound]` with no
+`sorryAx`. The single caveat is fidelity, not soundness: `lem-finite-exploding` reproduces the
+paper's `lemma:finite_exploding` content under the `ℕ`-valued `waveThreshold` reading but not its
+literal `M̂_η(0) < ∞` display, and both `check_clauses` and the erratum flag it — the outstanding
+item is the owner's ruling on that modelling choice, not a promoted proof error.

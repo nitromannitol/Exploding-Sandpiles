@@ -57,7 +57,7 @@ theorem xmb_box_difference (n m : ℕ) (H : (i : Fin (m + 1)) → Site (m + 1) �
       p + unit i ∈ cent (m + 1) n → p + unit j ∈ cent (m + 1) n →
       H i p + H j (p + unit i) = H j p + H i (p + unit j))
     (w : Site m) (hw : w ∈ cent m n) (i : Fin m) (hwi : w + unit i ∈ cent m n)
-    {x : ℤ} (hx : -(n : ℤ) ≤ x) (hxn : x ≤ (n : ℤ) - 1) :
+    {x : ℤ} (hx : -(n : ℤ) ≤ x) (hxn : x ≤ (n : ℤ)) :
     xmb_antiN n (fun t => H 0 (Fin.cons t (w + unit i))) x
         - xmb_antiN n (fun t => H 0 (Fin.cons t w)) x
       = H i.succ (Fin.cons x w) - H i.succ (Fin.cons (-(n : ℤ)) w) := by
@@ -125,5 +125,74 @@ theorem xmb_box_difference (n m : ℕ) (H : (i : Fin (m + 1)) → Site (m + 1) �
     rw [hxint]
     simpa only [hg0, hg1] using hfin
   exact sub_eq_zero.mp hfin'
+
+/-! ### The finite-box Poincare lemma -/
+
+theorem xmb_boxPoincare (n : ℕ) : ∀ d : ℕ, ∀ (H : (i : Fin d) → Site d → ZMod 2),
+    (∀ i j : Fin d, i ≠ j → ∀ p : Site d, p ∈ cent d n →
+      p + unit i ∈ cent d n → p + unit j ∈ cent d n →
+      H i p + H j (p + unit i) = H j p + H i (p + unit j)) →
+    ∃ F : Site d → ZMod 2, ∀ i p, p ∈ cent d n → p + unit i ∈ cent d n →
+      F (p + unit i) = F p + H i p := by
+  intro d
+  induction d with
+  | zero =>
+    intro H _hclosed
+    exact ⟨fun _ => 0, fun i => Fin.elim0 i⟩
+  | succ m ih =>
+    intro H hclosed
+    set H' : (i : Fin m) → Site m → ZMod 2 := fun i w => H i.succ (Fin.cons (-(n : ℤ)) w)
+      with hH'
+    have hclosed' : ∀ i j : Fin m, i ≠ j → ∀ w : Site m, w ∈ cent m n →
+        w + unit i ∈ cent m n → w + unit j ∈ cent m n →
+        H' i w + H' j (w + unit i) = H' j w + H' i (w + unit j) := by
+      intro i j hij w hw hwi hwj
+      simp only [hH']
+      have e0 : Fin.cons (-(n : ℤ)) w + unit i.succ = Fin.cons (-(n : ℤ)) (w + unit i) := by
+        rw [xmh3_add_succ_cons (Fin.cons (-(n : ℤ)) w) i]; simp
+      have e1 : Fin.cons (-(n : ℤ)) w + unit j.succ = Fin.cons (-(n : ℤ)) (w + unit j) := by
+        rw [xmh3_add_succ_cons (Fin.cons (-(n : ℤ)) w) j]; simp
+      have hmem : Fin.cons (-(n : ℤ)) w ∈ cent (m + 1) n :=
+        xmb_cons_mem_cent (by simp) hw
+      have hmem_i : Fin.cons (-(n : ℤ)) w + unit i.succ ∈ cent (m + 1) n := by
+        rw [e0]; exact xmb_cons_mem_cent (by simp) hwi
+      have hmem_j : Fin.cons (-(n : ℤ)) w + unit j.succ ∈ cent (m + 1) n := by
+        rw [e1]; exact xmb_cons_mem_cent (by simp) hwj
+      have hij' : (i.succ : Fin (m + 1)) ≠ j.succ := fun h => hij (Fin.succ_inj.mp h)
+      have hc := hclosed i.succ j.succ hij' (Fin.cons (-(n : ℤ)) w) hmem hmem_i hmem_j
+      rw [e0, e1] at hc
+      exact hc
+    obtain ⟨P, hP⟩ := ih H' hclosed'
+    refine ⟨fun p => xmb_antiN n (fun t => H 0 (Fin.cons t (Fin.tail p))) (p 0)
+      + P (Fin.tail p), ?_⟩
+    intro i p hp hpi
+    have hw : Fin.tail p ∈ cent m n := fun j => hp j.succ
+    have hx0 : -(n : ℤ) ≤ p 0 := (abs_le.mp (hp 0)).1
+    have hxn0 : p 0 ≤ (n : ℤ) := (abs_le.mp (hp 0)).2
+    induction i using Fin.cases with
+    | zero =>
+      rw [xmh3_add_zero_cons p]
+      simp only [Fin.tail_cons, Fin.cons_zero]
+      rw [xmb_antiN_succ]
+      have hg : H 0 (Fin.cons (p 0) (Fin.tail p)) = H 0 p := by rw [xmh3_self_cons p]
+      rw [hg]
+      abel
+    | succ i =>
+      rw [xmh3_add_succ_cons p i] at hpi ⊢
+      simp only [Fin.tail_cons, Fin.cons_zero] at hpi ⊢
+      have hwi : Fin.tail p + unit i ∈ cent m n := by
+        intro j
+        exact hpi j.succ
+      obtain hdif := xmb_box_difference n m H hclosed (Fin.tail p) hw i hwi hx0 hxn0
+      have hdif' : xmb_antiN n (fun t => H 0 (Fin.cons t (Fin.tail p + unit i))) (p 0)
+          = xmb_antiN n (fun t => H 0 (Fin.cons t (Fin.tail p))) (p 0)
+            + (H i.succ (Fin.cons (p 0) (Fin.tail p))
+              - H i.succ (Fin.cons (-(n : ℤ)) (Fin.tail p))) := by
+        rw [← hdif]; ring
+      rw [hP i (Fin.tail p) hw hwi, hdif']
+      have hH'i : H' i (Fin.tail p) = H i.succ (Fin.cons (-(n : ℤ)) (Fin.tail p)) := rfl
+      rw [hH'i, show H i.succ (Fin.cons (p 0) (Fin.tail p)) = H i.succ p from by
+        rw [xmh3_self_cons p]]
+      ring
 
 end Exploding

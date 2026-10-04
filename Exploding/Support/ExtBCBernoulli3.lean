@@ -169,4 +169,78 @@ theorem xbc_ae_eventually_crosses (hdual : xbc_StarDuality d) {q : ℝ} (h0 : 0 
   simpa using xmh2_ae_eventually_notMem (sitePercolation d q)
     (fun n => {ω | ¬ xbc_Crosses d n i ω}) hne
 
+/-- The geometric factor of the box-crossing bound tends to zero at every admissible density. -/
+theorem xbc_tendsto_zero (d : ℕ) {ρ : ℝ} (hρ0 : 0 ≤ ρ) (hρ1 : ρ < 1) :
+    Tendsto (fun n : ℕ => (((2 * n + 1 : ℕ) : ℝ)) ^ d * ρ ^ (2 * n + 1) * (1 - ρ)⁻¹)
+      atTop (𝓝 0) := by
+  have hρ2 : ‖ρ ^ 2‖ < 1 := by
+    rw [Real.norm_eq_abs, abs_of_nonneg (pow_nonneg hρ0 2)]
+    nlinarith
+  have hg : Tendsto (fun n : ℕ =>
+      ((3 : ℝ) ^ d * ρ * (1 - ρ)⁻¹) * ((n : ℝ) ^ d * (ρ ^ 2) ^ n)) atTop (𝓝 0) := by
+    have h := tendsto_pow_const_mul_const_pow_of_lt_one d (pow_nonneg hρ0 2)
+      (by nlinarith)
+    simpa [mul_assoc] using h.const_mul ((3 : ℝ) ^ d * ρ * (1 - ρ)⁻¹)
+  refine squeeze_zero' ?_ ?_ hg
+  · filter_upwards with n
+    exact mul_nonneg (mul_nonneg (pow_nonneg (by positivity) d) (pow_nonneg hρ0 _))
+      (inv_nonneg.mpr (by linarith))
+  · filter_upwards [eventually_ge_atTop (1 : ℕ)] with n hn
+    have hpow : (2 * n + 1 : ℕ) ≤ 3 * n := by omega
+    have hcast : (((2 * n + 1 : ℕ) : ℝ)) ^ d ≤ ((3 * n : ℕ) : ℝ) ^ d := by
+      rw [← Nat.cast_pow, ← Nat.cast_pow]
+      exact_mod_cast Nat.pow_le_pow_left hpow d
+    have hcast' : ((3 * n : ℕ) : ℝ) ^ d = (3 : ℝ) ^ d * (n : ℝ) ^ d := by
+      push_cast
+      ring
+    have hgeom : ρ ^ (2 * n + 1) = ρ * (ρ ^ 2) ^ n := by
+      rw [pow_succ, pow_mul]
+      ring
+    have hinv : 0 ≤ (1 - ρ)⁻¹ := inv_nonneg.mpr (by linarith)
+    rw [hgeom]
+    calc (((2 * n + 1 : ℕ) : ℝ)) ^ d * (ρ * (ρ ^ 2) ^ n) * (1 - ρ)⁻¹
+        ≤ (((3 : ℝ) ^ d * (n : ℝ) ^ d) * (ρ * (ρ ^ 2) ^ n)) * (1 - ρ)⁻¹ :=
+          mul_le_mul_of_nonneg_right
+            (mul_le_mul_of_nonneg_right (hcast.trans_eq hcast')
+              (mul_nonneg hρ0 (pow_nonneg (pow_nonneg hρ0 2) n))) hinv
+      _ = ((3 : ℝ) ^ d * ρ * (1 - ρ)⁻¹) * ((n : ℝ) ^ d * (ρ ^ 2) ^ n) := by ring
+
+/-- **The high-density site box-crossing probability tends to one.**  Conditional on the star
+duality, at density `q` with `3 ^ (2d) (1 - q) < 1` the probability that the box is crossed in
+direction `i` tends to one. -/
+theorem xbc_crossing_tendsto (hdual : xbc_StarDuality d) {q : ℝ} (h0 : 0 ≤ q) (h1 : q ≤ 1)
+    (hr : xbc_rho d q < 1) (i : Fin d) :
+    Tendsto (fun n : ℕ => sitePercolation d q {ω | xbc_Crosses d n i ω}) atTop (𝓝 1) := by
+  have hρ0 : 0 ≤ xbc_rho d q := by
+    rw [xbc_rho]
+    exact mul_nonneg (pow_nonneg (by norm_num) _) (by linarith)
+  haveI : IsProbabilityMeasure (sitePercolation d q) := rn_infinitePi_isProb h0 h1
+  have hfail : Tendsto (fun n : ℕ => sitePercolation d q {ω | ¬ xbc_Crosses d n i ω})
+      atTop (𝓝 0) := by
+    have hbound : Tendsto (fun n : ℕ => ENNReal.ofReal
+        ((((2 * n + 1 : ℕ) : ℝ)) ^ d * (xbc_rho d q) ^ (2 * n + 1) *
+          (1 - xbc_rho d q)⁻¹)) atTop (𝓝 0) := by
+      have h := (ENNReal.continuous_ofReal.tendsto (0 : ℝ)).comp
+        (xbc_tendsto_zero d hρ0 hr)
+      simpa only [Function.comp_def, ENNReal.ofReal_zero] using h
+    exact tendsto_of_tendsto_of_tendsto_of_le_of_le' tendsto_const_nhds hbound
+      (Filter.Eventually.of_forall fun n => bot_le)
+      (Filter.Eventually.of_forall fun n => xbc_failure_prob_le_ofReal hdual h0 h1 hr n i)
+  have hcompl : ∀ n, sitePercolation d q {ω | xbc_Crosses d n i ω} =
+      1 - sitePercolation d q {ω | ¬ xbc_Crosses d n i ω} := by
+    intro n
+    have hsum : sitePercolation d q {ω : Site d → Bool | xbc_Crosses d n i ω} +
+        sitePercolation d q {ω : Site d → Bool | ¬ xbc_Crosses d n i ω} = 1 := by
+      have h := measure_add_measure_compl (μ := sitePercolation d q)
+        (s := {ω : Site d → Bool | xbc_Crosses d n i ω}) (xbc_measurableSet_Crosses n i)
+      rw [measure_univ] at h
+      rwa [show {ω : Site d → Bool | xbc_Crosses d n i ω}ᶜ =
+          {ω : Site d → Bool | ¬ xbc_Crosses d n i ω} from by ext ω; simp] at h
+    exact ENNReal.eq_sub_of_add_eq (measure_ne_top _ _) hsum
+  have hlim : Tendsto (fun n : ℕ =>
+      1 - sitePercolation d q {ω | ¬ xbc_Crosses d n i ω}) atTop (𝓝 1) := by
+    have h := ((ENNReal.continuous_sub_left ENNReal.one_ne_top).tendsto (0 : ENNReal)).comp hfail
+    simpa only [Function.comp_def, tsub_zero] using h
+  exact hlim.congr' (Filter.Eventually.of_forall fun n => (hcompl n).symm)
+
 end Exploding

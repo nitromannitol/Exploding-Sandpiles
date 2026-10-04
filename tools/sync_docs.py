@@ -84,15 +84,17 @@ DESCRIPTIONS = {
 }
 
 # The order in which states are reported, and what each one means.
-STATE_ORDER = ["SEALED", "CONDITIONAL", "FROZEN", "DRAFT_SORRY"]
+STATE_ORDER = ["SEALED", "PROVED", "CONDITIONAL", "FROZEN", "DRAFT_SORRY"]
 STATE_WORDS = {
     "SEALED": "proved here",
+    "PROVED": "proved here and independently audited",
     "CONDITIONAL": "proofs written that rest on open statements",
     "FROZEN": "cited results carried as hypotheses",
     "DRAFT_SORRY": "open",
 }
 STATE_CELL = {
     "SEALED": "proved",
+    "PROVED": "proved, independently audited",
     "CONDITIONAL": "proof written; rests on open statements",
     "FROZEN": "cited result, hypothesis",
     "DRAFT_SORRY": "open",
@@ -189,9 +191,10 @@ def status_block(nodes: list[dict]) -> str:
         return ", ".join(names[:-1]) + " and " + names[-1]
 
     body = []
-    if counts["SEALED"]:
+    proved = counts["SEALED"] + counts["PROVED"]
+    if proved:
         body.append(
-            f"The {counts['SEALED']} sealed nodes are machine-checked, and each one's axiom\n"
+            f"The {proved} proved nodes are machine-checked, and each one's axiom\n"
             f"closure is exactly Lean's three standard axioms `propext`,\n"
             f"`Classical.choice` and `Quot.sound`.")
     if counts["CONDITIONAL"]:

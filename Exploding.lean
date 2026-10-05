@@ -73,6 +73,7 @@ import Exploding.Support.ExtAPMinCutStarFinal
 import Exploding.Support.ExtAPUncond
 import Exploding.Support.ExtAPUnconditional
 import Exploding.Support.ExtAPBoxCrossingBond
+import Exploding.Support.ExtAPBoxCrossingFinal
 import Exploding.Support.ExtBCBernoulli3
 import Exploding.Support.ExtMHBase
 import Exploding.Support.ExtMHProof

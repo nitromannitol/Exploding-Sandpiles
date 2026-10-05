@@ -75,6 +75,7 @@ import Exploding.Support.ExtAPUnconditional
 import Exploding.Support.ExtAPBoxCrossingBond
 import Exploding.Support.ExtAPBoxCrossingFinal
 import Exploding.Support.ExtAPBoxCrossingSupercritical
+import Exploding.Support.ExtAPCoarseGraining
 import Exploding.Support.ExtBCBernoulli3
 import Exploding.Support.ExtMHBase
 import Exploding.Support.ExtMHProof

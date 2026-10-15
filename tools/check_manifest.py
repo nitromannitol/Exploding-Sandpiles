@@ -18,6 +18,8 @@ Verifies, against ledger/manifest.yaml:
      PROVED/FROZEN files contain no sorry;
   8. when a node has `closure_sha256`, its source-level Exploding dependency-closure
      hash matches.  Nodes without the optional field are skipped and counted.
+  9. the global source pin and any per-node source-pin overrides name repository
+     files whose SHA-256 digests match the recorded values.
 
 `--emit` inserts or refreshes `closure_sha256` for every node after all other
 checks pass.
@@ -108,6 +110,39 @@ def path_is_relative_to(path: Path, parent: Path) -> bool:
     except ValueError:
         return False
     return True
+
+
+def checked_source_pin(pin: object, label: str, errors: list[str]) -> str | None:
+    """Check an exact paper-source pin and return its relative path on success."""
+    if not isinstance(pin, dict):
+        errors.append(f"{label}: source_pin must be a mapping")
+        return None
+    filename = pin.get("file")
+    digest = pin.get("sha256")
+    if not isinstance(filename, str) or not filename:
+        errors.append(f"{label}: source_pin.file must be a nonempty relative path")
+        return None
+    if not isinstance(digest, str) or re.fullmatch(r"[0-9a-f]{64}", digest) is None:
+        errors.append(f"{label}: source_pin.sha256 must be a lowercase SHA-256 digest")
+        return None
+    relative = Path(filename)
+    if relative.is_absolute() or ".." in relative.parts:
+        errors.append(f"{label}: source_pin.file must stay inside the repository")
+        return None
+    source = (ROOT / relative).resolve()
+    if not path_is_relative_to(source, ROOT.resolve()):
+        errors.append(f"{label}: source_pin.file resolves outside the repository")
+        return None
+    if not source.is_file():
+        errors.append(f"{label}: source_pin.file {filename!r} is not a file")
+        return None
+    actual = hashlib.sha256(source.read_bytes()).hexdigest()
+    if actual != digest:
+        errors.append(
+            f"{label}: source_pin SHA-256 {actual[:16]}… does not match "
+            f"{digest[:16]}… for {filename!r}")
+        return None
+    return filename
 
 
 def strip_block_comments(text: str) -> str:
@@ -398,6 +433,17 @@ def main() -> int:
     manifest_text = MANIFEST.read_text()
     manifest = yaml.safe_load(manifest_text)
     nodes = manifest.get("nodes") or []
+    default_source = manifest.get("source_pin")
+    source_counts: dict[str, int] = {}
+    checked_source_pin(default_source, "manifest", errors)
+    for node in nodes:
+        if "source_pin" in node:
+            filename = checked_source_pin(
+                node["source_pin"], node.get("id", "<missing id>"), errors)
+        else:
+            filename = default_source.get("file") if isinstance(default_source, dict) else None
+        if filename is not None:
+            source_counts[filename] = source_counts.get(filename, 0) + 1
     declarations = source_declarations()
     resolver = DeclarationResolver(declarations)
     closure_hashes: dict[str, str] = {}
@@ -513,6 +559,7 @@ def main() -> int:
     print(
         f"check_manifest: OK ({len(nodes)} nodes, {n_draft} unsealed; "
         f"closure {closure_checked} checked, {closure_skipped} skipped; "
+        f"source pins {source_counts}; "
         f"{len(declarations)} Exploding declarations indexed)")
     return 0
 

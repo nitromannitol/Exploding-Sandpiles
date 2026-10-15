@@ -27,12 +27,12 @@ import Exploding.Frozen.BoxCrossing
 This file gives the public paper-facing theorem statements. The 21 existing paper-owned
 old-source statements retain their corrected-journal contracts, including the proved
 finite-exploding version 7 with `0 < p ≤ 1`. The nine other strict Bernoulli paper rows
-retain their `p < 1` premises. Theorem 6.1 below is the
-proposed corrected-v10 v4 successor; its full proof and public type await the exact integrated
-Lean checks and independent final-byte audit. The proposal does not certify any other v10
-statement. Existing baseline axiom and build records do not cover this candidate.
+retain their `p < 1` premises. Theorem 6.1 below is the proved corrected-v10 v4 successor.
+Its exact type, standard-three axiom closure and same-background conclusion passed
+integrated Lean checks and independent source/body/consumer audit. This accepts one
+corrected-v10 theorem and does not certify the other v10 statements.
 
-The existing main theorems and the proposed counterexample are:
+The main theorems are:
 
 * `Exploding.limit_shape`: Theorem 1.2, the region toppled by time `t`, rescaled by `t`,
   converges in measure to a convex domain.
@@ -42,7 +42,7 @@ The existing main theorems and the proposed counterexample are:
   site and a positive density of sites with `2d - 1` chips explodes almost surely.
 * `Exploding.generalized_convergence`: Theorem 5.1, convergence of the exploding sandpile
   under the hypotheses of Section 5.
-* `Exploding.counterexample`: proposed corrected-v10 Theorem 6.1; its complete conclusion
+* `Exploding.counterexample`: proved corrected-v10 Theorem 6.1; its complete conclusion
   uses one background for both axial limits and the measurable-volume obstruction.
 
 The other public results summarize old-source Propositions 2.1, 2.2, 3.1, 4.1, 5.1, 7.1,
@@ -52,7 +52,7 @@ The other public results summarize old-source Propositions 2.1, 2.2, 3.1, 4.1, 5
 
 Seven historical literature results that the paper cites remain registered as assumptions.
 Each is a proposition in `Exploding/External/` with the old-source pin; a theorem carries one
-when its exact type has that hypothesis. The proposed v4 Theorem 6.1 has no cited-result
+when its exact type has that hypothesis. The proved v4 Theorem 6.1 has no cited-result
 binder, and no `axiom` is declared (see `ASSUMPTIONS.md`):
 
 * `FeyLevinePeresExplosive`, Theorem 1.1 of the paper (Proposition 1.4 of Fey, Levine and
@@ -71,7 +71,7 @@ binder, and no `axiom` is declared (see `ASSUMPTIONS.md`):
 Six of the seven are discharged by proofs in this repository:
 
 * The historical FMR registration is separately proved by `Exploding.xfmr_proved`
-  (`Exploding/Support/ExtFMR.lean`); FMR is not a premise of proposed v4 Theorem 6.1;
+  (`Exploding/Support/ExtFMR.lean`); FMR is not a premise of proved v4 Theorem 6.1;
 * `LiggettSchonmannStaceyBoundedDegree` is proved by `Exploding.xlse_lss_bounded_degree`
   and `LiggettSchonmannStacey` by `Exploding.xlse_lss_general`
   (`Exploding/Support/ExtLSSCountable.lean`), so `hLSSB` and `hLSS` may be discharged
@@ -98,7 +98,7 @@ three percolation results `hLSSB`, `hHole`, `hChem`:
 | Theorem 1.4, Proposition 7.5 | `hSch` |
 | Proposition 2.2, Lemmas 3.2, 3.5, 3.6, 3.7, Propositions 3.1, 4.1 | `perc` |
 | Proposition 5.1, Theorem 5.1 | `perc`, `hLSS` |
-| Theorem 6.1 v4 candidate | none; its proposed type has no cited-result binder |
+| Theorem 6.1 v4 | none; its proved type has no cited-result binder |
 | Propositions 2.1, 7.1, 7.2, 7.3, Lemmas 2.1, 3.1, 3.3, 3.4 | none |
 
 Propositions 5.1 and 7.1 and Theorem 5.1 also carry the model hypotheses of Sections 5 and 7
@@ -401,7 +401,8 @@ theorem Exploding.generalized_convergence (d : ℕ) (hd : 2 ≤ d) (ηmin : ℤ)
 /-- **Theorem 6.1** (corrected arXiv-format source, exploding-corrected-arxiv.tex:1875-1885,
 label theorem:counterexample; same-background volume obstruction at 2337-2373). One explosive
 background has finite axial arrivals and both stated axial limits; for that same background,
-no measurable set is a symmetric-difference-volume limit. Candidate proof and final audit pending. -/
+no measurable set is a symmetric-difference-volume limit. The exact corrected-source
+statement and its proof passed independent source/body/consumer audit. -/
 theorem Exploding.counterexample (d : ℕ) (hd : 2 ≤ d) :
     ∃ η : Site d → ℤ, ∃ hη : Explosive η,
       (¬ ∀ x : Site d, 2 * (d : ℤ) - 2 ≤ η x) ∧

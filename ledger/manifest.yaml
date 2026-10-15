@@ -170,7 +170,7 @@ nodes:
     source: exploding-corrected-arxiv.tex:1875-1885 (label theorem:counterexample)
     file: Exploding/Frozen/Counterexample.lean
     export: Exploding.Frozen.counterexample
-    state: SEALED
+    state: PROVED
     frozen_sha256: 1af0799acd9eccce67b979a6a59e756398fd513054e9019f1118421bf7ecf178
     closure_sha256: 616c1a01e21168c1b7e7840e907d5365135b1877df7e22d79132500a0ccae600
     provider: Exploding.ce_counterexample_complete

@@ -11,6 +11,8 @@ import tempfile
 import unittest
 from unittest.mock import patch
 
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+
 import yaml
 
 import assumptions
@@ -30,6 +32,8 @@ class SourceReportingTests(unittest.TestCase):
                               if n["id"] == "thm-counterexample")
         counterexample.pop("source_pin", None)
         counterexample["source"] = "exploding.tex:1351-1361 (label theorem:counterexample)"
+        counterexample["version"], counterexample["frozen_sha256"] = (
+            sync_docs.HISTORICAL_DECLARATIONS["thm-counterexample"])
         directory = tempfile.TemporaryDirectory(prefix="exploding-source-reporting-")
         self.addCleanup(directory.cleanup)
         self.root = Path(directory.name)
@@ -190,8 +194,46 @@ class SourceReportingTests(unittest.TestCase):
         node["id"] = "unreviewed-counterexample"
         self.write_manifest()
         result, output = self.run_main(check_clauses)
-        self.assertEqual(result, 1, output)
+        self.assertEqual(result, 2, output)
         self.assertIn("unreviewed-counterexample", output)
+
+    def test_changed_historical_identity_requires_fresh_review(self):
+        node = next(n for n in self.manifest["nodes"] if n["id"] == "thm-counterexample")
+        node["version"] += 1
+        self.write_manifest()
+        for module in (check_clauses, check_exponents):
+            result, output = self.run_main(module)
+            self.assertEqual(result, 2, output)
+            self.assertIn("historical annotation identity mismatch", output)
+
+    def test_changed_historical_bytes_cannot_retain_old_hash(self):
+        node = next(n for n in self.manifest["nodes"] if n["id"] == "thm-counterexample")
+        path = self.root / node["file"]
+        text = path.read_text(encoding="utf-8")
+        text = text.replace(node["export"], node["export"] + " (hAdditional : False)", 1)
+        path.write_text(text, encoding="utf-8")
+        for module in (check_clauses, check_exponents):
+            result, output = self.run_main(module)
+            self.assertEqual(result, 2, output)
+            self.assertIn("actual frozen block differs", output)
+
+    def test_updated_version_and_hash_do_not_refresh_historical_notes(self):
+        import hashlib
+
+        node = next(n for n in self.manifest["nodes"] if n["id"] == "thm-counterexample")
+        path = self.root / node["file"]
+        text = path.read_text(encoding="utf-8")
+        text = text.replace(node["export"], node["export"] + " (hAdditional : False)", 1)
+        path.write_text(text, encoding="utf-8")
+        errors = []
+        block = check_manifest.block_of(text, path, errors)[0]
+        node["version"] += 1
+        node["frozen_sha256"] = hashlib.sha256(block.encode()).hexdigest()
+        self.write_manifest()
+        for module in (check_clauses, check_exponents):
+            result, output = self.run_main(module)
+            self.assertEqual(result, 2, output)
+            self.assertIn("historical annotation identity mismatch", output)
 
 
 if __name__ == "__main__":

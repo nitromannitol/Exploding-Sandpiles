@@ -20,6 +20,8 @@ listed with its counts so the reader can judge. The recorded readings apply
 only to the exact historical source pin. Revised-source rows, non-External
 definitions, and citations without a statement range or label are explicitly
 excluded. A successful run must compare at least one historical statement.
+Every compared declaration must retain its recorded version and frozen hash;
+the marker-block hash is recomputed before any historical reading is reused.
 
     python3 tools/check_clauses.py            # report
     python3 tools/check_clauses.py --strict   # exit 1 if any node is unreviewed

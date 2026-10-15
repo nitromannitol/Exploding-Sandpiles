@@ -21,6 +21,8 @@ silently ignored:
 The recorded explanations apply only to the exact historical source pin.
 Revised-source rows, non-External definitions, and citations without a statement
 range are explicitly excluded. A run with no compared statements fails.
+Every compared declaration must retain its recorded version and frozen hash;
+the marker-block hash is recomputed before any historical explanation is reused.
 """
 
 from __future__ import annotations

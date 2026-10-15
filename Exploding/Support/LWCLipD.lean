@@ -42,7 +42,7 @@ theorem lwcl_lastArrival_lip (d : ℕ) (hd : 2 ≤ d) (p : ℝ) (hp : 0 < p) (hp
   refine ⟨e0 * ((E1 + 1 : ℕ) : ℝ) + 1, max ((k : ℝ) ^ d * Cr) C6, by linarith,
     lt_max_of_lt_right hC6, ?_⟩
   filter_upwards [hae, hub, aux_pub_reach_eta_bounds d p hp hp1,
-    Exploding.Frozen.finite_exploding d hd p hp hp1 hLSSB hHole hChem] with
+    Exploding.Frozen.finite_exploding d hd p hp hp1.le hLSSB hHole hChem] with
     η hη hubη hetabd hexplode
   obtain ⟨Cinf, hCinf, ⟨n0h, hhole⟩, ⟨n0c, hchem⟩⟩ := hη
   obtain ⟨n06, hn6⟩ := hubη

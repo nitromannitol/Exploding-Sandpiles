@@ -69,7 +69,7 @@ theorem as2_approximate_subadditive_of_gaps
       arrival η x ≤ lastArrival η (0 : Site d) x + (C1 : ℕ∞) ∧
         lastArrival η (0 : Site d) x ≤ arrival η x + (C2 : ℕ∞) := by
   filter_upwards [as_eta_bounds d hd p hp hp1,
-    Exploding.Frozen.finite_exploding d hd p hp hp1 hLSSB hHole hChem,
+    Exploding.Frozen.finite_exploding d hd p hp hp1.le hLSSB hHole hChem,
     as_penultimateCluster_finite d hd p hp hp1 hLSSB hHole hChem] with η hbounds hlast hPfin
   have hlow : ∀ x, 2 * (d : ℤ) - 2 ≤ η x := fun x => (hbounds x).1
   have hhigh : ∀ x, η x ≤ 2 * (d : ℤ) - 1 := fun x => (hbounds x).2

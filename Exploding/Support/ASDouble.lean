@@ -372,7 +372,7 @@ theorem asd_approximate_subadditive
       arrival η x ≤ lastArrival η (0 : Site d) x + (C1 : ℕ∞) ∧
         lastArrival η (0 : Site d) x ≤ arrival η x + (C2 : ℕ∞) := by
   filter_upwards [as_eta_bounds d hd p hp hp1,
-    Exploding.Frozen.finite_exploding d hd p hp hp1 hLSSB hHole hChem,
+    Exploding.Frozen.finite_exploding d hd p hp hp1.le hLSSB hHole hChem,
     as_penultimateCluster_finite d hd p hp hp1 hLSSB hHole hChem,
     as3_hlastreach d hd p hp hp1 hLSSB hHole hChem,
     asd_reach_ae d hd p hp hp1 hLSSB hHole hChem] with η hbounds hlast hPfin hlastreach hreach

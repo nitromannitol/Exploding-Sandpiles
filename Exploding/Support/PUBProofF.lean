@@ -31,7 +31,7 @@ theorem pub_penultimate_upper_bound (d : ℕ) (hd : 2 ≤ d) (p : ℝ) (hp : 0 <
       exact_mod_cast this
     positivity
   filter_upwards [hae, aux_pub_reach_eta_bounds d p hp hp1,
-    Exploding.Frozen.finite_exploding d hd p hp hp1 hLSSB hHole hChem] with η hη hetabd hexplode
+    Exploding.Frozen.finite_exploding d hd p hp hp1.le hLSSB hHole hChem] with η hη hetabd hexplode
   obtain ⟨Cinf, hCinf, ⟨n0h, hn0h⟩, ⟨n0c, hn0c⟩⟩ := hη
   have hMmem := Nat.sInf_mem hexplode
   have hS : pub_Setup d η (waveThreshold η (0 : Site d)) (max kb 2) Cinf n0h n0c Cr :=

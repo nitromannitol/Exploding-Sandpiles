@@ -61,7 +61,7 @@ HISTORICAL_DECLARATIONS = {
     "lem-approx-subadditivity": (3, "cc8f12ca936e4c7004662f4796489012419c44eb5071f5549ea1fa3cf5fc67f5"),
     "prop-recurrence": (3, "fb09b457811848161a746759e6fd31ee024a56bee43df4e23cca58af7ae87fa1"),
     "lem-local-convexity": (4, "c265b27336538e776144ad00d8ad3e44a93816312863f9b3cb9dc3d5997e91f4"),
-    "lem-finite-exploding": (6, "2bdfdb526cdb4146e9765019df878274f2d3d49991244591748bbce579ac9772"),
+    "lem-finite-exploding": (7, "70e35f646e03b599a40942113c9c6f1ad34cb35dc8757901a8ca990199169701"),
     "prop-crossing-time": (3, "86d88877abf5e6e1dc37f9bf5e1a1552bb04588de3fa050596b1faf4fb3d5e38"),
     "ext-fey-levine-peres-proved": (3, "a25c10e2f66ff0a1141aea2274ab888744e3a0a24b8e65077a671b3ea60ecb7a"),
     "ext-schonmann-bootstrap-proved": (3, "b2f9d167d3cbd4c150d94c771f06b6055ed809a62378fb549e2c0b7422c1ce89"),

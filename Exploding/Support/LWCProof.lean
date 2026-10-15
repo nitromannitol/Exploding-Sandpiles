@@ -405,7 +405,7 @@ theorem lwc_good_event (d : ℕ) (hd : 2 ≤ d) (p : ℝ) (hp : 0 < p) (hp1 : p 
     (∀ x, clusterArrival η (0 : Site d) x ≠ ⊤) with hQdef
   have hQae : ∀ᵐ η ∂(toyLaw d p), Q η := by
     filter_upwards [lwc_good_event_1 d p hp hp1,
-      Exploding.Frozen.finite_exploding d hd p hp hp1 hLSSB hHole hChem,
+      Exploding.Frozen.finite_exploding d hd p hp hp1.le hLSSB hHole hChem,
       lwc_good_event_2 d hd p hp hp1 hLSSB hHole hChem] with η h1 h2 h3
     exact ⟨h1, h2, h3⟩
   obtain ⟨E0, hE0meas, hE0full, hE0Q⟩ := lwc_good_event_3 p Q hQae

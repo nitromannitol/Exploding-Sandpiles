@@ -302,6 +302,7 @@ import Exploding.Support.AllHighPenultimateCluster
 import Exploding.Support.AllHighLastArrival
 import Exploding.Support.AllHighClusterArrival
 import Exploding.Support.PenultimateClusterP1
+import Exploding.Support.PenultimateUpperBoundP1
 
 import Exploding.External.FeyLevinePeres
 import Exploding.External.Schonmann

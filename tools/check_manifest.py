@@ -18,6 +18,9 @@ Verifies, against ledger/manifest.yaml:
      PROVED/FROZEN files contain no sorry;
   8. when a node has `closure_sha256`, its source-level Exploding dependency-closure
      hash matches.  Nodes without the optional field are skipped and counted.
+  9. the global source pin and any per-node source-pin overrides name repository
+     files whose SHA-256 digests match the recorded values, including literal
+     TeX inputs; source citations must address the selected pinned file.
 
 `--emit` inserts or refreshes `closure_sha256` for every node after all other
 checks pass.
@@ -108,6 +111,109 @@ def path_is_relative_to(path: Path, parent: Path) -> bool:
     except ValueError:
         return False
     return True
+
+
+def checked_source_pin(pin: object, label: str, errors: list[str]) -> str | None:
+    """Check a paper source and its literal direct and transitive TeX inputs."""
+    def checked_file(item: object, item_label: str) -> str | None:
+        if not isinstance(item, dict):
+            errors.append(f"{item_label}: source pin must be a mapping")
+            return None
+        filename = item.get("file")
+        digest = item.get("sha256")
+        if not isinstance(filename, str) or not filename:
+            errors.append(f"{item_label}: file must be a nonempty relative path")
+            return None
+        if not isinstance(digest, str) or re.fullmatch(r"[0-9a-f]{64}", digest) is None:
+            errors.append(f"{item_label}: sha256 must be a lowercase SHA-256 digest")
+            return None
+        relative = Path(filename)
+        if relative.is_absolute() or ".." in relative.parts:
+            errors.append(f"{item_label}: file must stay inside the repository")
+            return None
+        source = (ROOT / relative).resolve()
+        if not path_is_relative_to(source, ROOT.resolve()):
+            errors.append(f"{item_label}: file resolves outside the repository")
+            return None
+        if not source.is_file():
+            errors.append(f"{item_label}: file {filename!r} is not a file")
+            return None
+        actual = hashlib.sha256(source.read_bytes()).hexdigest()
+        if actual != digest:
+            errors.append(
+                f"{item_label}: SHA-256 {actual[:16]}… does not match "
+                f"{digest[:16]}… for {filename!r}")
+            return None
+        return source.relative_to(ROOT.resolve()).as_posix()
+
+    if not isinstance(pin, dict):
+        errors.append(f"{label}: source_pin must be a mapping")
+        return None
+    filename = checked_file(pin, f"{label}: source_pin")
+    if filename is None:
+        return None
+    inputs = pin.get("inputs", [])
+    if not isinstance(inputs, list):
+        errors.append(f"{label}: source_pin.inputs must be a list")
+        return None
+    declared = [checked_file(item, f"{label}: source_pin.inputs[{i}]")
+                for i, item in enumerate(inputs)]
+    if any(item is None for item in declared):
+        return None
+    declared_set = set(declared)
+    if len(declared_set) != len(declared) or filename in declared_set:
+        errors.append(f"{label}: source_pin.inputs contains a duplicate or the main source")
+        return None
+    included: set[str] = set()
+    for current in [filename, *declared_set]:
+        source = ROOT / current
+        # Macro-generated input filenames cannot be inferred from a regex.
+        # The reviewed sources use only literal inputs; reject known dynamic
+        # input constructs rather than certifying an incomplete dependency set.
+        active = "\n".join(re.split(r"(?<!\\)%", line, 1)[0]
+                           for line in source.read_text().splitlines())
+        if re.search(r"\\(?:csname|let|catcode|scantokens|directlua|openin|read)\b", active):
+            errors.append(f"{label}: dynamic TeX command in {current!r} needs source review")
+            return None
+        for match in re.finditer(
+                r"\\(?:input|include)(?![A-Za-z])\s*(?:\{([^{}]+)\}|([^\s{}%]+))", active):
+            name = match.group(1) or match.group(2)
+            child = source.parent / (name if Path(name).suffix else name + ".tex")
+            resolved = child.resolve()
+            if not path_is_relative_to(resolved, ROOT.resolve()):
+                errors.append(f"{label}: TeX input {name!r} escapes the repository")
+                return None
+            included.add(resolved.relative_to(ROOT.resolve()).as_posix())
+    if included != declared_set:
+        errors.append(
+            f"{label}: source_pin.inputs must exactly cover TeX inputs "
+            f"(expected {sorted(included)}, pinned {sorted(declared_set)})")
+        return None
+    return filename
+
+
+def check_source_address(node: dict, filename: str, errors: list[str]) -> None:
+    """Bind a node's cited line addresses to the exact file selected by its pin."""
+    citation = node.get("source")
+    if not isinstance(citation, str):
+        errors.append(f"{node.get('id', '<missing id>')}: source address is missing")
+        return
+    addresses = re.findall(
+        r"(?<![A-Za-z0-9_./-])([A-Za-z0-9_./-]+\.tex):(\d+)(?:-(\d+))?",
+        citation)
+    basename = Path(filename).name
+    if not addresses or any(name not in (basename, filename) for name, _, _ in addresses):
+        errors.append(
+            f"{node.get('id', '<missing id>')}: source address does not match "
+            f"pinned {basename!r}")
+        return
+    line_count = len((ROOT / filename).read_text().splitlines())
+    for _, first, last in addresses:
+        lo, hi = int(first), int(last or first)
+        if not (1 <= lo <= hi <= line_count):
+            errors.append(
+                f"{node.get('id', '<missing id>')}: source address "
+                f"{lo}-{hi} lies outside pinned {basename!r}")
 
 
 def strip_block_comments(text: str) -> str:
@@ -398,6 +504,18 @@ def main() -> int:
     manifest_text = MANIFEST.read_text()
     manifest = yaml.safe_load(manifest_text)
     nodes = manifest.get("nodes") or []
+    default_source = manifest.get("source_pin")
+    source_counts: dict[str, int] = {}
+    checked_source_pin(default_source, "manifest", errors)
+    for node in nodes:
+        if "source_pin" in node:
+            filename = checked_source_pin(
+                node["source_pin"], node.get("id", "<missing id>"), errors)
+        else:
+            filename = default_source.get("file") if isinstance(default_source, dict) else None
+        if filename is not None:
+            source_counts[filename] = source_counts.get(filename, 0) + 1
+            check_source_address(node, filename, errors)
     declarations = source_declarations()
     resolver = DeclarationResolver(declarations)
     closure_hashes: dict[str, str] = {}
@@ -513,6 +631,7 @@ def main() -> int:
     print(
         f"check_manifest: OK ({len(nodes)} nodes, {n_draft} unsealed; "
         f"closure {closure_checked} checked, {closure_skipped} skipped; "
+        f"source pins {source_counts}; "
         f"{len(declarations)} Exploding declarations indexed)")
     return 0
 

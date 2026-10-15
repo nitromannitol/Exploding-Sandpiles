@@ -1411,18 +1411,24 @@ the complement of a sufficiently large finite box in $\mathbb Z^d$
 is connected for $d\geq2$. Since the complement of $H$ contains $I$,
 it follows that $H$ is finite.
 For its containing defective star-component $G$,
-isoperimetry gives
+an elementary coordinate-line count gives
 \[
- |H|\leq c_d|\partial^\circ H|^{d/(d-1)}
-       \leq c_d|G|^{d/(d-1)}.
+ |H|\leq|\partial^\circ H|^2\leq|G|^2.
 \]
+Indeed, choose distinct coordinate directions $e_1,e_2$. Each $e_1$-line
+meeting $H$ has a last site in $H$ on its positive ray, giving a distinct
+site of $\partial^\circ H$. For each first-coordinate value attained in
+$H$, choose a site with that value and follow its positive $e_2$-ray to
+its last site in $H$; the first coordinate is preserved, so these
+boundary sites are distinct. A site of $H$ is determined by its
+$e_1$-line and its first coordinate, which gives the product bound.
 Also $H\subseteq\br(G)$. If $z\in H$ and $|G|=m$, a vertex of $G$
 lies within distance $m$ in the $\ell_\infty$ metric of $z$.
 The preceding animal count, now summed over at most $(2m+1)^d$
-possible anchors, proves, with $\theta=(d-1)/d$,
+possible anchors, proves
 \[
  \mathbf P\bigl(z\in I^c,\ |H(z)|\geq s\bigr)
- \leq C\exp(-c s^\theta),\qquad s\geq1.
+ \leq C\exp(-c\sqrt{s}),\qquad s\geq1.
 \]
 This argument bounds holes, which may contain finite open islands;
 bounding only clusters of closed vertices would not suffice.
@@ -1435,50 +1441,82 @@ For each coarse vertex $a$, let $\pi(a)$ be its nearest vertex of
 $\mathcal C$, with translation-covariant lexicographic tie breaking.
 Let $d_{\mathcal C}$ be graph distance in $\mathcal C$.
 
-Set $h_n=(\log(n+2))^{5/2}$. The hole tail, a union bound, and
-Borel--Cantelli show that eventually every hole meeting $[-2n,2n]^d$
-has size at most $h_n$. The AP estimate, in the form of equation (2)
-in Section 2.2 of \cite{garet2007large}, also shows that eventually
-all pairs of vertices of $I$ in this box separated by at least
-$(\log(n+2))^2$ have chemical distance at most a deterministic
-constant times their separation. The error probabilities are bounded
-by a polynomial in $n$ times, respectively,
-$\exp(-c(\log n)^{5\theta/2})$ and $\exp(-c(\log n)^2)$;
-both are summable because $\theta\geq1/2$.
+Choose the domination parameter above as $p=p(d)$ with $\alpha\leq1/8$ in the
+preceding animal estimate, so the constants in the resulting hole
+tail may be chosen in terms of $d$. Write
+$L_n=(\log(n+2))^2$ and $h_n=B L_n$, where the deterministic
+$B=B(d)\geq1$ is large enough that $c\sqrt B>d+2$;
+$c>0$ denotes the exponent in the hole tail. Put
+$W_n=[-4n,4n]^d$. A union over vertices of $W_n$ gives
+\[
+ \mathbf P\{\text{some $I^c$ hole meeting $W_n$ has size $>h_n$}\}
+ \leq Cn^d\exp(-c\sqrt{B L_n}).
+\]
+The all-pair Antal--Pisztora estimate and a union over pairs in $W_n$
+give
+\[
+ \mathbf P\{\exists a,b\in I\cap W_n:\ |a-b|\geq L_n,\
+                    d_I(a,b)>\rho|a-b|\}
+ \leq Cn^{2d}\exp(-c'L_n).
+\]
+Both bounds are summable: the first is $O(n^{d-c\sqrt B})$ by
+the choice of $B$. Hence, almost surely, both properties hold for all
+sufficiently large $n$, with a random threshold and deterministic
+$B,\rho$.
 
-A vertex of $\mathcal C\setminus I$ can be connected to $I$ by a
-simple good-vertex path of length at most the size of its $I^c$ hole
-plus one. Connect two such endpoints through $I$. For close endpoints,
-use an intermediate vertex of $I$ near their translate by $10h_ne_1$;
-the hole bound locates that vertex within $h_n+1$ steps, so both
-intermediate separations are large enough for AP. This proves, after
-enlarging the deterministic constant $A$, that almost surely for all
-sufficiently large $n$,
+For $i\in\mathcal C\cap[-n,n]^d$, follow a simple path in
+$\mathcal C$ to its first vertex $a\in I$; when $i\notin I$ its
+initial segment lies in $H(i)$ and has length at most
+$|H(i)|+1\leq h_n+1$. Take $a=i$ when $i\in I$, and choose $b\in I$
+similarly for $j\in\mathcal C\cap[-n,n]^d$. If $|a-b|\geq L_n$,
+apply AP directly. Otherwise translate $a$ by
+$\lceil10h_n\rceil e_1$ and choose $w\in I$ within $h_n+1$ steps
+of that translate; the hole bound supplies $w$. For all large $n$,
+$a,b,w\in W_n$,
+$|a-w|\geq9h_n-1$ and $|b-w|\geq9h_n-1-L_n$,
+so both exceed $L_n$, and
+$|a-w|+|w-b|\leq C h_n$. The two AP legs and the endpoint paths
+therefore give, with deterministic $A$,
+\[
+ d_{\mathcal C}(i,j)\leq A(|i-j|+h_n)
+ \qquad(i,j\in\mathcal C\cap[-n,n]^d).
+\]
+The same hole bound places each nearest-cluster projection $\pi(a)$
+within $h_n+1$ of $a$. Its connecting paths and the two-leg detour
+stay in $W_n$ for all large $n$. Applying the same argument there
+and adjusting $A$ gives
 \[
  \begin{split}
  &\text{every component of }\mathcal C^c\text{ meeting }[-n,n]^d
        \text{ has size at most }h_n,\\
  &|\pi(a)-a|\leq h_n+1,\\
- &d_{\mathcal C}(i,j)\leq A(|i-j|+h_n),\\
- &d_{\mathcal C}(\pi(a),\pi(b))\leq A(|a-b|+h_n),
+ &d_{\mathcal C}(\pi(a),\pi(b))\leq A(|a-b|+h_n)
+       \qquad(a,b\in[-n,n]^d).
  \end{split}
 \]
-for $a,b\in[-n,n]^d$ and $i,j\in\mathcal C\cap[-n,n]^d$.
-Enlarging the fixed windows, when needed for the connecting vertices,
-does not change these estimates.
+
+Finally let $x,y\in\mathcal C$, $|x|\leq n$, and
+$|x-y|\geq(\log n)^2$, and put $N=\max\{n,|y|\}$. The preceding
+additive estimate at scale $N$ applies to $x,y$. If $|y|\leq2n$,
+then $h_N\leq CB(\log n)^2\leq CB|x-y|$; if $|y|>2n$, then
+$|x-y|\geq N/2$ and $h_N\leq CBN\leq CB|x-y|$ for all large $n$.
+Thus $d_{\mathcal C}(x,y)\leq C'|x-y|$ with deterministic $C'$,
+simultaneously above an almost-sure finite threshold. The lower
+bound $d_{\mathcal C}(x,y)\geq|x-y|$ follows from the
+nearest-neighbor graph metric.
 
 We also need a moment bound, not merely an eventual almost-sure
 estimate. For fixed $a,b$ and $R\geq|a-b|+2$, require all $I^c$ holes
 meeting $a+[-40R,40R]^d$ to have size at most $R$ and require the AP
 bound for all pairs in that box separated by at least $R$.
 The failure probability is at most
-$CR^{2d}\exp(-cR^\theta)$. On this event the projections of $a,b$
+$CR^{2d}\exp(-c\sqrt R)$. On this event the projections of $a,b$
 and their connecting vertices in $I$ are within $O(R)$ of $a$.
 A vertex of $I$ near $a+10Re_1$ supplies the same two-leg connection
 as above. Hence for deterministic $A_*,C,c$,
 \[
  \mathbf P\{d_{\mathcal C}(\pi(a),\pi(b))>A_*R\}
- \leq CR^{2d}\exp(-cR^\theta),
+ \leq CR^{2d}\exp(-c\sqrt R),
  \qquad R\geq|a-b|+2.
 \]
 The tail is for each fixed pair $a,b$, for every

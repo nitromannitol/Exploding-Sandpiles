@@ -147,7 +147,8 @@ def is_cited_external(node: dict) -> bool:
             and Path(node["file"]).parts[:2] == (PKG, "External"))
 
 
-def is_literal_definition(node: dict) -> bool:
+def is_local_definition(node: dict) -> bool:
+    """Classify by registration location, without a source or literal-body verdict."""
     return (node.get("state") == "FROZEN" and node.get("kind") == "definition"
             and not is_cited_external(node))
 
@@ -158,7 +159,7 @@ def is_historical_source(pin: dict) -> bool:
 
 def legacy_reporting(nodes: list[dict], pins: dict[str, dict]) -> bool:
     return (all(is_historical_source(pins[n["id"]]) for n in nodes)
-            and not any(is_literal_definition(n) for n in nodes))
+            and not any(is_local_definition(n) for n in nodes))
 
 
 def source_range(node: dict, pin: dict) -> tuple[int, int]:
@@ -179,8 +180,8 @@ def historical_audit_nodes(
         pin = pins[node["id"]]
         if not is_historical_source(pin):
             excluded.append((node["id"], f"different source pin: {pin['file']} ({pin['sha256']})"))
-        elif is_literal_definition(node):
-            excluded.append((node["id"], "literal definition; no theorem correspondence audit"))
+        elif is_local_definition(node):
+            excluded.append((node["id"], "non-External FROZEN definition; source/body audit required"))
         elif not re.search(r"\.tex:\d+-\d+", node["source"]):
             excluded.append((node["id"], "citation has no explicit statement line range"))
         else:
@@ -262,7 +263,8 @@ def surface_table(nodes: list[dict], pins: dict[str, dict] | None = None) -> str
 
 
 def state_cell(node: dict) -> str:
-    return "literal definition" if is_literal_definition(node) else STATE_CELL[node["state"]]
+    return ("FROZEN definition; source/body audit required" if is_local_definition(node)
+            else STATE_CELL[node["state"]])
 
 
 def source_status(nodes: list[dict], pins: dict[str, dict]) -> str:
@@ -272,19 +274,19 @@ def source_status(nodes: list[dict], pins: dict[str, dict]) -> str:
     if unknown:
         raise LookupError(f"unknown node states {sorted(unknown)}")
     cited = sum(is_cited_external(n) for n in nodes)
-    literal = sum(is_literal_definition(n) for n in nodes)
+    local_definitions = sum(is_local_definition(n) for n in nodes)
     parts = [f"{counts[s]} `{s}`" for s in STATE_ORDER if counts[s] and s != "FROZEN"]
     if cited:
         parts.append(f"{cited} `FROZEN` cited inputs")
-    if literal:
-        parts.append(f"{literal} `FROZEN` literal definitions")
-    if counts["FROZEN"] != cited + literal:
-        raise LookupError("a FROZEN node is neither a cited input nor a literal definition")
+    if local_definitions:
+        parts.append(f"{local_definitions} `FROZEN` non-External definitions")
+    if counts["FROZEN"] != cited + local_definitions:
+        raise LookupError("a FROZEN node is neither a cited input nor a non-External definition")
     rows = [f"Status: **{len(nodes)} registered declarations: {'; '.join(parts)}.**",
             "", "Source coverage is partial. Each row describes only its selected source; "
             "historical-source rows provide no revised-source coverage. These counts do not "
             "establish that every statement of any paper revision is proved.", "",
-            "| Pinned source | SHA-256 | Theorem rows | Proved theorem rows | Cited inputs | Literal definitions |",
+            "| Pinned source | SHA-256 | Theorem rows | Proved theorem rows | Cited inputs | Non-External definitions |",
             "|---|---|---|---|---|---|"]
     groups: dict[tuple[str, str], list[dict]] = {}
     for node in nodes:
@@ -295,9 +297,10 @@ def source_status(nodes: list[dict], pins: dict[str, dict]) -> str:
         proved = sum(n["state"] in {"SEALED", "PROVED"} for n in theorems)
         rows.append(f"| [{filename}]({filename}) | `{digest}` | {len(theorems)} | {proved} | "
                     f"{sum(is_cited_external(n) for n in group)} | "
-                    f"{sum(is_literal_definition(n) for n in group)} |")
-    rows += ["", "Literal definitions define source objects; they are neither assumed results "
-             "nor theorem proofs. Theorem states and source pins come from "
+                    f"{sum(is_local_definition(n) for n in group)} |")
+    rows += ["", "Non-External definitions are not counted as cited inputs or theorem proofs. "
+             "Their literal-body/source audit is required; directory placement does not "
+             "establish source fidelity. Theorem states and source pins come from "
              "`ledger/manifest.yaml`; independent source and axiom audits remain necessary. "
              "Run `python3 tools/check_axioms.py` to check axiom closures."]
     return "\n".join(rows)
@@ -387,9 +390,9 @@ def source_paper_map(nodes: list[dict], pins: dict[str, dict]) -> str:
         pin = pins[node["id"]]
         first, last = source_range(node, pin)
         filename = pin["file"]
-        if is_literal_definition(node):
-            cell = f"[Definition, lines {first}-{last}]({filename}#L{first})"
-            description = "Literal source definition"
+        if is_local_definition(node):
+            cell = f"[Definition registration, lines {first}-{last}]({filename}#L{first})"
+            description = "Non-External definition; literal-body/source audit required"
         else:
             env = paper_statement(node, environments[filename], pin)
             label = f"<br>`{env['label']}`" if env["label"] else ""

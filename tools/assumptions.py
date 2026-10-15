@@ -3,8 +3,8 @@
 
 A reader who is told that something is assumed should be able to see exactly
 what. This lists FROZEN definitions in `Exploding/External/`, with where the
-paper cites them and the verbatim Lean propositions that are assumed. Literal
-source definitions elsewhere are not assumptions.
+paper cites them and the verbatim Lean propositions that are assumed. FROZEN
+definitions elsewhere are classified separately and need source/body review.
 
     python3 tools/assumptions.py            # write ASSUMPTIONS.md
     python3 tools/assumptions.py --check    # fail if the file on disk is stale
@@ -13,7 +13,7 @@ import pathlib, re, sys
 
 sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent))
 from check_manifest import strip_block_comments  # noqa: E402
-from sync_docs import (is_cited_external, is_literal_definition, legacy_reporting,
+from sync_docs import (is_cited_external, is_local_definition, legacy_reporting,
                        load_manifest, source_pins)  # noqa: E402
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
@@ -166,15 +166,16 @@ def render():
     man = load_manifest(ROOT / "ledger" / "manifest.yaml")
     pins = source_pins(man["nodes"], man)
     assumed = [n for n in man["nodes"] if is_cited_external(n)]
-    literal = [n for n in man["nodes"] if is_literal_definition(n)]
+    local_definitions = [n for n in man["nodes"] if is_local_definition(n)]
     mixed = not legacy_reporting(man["nodes"], pins)
     comp = companions(man["nodes"])
     out = ["# What this development assumes", ""]
     if not assumed:
         out += ["No cited inputs are registered as FROZEN definitions in `Exploding/External/`.",
                 "This is a statement about the manifest, not a claim of complete paper coverage.",
-                f"There are {len(literal)} FROZEN literal definitions; they define source objects",
-                "and do not count as assumed results or theorem proofs.", ""]
+                f"There are {len(local_definitions)} non-External FROZEN definitions.",
+                "Their literal-body/source audits are required; directory placement does not",
+                "establish source fidelity or prove a result.", ""]
         return "\n".join(out)
     out += [
         "The results below are quoted by the paper from the literature; the paper does",
@@ -190,10 +191,11 @@ def render():
         "",
     ]
     if mixed:
-        names = ", ".join(f"`{n['id']}`" for n in literal)
-        out += [f"The manifest also records {len(literal)} FROZEN literal definitions"
-                + (f": {names}." if literal else "."),
-                "They define source objects and are not included among the assumed results.",
+        names = ", ".join(f"`{n['id']}`" for n in local_definitions)
+        out += [f"The manifest also records {len(local_definitions)} non-External FROZEN definitions"
+                + (f": {names}." if local_definitions else "."),
+                "They are excluded from the cited-input list. Their literal-body/source audits",
+                "are required; directory placement does not establish source fidelity.",
                 "Each citation below belongs only to its selected source pin; historical-source",
                 "assumptions do not establish revised-source coverage.", ""]
     frozen_text = "\n".join(

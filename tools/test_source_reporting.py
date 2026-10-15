@@ -25,7 +25,7 @@ class SourceReportingTests(unittest.TestCase):
         original = sync_docs.ROOT
         self.manifest = copy.deepcopy(sync_docs.load_manifest())
         self.manifest["nodes"] = [n for n in self.manifest["nodes"]
-                                  if not sync_docs.is_literal_definition(n)]
+                                  if not sync_docs.is_local_definition(n)]
         counterexample = next(n for n in self.manifest["nodes"]
                               if n["id"] == "thm-counterexample")
         counterexample.pop("source_pin", None)
@@ -108,12 +108,14 @@ class SourceReportingTests(unittest.TestCase):
         status = sync_docs.status_block(nodes, pins)
         self.assertIn("39 registered declarations", status)
         self.assertIn("7 `FROZEN` cited inputs", status)
-        self.assertIn("4 `FROZEN` literal definitions", status)
+        self.assertIn("4 `FROZEN` non-External definitions", status)
+        self.assertIn("Their literal-body/source audit is required", status)
         self.assertIn("Source coverage is partial", status)
         self.assertIn(sync_docs.HISTORICAL_SHA256, status)
         mapping = sync_docs.paper_map(nodes, pins)
         self.assertIn(f"]({self.revised}#L", mapping)
-        self.assertEqual(mapping.count("Literal source definition"), 4)
+        self.assertEqual(mapping.count("Non-External definition; literal-body/source audit required"), 4)
+        self.assertNotIn("Literal source definition", mapping)
         self.assertIn("TestLiteral0.lean#L2", mapping)
         with patch.object(sys, "argv", ["sync_docs.py", "--write"]):
             result, output = self.run_main(sync_docs)
@@ -126,7 +128,7 @@ class SourceReportingTests(unittest.TestCase):
         text = assumptions.render()
         self.assertEqual(text.count("\n## `"), 7)
         self.assertNotIn("## `def-literal-", text)
-        self.assertIn("4 FROZEN literal definitions", text)
+        self.assertIn("4 non-External FROZEN definitions", text)
         self.assertIn("Source pin: `paper/exploding.tex`", text)
 
     def test_only_literal_definitions_do_not_imply_every_result_is_proved(self):
@@ -136,7 +138,7 @@ class SourceReportingTests(unittest.TestCase):
         self.write_manifest()
         text = assumptions.render()
         self.assertIn("No cited inputs are registered", text)
-        self.assertIn("4 FROZEN literal definitions", text)
+        self.assertIn("4 non-External FROZEN definitions", text)
         self.assertNotIn("every registered", text)
 
     def test_revised_rows_never_inherit_historical_audit_notes(self):

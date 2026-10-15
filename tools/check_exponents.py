@@ -19,7 +19,7 @@ silently ignored:
     python3 tools/check_exponents.py
 
 The recorded explanations apply only to the exact historical source pin.
-Revised-source rows, literal definitions, and citations without a statement
+Revised-source rows, non-External definitions, and citations without a statement
 range are explicitly excluded. A run with no compared statements fails.
 """
 

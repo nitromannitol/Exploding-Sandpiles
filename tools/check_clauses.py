@@ -17,7 +17,7 @@ The counts are a heuristic, not a proof of correspondence: one Lean conjunct can
 faithfully carry two paper displays, and one paper display can need three Lean
 conjuncts.  So a mismatch is a prompt to look, not a verdict, and every node is
 listed with its counts so the reader can judge. The recorded readings apply
-only to the exact historical source pin. Revised-source rows, literal
+only to the exact historical source pin. Revised-source rows, non-External
 definitions, and citations without a statement range or label are explicitly
 excluded. A successful run must compare at least one historical statement.
 

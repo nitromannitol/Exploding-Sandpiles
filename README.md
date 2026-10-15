@@ -13,6 +13,12 @@ The development is built on
 [`mathlib`](https://github.com/leanprover-community/mathlib4) and the shared library
 [`Lattice-Probability`](https://github.com/nitromannitol/Lattice-Probability) (`LatticeProb`).
 
+A separate [corrected arXiv-format draft](paper/corrected-arxiv/exploding-corrected-arxiv.tex)
+is available with a [source note and compilation instructions](paper/corrected-arxiv/SOURCE_NOTE.md).
+The formalization and its correspondence table follow the corrected journal-format source
+[`paper/exploding.tex`](paper/exploding.tex); the original arXiv v2 source is preserved at
+[`paper/exploding-arxiv.tex`](paper/exploding-arxiv.tex).
+
 [![CI](https://github.com/nitromannitol/Exploding-Sandpiles/actions/workflows/build.yml/badge.svg)](https://github.com/nitromannitol/Exploding-Sandpiles/actions/workflows/build.yml)
 [![Comparator audit](https://github.com/nitromannitol/Exploding-Sandpiles/actions/workflows/comparator.yml/badge.svg)](https://github.com/nitromannitol/Exploding-Sandpiles/actions/workflows/comparator.yml)
 

@@ -1,0 +1,292 @@
+\newcommand{\etalchar}[1]{$^{#1}$}
+\providecommand{\bysame}{\leavevmode\hbox to3em{\hrulefill}\thinspace}
+\providecommand{\MR}{\relax\ifhmode\unskip\space\fi MR }
+% \MRhref is called by the amsart/book/proc definition of \MR.
+\providecommand{\MRhref}[2]{%
+  \href{http://www.ams.org/mathscinet-getitem?mr=#1}{#2}
+}
+\providecommand{\href}[2]{#2}
+\begin{thebibliography}{HLM{\etalchar{+}}08}
+
+\bibitem[AC18]{armstrong2018stochastic}
+Scott Armstrong and Pierre Cardaliaguet, \emph{Stochastic homogenization of
+  quasilinear {H}amilton--{J}acobi equations and geometric motions}, Journal of
+  the European Mathematical Society \textbf{20} (2018), no.~4, 797--864.
+
+\bibitem[AM20]{alevy2020limit}
+Ian Alevy and Sevak Mkrtchyan, \emph{The limit shape of the leaky {A}belian
+  sandpile model}, arXiv preprint arXiv:2010.01946 (2020).
+
+\bibitem[AMP02]{alves2002shape}
+Oswaldo~SM Alves, Fabio~P Machado, and S~Yu Popov, \emph{The shape theorem for
+  the frog model}, The Annals of Applied Probability \textbf{12} (2002), no.~2,
+  533--546.
+
+\bibitem[AP96]{antal1996chemical}
+Peter Antal and Agoston Pisztora, \emph{On the chemical distance for
+  supercritical {B}ernoulli percolation}, The Annals of Probability (1996),
+  1036--1048.
+
+\bibitem[AS16]{alon2016probabilistic}
+Noga Alon and Joel~H Spencer, \emph{The probabilistic method}, John Wiley \&
+  Sons, 2016.
+
+\bibitem[AS19]{aleksanyan2019discrete}
+Hayk Aleksanyan and Henrik Shahgholian, \emph{Discrete balayage and boundary
+  sandpile}, Journal d'Analyse Mathematique \textbf{138} (2019), no.~1,
+  361--403.
+
+\bibitem[BG07]{babai2007sandpile}
+L{\'a}szl{\'o} Babai and Igor Gorodezky, \emph{Sandpile transience on the grid
+  is polynomially bounded}, Proceedings of the eighteenth annual ACM-SIAM
+  symposium on Discrete algorithms, 2007, pp.~627--636.
+
+\bibitem[BR21]{bou2019convergence}
+Ahmed Bou-Rabee, \emph{Convergence of the random {A}belian sandpile}, The
+  Annals of Probability \textbf{49} (2021), no.~6, 3168--3196.
+
+\bibitem[BR22]{bou2020dynamic}
+\bysame, \emph{Dynamic dimensional reduction in the {A}belian sandpile},
+  Communications in Mathematical Physics \textbf{390} (2022), no.~2, 933--958.
+
+\bibitem[BS98]{barles1998new}
+Guy Barles and Panagiotis~E Souganidis, \emph{A new approach to front
+  propagation problems: theory and applications}, Archive for Rational
+  Mechanics and Analysis \textbf{141} (1998), no.~3, 237--296.
+
+\bibitem[CD81]{cox1981some}
+J~Theodore Cox and Richard Durrett, \emph{Some limit theorems for percolation
+  processes with necessary and sufficient conditions}, The Annals of
+  Probability (1981), 583--603.
+
+\bibitem[CKF20]{chen2020laplacian}
+Joe Chen and Jonah Kudler-Flam, \emph{Laplacian growth and sandpiles on the
+  sierpi{\'n}ski gasket: limit shape universality and exact solutions}, Annales
+  de l’Institut Henri Poincar{\'e} D \textbf{7} (2020), no.~4.
+
+\bibitem[CM14]{caffarelli2014counter}
+LA~Caffarelli and R~Monneau, \emph{Counter-example in three dimension and
+  homogenization of geometric motions in two dimension}, Archive for Rational
+  Mechanics and Analysis \textbf{212} (2014), no.~2, 503--574.
+
+\bibitem[DF91]{diaconis1991growth}
+Persi Diaconis and William Fulton, \emph{A growth model, a game, an algebra,
+  {L}agrange inversion, and characteristic classes}, Rend. Sem. Mat. Univ. Pol.
+  Torino \textbf{49} (1991), no.~1, 95--119.
+
+\bibitem[Dha99]{dhar1999abelian}
+Deepak Dhar, \emph{The {A}belian sandpile and related models}, Physica A:
+  Statistical Mechanics and its Applications \textbf{263} (1999), no.~1-4,
+  4--25.
+
+\bibitem[DL81]{durrett1981shape}
+Richard Durrett and Thomas~M Liggett, \emph{The shape of the limit set in
+  {R}ichardson's growth model}, The Annals of Probability \textbf{9} (1981),
+  no.~2, 186--193.
+
+\bibitem[DS13]{dhar2013sandpile}
+Deepak Dhar and Tridib Sadhu, \emph{A sandpile model for proportionate growth},
+  Journal of Statistical Mechanics: Theory and Experiment \textbf{2013} (2013),
+  no.~11, P11006.
+
+\bibitem[FdBR08]{fey2008limiting}
+Anne Fey-den Boer and Frank Redig, \emph{Limiting shapes for deterministic
+  centrally seeded growth models}, Journal of Statistical Physics \textbf{130}
+  (2008), no.~3, 579.
+
+\bibitem[Fel19]{feldman2019mean}
+William~M Feldman, \emph{Mean curvature flow with positive random forcing in
+  2-d}, arXiv preprint arXiv:1911.00488 (2019).
+
+\bibitem[FL11]{fey2010limiting}
+Anne Fey and Haiyan Liu, \emph{Limiting shapes for a non-abelian sandpile
+  growth model and related cellular automata.}, Journal of Cellular Automata
+  \textbf{6} (2011).
+
+\bibitem[FLP10]{fey2010growth}
+Anne Fey, Lionel Levine, and Yuval Peres, \emph{Growth rates and explosions in
+  sandpiles}, Journal of statistical physics \textbf{138} (2010), no.~1-3,
+  143--159.
+
+\bibitem[FMR09]{fey2009stabilizability}
+Anne Fey, Ronald Meester, and Frank Redig, \emph{Stabilizability and
+  percolation in the infinite volume sandpile model}, The Annals of Probability
+  \textbf{37} (2009), no.~2, 654--675.
+
+\bibitem[FR05]{fey2005organized}
+Anne Fey and Frank Redig, \emph{Organized versus self-organized criticality in
+  the {A}belian sandpile model}, Markov Processes Relat. Fields \textbf{11}
+  (2005), 425--442.
+
+\bibitem[GG93]{gravner1993threshold}
+Janko Gravner and David Griffeath, \emph{Threshold growth dynamics},
+  Transactions of the American Mathematical society (1993), 837--870.
+
+\bibitem[GG96]{gravner1996first}
+\bysame, \emph{First passage times for threshold growth dynamics on {Z}2}, The
+  Annals of Probability (1996), 1752--1778.
+
+\bibitem[GG98]{gravner1998cellular}
+\bysame, \emph{Cellular automaton growth on {Z}2: theorems, examples, and
+  problems}, Advances in Applied Mathematics \textbf{21} (1998), no.~2,
+  241--304.
+
+\bibitem[GG06]{gravner2006random}
+\bysame, \emph{Random growth models with polygonal shapes}, The Annals of
+  Probability (2006), 181--218.
+
+\bibitem[GM04]{garet2004asymptotic}
+Olivier Garet and R{\'e}gine Marchand, \emph{Asymptotic shape for the chemical
+  distance and first-passage percolation on the infinite bernoulli cluster},
+  ESAIM: Probability and Statistics \textbf{8} (2004), 169--199.
+
+\bibitem[GM07]{garet2007large}
+\bysame, \emph{Large deviations for the chemical distance in supercritical
+  {B}ernoulli percolation}, The Annals of Probability \textbf{35} (2007),
+  no.~3, 833--866.
+
+\bibitem[GM12]{garet2012asymptotic}
+\bysame, \emph{Asymptotic shape for the contact process in random environment},
+  The Annals of Applied Probability \textbf{22} (2012), no.~4, 1362--1410.
+
+\bibitem[GMP21]{goles2021freezing}
+Eric Goles, Pedro Montealegre, and K{\'e}vin Perrot, \emph{Freezing sandpiles
+  and {B}oolean threshold networks: Equivalence and complexity}, Advances in
+  Applied Mathematics \textbf{125} (2021), 102161.
+
+\bibitem[Gri13]{grimmett2013percolation}
+Geoffrey~R Grimmett, \emph{Percolation}, vol. 321, Springer Science \& Business
+  Media, 2013.
+
+\bibitem[HJL19]{hough2019sandpiles}
+Robert~D Hough, Daniel~C Jerison, and Lionel Levine, \emph{Sandpiles on the
+  square lattice}, Communications in Mathematical Physics \textbf{367} (2019),
+  no.~1, 33--87.
+
+\bibitem[HLM{\etalchar{+}}08]{holroyd2008chip}
+Alexander~E Holroyd, Lionel Levine, Karola M{\'e}sz{\'a}ros, Yuyal Peres, James
+  Propp, and David~B Wilson, \emph{Chip-firing and rotor-routing on directed
+  graphs}, In and out of equilibrium 2, Springer, 2008, pp.~331--364.
+
+\bibitem[HS19]{hough2019cut}
+Robert Hough and Hyojeong Son, \emph{Cut-off for sandpiles on tiling graphs},
+  arXiv preprint arXiv:1902.04174 (2019).
+
+\bibitem[IPS99]{ishii1999threshold}
+Hitoshi Ishii, Gabriel~E Pires, and Panagiotis~E Souganidis, \emph{Threshold
+  dynamics type approximation schemes for propagating fronts}, Journal of the
+  Mathematical Society of Japan \textbf{51} (1999), no.~2, 267--308.
+
+\bibitem[J{\'a}r18]{jarai2018sandpile}
+Antal~A J{\'a}rai, \emph{Sandpile models}, Probability Surveys \textbf{15}
+  (2018), 243--306.
+
+\bibitem[Kli18]{klivans2018mathematics}
+Caroline~J Klivans, \emph{The mathematics of chip-firing}, CRC Press, 2018.
+
+\bibitem[KS08]{kesten2008shape}
+Harry Kesten and Vladas Sidoravicius, \emph{A shape theorem for the spread of
+  an infection}, Annals of mathematics (2008), 701--766.
+
+\bibitem[LBR02]{le2002identity}
+Yvan Le~Borgne and Dominique Rossin, \emph{On the identity of the sandpile
+  group}, Discrete mathematics \textbf{256} (2002), no.~3, 775--790.
+
+\bibitem[LKG90]{liu1990geometry}
+SH~Liu, Theodore Kaplan, and LJ~Gray, \emph{Geometry and dynamics of
+  deterministic sand piles}, Physical Review A \textbf{42} (1990), no.~6, 3207.
+
+\bibitem[LP09]{levine2009strong}
+Lionel Levine and Yuval Peres, \emph{Strong spherical asymptotics for
+  rotor-router aggregation and the divisible sandpile}, Potential Analysis
+  \textbf{30} (2009), no.~1, 1.
+
+\bibitem[LP10]{levine2010sandpile}
+Lionel Levine and James Propp, \emph{What is... a sandpile}, Notices Amer.
+  Math. Soc, 2010.
+
+\bibitem[LP17]{levine2017laplacian}
+Lionel Levine and Yuval Peres, \emph{Laplacian growth, sandpiles, and scaling
+  limits}, Bulletin of the American Mathematical Society \textbf{54} (2017),
+  no.~3, 355--382.
+
+\bibitem[LPS16]{levine2016apollonian}
+Lionel Levine, Wesley Pegden, and Charles~K Smart, \emph{Apollonian structure
+  in the {A}belian sandpile}, Geometric and functional analysis \textbf{26}
+  (2016), no.~1, 306--336.
+
+\bibitem[LPS17]{levine2017apollonian}
+\bysame, \emph{The {A}pollonian structure of integer superharmonic matrices},
+  Annals of Mathematics (2017), 1--67.
+
+\bibitem[LS19]{lang2019harmonic}
+Moritz Lang and Mikhail Shkolnikov, \emph{Harmonic dynamics of the {A}belian
+  sandpile}, Proceedings of the National Academy of Sciences \textbf{116}
+  (2019), no.~8, 2821--2830.
+
+\bibitem[LSS97]{liggett1997domination}
+Thomas~M Liggett, Roberto~H Schonmann, and Alan~M Stacey, \emph{Domination by
+  product measures}, The Annals of Probability \textbf{25} (1997), no.~1,
+  71--95.
+
+\bibitem[LZ19]{lin2019stochastic}
+Jessica Lin and Andrej Zlato{\v{s}}, \emph{Stochastic homogenization for
+  reaction--diffusion equations}, Archive for Rational Mechanics and Analysis
+  \textbf{232} (2019), no.~2, 813--871.
+
+\bibitem[Mar02]{marchand2002strict}
+R{\'e}gine Marchand, \emph{Strict inequalities for the time constant in first
+  passage percolation}, The Annals of Applied Probability \textbf{12} (2002),
+  no.~3, 1001--1038.
+
+\bibitem[Mat08]{mathieu2008quenched}
+P~Mathieu, \emph{Quenched invariance principles for random walks with random
+  conductances}, Journal of Statistical Physics \textbf{130} (2008), no.~5,
+  1025--1046.
+
+\bibitem[Mel20]{melchionna2020sandpile}
+Andrew Melchionna, \emph{The sandpile identity element on an ellipse}, arXiv
+  preprint arXiv:2007.05792 (2020).
+
+\bibitem[Ost03]{ostojic2003patterns}
+Srdjan Ostojic, \emph{Patterns formed by addition of grains to only one site of
+  an {A}belian sandpile}, Physica A: Statistical Mechanics and its Applications
+  \textbf{318} (2003), no.~1-2, 187--199.
+
+\bibitem[Pao13]{paoletti2013deterministic}
+Guglielmo Paoletti, \emph{Deterministic {A}belian sandpile models and
+  patterns}, Springer Science \& Business Media, 2013.
+
+\bibitem[PS13]{pegden2013convergence}
+Wesley Pegden and Charles~K Smart, \emph{Convergence of the {A}belian
+  sandpile}, Duke mathematical journal \textbf{162} (2013), no.~4, 627--642.
+
+\bibitem[PS20]{pegden2020stability}
+\bysame, \emph{Stability of patterns in the {A}belian sandpile}, Annales Henri
+  Poincar{\'e}, vol.~21, Springer, 2020, pp.~1383--1399.
+
+\bibitem[PW85]{packard1985two}
+Norman~H Packard and Stephen Wolfram, \emph{Two-dimensional cellular automata},
+  Journal of Statistical physics \textbf{38} (1985), no.~5-6, 901--946.
+
+\bibitem[Red05]{redig2005mathematical}
+Frank Redig, \emph{Mathematical aspects of the {A}belian sandpile model}, Les
+  Houches lecture notes \textbf{83} (2005), 657--659.
+
+\bibitem[Sch92]{schonmann1992behavior}
+Roberto~H Schonmann, \emph{On the behavior of some cellular automata related to
+  bootstrap percolation}, The Annals of Probability (1992), 174--193.
+
+\bibitem[Wil78]{willson1978convergence}
+Stephen~J Willson, \emph{On convergence of configurations}, Discrete
+  Mathematics \textbf{23} (1978), no.~3, 279--300.
+
+\bibitem[Xin09]{xin2009introduction}
+Jack Xin, \emph{An introduction to fronts in random media}, vol.~5, Springer
+  Science \& Business Media, 2009.
+
+\bibitem[ZZ20]{zhang2020long}
+Yuming~Paul Zhang and Andrej Zlatos, \emph{Long time dynamics for combustion in
+  random media}, arXiv preprint arXiv:2008.02391 (2020).
+
+\end{thebibliography}

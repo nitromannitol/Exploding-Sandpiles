@@ -2,21 +2,19 @@
 """Write ASSUMPTIONS.md: every result this development assumes, with its statement.
 
 A reader who is told that something is assumed should be able to see exactly
-what.  This lists each node whose state is `FROZEN`, with where the paper cites
-it and the verbatim Lean proposition that is assumed.
+what. This lists FROZEN definitions in `Exploding/External/`, with where the
+paper cites them and the verbatim Lean propositions that are assumed. Literal
+source definitions elsewhere are not assumptions.
 
     python3 tools/assumptions.py            # write ASSUMPTIONS.md
     python3 tools/assumptions.py --check    # fail if the file on disk is stale
 """
 import pathlib, re, sys
 
-try:
-    import yaml
-except ImportError:
-    sys.exit("assumptions.py: PyYAML is required")
-
 sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent))
 from check_manifest import strip_block_comments  # noqa: E402
+from sync_docs import (is_cited_external, is_literal_definition, legacy_reporting,
+                       load_manifest, source_pins)  # noqa: E402
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 BEGIN, END = "-- FROZEN-STATEMENT-BEGIN", "-- FROZEN-STATEMENT-END"
@@ -165,15 +163,18 @@ def bridge_condition(c):
 
 
 def render():
-    man = yaml.safe_load((ROOT / "ledger" / "manifest.yaml").read_text(encoding="utf-8"))
-    assumed = [n for n in man["nodes"] if n.get("state") == "FROZEN"]
+    man = load_manifest(ROOT / "ledger" / "manifest.yaml")
+    pins = source_pins(man["nodes"], man)
+    assumed = [n for n in man["nodes"] if is_cited_external(n)]
+    literal = [n for n in man["nodes"] if is_literal_definition(n)]
+    mixed = not legacy_reporting(man["nodes"], pins)
     comp = companions(man["nodes"])
     out = ["# What this development assumes", ""]
     if not assumed:
-        out += ["Nothing.  No result is carried as an assumed hypothesis: every registered",
-                "statement in this repository is either proved here, from Mathlib and the",
-                "libraries named in the README, or still open, with a proof that is a",
-                "registered `sorry` (see README.md).", ""]
+        out += ["No cited inputs are registered as FROZEN definitions in `Exploding/External/`.",
+                "This is a statement about the manifest, not a claim of complete paper coverage.",
+                f"There are {len(literal)} FROZEN literal definitions; they define source objects",
+                "and do not count as assumed results or theorem proofs.", ""]
         return "\n".join(out)
     out += [
         "The results below are quoted by the paper from the literature; the paper does",
@@ -188,10 +189,17 @@ def render():
         "`ledger/manifest.yaml` and the Lean sources; do not edit it by hand.",
         "",
     ]
+    if mixed:
+        names = ", ".join(f"`{n['id']}`" for n in literal)
+        out += [f"The manifest also records {len(literal)} FROZEN literal definitions"
+                + (f": {names}." if literal else "."),
+                "They define source objects and are not included among the assumed results.",
+                "Each citation below belongs only to its selected source pin; historical-source",
+                "assumptions do not establish revised-source coverage.", ""]
     frozen_text = "\n".join(
         p.read_text(encoding="utf-8")
         for p in sorted((ROOT / "Exploding" / "Frozen").rglob("*.lean")))
-    externals = {n["export"] for n in man["nodes"] if n.get("state") == "FROZEN"}
+    externals = {n["export"] for n in assumed}
     for n in assumed:
         stem = pathlib.Path(n["file"]).stem
         if stem in comp:
@@ -243,19 +251,34 @@ def render():
                 frozen_block(n["file"]),
                 "```",
                 ""]
+        if mixed:
+            pin = pins[n["id"]]
+            out += [f"Source pin: `{pin['file']}`, SHA-256 `{pin['sha256']}`.", ""]
         if cond:
             out += [f"The proof `{c['id']}`:", "", "```lean", cond, "```", ""]
     return "\n".join(out)
 
 
-text = render()
-target = ROOT / "ASSUMPTIONS.md"
-if "--check" in sys.argv[1:]:
-    cur = target.read_text(encoding="utf-8") if target.exists() else ""
-    if cur != text:
-        sys.exit("assumptions: ASSUMPTIONS.md is stale; rerun tools/assumptions.py")
-    print("assumptions: OK (ASSUMPTIONS.md is current)")
-else:
-    target.write_text(text, encoding="utf-8")
-    n = text.count("\n## `")
-    print(f"assumptions: wrote ASSUMPTIONS.md ({n} assumed result(s))")
+def main():
+    try:
+        text = render()
+        target = ROOT / "ASSUMPTIONS.md"
+        if "--check" in sys.argv[1:]:
+            cur = target.read_text(encoding="utf-8") if target.exists() else ""
+            if cur != text:
+                print("assumptions: ASSUMPTIONS.md is stale; rerun tools/assumptions.py",
+                      file=sys.stderr)
+                return 1
+            print("assumptions: OK (ASSUMPTIONS.md is current)")
+        else:
+            target.write_text(text, encoding="utf-8")
+            n = text.count("\n## `")
+            print(f"assumptions: wrote ASSUMPTIONS.md ({n} assumed result(s))")
+    except (LookupError, KeyError, OSError, ValueError) as exc:
+        print(f"assumptions: {exc}", file=sys.stderr)
+        return 2
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

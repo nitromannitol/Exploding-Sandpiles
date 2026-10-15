@@ -17,19 +17,22 @@ silently ignored:
              own display
 
     python3 tools/check_exponents.py
+
+The recorded explanations apply only to the exact historical source pin.
+Revised-source rows, literal definitions, and citations without a statement
+range are explicitly excluded. A run with no compared statements fails.
 """
 
 from __future__ import annotations
 
+import hashlib
 import os
 import re
 import sys
 from pathlib import Path
 
-try:
-    import yaml
-except ImportError:
-    sys.exit("check_exponents.py: PyYAML is required (pip install pyyaml)")
+from sync_docs import (HISTORICAL_SHA256, historical_audit_nodes, load_manifest,
+                       source_pins, source_range)
 
 ROOT = Path(__file__).resolve().parent.parent
 MANIFEST = ROOT / "ledger" / "manifest.yaml"
@@ -156,16 +159,23 @@ def lean_exponents(blk: str) -> set[str]:
 
 
 def main() -> int:
-    lines = paper_path().read_text(encoding="utf-8").splitlines()
-    manifest = yaml.safe_load(MANIFEST.read_text(encoding="utf-8"))
+    try:
+        path = paper_path()
+        if hashlib.sha256(path.read_bytes()).hexdigest() != HISTORICAL_SHA256:
+            raise LookupError("recorded exponent explanations apply only to historical "
+                              "paper/exploding.tex at SHA-256 " + HISTORICAL_SHA256)
+        lines = path.read_text(encoding="utf-8").splitlines()
+        manifest = load_manifest(MANIFEST)
+        pins = source_pins(manifest["nodes"], manifest)
+        eligible, excluded = historical_audit_nodes(manifest["nodes"], pins)
+    except (LookupError, KeyError, OSError, ValueError) as exc:
+        print(f"check_exponents: {exc}", file=sys.stderr)
+        return 2
     unexplained: list[tuple[str, list[str]]] = []
     compared = 0
 
-    for node in manifest.get("nodes") or []:
-        rng = re.search(rf"{re.escape(paper_path().name)}:(\d+)-(\d+)", node["source"])
-        if not rng:
-            continue
-        a, b = int(rng.group(1)), int(rng.group(2))
+    for node in eligible:
+        a, b = source_range(node, pins[node["id"]])
         seg = "\n".join(lines[a - 1:b])
         text = (ROOT / node["file"]).read_text(encoding="utf-8")
         blk = text[text.index("-- FROZEN-STATEMENT-BEGIN"):
@@ -182,13 +192,21 @@ def main() -> int:
         if missing:
             unexplained.append((node["id"], missing))
 
+    print("\nExcluded from this historical-source audit:")
+    for nid, reason in excluded:
+        print(f"  {nid}: {reason}")
+    if not compared:
+        print("\ncheck_exponents: FAIL (no historical-source statements compared)", file=sys.stderr)
+        return 1
+
     if unexplained:
         print("\ncheck_exponents: a paper exponent has no counterpart in Lean:",
               file=sys.stderr)
         for nid, ms in unexplained:
             print(f"  {nid}: {', '.join(ms)}", file=sys.stderr)
         return 1
-    print(f"\ncheck_exponents: OK ({compared} statements; every paper exponent "
+    print(f"\ncheck_exponents: OK ({compared} historical-source statements; "
+          f"{len(excluded)} explicitly excluded; every compared paper exponent "
           f"appears in its Lean statement or is explained above)")
     return 0
 

@@ -16,8 +16,10 @@ asserts more:
 The counts are a heuristic, not a proof of correspondence: one Lean conjunct can
 faithfully carry two paper displays, and one paper display can need three Lean
 conjuncts.  So a mismatch is a prompt to look, not a verdict, and every node is
-listed with its counts so the reader can judge.  Nodes whose `source` names no
-paper label are skipped: they have no paper statement to compare against.
+listed with its counts so the reader can judge. The recorded readings apply
+only to the exact historical source pin. Revised-source rows, literal
+definitions, and citations without a statement range or label are explicitly
+excluded. A successful run must compare at least one historical statement.
 
     python3 tools/check_clauses.py            # report
     python3 tools/check_clauses.py --strict   # exit 1 if any node is unreviewed
@@ -25,15 +27,14 @@ paper label are skipped: they have no paper statement to compare against.
 
 from __future__ import annotations
 
+import hashlib
 import os
 import re
 import sys
 from pathlib import Path
 
-try:
-    import yaml
-except ImportError:
-    sys.exit("check_clauses.py: PyYAML is required (pip install pyyaml)")
+from sync_docs import (HISTORICAL_SHA256, historical_audit_nodes, load_manifest,
+                       source_pins, source_range)
 
 ROOT = Path(__file__).resolve().parent.parent
 MANIFEST = ROOT / "ledger" / "manifest.yaml"
@@ -214,18 +215,27 @@ def lean_conjuncts(block: str) -> int:
 
 
 def main() -> int:
-    strict = "--strict" in sys.argv[1:]
-    lines = paper_path().read_text(encoding="utf-8").splitlines()
-    manifest = yaml.safe_load(MANIFEST.read_text(encoding="utf-8"))
+    try:
+        path = paper_path()
+        if hashlib.sha256(path.read_bytes()).hexdigest() != HISTORICAL_SHA256:
+            raise LookupError("recorded clause readings apply only to historical "
+                              "paper/exploding.tex at SHA-256 " + HISTORICAL_SHA256)
+        lines = path.read_text(encoding="utf-8").splitlines()
+        manifest = load_manifest(MANIFEST)
+        pins = source_pins(manifest["nodes"], manifest)
+        eligible, excluded = historical_audit_nodes(manifest["nodes"], pins)
+    except (LookupError, KeyError, OSError, ValueError) as exc:
+        print(f"check_clauses: {exc}", file=sys.stderr)
+        return 2
 
     rows, flagged, unreviewed = [], [], []
-    for node in manifest.get("nodes") or []:
+    for node in eligible:
         src = node["source"]
-        rng = re.search(rf"{re.escape(paper_path().name)}:(\d+)-(\d+)", src)
         lab = re.search(r"label ([A-Za-z][A-Za-z0-9:_-]*)", src)
-        if not (rng and lab):
+        if not lab:
+            excluded.append((node["id"], "no labelled statement; no recorded clause reading"))
             continue
-        a, b = int(rng.group(1)), int(rng.group(2))
+        a, b = source_range(node, pins[node["id"]])
         segment = "\n".join(lines[a - 1:b])
         text = (ROOT / node["file"]).read_text(encoding="utf-8")
         blk = text[text.index("-- FROZEN-STATEMENT-BEGIN"):text.index("-- FROZEN-STATEMENT-END")]
@@ -245,11 +255,19 @@ def main() -> int:
     for nid, _, _, _ in rows:
         print(f"  {nid}: {REVIEWED.get(nid, 'NOT REVIEWED')}")
 
+    print("\nExcluded from this historical-source audit:")
+    for nid, reason in excluded:
+        print(f"  {nid}: {reason}")
+    if not rows:
+        print("\ncheck_clauses: FAIL (no historical-source statements compared)", file=sys.stderr)
+        return 1
+
     if unreviewed:
         print(f"\ncheck_clauses: {len(unreviewed)} statement(s) have no recorded "
               f"correspondence: {', '.join(unreviewed)}", file=sys.stderr)
         return 1
-    print(f"\ncheck_clauses: OK ({len(rows)} statements, each read against the paper "
+    print(f"\ncheck_clauses: OK ({len(rows)} historical-source statements; "
+          f"{len(excluded)} explicitly excluded; each compared statement read against the paper "
           f"and its correspondence recorded; {len(flagged)} where the paper is "
           f"recorded as asserting more, all explained above)")
     return 0

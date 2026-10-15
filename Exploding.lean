@@ -295,6 +295,7 @@ import Exploding.Support.ArxivBondFiniteHoles
 import Exploding.Support.ArxivBondHoleGeometry
 import Exploding.Support.ArxivBondHoleTail
 import Exploding.Support.ArxivP1FiniteExploding
+import Exploding.Support.ArxivCrossingTerminal
 
 import Exploding.External.FeyLevinePeres
 import Exploding.External.Schonmann

@@ -10,7 +10,8 @@
 #         DRAFT_SORRY (the statement is frozen, the proof is still open),
 #         SEALED (a proof exists and its axiom closure is clean).
 # A node may override the global source_pin with its own file and sha256 when
-# that declaration has been audited against a later paper revision.
+# that declaration has been audited against a later paper revision. Pin each
+# TeX input under source_pin.inputs and cite the selected file in node.source.
 
 version: 1
 source_pin:

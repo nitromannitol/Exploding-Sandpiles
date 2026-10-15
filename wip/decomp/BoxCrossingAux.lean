@@ -76,7 +76,7 @@ theorem aux_box_crossing_rboxShift_zero_eq_cube (d n : ℕ) :
 -- each of its sites at most `1 + 2d = 2d+1 < 2*(d+1) = 2d+2` total, so layer 2 never reaches
 -- threshold and the box is never fully toppled: `CrossedInDirection`'s conclusion `1 ≤ fodo … x`
 -- fails at every `x` with `x 0 = 2`, contradicting the claim for every `t`. The fix is exactly the
--- hypothesis the orchestrator's own Assembly comment already names for this step ("turns 'every
+-- hypothesis the earlier Assembly comment already names for this step ("turns 'every
 -- layer spans' into 'the box is crossed'"): every layer `i ∈ [1,n]`, not just layer 1, must be
 -- spanned (matching `Ω' = ⋂_{i=1}^n Ω_i` in the paper, `exploding.tex:1997-2002`).
 /-- **New, real (generalises `Exploding.Support.SubWave.wave_le_fodo`'s domination technique).**
@@ -537,7 +537,7 @@ theorem aux_box_crossing_shift_invariant (d : ℕ) (ν : Measure ℤ) [IsProbabi
 -- (fun _ => ...)`-style two-point law), fix any site `x₀`, and set `Ω 0 := {η | η x₀ = a}`,
 -- `Ω 1 := (Ω 0)ᶜ`, `p := fun _ => (1/2 : ENNReal)`. Then `p i ≤ μ (Ω i)` holds (with equality)
 -- for both `i`, but `Ω 0 ∩ Ω 1 = ∅` so `μ (⋂ i, Ω i) = 0`, while `∏ i, p i = 1/4 ≠ 0`: the
--- claimed `∏ i, p i ≤ μ (⋂ i, Ω i)` reads `1/4 ≤ 0`, false. The orchestrator's own comment
+-- claimed `∏ i, p i ≤ μ (⋂ i, Ω i)` reads `1/4 ≤ 0`, false. The earlier comment
 -- already names the missing ingredient ("the `n` layers' internal-spanning events depend on
 -- pairwise-disjoint blocks of coordinates"); the fix below adds that hypothesis explicitly
 -- (a family of pairwise-disjoint coordinate blocks `A`, with each `Ω i` measurable for the

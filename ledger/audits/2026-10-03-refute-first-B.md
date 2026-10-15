@@ -1,16 +1,19 @@
 # Independent refute-first audit — Exploding-Sandpiles, Batch B
 
-* **Auditor:** DeepSeek fleet, second-key audit (independent; wrote none of the development).
+Historical audit snapshot. These checks cover the stated source and revision only; later source-fidelity rulings are separate.
+Command lines using `cd .` are normalized to the repository root; their recorded outputs and commit pins are unchanged.
+
+* **Auditor:** Independent reviewer (wrote none of the development).
 * **Batch B:** `lem-penultimate-cluster`, `lem-penultimate-upper-bound`, `lem-penultimate-close`, `prop-last-wave-convergence`, `prop-approximate-subadditive`, `prop-generalized-last-wave`.
-* **Repository:** `~/lean/Exploding-Sandpiles`.
+* **Repository:** `repository root`.
 * **Head read** (`git rev-parse HEAD`, read-only): `2ad193d428b6aee264a45b3750259c2bbaae0533`. The brief's pin `326a151` is an ancestor of this head. `git diff --stat 326a151 HEAD -- Exploding/Frozen ledger/manifest.yaml` is empty and `git diff --name-only 326a151 HEAD` lists only `Exploding.lean`, `Exploding/Support/ExtAPStarDuality.lean` and the Batch-A report, so the frozen blocks, the manifest and every provider of my six nodes are byte-identical at the two commits. I read and ran the gates on the current tree; the results apply verbatim to the pin.
 * **Paper pin:** `paper/exploding.tex`, sha256 `1d7c2010d8bd29e7fb83e93f19c9ebe0e8aef201f93559b2b18f5ca0dc049b44` (matches `ledger/manifest.yaml:source_pin`).
 * **Constraints observed:** no `git add/commit/push`, no `lake build`, no file edited except this report. The only `git` commands were read-only (`rev-parse`, `cat-file`, `diff`, `show`).
 
-## Gate results (exact commands and output)
+## Gate results (repository-relative commands and recorded output)
 
 ```
-$ cd ~/lean/Exploding-Sandpiles && export PATH=$HOME/.elan/bin:$PATH
+$ cd . && export PATH=$HOME/.elan/bin:$PATH
 $ python3 tools/check_manifest.py
 check_manifest: OK (29 nodes, 0 unsealed; closure 29 checked, 0 skipped; 460 Exploding declarations indexed)
 

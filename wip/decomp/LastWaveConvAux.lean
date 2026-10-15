@@ -35,7 +35,7 @@ it has no measure, no transformation, no a.e. statement.  Kingman's theorem is
 **absent from this Mathlib checkout**.
 
 It is, however, **present and fully proved (no `sorry`) in
-`~/Lattice-Probability/LatticeProb/Prob/Kingman.lean`**, in the classical
+`LatticeProb/Prob/Kingman.lean`**, in the classical
 single-measure-preserving-transformation form: for `T : Ω → Ω` measure
 preserving and `g : ℕ → Ω → ℝ` `SubadditiveAlong T` (`g (m+n) x ≤ g m x +
 g n (T^[m] x)`), nonnegative or bounded below linearly, `g n x / n` converges

@@ -31,7 +31,7 @@ compensate, by monotonicity of parallel toppling -- so `{η | Explosive η}` is 
 tail event; combined with `FiniteRangeOfDependence` (h1) and the GIVEN
 `ErgodicOn` hypothesis (herg), a tail event's probability is `0` or `1` (this
 is the classical mixing argument that
-`~/Lattice-Probability/LatticeProb/Prob/ZeroOne.lean`'s abstract criterion is
+`LatticeProb/Prob/ZeroOne.lean`'s abstract criterion is
 built for, though that file's concrete instance derives ergodicity of a single
 shift from an i.i.d. law, which is not quite our setting: here `ErgodicOn` is
 already handed to us as a hypothesis about the WHOLE sublattice `L`, and the

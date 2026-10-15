@@ -356,7 +356,7 @@ ASSUMPTIONS.md        the seven cited results and which are also proved here (ge
 CORRESPONDENCE.md     paper ↔ Lean: conventions, cited inputs, differences, node table
 CONTRIBUTING.md       building notes and the elaboration policy for new files
 CITATION.cff          citation metadata
-formalization.yaml    the disclosure record (models, tooling, review status)
+formalization.yaml    source, statement, axiom and review metadata
 ledger/manifest.yaml  one row per registered statement: hash, paper source, state
 paper/exploding.tex   the paper, pinned by the SHA-256 in ledger/manifest.yaml
 paper/exploding-arxiv.tex, paper/arxiv/
@@ -368,10 +368,6 @@ tools/                the checkers and generators listed under Building
 lakefile.lean, lake-manifest.json, lean-toolchain
                       the pinned build
 ```
-
-## How this was built
-
-The Lean code was written by AI coding agents under the close supervision of the author; the models, tooling and cost are disclosed in [`formalization.yaml`](formalization.yaml).
 
 ## Authors, citation, acknowledgements
 

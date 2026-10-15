@@ -294,6 +294,7 @@ import Exploding.Support.ArxivBondDefectiveFiniteness
 import Exploding.Support.ArxivBondFiniteHoles
 import Exploding.Support.ArxivBondHoleGeometry
 import Exploding.Support.ArxivBondHoleTail
+import Exploding.Support.ArxivBondFiniteHoleSeries
 import Exploding.Support.ArxivP1FiniteExploding
 import Exploding.Support.ArxivCrossingTerminal
 import Exploding.Support.ArxivCrossingBound

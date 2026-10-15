@@ -22,6 +22,17 @@ import check_manifest
 import sync_docs
 
 
+HISTORICAL_COUNTEREXAMPLE_BLOCK = """theorem Exploding.Frozen.counterexample (d : ℕ) (hd : 2 ≤ d)
+    (hFMR : Exploding.External.FeyMeesterRedigLeastAction) :
+    ∃ η : Site d → ℤ,
+      Explosive η ∧
+      (¬ ∀ x : Site d, 2 * (d : ℤ) - 2 ≤ η x) ∧
+      (∀ n : ℕ, arrival η ((n : ℤ) • e1 d) ≠ ⊤) ∧
+      3 / 2 ≤ limsup (fun n : ℕ => ((arrival η ((n : ℤ) • e1 d)).toNat : ℝ) / (n : ℝ)) atTop ∧
+      liminf (fun n : ℕ => ((arrival η ((n : ℤ) • e1 d)).toNat : ℝ) / (n : ℝ)) atTop = 1
+"""
+
+
 class SourceReportingTests(unittest.TestCase):
     def setUp(self):
         original = sync_docs.ROOT
@@ -45,6 +56,12 @@ class SourceReportingTests(unittest.TestCase):
             target = self.root / filename
             target.parent.mkdir(parents=True, exist_ok=True)
             shutil.copyfile(original / filename, target)
+            if filename == counterexample["file"]:
+                text = target.read_text(encoding="utf-8")
+                start = text.index(check_manifest.BEGIN) + len(check_manifest.BEGIN)
+                end = text.index(check_manifest.END)
+                target.write_text(text[:start] + "\n" + HISTORICAL_COUNTEREXAMPLE_BLOCK
+                                  + text[end:], encoding="utf-8")
         for module in (sync_docs, assumptions, check_manifest, check_clauses, check_exponents):
             self.enterContext(patch.object(module, "ROOT", self.root))
             if hasattr(module, "MANIFEST"):

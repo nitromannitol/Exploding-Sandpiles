@@ -109,7 +109,7 @@ The limit shape theorem (Theorem 1.2) is also restated over Mathlib alone and ch
 | `lem-approx-subadditivity` | [Exploding.Frozen.approx_subadditivity](Exploding/Frozen/ApproxSubadditivity.lean#L105) | exploding.tex:760-765 (label lemma:approx_subadditivity) | PROVED |
 | `prop-recurrence` | [Exploding.Frozen.recurrence](Exploding/Frozen/Recurrence.lean#L17) | exploding.tex:1927-1929 (label prop:recurrence) | PROVED |
 | `lem-local-convexity` | [Exploding.Frozen.local_convexity](Exploding/Frozen/LocalConvexity.lean#L20) | exploding.tex:531-535 (label lemma:local_convexity) | PROVED |
-| `lem-finite-exploding` | [Exploding.Frozen.finite_exploding](Exploding/Frozen/FiniteExploding.lean#L28) | exploding.tex:720-722 (label lemma:finite_exploding) | SEALED |
+| `lem-finite-exploding` | [Exploding.Frozen.finite_exploding](Exploding/Frozen/FiniteExploding.lean#L28) | exploding.tex:720-722 (label lemma:finite_exploding) | PROVED |
 | `prop-crossing-time` | [Exploding.Frozen.crossing_time](Exploding/Frozen/CrossingTime.lean#L20) | exploding.tex:416-422 (label prop:crossing_time) | PROVED |
 | `ext-fey-levine-peres-proved` | [Exploding.xsr_flp](Exploding/Support/ExtSchFLP.lean#L8) | exploding.tex:238-240 (label prop:fey_levine_peres_explode) | PROVED |
 | `ext-schonmann-bootstrap-proved` | [Exploding.xsr_schonmann](Exploding/Support/ExtSchFinal.lean#L72) | exploding.tex:1969-1981 (label prop:schonnmann_bootstrap) | PROVED |

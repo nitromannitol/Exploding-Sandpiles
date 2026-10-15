@@ -298,6 +298,7 @@ import Exploding.Support.ArxivP1FiniteExploding
 import Exploding.Support.ArxivCrossingTerminal
 import Exploding.Support.AllHighWaveTranslation
 import Exploding.Support.AllHighWaveThreshold
+import Exploding.Support.AllHighPenultimateCluster
 
 import Exploding.External.FeyLevinePeres
 import Exploding.External.Schonmann

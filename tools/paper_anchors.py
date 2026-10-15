@@ -14,6 +14,8 @@ stable, so this tool recomputes every range from its label and reports drift.
     python3 tools/paper_anchors.py --fix      # rewrite the stale source: lines
 
 Nodes whose `source:` names no paper label (the model guards) are skipped.
+Only rows under the default exact source pin are re-anchored. Rows pinned to
+other sources are listed explicitly and require separate anchor review.
 """
 
 from __future__ import annotations
@@ -28,17 +30,10 @@ try:
 except ImportError:
     sys.exit("paper_anchors.py: PyYAML is required (pip install pyyaml)")
 
+from check_manifest import checked_source_pin, check_source_address
+
 ROOT = Path(__file__).resolve().parent.parent
 MANIFEST = ROOT / "ledger" / "manifest.yaml"
-def _paper_path() -> Path:
-    """The paper: the copy pinned in this repository, or `$EXPLODING_PAPER`."""
-    env = os.environ.get("EXPLODING_PAPER")
-    return Path(env) if env else ROOT / "paper" / "exploding.tex"
-
-
-PAPER = _paper_path()
-
-SOURCE_RE = re.compile(r"^" + re.escape(PAPER.name) + r":(?P<a>\d+)-(?P<b>\d+)\s*(?P<rest>.*)$")
 LABEL_RE = re.compile(r"label\s+([A-Za-z][A-Za-z0-9:_-]*)")
 BEGIN_RE = re.compile(r"\\begin\{([A-Za-z*]+)\}")
 END_RE = re.compile(r"\\end\{([A-Za-z*]+)\}")
@@ -54,6 +49,78 @@ ANCHORABLE = {
 # lines of its own clause, which sit inside the environment the label anchors.
 # Its source says so, and such a node is checked for containment, not equality.
 PART_RE = re.compile(r"\bpart\b|\bclause\b|\bcontext\b")
+
+
+def manifest_sources(manifest: dict) -> tuple[tuple[str, str], dict]:
+    """Validate effective exact source pins and partition their manifest rows."""
+    if not isinstance(manifest, dict):
+        raise ValueError("manifest must be a mapping")
+    errors: list[str] = []
+    default = manifest.get("source_pin")
+    filename = checked_source_pin(default, "manifest", errors)
+    if errors or filename is None:
+        raise ValueError("; ".join(errors))
+    default_key = (filename, default["sha256"])
+    groups = {default_key: {"pin": default, "nodes": []}}
+    nodes = manifest.get("nodes")
+    if not isinstance(nodes, list) or not nodes:
+        raise ValueError("manifest nodes must be a nonempty list")
+    ids, files = set(), set()
+    for node in nodes:
+        if not isinstance(node, dict) or not isinstance(node.get("id"), str) or not node["id"]:
+            raise ValueError("each manifest node must have a string id")
+        nid = node["id"]
+        if nid in ids:
+            errors.append(f"duplicate node id {nid!r}")
+        ids.add(nid)
+        file = node.get("file")
+        if not isinstance(file, str) or not file:
+            errors.append(f"{nid}: declaration file is missing")
+        else:
+            relative = Path(file)
+            resolved = (ROOT / relative).resolve()
+            if (relative.is_absolute() or ".." in relative.parts or
+                    ROOT.resolve() not in resolved.parents):
+                errors.append(f"{nid}: declaration file must stay inside the repository")
+            elif resolved in files:
+                errors.append(f"{nid}: duplicate declaration file {file!r}")
+            else:
+                files.add(resolved)
+        if node.get("kind") not in {"theorem", "definition"}:
+            errors.append(f"{nid}: unknown declaration kind")
+        pin = node.get("source_pin", default)
+        selected = filename if pin == default else checked_source_pin(pin, nid, errors)
+        if selected is None:
+            continue
+        key = (selected, pin["sha256"])
+        if key in groups and groups[key]["pin"] != pin:
+            errors.append(f"{nid}: inconsistent source pins for {selected!r}")
+        groups.setdefault(key, {"pin": pin, "nodes": []})["nodes"].append(node)
+        check_source_address(node, selected, errors)
+    if errors:
+        raise ValueError("; ".join(errors))
+    return default_key, groups
+
+
+def default_source_scope(manifest: dict) -> tuple[tuple[str, str], dict]:
+    """Select the validated default source; reject an unrelated environment override."""
+    default_key, groups = manifest_sources(manifest)
+    if not groups[default_key]["nodes"]:
+        raise ValueError("default source scope has no manifest rows")
+    selected = os.environ.get("EXPLODING_PAPER")
+    if selected and Path(selected).resolve() != (ROOT / default_key[0]).resolve():
+        raise ValueError("EXPLODING_PAPER must select the manifest's default pinned source")
+    return default_key, groups
+
+
+def report_source_scope(tool: str, default_key: tuple[str, str], groups: dict) -> None:
+    """Name the checked source and every row outside that explicit scope."""
+    print(f"{tool}: source scope {default_key[0]} ({default_key[1]})")
+    for key, group in groups.items():
+        if key != default_key:
+            excluded = ", ".join(node["id"] for node in group["nodes"])
+            print(f"{tool}: excluded {len(group['nodes'])} rows from {key[0]} "
+                  f"({key[1]}): {excluded}; anchors require separate source review")
 
 
 def label_variants(label: str) -> list[str]:
@@ -118,16 +185,23 @@ def span_of_label(lines: list[str], label: str) -> tuple[int, int]:
 
 def main() -> int:
     fix = "--fix" in sys.argv[1:]
-    if not PAPER.exists():
-        print(f"paper_anchors: paper not found at {PAPER}", file=sys.stderr)
+    try:
+        manifest = yaml.safe_load(MANIFEST.read_text(encoding="utf-8"))
+        default_key, groups = default_source_scope(manifest)
+    except (OSError, ValueError, TypeError, yaml.YAMLError) as exc:
+        print(f"paper_anchors: {exc}", file=sys.stderr)
         return 2
-    lines = PAPER.read_text(encoding="utf-8").splitlines()
-    manifest = yaml.safe_load(MANIFEST.read_text(encoding="utf-8"))
+    report_source_scope("paper_anchors", default_key, groups)
+    paper = ROOT / default_key[0]
+    lines = paper.read_text(encoding="utf-8").splitlines()
+    source_re = re.compile(
+        rf"^(?:{re.escape(default_key[0])}|{re.escape(paper.name)}):"
+        r"(?P<a>\d+)-(?P<b>\d+)\s*(?P<rest>.*)$")
 
     drift: list[tuple[str, str, str]] = []
     skipped = 0
     checked = 0
-    for node in manifest.get("nodes") or []:
+    for node in groups[default_key]["nodes"]:
         nid, source = node["id"], node["source"]
         label_match = LABEL_RE.search(source)
         if not label_match:
@@ -140,8 +214,9 @@ def main() -> int:
             drift.append((nid, source, f"UNRESOLVABLE: {exc}"))
             continue
         checked += 1
-        want = f"exploding.tex:{a}-{b}"
-        got = SOURCE_RE.match(source)
+        got = source_re.match(source)
+        address = source[:source.index(":")]
+        want = f"{address}:{a}-{b}"
         if got:
             ga, gb = int(got.group("a")), int(got.group("b"))
             if (ga, gb) == (a, b):
@@ -170,11 +245,19 @@ def main() -> int:
         if new.startswith("UNRESOLVABLE"):
             print(f"paper_anchors: cannot repair {nid}", file=sys.stderr)
             return 1
+        entry_start = re.search(rf"(?m)^  - id: {re.escape(nid)}\s*$", text)
+        if entry_start is None:
+            print(f"paper_anchors: no verbatim entry for {nid}", file=sys.stderr)
+            return 1
+        following = re.search(r"(?m)^  - id: ", text[entry_start.end():])
+        entry_end = entry_start.end() + following.start() if following else len(text)
+        entry = text[entry_start.start():entry_end]
         before = f"    source: {old}\n"
-        if before not in text:
+        if entry.count(before) != 1:
             print(f"paper_anchors: no verbatim source line for {nid}", file=sys.stderr)
             return 1
-        text = text.replace(before, f"    source: {new}\n", 1)
+        replacement = entry.replace(before, f"    source: {new}\n", 1)
+        text = text[:entry_start.start()] + replacement + text[entry_end:]
     MANIFEST.write_text(text, encoding="utf-8")
     print(f"\npaper_anchors: repaired {len(drift)} anchor(s)")
     return 0

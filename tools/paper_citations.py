@@ -6,6 +6,8 @@ silently.  A citation that also names the LaTeX `\\label` can be recomputed, so
 this tool resolves those and repairs them.  A citation with no nearby label
 points into the middle of a proof and cannot be resolved mechanically; those are
 listed so they can be checked by hand or dropped.
+The check uses the manifest's default exact source pin. Declaration files
+pinned to other sources are listed and excluded, including from `--fix`.
 
     python3 tools/paper_citations.py           # check, exit 1 if a resolvable
                                                # citation is stale
@@ -16,25 +18,16 @@ listed so they can be checked by hand or dropped.
 from __future__ import annotations
 
 import importlib.util
-import os
 import re
 import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
-def _paper_path() -> Path:
-    """The paper: the copy pinned in this repository, or `$EXPLODING_PAPER`."""
-    env = os.environ.get("EXPLODING_PAPER")
-    return Path(env) if env else ROOT / "paper" / "exploding.tex"
-
-
-PAPER = _paper_path()
 
 _spec = importlib.util.spec_from_file_location("pa", ROOT / "tools" / "paper_anchors.py")
 _pa = importlib.util.module_from_spec(_spec)
 _spec.loader.exec_module(_pa)
 
-CITE_RE = re.compile(re.escape(PAPER.name) + r":(\d+)(?:-(\d+))?")
 # A frozen file opens with a header docstring naming the paper statement it
 # transcribes: its LaTeX label and its line range.  Three wordings are in use
 # (citation before the label, after it, or with another backticked token
@@ -62,10 +55,24 @@ def header_block(text: str) -> tuple[int, int] | None:
 def main() -> int:
     fix = "--fix" in sys.argv[1:]
     list_unanchored = "--list-unanchored" in sys.argv[1:]
-    lines = PAPER.read_text(encoding="utf-8").splitlines()
+    try:
+        manifest = _pa.yaml.safe_load(_pa.MANIFEST.read_text(encoding="utf-8"))
+        default_key, groups = _pa.default_source_scope(manifest)
+    except (OSError, ValueError, TypeError, _pa.yaml.YAMLError) as exc:
+        print(f"paper_citations: {exc}", file=sys.stderr)
+        return 2
+    _pa.report_source_scope("paper_citations", default_key, groups)
+    paper = ROOT / default_key[0]
+    lines = paper.read_text(encoding="utf-8").splitlines()
+    cite_re = re.compile(re.escape(paper.name) + r":(\d+)(?:-(\d+))?")
+    excluded = {(ROOT / node["file"]).resolve()
+                for key, group in groups.items() if key != default_key
+                for node in group["nodes"]}
 
     stale, ok, unanchored, unresolvable = [], 0, [], []
     for path in sorted((ROOT / "Exploding").rglob("*.lean")):
+        if path.resolve() in excluded:
+            continue
         text = path.read_text(encoding="utf-8")
         # Only a frozen file's PRIMARY anchor is repaired: the first citation in
         # its header docstring, sitting beside the label it names.  Later
@@ -76,11 +83,11 @@ def main() -> int:
         primary_label, primary_at = None, None
         if block:
             lab = HEADER_LABEL_RE.search(text[block[0]:block[1]])
-            cite = CITE_RE.search(text[block[0]:block[1]])
+            cite = cite_re.search(text[block[0]:block[1]])
             if lab and cite and abs(lab.start() - cite.start()) <= 120:
                 primary_label, primary_at = lab.group(1), cite.start()
         out, cursor, changed = [], 0, False
-        for m in CITE_RE.finditer(text):
+        for m in cite_re.finditer(text):
             out.append(text[cursor:m.start()])
             cursor = m.end()
             label = primary_label if m.start() == primary_at else None
@@ -94,7 +101,7 @@ def main() -> int:
                 unresolvable.append((path, m.group(0), label, str(exc)))
                 out.append(m.group(0))
                 continue
-            want = f"exploding.tex:{a}-{b}"
+            want = f"{paper.name}:{a}-{b}"
             if want == m.group(0):
                 ok += 1
                 out.append(m.group(0))

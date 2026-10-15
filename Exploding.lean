@@ -301,6 +301,7 @@ import Exploding.Support.AllHighWaveThreshold
 import Exploding.Support.AllHighPenultimateCluster
 import Exploding.Support.AllHighLastArrival
 import Exploding.Support.AllHighClusterArrival
+import Exploding.Support.PenultimateClusterP1
 
 import Exploding.External.FeyLevinePeres
 import Exploding.External.Schonmann

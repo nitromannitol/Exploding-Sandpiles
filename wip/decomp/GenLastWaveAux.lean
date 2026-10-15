@@ -970,7 +970,7 @@ theorem aux_glw_kingman_linear_setA {Ω : Type*} [MeasurableSpace Ω] (μ : Meas
   refine ⟨(K : ℝ), hA_meas K, hKpos⟩
 
 /-- Steps (ii)-(vi) (**GAP**, needs Kac's lemma and induced-transformation ergodicity, neither
-present in `~/Lattice-Probability/LatticeProb/Prob/Kingman.lean` -- only the WITH-moment-bound
+present in `LatticeProb/Prob/Kingman.lean` -- only the WITH-moment-bound
 `LatticeProb.ae_tendsto_div` is proved there; this is a genuinely new piece of subadditive
 ergodic theory this campaign's library does not yet contain, flagged rather than silently
 assumed, not closed here).  Given the positive-measure set `A` of `aux_glw_kingman_linear_setA`,

@@ -461,7 +461,7 @@ theorem aux_pub_reach (d : ℕ) (hd : 2 ≤ d) (p : ℝ) (hp : 0 < p) (hp1 : p <
   have hk0 : 1 ≤ k0 := le_max_right kb 1
   obtain ⟨c, Cr, hc, hCr, hae⟩ := hkb k0 (le_max_left kb 1)
   filter_upwards [hae, aux_pub_reach_eta_bounds d p hp hp1,
-      Exploding.Frozen.finite_exploding d hd p hp hp1 hLSSB hHole hChem] with η hη hetabd hexplode
+      Exploding.Frozen.finite_exploding d hd p hp hp1.le hLSSB hHole hChem] with η hη hetabd hexplode
   obtain ⟨Cinf, hCinf, ⟨n0, hn0⟩, -⟩ := hη
   have hlow : ∀ x, 0 ≤ η x := fun x => by linarith [(hetabd x).1]
   have hhigh : ∀ x, η x ≤ 2 * (d : ℤ) - 1 := fun x => (hetabd x).2
@@ -632,7 +632,7 @@ theorem finite_exploding_at (d : ℕ) (hd : 2 ≤ d) (p : ℝ) (hp : 0 < p) (hp1
     (hHole : Exploding.External.MathieuHoleVolume)
     (hChem : Exploding.External.AntalPisztoraChemicalDistance) :
     ∀ᵐ η ∂(toyLaw d p), ∀ x : Site d, ∃ n : ℕ, 1 ≤ n ∧ ¬ WaveStabilizable η n x := by
-  have h0 := Exploding.Frozen.finite_exploding d hd p hp hp1 hLSSB hHole hChem
+  have h0 := Exploding.Frozen.finite_exploding d hd p hp hp1.le hLSSB hHole hChem
   have hshift : ∀ x : Site d, ∀ᵐ η ∂(toyLaw d p),
       ∃ n : ℕ, 1 ≤ n ∧ ¬ WaveStabilizable η n x := by
     intro x

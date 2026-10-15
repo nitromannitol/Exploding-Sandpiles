@@ -1,6 +1,8 @@
 # Hand triage of the systematic Exploding audit (2026-10-03)
 
-Triages the flags of `~/fleet/runs/exploding-sandpiles-audit/` (DeepSeek-V4.1-flash, 58 lenses,
+Historical audit snapshot. These checks cover the stated source and revision only; later source-fidelity rulings are separate.
+
+Triages the flags of the original audit packet (58 checks,
 `AUDIT-DONE`) against the frozen Lean and `paper/exploding.tex`. The reader is fallible; nothing
 frozen is edited here. No statement is refuted; the items below are fidelity notes.
 

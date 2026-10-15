@@ -345,16 +345,16 @@ nodes:
     approved: "2026-09-27"
 
   - id: lem-finite-exploding
-    version: 6
+    version: 7
     kind: theorem
     source: exploding.tex:720-722 (label lemma:finite_exploding)
     file: Exploding/Frozen/FiniteExploding.lean
     export: Exploding.Frozen.finite_exploding
-    state: PROVED
-    frozen_sha256: 2bdfdb526cdb4146e9765019df878274f2d3d49991244591748bbce579ac9772
+    state: SEALED
+    frozen_sha256: 70e35f646e03b599a40942113c9c6f1ad34cb35dc8757901a8ca990199169701
     closure_sha256: 77673f7e7668fc185b4aa41a865f2abe3a7deca9485e1c58d58353968b2ca7f5
     provider: Exploding.Frozen.finite_exploding
-    approved: "2026-09-28"
+    approved: "2026-10-15"
 
   - id: prop-crossing-time
     version: 3

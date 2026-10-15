@@ -1,12 +1,14 @@
 # Promotion of the 22 Exploding SEALED nodes to PROVED (2026-10-04)
 
+Historical audit snapshot. These checks cover the stated source and revision only; later source-fidelity rulings are separate.
+
 Independent evidence, all committed:
 * `2026-10-03-refute-first-A.md` — batch A (`thm-limit-shape`, `thm-time-constant`,
   `thm-explosive`, `prop-renormalization`, `lem-square-lower-bound`): no refutation.
 * `2026-10-03-refute-first-B.md` — batch B (`lem-penultimate-cluster`,
   `lem-penultimate-upper-bound`, `lem-penultimate-close`, `prop-last-wave-convergence`,
   `prop-approximate-subadditive`, `prop-generalized-last-wave`): no refutation.
-* `2026-10-03-script-audit-triage.md` and `~/fleet/runs/exploding-sandpiles-audit/` — the systematic
+* `2026-10-03-script-audit-triage.md` and the original audit packet — the systematic
   audit of all 22 nodes (58 lenses): no proof error; every transcription flag is a registered
   `Exploding.External.*` binder, the model's own range (`toyLaw` support `{2d-2, 2d-1}`), or a benign
   explicit rendering. Vacuity lens: none.

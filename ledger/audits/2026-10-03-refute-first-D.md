@@ -1,8 +1,10 @@
 # Independent refute-first audit — Exploding-Sandpiles, Batch D
 
-* **Auditor:** DeepSeek fleet, second-key audit (independent; wrote none of the development).
+Historical audit snapshot. These checks cover the stated source and revision only; later source-fidelity rulings are separate.
+
+* **Auditor:** Independent reviewer (wrote none of the development).
 * **Batch:** D — `lem-approx-subadditivity`, `prop-recurrence`, `lem-local-convexity`, `lem-finite-exploding`, `prop-crossing-time`.
-* **Repository:** `~/lean/Exploding-Sandpiles`.
+* **Repository:** `repository root`.
 * **Head:** I did **not** run `git` (per instruction). The brief pins `326a151`; the batch-A report records `326a151fa10d4f4eaa0905c12b18dd4e64d9e915` and the batch-B report records `2ad193d428b6aee264a45b3750259c2bbaae0533`, an ancestor–descendant of the pin with `Exploding/Frozen`, `ledger/manifest.yaml` and every provider byte-identical. All frozen-block reads and gate runs below are on the current tree, and all five block hashes match the manifest, so the results apply at the pin.
 * **Paper pin:** `paper/exploding.tex`, sha256 `1d7c2010d8bd29e7fb83e93f19c9ebe0e8aef201f93559b2b18f5ca0dc049b44` (matches `ledger/manifest.yaml:source_pin`).
 * **Constraints observed:** no `git`, no `lake build`, no file edited except this report.

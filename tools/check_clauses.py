@@ -139,9 +139,10 @@ REVIEWED: dict[str, str] = {
         "fodo A η (indicator A 1) t x = 1, with hlow/hhigh the model's standing range "
         "(triage) and the finite-path and initial-condition hypotheses explicit",
     "lem-finite-exploding":
-        "the paper asserts the last wave is well-defined as M̂_η(0) < ∞; Lean asserts "
-        "the existence half, ∀ᵐη ∃ n ≥ 1, ¬ WaveStabilizable η n 0, and not the "
-        "finiteness of M̂ (flagged: partial transcription, triage)",
+        "the paper asserts the last wave is well-defined as M̂_η(0) < ∞; Lean gives "
+        "an a.e. positive nonstabilizing mass. This witness makes the natural "
+        "sInf defining waveThreshold nonempty, and Nat.sInf_mem gives its finite "
+        "attained minimum, so the finiteness is represented without another conjunct",
     "prop-crossing-time":
         "one display (max_{i,z} C_k^{(i,z)} ≤ k^d with probability ≥ 1 − δ); Lean's "
         "measure conjunct GoodCube η k unpacks to ∀ i z ∈ closureN, crossingTime ≤ k^d "
@@ -152,9 +153,7 @@ REVIEWED: dict[str, str] = {
 # statement, which the count heuristic misses when the missing assertion is not
 # a displayed relation.  Like the heuristic flags, these are printed and
 # explained but do not fail the check; only `unreviewed` does.
-FLAGGED: set[str] = {
-    "lem-finite-exploding",
-}
+FLAGGED: set[str] = set()
 
 
 def paper_path() -> Path:

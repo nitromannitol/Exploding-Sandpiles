@@ -1,8 +1,10 @@
 # Independent refute-first audit — Exploding-Sandpiles, Batch A
 
-* **Auditor:** DeepSeek fleet, second-key audit (independent; wrote none of the development).
+Historical audit snapshot. These checks cover the stated source and revision only; later source-fidelity rulings are separate.
+
+* **Auditor:** Independent reviewer (wrote none of the development).
 * **Batch:** A — `thm-limit-shape`, `thm-time-constant`, `thm-explosive`, `prop-renormalization`, `lem-square-lower-bound`.
-* **Repository:** `~/lean/Exploding-Sandpiles`
+* **Repository:** `repository root`
 * **Head read:** `326a151fa10d4f4eaa0905c12b18dd4e64d9e915` (`git rev-parse HEAD`, read-only) — matches the brief's pin `326a151`.
 * **Paper pin:** `paper/exploding.tex`, sha256 `1d7c2010d8bd29e7fb83e93f19c9ebe0e8aef201f93559b2b18f5ca0dc049b44` (matches `ledger/manifest.yaml:source_pin`).
 * **Constraint observed:** no `git add/commit/push`, no `lake build`, no file edited except this report.

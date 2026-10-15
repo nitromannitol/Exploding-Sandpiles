@@ -1,6 +1,9 @@
 # Gate repair — `check_clauses.py` and `check_exponents.py` (vacuous `rotor.tex` stem)
 
-* **Repository:** `~/lean/Exploding-Sandpiles`
+Historical audit snapshot. These checks cover the stated source and revision only; later source-fidelity rulings are separate.
+Command lines using `cd .` are normalized to the repository root; their recorded outputs and commit pins are unchanged.
+
+* **Repository:** `repository root`
 * **Paper:** `paper/exploding.tex`, sha256 `1d7c2010d8bd29e7fb83e93f19c9ebe0e8aef201f93559b2b18f5ca0dc049b44` (matches `ledger/manifest.yaml:source_pin`).
 * **Constraints observed:** no `git`, no `lake build`/`update`/`clean`, no frozen `Exploding/Frozen/**`, `Exploding/External/**` or `Exploding/Support/**` statement touched. Only `tools/check_clauses.py`, `tools/check_exponents.py` and this report were written.
 
@@ -75,7 +78,7 @@ The four printed flags are `prop-renormalization` and `ext-schonmann-bootstrap` 
 ## Step 3 — full gate suite
 
 ```
-$ cd ~/lean/Exploding-Sandpiles && export PATH=$HOME/.elan/bin:$PATH
+$ cd . && export PATH=$HOME/.elan/bin:$PATH
 $ python3 tools/verify.py
 check_manifest: OK (29 nodes, 0 unsealed; closure 29 checked, 0 skipped; 460 Exploding declarations indexed)
 ...

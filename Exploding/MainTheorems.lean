@@ -227,7 +227,7 @@ theorem Exploding.square_lower_bound (d : ℕ) (hd : 2 ≤ d) :
 /-- **Lemma 3.2** (`lemma:finite_exploding`): the last wave is well defined,
 `M̂_η(0) < ∞`.  The certified statement is `Exploding.Frozen.finite_exploding`, restated
 unchanged. -/
-theorem Exploding.finite_exploding (d : ℕ) (hd : 2 ≤ d) (p : ℝ) (hp : 0 < p) (hp1 : p < 1)
+theorem Exploding.finite_exploding (d : ℕ) (hd : 2 ≤ d) (p : ℝ) (hp : 0 < p) (hp1 : p ≤ 1)
     (hLSSB : Exploding.External.LiggettSchonmannStaceyBoundedDegree)
     (hHole : Exploding.External.MathieuHoleVolume)
     (hChem : Exploding.External.AntalPisztoraChemicalDistance) :

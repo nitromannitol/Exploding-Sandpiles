@@ -266,8 +266,8 @@ ergodic under translation" instance (`ErgodicVAdd`/`ErgodicSMul` are generic
 typeclasses with no i.i.d.-field instance found by grep); this is standard
 but unformalized. Stationarity (`StationaryOn`) by contrast IS immediate
 from `Measure.infinitePi` being genuinely translation-invariant and should
-NOT be flagged as a gap. CORRECTION (orchestrator, after cross-check): NOT a gap.  `LatticeProb.ergodic_coordShift_infinitePi`
-(~/Lattice-Probability/LatticeProb/Prob/ZeroOne.lean:220) and its lattice-translation specialisation in
+NOT be flagged as a gap. CORRECTION (after cross-check): NOT a gap.  `LatticeProb.ergodic_coordShift_infinitePi`
+(LatticeProb/Prob/ZeroOne.lean:220) and its lattice-translation specialisation in
 LatticeProb/Prob/Translation.lean prove ergodicity of i.i.d. product measures under coordinate shifts;
 `aux_te_ergodic` should be a bridge from that to `ErgodicOn` (whose invariance clause is set-image based).
 -/

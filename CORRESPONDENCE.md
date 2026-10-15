@@ -55,7 +55,7 @@ Six of the seven are proved in this repository, so the hypothesis can be dischar
 | `lemma:square_lower_bound` | "the support of the `m`-wave" is `∃ t, 0 < u_t x` | the wave odometer is nondecreasing in time on a nonnegative background, so this is the support of the terminal odometer when the wave stabilizes, and is the right reading when it does not |
 | every statement of Sections 1 to 4 | carries `2 ≤ d` | the standing hypothesis of "Main results", `Suppose d ≥ 2 and η is drawn from a product measure ...` |
 | `s_0' = η` in the frozen-toppling convention (2.3), in Lemma 2.1, the crossing time, Hypotheses 5.2–5.4 and recurrence | the `S`-frozen toppling `fodo S η w₀` evolves `s_t' = η + Δ w_t`, i.e. `s_0 = η` | (2.3) writes `s_0' = s_0 + Δ w_0`, but the paper's later uses and its proofs need the initial firing's chips delivered (`exploding.tex:447`: a `(2d-1)`-site next to a toppled line topples at the next step); the paper's own (2.4) is inconsistent with (2.3) here |
-| the Bernoulli probability `p` of `(1.2)` | `0 < p ∧ p < 1` on every node that names it, although the paper writes `Fix p > 0` | the paper's `Fix p > 0` does not exclude the endpoint `p = 1`, which is the deterministic background `η ≡ 2d - 1` and lies outside the estimates the proofs use, so the frozen statements assume `p < 1` |
+| the Bernoulli probability `p` of `(1.2)` | `0 < p ≤ 1` in `lem-finite-exploding@7`; other frozen rows retain their existing `p < 1` premises | This versioned repair includes the deterministic `p = 1` endpoint for Lemma 3.2 only. It keeps the historical source pin and does not certify every result against official arXiv or corrected-v10 bytes. |
 
 ## Main results
 
@@ -109,7 +109,7 @@ The limit shape theorem (Theorem 1.2) is also restated over Mathlib alone and ch
 | `lem-approx-subadditivity` | [Exploding.Frozen.approx_subadditivity](Exploding/Frozen/ApproxSubadditivity.lean#L105) | exploding.tex:760-765 (label lemma:approx_subadditivity) | PROVED |
 | `prop-recurrence` | [Exploding.Frozen.recurrence](Exploding/Frozen/Recurrence.lean#L17) | exploding.tex:1927-1929 (label prop:recurrence) | PROVED |
 | `lem-local-convexity` | [Exploding.Frozen.local_convexity](Exploding/Frozen/LocalConvexity.lean#L20) | exploding.tex:531-535 (label lemma:local_convexity) | PROVED |
-| `lem-finite-exploding` | [Exploding.Frozen.finite_exploding](Exploding/Frozen/FiniteExploding.lean#L27) | exploding.tex:720-722 (label lemma:finite_exploding) | PROVED |
+| `lem-finite-exploding` | [Exploding.Frozen.finite_exploding](Exploding/Frozen/FiniteExploding.lean#L28) | exploding.tex:720-722 (label lemma:finite_exploding) | SEALED |
 | `prop-crossing-time` | [Exploding.Frozen.crossing_time](Exploding/Frozen/CrossingTime.lean#L20) | exploding.tex:416-422 (label prop:crossing_time) | PROVED |
 | `ext-fey-levine-peres-proved` | [Exploding.xsr_flp](Exploding/Support/ExtSchFLP.lean#L8) | exploding.tex:238-240 (label prop:fey_levine_peres_explode) | PROVED |
 | `ext-schonmann-bootstrap-proved` | [Exploding.xsr_schonmann](Exploding/Support/ExtSchFinal.lean#L72) | exploding.tex:1969-1981 (label prop:schonnmann_bootstrap) | PROVED |

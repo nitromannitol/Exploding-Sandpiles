@@ -1,7 +1,10 @@
 # Independent verification — Exploding-Sandpiles full promotion (28 PROVED / 0 SEALED)
 
+Historical audit snapshot. These checks cover the stated source and revision only; later source-fidelity rulings are separate.
+Command lines using `cd .` are normalized to the repository root; their recorded outputs and commit pins are unchanged.
+
 * **Auditor:** independent verification pass (this report only; no other file written).
-* **Repository:** `~/lean/Exploding-Sandpiles` (working tree as read).
+* **Repository:** `repository root` (working tree as read).
 * **Constraints observed:** no `git`, no `lake build`. `tools/verify.py` was run, which internally
   invokes `python3 tools/check_axioms.py` (`lake env lean` on one scratch audit file); that is the
   standard gate and not a `lake build`.
@@ -13,7 +16,7 @@
 ## 1. Gate suite
 
 ```
-$ cd ~/lean/Exploding-Sandpiles && export PATH=$HOME/.elan/bin:$PATH && python3 tools/verify.py
+$ cd . && export PATH=$HOME/.elan/bin:$PATH && python3 tools/verify.py
 check_manifest: OK (35 nodes, 0 unsealed; closure 35 checked, 0 skipped; 469 Exploding declarations indexed)
 check_coverage: 24 statements in the paper, 24 formalized
 check_constants: OK (35 statements; every existential constant is bound before every paper parameter, so it is a genuine constant)

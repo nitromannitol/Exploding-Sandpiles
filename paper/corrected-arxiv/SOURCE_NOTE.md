@@ -2,7 +2,7 @@
 
 This directory contains a local corrected arXiv-format draft dated 15 October 2026:
 [`exploding-corrected-arxiv.tex`](exploding-corrected-arxiv.tex), SHA-256
-`8ea6f8fb2e2885382331cedffd7a5a7951a85d04d2a71a40546ac11a491d67c8`.
+`59b5ac1a5cdf80c5b550dfc1738414892e0aa3f8cdb0bf03d00c74685a3e1be2`.
 
 The official [arXiv v2](https://arxiv.org/abs/2102.04422v2) source is preserved at
 [`paper/exploding-arxiv.tex`](../exploding-arxiv.tex) with its inputs in

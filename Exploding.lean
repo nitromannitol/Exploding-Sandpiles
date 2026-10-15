@@ -292,6 +292,8 @@ import Exploding.Support.PUBProofF
 import Exploding.Support.ArxivBondBoundaryStar
 import Exploding.Support.ArxivBondDefectiveFiniteness
 import Exploding.Support.ArxivBondFiniteHoles
+import Exploding.Support.ArxivBondHoleGeometry
+import Exploding.Support.ArxivBondHoleTail
 import Exploding.Support.ArxivP1FiniteExploding
 
 import Exploding.External.FeyLevinePeres

@@ -1,16 +1,16 @@
 # Correspondence: paper ↔ Lean
 
 Maps the source-partitioned manifest to A shape theorem for exploding sandpiles
-(Bou-Rabee). The default is the corrected journal source; the proposed v4 counterexample
+(Bou-Rabee). The default is the corrected journal source; the proved v4 counterexample
 and four literal definitions override it with corrected arXiv-format v10. The official
-arXiv v2 extraction is preserved separately and is outside this candidate's certification
+arXiv v2 extraction is preserved separately and is outside this promotion's certification
 scope.
 
 ## Conventions
 
 - The global default is paper/exploding.tex, SHA-256
   1d7c2010d8bd29e7fb83e93f19c9ebe0e8aef201f93559b2b18f5ca0dc049b44; row-level
-  overrides pin only five proposed declarations to corrected arXiv-format v10 and
+  overrides pin only five approved declarations to corrected arXiv-format v10 and
   its defs.tex input. A source address is tied to its effective pin, range and label
   when present; v10 line 103 has no invented equation label.
 - The bytes between `-- FROZEN-STATEMENT-BEGIN` and `-- FROZEN-STATEMENT-END`
@@ -20,7 +20,7 @@ scope.
 ## External inputs
 
 The seven cited results remain registered in Exploding/External/ under the old source.
-A theorem carries one only when its exact frozen type has that binder. The proposed v4
+A theorem carries one only when its exact frozen type has that binder. The proved v4
 counterexample type has no hFMR binder; the historic FMR citation remains in the old
 journal-source record.
 
@@ -32,7 +32,7 @@ journal-source record.
 | `ext-lss-bounded-degree` | Liggett, Schonmann and Stacey, *Domination by product measures*, Corollary 1.4 | Proposition 2.2 and every statement that uses it |
 | `ext-antal-pisztora` | Antal and Pisztora, *On the chemical distance for supercritical Bernoulli percolation*, Theorem 1.1, for bond percolation | Proposition 2.2 and every statement that uses it |
 | `ext-mathieu-holes` | Mathieu, *Quenched invariance principles for random walks with random conductances*, Lemma 5.2 | Proposition 2.2 and every statement that uses it |
-| `ext-fey-meester-redig` | Fey, Meester and Redig, *Stabilizability and percolation in the infinite volume sandpile model*, Theorem 2.8 | preserved historical journal-source record; not a premise of proposed v4 |
+| `ext-fey-meester-redig` | Fey, Meester and Redig, *Stabilizability and percolation in the infinite volume sandpile model*, Theorem 2.8 | preserved historical journal-source record; not a premise of proved v4 |
 
 Six of the seven are proved in this repository, so the hypothesis can be discharged:
 `ext-fey-meester-redig` by `Exploding.xfmr_proved`, `ext-lss-bounded-degree` by
@@ -57,7 +57,7 @@ Six of the seven are proved in this repository, so the hypothesis can be dischar
 | `theorem:limit_shape` | "convex domain" is `Convex ℝ B ∧ IsOpen B ∧ B.Nonempty` | a nonempty open convex set is connected, hence a domain |
 | the floor `⌊·⌋` of `(2.1)`, `(2.4)` and `(3.1)` | integer division `/` on `ℤ` | `/` on `ℤ` is `Int.ediv`, which rounds towards `-∞` |
 | `lemma:square_lower_bound` | "the support of the `m`-wave" is `∃ t, 0 < u_t x` | the wave odometer is nondecreasing in time on a nonnegative background, so this is the support of the terminal odometer when the wave stabilizes, and is the right reading when it does not |
-| old-source statements of Sections 1 to 4 | carry `2 ≤ d` | the standing hypothesis of the historical "Main results" section; the proposed v4 statement has its own explicit `2 ≤ d` binder |
+| old-source statements of Sections 1 to 4 | carry `2 ≤ d` | the standing hypothesis of the historical "Main results" section; the proved v4 statement has its own explicit `2 ≤ d` binder |
 | `s_0' = η` in the frozen-toppling convention (2.3), in Lemma 2.1, the crossing time, Hypotheses 5.2–5.4 and recurrence | the `S`-frozen toppling `fodo S η w₀` evolves `s_t' = η + Δ w_t`, i.e. `s_0 = η` | (2.3) writes `s_0' = s_0 + Δ w_0`, but the paper's later uses and its proofs need the initial firing's chips delivered (`exploding.tex:447`: a `(2d-1)`-site next to a toppled line topples at the next step); the paper's own (2.4) is inconsistent with (2.3) here |
 | the Bernoulli probability `p` of `(1.2)` in old-source rows | `0 < p ≤ 1` in `lem-finite-exploding@7`; the nine other strict Bernoulli paper rows retain `0 < p < 1` | The proved version 7 includes the deterministic `p = 1` endpoint for Lemma 3.2 under the historical source pin. The corrected-v10 counterexample is deterministic and has no Bernoulli `p`. Neither fact certifies the other corrected-v10 statements. |
 
@@ -65,9 +65,10 @@ Six of the seven are proved in this repository, so the hypothesis can be dischar
 
 The old-source theorem rows below retain their narrower journal-source contracts. The
 Theorem 1.2 0 < p < 1 row and comparator are historical old-source scope; they do not
-certify corrected-v10 endpoints. The proposed v4 Theorem 6.1 row has no cited-result binder
-and remains pending exact final-byte audit and integration gates. The four literal definitions
-record source bodies but add no theorem coverage. Main theorem rows are:
+certify corrected-v10 endpoints. The proved v4 Theorem 6.1 row has no cited-result binder
+and passed exact compiled type, axiom and independent source/body/consumer checks. The four
+literal definitions passed source/body audit but add no theorem coverage. The dated
+promotion receipt is [ledger/audits/2026-10-15-counterexample-v4-promotion.md](ledger/audits/2026-10-15-counterexample-v4-promotion.md). Main theorem rows are:
 
 | Source | Frozen statement | State and cited hypotheses carried |
 |---|---|---|
@@ -75,7 +76,7 @@ record source bodies but add no theorem coverage. Main theorem rows are:
 | Theorem 1.3, `theorem:convergence_of_time_constant` | `Exploding.Frozen.convergence_of_time_constant` | proved; carries the cited Theorem 1.1 (`hFLP`), which `Exploding.xsr_flp` proves, and the three percolation results |
 | Theorem 1.4, `theorem:explosive` | `Exploding.Frozen.explosive` | proved; carries Schonmann's bound (`hSch`), which `Exploding.xsr_schonmann` proves |
 | Theorem 5.1, "Convergence of the exploding sandpile" | `Exploding.Frozen.generalized_convergence` | proved; carries the general domination theorem (`hLSS`) and the three percolation results |
-| Theorem 6.1, `theorem:counterexample` | `Exploding.Frozen.counterexample` | proposed exact-source successor: one and the same explosive background supplies the lower-bound, finite-arrival, both axial-limit and measurable-volume clauses; no cited-result binder; pending exact-byte audit and gates |
+| Theorem 6.1, `theorem:counterexample` | `Exploding.Frozen.counterexample` | proved exact-source successor: one and the same explosive background supplies the lower-bound, finite-arrival, both axial-limit and measurable-volume clauses; no cited-result binder; independent source/body/consumer audit and integration checks passed |
 
 The historical limit-shape statement (Theorem 1.2) is restated over Mathlib alone and
 checked with leanprover/comparator; this covers only its four explicit old-source hypotheses,
@@ -99,7 +100,7 @@ not v4 or corrected v10 as a whole. See ExplodingAudit/README.md.
 | `prop-approximate-subadditive` | [Exploding.Frozen.approximate_subadditive](Exploding/Frozen/ApproximateSubadditive.lean#L35) | exploding.tex:886-898 (label prop:approximate_subadditive) | `paper/exploding.tex` (`1d7c2010d8bd29e7`) | proved, independently audited |
 | `prop-generalized-last-wave` | [Exploding.Frozen.convergence_of_the_generalized_last_wave](Exploding/Frozen/GeneralizedLastWave.lean#L40) | exploding.tex:1203-1207 (label prop:convergence_of_the_generalized_last_wave) | `paper/exploding.tex` (`1d7c2010d8bd29e7`) | proved, independently audited |
 | `thm-generalized-convergence` | [Exploding.Frozen.generalized_convergence](Exploding/Frozen/GeneralizedConvergence.lean#L33) | exploding.tex:1249-1253 (Convergence of the exploding sandpile) | `paper/exploding.tex` (`1d7c2010d8bd29e7`) | proved, independently audited |
-| `thm-counterexample` | [Exploding.Frozen.counterexample](Exploding/Frozen/Counterexample.lean#L13) | exploding-corrected-arxiv.tex:1875-1885 (label theorem:counterexample) | `paper/corrected-arxiv/exploding-corrected-arxiv.tex` (`59b5ac1a5cdf80c5`) | proved |
+| `thm-counterexample` | [Exploding.Frozen.counterexample](Exploding/Frozen/Counterexample.lean#L13) | exploding-corrected-arxiv.tex:1875-1885 (label theorem:counterexample) | `paper/corrected-arxiv/exploding-corrected-arxiv.tex` (`59b5ac1a5cdf80c5`) | proved, independently audited |
 | `prop-explosion-criteria` | [Exploding.Frozen.explosion_criteria](Exploding/Frozen/ExplosionCriteria.lean#L19) | exploding.tex:1821-1825 (label prop:explosion_criteria) | `paper/exploding.tex` (`1d7c2010d8bd29e7`) | proved, independently audited |
 | `prop-box-crossing` | [Exploding.Frozen.box_crossing](Exploding/Frozen/BoxCrossing.lean#L22) | exploding.tex:1986-1988 (P is box-crossing) | `paper/exploding.tex` (`1d7c2010d8bd29e7`) | proved, independently audited |
 | `ext-fey-levine-peres` | [Exploding.External.FeyLevinePeresExplosive](Exploding/External/FeyLevinePeres.lean#L18) | exploding.tex:238-240 (label prop:fey_levine_peres_explode) | `paper/exploding.tex` (`1d7c2010d8bd29e7`) | cited result, hypothesis |
@@ -129,4 +130,4 @@ not v4 or corrected v10 as a whole. See ExplodingAudit/README.md.
 
 <!-- FROZEN-SURFACE-END -->
 
-The table retains the historical thm-counterexample@3 identity: old marker SHA-256 c9c8b8778d204a8280a899f7dda2fefda47e85854c1169bb477828b81f191dd3, semantic-closure SHA-256 ff157998636d1fa5296aa50733454d0a0538d591c0824fd6e6fcab3f9e9b4b9e, and whole-file SHA-256 d9e7f60ec00c1dbdc63a690bba7524dd1fd0f31b30b0ccaa03de3c15bd0dc195. Those v3 values do not certify v4. The proposed registry is 34 old-source rows plus five corrected-v10 rows; exact allowed gaps are source-partitioned. Old coverage is 23/24, corrected-v10 coverage is 1/24, and definitions add zero theorem coverage. All seven historical cited inputs, including FMR, remain registered.
+The table retains the historical thm-counterexample@3 identity: old marker SHA-256 c9c8b8778d204a8280a899f7dda2fefda47e85854c1169bb477828b81f191dd3, semantic-closure SHA-256 ff157998636d1fa5296aa50733454d0a0538d591c0824fd6e6fcab3f9e9b4b9e, and whole-file SHA-256 d9e7f60ec00c1dbdc63a690bba7524dd1fd0f31b30b0ccaa03de3c15bd0dc195. Those v3 values do not certify v4. The registry is 34 old-source rows plus five corrected-v10 rows; exact allowed gaps are source-partitioned. Old coverage is 23/24, corrected-v10 coverage is 1/24, and definitions add zero theorem coverage. The aggregate is 28 PROVED rows (22 paper-owned across the two pins and six cited-input discharges), 11 FROZEN definitions and zero SEALED rows. All seven historical cited inputs, including FMR, remain registered. The ordinary bond-hole geometry and near-root defective-animal bounds add no numbered-theorem coverage; corrected Proposition 2.2, the fixed-root hole tail and its exact alpha constant remain outside this promotion.

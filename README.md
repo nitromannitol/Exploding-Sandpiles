@@ -6,7 +6,7 @@ A **Lean 4** formalization of the paper
 > [*A shape theorem for exploding sandpiles*](https://arxiv.org/abs/2102.04422),
 > Annals of Applied Probability 34(1A) (2024), 714-742; arXiv:2102.04422.
 
-The staged manifest retains 34 rows against the corrected journal source paper/exploding.tex, SHA-256 1d7c2010d8bd29e7fb83e93f19c9ebe0e8aef201f93559b2b18f5ca0dc049b44. Only the proposed Theorem 6.1 successor and four literal definitions override that default to local corrected arXiv-format v10 paper/corrected-arxiv/exploding-corrected-arxiv.tex, SHA-256 59b5ac1a5cdf80c5b550dfc1738414892e0aa3f8cdb0bf03d00c74685a3e1be2, with defs.tex, SHA-256 9aba2c73246d79e3c6b87cb1f01cf3e2f636e27c8afd97ccb8ba5c032a9ee65b. That group claims one of 24 theorem-like statements, including one of 22 paper-owned statements; it does not certify any other v10 endpoint. The old-source group claims 23/24, including 21/22 paper-owned statements. The official arXiv v2 extraction remains preserved at paper/exploding-arxiv.tex and is outside this transaction's certification scope. The 21 retained old-source paper theorem rows remain PROVED; the v4 counterexample and four definitions await current-base validation. Cited literature results remain explicit definitions where a theorem binder carries them. The development is built on mathlib and Lattice-Probability (LatticeProb).
+The manifest retains 34 rows against the corrected journal source paper/exploding.tex, SHA-256 1d7c2010d8bd29e7fb83e93f19c9ebe0e8aef201f93559b2b18f5ca0dc049b44. Only the proved Theorem 6.1 successor and four literal definitions override that default to local corrected arXiv-format v10 paper/corrected-arxiv/exploding-corrected-arxiv.tex, SHA-256 59b5ac1a5cdf80c5b550dfc1738414892e0aa3f8cdb0bf03d00c74685a3e1be2, with defs.tex, SHA-256 9aba2c73246d79e3c6b87cb1f01cf3e2f636e27c8afd97ccb8ba5c032a9ee65b. That group claims one of 24 theorem-like statements, including one of 22 paper-owned statements; it does not certify any other v10 endpoint. The old-source group claims 23/24, including 21/22 paper-owned statements. The official arXiv v2 extraction remains preserved at paper/exploding-arxiv.tex and is outside this transaction's certification scope. The 21 retained old-source paper theorem rows and the corrected-v10 v4 counterexample are PROVED; the four literal definitions are FROZEN after their source/body audit. Cited literature results remain explicit definitions where a theorem binder carries them. The development is built on mathlib and Lattice-Probability (LatticeProb).
 
 A separate corrected arXiv-format draft is available with a source note and compilation instructions at paper/corrected-arxiv/SOURCE_NOTE.md.
 
@@ -31,13 +31,13 @@ renormalization (Section 2), the last wave (Section 3), the proof of Theorem 1.3
 explosive backgrounds with no limit shape (Section 6, Theorem 6.1), and a criterion for
 explosion through dimensional reduction and bootstrap percolation (Section 7).
 
-The staged registry has 39 rows: 34 old-source rows and five corrected-v10 rows. It contains 28 theorem rows (27 old-source rows: 21 paper-owned and six cited-input companions; plus one proposed theorem) and 11 definition rows (seven historical cited inputs and four proposed literal definitions). The four definitions add zero numbered-theorem coverage. Old-source structural coverage is 23/24 theorem-like statements, including 21/22 paper-owned statements. Corrected-v10 coverage is 1/24, including 1/22 paper-owned statements. The exact uncovered sets are the two coverage_allowed_gaps entries in the manifest. The exact declarations were approved on 15 October 2026. In this isolated validation tree the counterexample is SEALED and the four literal definitions are FROZEN; current-base compilation, axiom checks and final independent audit remain pending. This staging gives no new paper proof credit. Theorem 1.1 and Proposition 7.4 are among the seven preserved cited inputs.
+The registry has 39 rows: 34 old-source rows and five corrected-v10 rows. It contains 28 theorem rows (27 old-source rows: 21 paper-owned and six cited-input companions; plus one corrected-source theorem) and 11 definition rows (seven historical cited inputs and four literal definitions). The four definitions add zero numbered-theorem coverage. Old-source structural coverage is 23/24 theorem-like statements, including 21/22 paper-owned statements. Corrected-v10 coverage is 1/24, including 1/22 paper-owned statements. The exact uncovered sets are the two coverage_allowed_gaps entries in the manifest. The exact declarations were approved on 15 October 2026. The counterexample is PROVED and the four literal definitions are FROZEN following exact-type compilation, standard-three axiom checks, a full locked build, all eleven configured checks and independent source/body/consumer audit. The aggregate is 28 PROVED rows (22 paper-owned rows across the two source pins and six cited-input discharges), 11 FROZEN definitions and zero SEALED rows. The dated promotion receipt is [ledger/audits/2026-10-15-counterexample-v4-promotion.md](ledger/audits/2026-10-15-counterexample-v4-promotion.md). Theorem 1.1 and Proposition 7.4 are among the seven preserved cited inputs.
 
 [`Exploding/MainTheorems.lean`](Exploding/MainTheorems.lean) gives the public statements.
 The following Theorems 1.2, 1.3, 1.4 and 5.1 summarize existing old-source rows only.
 The Bernoulli Theorems 1.2 and 1.3 retain their strict 0 < p < 1 contracts;
 Theorems 1.4 and 5.1 retain their own stated model hypotheses. None certifies a
-corrected-v10 endpoint. The proposed v4 Theorem 6.1 statement is tied to the corrected-v10 override and remains pending independent final-byte audit and integration gates:
+corrected-v10 endpoint. The proved v4 Theorem 6.1 statement is tied to the corrected-v10 override:
 
 - **Theorem 1.2, the limit shape** (`theorem:limit_shape`, `Exploding.Frozen.limit_shape`):
   for `d ≥ 2` and `0 < p < 1` there is a nonempty open convex set `B ⊂ ℝ^d` such that, for
@@ -55,12 +55,12 @@ corrected-v10 endpoint. The proposed v4 Theorem 6.1 statement is tied to the cor
   under the hypotheses of Section 5, almost surely the background is explosive and the
   rescaled arrival times converge locally uniformly to a deterministic, continuous, convex,
   one-homogeneous function.
-- **Theorem 6.1, no limit shape** (`theorem:counterexample`, proposed
+- **Theorem 6.1, no limit shape** (`theorem:counterexample`,
   `Exploding.Frozen.counterexample`): for `d ≥ 2` there is one explosive background `η` not
   bounded below by `2d - 2`, with finite arrivals along `n e₁`, `limsup n⁻¹ T(n) ≥ 3/2`,
   and `liminf n⁻¹ T(n) = 1`. For that same `η` and `hη`, no measurable set `B` is a limit
-  of the rescaled support in symmetric-difference volume. This full conclusion is a pending
-  candidate, not a proved result.
+  of the rescaled support in symmetric-difference volume. The full conclusion is proved
+  without a cited-result hypothesis.
 
 Highlights among the proved results:
 
@@ -76,7 +76,7 @@ Highlights among the proved results:
 
 **What is assumed.** The seven historical cited results are stated in Lean as propositions in
 `Exploding/External/`; an old-source theorem carries one where it appears in that statement, so
-the type shows its cited premises. The proposed v4 theorem has no cited-result binder. No
+the type shows its cited premises. The proved v4 theorem has no cited-result binder. No
 `axiom` is declared. [`ASSUMPTIONS.md`](ASSUMPTIONS.md) lists all seven registered historical
 inputs with their verbatim Lean statements. The old-source frozen statements carry them as
 follows, where `perc` stands for the three percolation
@@ -90,7 +90,7 @@ Mathieu) and `hChem` (Theorem 1.1 of Antal and Pisztora):
 | Theorem 1.4, Proposition 7.5 | `hSch` |
 | Proposition 2.2, Lemmas 3.2, 3.5, 3.6 and 3.7, Propositions 3.1 and 4.1 | `perc` |
 | Proposition 5.1, Theorem 5.1 | `perc`, `hLSS` (Theorem 0.0 of Liggett, Schonmann and Stacey) |
-| Theorem 6.1 candidate | none; its proposed type has no cited-result binder |
+| Theorem 6.1, corrected-v10 | none; its proved type has no cited-result binder |
 | Propositions 2.1, 7.1, 7.2 and 7.3, Lemmas 2.1, 3.1, 3.3 and 3.4 | none |
 
 Propositions 5.1 and 7.1 and Theorem 5.1 also carry the model hypotheses of Sections 5 and 7
@@ -101,7 +101,7 @@ Six of the seven cited results are proved in this repository, so the hypothesis 
 discharged by the proof named:
 
 - The historical FMR registration still has the separate proof `Exploding.xfmr_proved`
-  (`Exploding/Support/ExtFMR.lean`); FMR is not a premise of proposed v4 Theorem 6.1.
+  (`Exploding/Support/ExtFMR.lean`); FMR is not a premise of proved v4 Theorem 6.1.
 - `hLSSB` by `Exploding.xlse_lss_bounded_degree` and `hLSS` by `Exploding.xlse_lss_general`
   (`Exploding/Support/ExtLSSCountable.lean`);
 - `hHole` by `Exploding.xmf_proved` (`Exploding/Support/ExtMHHoleVolume.lean`);
@@ -112,9 +112,8 @@ discharged by the proof named:
   Theorem 1.1, and the proof of Theorem 1.2 already uses it.
 
 Only `hChem` (`Exploding.External.AntalPisztoraChemicalDistance`) is assumed outright. The
-frozen statements carry cited results only where they appear as hypotheses. The proposed
-Theorem 6.1 statement has no cited-result binder; its candidate proof is still pending the
-exact integration gates. Theorem 1.4 and Proposition 7.5 (`hSch := Exploding.xsr_schonmann`)
+frozen statements carry cited results only where they appear as hypotheses. The proved
+Theorem 6.1 statement has no cited-result binder. Theorem 1.4 and Proposition 7.5 (`hSch := Exploding.xsr_schonmann`)
 hold with no cited hypothesis; Theorems 1.2 and 1.3 rest on `hChem` alone; and Proposition
 2.2, Lemmas 3.2, 3.5, 3.6 and 3.7, Propositions 3.1, 4.1 and 5.1 and Theorem 5.1 rest on
 `hChem` alone, the last two together with the model hypotheses above. The paper-to-Lean map
@@ -122,11 +121,11 @@ of the cited results is
 in [`CORRESPONDENCE.md`](CORRESPONDENCE.md).
 
 Not formalized: the proof outline of Section 1, the examples of Section 5.2 and the figures.
-Other corrected-v10 statements have no corrected-source certification; Lemma 3.2 version 7 is PROVED for 0 < p ≤ 1 under the historical source pin; the nine other strict Bernoulli paper rows still have p = 1 scope holds.
+Other corrected-v10 statements have no corrected-source certification; Lemma 3.2 version 7 is PROVED for 0 < p ≤ 1 under the historical source pin; the nine other strict Bernoulli paper rows still exclude p = 1.
 
 <!-- STATUS-BEGIN (generated by tools/sync_docs.py) -->
 
-Status: **39 registered declarations: 1 `SEALED`; 27 `PROVED`; 7 `FROZEN` cited inputs; 4 `FROZEN` non-External definitions.**
+Status: **39 registered declarations: 28 `PROVED`; 7 `FROZEN` cited inputs; 4 `FROZEN` non-External definitions.**
 
 Source coverage is partial. Each row describes only its selected source; historical-source rows provide no revised-source coverage. These counts do not establish that every statement of any paper revision is proved.
 
@@ -141,26 +140,26 @@ Non-External definitions are not counted as cited inputs or theorem proofs. Thei
 
 ### Scope and faithfulness
 
-The global source default remains paper/exploding.tex, SHA-256 1d7c2010d8bd29e7fb83e93f19c9ebe0e8aef201f93559b2b18f5ca0dc049b44. Only the proposed v4 counterexample successor and four literal definitions override to paper/corrected-arxiv/exploding-corrected-arxiv.tex, SHA-256 59b5ac1a5cdf80c5b550dfc1738414892e0aa3f8cdb0bf03d00c74685a3e1be2, and paper/corrected-arxiv/defs.tex, SHA-256 9aba2c73246d79e3c6b87cb1f01cf3e2f636e27c8afd97ccb8ba5c032a9ee65b. The official arXiv v2 extraction is preserved separately and is not certified by this transaction.
+The global source default remains paper/exploding.tex, SHA-256 1d7c2010d8bd29e7fb83e93f19c9ebe0e8aef201f93559b2b18f5ca0dc049b44. Only the proved v4 counterexample successor and four literal definitions override to paper/corrected-arxiv/exploding-corrected-arxiv.tex, SHA-256 59b5ac1a5cdf80c5b550dfc1738414892e0aa3f8cdb0bf03d00c74685a3e1be2, and paper/corrected-arxiv/defs.tex, SHA-256 9aba2c73246d79e3c6b87cb1f01cf3e2f636e27c8afd97ccb8ba5c032a9ee65b. The official arXiv v2 extraction is preserved separately and is not certified by this transaction.
 
 The source partition is 34 old-source rows plus five corrected-v10 rows. The old group has 27 theorem rows (21 paper-owned and six cited-input companions) and seven cited-input definitions. The corrected group has one paper theorem and four literal definitions. Aggregate counts are 28 theorem rows and 11 definition rows. Old-source coverage is 23/24 theorem-like statements and 21/22 paper-owned statements; the only old-source gap is theorem:counterexample at line 1351. Corrected-v10 coverage is 1/24 and 1/22 paper-owned; its only claim is the counterexample at line 1875, and its other 23 statements are listed exactly in coverage_allowed_gaps. Definitions add no theorem coverage. These are structural row claims, not proof or fidelity certificates.
 
-The old thm-counterexample@3 handwritten audit remains bound to exploding.tex:1351-1361, marker SHA-256 c9c8b8778d204a8280a899f7dda2fefda47e85854c1169bb477828b81f191dd3, semantic-closure SHA-256 ff157998636d1fa5296aa50733454d0a0538d591c0824fd6e6fcab3f9e9b4b9e, and whole-file SHA-256 d9e7f60ec00c1dbdc63a690bba7524dd1fd0f31b30b0ccaa03de3c15bd0dc195. The v4 candidate has a different pin and is excluded from that historical audit. Handwritten notes apply only to their exact source, version and hashes. The proved finite-exploding version 7 includes p = 1 under its historical source pin. The nine other strict Bernoulli paper rows remain narrower at p = 1.
+The old thm-counterexample@3 handwritten audit remains bound to exploding.tex:1351-1361, marker SHA-256 c9c8b8778d204a8280a899f7dda2fefda47e85854c1169bb477828b81f191dd3, semantic-closure SHA-256 ff157998636d1fa5296aa50733454d0a0538d591c0824fd6e6fcab3f9e9b4b9e, and whole-file SHA-256 d9e7f60ec00c1dbdc63a690bba7524dd1fd0f31b30b0ccaa03de3c15bd0dc195. The proved v4 successor has a different pin and its own source/body/consumer audit; it is excluded from that historical audit. Handwritten notes apply only to their exact source, version and hashes. The proved finite-exploding version 7 includes p = 1 under its historical source pin. The nine other strict Bernoulli paper rows remain narrower at p = 1.
 
 | term | meaning |
 |---|---|
 | registered node | a manifest-owned declaration. Theorem nodes claim numbered source statements; definition nodes record literal or cited-input definitions and add no theorem coverage. |
 | frozen statement | the declaration text between FROZEN-STATEMENT-BEGIN and FROZEN-STATEMENT-END, pinned by its exact SHA-256; any proof follows the end marker. |
-| PROVED / SEALED | a theorem node with a complete proof and recorded clean axiom closure. The isolated v4 SEALED state is pending current-base compilation, axiom checks and final audit and gives no new paper credit. |
+| PROVED / SEALED | a theorem node with a complete proof and recorded clean axiom closure. PROVED also records passing source/semantic and independent audits; no row is currently SEALED. |
 | FROZEN | a pinned definition contract with no theorem-proof claim. It includes cited-input definitions and, after independent audit, may include literal local definitions; it does not mean every definition is a literature assumption. |
 | axiom closure | the axioms a proof ultimately rests on, as reported by Lean's #print axioms. |
 | sorryAx | the axiom Lean inserts for an unproved sorry; its presence in an axiom closure means the result is not proved. |
 
 The old rows' summaries above retain their old-source scope. Historical handwritten statement/citation audits and paper_anchors.py / paper_citations.py select only rows pinned to the exact default journal source; the five corrected-v10 rows are explicitly excluded from those old-source endpoint claims. A stale v3 identity must fail against the changed live export, not be silently rebound to v4.
 
-tools/check_coverage.py partitions claims by effective source pin and checks the exact two allowed-gap sets in the manifest. It must report the old 23/24 and corrected-v10 1/24 counts. Definitions contribute zero theorem-like claims. This structural check does not establish mathematical equivalence. The p=1 endpoint inventory and all other corrected-v10 statements remain outside this candidate's certification.
+tools/check_coverage.py partitions claims by effective source pin and checks the exact two allowed-gap sets in the manifest. It must report the old 23/24 and corrected-v10 1/24 counts. Definitions contribute zero theorem-like claims. This structural check does not establish mathematical equivalence. The nine remaining p=1 endpoint gaps and all other corrected-v10 statements remain outside this promotion's certification.
 
-check_clauses.py and check_exponents.py are review aids bound to recorded source-specific readings. An empty annotation set is not evidence of correspondence; no candidate source or proof result is inferred from it. Historical audit fixtures remain bound to their exact v3 identities.
+check_clauses.py and check_exponents.py are review aids bound to recorded source-specific readings. An empty annotation set is not evidence of correspondence; no unreviewed source or proof result is inferred from it. Historical audit fixtures remain bound to their exact v3 identities.
 
 ### Which Lean statement formalizes which result
 
@@ -176,7 +175,7 @@ correspondence between the two sources.
 | `paper/corrected-arxiv/exploding-corrected-arxiv.tex` | [Definition registration, lines 103-103](paper/corrected-arxiv/exploding-corrected-arxiv.tex#L103) | Non-External definition; literal-body/source audit required | [Exploding.counterexamplePile](Exploding/Frozen/CounterexamplePile.lean#L13) | FROZEN definition; source/body audit required |
 | `paper/corrected-arxiv/exploding-corrected-arxiv.tex` | [Definition registration, lines 109-111](paper/corrected-arxiv/exploding-corrected-arxiv.tex#L109) | Non-External definition; literal-body/source audit required | [Exploding.counterexampleSupport](Exploding/Frozen/CounterexampleSupport.lean#L13) | FROZEN definition; source/body audit required |
 | `paper/corrected-arxiv/exploding-corrected-arxiv.tex` | [Definition registration, lines 118-118](paper/corrected-arxiv/exploding-corrected-arxiv.tex#L118) | Non-External definition; literal-body/source audit required | [Exploding.counterexampleArrival](Exploding/Frozen/CounterexampleArrival.lean#L13) | FROZEN definition; source/body audit required |
-| `paper/corrected-arxiv/exploding-corrected-arxiv.tex` | [Theorem 6.1](paper/corrected-arxiv/exploding-corrected-arxiv.tex#L1875)<br>`theorem:counterexample` | Explosive backgrounds without a limit shape | [Exploding.Frozen.counterexample](Exploding/Frozen/Counterexample.lean#L13) | proved |
+| `paper/corrected-arxiv/exploding-corrected-arxiv.tex` | [Theorem 6.1](paper/corrected-arxiv/exploding-corrected-arxiv.tex#L1875)<br>`theorem:counterexample` | Explosive backgrounds without a limit shape | [Exploding.Frozen.counterexample](Exploding/Frozen/Counterexample.lean#L13) | proved, independently audited |
 | `paper/exploding.tex` | [Theorem 1.1](paper/exploding.tex#L238)<br>`prop:fey_levine_peres_explode` | Explosion of the Bernoulli background (Fey, Levine and Peres), cited | [Exploding.External.FeyLevinePeresExplosive](Exploding/External/FeyLevinePeres.lean#L18) | cited result, hypothesis |
 | `paper/exploding.tex` | [Theorem 1.1](paper/exploding.tex#L238)<br>`prop:fey_levine_peres_explode` | In-repo discharge of the Fey, Levine and Peres explosion theorem | [Exploding.xsr_flp](Exploding/Support/ExtSchFLP.lean#L8) | proved, independently audited |
 | `paper/exploding.tex` | [Theorem 1.2](paper/exploding.tex#L246)<br>`theorem:limit_shape` | The rescaled toppled region converges to a convex domain | [Exploding.Frozen.limit_shape](Exploding/Frozen/LimitShape.lean#L30) | proved, independently audited |
@@ -216,16 +215,16 @@ correspondence between the two sources.
 
 ## Guarantees
 
-These existing guarantees describe the integrated baseline only. The corrected-v10 theorem and four literal definitions pass the current source-registration static checks. Exact integrated Lean, axiom, full-build and independent final-byte gates remain pending; this candidate adds no proof certification.
+The corrected-v10 counterexample and its four literal definitions passed exact integrated Lean checks, a full locked 9,405-job build, all eleven configured checks and independent source/body/consumer audit. The promotion covers this one corrected-source theorem; the [dated receipt](ledger/audits/2026-10-15-counterexample-v4-promotion.md) records the exact declaration and evidence. The two ordinary bond-hole Support modules imported by the root add no numbered-theorem credit; they do not establish corrected Proposition 2.2, a fixed-root hole tail or its exact alpha constant.
 
-- No sorry in the existing baseline. The staged candidate text contains no sorry, admit or custom axiom by static inspection, but exact integrated compilation remains pending. The comparator challenge contains one intentional statement-level sorry.
-- Axiom closure. Existing accepted theorem rows retain their recorded standard closure. The recovered transient proof's prior exact command reported the standard three axioms; the integrated candidate closure is pending.
+- No sorry, admit or custom axiom in the production library. The comparator challenge contains one intentional statement-level sorry.
+- Axiom closure. The accepted theorem rows have clean closures; the corrected counterexample and its four definitions were checked against the standard axioms `propext`, `Classical.choice` and `Quot.sound`.
 - Comparator scope. The comparator remains the historical Theorem 1.2 limit-shape comparison with its four explicit hypotheses. It is not a comparator for v4 or corrected v10 as a whole.
-- Pinned toolchain. Existing toolchain and dependency pins remain recorded in lean-toolchain and lake-manifest.json; no candidate build was run.
+- Pinned toolchain. The build uses the toolchain and dependency revisions recorded in lean-toolchain and lake-manifest.json.
 
 ## Size
 
-The size inventory belongs to the pre-v4 base and was not recomputed for this candidate. Refresh line and module counts from the final integrated tree.
+The production library contains 357 Lean modules, including the root module and the two ordinary bond-hole Support modules.
 
 ## Building
 

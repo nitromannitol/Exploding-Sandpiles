@@ -19,7 +19,8 @@ Verifies, against ledger/manifest.yaml:
   8. when a node has `closure_sha256`, its source-level Exploding dependency-closure
      hash matches.  Nodes without the optional field are skipped and counted.
   9. the global source pin and any per-node source-pin overrides name repository
-     files whose SHA-256 digests match the recorded values.
+     files whose SHA-256 digests match the recorded values, including literal
+     TeX inputs; source citations must address the selected pinned file.
 
 `--emit` inserts or refreshes `closure_sha256` for every node after all other
 checks pass.
@@ -113,7 +114,7 @@ def path_is_relative_to(path: Path, parent: Path) -> bool:
 
 
 def checked_source_pin(pin: object, label: str, errors: list[str]) -> str | None:
-    """Check a paper source and every TeX file it directly or transitively inputs."""
+    """Check a paper source and its literal direct and transitive TeX inputs."""
     def checked_file(item: object, item_label: str) -> str | None:
         if not isinstance(item, dict):
             errors.append(f"{item_label}: source pin must be a mapping")
@@ -166,10 +167,14 @@ def checked_source_pin(pin: object, label: str, errors: list[str]) -> str | None
     included: set[str] = set()
     for current in [filename, *declared_set]:
         source = ROOT / current
-        # LaTeX comments cannot introduce active input commands.  The pinned
-        # bytes still protect any unusual macro-based input from later drift.
+        # Macro-generated input filenames cannot be inferred from a regex.
+        # The reviewed sources use only literal inputs; reject known dynamic
+        # input constructs rather than certifying an incomplete dependency set.
         active = "\n".join(re.split(r"(?<!\\)%", line, 1)[0]
                            for line in source.read_text().splitlines())
+        if re.search(r"\\(?:csname|let|catcode|scantokens|directlua|openin|read)\b", active):
+            errors.append(f"{label}: dynamic TeX command in {current!r} needs source review")
+            return None
         for match in re.finditer(
                 r"\\(?:input|include)(?![A-Za-z])\s*(?:\{([^{}]+)\}|([^\s{}%]+))", active):
             name = match.group(1) or match.group(2)
@@ -193,9 +198,11 @@ def check_source_address(node: dict, filename: str, errors: list[str]) -> None:
     if not isinstance(citation, str):
         errors.append(f"{node.get('id', '<missing id>')}: source address is missing")
         return
-    addresses = re.findall(r"([A-Za-z0-9_-]+\.tex):(\d+)(?:-(\d+))?", citation)
+    addresses = re.findall(
+        r"(?<![A-Za-z0-9_./-])([A-Za-z0-9_./-]+\.tex):(\d+)(?:-(\d+))?",
+        citation)
     basename = Path(filename).name
-    if not addresses or any(name != basename for name, _, _ in addresses):
+    if not addresses or any(name not in (basename, filename) for name, _, _ in addresses):
         errors.append(
             f"{node.get('id', '<missing id>')}: source address does not match "
             f"pinned {basename!r}")

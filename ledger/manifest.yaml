@@ -165,16 +165,22 @@ nodes:
     approved: "2026-09-24"
 
   - id: thm-counterexample
-    version: 3
+    version: 4
     kind: theorem
-    source: exploding.tex:1351-1361 (label theorem:counterexample)
+    source: exploding-corrected-arxiv.tex:1875-1885 (label theorem:counterexample)
     file: Exploding/Frozen/Counterexample.lean
     export: Exploding.Frozen.counterexample
-    state: PROVED
-    frozen_sha256: c9c8b8778d204a8280a899f7dda2fefda47e85854c1169bb477828b81f191dd3
-    closure_sha256: ff157998636d1fa5296aa50733454d0a0538d591c0824fd6e6fcab3f9e9b4b9e
-    provider: Exploding.Frozen.counterexample
-    approved: "2026-09-24"
+    state: SEALED
+    frozen_sha256: 1af0799acd9eccce67b979a6a59e756398fd513054e9019f1118421bf7ecf178
+    closure_sha256: 616c1a01e21168c1b7e7840e907d5365135b1877df7e22d79132500a0ccae600
+    provider: Exploding.ce_counterexample_complete
+    approved: "2026-10-15"
+    source_pin:
+      file: paper/corrected-arxiv/exploding-corrected-arxiv.tex
+      sha256: 59b5ac1a5cdf80c5b550dfc1738414892e0aa3f8cdb0bf03d00c74685a3e1be2
+      inputs:
+        - file: paper/corrected-arxiv/defs.tex
+          sha256: 9aba2c73246d79e3c6b87cb1f01cf3e2f636e27c8afd97ccb8ba5c032a9ee65b
 
   - id: prop-explosion-criteria
     version: 3
@@ -446,3 +452,113 @@ nodes:
     note: \"DISCHARGED at Exploding/Support/ExtFMR.lean:53; axiom closure [propext, Classical.choice, Quot.sound]"
     approved: "2026-10-04"
 
+  - id: def-counterexample-threshold
+    version: 1
+    kind: definition
+    source: exploding-corrected-arxiv.tex:100-102 (label eq:first_explosion); carrier at 28-39 and context at 99
+    file: Exploding/Frozen/CounterexampleThreshold.lean
+    export: Exploding.counterexampleThreshold
+    state: FROZEN
+    frozen_sha256: 337e02a2f165ae5bb3e79fd4220a08f3a70f1abefd9fdccaf8734ca9ac3124b7
+    closure_sha256: dce457aa0557b2e863c627954713db05c55813cf8018789aafea8c1580bb58e7
+    provider: Exploding.counterexampleThreshold
+    approved: "2026-10-15"
+    source_pin:
+      file: paper/corrected-arxiv/exploding-corrected-arxiv.tex
+      sha256: 59b5ac1a5cdf80c5b550dfc1738414892e0aa3f8cdb0bf03d00c74685a3e1be2
+      inputs:
+        - file: paper/corrected-arxiv/defs.tex
+          sha256: 9aba2c73246d79e3c6b87cb1f01cf3e2f636e27c8afd97ccb8ba5c032a9ee65b
+
+  - id: def-counterexample-pile
+    version: 1
+    kind: definition
+    source: exploding-corrected-arxiv.tex:103-103 (literal definition); threshold context at 99-102
+    file: Exploding/Frozen/CounterexamplePile.lean
+    export: Exploding.counterexamplePile
+    state: FROZEN
+    frozen_sha256: b1e25647157d36ac9c2e033dfec50ec63ce1865f6cf9bcb41580fd40b6a4ea69
+    closure_sha256: dce457aa0557b2e863c627954713db05c55813cf8018789aafea8c1580bb58e7
+    provider: Exploding.counterexamplePile
+    approved: "2026-10-15"
+    source_pin:
+      file: paper/corrected-arxiv/exploding-corrected-arxiv.tex
+      sha256: 59b5ac1a5cdf80c5b550dfc1738414892e0aa3f8cdb0bf03d00c74685a3e1be2
+      inputs:
+        - file: paper/corrected-arxiv/defs.tex
+          sha256: 9aba2c73246d79e3c6b87cb1f01cf3e2f636e27c8afd97ccb8ba5c032a9ee65b
+
+  - id: def-counterexample-arrival
+    version: 1
+    kind: definition
+    source: exploding-corrected-arxiv.tex:118 (context label theorem:convergence_of_time_constant); specialization at 1877
+    file: Exploding/Frozen/CounterexampleArrival.lean
+    export: Exploding.counterexampleArrival
+    state: FROZEN
+    frozen_sha256: cba2d6d2eb0f29b96604dc17c2ede38a8cf1bd2ab8b3d3c623e267f6e4715025
+    closure_sha256: dce457aa0557b2e863c627954713db05c55813cf8018789aafea8c1580bb58e7
+    provider: Exploding.counterexampleArrival
+    approved: "2026-10-15"
+    source_pin:
+      file: paper/corrected-arxiv/exploding-corrected-arxiv.tex
+      sha256: 59b5ac1a5cdf80c5b550dfc1738414892e0aa3f8cdb0bf03d00c74685a3e1be2
+      inputs:
+        - file: paper/corrected-arxiv/defs.tex
+          sha256: 9aba2c73246d79e3c6b87cb1f01cf3e2f636e27c8afd97ccb8ba5c032a9ee65b
+
+  - id: def-counterexample-support
+    version: 1
+    kind: definition
+    source: exploding-corrected-arxiv.tex:109-111 (context label theorem:limit_shape); tie rule at 173-174 and A_t at 2340-2341
+    file: Exploding/Frozen/CounterexampleSupport.lean
+    export: Exploding.counterexampleSupport
+    state: FROZEN
+    frozen_sha256: 1a04fc9143a068ca9b0dde7a71b6ccc6df494644933d7de022af62c6a6e8a8cf
+    closure_sha256: 57a789b7c21f05852a91291912b10c80b42c0f1191fce5cc8251d65f16fcf7c7
+    provider: Exploding.counterexampleSupport
+    approved: "2026-10-15"
+    source_pin:
+      file: paper/corrected-arxiv/exploding-corrected-arxiv.tex
+      sha256: 59b5ac1a5cdf80c5b550dfc1738414892e0aa3f8cdb0bf03d00c74685a3e1be2
+      inputs:
+        - file: paper/corrected-arxiv/defs.tex
+          sha256: 9aba2c73246d79e3c6b87cb1f01cf3e2f636e27c8afd97ccb8ba5c032a9ee65b
+
+coverage_allowed_gaps:
+  - source_pin:
+      file: paper/exploding.tex
+      sha256: 1d7c2010d8bd29e7fb83e93f19c9ebe0e8aef201f93559b2b18f5ca0dc049b44
+    reason: The counterexample registration has moved to its exact corrected-source successor.
+    statements:
+      - {kind: theorem, line: 1351, label: "theorem:counterexample"}
+  - source_pin:
+      file: paper/corrected-arxiv/exploding-corrected-arxiv.tex
+      sha256: 59b5ac1a5cdf80c5b550dfc1738414892e0aa3f8cdb0bf03d00c74685a3e1be2
+      inputs:
+        - file: paper/corrected-arxiv/defs.tex
+          sha256: 9aba2c73246d79e3c6b87cb1f01cf3e2f636e27c8afd97ccb8ba5c032a9ee65b
+    reason: Only the exact counterexample theorem is registered for this corrected source.
+    statements:
+      - {kind: theorem, line: 96, label: "prop:fey_levine_peres_explode"}
+      - {kind: theorem, line: 104, label: "theorem:limit_shape"}
+      - {kind: theorem, line: 117, label: "theorem:convergence_of_time_constant"}
+      - {kind: theorem, line: 123, label: "theorem:explosive"}
+      - {kind: prop, line: 286, label: "prop:crossing_time"}
+      - {kind: prop, line: 352, label: "prop:renormalization_properties"}
+      - {kind: lemma, line: 401, label: "lemma:local_convexity"}
+      - {kind: lemma, line: 586, label: "lemma:square_lower_bound"}
+      - {kind: lemma, line: 846, label: "lemma:finite_exploding"}
+      - {kind: lemma, line: 856, label: "lemma:last_wave_bound"}
+      - {kind: lemma, line: 886, label: "lemma:approx_subadditivity"}
+      - {kind: lemma, line: 918, label: "lemma:last_penultimate_cluster"}
+      - {kind: lemma, line: 933, label: "lemma:penultimate_upper_bound"}
+      - {kind: lemma, line: 958, label: "lemma:last_penultimate_close"}
+      - {kind: prop, line: 972, label: "prop:convergence_of_the_last_wave"}
+      - {kind: prop, line: 1006, label: "prop:approximate_subadditive"}
+      - {kind: prop, line: 1323, label: "prop:convergence_of_the_generalized_last_wave"}
+      - {kind: theorem, line: 1753, label: null}
+      - {kind: prop, line: 2386, label: "prop:explosion_criteria"}
+      - {kind: prop, line: 2524, label: "prop:dimensional_reduction"}
+      - {kind: prop, line: 2573, label: "prop:recurrence"}
+      - {kind: prop, line: 2638, label: "prop:schonnmann_bootstrap"}
+      - {kind: prop, line: 2655, label: null}

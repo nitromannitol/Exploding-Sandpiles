@@ -320,6 +320,10 @@ import Exploding.Frozen.LastWaveConvergence
 import Exploding.Frozen.ApproximateSubadditive
 import Exploding.Frozen.GeneralizedLastWave
 import Exploding.Frozen.GeneralizedConvergence
+import Exploding.Frozen.CounterexampleThreshold
+import Exploding.Frozen.CounterexamplePile
+import Exploding.Frozen.CounterexampleArrival
+import Exploding.Frozen.CounterexampleSupport
 import Exploding.Frozen.Counterexample
 import Exploding.Frozen.ExplosionCriteria
 import Exploding.Frozen.DimensionalReduction

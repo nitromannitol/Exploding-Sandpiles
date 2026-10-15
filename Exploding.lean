@@ -289,6 +289,10 @@ import Exploding.Support.PUBProofC
 import Exploding.Support.PUBProofD
 import Exploding.Support.PUBProofE
 import Exploding.Support.PUBProofF
+import Exploding.Support.ArxivBondBoundaryStar
+import Exploding.Support.ArxivBondDefectiveFiniteness
+import Exploding.Support.ArxivBondFiniteHoles
+import Exploding.Support.ArxivP1FiniteExploding
 
 import Exploding.External.FeyLevinePeres
 import Exploding.External.Schonmann

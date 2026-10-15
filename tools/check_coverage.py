@@ -185,7 +185,8 @@ def main() -> int:
             print("check_coverage: OK within the explicit partial scopes; "
                   "whole-paper formalization is not certified")
         else:
-            print("every theorem, lemma and proposition in the pinned sources is formalized")
+            print("all numbered statements have theorem-row claims under their exact source pins; "
+                  "independent statement and proof audits are still required")
         return 0
     except (OSError, ValueError, TypeError, yaml.YAMLError) as exc:
         print(f"check_coverage: {exc}", file=sys.stderr)

@@ -114,6 +114,8 @@ class SourceToolsTest(unittest.TestCase):
         result = self.run_script("check_coverage")
         self.assertEqual(result.returncode, 0, result.stderr)
         self.assertIn("24/24 statements claimed", result.stdout)
+        self.assertIn("independent statement and proof audits are still required", result.stdout)
+        self.assertNotIn("is formalized", result.stdout)
 
     def test_mixed_sources_have_no_cross_source_credit(self):
         self.assertEqual(len(self.manifest["nodes"]), 39)

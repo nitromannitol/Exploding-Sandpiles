@@ -3,18 +3,12 @@ version: "v0.4"
 project:
   name: "Exploding-Sandpiles"
   description: >-
-    A Lean 4/Mathlib formalization of "A shape theorem for exploding sandpiles"
-    (Bou-Rabee, Annals of Applied Probability 34(1A) (2024), 714-742; arXiv:2102.04422):
-    the limit shape of the exploding sandpile (Theorem 1.2), the convergence of the
-    rescaled arrival times to a continuous, convex, one-homogeneous function
-    (Theorem 1.3), the explosion criterion for product backgrounds (Theorem 1.4),
-    convergence under general hypotheses (Theorem 5.1) and explosive backgrounds
-    without a limit shape (Theorem 6.1), together with the numbered statements
-    registered from the pinned manuscript. Seven cited results enter as explicit
-    hypotheses; six are also proved in the repository. Some registered statements
-    have narrower scope than the source, and later arXiv corrections are not yet
-    fully covered. The historical limit shape declaration is independently checked
-    by the ExplodingAudit/ comparator pair.
+    Lean 4/Mathlib formalization of the paper's results with source selected per manifest
+    row. The existing baseline has 34 rows pinned to the corrected journal source. The
+    proposed v4 counterexample theorem and four literal definitions add five corrected-v10
+    rows; this candidate claims no other corrected-v10 endpoint. Seven historical cited
+    inputs remain registered, six also proved in the repository. The comparator remains the
+    historical limit-shape pair.
   authors:
     - "Ahmed Bou-Rabee"
   license: "Apache-2.0"
@@ -33,10 +27,24 @@ sources:
     id: "arXiv:2102.04422"
     url: "https://arxiv.org/abs/2102.04422"
     type: "journal article"
-    relationship: "formalizes"
+    relationship: "formalizes by default"
     note: >-
-      The paper under formalization, in the corrected copy paper/exploding.tex;
-      paper/CHANGES_FROM_ARXIV.md lists each difference from arXiv:2102.04422v2.
+      Default source for 34 existing rows: paper/exploding.tex, SHA-256
+      1d7c2010d8bd29e7fb83e93f19c9ebe0e8aef201f93559b2b18f5ca0dc049b44.
+      paper/CHANGES_FROM_ARXIV.md lists the journal-copy differences.
+    license: ""
+    author_contacted: "n/a"
+    prior_work: ""
+  - title: "A shape theorem for exploding sandpiles, corrected arXiv-format v10 draft"
+    authors:
+      - "Ahmed Bou-Rabee"
+    id: "arXiv:2102.04422v2, local corrected draft"
+    url: "https://arxiv.org/abs/2102.04422v2"
+    type: "local corrected arXiv-format draft"
+    relationship: "partial-source-for"
+    note: >-
+      Only the proposed counterexample theorem and four literal definitions select
+      this local v10 draft and its defs.tex input; it is not the official arXiv source.
     license: ""
     author_contacted: "n/a"
     prior_work: ""
@@ -51,49 +59,37 @@ related_formalizations:
 
 status:
   scope: >-
-    The pinned historical manuscript has 22 registered paper theorem rows, each
-    PROVED as its exact Lean declaration. Lemma 3.2 version 7 includes the p = 1
-    endpoint. Their current Lean proofs have no sorry
-    and close to propext, Classical.choice and Quot.sound. The registered rows cover
-    Theorems 1.2, 1.3, 1.4, 5.1 and 6.1,
-    Propositions 2.1, 2.2, 3.1, 4.1, 5.1, 7.1, 7.2, 7.3 and 7.5, and Lemmas 2.1 and
-    3.1 to 3.7. SCOPE BOUNDARY: seven results the paper cites are stated as
-    propositions in Exploding/External/ and carried as explicit hypotheses by the
-    statements whose proofs use them, not as axioms: the explosion theorem of Fey,
-    Levine and Peres (Theorem 1.1), Schonmann's bound for bootstrap percolation
-    (Proposition 7.4), Theorem 0.0 and Corollary 1.4 of Liggett, Schonmann and Stacey,
-    Theorem 1.1 of Antal and Pisztora, Lemma 5.2 of Mathieu and Theorem 2.8 of Fey,
-    Meester and Redig (ASSUMPTIONS.md). Six of the seven are also proved in this
-    repository: the least-action principle of Fey, Meester and Redig
-    (Exploding.xfmr_proved), both domination theorems of Liggett, Schonmann and Stacey
-    (Exploding.xlse_lss_bounded_degree and Exploding.xlse_lss_general), the hole bound
-    of Mathieu (Exploding.xmf_proved), Schonmann's bound (Exploding.xsr_schonmann), and
-    the explosion theorem of Fey, Levine and Peres, derived from Schonmann's bound
-    (Exploding.xsr_flp, which applies Exploding.LSProof.ls_flp_from_explosive to
-    Exploding.xsr_schonmann). Only Theorem 1.1 of Antal and Pisztora (the chemical
-    distance in supercritical bond percolation) is assumed outright. The frozen
-    statements still take the cited results as hypotheses; discharging them with
-    these proofs, Theorem 6.1, Theorem 1.4 and Proposition 7.5 hold with no cited
-    hypothesis, and Theorems 1.2, 1.3 and 5.1 rest on the Antal-Pisztora bound alone
-    (Theorem 5.1 together with the model hypotheses of Section 5). The formalized
-    paper source currently pinned by the manifest is paper/exploding.tex;
-    paper/CHANGES_FROM_ARXIV.md lists its differences from arXiv:2102.04422v2.
-    The nine other Bernoulli paper rows with p < 1 still omit the valid p = 1
-    endpoint, and the separate corrected arXiv draft has additional unregistered
-    or stronger statements. Thus the registry is not a full source-fidelity
-    certificate for either arXiv version. Not formalized: the proof outline of
-    Section 1, the examples of Section 5.2 and the figures. Registered public
-    wrappers are in Exploding/MainTheorems.lean. A Mathlib-only comparator challenge
-    for Theorem 1.2 is ExplodingAudit/LimitShape/Challenge.lean; the checked statement
-    carries the four cited results the theorem uses as hypotheses.
+    Mixed-source candidate: 39 registrations = 34 old-source rows and five corrected-v10
+    rows; aggregate 28 theorem rows and 11 definition rows. The old group has 27 theorem
+    rows (21 paper-owned plus six cited-input companions) and seven cited-input definitions.
+    The corrected group has one proposed theorem and four literal definitions; definitions
+    add zero theorem coverage. Structural claims are old 23/24 (21/22 paper-owned) and
+    corrected-v10 1/24 (1/22 paper-owned); the exact uncovered sets are the two manifest
+    allowed-gap entries. The isolated counterexample successor is SEALED and the four
+    literal definitions are FROZEN under the 15 October 2026 exact-declaration ruling.
+    Current-base compilation, axiom checks and final independent audit are pending; this
+    validation state gives no new paper proof credit. The global source default remains
+    paper/exploding.tex; only those five corrected rows pin
+    paper/corrected-arxiv/exploding-corrected-arxiv.tex (SHA-256
+    59b5ac1a5cdf80c5b550dfc1738414892e0aa3f8cdb0bf03d00c74685a3e1be2) and
+    paper/corrected-arxiv/defs.tex (SHA-256
+    9aba2c73246d79e3c6b87cb1f01cf3e2f636e27c8afd97ccb8ba5c032a9ee65b). The other 21
+    paper-owned baseline results retain their old-source statements and recorded axiom
+    closure. Seven cited results remain registered; the proposed theorem has no hFMR binder.
+    Other corrected-v10 statements lack corrected-source certification. The official arXiv
+    extraction remains separate. The comparator remains the historical Theorem 1.2
+    comparison only; the p=1 endpoint inventory is separate. Lemma 3.2 version 7 remains
+    PROVED with 0 < p ≤ 1 under the historical pin. The nine other strict Bernoulli paper
+    rows retain their p < 1 premises.
   sorry_count: 0
-  sorry_count_scope: "Exploding production library only"
+  sorry_count_scope: "Pre-candidate integrated baseline only; the candidate has no statically visible sorry/admit, but integrated verification is pending"
   comparator_challenge_sorry_count: 1
   sorry_in_definitions: 0
   axioms:
     - "propext"
     - "Classical.choice"
     - "Quot.sound"
+  axioms_scope: "Recorded old-source baseline; candidate closure awaits exact integrated Lean audit"
   main_results:
     - declaration: "Exploding.Frozen.limit_shape"
       file: "Exploding/Frozen/LimitShape.lean"
@@ -129,39 +125,40 @@ status:
         - statement: "Liggett, Schonmann and Stacey, Domination by product measures, Corollary 1.4 (Exploding.External.LiggettSchonmannStaceyBoundedDegree, an explicit hypothesis; proved in this repository by Exploding.xlse_lss_bounded_degree)"
         - statement: "Mathieu, Quenched invariance principles for random walks with random conductances, Lemma 5.2 (Exploding.External.MathieuHoleVolume, an explicit hypothesis; proved in this repository by Exploding.xmf_proved)"
         - statement: "Antal and Pisztora, On the chemical distance for supercritical Bernoulli percolation, Theorem 1.1 (Exploding.External.AntalPisztoraChemicalDistance, an explicit hypothesis, assumed)"
-    - declaration: "Exploding.Frozen.counterexample"
-      file: "Exploding/Frozen/Counterexample.lean"
-      sorry_count: 0
-      axioms: ["propext", "Classical.choice", "Quot.sound"]
-      literature_dependencies:
-        - statement: "Fey, Meester and Redig, Stabilizability and percolation in the infinite volume sandpile model, Theorem 2.8 (Exploding.External.FeyMeesterRedigLeastAction, an explicit hypothesis; proved in this repository by Exploding.xfmr_proved)"
+    - declaration: Exploding.Frozen.counterexample
+      file: Exploding/Frozen/Counterexample.lean
+      candidate_status: SEALED in isolated validation tree; current-base compilation, axiom checks and final
+        independent audit pending
+      source: paper/corrected-arxiv/exploding-corrected-arxiv.tex:1875-1885
+      source_sha256: 59b5ac1a5cdf80c5b550dfc1738414892e0aa3f8cdb0bf03d00c74685a3e1be2
+      input: paper/corrected-arxiv/defs.tex
+      input_sha256: 9aba2c73246d79e3c6b87cb1f01cf3e2f636e27c8afd97ccb8ba5c032a9ee65b
+      cited_hypotheses: []
 
 fidelity:
   divergences: >-
-    The formalized paper is the corrected copy paper/exploding.tex, and
-    paper/CHANGES_FROM_ARXIV.md lists each difference from the arXiv version.
-    CORRESPONDENCE.md records how each statement of the paper is read in Lean.
-    In summary: arrival and crossing times are valued in the extended naturals, so
-    that the paper's infinity is not a junk value, and bounds against real quantities
-    assert a natural number equal to the time; locally uniform convergence is written
-    in its epsilon form; the finiteness of a component or of a bounding rectangle is
-    carried where a cardinality would otherwise absorb it; the standing hypotheses of
-    Sections 2 to 4 are explicit hypotheses of the deterministic lemmas; "convex
-    domain" is a nonempty open convex set; Proposition 7.2 writes the paper's d as
-    d + 1. Lemma 3.2 version 7 includes the valid Bernoulli endpoint p = 1;
-    nine other registered Bernoulli paper rows still restrict p to (0, 1),
-    although the pinned source's "Fix p > 0" also includes the deterministic
-    background with 2d - 1 chips at every site.
+    The old-source default is paper/exploding.tex. Five proposed declarations override to
+    local corrected arXiv-format v10 and defs.tex; the official arXiv extraction remains
+    separate. No other corrected-v10 result is certified here. CORRESPONDENCE.md records how
+    each statement of the paper is read in Lean. In summary: arrival and crossing times are
+    valued in the extended naturals, so that the paper's infinity is not a junk value, and
+    bounds against real quantities assert a natural number equal to the time; locally
+    uniform convergence is written in its epsilon form; the finiteness of a component or of
+    a bounding rectangle is carried where a cardinality would otherwise absorb it; the
+    standing hypotheses of Sections 2 to 4 are explicit hypotheses of the deterministic
+    lemmas; "convex domain" is a nonempty open convex set; Proposition 7.2 writes the
+    paper's d as d + 1. Lemma 3.2 version 7 includes the valid Bernoulli endpoint p = 1;
+    nine other registered Bernoulli paper rows still restrict p to (0, 1), although the
+    source's "Fix p > 0" also includes that deterministic background.
 
 review:
   status: "author-verified"
   reviewers:
     - "Ahmed Bou-Rabee"
   notes: >-
-    The Lean kernel checks the proofs of the declarations as stated. Fidelity to
-    the source, including the remaining p = 1 endpoints and later corrected draft,
-    requires separate review. Cited results remain explicit hypotheses, except
-    the six that are also proved here. This is not external peer review.
+    This historic review record applies to the old-source baseline and does not cover the
+    proposed corrected-v10 theorem or definitions. Their final source/body audit and all
+    integration gates remain pending.
 
 alignment:
   namespace: "Exploding"
@@ -186,11 +183,13 @@ alignment:
       module: "Exploding.Frozen.GeneralizedConvergence"
       status: "proved"
       note: "Takes the general domination theorem and the three percolation results as explicit hypotheses."
-    - source: "Theorem 6.1 (theorem:counterexample)"
-      lean: "Exploding.Frozen.counterexample"
-      module: "Exploding.Frozen.Counterexample"
-      status: "proved"
-      note: "This is the pinned historical-source statement, not the later corrected-draft claim. It takes the least-action principle as an explicit hypothesis, which Exploding.xfmr_proved proves."
+    - source: Theorem 6.1 (theorem:counterexample; corrected-v10 candidate)
+      lean: Exploding.Frozen.counterexample
+      module: Exploding.Frozen.Counterexample
+      source_pin: paper/corrected-arxiv/exploding-corrected-arxiv.tex; 59b5ac1a5cdf80c5b550dfc1738414892e0aa3f8cdb0bf03d00c74685a3e1be2
+      status: SEALED; integrated verification pending
+      note: Exact declaration approved on 15 October 2026; no hFMR binder. Current-base compilation, axiom
+        checks and final independent audit remain pending.
     - source: "The paper's other propositions and lemmas and Propositions 7.2, 7.3, excluding Lemma 3.2"
       lean: "Exploding.* in Exploding/MainTheorems.lean"
       module: "Exploding.MainTheorems"

@@ -24,14 +24,15 @@ import Exploding.Frozen.BoxCrossing
 /-!
 # Main results
 
-This file restates every result of *A shape theorem for exploding sandpiles* (Ahmed
-Bou-Rabee) that is proved in this development: the 22 nodes registered as `SEALED` in
-`ledger/manifest.yaml`, in the order of the paper.  Each restates its certified counterpart
-in `Exploding/Frozen/` unchanged and is proved by `exact` of it, so the statements displayed
-here are the certified ones.  All 22 are proved, and each reduces to the three standard axioms
-`propext`, `Classical.choice` and `Quot.sound`; see `Exploding/Meta/AxiomsAudit.lean`.
+This file gives the public paper-facing theorem statements. The 21 existing paper-owned
+old-source statements retain their corrected-journal contracts, including the proved
+finite-exploding version 7 with `0 < p ≤ 1`. The nine other strict Bernoulli paper rows
+retain their `p < 1` premises. Theorem 6.1 below is the
+proposed corrected-v10 v4 successor; its full proof and public type await the exact integrated
+Lean checks and independent final-byte audit. The proposal does not certify any other v10
+statement. Existing baseline axiom and build records do not cover this candidate.
 
-The paper's main theorems are among them:
+The existing main theorems and the proposed counterexample are:
 
 * `Exploding.limit_shape`: Theorem 1.2, the region toppled by time `t`, rescaled by `t`,
   converges in measure to a convex domain.
@@ -41,17 +42,18 @@ The paper's main theorems are among them:
   site and a positive density of sites with `2d - 1` chips explodes almost surely.
 * `Exploding.generalized_convergence`: Theorem 5.1, convergence of the exploding sandpile
   under the hypotheses of Section 5.
-* `Exploding.counterexample`: Theorem 6.1, explosive backgrounds without a limit shape.
+* `Exploding.counterexample`: proposed corrected-v10 Theorem 6.1; its complete conclusion
+  uses one background for both axial limits and the measurable-volume obstruction.
 
-The supporting results are Propositions 2.1, 2.2, 3.1, 4.1, 5.1, 7.1, 7.2, 7.3 and 7.5 and
-Lemmas 2.1 and 3.1 to 3.7.
+The other public results summarize old-source Propositions 2.1, 2.2, 3.1, 4.1, 5.1, 7.1,
+7.2, 7.3 and 7.5 and Lemmas 2.1 and 3.1 to 3.7.
 
 ## Cited results
 
-Seven results of the literature that the paper cites are stated in this development as
-assumptions.  Each is stated as a proposition in `Exploding/External/` and registered as
-`FROZEN` in the manifest; a theorem that needs one takes it as an explicit hypothesis, and no
-`axiom` is declared (see `ASSUMPTIONS.md`):
+Seven historical literature results that the paper cites remain registered as assumptions.
+Each is a proposition in `Exploding/External/` with the old-source pin; a theorem carries one
+when its exact type has that hypothesis. The proposed v4 Theorem 6.1 has no cited-result
+binder, and no `axiom` is declared (see `ASSUMPTIONS.md`):
 
 * `FeyLevinePeresExplosive`, Theorem 1.1 of the paper (Proposition 1.4 of Fey, Levine and
   Peres), `hFLP`;
@@ -63,13 +65,13 @@ assumptions.  Each is stated as a proposition in `Exploding/External/` and regis
   `AntalPisztoraChemicalDistance` (Theorem 1.1 of Antal and Pisztora) and `MathieuHoleVolume`
   (Lemma 5.2 of Mathieu), the three percolation results cited before Proposition 2.2,
   `hLSSB`, `hChem`, `hHole`;
-* `FeyMeesterRedigLeastAction`, Theorem 2.8 of Fey, Meester and Redig, cited in the proof of
-  Theorem 6.1, `hFMR`.
+* `FeyMeesterRedigLeastAction`, Theorem 2.8 of Fey, Meester and Redig, retained in the
+  historical journal-source Theorem 6.1 record, `hFMR`.
 
 Six of the seven are discharged by proofs in this repository:
 
-* `FeyMeesterRedigLeastAction` is proved by `Exploding.xfmr_proved`
-  (`Exploding/Support/ExtFMR.lean`), so Theorem 6.1 holds with `hFMR := Exploding.xfmr_proved`;
+* The historical FMR registration is separately proved by `Exploding.xfmr_proved`
+  (`Exploding/Support/ExtFMR.lean`); FMR is not a premise of proposed v4 Theorem 6.1;
 * `LiggettSchonmannStaceyBoundedDegree` is proved by `Exploding.xlse_lss_bounded_degree`
   and `LiggettSchonmannStacey` by `Exploding.xlse_lss_general`
   (`Exploding/Support/ExtLSSCountable.lean`), so `hLSSB` and `hLSS` may be discharged
@@ -96,7 +98,7 @@ three percolation results `hLSSB`, `hHole`, `hChem`:
 | Theorem 1.4, Proposition 7.5 | `hSch` |
 | Proposition 2.2, Lemmas 3.2, 3.5, 3.6, 3.7, Propositions 3.1, 4.1 | `perc` |
 | Proposition 5.1, Theorem 5.1 | `perc`, `hLSS` |
-| Theorem 6.1 | `hFMR` |
+| Theorem 6.1 v4 candidate | none; its proposed type has no cited-result binder |
 | Propositions 2.1, 7.1, 7.2, 7.3, Lemmas 2.1, 3.1, 3.3, 3.4 | none |
 
 Propositions 5.1 and 7.1 and Theorem 5.1 also carry the model hypotheses of Sections 5 and 7
@@ -396,22 +398,28 @@ theorem Exploding.generalized_convergence (d : ℕ) (hd : 2 ≤ d) (ηmin : ℤ)
   exact Exploding.Frozen.generalized_convergence d hd ηmin hηmin L hL P hP hsupp hstat herg
     h1 h3 h4 h5 hLSS hLSSB hHole hChem
 
-/-- **Theorem 6.1** (`theorem:counterexample`): explosive backgrounds without a limit shape.
-There is an explosive background `η` on `ℤ^d`, not bounded below by `2d - 2`, whose arrival
-times along the first axis are finite, with `limsup T_η(n e₁) / n ≥ 3/2` and
-`liminf T_η(n e₁) / n = 1`, so that the rescaled arrival times do not converge.  It takes the
-least-action principle of Fey, Meester and Redig (`hFMR`) as a hypothesis, which
-`Exploding.xfmr_proved` discharges; the proof of the certified statement does not use it.
-The certified statement is `Exploding.Frozen.counterexample`, restated unchanged. -/
-theorem Exploding.counterexample (d : ℕ) (hd : 2 ≤ d)
-    (hFMR : Exploding.External.FeyMeesterRedigLeastAction) :
-    ∃ η : Site d → ℤ,
-      Explosive η ∧
+/-- **Theorem 6.1** (corrected arXiv-format source, exploding-corrected-arxiv.tex:1875-1885,
+label theorem:counterexample; same-background volume obstruction at 2337-2373). One explosive
+background has finite axial arrivals and both stated axial limits; for that same background,
+no measurable set is a symmetric-difference-volume limit. Candidate proof and final audit pending. -/
+theorem Exploding.counterexample (d : ℕ) (hd : 2 ≤ d) :
+    ∃ η : Site d → ℤ, ∃ hη : Explosive η,
       (¬ ∀ x : Site d, 2 * (d : ℤ) - 2 ≤ η x) ∧
-      (∀ n : ℕ, arrival η ((n : ℤ) • e1 d) ≠ ⊤) ∧
-      3 / 2 ≤ limsup (fun n : ℕ => ((arrival η ((n : ℤ) • e1 d)).toNat : ℝ) / (n : ℝ)) atTop ∧
-      liminf (fun n : ℕ => ((arrival η ((n : ℤ) • e1 d)).toNat : ℝ) / (n : ℝ)) atTop = 1 := by
-  exact Exploding.Frozen.counterexample d hd hFMR
+      (∀ n : ℕ, counterexampleArrival η hη ((n : ℤ) • e1 d) ≠ ⊤) ∧
+      3 / 2 ≤ limsup
+        (fun n : ℕ =>
+          ((counterexampleArrival η hη ((n : ℤ) • e1 d)).toNat : ℝ) / (n : ℝ))
+        atTop ∧
+      liminf
+        (fun n : ℕ =>
+          ((counterexampleArrival η hη ((n : ℤ) • e1 d)).toNat : ℝ) / (n : ℝ))
+        atTop = 1 ∧
+      ¬ ∃ B : Set (Fin d → ℝ),
+        MeasurableSet B ∧
+        Tendsto
+          (fun t : ℕ => volume (symmDiff (counterexampleSupport η hη t) B))
+          atTop (nhds 0) := by
+  exact Exploding.Frozen.counterexample d hd
 
 /-- **Proposition 7.1** (`prop:explosion_criteria`): a stationary, ergodic,
 finite-range-dependent, box-crossing and recurrent law on backgrounds bounded between

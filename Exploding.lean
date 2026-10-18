@@ -304,6 +304,7 @@ import Exploding.Support.AllHighWaveThreshold
 import Exploding.Support.AllHighPenultimateCluster
 import Exploding.Support.AllHighLastArrival
 import Exploding.Support.AllHighLastArrivalScaling
+import Exploding.Support.ManhattanProfile
 import Exploding.Support.AllHighClusterArrival
 import Exploding.Support.PenultimateClusterP1
 import Exploding.Support.PenultimateUpperBoundP1

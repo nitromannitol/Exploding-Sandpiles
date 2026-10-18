@@ -5,6 +5,7 @@ import Exploding.Frozen.CrossingTime
 import Exploding.Frozen.Renormalization
 import Exploding.Frozen.LocalConvexity
 import Exploding.Frozen.SquareLowerBound
+import Exploding.Frozen.SharpPlanarObstruction
 import Exploding.Frozen.FiniteExploding
 import Exploding.Frozen.LastWaveBound
 import Exploding.Frozen.ApproxSubadditivity
@@ -239,14 +240,43 @@ theorem Exploding.local_convexity (d : ℕ) (hd : 2 ≤ d) (η : Site d → ℤ)
     fodo A η (Set.indicator A 1) t x = 1 := by
   exact Exploding.Frozen.local_convexity d hd η hlow hhigh m z hpath A hA hfin t ht x hx
 
-/-- **Lemma 3.1** (`lemma:square_lower_bound`): on a nonnegative background, for `n ≥ 1`
-and `m ≥ (2d)^{dn}`, every site of `[-n, n]^d` is reached by the `m`-wave started at the
-origin: the wave is positive there at some time.  The certified statement is
+/-- **Lemma 3.1** (`lemma:square_lower_bound`), sharp form: for `d ≥ 2` and the two cited inputs,
+there is `C > 0` such that for every background `η` with `2d - 2 ≤ η ≤ 2d - 1`, every `n ≥ 1`
+and every `m ≥ 1` with `⌈C n^d (log (n+1) if d = 2)⌉ ≤ m`, there is a finite `T` after which the
+`m`-wave from the origin is positive on `[-n, n]^d`. The certified statement is
 `Exploding.Frozen.square_lower_bound`, restated unchanged. -/
-theorem Exploding.square_lower_bound (d : ℕ) (hd : 2 ≤ d) :
-    ∀ η : Site d → ℤ, (∀ x, 0 ≤ η x) → ∀ n : ℕ, 1 ≤ n → ∀ m : ℕ, (2 * d) ^ (d * n) ≤ m →
-      ∀ x ∈ cent d n, ∃ t : ℕ, 0 < wave η m (0 : Site d) t x := by
-  exact Exploding.Frozen.square_lower_bound d hd
+theorem Exploding.square_lower_bound (d : ℕ) (hd : 2 ≤ d)
+    (hFdBR : Exploding.External.FeyDenBoerRedigCubicalCluster)
+    (hFLP : Exploding.External.FeyLevinePeresRadius) :
+    ∃ C : ℝ, 0 < C ∧
+      ∀ η : Site d → ℤ,
+        (∀ x, 2 * (d : ℤ) - 2 ≤ η x ∧ η x ≤ 2 * (d : ℤ) - 1) →
+        ∀ n : ℕ, 1 ≤ n → ∀ m : ℕ, 1 ≤ m →
+          Nat.ceil (C * (n : ℝ) ^ d *
+            (if d = 2 then Real.log ((n : ℝ) + 1) else 1)) ≤ m →
+          ∃ T : ℕ, ∀ t : ℕ, T ≤ t →
+            ∀ x ∈ cent d n, 0 < wave η m (0 : Site d) t x := by
+  exact Exploding.Frozen.square_lower_bound d hd hFdBR hFLP
+
+/-- **Sharp planar obstruction** (remark after `lemma:square_lower_bound`): on the homogeneous
+height-two background in dimension two, with the two cited inputs, there are `c, C > 0` such that
+for every `n ≥ 1` the least positive order `M` whose wave from the origin covers `[-n, n]²`
+satisfies `c n² log (n + 1) ≤ M ≤ C n² log (n + 1)`. The certified statement is
+`Exploding.Frozen.sharp_planar_obstruction`, restated unchanged. -/
+theorem Exploding.sharp_planar_obstruction
+    (hFDR : Exploding.External.FeyDenBoerRedigCubicalCluster)
+    (hFLP : Exploding.External.FeyLevinePeresRadius) :
+    ∃ c C : Real, 0 < c ∧ 0 < C ∧
+      ∀ n : Nat, 1 ≤ n → ∃ M : Nat,
+        1 ≤ M ∧
+        (∀ x ∈ cent 2 n, ∃ t : Nat,
+          0 < wave (fun _ : Site 2 => (2 : Int)) M (0 : Site 2) t x) ∧
+        (∀ m : Nat, 1 ≤ m →
+          (∀ x ∈ cent 2 n, ∃ t : Nat,
+            0 < wave (fun _ : Site 2 => (2 : Int)) m (0 : Site 2) t x) → M ≤ m) ∧
+        c * (n : Real)^2 * Real.log ((n : Real) + 1) ≤ (M : Real) ∧
+        (M : Real) ≤ C * (n : Real)^2 * Real.log ((n : Real) + 1) := by
+  exact Exploding.Frozen.sharp_planar_obstruction hFDR hFLP
 
 /-- **Lemma 3.2** (`lemma:finite_exploding`): the last wave is well defined,
 `M̂_η(0) < ∞`.  The certified statement is `Exploding.Frozen.finite_exploding`, restated
@@ -258,16 +288,16 @@ theorem Exploding.finite_exploding (d : ℕ) (hd : 2 ≤ d) (p : ℝ) (hp : 0 < 
     ∀ᵐ η ∂(toyLaw d p), ∃ n : ℕ, 1 ≤ n ∧ ¬ WaveStabilizable η n (0 : Site d) := by
   exact Exploding.Frozen.finite_exploding d hd p hp hp1 hLSSB hHole hChem
 
-/-- **Lemma 3.3** (`lemma:last_wave_bound`): for a background with `2d - 2 ≤ η ≤ 2d - 1`
-whose last wave from `z` is well defined, the last wave exceeds the penultimate wave by at
-most one at every site and every time `t ≥ 1`.  The certified statement is
-`Exploding.Frozen.last_wave_bound`, restated unchanged. -/
+/-- **Lemma 3.3** (`lemma:last_wave_bound`): the complete last-wave bound, at every
+time, including time zero. Outside the interior of the penultimate cluster the last wave
+is at most one. The certified statement is `Exploding.Frozen.last_wave_bound`. -/
 theorem Exploding.last_wave_bound (d : ℕ) (hd : 2 ≤ d) (η : Site d → ℤ)
     (hlow : ∀ x, 2 * (d : ℤ) - 2 ≤ η x) (hhigh : ∀ x, η x ≤ 2 * (d : ℤ) - 1)
-    (z : Site d) (hlast : ∃ n : ℕ, 1 ≤ n ∧ ¬ WaveStabilizable η n z)
-    (t : ℕ) (ht : 1 ≤ t) (x : Site d) :
-    lastWave η z t x ≤ 1 + penultimateWave η z x := by
-  exact Exploding.Frozen.last_wave_bound d hd η hlow hhigh z hlast t ht x
+    (z : Site d) (hlast : ∃ n : ℕ, 1 ≤ n ∧ ¬ WaveStabilizable η n z) (t : ℕ) (x : Site d) :
+    lastWave η z t x ≤ 1 + penultimateWave η z x ∧
+      (x ∉ penultimateCluster η z \ innerBoundary (penultimateCluster η z) →
+        lastWave η z t x ≤ 1) :=
+  Exploding.Frozen.last_wave_bound d hd η hlow hhigh z hlast t x
 
 /-- **Lemma 3.4** (`lemma:approx_subadditivity`): under the same standing hypotheses, with
 the last wave well defined from every site, the penultimate-cluster arrival times are
@@ -359,20 +389,20 @@ theorem Exploding.approximate_subadditive (d : ℕ) (hd : 2 ≤ d) (p : ℝ) (hp
   exact Exploding.Frozen.approximate_subadditive d hd p hp hp1 hLSSB hHole hChem
 
 /-- **Proposition 5.1** (`prop:convergence_of_the_generalized_last_wave`): for a law `P` on
-backgrounds with `η_min ≤ η ≤ 2d - 1`, stationary and ergodic for a finite-index sublattice
-`L`, and satisfying finite range of dependence (Hypothesis 5.1), path-filling (Hypothesis 5.3)
-and strong box-crossing (Hypothesis 5.4), the rescaled last-wave arrival times converge
-almost surely, uniformly on compact sets, to a continuous, convex, one-homogeneous function,
-and `P`-almost every background is explosive.  It takes the Liggett-Schonmann-Stacey
-domination theorem (`hLSS`) and the three percolation results behind Proposition 2.2 as
-hypotheses.  The certified statement is
+backgrounds with `η_min ≤ η ≤ 2d - 1`, for an arbitrary integer `η_min` (no sign assumption),
+stationary and measurably ergodic for a finite-index sublattice `L`, and satisfying finite range
+of dependence (Hypothesis 5.1), path-filling (Hypothesis 5.3) and strong box-crossing
+(Hypothesis 5.4), the rescaled last-wave arrival times converge almost surely, uniformly on
+compact sets, to a continuous, convex, one-homogeneous function, and `P`-almost every background
+is explosive.  The nonnegativity of the background is derived, not assumed.  It takes the
+Liggett-Schonmann-Stacey domination theorem (`hLSS`) and the three percolation results behind
+Proposition 2.2 as hypotheses.  The certified statement is
 `Exploding.Frozen.convergence_of_the_generalized_last_wave`, restated unchanged. -/
 theorem Exploding.convergence_of_the_generalized_last_wave (d : ℕ) (hd : 2 ≤ d) (ηmin : ℤ)
-    (hηmin : 0 ≤ ηmin)
     (L : AddSubgroup (Site d)) (hL : L.index ≠ 0)
     (P : Measure (Site d → ℤ)) (hP : IsProbabilityMeasure P)
     (hsupp : ∀ᵐ η ∂P, InOmega d ηmin η)
-    (hstat : StationaryOn d L P) (herg : ErgodicOn d L P)
+    (hstat : StationaryOn d L P) (herg : MeasurableErgodicOn d L P)
     (h1 : FiniteRangeOfDependence d P) (h3 : PathFillingHyp d P)
     (h4 : StronglyBoxCrossingHyp d P)
     (hLSS : Exploding.External.LiggettSchonmannStacey)
@@ -389,21 +419,22 @@ theorem Exploding.convergence_of_the_generalized_last_wave (d : ℕ) (hd : 2 ≤
             ∀ᶠ n : ℕ in atTop, ∀ y ∈ K,
               |((lastArrival η (0 : Site d) (nearestSite ((n : ℝ) • y))).toNat : ℝ) / (n : ℝ)
                 - N y| ≤ ε := by
-  exact Exploding.Frozen.convergence_of_the_generalized_last_wave d hd ηmin hηmin L hL P hP
+  exact Exploding.Frozen.convergence_of_the_generalized_last_wave d hd ηmin L hL P hP
     hsupp hstat herg h1 h3 h4 hLSS hLSSB hHole hChem
 
 /-- **Theorem 5.1** (`Convergence of the exploding sandpile`): under the hypotheses of
 Proposition 5.1 and the wave-approximation hypothesis (Hypothesis 5.5), the rescaled arrival
 times `T_η([n y]) / n` of the exploding sandpile converge almost surely, uniformly on compact
 sets, to a continuous, convex, one-homogeneous function, and every arrival time is finite.
-It takes the Liggett-Schonmann-Stacey domination theorem (`hLSS`) and the three percolation
-results behind Proposition 2.2 as hypotheses.  The certified statement is
+The integer `η_min` is arbitrary and the ergodicity premise is measurable ergodicity.  It takes
+the Liggett-Schonmann-Stacey domination theorem (`hLSS`) and the three percolation results
+behind Proposition 2.2 as hypotheses.  The certified statement is
 `Exploding.Frozen.generalized_convergence`, restated unchanged. -/
-theorem Exploding.generalized_convergence (d : ℕ) (hd : 2 ≤ d) (ηmin : ℤ) (hηmin : 0 ≤ ηmin)
+theorem Exploding.generalized_convergence (d : ℕ) (hd : 2 ≤ d) (ηmin : ℤ)
     (L : AddSubgroup (Site d)) (hL : L.index ≠ 0)
     (P : Measure (Site d → ℤ)) (hP : IsProbabilityMeasure P)
     (hsupp : ∀ᵐ η ∂P, InOmega d ηmin η)
-    (hstat : StationaryOn d L P) (herg : ErgodicOn d L P)
+    (hstat : StationaryOn d L P) (herg : MeasurableErgodicOn d L P)
     (h1 : FiniteRangeOfDependence d P) (h3 : PathFillingHyp d P)
     (h4 : StronglyBoxCrossingHyp d P) (h5 : WaveApproximationHyp d P)
     (hLSS : Exploding.External.LiggettSchonmannStacey)
@@ -419,7 +450,7 @@ theorem Exploding.generalized_convergence (d : ℕ) (hd : 2 ≤ d) (ηmin : ℤ)
           ∀ K : Set (Fin d → ℝ), IsCompact K → ∀ ε : ℝ, 0 < ε →
             ∀ᶠ n : ℕ in atTop, ∀ y ∈ K,
               |((arrival η (nearestSite ((n : ℝ) • y))).toNat : ℝ) / (n : ℝ) - N y| ≤ ε := by
-  exact Exploding.Frozen.generalized_convergence d hd ηmin hηmin L hL P hP hsupp hstat herg
+  exact Exploding.Frozen.generalized_convergence d hd ηmin L hL P hP hsupp hstat herg
     h1 h3 h4 h5 hLSS hLSSB hHole hChem
 
 /-- **Theorem 6.1** (corrected arXiv-format source, exploding-corrected-arxiv.tex:1875-1885,
@@ -446,41 +477,45 @@ theorem Exploding.counterexample (d : ℕ) (hd : 2 ≤ d) :
           atTop (nhds 0) := by
   exact Exploding.Frozen.counterexample d hd
 
-/-- **Proposition 7.1** (`prop:explosion_criteria`): a stationary, ergodic,
+/-- **Proposition 7.1** (`prop:explosion_criteria`): a stationary, measurably ergodic,
 finite-range-dependent, box-crossing and recurrent law on backgrounds bounded between
-`η_min ≥ 0` and `2d - 1` is explosive.  The certified statement is
+`η_min` and `2d - 1`, for `d ≥ 2`, is explosive.  The certified statement is
 `Exploding.Frozen.explosion_criteria`, restated unchanged. -/
-theorem Exploding.explosion_criteria (d : ℕ) (hd : 2 ≤ d) (ηmin : ℤ) (hηmin : 0 ≤ ηmin)
+theorem Exploding.explosion_criteria (d : ℕ) (hd : 2 ≤ d) (ηmin : ℤ)
     (L : AddSubgroup (Site d)) (hL : L.index ≠ 0) (P : Measure (Site d → ℤ)) (hP : IsProbabilityMeasure P)
     (hsupp : ∀ᵐ η ∂P, InOmega d ηmin η)
-    (hstat : StationaryOn d L P) (herg : ErgodicOn d L P)
+    (hstat : StationaryOn d L P) (herg : MeasurableErgodicOn d L P)
     (h1 : FiniteRangeOfDependence d P) (h2 : BoxCrossingHyp d P)
     (hrec : RecurrentLaw d P) :
     ExplosiveLaw d P := by
-  exact Exploding.Frozen.explosion_criteria d hd ηmin hηmin L hL P hP hsupp hstat herg h1 h2 hrec
+  exact Exploding.Frozen.explosion_criteria d hd ηmin L hL P hP hsupp hstat herg h1 h2 hrec
 
 /-- **Proposition 7.2** (`prop:dimensional_reduction`), with the paper's `d` written
-`d + 1`: at every time, on the face `F_1(Q_n)` of the box, the constrained odometer in
-`ℤ^{d+1}` equals the one in `ℤ^d`, and where it vanishes the configuration in `ℤ^{d+1}`
-exceeds the one in `ℤ^d` by `2`.  The certified statement is
-`Exploding.Frozen.dimensional_reduction`, restated unchanged. -/
-theorem Exploding.dimensional_reduction (d n : ℕ) (hd : 1 ≤ d) (η : Site (d + 1) → ℤ)
-    (t : ℕ) (y : Site d) (hy : cons 1 y ∈ faceLow (d + 1) n 0) :
-    redOdoUp n η t (cons 1 y) = redOdoDown n η t y ∧
-      (redOdoUp n η t (cons 1 y) = 0 →
-        redConfUp n η t (cons 1 y) = redConfDown n η t y + 2) := by
-  exact Exploding.Frozen.dimensional_reduction d n hd η t y hy
+`d + 1`: for every pointwise tangential boundary choice `beta : Site d → Bool`, at every time, on
+the face `F_1(Q_n)` of the box, the constrained odometer in `ℤ^{d+1}` equals the one in `ℤ^d`, and
+where it vanishes the configuration in `ℤ^{d+1}` exceeds the one in `ℤ^d` by `2`.  The certified
+statement is `Exploding.Frozen.dimensional_reduction`, restated unchanged. -/
+theorem Exploding.dimensional_reduction (d n : ℕ) (hd : 1 ≤ d) (beta : Site d → Bool)
+    (η : Site (d + 1) → ℤ) (t : ℕ) (y : Site d) (hy : cons 1 y ∈ faceLow (d + 1) n 0) :
+    bUpOdo beta n η t (cons 1 y) = bLowOdo beta n η t y ∧
+      (bUpOdo beta n η t (cons 1 y) = 0 →
+        bUpConf beta n η t (cons 1 y) = bLowConf beta n η t y + 2) := by
+  exact Exploding.Frozen.dimensional_reduction d n hd beta η t y hy
 
 /-- **Proposition 7.3** (`prop:recurrence`): the constant background `d` on `ℤ^d` is
 recurrent.  The certified statement is `Exploding.Frozen.recurrence`, restated unchanged. -/
 theorem Exploding.recurrence (d : ℕ) (hd : 1 ≤ d) : Recurrent (fun _ : Site d => (d : ℤ)) := by
   exact Exploding.Frozen.recurrence d hd
 
-/-- **Proposition 7.5** (`exploding.tex:1986-1988`): a product background with at least `d`
-chips at every site and a positive density of `(2d-1)`-sites is box-crossing.  The certified
+/-- **Box-crossing, both cases** (`paper/corrected-arxiv/exploding-corrected-arxiv.tex:2655-2659`):
+the product case for `d ≥ 2` and the dimension-one case for any law on `η ≥ 1`. The certified
 statement is `Exploding.Frozen.box_crossing`, restated unchanged. -/
-theorem Exploding.box_crossing (d : ℕ) (hd : 2 ≤ d) (ν : Measure ℤ) (hν : IsProbabilityMeasure ν)
-    (hlow : ν {m : ℤ | (d : ℤ) ≤ m} = 1) (hhit : 0 < ν {(2 * (d : ℤ) - 1)})
-    (hSch : Exploding.External.SchonmannBootstrap) :
-    BoxCrossingHyp d (Measure.infinitePi fun _ : Site d => ν) := by
-  exact Exploding.Frozen.box_crossing d hd ν hν hlow hhit hSch
+theorem Exploding.box_crossing :
+    (∀ (d : ℕ) (_hd : 2 ≤ d) (ν : Measure ℤ) (_hν : IsProbabilityMeasure ν)
+      (_hlow : ν {m : ℤ | (d : ℤ) ≤ m} = 1) (_hhit : 0 < ν {(2 * (d : ℤ) - 1)})
+      (_hSch : Exploding.External.SchonmannBootstrap),
+      BoxCrossingHyp d (Measure.infinitePi fun _ : Site d => ν)) ∧
+    (∀ (P : Measure (Site 1 → ℤ)) (_hP : IsProbabilityMeasure P)
+      (_hsupp : P {η : Site 1 → ℤ | ∀ x, (1 : ℤ) ≤ η x} = 1),
+      BoxCrossingHyp 1 P) :=
+  Exploding.Frozen.box_crossing

@@ -41,7 +41,7 @@ the toy law.  It is left as ONE explicitly flagged "needs further split"
 lemma with a comment pointing at exactly which six nodes it mirrors.
 -/
 import Exploding.Support.Hypotheses
-import Exploding.Frozen.SquareLowerBound
+import Exploding.Support.SquareLowerBoundExponential
 import Exploding.External.LiggettSchonmannStacey
 import Exploding.External.LiggettSchonmannStaceyBoundedDegree
 import Exploding.External.MathieuHoles
@@ -239,13 +239,13 @@ theorem glw_box_field_kdependent (d : ℕ) (P : Measure (Site d → ℤ))
 end
 
 /-- Step 3 (Lemma 3.1 in the Section 5 setting).  On `Ω` with `η_min ≥ 0` the background is
-nonnegative, so `Exploding.Frozen.square_lower_bound` applies directly: the
+nonnegative, so `Exploding.square_lower_bound_exponential` applies directly: the
 `(2d)^{dn}`-wave covers `[-n, n]^d`. -/
 theorem glw_square_lower_bound (d : ℕ) (hd : 2 ≤ d) (ηmin : ℤ) (hηmin : 0 ≤ ηmin) :
     ∀ η : Site d → ℤ, InOmega d ηmin η →
       ∀ n : ℕ, 1 ≤ n → ∀ x ∈ cent d n, ∃ t : ℕ, 0 < wave η ((2 * d) ^ (d * n)) (0 : Site d) t x := by
   intro η hη n hn x hx
-  exact Exploding.Frozen.square_lower_bound d hd η (fun y => le_trans hηmin (hη y).1) n hn
+  exact Exploding.square_lower_bound_exponential d hd η (fun y => le_trans hηmin (hη y).1) n hn
     ((2 * d) ^ (d * n)) le_rfl x hx
 
 /-- Step 4 (genuinely new, not present in the toy-law path at all: bridges

@@ -340,6 +340,7 @@ import Exploding.Frozen.CrossingTime
 import Exploding.Frozen.Renormalization
 import Exploding.Frozen.LocalConvexity
 import Exploding.Frozen.SquareLowerBound
+import Exploding.Frozen.SharpPlanarObstruction
 import Exploding.Frozen.FiniteExploding
 import Exploding.Frozen.LastWaveBound
 import Exploding.Frozen.ApproxSubadditivity
@@ -360,3 +361,45 @@ import Exploding.Frozen.DimensionalReduction
 import Exploding.Frozen.Recurrence
 import Exploding.Frozen.BoxCrossing
 import Exploding.MainTheorems
+
+import Exploding.Support.OmegaErgodic
+import Exploding.Support.OmegaTraceSigma
+import Exploding.Support.OmegaStationary
+import Exploding.Support.RecurrentMeasurable
+import Exploding.Support.ExplosiveMeasurable
+import Exploding.Support.ArxivBondHoleTailMoments
+import Exploding.Support.ArxivActualBondCoreProximity
+import Exploding.Support.ArxivBondTranslatedBoxTail
+import Exploding.Support.ArxivActualBondOne
+import Exploding.Support.PathFillingBarrier
+import Exploding.Support.ReductionBoundary
+import Exploding.Support.PathFillingDetour
+import Exploding.Support.PathFillingNonneg
+import Exploding.Support.OmegaCriterionConsumer
+
+import Exploding.Support.BCDimOne
+
+import Exploding.Support.SourceCriterionVacuity
+
+import Exploding.Support.WaveApproximationSource
+import Exploding.Support.AllHighPathFilling
+import Exploding.Support.AllHighGeneralizedHypotheses
+import Exploding.Support.SquareWaveComparison
+import Exploding.Support.SquareGreenOrigin
+import Exploding.Support.LatticeSandpileBridge
+import Exploding.External.FeyDenBoerRedigCubicalCluster
+import Exploding.External.FeyLevinePeresRadius
+import Exploding.Support.SquareRadiusGreen
+
+import Exploding.Support.SquareLowerBoundExponential
+
+import Exploding.Support.SquareLowerBoundSharp
+
+import Exploding.Support.LastWaveBoundComplete
+
+import Exploding.Support.CorrectedSourceConsumers
+
+import Exploding.Support.SquareGreenOriginLower
+import Exploding.Support.PlanarWaveOrder
+import Exploding.Support.PlanarWaveBarrier
+import Exploding.Support.PlanarWaveOptimality

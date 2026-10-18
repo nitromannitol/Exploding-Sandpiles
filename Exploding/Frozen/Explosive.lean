@@ -48,11 +48,11 @@ theorem Exploding.Frozen.explosive (d : ℕ) (hd : 2 ≤ d) (ν : Measure ℤ) (
         te_ae_prod d ν hν (fun m : ℤ => m ≤ 2 * (d : ℤ) - 1) measurableSet_Iic hupper] with
         η h1 h2 x
       exact ⟨h1 x, h2 x⟩
-    exact Exploding.Frozen.explosion_criteria d hd (d : ℤ) (Int.natCast_nonneg d)
+    exact Exploding.Frozen.explosion_criteria d hd (d : ℤ)
       (⊤ : AddSubgroup (Site d)) (by rw [AddSubgroup.index_top]; norm_num)
       (Measure.infinitePi fun _ : Site d => ν) hP hsupp (te_stationary d ν hν)
-      (te_ergodic d hd1 ν hν) (te_finite_range d ν hν)
-      (Exploding.Frozen.box_crossing d hd ν hν hlow hhit hSch)
+      (measurableErgodicOn_of_ergodicOn (te_ergodic d hd1 ν hν)) (te_finite_range d ν hν)
+      (Exploding.Frozen.box_crossing.1 d hd ν hν hlow hhit hSch)
       (te_recurrent_law d (Exploding.Frozen.recurrence d hd1) ν hν hlow hupper)
   · -- a positive proportion of sites hold `2d` chips or more: arbitrarily large blocks of
     -- unstable sites force non-stabilizability

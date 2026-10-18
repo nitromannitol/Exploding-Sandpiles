@@ -12,8 +12,8 @@ import Exploding.External.AntalPisztora
 
 open Exploding LatticeProb MeasureTheory Filter
 
-/-- **Theorem 5.1** (`exploding.tex:1249-1253`, "Convergence of the exploding
-sandpile", the unlabelled theorem of Section 5).
+/-- **Theorem 5.1** (`paper/corrected-arxiv/exploding-corrected-arxiv.tex:1753-1757`,
+"Convergence of the exploding sandpile", the unlabelled theorem of Section 5).
 
 "Under the assumptions in Proposition 5.1 and Hypothesis 5.5, on an event of
 probability 1, `η` is explosive and the rescaled arrival times
@@ -21,20 +21,21 @@ probability 1, `η` is explosive and the rescaled arrival times
 uniformly to `N_η`, a deterministic, continuous, convex, one-homogeneous
 function on `ℝ^d` depending only on the law of `η`."
 
-The assumptions of Proposition 5.1 are the Section 5 setting, with
-`0 ≤ η_min`, together with Hypotheses 5.1, 5.3 and 5.4; Hypothesis 5.5 is the
-wave-approximation hypothesis.
+The assumptions of Proposition 5.1 are the Section 5 setting, with an arbitrary integer
+`η_min` (no sign assumption) and measurable ergodicity (`MeasurableErgodicOn`), together
+with Hypotheses 5.1, 5.3 and 5.4; Hypothesis 5.5 is the wave-approximation hypothesis `h5`,
+which enters unchanged.
 
 The results the paper cites in the proof enter as explicit hypotheses: `hLSS`
 (Liggett, Schonmann and Stacey, Theorem 0.0), and, for the rerun of Section 3,
 `hLSSB` (Liggett, Schonmann and Stacey, Corollary 1.4), `hHole` (Mathieu,
 Lemma 5.2) and `hChem` (Antal and Pisztora, Theorem 1.1). -/
 -- FROZEN-STATEMENT-BEGIN
-theorem Exploding.Frozen.generalized_convergence (d : ℕ) (hd : 2 ≤ d) (ηmin : ℤ) (hηmin : 0 ≤ ηmin)
+theorem Exploding.Frozen.generalized_convergence (d : ℕ) (hd : 2 ≤ d) (ηmin : ℤ)
     (L : AddSubgroup (Site d)) (hL : L.index ≠ 0)
     (P : Measure (Site d → ℤ)) (hP : IsProbabilityMeasure P)
     (hsupp : ∀ᵐ η ∂P, InOmega d ηmin η)
-    (hstat : StationaryOn d L P) (herg : ErgodicOn d L P)
+    (hstat : StationaryOn d L P) (herg : MeasurableErgodicOn d L P)
     (h1 : FiniteRangeOfDependence d P) (h3 : PathFillingHyp d P)
     (h4 : StronglyBoxCrossingHyp d P) (h5 : WaveApproximationHyp d P)
     (hLSS : Exploding.External.LiggettSchonmannStacey)
@@ -53,7 +54,7 @@ theorem Exploding.Frozen.generalized_convergence (d : ℕ) (hd : 2 ≤ d) (ηmin
 -- FROZEN-STATEMENT-END
 := by
   obtain ⟨N, hcont, hconv, hhom, hlast⟩ :=
-    Exploding.Frozen.convergence_of_the_generalized_last_wave d hd ηmin hηmin L hL P hP hsupp
+    Exploding.Frozen.convergence_of_the_generalized_last_wave d hd ηmin L hL P hP hsupp
       hstat herg h1 h3 h4 hLSS hLSSB hHole hChem
   refine ⟨N, hcont, hconv, hhom, ?_⟩
   filter_upwards [hlast, h5] with η hlastη h5η

@@ -15,11 +15,12 @@
 
 version: 1
 source_pin:
-  file: paper/exploding.tex
-  sha256: 1d7c2010d8bd29e7fb83e93f19c9ebe0e8aef201f93559b2b18f5ca0dc049b44
-
+  file: paper/corrected-arxiv/exploding-corrected-arxiv.tex
+  sha256: c99ce52a57b7da1f805efe610c474c968c0aa00e0840bd8b0e92ae0d4c53f262
+  inputs:
+  - file: paper/corrected-arxiv/defs.tex
+    sha256: 9aba2c73246d79e3c6b87cb1f01cf3e2f636e27c8afd97ccb8ba5c032a9ee65b
 nodes:
-
   - id: thm-limit-shape
     version: 5
     kind: theorem
@@ -30,15 +31,14 @@ nodes:
     frozen_sha256: 3f3707ff2dfa461558934c748b614a3b4472f338425ddf883b0ff4485e72f6d9
     closure_sha256: 9452aef58fe5be3d2e73376b97502f1c15e8a83ac7db608683db47c60398c6a8
     provider: Exploding.Frozen.limit_shape
-    approved: "2026-10-18"
-    audit_receipt: ledger/audits/2026-10-18-limitshape-v5-source-marker.md
-    source_pin:
+    approved: '2026-10-18'
+    audit_receipt: ledger/audits/2026-10-18-corrected-v11-integration.md
+    source_pin: &id001
       file: paper/corrected-arxiv/exploding-corrected-arxiv.tex
-      sha256: 59b5ac1a5cdf80c5b550dfc1738414892e0aa3f8cdb0bf03d00c74685a3e1be2
+      sha256: c99ce52a57b7da1f805efe610c474c968c0aa00e0840bd8b0e92ae0d4c53f262
       inputs:
-        - file: paper/corrected-arxiv/defs.tex
-          sha256: 9aba2c73246d79e3c6b87cb1f01cf3e2f636e27c8afd97ccb8ba5c032a9ee65b
-
+      - file: paper/corrected-arxiv/defs.tex
+        sha256: 9aba2c73246d79e3c6b87cb1f01cf3e2f636e27c8afd97ccb8ba5c032a9ee65b
   - id: thm-time-constant
     version: 6
     kind: theorem
@@ -49,14 +49,14 @@ nodes:
     frozen_sha256: 83239bc6236e7faecd7ba0ab147fc0af98c324fc90f32cb537a6f368fa478a07
     closure_sha256: d8de311133b2df87608b8cf2da97975aab922b242cd3966f537d68132d78608b
     provider: Exploding.Frozen.convergence_of_time_constant
-    approved: "2026-10-18"
+    approved: '2026-10-18'
     source_pin:
       file: paper/corrected-arxiv/exploding-corrected-arxiv.tex
-      sha256: 59b5ac1a5cdf80c5b550dfc1738414892e0aa3f8cdb0bf03d00c74685a3e1be2
+      sha256: c99ce52a57b7da1f805efe610c474c968c0aa00e0840bd8b0e92ae0d4c53f262
       inputs:
-        - file: paper/corrected-arxiv/defs.tex
-          sha256: 9aba2c73246d79e3c6b87cb1f01cf3e2f636e27c8afd97ccb8ba5c032a9ee65b
-
+      - file: paper/corrected-arxiv/defs.tex
+        sha256: 9aba2c73246d79e3c6b87cb1f01cf3e2f636e27c8afd97ccb8ba5c032a9ee65b
+    audit_receipt: ledger/audits/2026-10-18-corrected-v11-integration.md
   - id: thm-explosive
     version: 4
     kind: theorem
@@ -67,15 +67,14 @@ nodes:
     frozen_sha256: 8132c02216ac6b502b1b4e6bb898ead2d8aaeea4a7b9da2795b1f83af4b403ed
     closure_sha256: 9aab685c9ae56d183558908b6885a177a84707a133f5bb13aa1b6296e92a701e
     provider: Exploding.Frozen.explosive
-    approved: "2026-09-24"
-    audit_receipt: ledger/audits/2026-10-18-explosive-v4-source-marker.md
+    approved: '2026-10-18'
+    audit_receipt: ledger/audits/2026-10-18-corrected-v11-integration.md
     source_pin:
       file: paper/corrected-arxiv/exploding-corrected-arxiv.tex
-      sha256: 59b5ac1a5cdf80c5b550dfc1738414892e0aa3f8cdb0bf03d00c74685a3e1be2
+      sha256: c99ce52a57b7da1f805efe610c474c968c0aa00e0840bd8b0e92ae0d4c53f262
       inputs:
-        - file: paper/corrected-arxiv/defs.tex
-          sha256: 9aba2c73246d79e3c6b87cb1f01cf3e2f636e27c8afd97ccb8ba5c032a9ee65b
-
+      - file: paper/corrected-arxiv/defs.tex
+        sha256: 9aba2c73246d79e3c6b87cb1f01cf3e2f636e27c8afd97ccb8ba5c032a9ee65b
   - id: prop-renormalization
     version: 5
     kind: theorem
@@ -86,184 +85,230 @@ nodes:
     frozen_sha256: 5e3c8b09f9ce732c2cad76168fa1d455e515ea8a08ae74716d43967e8e623b21
     closure_sha256: e1fbda039f229cc3970c40943ccbabd91047436071447c13c923fe0c65e916fd
     provider: Exploding.Frozen.renormalization_properties
-    approved: "2026-10-18"
-    audit_receipt: ledger/audits/2026-10-18-renormalization-v5-source-marker.md
+    approved: '2026-10-18'
+    audit_receipt: ledger/audits/2026-10-18-corrected-v11-integration.md
     source_pin:
       file: paper/corrected-arxiv/exploding-corrected-arxiv.tex
-      sha256: 59b5ac1a5cdf80c5b550dfc1738414892e0aa3f8cdb0bf03d00c74685a3e1be2
+      sha256: c99ce52a57b7da1f805efe610c474c968c0aa00e0840bd8b0e92ae0d4c53f262
       inputs:
-        - file: paper/corrected-arxiv/defs.tex
-          sha256: 9aba2c73246d79e3c6b87cb1f01cf3e2f636e27c8afd97ccb8ba5c032a9ee65b
-
+      - file: paper/corrected-arxiv/defs.tex
+        sha256: 9aba2c73246d79e3c6b87cb1f01cf3e2f636e27c8afd97ccb8ba5c032a9ee65b
   - id: lem-square-lower-bound
-    version: 4
+    version: 5
     kind: theorem
-    source: exploding.tex:705-707 (label lemma:square_lower_bound)
+    source: exploding-corrected-arxiv.tex:586-603 (label lemma:square_lower_bound)
     file: Exploding/Frozen/SquareLowerBound.lean
     export: Exploding.Frozen.square_lower_bound
     state: PROVED
-    frozen_sha256: ef7444fd525fb739159df1b1f18e6d7795f7028ca66531e1c9f675c3b15ab9b7
-    closure_sha256: 90f46f3de965432d54b837cc13b9ef4ee9e86282de8e2e81a31c57ef2dd77960
+    frozen_sha256: 19f817d7ff3eb7c2f9a112ea3fe3c0070bb13f4e9e9ca3a6c31ad2f0265dcf1b
+    closure_sha256: cb6eca5e4c3faa7242428dbef6cc24814b9b3fba754f635e74ff23d8dd15c4e9
     provider: Exploding.Frozen.square_lower_bound
-    approved: "2026-09-24"
-
+    approved: '2026-10-18'
+    source_pin:
+      file: paper/corrected-arxiv/exploding-corrected-arxiv.tex
+      sha256: c99ce52a57b7da1f805efe610c474c968c0aa00e0840bd8b0e92ae0d4c53f262
+      inputs:
+      - file: paper/corrected-arxiv/defs.tex
+        sha256: 9aba2c73246d79e3c6b87cb1f01cf3e2f636e27c8afd97ccb8ba5c032a9ee65b
+    audit_receipt: ledger/audits/2026-10-18-corrected-v11-integration.md
+  - id: rem-sharp-planar-obstruction
+    version: 1
+    kind: theorem
+    source: exploding-corrected-arxiv.tex:785-823 (remark Sharp planar obstruction)
+    file: Exploding/Frozen/SharpPlanarObstruction.lean
+    export: Exploding.Frozen.sharp_planar_obstruction
+    state: PROVED
+    frozen_sha256: a086ab6a2d98e5e193a5bf73c82335824ffa3b2628bf1f418859acbf9777a03d
+    closure_sha256: cb6eca5e4c3faa7242428dbef6cc24814b9b3fba754f635e74ff23d8dd15c4e9
+    provider: Exploding.Frozen.sharp_planar_obstruction
+    approved: '2026-10-18'
+    source_pin:
+      file: paper/corrected-arxiv/exploding-corrected-arxiv.tex
+      sha256: c99ce52a57b7da1f805efe610c474c968c0aa00e0840bd8b0e92ae0d4c53f262
+      inputs:
+      - file: paper/corrected-arxiv/defs.tex
+        sha256: 9aba2c73246d79e3c6b87cb1f01cf3e2f636e27c8afd97ccb8ba5c032a9ee65b
+    audit_receipt: ledger/audits/2026-10-18-sharp-planar-obstruction.md
   - id: lem-penultimate-cluster
     version: 5
     kind: theorem
-    source: exploding-arxiv.tex:652-658 (label lemma:last_penultimate_cluster)
+    source: exploding-corrected-arxiv.tex:920-926 (label lemma:last_penultimate_cluster)
     file: Exploding/Frozen/PenultimateCluster.lean
     export: Exploding.Frozen.last_penultimate_cluster
     state: PROVED
     frozen_sha256: 58d7a4ac6a71a4a8145a5c64cb08d305febcbd628497ada2cb10bf250293f4d1
     closure_sha256: 3d5a2f4b74fe32a432a2529ad00f46fac74402eae25e5254079ba54a62d4a7cc
     provider: Exploding.Frozen.last_penultimate_cluster
-    approved: "2026-10-18"
+    approved: '2026-10-18'
     source_pin:
-      file: paper/exploding-arxiv.tex
-      sha256: f12deba6e481a3d81c6967bc48ecbbdae1df4fa1c5f6248a38990030b308072d
+      file: paper/corrected-arxiv/exploding-corrected-arxiv.tex
+      sha256: c99ce52a57b7da1f805efe610c474c968c0aa00e0840bd8b0e92ae0d4c53f262
       inputs:
-        - file: paper/defs.tex
-          sha256: 9aba2c73246d79e3c6b87cb1f01cf3e2f636e27c8afd97ccb8ba5c032a9ee65b
-
+      - file: paper/corrected-arxiv/defs.tex
+        sha256: 9aba2c73246d79e3c6b87cb1f01cf3e2f636e27c8afd97ccb8ba5c032a9ee65b
+    audit_receipt: ledger/audits/2026-10-18-corrected-v11-integration.md
   - id: lem-penultimate-upper-bound
     version: 5
     kind: theorem
-    source: exploding-arxiv.tex:667-672 (label lemma:penultimate_upper_bound)
+    source: exploding-corrected-arxiv.tex:935-940 (label lemma:penultimate_upper_bound)
     file: Exploding/Frozen/PenultimateUpperBound.lean
     export: Exploding.Frozen.penultimate_upper_bound
     state: PROVED
     frozen_sha256: 5b2ee13157a8d82856757ff4dd81617c9a2c782f2d59e704ccf71b5e14cd6a18
     closure_sha256: 1d2f2a78d56ec40472f7752e4c65eea0ab4d26481d5dfd2733a8eaac2812122e
     provider: Exploding.Frozen.penultimate_upper_bound
-    approved: "2026-10-18"
+    approved: '2026-10-18'
     source_pin:
-      file: paper/exploding-arxiv.tex
-      sha256: f12deba6e481a3d81c6967bc48ecbbdae1df4fa1c5f6248a38990030b308072d
+      file: paper/corrected-arxiv/exploding-corrected-arxiv.tex
+      sha256: c99ce52a57b7da1f805efe610c474c968c0aa00e0840bd8b0e92ae0d4c53f262
       inputs:
-        - file: paper/defs.tex
-          sha256: 9aba2c73246d79e3c6b87cb1f01cf3e2f636e27c8afd97ccb8ba5c032a9ee65b
-
+      - file: paper/corrected-arxiv/defs.tex
+        sha256: 9aba2c73246d79e3c6b87cb1f01cf3e2f636e27c8afd97ccb8ba5c032a9ee65b
+    audit_receipt: ledger/audits/2026-10-18-corrected-v11-integration.md
   - id: lem-penultimate-close
     version: 5
     kind: theorem
-    source: exploding-arxiv.tex:692-697 (label lemma:last_penultimate_close)
+    source: exploding-corrected-arxiv.tex:960-965 (label lemma:last_penultimate_close)
     file: Exploding/Frozen/PenultimateClose.lean
     export: Exploding.Frozen.last_penultimate_close
     state: PROVED
     frozen_sha256: f2ac930203bda0ebdc77f88a7eefb80485e0492766f23f701b3f532d34c3ac18
     closure_sha256: 8809d5aaeb8694fe1e159ffeb3a85240465aa90c45ed1b32619d396d1a3a7876
     provider: Exploding.Frozen.last_penultimate_close
-    approved: "2026-10-18"
+    approved: '2026-10-18'
     source_pin:
-      file: paper/exploding-arxiv.tex
-      sha256: f12deba6e481a3d81c6967bc48ecbbdae1df4fa1c5f6248a38990030b308072d
+      file: paper/corrected-arxiv/exploding-corrected-arxiv.tex
+      sha256: c99ce52a57b7da1f805efe610c474c968c0aa00e0840bd8b0e92ae0d4c53f262
       inputs:
-        - file: paper/defs.tex
-          sha256: 9aba2c73246d79e3c6b87cb1f01cf3e2f636e27c8afd97ccb8ba5c032a9ee65b
-
+      - file: paper/corrected-arxiv/defs.tex
+        sha256: 9aba2c73246d79e3c6b87cb1f01cf3e2f636e27c8afd97ccb8ba5c032a9ee65b
+    audit_receipt: ledger/audits/2026-10-18-corrected-v11-integration.md
   - id: prop-last-wave-convergence
     version: 5
     kind: theorem
-    source: exploding-arxiv.tex:706-718 (label prop:convergence_of_the_last_wave)
+    source: exploding-corrected-arxiv.tex:974-980 (label prop:convergence_of_the_last_wave)
     file: Exploding/Frozen/LastWaveConvergence.lean
     export: Exploding.Frozen.convergence_of_the_last_wave
     state: PROVED
     frozen_sha256: 9a80cc4dcaac38eaab62fc1fbfeb46f6b0868d54c397c6b4687823ef3940ff59
     closure_sha256: 7bbd08b1ea43a5a7b547f5f6ed0a1e1ff13299548c88f61b24d4048383f9c1bf
     provider: Exploding.Frozen.convergence_of_the_last_wave
-    approved: "2026-10-18"
+    approved: '2026-10-18'
     source_pin:
-      file: paper/exploding-arxiv.tex
-      sha256: f12deba6e481a3d81c6967bc48ecbbdae1df4fa1c5f6248a38990030b308072d
+      file: paper/corrected-arxiv/exploding-corrected-arxiv.tex
+      sha256: c99ce52a57b7da1f805efe610c474c968c0aa00e0840bd8b0e92ae0d4c53f262
       inputs:
-        - file: paper/defs.tex
-          sha256: 9aba2c73246d79e3c6b87cb1f01cf3e2f636e27c8afd97ccb8ba5c032a9ee65b
-
+      - file: paper/corrected-arxiv/defs.tex
+        sha256: 9aba2c73246d79e3c6b87cb1f01cf3e2f636e27c8afd97ccb8ba5c032a9ee65b
+    audit_receipt: ledger/audits/2026-10-18-corrected-v11-integration.md
   - id: prop-approximate-subadditive
     version: 5
     kind: theorem
-    source: exploding-arxiv.tex:740-752 (label prop:approximate_subadditive)
+    source: exploding-corrected-arxiv.tex:1008-1020 (label prop:approximate_subadditive)
     file: Exploding/Frozen/ApproximateSubadditive.lean
     export: Exploding.Frozen.approximate_subadditive
     state: PROVED
     frozen_sha256: 9b0824a6fef38f45bc7f3c1cc813ab4268d210f0eeb61ea6bf217cd93132cd44
     closure_sha256: fd050d97f3820155430dabbd8a70840b7e97d22490af56cba2f5f1c6a9b2a4d0
     provider: Exploding.Frozen.approximate_subadditive
-    approved: "2026-10-18"
-    audit_receipt: ledger/audits/2026-10-18-approxsub-v5-promotion.md
+    approved: '2026-10-18'
+    audit_receipt: ledger/audits/2026-10-18-corrected-v11-integration.md
     source_pin:
-      file: paper/exploding-arxiv.tex
-      sha256: f12deba6e481a3d81c6967bc48ecbbdae1df4fa1c5f6248a38990030b308072d
+      file: paper/corrected-arxiv/exploding-corrected-arxiv.tex
+      sha256: c99ce52a57b7da1f805efe610c474c968c0aa00e0840bd8b0e92ae0d4c53f262
       inputs:
-        - file: paper/defs.tex
-          sha256: 9aba2c73246d79e3c6b87cb1f01cf3e2f636e27c8afd97ccb8ba5c032a9ee65b
-
+      - file: paper/corrected-arxiv/defs.tex
+        sha256: 9aba2c73246d79e3c6b87cb1f01cf3e2f636e27c8afd97ccb8ba5c032a9ee65b
   - id: prop-generalized-last-wave
-    version: 4
+    version: 5
     kind: theorem
-    source: exploding.tex:1203-1207 (label prop:convergence_of_the_generalized_last_wave)
+    source: exploding-corrected-arxiv.tex:1325-1329 (label prop:convergence_of_the_generalized_last_wave)
     file: Exploding/Frozen/GeneralizedLastWave.lean
     export: Exploding.Frozen.convergence_of_the_generalized_last_wave
     state: PROVED
-    frozen_sha256: 63edbd1a3a9902f41df41c9c3efbe3e73ae7802ffacce176582e67f10b0cf8f3
-    closure_sha256: 94a2d61d86c120e99b2c3cfed7c719a993bbb214e683cb4fab02daacf9f09ceb
+    frozen_sha256: aa81aa6cdc69939e486fb145c1d7b7b7643e47511b4dbe84d71ad588ea823eaf
+    closure_sha256: 8adc999e03a74a92ee004bfdc4a230effa1c71f5cd10d77a7f688667fbb318fc
     provider: Exploding.Frozen.convergence_of_the_generalized_last_wave
-    approved: "2026-09-24"
-
+    approved: '2026-10-18'
+    source_pin:
+      file: paper/corrected-arxiv/exploding-corrected-arxiv.tex
+      sha256: c99ce52a57b7da1f805efe610c474c968c0aa00e0840bd8b0e92ae0d4c53f262
+      inputs:
+      - file: paper/corrected-arxiv/defs.tex
+        sha256: 9aba2c73246d79e3c6b87cb1f01cf3e2f636e27c8afd97ccb8ba5c032a9ee65b
+    audit_receipt: ledger/audits/2026-10-18-corrected-v11-integration.md
   - id: thm-generalized-convergence
-    version: 5
+    version: 6
     kind: theorem
-    source: exploding.tex:1249-1253 (Convergence of the exploding sandpile)
+    source: exploding-corrected-arxiv.tex:1755-1759
     file: Exploding/Frozen/GeneralizedConvergence.lean
     export: Exploding.Frozen.generalized_convergence
     state: PROVED
-    frozen_sha256: d81928d9c4ec6e2469184bd5c807767999597eacb970ea31d10a3458fd5f9e75
-    closure_sha256: 45cc4e17ac16b9828683dbeefea2c533c793e7b29531c5392820fe4b656b6ad1
+    frozen_sha256: d32daec0ed262bf93997fd6bf958d784c860b5024f292c5a782cf8b0f332c546
+    closure_sha256: 5415f6b03482eb7f9ba7c96056167b147a2413dd702d6ab9343b531fd5a5f46d
     provider: Exploding.Frozen.generalized_convergence
-    approved: "2026-09-24"
-
+    approved: '2026-10-18'
+    source_pin:
+      file: paper/corrected-arxiv/exploding-corrected-arxiv.tex
+      sha256: c99ce52a57b7da1f805efe610c474c968c0aa00e0840bd8b0e92ae0d4c53f262
+      inputs:
+      - file: paper/corrected-arxiv/defs.tex
+        sha256: 9aba2c73246d79e3c6b87cb1f01cf3e2f636e27c8afd97ccb8ba5c032a9ee65b
+    audit_receipt: ledger/audits/2026-10-18-corrected-v11-integration.md
   - id: thm-counterexample
     version: 4
     kind: theorem
-    source: exploding-corrected-arxiv.tex:1875-1885 (label theorem:counterexample)
+    source: exploding-corrected-arxiv.tex:1877-1887 (label theorem:counterexample)
     file: Exploding/Frozen/Counterexample.lean
     export: Exploding.Frozen.counterexample
     state: PROVED
     frozen_sha256: 1af0799acd9eccce67b979a6a59e756398fd513054e9019f1118421bf7ecf178
     closure_sha256: 616c1a01e21168c1b7e7840e907d5365135b1877df7e22d79132500a0ccae600
     provider: Exploding.ce_counterexample_complete
-    approved: "2026-10-15"
+    approved: '2026-10-18'
     source_pin:
       file: paper/corrected-arxiv/exploding-corrected-arxiv.tex
-      sha256: 59b5ac1a5cdf80c5b550dfc1738414892e0aa3f8cdb0bf03d00c74685a3e1be2
+      sha256: c99ce52a57b7da1f805efe610c474c968c0aa00e0840bd8b0e92ae0d4c53f262
       inputs:
-        - file: paper/corrected-arxiv/defs.tex
-          sha256: 9aba2c73246d79e3c6b87cb1f01cf3e2f636e27c8afd97ccb8ba5c032a9ee65b
-
+      - file: paper/corrected-arxiv/defs.tex
+        sha256: 9aba2c73246d79e3c6b87cb1f01cf3e2f636e27c8afd97ccb8ba5c032a9ee65b
+    audit_receipt: ledger/audits/2026-10-18-corrected-v11-integration.md
   - id: prop-explosion-criteria
-    version: 3
+    version: 4
     kind: theorem
-    source: exploding.tex:1821-1825 (label prop:explosion_criteria)
+    source: exploding-corrected-arxiv.tex:2388-2392 (label prop:explosion_criteria)
     file: Exploding/Frozen/ExplosionCriteria.lean
     export: Exploding.Frozen.explosion_criteria
     state: PROVED
-    frozen_sha256: 1346c0fe8b765d135baa9ad2b1a81e233decd87ad277bc353504f7b721b270ca
-    closure_sha256: 320b10029b506fd7fcce25166048ce5e35babd4c0e943dd4666e948f0e492c69
+    frozen_sha256: 72c7f767456a36130729aa032ed6da22a650bd11c0d87266b9a785b73dab827f
+    closure_sha256: b1881bcc5f29b44efa4a26b104424deeab9d3818ad2407614df5118126f2934e
     provider: Exploding.Frozen.explosion_criteria
-    approved: "2026-09-24"
-
+    approved: '2026-10-18'
+    source_pin:
+      file: paper/corrected-arxiv/exploding-corrected-arxiv.tex
+      sha256: c99ce52a57b7da1f805efe610c474c968c0aa00e0840bd8b0e92ae0d4c53f262
+      inputs:
+      - file: paper/corrected-arxiv/defs.tex
+        sha256: 9aba2c73246d79e3c6b87cb1f01cf3e2f636e27c8afd97ccb8ba5c032a9ee65b
+    audit_receipt: ledger/audits/2026-10-18-corrected-v11-integration.md
   - id: prop-box-crossing
-    version: 3
+    version: 4
     kind: theorem
-    source: exploding.tex:1986-1988 (P is box-crossing)
+    source: exploding-corrected-arxiv.tex:2657-2659
     file: Exploding/Frozen/BoxCrossing.lean
     export: Exploding.Frozen.box_crossing
     state: PROVED
-    frozen_sha256: d0e2daded00c514cd4ea1476eb509a9440219ff70994ebcc7fa6b1b58a9a0f1a
+    frozen_sha256: 967eea86ece9bb02ada55289f36b6bb98ab9f02b4099f9067c43565191c91144
     closure_sha256: 4c609c829820817e8d325fd4616d65e902f9028939fddb11abc860e55b388429
     provider: Exploding.Frozen.box_crossing
-    approved: "2026-09-24"
-
+    approved: '2026-10-18'
+    source_pin:
+      file: paper/corrected-arxiv/exploding-corrected-arxiv.tex
+      sha256: c99ce52a57b7da1f805efe610c474c968c0aa00e0840bd8b0e92ae0d4c53f262
+      inputs:
+      - file: paper/corrected-arxiv/defs.tex
+        sha256: 9aba2c73246d79e3c6b87cb1f01cf3e2f636e27c8afd97ccb8ba5c032a9ee65b
+    audit_receipt: ledger/audits/2026-10-18-corrected-v11-integration.md
   - id: ext-fey-levine-peres
     version: 2
     kind: definition
@@ -274,8 +319,10 @@ nodes:
     frozen_sha256: 16cbe44911cfe7e8ec9c4369cb757275bcb1d30cc51822c13f68488d34e7ca02
     closure_sha256: 7d32df49d39e9a46798ae2c7fded657a853975017764efa694fa53e31947d473
     provider: Exploding.External.FeyLevinePeresExplosive
-    approved: "2026-09-10"
-
+    approved: '2026-09-10'
+    source_pin:
+      file: paper/exploding.tex
+      sha256: 1d7c2010d8bd29e7fb83e93f19c9ebe0e8aef201f93559b2b18f5ca0dc049b44
   - id: ext-schonmann-bootstrap
     version: 2
     kind: definition
@@ -286,8 +333,10 @@ nodes:
     frozen_sha256: 1ef132590c8069beea81e81b996ec77278f3f8614af4224fec242eb74c88e6de
     closure_sha256: 6fca9aa8f47b3d1b8ec861362ad6e79194487dc5568bdf6282488fd312e76925
     provider: Exploding.External.SchonmannBootstrap
-    approved: "2026-09-10"
-
+    approved: '2026-09-10'
+    source_pin:
+      file: paper/exploding.tex
+      sha256: 1d7c2010d8bd29e7fb83e93f19c9ebe0e8aef201f93559b2b18f5ca0dc049b44
   - id: ext-liggett-schonmann-stacey
     version: 1
     kind: definition
@@ -298,8 +347,10 @@ nodes:
     frozen_sha256: 60327e46178ffdfcf6edcdcc3590b2896f6ea1a0bdaf71064c3782d2e159cd96
     closure_sha256: 9ea0611d9fc14746b5411b138a27df13a147c43708c92de8a0c7756f227a0da1
     provider: Exploding.External.LiggettSchonmannStacey
-    approved: "2026-09-24"
-
+    approved: '2026-09-24'
+    source_pin:
+      file: paper/exploding.tex
+      sha256: 1d7c2010d8bd29e7fb83e93f19c9ebe0e8aef201f93559b2b18f5ca0dc049b44
   - id: ext-lss-bounded-degree
     version: 1
     kind: definition
@@ -310,8 +361,10 @@ nodes:
     frozen_sha256: 21027b6175c4669b5dd05dd0e6083e3f962b6df4955405b6ddf28305eaac4e4f
     closure_sha256: 1d4f6fd2c31b276b7698ba40d8bfd39d6a81032b0ceb93a14a5eddf8e721116c
     provider: Exploding.External.LiggettSchonmannStaceyBoundedDegree
-    approved: "2026-09-24"
-
+    approved: '2026-09-24'
+    source_pin:
+      file: paper/exploding.tex
+      sha256: 1d7c2010d8bd29e7fb83e93f19c9ebe0e8aef201f93559b2b18f5ca0dc049b44
   - id: ext-antal-pisztora
     version: 2
     kind: definition
@@ -322,8 +375,10 @@ nodes:
     frozen_sha256: 952704b4ea136adac8cd89abdfdd69dedc9a57e4362d8f376117324a6bccbfb7
     closure_sha256: 101626948703a80b72588b7f9e840a54a47815bc573425e093419932710d0cf0
     provider: Exploding.External.AntalPisztoraChemicalDistance
-    approved: "2026-09-24"
-
+    approved: '2026-09-24'
+    source_pin:
+      file: paper/exploding.tex
+      sha256: 1d7c2010d8bd29e7fb83e93f19c9ebe0e8aef201f93559b2b18f5ca0dc049b44
   - id: ext-mathieu-holes
     version: 1
     kind: definition
@@ -334,8 +389,10 @@ nodes:
     frozen_sha256: 0e80c60c71a1048803975b1b15f05e7eb37519bb878f00d7e6277d97a9581bb7
     closure_sha256: 1f890c0c3f3ffa37fae313b9514e8a14ef983cb6dfeb6f097a2afb4dda458be6
     provider: Exploding.External.MathieuHoleVolume
-    approved: "2026-09-24"
-
+    approved: '2026-09-24'
+    source_pin:
+      file: paper/exploding.tex
+      sha256: 1d7c2010d8bd29e7fb83e93f19c9ebe0e8aef201f93559b2b18f5ca0dc049b44
   - id: ext-fey-meester-redig
     version: 1
     kind: definition
@@ -346,80 +403,118 @@ nodes:
     frozen_sha256: f834322e354be0f0fcbfbd64b3f9eaefbfadf4457ff510062932911d4f45e44b
     closure_sha256: 66b134f67c410f8bd472baa957db30202ef9066e0d3fafbb52ed62e177c28604
     provider: Exploding.External.FeyMeesterRedigLeastAction
-    approved: "2026-09-24"
-
+    approved: '2026-09-24'
+    source_pin:
+      file: paper/exploding.tex
+      sha256: 1d7c2010d8bd29e7fb83e93f19c9ebe0e8aef201f93559b2b18f5ca0dc049b44
   - id: lem-last-wave-bound
-    version: 3
+    version: 4
     kind: theorem
-    source: exploding.tex:730-735 (label lemma:last_wave_bound)
+    source: exploding-corrected-arxiv.tex:858-863 (label lemma:last_wave_bound)
     file: Exploding/Frozen/LastWaveBound.lean
     export: Exploding.Frozen.last_wave_bound
     state: PROVED
-    frozen_sha256: 747c9a088fbc2cde832d7fb7842235dd0ba49396ddf1e67a96c5bed6e2872338
-    closure_sha256: 2bfc67b3b9bc251d1a709ca706d995ca2f610b5e01e385d9d52969f21d636400
+    frozen_sha256: 3760843f3135cb089b2282167e54ccfa110776cff8af977a314b73c7f3179774
+    closure_sha256: ec28e19cdb7b2036239422c03436702a71dfb58d7f58cffe46c04d2420ed539d
     provider: Exploding.Frozen.last_wave_bound
-    approved: "2026-09-10"
-
+    approved: '2026-10-18'
+    source_pin:
+      file: paper/corrected-arxiv/exploding-corrected-arxiv.tex
+      sha256: c99ce52a57b7da1f805efe610c474c968c0aa00e0840bd8b0e92ae0d4c53f262
+      inputs:
+      - file: paper/corrected-arxiv/defs.tex
+        sha256: 9aba2c73246d79e3c6b87cb1f01cf3e2f636e27c8afd97ccb8ba5c032a9ee65b
+    audit_receipt: ledger/audits/2026-10-18-corrected-v11-integration.md
   - id: prop-dimensional-reduction
-    version: 3
+    version: 4
     kind: theorem
-    source: exploding.tex:1890-1899 (label prop:dimensional_reduction)
+    source: exploding-corrected-arxiv.tex:2526-2535 (label prop:dimensional_reduction)
     file: Exploding/Frozen/DimensionalReduction.lean
     export: Exploding.Frozen.dimensional_reduction
     state: PROVED
-    frozen_sha256: 5777a520125b85ceccd832b9191d16da33405025e490edfaa05aa10b546da169
-    closure_sha256: 5b8f70c729ef5acb6903bdddec5fae0839664e9e412f7a9d132956e1c1fe32ef
+    frozen_sha256: 678347f088aa6399bee44eabb178981923e8fa91f3fa119fb1550a2f5b25d7a1
+    closure_sha256: 425dad6c33cd4e2a7d677d1842935a291e76dfe4dcb2001da8d146bab7b118a8
     provider: Exploding.Frozen.dimensional_reduction
-    approved: "2026-09-10"
-
+    approved: '2026-10-18'
+    source_pin:
+      file: paper/corrected-arxiv/exploding-corrected-arxiv.tex
+      sha256: c99ce52a57b7da1f805efe610c474c968c0aa00e0840bd8b0e92ae0d4c53f262
+      inputs:
+      - file: paper/corrected-arxiv/defs.tex
+        sha256: 9aba2c73246d79e3c6b87cb1f01cf3e2f636e27c8afd97ccb8ba5c032a9ee65b
+    audit_receipt: ledger/audits/2026-10-18-corrected-v11-integration.md
   - id: lem-approx-subadditivity
     version: 3
     kind: theorem
-    source: exploding.tex:760-765 (label lemma:approx_subadditivity)
+    source: exploding-corrected-arxiv.tex:888-893 (label lemma:approx_subadditivity)
     file: Exploding/Frozen/ApproxSubadditivity.lean
     export: Exploding.Frozen.approx_subadditivity
     state: PROVED
     frozen_sha256: cc8f12ca936e4c7004662f4796489012419c44eb5071f5549ea1fa3cf5fc67f5
     closure_sha256: 25f2e869473ec46977491845a922638d538d44feb379848d35c2c6deda4f73ff
     provider: Exploding.Frozen.approx_subadditivity
-    approved: "2026-09-10"
-
+    approved: '2026-10-18'
+    source_pin:
+      file: paper/corrected-arxiv/exploding-corrected-arxiv.tex
+      sha256: c99ce52a57b7da1f805efe610c474c968c0aa00e0840bd8b0e92ae0d4c53f262
+      inputs:
+      - file: paper/corrected-arxiv/defs.tex
+        sha256: 9aba2c73246d79e3c6b87cb1f01cf3e2f636e27c8afd97ccb8ba5c032a9ee65b
+    audit_receipt: ledger/audits/2026-10-18-corrected-v11-integration.md
   - id: prop-recurrence
     version: 3
     kind: theorem
-    source: exploding.tex:1927-1929 (label prop:recurrence)
+    source: exploding-corrected-arxiv.tex:2575-2577 (label prop:recurrence)
     file: Exploding/Frozen/Recurrence.lean
     export: Exploding.Frozen.recurrence
     state: PROVED
     frozen_sha256: fb09b457811848161a746759e6fd31ee024a56bee43df4e23cca58af7ae87fa1
     closure_sha256: ece9c83ad0ab470ba157e422cd7ba64ec7edd6b431013fc90f8b5991b95a332a
     provider: Exploding.Frozen.recurrence
-    approved: "2026-09-13"
-
+    approved: '2026-10-18'
+    source_pin:
+      file: paper/corrected-arxiv/exploding-corrected-arxiv.tex
+      sha256: c99ce52a57b7da1f805efe610c474c968c0aa00e0840bd8b0e92ae0d4c53f262
+      inputs:
+      - file: paper/corrected-arxiv/defs.tex
+        sha256: 9aba2c73246d79e3c6b87cb1f01cf3e2f636e27c8afd97ccb8ba5c032a9ee65b
+    audit_receipt: ledger/audits/2026-10-18-corrected-v11-integration.md
   - id: lem-local-convexity
     version: 4
     kind: theorem
-    source: exploding.tex:531-535 (label lemma:local_convexity)
+    source: exploding-corrected-arxiv.tex:401-405 (label lemma:local_convexity)
     file: Exploding/Frozen/LocalConvexity.lean
     export: Exploding.Frozen.local_convexity
     state: PROVED
     frozen_sha256: c265b27336538e776144ad00d8ad3e44a93816312863f9b3cb9dc3d5997e91f4
     closure_sha256: 9fc397172a1d2fb1a95712e26d81cbf5bc54845e253fb4ae362f361660dfe3b7
     provider: Exploding.Frozen.local_convexity
-    approved: "2026-09-27"
-
+    approved: '2026-10-18'
+    source_pin:
+      file: paper/corrected-arxiv/exploding-corrected-arxiv.tex
+      sha256: c99ce52a57b7da1f805efe610c474c968c0aa00e0840bd8b0e92ae0d4c53f262
+      inputs:
+      - file: paper/corrected-arxiv/defs.tex
+        sha256: 9aba2c73246d79e3c6b87cb1f01cf3e2f636e27c8afd97ccb8ba5c032a9ee65b
+    audit_receipt: ledger/audits/2026-10-18-corrected-v11-integration.md
   - id: lem-finite-exploding
     version: 7
     kind: theorem
-    source: exploding.tex:720-722 (label lemma:finite_exploding)
+    source: exploding-corrected-arxiv.tex:848-850 (label lemma:finite_exploding)
     file: Exploding/Frozen/FiniteExploding.lean
     export: Exploding.Frozen.finite_exploding
     state: PROVED
     frozen_sha256: 70e35f646e03b599a40942113c9c6f1ad34cb35dc8757901a8ca990199169701
     closure_sha256: 77673f7e7668fc185b4aa41a865f2abe3a7deca9485e1c58d58353968b2ca7f5
     provider: Exploding.Frozen.finite_exploding
-    approved: "2026-10-15"
-
+    approved: '2026-10-18'
+    source_pin:
+      file: paper/corrected-arxiv/exploding-corrected-arxiv.tex
+      sha256: c99ce52a57b7da1f805efe610c474c968c0aa00e0840bd8b0e92ae0d4c53f262
+      inputs:
+      - file: paper/corrected-arxiv/defs.tex
+        sha256: 9aba2c73246d79e3c6b87cb1f01cf3e2f636e27c8afd97ccb8ba5c032a9ee65b
+    audit_receipt: ledger/audits/2026-10-18-corrected-v11-integration.md
   - id: prop-crossing-time
     version: 4
     kind: theorem
@@ -430,14 +525,14 @@ nodes:
     frozen_sha256: 0abd7c5aad74dc25d871825907205f3af57bbc7755498247c348ad66592bceae
     closure_sha256: 254217882eed9f4c125df372a844801ce973e90087909ac00c89838e91fe4f5d
     provider: Exploding.crossing_time_terminal_bound
-    approved: "2026-10-15"
+    approved: '2026-10-18'
     source_pin:
       file: paper/corrected-arxiv/exploding-corrected-arxiv.tex
-      sha256: 59b5ac1a5cdf80c5b550dfc1738414892e0aa3f8cdb0bf03d00c74685a3e1be2
+      sha256: c99ce52a57b7da1f805efe610c474c968c0aa00e0840bd8b0e92ae0d4c53f262
       inputs:
-        - file: paper/corrected-arxiv/defs.tex
-          sha256: 9aba2c73246d79e3c6b87cb1f01cf3e2f636e27c8afd97ccb8ba5c032a9ee65b
-
+      - file: paper/corrected-arxiv/defs.tex
+        sha256: 9aba2c73246d79e3c6b87cb1f01cf3e2f636e27c8afd97ccb8ba5c032a9ee65b
+    audit_receipt: ledger/audits/2026-10-18-corrected-v11-integration.md
   - id: ext-fey-levine-peres-proved
     version: 3
     kind: theorem
@@ -449,8 +544,10 @@ nodes:
     closure_sha256: 7d32df49d39e9a46798ae2c7fded657a853975017764efa694fa53e31947d473
     provider: Exploding.xsr_flp
     note: \"DISCHARGED at Exploding/Support/ExtSchFLP.lean:11; axiom closure [propext, Classical.choice, Quot.sound]"
-    approved: "2026-10-04"
-
+    approved: '2026-10-04'
+    source_pin:
+      file: paper/exploding.tex
+      sha256: 1d7c2010d8bd29e7fb83e93f19c9ebe0e8aef201f93559b2b18f5ca0dc049b44
   - id: ext-schonmann-bootstrap-proved
     version: 3
     kind: theorem
@@ -462,8 +559,10 @@ nodes:
     closure_sha256: 6fca9aa8f47b3d1b8ec861362ad6e79194487dc5568bdf6282488fd312e76925
     provider: Exploding.xsr_schonmann
     note: \"DISCHARGED at Exploding/Support/ExtSchFinal.lean:65; axiom closure [propext, Classical.choice, Quot.sound]"
-    approved: "2026-10-04"
-
+    approved: '2026-10-04'
+    source_pin:
+      file: paper/exploding.tex
+      sha256: 1d7c2010d8bd29e7fb83e93f19c9ebe0e8aef201f93559b2b18f5ca0dc049b44
   - id: ext-liggett-schonmann-stacey-proved
     version: 3
     kind: theorem
@@ -475,8 +574,10 @@ nodes:
     closure_sha256: 9ea0611d9fc14746b5411b138a27df13a147c43708c92de8a0c7756f227a0da1
     provider: Exploding.xlse_lss_general
     note: \"DISCHARGED at Exploding/Support/ExtLSSCountable.lean:116; axiom closure [propext, Classical.choice, Quot.sound]"
-    approved: "2026-10-04"
-
+    approved: '2026-10-04'
+    source_pin:
+      file: paper/exploding.tex
+      sha256: 1d7c2010d8bd29e7fb83e93f19c9ebe0e8aef201f93559b2b18f5ca0dc049b44
   - id: ext-lss-bounded-degree-proved
     version: 3
     kind: theorem
@@ -488,8 +589,10 @@ nodes:
     closure_sha256: 1d4f6fd2c31b276b7698ba40d8bfd39d6a81032b0ceb93a14a5eddf8e721116c
     provider: Exploding.lssBoundedDegree
     note: \"DISCHARGED at Exploding/Support/ExtLSSCountable.lean:111 (xlse_lss_bounded_degree); axiom closure [propext, Classical.choice, Quot.sound]"
-    approved: "2026-10-04"
-
+    approved: '2026-10-04'
+    source_pin:
+      file: paper/exploding.tex
+      sha256: 1d7c2010d8bd29e7fb83e93f19c9ebe0e8aef201f93559b2b18f5ca0dc049b44
   - id: ext-mathieu-holes-proved
     version: 3
     kind: theorem
@@ -501,8 +604,10 @@ nodes:
     closure_sha256: 1f890c0c3f3ffa37fae313b9514e8a14ef983cb6dfeb6f097a2afb4dda458be6
     provider: Exploding.xmf_proved
     note: \"DISCHARGED at Exploding/Support/ExtMHHoleVolume.lean:16; axiom closure [propext, Classical.choice, Quot.sound]"
-    approved: "2026-10-04"
-
+    approved: '2026-10-04'
+    source_pin:
+      file: paper/exploding.tex
+      sha256: 1d7c2010d8bd29e7fb83e93f19c9ebe0e8aef201f93559b2b18f5ca0dc049b44
   - id: ext-fey-meester-redig-proved
     version: 3
     kind: theorem
@@ -514,8 +619,10 @@ nodes:
     closure_sha256: 66b134f67c410f8bd472baa957db30202ef9066e0d3fafbb52ed62e177c28604
     provider: Exploding.xfmr_proved
     note: \"DISCHARGED at Exploding/Support/ExtFMR.lean:53; axiom closure [propext, Classical.choice, Quot.sound]"
-    approved: "2026-10-04"
-
+    approved: '2026-10-04'
+    source_pin:
+      file: paper/exploding.tex
+      sha256: 1d7c2010d8bd29e7fb83e93f19c9ebe0e8aef201f93559b2b18f5ca0dc049b44
   - id: def-counterexample-threshold
     version: 1
     kind: definition
@@ -526,14 +633,14 @@ nodes:
     frozen_sha256: 337e02a2f165ae5bb3e79fd4220a08f3a70f1abefd9fdccaf8734ca9ac3124b7
     closure_sha256: dce457aa0557b2e863c627954713db05c55813cf8018789aafea8c1580bb58e7
     provider: Exploding.counterexampleThreshold
-    approved: "2026-10-15"
+    approved: '2026-10-15'
     source_pin:
       file: paper/corrected-arxiv/exploding-corrected-arxiv.tex
-      sha256: 59b5ac1a5cdf80c5b550dfc1738414892e0aa3f8cdb0bf03d00c74685a3e1be2
+      sha256: c99ce52a57b7da1f805efe610c474c968c0aa00e0840bd8b0e92ae0d4c53f262
       inputs:
-        - file: paper/corrected-arxiv/defs.tex
-          sha256: 9aba2c73246d79e3c6b87cb1f01cf3e2f636e27c8afd97ccb8ba5c032a9ee65b
-
+      - file: paper/corrected-arxiv/defs.tex
+        sha256: 9aba2c73246d79e3c6b87cb1f01cf3e2f636e27c8afd97ccb8ba5c032a9ee65b
+    audit_receipt: ledger/audits/2026-10-18-corrected-v11-integration.md
   - id: def-counterexample-pile
     version: 1
     kind: definition
@@ -544,117 +651,164 @@ nodes:
     frozen_sha256: b1e25647157d36ac9c2e033dfec50ec63ce1865f6cf9bcb41580fd40b6a4ea69
     closure_sha256: dce457aa0557b2e863c627954713db05c55813cf8018789aafea8c1580bb58e7
     provider: Exploding.counterexamplePile
-    approved: "2026-10-15"
+    approved: '2026-10-15'
     source_pin:
       file: paper/corrected-arxiv/exploding-corrected-arxiv.tex
-      sha256: 59b5ac1a5cdf80c5b550dfc1738414892e0aa3f8cdb0bf03d00c74685a3e1be2
+      sha256: c99ce52a57b7da1f805efe610c474c968c0aa00e0840bd8b0e92ae0d4c53f262
       inputs:
-        - file: paper/corrected-arxiv/defs.tex
-          sha256: 9aba2c73246d79e3c6b87cb1f01cf3e2f636e27c8afd97ccb8ba5c032a9ee65b
-
+      - file: paper/corrected-arxiv/defs.tex
+        sha256: 9aba2c73246d79e3c6b87cb1f01cf3e2f636e27c8afd97ccb8ba5c032a9ee65b
+    audit_receipt: ledger/audits/2026-10-18-corrected-v11-integration.md
   - id: def-counterexample-arrival
     version: 1
     kind: definition
-    source: exploding-corrected-arxiv.tex:118 (context label theorem:convergence_of_time_constant); specialization at 1877
+    source: exploding-corrected-arxiv.tex:117-120 (context label theorem:convergence_of_time_constant); specialization at 1879
     file: Exploding/Frozen/CounterexampleArrival.lean
     export: Exploding.counterexampleArrival
     state: FROZEN
     frozen_sha256: cba2d6d2eb0f29b96604dc17c2ede38a8cf1bd2ab8b3d3c623e267f6e4715025
     closure_sha256: dce457aa0557b2e863c627954713db05c55813cf8018789aafea8c1580bb58e7
     provider: Exploding.counterexampleArrival
-    approved: "2026-10-15"
+    approved: '2026-10-15'
     source_pin:
       file: paper/corrected-arxiv/exploding-corrected-arxiv.tex
-      sha256: 59b5ac1a5cdf80c5b550dfc1738414892e0aa3f8cdb0bf03d00c74685a3e1be2
+      sha256: c99ce52a57b7da1f805efe610c474c968c0aa00e0840bd8b0e92ae0d4c53f262
       inputs:
-        - file: paper/corrected-arxiv/defs.tex
-          sha256: 9aba2c73246d79e3c6b87cb1f01cf3e2f636e27c8afd97ccb8ba5c032a9ee65b
-
+      - file: paper/corrected-arxiv/defs.tex
+        sha256: 9aba2c73246d79e3c6b87cb1f01cf3e2f636e27c8afd97ccb8ba5c032a9ee65b
+    audit_receipt: ledger/audits/2026-10-18-corrected-v11-integration.md
   - id: def-counterexample-support
     version: 1
     kind: definition
-    source: exploding-corrected-arxiv.tex:109-111 (context label theorem:limit_shape); tie rule at 173-174 and A_t at 2340-2341
+    source: exploding-corrected-arxiv.tex:109-111 (context label theorem:limit_shape); tie rule at 173-174 and A_t at 2342-2343
     file: Exploding/Frozen/CounterexampleSupport.lean
     export: Exploding.counterexampleSupport
     state: FROZEN
     frozen_sha256: 1a04fc9143a068ca9b0dde7a71b6ccc6df494644933d7de022af62c6a6e8a8cf
     closure_sha256: 57a789b7c21f05852a91291912b10c80b42c0f1191fce5cc8251d65f16fcf7c7
     provider: Exploding.counterexampleSupport
-    approved: "2026-10-15"
+    approved: '2026-10-15'
     source_pin:
       file: paper/corrected-arxiv/exploding-corrected-arxiv.tex
-      sha256: 59b5ac1a5cdf80c5b550dfc1738414892e0aa3f8cdb0bf03d00c74685a3e1be2
+      sha256: c99ce52a57b7da1f805efe610c474c968c0aa00e0840bd8b0e92ae0d4c53f262
       inputs:
-        - file: paper/corrected-arxiv/defs.tex
-          sha256: 9aba2c73246d79e3c6b87cb1f01cf3e2f636e27c8afd97ccb8ba5c032a9ee65b
-
-coverage_allowed_gaps:
-  - source_pin:
-      file: paper/exploding.tex
-      sha256: 1d7c2010d8bd29e7fb83e93f19c9ebe0e8aef201f93559b2b18f5ca0dc049b44
-    reason: The limit-shape, time-constant, counterexample, crossing and Proposition 2.2 registrations moved to corrected-source successors; Theorem 1.4 moved to its corrected-source successor version 4; Lemmas 3.5, 3.6 and 3.7, Proposition 3.1, and Proposition 4.1 moved to official arXiv successors.
-    statements:
-      - {kind: theorem, line: 246, label: "theorem:limit_shape"}
-      - {kind: theorem, line: 259, label: "theorem:convergence_of_time_constant"}
-      - {kind: theorem, line: 265, label: "theorem:explosive"}
-      - {kind: theorem, line: 1351, label: "theorem:counterexample"}
-      - {kind: prop, line: 416, label: "prop:crossing_time"}
-      - {kind: prop, line: 482, label: "prop:renormalization_properties"}
-      - {kind: prop, line: 886, label: "prop:approximate_subadditive"}
-      - {kind: lemma, line: 792, label: "lemma:last_penultimate_cluster"}
-      - {kind: lemma, line: 807, label: "lemma:penultimate_upper_bound"}
-      - {kind: lemma, line: 832, label: "lemma:last_penultimate_close"}
-      - {kind: prop, line: 846, label: "prop:convergence_of_the_last_wave"}
-  - source_pin:
-      file: paper/exploding-arxiv.tex
-      sha256: f12deba6e481a3d81c6967bc48ecbbdae1df4fa1c5f6248a38990030b308072d
-      inputs:
-        - file: paper/defs.tex
-          sha256: 9aba2c73246d79e3c6b87cb1f01cf3e2f636e27c8afd97ccb8ba5c032a9ee65b
-    reason: Only the exact Proposition 3.1, Lemma 3.5, 3.6 and 3.7 successors and Proposition 4.1 successor are registered under this official arXiv pin; its other 19 theorem-like statements remain unclaimed under this pin, including Theorem 1.4 at line 120, whose version 4 successor pins the corrected source.
-    statements:
-      - {kind: theorem, line: 93, label: "prop:fey_levine_peres_explode"}
-      - {kind: theorem, line: 101, label: "theorem:limit_shape"}
-      - {kind: theorem, line: 114, label: "theorem:convergence_of_time_constant"}
-      - {kind: theorem, line: 120, label: "theorem:explosive"}
-      - {kind: prop, line: 278, label: "prop:crossing_time"}
-      - {kind: prop, line: 344, label: "prop:renormalization_properties"}
-      - {kind: lemma, line: 393, label: "lemma:local_convexity"}
-      - {kind: lemma, line: 567, label: "lemma:square_lower_bound"}
-      - {kind: lemma, line: 580, label: "lemma:finite_exploding"}
-      - {kind: lemma, line: 590, label: "lemma:last_wave_bound"}
-      - {kind: lemma, line: 620, label: "lemma:approx_subadditivity"}
-      - {kind: prop, line: 1057, label: "prop:convergence_of_the_generalized_last_wave"}
-      - {kind: theorem, line: 1090, label: null}
-      - {kind: theorem, line: 1192, label: "theorem:counterexample"}
-      - {kind: prop, line: 1662, label: "prop:explosion_criteria"}
-      - {kind: prop, line: 1731, label: "prop:dimensional_reduction"}
-      - {kind: prop, line: 1768, label: "prop:recurrence"}
-      - {kind: prop, line: 1810, label: "prop:schonnmann_bootstrap"}
-      - {kind: prop, line: 1827, label: null}
-  - source_pin:
+      - file: paper/corrected-arxiv/defs.tex
+        sha256: 9aba2c73246d79e3c6b87cb1f01cf3e2f636e27c8afd97ccb8ba5c032a9ee65b
+    audit_receipt: ledger/audits/2026-10-18-corrected-v11-integration.md
+  - id: ext-fey-den-boer-redig-cubical-cluster
+    version: 2
+    kind: definition
+    source: Cited at exploding-corrected-arxiv.tex:584-585 for lemma:square_lower_bound
+    file: Exploding/External/FeyDenBoerRedigCubicalCluster.lean
+    export: Exploding.External.FeyDenBoerRedigCubicalCluster
+    state: FROZEN
+    frozen_sha256: 061d439c3580510b2684b26a533d465d7d0aaa3532306e416e138172d6c80423
+    closure_sha256: 061d439c3580510b2684b26a533d465d7d0aaa3532306e416e138172d6c80423
+    provider: Exploding.External.FeyDenBoerRedigCubicalCluster
+    approved: '2026-10-18'
+    audit_receipt: ledger/audits/2026-10-18-corrected-v11-integration.md
+    source_pin:
       file: paper/corrected-arxiv/exploding-corrected-arxiv.tex
-      sha256: 59b5ac1a5cdf80c5b550dfc1738414892e0aa3f8cdb0bf03d00c74685a3e1be2
+      sha256: c99ce52a57b7da1f805efe610c474c968c0aa00e0840bd8b0e92ae0d4c53f262
       inputs:
-        - file: paper/corrected-arxiv/defs.tex
-          sha256: 9aba2c73246d79e3c6b87cb1f01cf3e2f636e27c8afd97ccb8ba5c032a9ee65b
-    reason: The exact limit-shape, time-constant, counterexample, crossing and Theorem 1.4 successors and Proposition 2.2 version 5 are registered for this corrected source; its other theorem-like statements remain unclaimed.
-    statements:
-      - {kind: theorem, line: 96, label: "prop:fey_levine_peres_explode"}
-      - {kind: lemma, line: 401, label: "lemma:local_convexity"}
-      - {kind: lemma, line: 586, label: "lemma:square_lower_bound"}
-      - {kind: lemma, line: 846, label: "lemma:finite_exploding"}
-      - {kind: lemma, line: 856, label: "lemma:last_wave_bound"}
-      - {kind: lemma, line: 886, label: "lemma:approx_subadditivity"}
-      - {kind: lemma, line: 918, label: "lemma:last_penultimate_cluster"}
-      - {kind: lemma, line: 933, label: "lemma:penultimate_upper_bound"}
-      - {kind: lemma, line: 958, label: "lemma:last_penultimate_close"}
-      - {kind: prop, line: 972, label: "prop:convergence_of_the_last_wave"}
-      - {kind: prop, line: 1006, label: "prop:approximate_subadditive"}
-      - {kind: prop, line: 1323, label: "prop:convergence_of_the_generalized_last_wave"}
-      - {kind: theorem, line: 1753, label: null}
-      - {kind: prop, line: 2386, label: "prop:explosion_criteria"}
-      - {kind: prop, line: 2524, label: "prop:dimensional_reduction"}
-      - {kind: prop, line: 2573, label: "prop:recurrence"}
-      - {kind: prop, line: 2638, label: "prop:schonnmann_bootstrap"}
-      - {kind: prop, line: 2655, label: null}
+      - file: paper/corrected-arxiv/defs.tex
+        sha256: 9aba2c73246d79e3c6b87cb1f01cf3e2f636e27c8afd97ccb8ba5c032a9ee65b
+  - id: ext-fey-levine-peres-radius
+    version: 2
+    kind: definition
+    source: Cited at exploding-corrected-arxiv.tex:584-585 for lemma:square_lower_bound
+    file: Exploding/External/FeyLevinePeresRadius.lean
+    export: Exploding.External.FeyLevinePeresRadius
+    state: FROZEN
+    frozen_sha256: 567bdf3c572686835a075da3828b408335b3af1dc2a14ae16e48b622e30d60e3
+    closure_sha256: 567bdf3c572686835a075da3828b408335b3af1dc2a14ae16e48b622e30d60e3
+    provider: Exploding.External.FeyLevinePeresRadius
+    approved: '2026-10-18'
+    audit_receipt: ledger/audits/2026-10-18-corrected-v11-integration.md
+    source_pin:
+      file: paper/corrected-arxiv/exploding-corrected-arxiv.tex
+      sha256: c99ce52a57b7da1f805efe610c474c968c0aa00e0840bd8b0e92ae0d4c53f262
+      inputs:
+      - file: paper/corrected-arxiv/defs.tex
+        sha256: 9aba2c73246d79e3c6b87cb1f01cf3e2f636e27c8afd97ccb8ba5c032a9ee65b
+coverage_allowed_gaps:
+- source_pin:
+    file: paper/exploding.tex
+    sha256: 1d7c2010d8bd29e7fb83e93f19c9ebe0e8aef201f93559b2b18f5ca0dc049b44
+  reason: This historical pin is retained only for exact cited-input definitions and six proof companions. Paper-owned theorem rows select the corrected arXiv-format source; this group grants no revised-source or whole-paper coverage.
+  statements:
+  - kind: theorem
+    line: 246
+    label: theorem:limit_shape
+  - kind: theorem
+    line: 259
+    label: theorem:convergence_of_time_constant
+  - kind: theorem
+    line: 265
+    label: theorem:explosive
+  - kind: prop
+    line: 416
+    label: prop:crossing_time
+  - kind: prop
+    line: 482
+    label: prop:renormalization_properties
+  - kind: lemma
+    line: 531
+    label: lemma:local_convexity
+  - kind: lemma
+    line: 705
+    label: lemma:square_lower_bound
+  - kind: lemma
+    line: 720
+    label: lemma:finite_exploding
+  - kind: lemma
+    line: 730
+    label: lemma:last_wave_bound
+  - kind: lemma
+    line: 760
+    label: lemma:approx_subadditivity
+  - kind: lemma
+    line: 792
+    label: lemma:last_penultimate_cluster
+  - kind: lemma
+    line: 807
+    label: lemma:penultimate_upper_bound
+  - kind: lemma
+    line: 832
+    label: lemma:last_penultimate_close
+  - kind: prop
+    line: 846
+    label: prop:convergence_of_the_last_wave
+  - kind: prop
+    line: 886
+    label: prop:approximate_subadditive
+  - kind: prop
+    line: 1203
+    label: prop:convergence_of_the_generalized_last_wave
+  - kind: theorem
+    line: 1249
+    label: null
+  - kind: theorem
+    line: 1351
+    label: theorem:counterexample
+  - kind: prop
+    line: 1821
+    label: prop:explosion_criteria
+  - kind: prop
+    line: 1890
+    label: prop:dimensional_reduction
+  - kind: prop
+    line: 1927
+    label: prop:recurrence
+  - kind: prop
+    line: 1986
+    label: null
+- source_pin: *id001
+  reason: All 22 paper-owned numbered theorem-like statements select this corrected source. These two statements quote cited results; their historical literal input and proof-companion registrations are retained at their exact historical pins. The unnumbered planar optimality remark is not seen by the numbered-environment checker; it is registered separately as rem-sharp-planar-obstruction.
+  statements:
+  - kind: theorem
+    line: 96
+    label: prop:fey_levine_peres_explode
+  - kind: prop
+    line: 2640
+    label: prop:schonnmann_bootstrap

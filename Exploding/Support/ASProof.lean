@@ -176,7 +176,7 @@ theorem as_lastWave_le_one_on_inner_boundary
     obtain ⟨w, hwOut, hAdj⟩ := hy.2
     exact hwOut (mem_penultimateCluster_of_adj η (0 : Site d) w y hAdj hypos)
   intro t y hy
-  rcases Nat.eq_zero_or_pos t with ht0 | htpos
+  rcases Nat.eq_zero_or_pos t with ht0 | _htpos
   · subst ht0
     by_cases hyz : y = (0 : Site d)
     · have hM1' : waveThreshold η (0 : Site d) = 1 := by
@@ -190,7 +190,7 @@ theorem as_lastWave_le_one_on_inner_boundary
         omega
       simp [lastWave, hyz, hM1']
     · simp [lastWave, wave_zero, hyz]
-  · have hpb := Exploding.Frozen.last_wave_bound d hd η hlow hhigh (0 : Site d) hlast t htpos y
+  · have hpb := (Exploding.Frozen.last_wave_bound d hd η hlow hhigh (0 : Site d) hlast t y).1
     rw [hnotmem y hy] at hpb
     simpa using hpb
 

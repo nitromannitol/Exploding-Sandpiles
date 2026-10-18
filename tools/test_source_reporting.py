@@ -4,9 +4,9 @@ import contextlib
 import copy
 import hashlib
 import io
+import json
 import os
 from pathlib import Path
-import shutil
 import sys
 import tempfile
 import unittest
@@ -165,10 +165,13 @@ LIMITSHAPE_V5_BLOCK = """theorem Exploding.Frozen.limit_shape (d : ℕ) (hd : 2 
 
 
 class SourceReportingTests(unittest.TestCase):
+    """Historical v10 regressions, independent of the mutable live registry."""
+
     def setUp(self):
-        original = sync_docs.ROOT
-        self.live_manifest = copy.deepcopy(sync_docs.load_manifest())
-        self.manifest = copy.deepcopy(self.live_manifest)
+        fixture = Path(__file__).parent / "fixtures/source_reporting/baseline_v10.json"
+        snapshot = json.loads(fixture.read_text(encoding="utf-8"))
+        self.snapshot_manifest = snapshot["manifest"]
+        self.manifest = copy.deepcopy(self.snapshot_manifest)
         self.manifest["nodes"] = [n for n in self.manifest["nodes"]
                                   if not sync_docs.is_local_definition(n)]
         historical = {
@@ -205,18 +208,10 @@ class SourceReportingTests(unittest.TestCase):
             node["version"], node["frozen_sha256"] = sync_docs.HISTORICAL_DECLARATIONS[nid]
             self.assertEqual(hashlib.sha256(block.encode()).hexdigest(), node["frozen_sha256"])
             restored[node["file"]] = block
-        self.live_successor_texts = {
-            n["id"]: (original / n["file"]).read_text(encoding="utf-8")
-            for n in self.live_manifest["nodes"] if n["id"] in historical}
-        live_crossing = next(n for n in self.live_manifest["nodes"]
-                             if n["id"] == "prop-crossing-time")
-        self.live_crossing_text = (original / live_crossing["file"]).read_text(encoding="utf-8")
-        live_approximate = next(n for n in self.live_manifest["nodes"]
-                                if n["id"] == "prop-approximate-subadditive")
-        self.live_approximate_text = (original / live_approximate["file"]).read_text(encoding="utf-8")
-        live_lastwave = next(n for n in self.live_manifest["nodes"]
-                             if n["id"] == "prop-last-wave-convergence")
-        self.live_lastwave_text = (original / live_lastwave["file"]).read_text(encoding="utf-8")
+        self.snapshot_successor_texts = {
+            n["id"]: snapshot["files"][n["file"]]
+            for n in self.snapshot_manifest["nodes"] if n["id"] in historical}
+        self.snapshot_crossing_text = self.snapshot_successor_texts["prop-crossing-time"]
         # Restore historical journal identities and their matching source gap sets.
         journal_gaps, official_gaps, corrected_gaps = self.manifest["coverage_allowed_gaps"]
         journal_gaps["statements"] = [
@@ -251,20 +246,20 @@ class SourceReportingTests(unittest.TestCase):
         self.addCleanup(directory.cleanup)
         self.root = Path(directory.name)
         self.revised = "paper/corrected-arxiv/exploding-corrected-arxiv.tex"
-        paths = {n["file"] for n in self.manifest["nodes"]}
-        paths.update(["paper/exploding.tex", "paper/exploding-arxiv.tex", "paper/defs.tex",
-                      self.revised, "paper/corrected-arxiv/defs.tex",
-                      "README.md", "CORRESPONDENCE.md", "ASSUMPTIONS.md"])
-        for filename in paths:
+        for filename, contents in snapshot["files"].items():
             target = self.root / filename
             target.parent.mkdir(parents=True, exist_ok=True)
-            shutil.copyfile(original / filename, target)
             if filename in restored:
-                text = target.read_text(encoding="utf-8")
-                start = text.index(check_manifest.BEGIN) + len(check_manifest.BEGIN)
-                end = text.index(check_manifest.END)
-                target.write_text(text[:start] + "\n" + restored[filename]
-                                  + text[end:], encoding="utf-8")
+                start = contents.index(check_manifest.BEGIN) + len(check_manifest.BEGIN)
+                end = contents.index(check_manifest.END)
+                contents = contents[:start] + "\n" + restored[filename] + contents[end:]
+            target.write_text(contents, encoding="utf-8")
+        # Only generated-block delimiters are needed; no production docs are copied.
+        (self.root / "README.md").write_text(
+            "\n".join((sync_docs.STATUS_BEGIN, sync_docs.STATUS_END,
+                       sync_docs.MAP_BEGIN, sync_docs.MAP_END)), encoding="utf-8")
+        (self.root / "CORRESPONDENCE.md").write_text(
+            sync_docs.SURFACE_BEGIN + "\n" + sync_docs.SURFACE_END, encoding="utf-8")
         for module in (sync_docs, assumptions, check_manifest, check_clauses, check_exponents,
                        check_coverage, paper_anchors):
             self.enterContext(patch.object(module, "ROOT", self.root))
@@ -283,13 +278,13 @@ class SourceReportingTests(unittest.TestCase):
         path.parent.mkdir(exist_ok=True)
         path.write_text(yaml.safe_dump(self.manifest), encoding="utf-8")
 
-    def restore_live_successors(self):
-        """Use live node identities only with the matching complete Frozen bytes."""
-        self.manifest = copy.deepcopy(self.live_manifest)
+    def restore_snapshot_successors(self):
+        """Restore v10 successor identities with their matching frozen marker bytes."""
+        self.manifest = copy.deepcopy(self.snapshot_manifest)
         for node in self.manifest["nodes"]:
-            if node["id"] not in self.live_successor_texts:
+            if node["id"] not in self.snapshot_successor_texts:
                 continue
-            text = self.live_successor_texts[node["id"]]
+            text = self.snapshot_successor_texts[node["id"]]
             path = self.root / node["file"]
             path.write_text(text, encoding="utf-8")
             errors = []
@@ -329,11 +324,11 @@ class SourceReportingTests(unittest.TestCase):
         if include_crossing:
             crossing = next(n for n in self.manifest["nodes"]
                             if n["id"] == "prop-crossing-time")
-            live = next(n for n in self.live_manifest["nodes"]
+            successor = next(n for n in self.snapshot_manifest["nodes"]
                         if n["id"] == "prop-crossing-time")
             for key in ("source_pin", "source", "version", "frozen_sha256"):
-                crossing[key] = copy.deepcopy(live[key])
-            (self.root / crossing["file"]).write_text(self.live_crossing_text, encoding="utf-8")
+                crossing[key] = copy.deepcopy(successor[key])
+            (self.root / crossing["file"]).write_text(self.snapshot_crossing_text, encoding="utf-8")
         self.write_manifest()
 
     def run_main(self, module):
@@ -404,12 +399,12 @@ class SourceReportingTests(unittest.TestCase):
             for i in range(4):
                 self.assertIn(f"def-literal-{i}: different source pin:", output)
 
-    def test_live_source_moves_have_exact_source_partition(self):
-        nodes = self.live_manifest["nodes"]
+    def test_v10_source_moves_have_exact_source_partition(self):
+        nodes = self.snapshot_manifest["nodes"]
         self.assertEqual(len(nodes), 39)
         groups = {}
         for node in nodes:
-            filename = node.get("source_pin", self.live_manifest["source_pin"])["file"]
+            filename = node.get("source_pin", self.snapshot_manifest["source_pin"])["file"]
             groups.setdefault(filename, []).append(node)
         old = groups["paper/exploding.tex"]
         official = groups["paper/exploding-arxiv.tex"]
@@ -429,7 +424,7 @@ class SourceReportingTests(unittest.TestCase):
                           "prop-renormalization", "thm-limit-shape", "thm-explosive"})
 
     def test_theorem_1_4_v4_excludes_its_v3_historical_reading(self):
-        self.restore_live_successors()
+        self.restore_snapshot_successors()
         result, output = self.run_main(check_clauses)
         self.assertEqual(result, 0, output)
         self.assertIn("thm-explosive: different source pin:", output)
@@ -443,8 +438,8 @@ class SourceReportingTests(unittest.TestCase):
         self.assertEqual(result, 2, output)
         self.assertIn("thm-explosive: historical annotation identity mismatch", output)
 
-    def test_live_approximate_successor_coverage_and_historical_boundary(self):
-        self.restore_live_successors()
+    def test_v10_approximate_successor_coverage_and_historical_boundary(self):
+        self.restore_snapshot_successors()
         result, output = self.run_main(check_coverage)
         self.assertEqual(result, 0, output)
         self.assertIn("13/24 statements claimed", output)
@@ -492,8 +487,8 @@ class SourceReportingTests(unittest.TestCase):
             self.assertEqual(result, 0, output)
             self.assertIn("prop-approximate-subadditive: different source pin:", output)
 
-    def test_live_timeconstant_source_move_and_negative_controls(self):
-        self.restore_live_successors()
+    def test_v10_timeconstant_source_move_and_negative_controls(self):
+        self.restore_snapshot_successors()
         node = next(n for n in self.manifest["nodes"] if n["id"] == "thm-time-constant")
         self.assertEqual((node["version"], node["frozen_sha256"]),
                          (6, "83239bc6236e7faecd7ba0ab147fc0af98c324fc90f32cb537a6f368fa478a07"))
@@ -539,8 +534,8 @@ class SourceReportingTests(unittest.TestCase):
                 node.clear()
                 node.update(saved)
 
-    def test_live_renormalization_v5_marker_source_and_gap_controls(self):
-        self.restore_live_successors()
+    def test_v10_renormalization_v5_marker_source_and_gap_controls(self):
+        self.restore_snapshot_successors()
         node = next(n for n in self.manifest["nodes"]
                     if n["id"] == "prop-renormalization")
         expected_source = (
@@ -647,8 +642,8 @@ class SourceReportingTests(unittest.TestCase):
         self.assertEqual(result, 1, output)
         self.assertIn("stale gap allowance: prop at line 344", output)
 
-    def test_live_limitshape_v5_partition_source_and_gap_controls(self):
-        self.manifest = copy.deepcopy(self.live_manifest)
+    def test_v10_limitshape_v5_partition_source_and_gap_controls(self):
+        self.manifest = copy.deepcopy(self.snapshot_manifest)
         self.write_manifest()
         node = next(n for n in self.manifest["nodes"] if n["id"] == "thm-limit-shape")
         self.assertEqual(node["version"], 5)
@@ -709,16 +704,16 @@ class SourceReportingTests(unittest.TestCase):
                 node.clear()
                 node.update(saved)
 
-    def test_live_limitshape_v5_frozen_bytes_are_installed(self):
-        node = next(n for n in self.live_manifest["nodes"] if n["id"] == "thm-limit-shape")
-        text = self.live_successor_texts["thm-limit-shape"]
+    def test_v10_limitshape_v5_frozen_bytes_are_installed(self):
+        node = next(n for n in self.snapshot_manifest["nodes"] if n["id"] == "thm-limit-shape")
+        text = self.snapshot_successor_texts["thm-limit-shape"]
         block = check_manifest.block_of(text, self.root / node["file"], [])[0]
         self.assertEqual(block, LIMITSHAPE_V5_BLOCK)
         self.assertEqual(hashlib.sha256(block.encode("utf-8")).hexdigest(),
                          node["frozen_sha256"])
 
     def test_limitshape_v5_marker_bytes_and_single_delta_are_exact(self):
-        node = next(n for n in self.live_manifest["nodes"] if n["id"] == "thm-limit-shape")
+        node = next(n for n in self.snapshot_manifest["nodes"] if n["id"] == "thm-limit-shape")
         self.assertEqual(node["version"], 5)
         self.assertEqual(len(LIMITSHAPE_V5_BLOCK.encode("utf-8")), 652)
         self.assertEqual(hashlib.sha256(LIMITSHAPE_V5_BLOCK.encode("utf-8")).hexdigest(),
@@ -1014,6 +1009,133 @@ class SourceReportingTests(unittest.TestCase):
             result, output = self.run_main(module)
             self.assertEqual(result, 2, output)
             self.assertIn("historical annotation identity mismatch", output)
+
+
+class LiveSourceReportingTests(unittest.TestCase):
+    """Check the actual corrected v11 registry separately from historical data."""
+
+    CORRECTED_SHA256 = "c99ce52a57b7da1f805efe610c474c968c0aa00e0840bd8b0e92ae0d4c53f262"
+
+    def setUp(self):
+        original = sync_docs.ROOT
+        self.manifest = copy.deepcopy(sync_docs.load_manifest())
+        directory = tempfile.TemporaryDirectory(prefix="exploding-live-reporting-")
+        self.addCleanup(directory.cleanup)
+        self.root = Path(directory.name)
+        pins = sync_docs.source_pins(self.manifest["nodes"], self.manifest)
+        # Read current source and declaration bytes, never the v10 fixture.
+        paths = {n["file"] for n in self.manifest["nodes"]}
+        # A valid but inactive official source is needed for the scope mutant.
+        paths.update({"paper/exploding-arxiv.tex", "paper/defs.tex"})
+        for pin in pins.values():
+            paths.add(pin["file"])
+            paths.update(p["file"] for p in pin.get("inputs", []))
+        for filename in paths:
+            target = self.root / filename
+            target.parent.mkdir(parents=True, exist_ok=True)
+            target.write_bytes((original / filename).read_bytes())
+        for module in (sync_docs, check_manifest, check_coverage, paper_anchors):
+            self.enterContext(patch.object(module, "ROOT", self.root))
+            self.enterContext(patch.object(module, "MANIFEST", self.root / "ledger/manifest.yaml"))
+        self.enterContext(patch.dict(os.environ))
+        os.environ.pop("EXPLODING_PAPER", None)
+        self.write_manifest()
+
+    write_manifest = SourceReportingTests.write_manifest
+    run_main = SourceReportingTests.run_main
+
+    def test_live_v11_identities_and_source_partition(self):
+        nodes = self.manifest["nodes"]
+        self.assertEqual(len(nodes), 42)
+        self.assertEqual(self.manifest["source_pin"]["sha256"], self.CORRECTED_SHA256)
+        _, groups = paper_anchors.manifest_sources(self.manifest)
+        self.assertEqual({key[0]: len(group["nodes"]) for key, group in groups.items()},
+                         {"paper/exploding.tex": 13,
+                          "paper/corrected-arxiv/exploding-corrected-arxiv.tex": 29})
+        corrected = groups[(self.manifest["source_pin"]["file"], self.CORRECTED_SHA256)]
+        # 22 numbered theorem-like paper statements and the planar optimality remark (Remark 1).
+        self.assertEqual(sum(n["kind"] == "theorem" for n in corrected["nodes"]), 23)
+        self.assertEqual(sum(sync_docs.is_local_definition(n) for n in nodes), 4)
+        self.assertEqual(sum(sync_docs.is_cited_external(n) for n in nodes), 9)
+        for node in nodes:
+            with self.subTest(node=node["id"]):
+                path = self.root / node["file"]
+                errors = []
+                block = check_manifest.block_of(path.read_text(encoding="utf-8"), path, errors)
+                self.assertIsNotNone(block, errors)
+                self.assertEqual(hashlib.sha256(block[0].encode("utf-8")).hexdigest(),
+                                 node["frozen_sha256"])
+                if node["id"] in {
+                        "ext-fey-den-boer-redig-cubical-cluster", "ext-fey-levine-peres-radius"}:
+                    self.assertEqual(node["version"], 2)
+                    self.assertTrue(block[0].startswith(f"def {node['export']} : Prop :=\n"))
+
+    def test_live_default_serialization_preserves_effective_sources_and_partial_scope(self):
+        before = sync_docs.source_pins(self.manifest["nodes"], self.manifest)
+        self.assertEqual(len(self.manifest["coverage_allowed_gaps"]), 2)
+        for node in self.manifest["nodes"]:
+            if node.get("source_pin") == self.manifest["source_pin"]:
+                node.pop("source_pin")
+            else:
+                self.assertEqual(node["source_pin"]["file"], "paper/exploding.tex")
+        self.assertEqual(sum("source_pin" not in n for n in self.manifest["nodes"]), 29)
+        self.write_manifest()
+        reloaded = sync_docs.load_manifest()
+        self.assertEqual(sync_docs.source_pins(reloaded["nodes"], reloaded), before)
+        result, output = self.run_main(check_coverage)
+        self.assertEqual(result, 0, output)
+        self.assertIn("2/24 statements claimed", output)
+        self.assertIn("22/24 statements claimed", output)
+        self.assertEqual(output.count("statements claimed;"), 2)
+        self.assertIn("whole-paper formalization is not certified", output)
+
+    def test_live_missing_forged_and_inactive_source_scopes_fail(self):
+        saved = copy.deepcopy(self.manifest["coverage_allowed_gaps"])
+        for defect in ("missing", "forged", "inactive-official"):
+            with self.subTest(defect=defect):
+                self.manifest["coverage_allowed_gaps"] = copy.deepcopy(saved)
+                entries = self.manifest["coverage_allowed_gaps"]
+                if defect == "missing":
+                    entries.clear()
+                    expected = "unexpected gap"
+                elif defect == "forged":
+                    entries[0]["statements"].append(
+                        {"kind": "theorem", "line": 1, "label": "forged:scope"})
+                    expected = "stale gap allowance"
+                else:
+                    entries[0]["source_pin"] = {
+                        "file": "paper/exploding-arxiv.tex",
+                        "sha256": hashlib.sha256(
+                            (self.root / "paper/exploding-arxiv.tex").read_bytes()).hexdigest(),
+                        "inputs": [{
+                            "file": "paper/defs.tex",
+                            "sha256": hashlib.sha256(
+                                (self.root / "paper/defs.tex").read_bytes()).hexdigest(),
+                        }],
+                    }
+                    expected = "coverage allowance must select an exact active source pin"
+                self.write_manifest()
+                result, output = self.run_main(check_coverage)
+                self.assertEqual(result, 1, output)
+                self.assertIn(expected, output)
+
+    def test_live_corrected_pin_and_citation_reject_stale_data(self):
+        node = next(n for n in self.manifest["nodes"] if n["id"] == "lem-square-lower-bound")
+        saved = copy.deepcopy(node)
+        for defect in ("v10-pin", "missing-input", "journal-citation"):
+            with self.subTest(defect=defect):
+                node.clear()
+                node.update(copy.deepcopy(saved))
+                node["source_pin"] = copy.deepcopy(self.manifest["source_pin"])
+                if defect == "v10-pin":
+                    node["source_pin"]["sha256"] = (
+                        "59b5ac1a5cdf80c5b550dfc1738414892e0aa3f8cdb0bf03d00c74685a3e1be2")
+                elif defect == "missing-input":
+                    node["source_pin"]["inputs"] = []
+                else:
+                    node["source"] = "exploding.tex:586-603 (label lemma:square_lower_bound)"
+                with self.assertRaises(LookupError):
+                    sync_docs.source_pins(self.manifest["nodes"], self.manifest)
 
 
 if __name__ == "__main__":

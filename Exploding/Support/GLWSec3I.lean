@@ -7,6 +7,7 @@ or of its outer boundary, lights the whole tile within `∏ k` steps.  Along a c
 strongly box-crossing tiles the lighting travels at `∏ k` steps per tile, and an infinite such set
 makes every `N`-wave with `N` large non-stabilizable, since a wave has finite support at each time.
 -/
+import Exploding.Support.SquareLowerBoundExponential
 import Exploding.Support.GLWSec3A
 import Exploding.Support.LWCProof4
 import Exploding.Support.PCloseProofPath
@@ -291,7 +292,7 @@ theorem glws_light_tile (hd : 2 ≤ d) (η : Site d → ℤ) (hlow : ∀ x, 0 �
   have hfin := glws_tile_finite k j
   have hex : ∀ x ∈ rboxShift k j, ∃ t : ℕ, 0 < wave η N y t x := by
     intro x hx
-    obtain ⟨t, ht⟩ := Exploding.Frozen.square_lower_bound d hd η' hη'low R hR1 N le_rfl _
+    obtain ⟨t, ht⟩ := Exploding.square_lower_bound_exponential d hd η' hη'low R hR1 N le_rfl _
       (hcent x hx)
     refine ⟨t, ?_⟩
     have := lwc_wave_shift η y N 0 t (x - y)

@@ -61,8 +61,7 @@ theorem lastWave_dominates (η : Site d → ℤ) (hd : 2 ≤ d)
       exact wave_nonneg η hη0 (waveThreshold η a) a (N + 0) x
   | succ t ih =>
     intro x hx
-    have h3 := Exploding.Frozen.last_wave_bound d hd η hlow hhigh b (hlast b) (t+1)
-      (by omega) x
+    have h3 := (Exploding.Frozen.last_wave_bound d hd η hlow hhigh b (hlast b) (t+1) x).1
     rw [hx] at h3
     by_cases hxP : x ∈ penultimateCluster η b
     · have h4 := hone (t+1) x hxP

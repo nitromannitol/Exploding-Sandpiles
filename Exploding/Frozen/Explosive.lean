@@ -1,6 +1,7 @@
 /-
-Theorem 1.4 of the paper: a product background with at least `d` chips
-everywhere and a positive density of sites with `2d - 1` chips is explosive.
+Theorem 1.4 of the corrected source: for `d ≥ 2` and a probability law `ν` on `ℤ` with
+`ν {m ≥ d} = 1` and `ν {2d - 1} > 0`, the product background with that one-site law is
+explosive almost surely.
 -/
 import Exploding.Support.Vocab
 import Exploding.External.Schonmann
@@ -13,17 +14,17 @@ import Exploding.Frozen.ExplosionCriteria
 
 open Exploding LatticeProb MeasureTheory
 
-/-- **Theorem 1.4** (`exploding.tex:265-268`, label `theorem:explosive`).
+/-- **Theorem 1.4** (`paper/corrected-arxiv/exploding-corrected-arxiv.tex:123-129`,
+label `theorem:explosive`).
 
-"Suppose `β : ℤ^d → ℤ` is drawn from a product measure `P`.  If `β ≥ d` and
-`P(β(0) = (2d - 1)) > 0`, then `β` is explosive with probability 1."
+"For `d ≥ 2`, let `ν` be a probability measure on `ℤ` with `ν({m ∈ ℤ : m ≥ d}) = 1` and
+`ν({2d - 1}) > 0`. If `β : ℤ^d → ℤ` has law `P = ⊗_{x ∈ ℤ^d} ν`, then `β` is explosive
+with probability 1."
 
-`P` is the product measure with one-site law `ν`; `β ≥ d` is the statement that
-`ν` gives full mass to `{m : d ≤ m}`, which is what "`β ≥ d`" asserts for a
-product measure.
-
-Schonmann's bound, Proposition 7.4 of the paper, used through Proposition 7.5,
-enters as the explicit hypothesis `hSch`. -/
+The binders `hd`, `hν`, `hlow` and `hhit` are the source's hypotheses on `d` and `ν`, and
+`ν` is the one-site law at every site. Schonmann's bound, Proposition 7.4 of the corrected
+source, which the paper cites, enters as the explicit hypothesis `hSch`; the corrected
+source uses it to show that `P` is box-crossing (Proposition 7.5). -/
 -- FROZEN-STATEMENT-BEGIN
 theorem Exploding.Frozen.explosive (d : ℕ) (hd : 2 ≤ d) (ν : Measure ℤ) (hν : IsProbabilityMeasure ν)
     (hlow : ν {m : ℤ | (d : ℤ) ≤ m} = 1) (hhit : 0 < ν {(2 * (d : ℤ) - 1)})

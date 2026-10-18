@@ -4,8 +4,8 @@ project:
   name: "Exploding-Sandpiles"
   description: >-
     Lean 4/Mathlib formalization of the paper's results with source selected per manifest
-    row: 25 rows select the corrected journal source, Proposition 3.1, Lemmas 3.5, 3.6,
-    3.7 and Proposition 4.1 select the official arXiv source, and nine rows select the local
+    row: 24 rows select the journal source, Proposition 3.1, Lemmas 3.5, 3.6,
+    3.7 and Proposition 4.1 select the official arXiv source, and ten rows select the local
     corrected-v10 draft.
     The corrected crossing row gives the terminal-and-deadline event. Seven cited
     inputs remain registered, six also proved in the repository. The comparator
@@ -74,20 +74,20 @@ related_formalizations:
 
 status:
   scope: >-
-    Mixed-source registry: 39 registrations = 25 journal rows, five official-arXiv
-    rows and nine corrected-v10 rows; aggregate 28 theorem rows and 11 definition
-    rows. The journal group has 18 theorem rows (12 paper-owned plus six
+    Mixed-source registry: 39 registrations = 24 journal rows, five official-arXiv
+    rows and ten corrected-v10 rows; aggregate 28 theorem rows and 11 definition
+    rows. The journal group has 17 theorem rows (11 paper-owned plus six
     cited-input companions) and seven cited-input definitions. The official
     group contains Proposition 3.1, Lemmas 3.5, 3.6, 3.7 and Proposition 4.1 as paper theorem rows. The corrected
-    group has five paper theorem rows and four literal definitions; definitions
-    add zero theorem coverage. Structural claims are journal 14/24 (12/22
-    paper-owned), official arXiv 5/24 (5/22), and corrected-v10 5/24 (5/22);
+    group has six paper theorem rows and four literal definitions; definitions
+    add zero theorem coverage. Structural claims are journal 13/24 (11/22
+    paper-owned), official arXiv 5/24 (5/22), and corrected-v10 6/24 (6/22);
     exact uncovered sets are the three manifest allowed-gap entries. Aggregate
     manifest states remain 28 PROVED, 11 FROZEN definitions and zero SEALED.
     The global default remains paper/exploding.tex. Proposition 3.1, Lemmas 3.5, 3.6, 3.7 and Proposition 4.1 select
     paper/exploding-arxiv.tex (SHA-256
     f12deba6e481a3d81c6967bc48ecbbdae1df4fa1c5f6248a38990030b308072d)
-    with paper/defs.tex input. Nine rows select the corrected-v10 TeX (SHA-256
+    with paper/defs.tex input. Ten rows select the corrected-v10 TeX (SHA-256
     59b5ac1a5cdf80c5b550dfc1738414892e0aa3f8cdb0bf03d00c74685a3e1be2)
     and its defs.tex input (SHA-256
     9aba2c73246d79e3c6b87cb1f01cf3e2f636e27c8afd97ccb8ba5c032a9ee65b).
@@ -142,6 +142,10 @@ status:
         - statement: "Antal and Pisztora, On the chemical distance for supercritical Bernoulli percolation, Theorem 1.1 (Exploding.External.AntalPisztoraChemicalDistance, an explicit hypothesis, assumed)"
     - declaration: "Exploding.Frozen.explosive"
       file: "Exploding/Frozen/Explosive.lean"
+      source: paper/corrected-arxiv/exploding-corrected-arxiv.tex:123-129
+      source_sha256: 59b5ac1a5cdf80c5b550dfc1738414892e0aa3f8cdb0bf03d00c74685a3e1be2
+      input: paper/corrected-arxiv/defs.tex
+      input_sha256: 9aba2c73246d79e3c6b87cb1f01cf3e2f636e27c8afd97ccb8ba5c032a9ee65b
       sorry_count: 0
       axioms: ["propext", "Classical.choice", "Quot.sound"]
       literature_dependencies:
@@ -170,9 +174,10 @@ status:
 fidelity:
   divergences: >-
     The journal default is paper/exploding.tex. Proposition 3.1, Lemmas 3.5, 3.6, 3.7 and Proposition 4.1 select the
-    official arXiv extraction and its defs.tex input; eight declarations select
-    local corrected arXiv-format v10 and its defs.tex input. Proposition 2.2 version 5 selects that
-    corrected source and retains its three cited inputs. The corrected
+    official arXiv extraction and its defs.tex input; ten declarations select
+    local corrected arXiv-format v10 and its defs.tex input. Theorem 1.4 version 4 and Proposition
+    2.2 version 5 select that corrected source; Theorem 1.4 retains its Schonmann input and
+    Proposition 2.2 retains its three cited inputs. The corrected
     crossing row explicitly includes terminal one and a positive volume deadline;
     corrected Theorem 1.3 version 6 includes the actual homogeneous-law endpoint;
     other corrected-v10 results are not certified here. CORRESPONDENCE.md records how
@@ -197,7 +202,7 @@ review:
     counterexample theorem and four literal definitions separately passed independent source/body/consumer
     audit and all integration checks on 15 October 2026; see
     ledger/audits/2026-10-15-counterexample-v4-promotion.md. Proposition 2.2 version 5 has a separate
-    source-marker and proof-consumer receipt at ledger/audits/2026-10-18-renormalization-v5-source-marker.md.
+    source-marker and proof-consumer receipt at ledger/audits/2026-10-18-renormalization-v5-source-marker.md. Theorem 1.4 version 4 has a source-marker receipt at ledger/audits/2026-10-18-explosive-v4-source-marker.md.
 
 alignment:
   namespace: "Exploding"
@@ -220,11 +225,12 @@ alignment:
       status: "proved"
       source_pin: "paper/corrected-arxiv/exploding-corrected-arxiv.tex:352-367; 59b5ac1a5cdf80c5b550dfc1738414892e0aa3f8cdb0bf03d00c74685a3e1be2; defs input 9aba2c73246d79e3c6b87cb1f01cf3e2f636e27c8afd97ccb8ba5c032a9ee65b"
       note: "Version 5 states 0 < p ≤ 1 and retains the three cited-input binders. The hHole cited binder remains in the theorem type but is unused in this proof; the hole obligation is proved through in-repository Exploding.xmf_proved. No new External declaration is introduced. It includes that Cinf is a good-cube component and that every infinite good-cube component equals Cinf. See ledger/audits/2026-10-18-renormalization-v5-source-marker.md."
-    - source: "Theorem 1.4 (theorem:explosive)"
+    - source: "Theorem 1.4 (theorem:explosive; corrected-v10, version 4)"
       lean: "Exploding.Frozen.explosive"
       module: "Exploding.Frozen.Explosive"
       status: "proved"
-      note: "Takes Schonmann's bound as an explicit hypothesis, which Exploding.xsr_schonmann proves."
+      source_pin: "paper/corrected-arxiv/exploding-corrected-arxiv.tex:123-129; 59b5ac1a5cdf80c5b550dfc1738414892e0aa3f8cdb0bf03d00c74685a3e1be2; defs input 9aba2c73246d79e3c6b87cb1f01cf3e2f636e27c8afd97ccb8ba5c032a9ee65b"
+      note: "Version 4 states one probability law ν on ℤ at every site, with ν{m ≥ d} = 1 and ν{2d-1} > 0. It takes Schonmann's bound as an explicit hypothesis, which Exploding.xsr_schonmann proves. See ledger/audits/2026-10-18-explosive-v4-source-marker.md."
     - source: "Theorem 5.1 (Convergence of the exploding sandpile)"
       lean: "Exploding.Frozen.generalized_convergence"
       module: "Exploding.Frozen.GeneralizedConvergence"

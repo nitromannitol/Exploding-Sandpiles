@@ -10,8 +10,8 @@ The official [arXiv v2](https://arxiv.org/abs/2102.04422v2) source is preserved 
 [`paper/exploding-arxiv.tex`](../exploding-arxiv.tex) with its inputs in
 [`paper/arxiv/`](../arxiv/). The draft retains the official abstract byte-for-byte.
 
-The global Lean source default remains the corrected journal-format file
-`paper/exploding.tex`. The v5 Theorem 1.2 row, v4 Theorem 6.1 row, v4 Proposition 2.1 row,
+The global Lean source default remains the journal-format file
+`paper/exploding.tex`. The v5 Theorem 1.2 row, v4 Theorem 1.4 row, v4 Theorem 6.1 row, v4 Proposition 2.1 row,
 v5 Proposition 2.2 row, v6 Theorem 1.3 row and four FROZEN literal definitions select this draft
 and its `defs.tex` input. The [counterexample promotion receipt](../../ledger/audits/2026-10-15-counterexample-v4-promotion.md)
 records its checks. The corrected terminal-and-deadline crossing declaration and its
@@ -36,9 +36,16 @@ homogeneous law of this draft, which fixes the marginal at every site; the offic
 theorem paragraph is text-identical. Its source-marker evidence is recorded in the
 [Theorem 1.2 receipt](../../ledger/audits/2026-10-18-limitshape-v5-source-marker.md).
 
-Structural coverage is 5/24 theorem-like statements (5/22 paper-owned); the other 19
-v10 statements remain uncertified. The journal-source group has coverage 14/24
-(12/22 paper-owned). Official arXiv v2 Proposition 3.1, Lemmas 3.5, 3.6, 3.7 and
+Corrected-v10 Theorem 1.4 version 4 selects lines 123–129 with label `theorem:explosive`. It
+retains its cited-input binder `hSch` unchanged and introduces no new External declaration.
+Its type takes one probability law `ν` on `ℤ` at every lattice site, with `ν({m ≥ d}) = 1`
+and `ν({2d-1}) > 0`. The corrected theorem paragraph is 283 bytes, SHA-256
+`7f8a37ca9eb5f7b7cdca20432b3478bfae47974d90d310538a9da15baf0f4994`. Its source-marker evidence
+is recorded in the [Theorem 1.4 receipt](../../ledger/audits/2026-10-18-explosive-v4-source-marker.md).
+
+Structural coverage is 6/24 theorem-like statements (6/22 paper-owned); the other 18
+v10 statements remain uncertified. The journal-source group has coverage 13/24
+(11/22 paper-owned). Official arXiv v2 Proposition 3.1, Lemmas 3.5, 3.6, 3.7 and
 Proposition 4.1 form a separate 5/24 (5/22 paper-owned) group. All five official
 arXiv theorem rows include the endpoint `p = 1`. The four literal definitions add no
 theorem coverage. These registrations do not certify the other statements of the

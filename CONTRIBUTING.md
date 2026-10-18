@@ -53,8 +53,8 @@ A few practical notes for working with this development:
 
 - **The main results** are in `Exploding/MainTheorems.lean`; the axiom report is
   included in the default build and is also built explicitly by
-  `lake build Exploding.Meta.AxiomsAudit` in the CI workflow. A theorem restated there is added to
-  `Exploding/Meta/AxiomsAudit.lean`.  `python3 tools/verify.py` runs every checker.
+  `lake build Exploding.Meta.AxiomsAudit` in the CI workflow. A theorem restated there
+  is added to `Exploding/Meta/AxiomsAudit.lean`. `python3 tools/verify.py` runs every checker.
 
 - **The comparator surface** under `ExplodingAudit/` is deliberately not a default target.
   Run `bash ExplodingAudit/check_standalone.sh --vocabulary` after editing a challenge or its

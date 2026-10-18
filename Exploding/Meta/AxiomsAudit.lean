@@ -15,9 +15,9 @@ Building this module prints the axiom dependencies of the 22 proved paper result
 exactly the three standard foundational axioms of Mathlib: `propext`, `Classical.choice`,
 `Quot.sound`.
 
-All of the paper's main results are proved and appear among them: Theorems 1.2, 1.3, 1.4,
-5.1 and 6.1, together with Propositions 2.1, 2.2, 3.1, 4.1, 5.1, 7.1, 7.2, 7.3 and 7.5 and
-Lemmas 2.1 and 3.1 to 3.7.  No registered statement is open, so none depends on `sorryAx`.
+The registered theorem exports listed here include Theorems 1.2, 1.3, 1.4, 5.1 and 6.1,
+Propositions 2.1, 2.2, 3.1, 4.1, 5.1, 7.1, 7.2, 7.3 and 7.5, and Lemmas 2.1 and 3.1 to 3.7.
+Their source pins and the remaining gaps in each source are recorded in `ledger/manifest.yaml`.
 `python3 tools/check_axioms.py` prints the axiom closure of every registered statement.
 
 No `axiom` is declared in this development.  The seven cited results are stated as

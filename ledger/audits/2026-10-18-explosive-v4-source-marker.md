@@ -18,10 +18,10 @@ any paper theorem proof, any other manifest node, or any paper source.
 
 Required before corrected-source credit:
 
-- a fresh locked full build and the axiom closures of `Exploding.Frozen.explosive`,
+- a fresh full build and the axiom closures of `Exploding.Frozen.explosive`,
   `Exploding.explosive`, `Exploding.xsr_schonmann`, and
   `Exploding.explosive_all_high_nonvacuity`;
-- all configured repository gates on the integrated tree and independent final-byte review.
+- all configured repository checks on the final tree and independent statement review.
 
 The generated state wording "proved, independently audited" is the tool's convention for every
 `PROVED` row. This receipt distinguishes that registry state from the required integrated checks.
@@ -39,10 +39,12 @@ The generated state wording "proved, independently audited" is the tool's conven
 | Official arXiv paragraph, `exploding-arxiv.tex:120-123` | 241 | `67156828b4f2c7557a3f9ab5eca17f5dc362921fbd19845031f79329f88a44c8` |
 
 The version 3 and version 4 markers are the same 323 bytes, so `frozen_sha256` is unchanged.
-The version 3 identity, the journal pin `paper/exploding.tex` (SHA-256 `1d7c2010d8bd29e7…`)
+The version 3 identity, the journal pin `paper/exploding.tex` (SHA-256
+`1d7c2010d8bd29e7fb83e93f19c9ebe0e8aef201f93559b2b18f5ca0dc049b44`)
 and the journal lines 265–268, is retained only as history. Its text states the product law
 without a single common marginal; the corrected source states one probability law `ν` at every
-site. The 2026-10-03 journal-source audit of the version 3 identity does not apply to version 4.
+site. The 2026-10-03 journal-source audit in
+`ledger/audits/2026-10-03-refute-first-A.md` of the version 3 identity does not apply to version 4.
 `tools/sync_docs.py` and `tools/check_clauses.py` keep the version 3 readings as recorded
 history. The source-reporting tests check that a version 4 node pinned back to the journal
 source fails the historical identity check.
@@ -60,7 +62,7 @@ then `β` is explosive with probability 1.
 | `ν({m ∈ ℤ : m ≥ d}) = 1` | `(hlow : ν {m : ℤ \| (d : ℤ) ≤ m} = 1)` | source |
 | `ν({2d − 1}) > 0` | `(hhit : 0 < ν {(2 * (d : ℤ) - 1)})` | source |
 | `β` has law `⊗_{x ∈ ℤ^d} ν` | `Measure.infinitePi fun _ : Site d => ν` | source |
-| `β` explosive with probability 1 | `∀ᵐ β ∂(…), Explosive β` | conclusion |
+| `β` explosive with probability 1 | `∀ᵐ β ∂(Measure.infinitePi fun _ : Site d => ν), Explosive β` | conclusion |
 | Schonmann's bound, Proposition 7.4, cited | `(hSch : Exploding.External.SchonmannBootstrap)` | cited input |
 
 The five-bin audit classifies the outer binders as TYPING `d` and `ν` (2), SOURCE `hd`,
@@ -120,8 +122,8 @@ test was added: `test_theorem_1_4_v4_excludes_its_v3_historical_reading`.
 ## Source checks on the source/manifest postimage
 
 The table records the source checks on commit `edb1b596101abc5c64760e9d4817c3ecb0592e45`
-(tree `f460d1eb4d4384e506c745b16bbeaf467799b981`), whose source and manifest bytes are
-unchanged in this version. The integration gate reruns these checks on the final tree.
+(tree `f460d1eb4d4384e506c745b16bbeaf467799b981`), whose paper and manifest bytes are
+unchanged in this version. `tools/verify.py` checks the final tree.
 
 | Check | Exit | Result |
 |---|---:|---|
@@ -137,7 +139,7 @@ unchanged in this version. The integration gate reruns these checks on the final
 | `python3 -m unittest tools.test_source_reporting` | 0 | 29 tests |
 | `python3 -m unittest tools.test_source_tools` | 0 | 16 tests |
 
-The source checks above do not replace the fresh full build, axiom probes, or warning gates.
+The source checks above do not replace the fresh full build, axiom probes, or warning checks.
 
 ## Proof and gate obligations
 
@@ -148,9 +150,9 @@ The source checks above do not replace the fresh full build, axiom probes, or wa
    `Exploding.LSProof.ls_flp_from_explosive` for every `0 < p < 1`, including `p = 1/2`.
    The expanding-front clause checks the dynamics at the endpoint; the theorem's explosion
    clause follows by applying `Exploding.Frozen.explosive` to that same product law.
-2. Before credit, run the locked full build, `#print axioms` for the Frozen/public theorem,
+2. Before credit, run the full build, `#print axioms` for the Frozen/public theorem,
    `Exploding.xsr_schonmann` and the nonvacuity theorem, and the configured axiom and warning
-   gates. The axiom-audit module prints the nonvacuity theorem's closure explicitly.
+   checks. The axiom-audit module prints the nonvacuity theorem's closure explicitly.
 3. Confirm the `formalization.yaml` sorry and axiom fields against that fresh build and record
-   the post-landing certificate separately.
+   the verification result separately.
 4. Complete independent final-byte review of the integrated tree.

@@ -82,17 +82,22 @@ RANGE_RE = re.compile(re.escape(PAPER) + r":(\d+)(?:-(\d+))?")
 CITED_RE = re.compile(r"(?:in the proof of|for) ([A-Za-z][A-Za-z0-9:_-]*)")
 
 # How the paper numbers its statements: environment -> (printed name, counter).
-# Environments sharing a counter share its name; every counter is reset at
-# each \section, as the paper's \newtheorem declarations say.
+# Environments sharing a counter share its name. Every counter except those in
+# GLOBAL_COUNTERS is reset at each \section, as the paper's \newtheorem
+# declarations say; `\newtheorem{remark}{Remark}` numbers remarks through the
+# whole paper.
 ENVIRONMENTS = {
     "theorem": ("Theorem", "theorem"),
     "lemma": ("Lemma", "theorem"),
     "prop": ("Proposition", "prop"),
     "conj": ("Conjecture", "conj"),
+    "remark": ("Remark", "remark"),
 }
+GLOBAL_COUNTERS = {"remark"}
 
 # One short description per node, in the paper's words where it has them.
 DESCRIPTIONS = {
+    "rem-sharp-planar-obstruction": "The least planar covering wave order is of order n² log(n+1)",
     "ext-fey-levine-peres": "Explosion of the Bernoulli background (Fey, Levine and Peres), cited",
     "thm-limit-shape": "The rescaled toppled region converges to a convex domain",
     "thm-time-constant": "The rescaled arrival times converge",
@@ -100,9 +105,9 @@ DESCRIPTIONS = {
     "prop-crossing-time": "Large boxes are crossed quickly",
     "prop-renormalization": "The infinite cluster of good cubes",
     "lem-local-convexity": "A path of topplings fills its bounding rectangle",
-    "lem-square-lower-bound": "A wave of order (2d)^(dn) covers the box of radius n",
+    "lem-square-lower-bound": "A common eventual square-filling bound of order n^d, with n^2 log(n+1) in the plane",
     "lem-finite-exploding": "The last wave is well defined",
-    "lem-last-wave-bound": "The last wave exceeds the penultimate wave by at most one",
+    "lem-last-wave-bound": "The complete last-wave bound and its exterior-of-interior clause at every time",
     "lem-approx-subadditivity": "Penultimate-cluster arrival times are subadditive",
     "lem-penultimate-cluster": "Penultimate clusters are polylogarithmically small",
     "lem-penultimate-upper-bound": "A linear upper bound on last-wave arrival times",
@@ -113,7 +118,7 @@ DESCRIPTIONS = {
     "thm-generalized-convergence": "Convergence of the exploding sandpile under the general hypotheses",
     "thm-counterexample": "Explosive backgrounds without a limit shape",
     "prop-explosion-criteria": "A criterion for a background law to explode",
-    "prop-dimensional-reduction": "Dynamics on a face reduce to one dimension lower",
+    "prop-dimensional-reduction": "Dimension reduction for every Boolean boundary field",
     "prop-recurrence": "The constant background d is recurrent",
     "ext-schonmann-bootstrap": "Schonmann's bound for bootstrap percolation, cited",
     "ext-liggett-schonmann-stacey":
@@ -129,7 +134,9 @@ DESCRIPTIONS = {
     "ext-lss-bounded-degree-proved": "In-repo discharge of the bounded-degree Liggett, Schonmann and Stacey corollary",
     "ext-mathieu-holes-proved": "In-repo discharge of Mathieu's hole-volume bound",
     "ext-fey-meester-redig-proved": "In-repo discharge of the Fey, Meester and Redig least action principle",
-    "prop-box-crossing": "The background of Theorem 1.4 is box-crossing",
+    "prop-box-crossing": "Product-law box crossing and the separate arbitrary-law dimension-one case",
+    "ext-fey-den-boer-redig-cubical-cluster": "Cubical toppled support and lower radius, cited and unproved",
+    "ext-fey-levine-peres-radius": "Upper radius of the ordinary pile, cited and unproved",
 }
 
 # The order in which states are reported, and what each one means.
@@ -261,21 +268,33 @@ def lean_link(node: dict) -> str:
 
 
 def paper_environments(filename: str = HISTORICAL_SOURCE) -> list[dict]:
-    """Every numbered statement of the paper, with its printed number and span."""
+    """Every numbered statement of the paper, with its printed number and span.
+
+    Lines between `\\iffalse` and its `\\fi` are not typeset and are skipped."""
     lines = (ROOT / filename).read_text(encoding="utf-8").splitlines()
-    envs, open_envs, counters, section = [], [], Counter(), 0
+    envs, open_envs, counters, section, hidden = [], [], Counter(), 0, 0
     begin = re.compile(r"\\begin\{(" + "|".join(ENVIRONMENTS) + r")\}")
     for i, raw in enumerate(lines, start=1):
         line = re.sub(r"(?<!\\)%.*", "", raw)
+        if re.match(r"\s*\\iffalse(?![A-Za-z])", line):
+            hidden += 1
+            continue
+        if hidden:
+            if re.match(r"\s*\\fi(?![A-Za-z])", line):
+                hidden -= 1
+            continue
         if re.search(r"\\section\*?\{", line):
             section += 1
-            counters.clear()
+            for counter in [c for c in counters if c not in GLOBAL_COUNTERS]:
+                del counters[counter]
         m = begin.search(line)
         if m:
             name, counter = ENVIRONMENTS[m.group(1)]
             counters[counter] += 1
+            number = (f"{counters[counter]}" if counter in GLOBAL_COUNTERS
+                      else f"{section}.{counters[counter]}")
             label = re.search(r"\\label\{([^}]*)\}", line[m.end():])
-            env = dict(kind=m.group(1), name=f"{name} {section}.{counters[counter]}",
+            env = dict(kind=m.group(1), name=f"{name} {number}",
                        start=i, end=None, label=label.group(1) if label else None)
             envs.append(env)
             open_envs.append(env)

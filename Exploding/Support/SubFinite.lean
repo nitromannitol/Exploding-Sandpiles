@@ -19,7 +19,7 @@ non-stabilizable.
 import Exploding.Support.Vocab
 import Exploding.Support.Wave
 import Exploding.Support.SubGeom
-import Exploding.Frozen.SquareLowerBound
+import Exploding.Support.SquareLowerBoundExponential
 import Exploding.Frozen.Renormalization
 import Exploding.External.LiggettSchonmannStaceyBoundedDegree
 import Exploding.External.MathieuHoles
@@ -85,7 +85,7 @@ themselves nontrivial:
     covered by (finitely many, boundedly sized) components of `Cinfᶜ` once
     `m` is large, since those components have cardinality `< (log m)^{5/2} ≪
     m^d`; hence some macroscopic site `i` with `|i| ≤ m` lies in `Cinf`;
-(iii) apply `Exploding.Frozen.square_lower_bound` (proved in
+(iii) apply `Exploding.square_lower_bound_exponential` (proved in
     `Exploding/Frozen/SquareLowerBound.lean`) with `n` large
     enough that `cent d n` contains the microscopic cube `Q_k(i) = Q_k + k•i`
     entirely, so the resulting wave's support covers `Q_k(i)`.
@@ -366,7 +366,7 @@ theorem aux_finite_exploding_covers (d : ℕ) (hd : 2 ≤ d) (p : ℝ) (hp : 0 <
       _ ≤ (k0 : ℤ) + (k0 : ℤ) * (m : ℤ) := by linarith
       _ ≤ (n1 : ℤ) := by rw [hn1def]; push_cast; nlinarith [Nat.zero_le k0, Nat.zero_le m]
   have hpt : ∀ x ∈ cube d k0, ∃ t : ℕ, 0 < wave η N (0 : Site d) t (x + (k0 : ℤ) • i) :=
-    fun x hx => Exploding.Frozen.square_lower_bound d hd η hηnn n1 (by omega) N (le_refl N)
+    fun x hx => Exploding.square_lower_bound_exponential d hd η hηnn n1 (by omega) N (le_refl N)
       (x + (k0 : ℤ) • i) (hxcent x hx)
   obtain ⟨t, ht⟩ := aux_finite_exploding_uniform_time η hηnn hd0
     N (0 : Site d) (cube d k0) (aux_finite_exploding_cube_finite d k0)

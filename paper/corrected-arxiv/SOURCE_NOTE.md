@@ -1,59 +1,38 @@
 # Corrected arXiv-format draft
 
-This directory contains a local corrected arXiv-format draft dated 15 October 2026:
-[`exploding-corrected-arxiv.tex`](exploding-corrected-arxiv.tex), SHA-256
-`59b5ac1a5cdf80c5b550dfc1738414892e0aa3f8cdb0bf03d00c74685a3e1be2`.
-Its included `defs.tex` input has SHA-256
+The local corrected draft, version 11 dated 18 October 2026, is
+[exploding-corrected-arxiv.tex](exploding-corrected-arxiv.tex), SHA-256
+`c99ce52a57b7da1f805efe610c474c968c0aa00e0840bd8b0e92ae0d4c53f262`.
+Its `defs.tex` input is
 `9aba2c73246d79e3c6b87cb1f01cf3e2f636e27c8afd97ccb8ba5c032a9ee65b`.
+The official [arXiv v2](https://arxiv.org/abs/2102.04422v2) extraction remains
+unchanged at [paper/exploding-arxiv.tex](../exploding-arxiv.tex); its abstract
+is retained byte-for-byte.
 
-The official [arXiv v2](https://arxiv.org/abs/2102.04422v2) source is preserved at
-[`paper/exploding-arxiv.tex`](../exploding-arxiv.tex) with its inputs in
-[`paper/arxiv/`](../arxiv/). The draft retains the official abstract byte-for-byte.
+Version 11 reconciles one obsolete qualification remark with the existing
+Section 5 argument: path filling implies nonnegativity, allowing qualitative
+exponential finite-box seeding. It asserts no polynomial rate for general
+backgrounds. Numbered statements, proofs, hypotheses and bibliography have
+unchanged bytes from version 10; later source addresses shift two lines.
 
-The global Lean source default remains the journal-format file
-`paper/exploding.tex`. The v5 Theorem 1.2 row, v4 Theorem 1.4 row, v4 Theorem 6.1 row, v4 Proposition 2.1 row,
-v5 Proposition 2.2 row, v6 Theorem 1.3 row and four FROZEN literal definitions select this draft
-and its `defs.tex` input. The [counterexample promotion receipt](../../ledger/audits/2026-10-15-counterexample-v4-promotion.md)
-records its checks. The corrected terminal-and-deadline crossing declaration and its
-bounded checks are recorded in a [separate receipt](../../ledger/audits/2026-10-15-crossing-v4-promotion.md).
-The corrected homogeneous-law Theorem 1.3 for `0 < p ≤ 1` has a [source and statement
-receipt](../../ledger/audits/2026-10-18-timeconstant-v6-source-statement.md); its four
-cited inputs remain explicit for the strict branch, and its deterministic endpoint uses
-ordinary arrivals under the actual all-high law.
+The manifest selects this draft for 22 numbered paper-owned theorem rows,
+four literal definitions and two new cited-input definitions. The 13 retained
+historical citation/input-companion rows carry their exact journal pins
+explicitly. The two new radius predicates are cited, unproved inputs. Exact
+source and native integration evidence is in the
+[integration record](../../ledger/audits/2026-10-18-corrected-v11-integration.md).
 
-Corrected-v10 Proposition 2.2 version 5 selects lines 352–367 and retains all three
-cited percolation inputs. The `hHole` cited binder remains in the type but is unused in
-this proof; the hole obligation is proved through in-repository `Exploding.xmf_proved`.
-No new External declaration is introduced. The type
-states `0 < p ≤ 1` and includes both existence of a maximal infinite good-cube component
-and uniqueness of every infinite good-cube component. Its source-marker and proof-consumer
-evidence is recorded in the [v5 receipt](../../ledger/audits/2026-10-18-renormalization-v5-source-marker.md).
+The unnumbered planar optimality remark (Remark 1, lines 785-823) is
+registered separately as `Exploding.Frozen.sharp_planar_obstruction`; see its
+[audit record](../../ledger/audits/2026-10-18-sharp-planar-obstruction.md).
+Compilation does not certify a whole-paper release. Final semantic closure and all
+release gates remain required.
 
-Corrected-v10 Theorem 1.2 version 5 selects lines 104–112 with label `theorem:limit_shape`. It
-retains its four cited-input binders, `hLSSB`, `hHole`, `hChem` and `hSch`, unchanged, and
-introduces no new External declaration. The type states `0 < p ≤ 1` under the standing
-homogeneous law of this draft, which fixes the marginal at every site; the official arXiv
-theorem paragraph is text-identical. Its source-marker evidence is recorded in the
-[Theorem 1.2 receipt](../../ledger/audits/2026-10-18-limitshape-v5-source-marker.md).
-
-Corrected-v10 Theorem 1.4 version 4 selects lines 123–129 with label `theorem:explosive`. It
-retains its cited-input binder `hSch` unchanged and introduces no new External declaration.
-Its type takes one probability law `ν` on `ℤ` at every lattice site, with `ν({m ≥ d}) = 1`
-and `ν({2d-1}) > 0`. The corrected theorem paragraph is 283 bytes, SHA-256
-`7f8a37ca9eb5f7b7cdca20432b3478bfae47974d90d310538a9da15baf0f4994`. Its source-marker evidence
-is recorded in the [Theorem 1.4 receipt](../../ledger/audits/2026-10-18-explosive-v4-source-marker.md).
-
-Structural coverage is 6/24 theorem-like statements (6/22 paper-owned); the other 18
-v10 statements remain uncertified. The journal-source group has coverage 13/24
-(11/22 paper-owned). Official arXiv v2 Proposition 3.1, Lemmas 3.5, 3.6, 3.7 and
-Proposition 4.1 form a separate 5/24 (5/22 paper-owned) group. All five official
-arXiv theorem rows include the endpoint `p = 1`. The four literal definitions add no
-theorem coverage. These registrations do not certify the other statements of the
-corrected draft or of the official arXiv source.
-
-The definitions, figures and precomputed bibliography needed to compile the draft are
-included here. From this directory, run the following command three times:
+Definitions, figures and the bibliography needed to compile the draft are
+included. From this directory run:
 
 ```sh
-pdflatex -interaction=nonstopmode -halt-on-error exploding-corrected-arxiv.tex
+latexmk -pdf -interaction=nonstopmode -halt-on-error exploding-corrected-arxiv.tex
 ```
+
+The checked version 11 PDF has 42 pages and no unresolved references or citations.

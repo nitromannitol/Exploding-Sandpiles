@@ -316,6 +316,7 @@ import Exploding.Support.AllHighPodoFront
 import Exploding.Support.ApproximateSubadditiveP1
 import Exploding.Support.TimeConstantP1
 import Exploding.Support.ArxivP1RenormGeometry
+import Exploding.Support.ArxivAllGoodRenormGeometry
 import Exploding.Support.AllHighClusterArrival
 import Exploding.Support.PenultimateClusterP1
 import Exploding.Support.PenultimateUpperBoundP1

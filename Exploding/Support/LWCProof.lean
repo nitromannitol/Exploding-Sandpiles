@@ -326,7 +326,7 @@ theorem lwc_good_event_2 (d : ℕ) (hd : 2 ≤ d) (p : ℝ) (hp : 0 < p) (hp1 : 
     (hHole : Exploding.External.MathieuHoleVolume)
     (hChem : Exploding.External.AntalPisztoraChemicalDistance) :
     ∀ᵐ η ∂(toyLaw d p), ∀ x : Site d, clusterArrival η (0 : Site d) x ≠ ⊤ := by
-  obtain ⟨γ, hγ, hclose⟩ := Exploding.Frozen.last_penultimate_close d hd p hp hp1 hLSSB hHole hChem
+  obtain ⟨γ, hγ, hclose⟩ := Exploding.Frozen.last_penultimate_close d hd p hp hp1.le hLSSB hHole hChem
   filter_upwards [hclose] with η hη x
   obtain ⟨n0, hn0⟩ := hη
   obtain ⟨_, b, _, hb, _⟩ := (hn0 (max n0 (mnorm x).toNat) (le_max_left _ _) x (by omega)).2
@@ -854,7 +854,7 @@ theorem lwc_cluster_lipschitz_1_2 (d : ℕ) (hd : 2 ≤ d) (p : ℝ) (hp : 0 < p
   obtain ⟨γ1, C, hγ1, hC, hub⟩ :=
     Exploding.Frozen.penultimate_upper_bound d hd p hp hp1 hLSSB hHole hChem
   obtain ⟨γ2, hγ2, hclose⟩ :=
-    Exploding.Frozen.last_penultimate_close d hd p hp hp1 hLSSB hHole hChem
+    Exploding.Frozen.last_penultimate_close d hd p hp hp1.le hLSSB hHole hChem
   obtain ⟨N, hN⟩ := Filter.eventually_atTop.mp (lwc_cluster_lipschitz_1_1 γ1 γ2)
   refine ⟨max γ1 γ2 + 1, C, by positivity, hC, ?_⟩
   filter_upwards [hub, hclose] with η hηub hηclose
@@ -1206,7 +1206,7 @@ theorem lwc_transfer (d : ℕ) (hd : 2 ≤ d) (p : ℝ) (hp : 0 < p) (hp1 : p < 
           ∀ᶠ n : ℕ in atTop, ∀ y ∈ K,
             |((lastArrival η (0 : Site d) (nearestSite ((n : ℝ) • y))).toNat : ℝ) / (n : ℝ)
               - N y| ≤ ε := by
-  obtain ⟨γ, hγ, hclose⟩ := Exploding.Frozen.last_penultimate_close d hd p hp hp1 hLSSB hHole hChem
+  obtain ⟨γ, hγ, hclose⟩ := Exploding.Frozen.last_penultimate_close d hd p hp hp1.le hLSSB hHole hChem
   filter_upwards [hclose, hunif] with η hηclose hηunif
   refine ⟨lwc_transfer_5 η γ hηclose, fun K hK ε hε => ?_⟩
   obtain ⟨C, hCbd⟩ := lwc_transfer_3 d K hK

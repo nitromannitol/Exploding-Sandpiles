@@ -25,7 +25,7 @@ theorem lwcl_far_lipschitz (d : ℕ) (hd : 2 ≤ d) (p : ℝ) (hp : 0 < p) (hp1 
           ((clusterArrival η (0 : Site d) x').toNat : ℝ)|
             ≤ C * (mnorm (x - x') : ℝ) + Real.log n ^ γ := by
   obtain ⟨γ1, C, hγ1, hC, hlip⟩ := lwcl_lastArrival_lip d hd p hp hp1 hLSSB hHole hChem
-  obtain ⟨γ2, hγ2, hclose⟩ := Exploding.Frozen.last_penultimate_close d hd p hp hp1 hLSSB hHole hChem
+  obtain ⟨γ2, hγ2, hclose⟩ := Exploding.Frozen.last_penultimate_close d hd p hp hp1.le hLSSB hHole hChem
   have hd1 : 1 ≤ d := by omega
   obtain ⟨N1, hN1⟩ := Filter.eventually_atTop.mp (lwc_cluster_lipschitz_1_1 γ1 γ2)
   obtain ⟨N2, hN2⟩ := Filter.eventually_atTop.mp

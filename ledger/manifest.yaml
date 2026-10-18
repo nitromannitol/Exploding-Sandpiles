@@ -105,16 +105,22 @@ nodes:
     approved: "2026-09-24"
 
   - id: lem-penultimate-close
-    version: 4
+    version: 5
     kind: theorem
-    source: exploding.tex:832-837 (label lemma:last_penultimate_close)
+    source: exploding-arxiv.tex:692-697 (label lemma:last_penultimate_close)
     file: Exploding/Frozen/PenultimateClose.lean
     export: Exploding.Frozen.last_penultimate_close
     state: PROVED
-    frozen_sha256: 155ee18f906de192a37114b586420bfae02efadb3d6d74235494dccf37ea9af7
+    frozen_sha256: f2ac930203bda0ebdc77f88a7eefb80485e0492766f23f701b3f532d34c3ac18
     closure_sha256: 8809d5aaeb8694fe1e159ffeb3a85240465aa90c45ed1b32619d396d1a3a7876
     provider: Exploding.Frozen.last_penultimate_close
-    approved: "2026-09-24"
+    approved: "2026-10-18"
+    source_pin:
+      file: paper/exploding-arxiv.tex
+      sha256: f12deba6e481a3d81c6967bc48ecbbdae1df4fa1c5f6248a38990030b308072d
+      inputs:
+        - file: paper/defs.tex
+          sha256: 9aba2c73246d79e3c6b87cb1f01cf3e2f636e27c8afd97ccb8ba5c032a9ee65b
 
   - id: prop-last-wave-convergence
     version: 4
@@ -534,10 +540,42 @@ coverage_allowed_gaps:
   - source_pin:
       file: paper/exploding.tex
       sha256: 1d7c2010d8bd29e7fb83e93f19c9ebe0e8aef201f93559b2b18f5ca0dc049b44
-    reason: The counterexample and crossing registrations have moved to their exact corrected-source successors.
+    reason: The counterexample and crossing registrations moved to corrected-source successors; Lemma 3.7 moved to its official arXiv successor.
     statements:
       - {kind: theorem, line: 1351, label: "theorem:counterexample"}
       - {kind: prop, line: 416, label: "prop:crossing_time"}
+      - {kind: lemma, line: 832, label: "lemma:last_penultimate_close"}
+  - source_pin:
+      file: paper/exploding-arxiv.tex
+      sha256: f12deba6e481a3d81c6967bc48ecbbdae1df4fa1c5f6248a38990030b308072d
+      inputs:
+        - file: paper/defs.tex
+          sha256: 9aba2c73246d79e3c6b87cb1f01cf3e2f636e27c8afd97ccb8ba5c032a9ee65b
+    reason: Only the exact Lemma 3.7 successor is registered under this official arXiv pin; its other 23 theorem-like statements remain unclaimed under this pin.
+    statements:
+      - {kind: theorem, line: 93, label: "prop:fey_levine_peres_explode"}
+      - {kind: theorem, line: 101, label: "theorem:limit_shape"}
+      - {kind: theorem, line: 114, label: "theorem:convergence_of_time_constant"}
+      - {kind: theorem, line: 120, label: "theorem:explosive"}
+      - {kind: prop, line: 278, label: "prop:crossing_time"}
+      - {kind: prop, line: 344, label: "prop:renormalization_properties"}
+      - {kind: lemma, line: 393, label: "lemma:local_convexity"}
+      - {kind: lemma, line: 567, label: "lemma:square_lower_bound"}
+      - {kind: lemma, line: 580, label: "lemma:finite_exploding"}
+      - {kind: lemma, line: 590, label: "lemma:last_wave_bound"}
+      - {kind: lemma, line: 620, label: "lemma:approx_subadditivity"}
+      - {kind: lemma, line: 652, label: "lemma:last_penultimate_cluster"}
+      - {kind: lemma, line: 667, label: "lemma:penultimate_upper_bound"}
+      - {kind: prop, line: 706, label: "prop:convergence_of_the_last_wave"}
+      - {kind: prop, line: 740, label: "prop:approximate_subadditive"}
+      - {kind: prop, line: 1057, label: "prop:convergence_of_the_generalized_last_wave"}
+      - {kind: theorem, line: 1090, label: null}
+      - {kind: theorem, line: 1192, label: "theorem:counterexample"}
+      - {kind: prop, line: 1662, label: "prop:explosion_criteria"}
+      - {kind: prop, line: 1731, label: "prop:dimensional_reduction"}
+      - {kind: prop, line: 1768, label: "prop:recurrence"}
+      - {kind: prop, line: 1810, label: "prop:schonnmann_bootstrap"}
+      - {kind: prop, line: 1827, label: null}
   - source_pin:
       file: paper/corrected-arxiv/exploding-corrected-arxiv.tex
       sha256: 59b5ac1a5cdf80c5b550dfc1738414892e0aa3f8cdb0bf03d00c74685a3e1be2

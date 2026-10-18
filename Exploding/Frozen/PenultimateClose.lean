@@ -7,13 +7,14 @@ import Exploding.Support.Wave
 import Exploding.Support.SubPub
 import Exploding.Support.PCloseProofFinal
 import Exploding.Frozen.PenultimateUpperBound
+import Exploding.Support.PenultimateCloseP1
 import Exploding.External.LiggettSchonmannStaceyBoundedDegree
 import Exploding.External.MathieuHoles
 import Exploding.External.AntalPisztora
 
 open Exploding LatticeProb MeasureTheory
 
-/-- **Lemma 3.7** (`exploding.tex:832-837`, label
+/-- **Lemma 3.7** (`exploding-arxiv.tex:692-697`, label
 `lemma:last_penultimate_close`).
 
 "There exists a constant `γ > 0` so that on an event of probability 1, for all
@@ -28,7 +29,7 @@ for it enter as explicit hypotheses: `hLSSB` (Liggett, Schonmann and Stacey,
 Corollary 1.4), `hHole` (Mathieu, Lemma 5.2) and `hChem` (Antal and Pisztora,
 Theorem 1.1). -/
 -- FROZEN-STATEMENT-BEGIN
-theorem Exploding.Frozen.last_penultimate_close (d : ℕ) (hd : 2 ≤ d) (p : ℝ) (hp : 0 < p) (hp1 : p < 1)
+theorem Exploding.Frozen.last_penultimate_close (d : ℕ) (hd : 2 ≤ d) (p : ℝ) (hp : 0 < p) (hp1 : p ≤ 1)
     (hLSSB : Exploding.External.LiggettSchonmannStaceyBoundedDegree)
     (hHole : Exploding.External.MathieuHoleVolume)
     (hChem : Exploding.External.AntalPisztoraChemicalDistance) :
@@ -39,9 +40,12 @@ theorem Exploding.Frozen.last_penultimate_close (d : ℕ) (hd : 2 ≤ d) (p : �
             clusterArrival η (0 : Site d) x = (b : ℕ∞) ∧ (b : ℝ) ≤ (a : ℝ) + Real.log n ^ γ
 -- FROZEN-STATEMENT-END
 := by
-  obtain ⟨γ, hγ, hcore⟩ := pclose_second d hd p hp hp1 hLSSB hHole hChem
-  refine ⟨γ, hγ, ?_⟩
-  filter_upwards [hcore] with η hη
-  obtain ⟨n0, hn0⟩ := hη
-  exact ⟨n0, fun n hn x hx =>
-    ⟨lastArrival_le_clusterArrival η (0 : Site d) x, hn0 n hn x hx⟩⟩
+  rcases lt_or_eq_of_le hp1 with hlt | heq
+  · obtain ⟨γ, hγ, hcore⟩ := pclose_second d hd p hp hlt hLSSB hHole hChem
+    refine ⟨γ, hγ, ?_⟩
+    filter_upwards [hcore] with η hη
+    obtain ⟨n0, hn0⟩ := hη
+    exact ⟨n0, fun n hn x hx =>
+      ⟨lastArrival_le_clusterArrival η (0 : Site d) x, hn0 n hn x hx⟩⟩
+  · subst heq
+    exact last_penultimate_close_p1 d hd

@@ -883,7 +883,7 @@ one, in `aux_finite_exploding_bounds` of `Exploding/Support/SubFinite.lean`); co
 `∀ x, ∀ᵐ η, η x ≤ 2d-1` (one instance of `ls_chipLaw_up` per `x`, read
 through the marginal) into `∀ᵐ η, ∀ x, η x ≤ 2d-1` via
 `MeasureTheory.ae_all_iff` (valid since `Site d` is countable). -/
-theorem ls_toyLaw_upper_ae (d : ℕ) (_hd : 2 ≤ d) (p : ℝ) (hp : 0 < p) (hp1 : p < 1) :
+theorem ls_toyLaw_upper_ae (d : ℕ) (_hd : 2 ≤ d) (p : ℝ) (hp : 0 < p) (hp1 : p ≤ 1) :
     ∀ᵐ η ∂(toyLaw d p), ∀ x : Site d, η x ≤ 2 * (d : ℤ) - 1 := by
   have hp0 : 0 ≤ p := by linarith
   have hp1' : p ≤ 1 := by linarith
@@ -921,7 +921,7 @@ regularity, and the a.s. locally-uniform convergence; feed the `N`,
 with null frontier; feed `hloc`/`hexp` into Steps 5-6 to get the measure
 convergence; assemble into the target's `∃ B, ...`.  Pure bookkeeping given
 Steps 1-6. -/
-theorem ls_assemble (d : ℕ) (hd : 2 ≤ d) (p : ℝ) (hp : 0 < p) (hp1 : p < 1)
+theorem ls_assemble (d : ℕ) (hd : 2 ≤ d) (p : ℝ) (hp : 0 < p) (hp1 : p ≤ 1)
     (hFLP : Exploding.External.FeyLevinePeresExplosive)
     (hLSSB : Exploding.External.LiggettSchonmannStaceyBoundedDegree) (hHole : Exploding.External.MathieuHoleVolume)
     (hChem : Exploding.External.AntalPisztoraChemicalDistance) :
@@ -934,7 +934,7 @@ theorem ls_assemble (d : ℕ) (hd : 2 ≤ d) (p : ℝ) (hp : 0 < p) (hp1 : p < 1
               {y : Fin d → ℝ | 0 < podo (explodingPile η) t (nearestSite ((t : ℝ) • y))} B))
           atTop (nhds 0) := by
   obtain ⟨N, hcont, hconv, hhom, hae⟩ :=
-    Exploding.Frozen.convergence_of_time_constant d hd p hp hp1.le hFLP hLSSB hHole hChem
+    Exploding.Frozen.convergence_of_time_constant d hd p hp hp1 hFLP hLSSB hHole hChem
   by_cases hμ : toyLaw d p = 0
   · exact ⟨Set.univ, convex_univ, isOpen_univ, Set.univ_nonempty, by simp [hμ]⟩
   · haveI : NeBot (ae (toyLaw d p)) := ae_neBot.mpr hμ

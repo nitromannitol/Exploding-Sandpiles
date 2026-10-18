@@ -99,16 +99,22 @@ nodes:
           sha256: 9aba2c73246d79e3c6b87cb1f01cf3e2f636e27c8afd97ccb8ba5c032a9ee65b
 
   - id: lem-penultimate-upper-bound
-    version: 4
+    version: 5
     kind: theorem
-    source: exploding.tex:807-812 (label lemma:penultimate_upper_bound)
+    source: exploding-arxiv.tex:667-672 (label lemma:penultimate_upper_bound)
     file: Exploding/Frozen/PenultimateUpperBound.lean
     export: Exploding.Frozen.penultimate_upper_bound
     state: PROVED
-    frozen_sha256: 755dc2bd6ea319253c74e38c3f0320cd0b6ec98d60157d330873710e2519e903
+    frozen_sha256: 5b2ee13157a8d82856757ff4dd81617c9a2c782f2d59e704ccf71b5e14cd6a18
     closure_sha256: 1d2f2a78d56ec40472f7752e4c65eea0ab4d26481d5dfd2733a8eaac2812122e
     provider: Exploding.Frozen.penultimate_upper_bound
-    approved: "2026-09-24"
+    approved: "2026-10-18"
+    source_pin:
+      file: paper/exploding-arxiv.tex
+      sha256: f12deba6e481a3d81c6967bc48ecbbdae1df4fa1c5f6248a38990030b308072d
+      inputs:
+        - file: paper/defs.tex
+          sha256: 9aba2c73246d79e3c6b87cb1f01cf3e2f636e27c8afd97ccb8ba5c032a9ee65b
 
   - id: lem-penultimate-close
     version: 5
@@ -546,11 +552,12 @@ coverage_allowed_gaps:
   - source_pin:
       file: paper/exploding.tex
       sha256: 1d7c2010d8bd29e7fb83e93f19c9ebe0e8aef201f93559b2b18f5ca0dc049b44
-    reason: The counterexample and crossing registrations moved to corrected-source successors; Lemmas 3.5 and 3.7 moved to their official arXiv successors.
+    reason: The counterexample and crossing registrations moved to corrected-source successors; Lemmas 3.5, 3.6 and 3.7 moved to their official arXiv successors.
     statements:
       - {kind: theorem, line: 1351, label: "theorem:counterexample"}
       - {kind: prop, line: 416, label: "prop:crossing_time"}
       - {kind: lemma, line: 792, label: "lemma:last_penultimate_cluster"}
+      - {kind: lemma, line: 807, label: "lemma:penultimate_upper_bound"}
       - {kind: lemma, line: 832, label: "lemma:last_penultimate_close"}
   - source_pin:
       file: paper/exploding-arxiv.tex
@@ -558,7 +565,7 @@ coverage_allowed_gaps:
       inputs:
         - file: paper/defs.tex
           sha256: 9aba2c73246d79e3c6b87cb1f01cf3e2f636e27c8afd97ccb8ba5c032a9ee65b
-    reason: Only the exact Lemma 3.5 and 3.7 successors are registered under this official arXiv pin; its other 22 theorem-like statements remain unclaimed under this pin.
+    reason: Only the exact Lemma 3.5, 3.6 and 3.7 successors are registered under this official arXiv pin; its other 21 theorem-like statements remain unclaimed under this pin.
     statements:
       - {kind: theorem, line: 93, label: "prop:fey_levine_peres_explode"}
       - {kind: theorem, line: 101, label: "theorem:limit_shape"}
@@ -571,7 +578,6 @@ coverage_allowed_gaps:
       - {kind: lemma, line: 580, label: "lemma:finite_exploding"}
       - {kind: lemma, line: 590, label: "lemma:last_wave_bound"}
       - {kind: lemma, line: 620, label: "lemma:approx_subadditivity"}
-      - {kind: lemma, line: 667, label: "lemma:penultimate_upper_bound"}
       - {kind: prop, line: 706, label: "prop:convergence_of_the_last_wave"}
       - {kind: prop, line: 740, label: "prop:approximate_subadditive"}
       - {kind: prop, line: 1057, label: "prop:convergence_of_the_generalized_last_wave"}

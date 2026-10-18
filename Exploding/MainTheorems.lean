@@ -24,10 +24,10 @@ import Exploding.Frozen.BoxCrossing
 /-!
 # Main results
 
-This file gives the public paper-facing theorem statements. Eighteen paper-owned
+This file gives the public paper-facing theorem statements. Seventeen paper-owned
 journal-source statements retain their corrected-journal contracts, including the proved
-finite-exploding version 7 with `0 < p ≤ 1`. Lemmas 3.5 and 3.7 version 5 select the official
-arXiv source and include `p = 1`; six strict Bernoulli paper rows retain `p < 1`.
+finite-exploding version 7 with `0 < p ≤ 1`. Lemmas 3.5, 3.6 and 3.7 version 5 select the official
+arXiv source and include `p = 1`; five strict Bernoulli paper rows retain `p < 1`.
 Theorem 6.1 is the proved corrected-v10 v4 counterexample successor.
 Proposition 2.1 has the corrected-v10 v4 terminal-and-deadline statement for `0 < p ≤ 1`;
 its separate receipt records the exact declaration and bounded consumer evidence. The remaining
@@ -47,8 +47,8 @@ The main theorems are:
   uses one background for both axial limits and the measurable-volume obstruction.
 
 The other public results summarize journal-source Propositions 2.2, 3.1, 4.1, 5.1, 7.1,
-7.2, 7.3 and 7.5 and Lemmas 2.1, 3.1 to 3.4, and 3.6. Proposition 2.1 selects
-the corrected-v10 source; Lemmas 3.5 and 3.7 select the official arXiv source.
+7.2, 7.3 and 7.5 and Lemmas 2.1 and 3.1 to 3.4. Proposition 2.1 selects
+the corrected-v10 source; Lemmas 3.5, 3.6 and 3.7 select the official arXiv source.
 
 ## Cited results
 
@@ -285,7 +285,7 @@ theorem Exploding.last_penultimate_cluster (d : ℕ) (hd : 2 ≤ d) (p : ℝ) (h
 /-- **Lemma 3.6** (`lemma:penultimate_upper_bound`): the last-wave arrival times obey a
 linear upper bound up to a power of the logarithm.  The certified statement is
 `Exploding.Frozen.penultimate_upper_bound`, restated unchanged. -/
-theorem Exploding.penultimate_upper_bound (d : ℕ) (hd : 2 ≤ d) (p : ℝ) (hp : 0 < p) (hp1 : p < 1)
+theorem Exploding.penultimate_upper_bound (d : ℕ) (hd : 2 ≤ d) (p : ℝ) (hp : 0 < p) (hp1 : p ≤ 1)
     (hLSSB : Exploding.External.LiggettSchonmannStaceyBoundedDegree)
     (hHole : Exploding.External.MathieuHoleVolume)
     (hChem : Exploding.External.AntalPisztoraChemicalDistance) :

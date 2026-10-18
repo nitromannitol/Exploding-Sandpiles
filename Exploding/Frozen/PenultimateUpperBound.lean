@@ -6,10 +6,11 @@ import Exploding.External.LiggettSchonmannStaceyBoundedDegree
 import Exploding.External.MathieuHoles
 import Exploding.External.AntalPisztora
 import Exploding.Support.PUBProofF
+import Exploding.Support.PenultimateUpperBoundP1
 
 open Exploding LatticeProb MeasureTheory
 
-/-- **Lemma 3.6** (`exploding.tex:807-812`, label
+/-- **Lemma 3.6** (`exploding-arxiv.tex:667-672`, label
 `lemma:penultimate_upper_bound`).
 
 "There are constants `γ` and `C` so that on an event of probability 1, for all
@@ -25,7 +26,7 @@ for it enter as explicit hypotheses: `hLSSB` (Liggett, Schonmann and Stacey,
 Corollary 1.4), `hHole` (Mathieu, Lemma 5.2) and `hChem` (Antal and Pisztora,
 Theorem 1.1). -/
 -- FROZEN-STATEMENT-BEGIN
-theorem Exploding.Frozen.penultimate_upper_bound (d : ℕ) (hd : 2 ≤ d) (p : ℝ) (hp : 0 < p) (hp1 : p < 1)
+theorem Exploding.Frozen.penultimate_upper_bound (d : ℕ) (hd : 2 ≤ d) (p : ℝ) (hp : 0 < p) (hp1 : p ≤ 1)
     (hLSSB : Exploding.External.LiggettSchonmannStaceyBoundedDegree)
     (hHole : Exploding.External.MathieuHoleVolume)
     (hChem : Exploding.External.AntalPisztoraChemicalDistance) :
@@ -34,4 +35,8 @@ theorem Exploding.Frozen.penultimate_upper_bound (d : ℕ) (hd : 2 ≤ d) (p : �
         ∃ m : ℕ, lastArrival η (0 : Site d) x = (m : ℕ∞) ∧
           (m : ℝ) ≤ C * (mnorm x : ℝ) + Real.log n ^ γ
 -- FROZEN-STATEMENT-END
-:= Exploding.pub_penultimate_upper_bound d hd p hp hp1 hLSSB hHole hChem
+:= by
+  rcases lt_or_eq_of_le hp1 with hlt | heq
+  · exact Exploding.pub_penultimate_upper_bound d hd p hp hlt hLSSB hHole hChem
+  · subst heq
+    exact Exploding.penultimate_upper_bound_p1 d hd

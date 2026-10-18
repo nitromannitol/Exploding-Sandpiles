@@ -852,7 +852,7 @@ theorem lwc_cluster_lipschitz_1_2 (d : ℕ) (hd : 2 ≤ d) (p : ℝ) (hp : 0 < p
       ∀ x : Site d, mnorm x ≤ (n:ℤ) → ∃ a : ℕ, clusterArrival η (0:Site d) x = (a:ℕ∞) ∧
         (a:ℝ) ≤ C * (mnorm x : ℝ) + Real.log n ^ γ := by
   obtain ⟨γ1, C, hγ1, hC, hub⟩ :=
-    Exploding.Frozen.penultimate_upper_bound d hd p hp hp1 hLSSB hHole hChem
+    Exploding.Frozen.penultimate_upper_bound d hd p hp hp1.le hLSSB hHole hChem
   obtain ⟨γ2, hγ2, hclose⟩ :=
     Exploding.Frozen.last_penultimate_close d hd p hp hp1.le hLSSB hHole hChem
   obtain ⟨N, hN⟩ := Filter.eventually_atTop.mp (lwc_cluster_lipschitz_1_1 γ1 γ2)

@@ -147,16 +147,23 @@ nodes:
     approved: "2026-09-24"
 
   - id: prop-approximate-subadditive
-    version: 4
+    version: 5
     kind: theorem
-    source: exploding.tex:886-898 (label prop:approximate_subadditive)
+    source: exploding-arxiv.tex:740-752 (label prop:approximate_subadditive)
     file: Exploding/Frozen/ApproximateSubadditive.lean
     export: Exploding.Frozen.approximate_subadditive
     state: PROVED
-    frozen_sha256: 724f16a435a724da7cf5af101b9d248d41329ddd4286e2360a1502aa9f2138a4
+    frozen_sha256: 9b0824a6fef38f45bc7f3c1cc813ab4268d210f0eeb61ea6bf217cd93132cd44
     closure_sha256: fd050d97f3820155430dabbd8a70840b7e97d22490af56cba2f5f1c6a9b2a4d0
     provider: Exploding.Frozen.approximate_subadditive
-    approved: "2026-09-24"
+    approved: "2026-10-18"
+    audit_receipt: ledger/audits/2026-10-18-approxsub-v5-promotion.md
+    source_pin:
+      file: paper/exploding-arxiv.tex
+      sha256: f12deba6e481a3d81c6967bc48ecbbdae1df4fa1c5f6248a38990030b308072d
+      inputs:
+        - file: paper/defs.tex
+          sha256: 9aba2c73246d79e3c6b87cb1f01cf3e2f636e27c8afd97ccb8ba5c032a9ee65b
 
   - id: prop-generalized-last-wave
     version: 4
@@ -552,10 +559,11 @@ coverage_allowed_gaps:
   - source_pin:
       file: paper/exploding.tex
       sha256: 1d7c2010d8bd29e7fb83e93f19c9ebe0e8aef201f93559b2b18f5ca0dc049b44
-    reason: The counterexample and crossing registrations moved to corrected-source successors; Lemmas 3.5, 3.6 and 3.7 moved to their official arXiv successors.
+    reason: The counterexample and crossing registrations moved to corrected-source successors; Lemmas 3.5, 3.6 and 3.7 moved to official arXiv successors; Proposition 4.1 moved to its official-source successor.
     statements:
       - {kind: theorem, line: 1351, label: "theorem:counterexample"}
       - {kind: prop, line: 416, label: "prop:crossing_time"}
+      - {kind: prop, line: 886, label: "prop:approximate_subadditive"}
       - {kind: lemma, line: 792, label: "lemma:last_penultimate_cluster"}
       - {kind: lemma, line: 807, label: "lemma:penultimate_upper_bound"}
       - {kind: lemma, line: 832, label: "lemma:last_penultimate_close"}
@@ -565,7 +573,7 @@ coverage_allowed_gaps:
       inputs:
         - file: paper/defs.tex
           sha256: 9aba2c73246d79e3c6b87cb1f01cf3e2f636e27c8afd97ccb8ba5c032a9ee65b
-    reason: Only the exact Lemma 3.5, 3.6 and 3.7 successors are registered under this official arXiv pin; its other 21 theorem-like statements remain unclaimed under this pin.
+    reason: Only the exact Lemma 3.5, 3.6 and 3.7 successors and Proposition 4.1 successor are registered under this official arXiv pin; its other 20 theorem-like statements remain unclaimed under this pin.
     statements:
       - {kind: theorem, line: 93, label: "prop:fey_levine_peres_explode"}
       - {kind: theorem, line: 101, label: "theorem:limit_shape"}
@@ -579,7 +587,6 @@ coverage_allowed_gaps:
       - {kind: lemma, line: 590, label: "lemma:last_wave_bound"}
       - {kind: lemma, line: 620, label: "lemma:approx_subadditivity"}
       - {kind: prop, line: 706, label: "prop:convergence_of_the_last_wave"}
-      - {kind: prop, line: 740, label: "prop:approximate_subadditive"}
       - {kind: prop, line: 1057, label: "prop:convergence_of_the_generalized_last_wave"}
       - {kind: theorem, line: 1090, label: null}
       - {kind: theorem, line: 1192, label: "theorem:counterexample"}

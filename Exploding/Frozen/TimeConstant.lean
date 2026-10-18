@@ -50,7 +50,7 @@ theorem Exploding.Frozen.convergence_of_time_constant (d : ℕ) (hd : 2 ≤ d) (
     Exploding.Frozen.convergence_of_the_last_wave d hd p hp hp1 hLSSB hHole hChem
   have hexp : ∀ᵐ η ∂(toyLaw d p), Explosive η := hFLP d hd p hp hp1
   refine ⟨N, hcont, hconv, hhom, ?_⟩
-  filter_upwards [hlast, Exploding.Frozen.approximate_subadditive d hd p hp hp1 hLSSB hHole hChem, hexp]
+  filter_upwards [hlast, Exploding.Frozen.approximate_subadditive d hd p hp hp1.le hLSSB hHole hChem, hexp]
     with η hlastη hsub hηexp
   obtain ⟨hfinL, hloc⟩ := hlastη
   obtain ⟨C1, C2, hC⟩ := hsub

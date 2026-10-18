@@ -42,6 +42,16 @@ HISTORICAL_CROSSING_BLOCK = """theorem Exploding.Frozen.crossing_time (d : ℕ) 
 """
 
 
+HISTORICAL_APPROXIMATE_BLOCK = """theorem Exploding.Frozen.approximate_subadditive (d : ℕ) (hd : 2 ≤ d) (p : ℝ) (hp : 0 < p) (hp1 : p < 1)
+    (hLSSB : Exploding.External.LiggettSchonmannStaceyBoundedDegree)
+    (hHole : Exploding.External.MathieuHoleVolume)
+    (hChem : Exploding.External.AntalPisztoraChemicalDistance) :
+    ∀ᵐ η ∂(toyLaw d p), ∃ C1 C2 : ℕ, ∀ x : Site d,
+      arrival η x ≤ lastArrival η (0 : Site d) x + (C1 : ℕ∞) ∧
+        lastArrival η (0 : Site d) x ≤ arrival η x + (C2 : ℕ∞)
+"""
+
+
 class SourceReportingTests(unittest.TestCase):
     def setUp(self):
         original = sync_docs.ROOT
@@ -56,6 +66,9 @@ class SourceReportingTests(unittest.TestCase):
             "prop-crossing-time": (
                 "exploding.tex:416-422 (label prop:crossing_time)",
                 HISTORICAL_CROSSING_BLOCK),
+            "prop-approximate-subadditive": (
+                "exploding.tex:886-898 (label prop:approximate_subadditive)",
+                HISTORICAL_APPROXIMATE_BLOCK),
         }
         restored = {}
         for nid, (source, block) in historical.items():
@@ -68,6 +81,19 @@ class SourceReportingTests(unittest.TestCase):
         live_crossing = next(n for n in self.live_manifest["nodes"]
                              if n["id"] == "prop-crossing-time")
         self.live_crossing_text = (original / live_crossing["file"]).read_text(encoding="utf-8")
+        live_approximate = next(n for n in self.live_manifest["nodes"]
+                                if n["id"] == "prop-approximate-subadditive")
+        self.live_approximate_text = (original / live_approximate["file"]).read_text(encoding="utf-8")
+        # This fixture models the historical @4 row exactly: the statement is
+        # journal-pinned, so its matching gap belongs to official arXiv instead.
+        journal_gaps, official_gaps = self.manifest["coverage_allowed_gaps"][:2]
+        journal_gaps["statements"] = [
+            gap for gap in journal_gaps["statements"]
+            if gap["label"] != "prop:approximate_subadditive"]
+        if not any(gap["label"] == "prop:approximate_subadditive"
+                   for gap in official_gaps["statements"]):
+            official_gaps["statements"].append(
+                {"kind": "prop", "line": 740, "label": "prop:approximate_subadditive"})
         directory = tempfile.TemporaryDirectory(prefix="exploding-source-reporting-")
         self.addCleanup(directory.cleanup)
         self.root = Path(directory.name)
@@ -219,17 +245,77 @@ class SourceReportingTests(unittest.TestCase):
         old = groups["paper/exploding.tex"]
         official = groups["paper/exploding-arxiv.tex"]
         revised = groups[self.revised]
-        self.assertEqual((len(old), len(official), len(revised)), (30, 3, 6))
-        self.assertEqual(sum(n["kind"] == "theorem" for n in old), 23)
+        self.assertEqual((len(old), len(official), len(revised)), (29, 4, 6))
+        self.assertEqual(sum(n["kind"] == "theorem" for n in old), 22)
         self.assertEqual(sum(n["kind"] == "definition" for n in old), 7)
         self.assertEqual({n["id"] for n in official},
                          {"lem-penultimate-cluster", "lem-penultimate-upper-bound",
-                          "lem-penultimate-close"})
+                          "lem-penultimate-close", "prop-approximate-subadditive"})
         self.assertTrue(all(n["kind"] == "theorem" for n in official))
         self.assertEqual(sum(n["kind"] == "theorem" for n in revised), 2)
         self.assertEqual(sum(n["kind"] == "definition" for n in revised), 4)
         self.assertEqual({n["id"] for n in revised if n["kind"] == "theorem"},
                          {"thm-counterexample", "prop-crossing-time"})
+
+    def test_live_approximate_successor_coverage_and_historical_boundary(self):
+        self.manifest = copy.deepcopy(self.live_manifest)
+        self.write_manifest()
+        result, output = self.run_main(check_coverage)
+        self.assertEqual(result, 0, output)
+        self.assertIn("18/24 statements claimed", output)
+        self.assertIn("4/24 statements claimed", output)
+        self.assertEqual(output.count("2/24 statements claimed"), 1)
+
+        saved = copy.deepcopy(self.manifest["coverage_allowed_gaps"])
+        journal, official, _ = self.manifest["coverage_allowed_gaps"]
+        journal["statements"] = [
+            gap for gap in journal["statements"]
+            if gap["label"] != "prop:approximate_subadditive"]
+        self.write_manifest()
+        result, output = self.run_main(check_coverage)
+        self.assertEqual(result, 1, output)
+        self.assertIn("unexpected gap: prop at line 886", output)
+
+        self.manifest["coverage_allowed_gaps"] = copy.deepcopy(saved)
+        official = self.manifest["coverage_allowed_gaps"][1]
+        official["statements"].append(
+            {"kind": "prop", "line": 740, "label": "prop:approximate_subadditive"})
+        self.write_manifest()
+        result, output = self.run_main(check_coverage)
+        self.assertEqual(result, 1, output)
+        self.assertIn("stale gap allowance: prop at line 740", output)
+
+        node = next(n for n in self.manifest["nodes"]
+                    if n["id"] == "prop-approximate-subadditive")
+        for defect in ("input", "citation"):
+            with self.subTest(defect=defect):
+                saved_node = copy.deepcopy(node)
+                if defect == "input":
+                    node["source_pin"] = {**node["source_pin"], "inputs": []}
+                else:
+                    node["source"] = "exploding.tex:886-898 (label prop:approximate_subadditive)"
+                self.write_manifest()
+                for module in (sync_docs, assumptions, check_clauses, check_exponents):
+                    result, output = self.run_main(module)
+                    self.assertEqual(result, 2, output)
+                node.clear()
+                node.update(saved_node)
+
+        self.write_manifest()
+        for module in (check_clauses, check_exponents):
+            result, output = self.run_main(module)
+            self.assertEqual(result, 0, output)
+            self.assertIn("prop-approximate-subadditive: different source pin:", output)
+
+    def test_historical_approximate_note_cannot_be_reused_for_v5(self):
+        node = next(n for n in self.manifest["nodes"]
+                    if n["id"] == "prop-approximate-subadditive")
+        node["version"] = 5
+        self.write_manifest()
+        for module in (check_clauses, check_exponents):
+            result, output = self.run_main(module)
+            self.assertEqual(result, 2, output)
+            self.assertIn("historical annotation identity mismatch", output)
 
     def test_two_migrations_exclude_both_historical_readings(self):
         self.mixed_manifest(include_crossing=True)

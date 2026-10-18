@@ -4,8 +4,9 @@ project:
   name: "Exploding-Sandpiles"
   description: >-
     Lean 4/Mathlib formalization of the paper's results with source selected per manifest
-    row: 30 rows select the corrected journal source, Lemmas 3.5, 3.6 and 3.7 select
-    the official arXiv source, and six rows select the local corrected-v10 draft.
+    row: 29 rows select the corrected journal source, Lemmas 3.5, 3.6, 3.7 and
+    Proposition 4.1 select the official arXiv source, and six rows select the local
+    corrected-v10 draft.
     The corrected crossing row gives the terminal-and-deadline event. Seven cited
     inputs remain registered, six also proved in the repository. The comparator
     remains the historical limit-shape pair.
@@ -29,7 +30,7 @@ sources:
     type: "journal article"
     relationship: "formalizes by default"
     note: >-
-      Default source for 30 existing rows: paper/exploding.tex, SHA-256
+      Default source for 29 existing rows: paper/exploding.tex, SHA-256
       1d7c2010d8bd29e7fb83e93f19c9ebe0e8aef201f93559b2b18f5ca0dc049b44.
       paper/CHANGES_FROM_ARXIV.md lists the journal-copy differences.
     license: ""
@@ -43,8 +44,8 @@ sources:
     type: "official arXiv source extraction"
     relationship: "partial-source-for"
     note: >-
-      Lemmas 3.5, 3.6 and 3.7 alone select paper/exploding-arxiv.tex at SHA-256
-      f12deba6e481a3d81c6967bc48ecbbdae1df4fa1c5f6248a38990030b308072d
+      Lemmas 3.5, 3.6, 3.7 and Proposition 4.1 select paper/exploding-arxiv.tex
+      at SHA-256 f12deba6e481a3d81c6967bc48ecbbdae1df4fa1c5f6248a38990030b308072d
       and its paper/defs.tex input. This selection does not certify other arXiv statements.
     license: ""
     author_contacted: "n/a"
@@ -73,17 +74,17 @@ related_formalizations:
 
 status:
   scope: >-
-    Mixed-source registry: 39 registrations = 30 journal rows, three official-arXiv
+    Mixed-source registry: 39 registrations = 29 journal rows, four official-arXiv
     rows and six corrected-v10 rows; aggregate 28 theorem rows and 11 definition
-    rows. The journal group has 23 theorem rows (17 paper-owned plus six
+    rows. The journal group has 22 theorem rows (16 paper-owned plus six
     cited-input companions) and seven cited-input definitions. The official
-    group contains Lemmas 3.5, 3.6 and 3.7 as paper theorem rows. The corrected
+    group contains Lemmas 3.5, 3.6, 3.7 and Proposition 4.1 as paper theorem rows. The corrected
     group has two paper theorem rows and four literal definitions; definitions
-    add zero theorem coverage. Structural claims are journal 19/24 (17/22
-    paper-owned), official arXiv 3/24 (3/22), and corrected-v10 2/24 (2/22);
+    add zero theorem coverage. Structural claims are journal 18/24 (16/22
+    paper-owned), official arXiv 4/24 (4/22), and corrected-v10 2/24 (2/22);
     exact uncovered sets are the three manifest allowed-gap entries. Aggregate
     manifest states remain 28 PROVED, 11 FROZEN definitions and zero SEALED.
-    The global default remains paper/exploding.tex. Lemmas 3.5, 3.6 and 3.7 select
+    The global default remains paper/exploding.tex. Lemmas 3.5, 3.6, 3.7 and Proposition 4.1 select
     paper/exploding-arxiv.tex (SHA-256
     f12deba6e481a3d81c6967bc48ecbbdae1df4fa1c5f6248a38990030b308072d)
     with paper/defs.tex input. Six rows select the corrected-v10 TeX (SHA-256
@@ -93,11 +94,13 @@ status:
     All seven cited inputs remain registered and unchanged. The counterexample
     and crossing successors have separate receipts; neither corrected theorem
     has a cited-input binder. Official Lemmas 3.5, 3.6 and 3.7 retain explicit cited
-    inputs for the strict p < 1 branch and prove p = 1 without them. Other
+    inputs for the strict p < 1 branch and prove p = 1 without them. Proposition 4.1
+    version 5 keeps its three cited inputs for the strict branch and uses the ordinary
+    Support endpoint theorem at p = 1. Other
     statements of either revised source lack certification. Lemma 3.2 version 7
     retains its historical-pin p = 1 endpoint; corrected crossing version 4 and
-    official Lemmas 3.5, 3.6 and 3.7 include 0 < p ≤ 1. Five Bernoulli paper rows retain
-    p < 1. The comparator remains historical Theorem 1.2 only.
+    official Lemmas 3.5, 3.6, 3.7 and Proposition 4.1 version 5 include 0 < p ≤ 1.
+    Four Bernoulli paper rows retain p < 1. The comparator remains historical Theorem 1.2 only.
   sorry_count: 0
   sorry_count_scope: "Production library; the comparator challenge has one separately reported intentional sorry"
   comparator_challenge_sorry_count: 1
@@ -156,7 +159,7 @@ status:
 
 fidelity:
   divergences: >-
-    The journal default is paper/exploding.tex. Lemmas 3.5, 3.6 and 3.7 select the
+    The journal default is paper/exploding.tex. Lemmas 3.5, 3.6, 3.7 and Proposition 4.1 select the
     official arXiv extraction and its defs.tex input; six declarations select
     local corrected arXiv-format v10 and its defs.tex input. The corrected
     crossing row explicitly includes terminal one and a positive volume deadline;
@@ -168,8 +171,8 @@ fidelity:
     a bounding rectangle is carried where a cardinality would otherwise absorb it; the
     standing hypotheses of Sections 2 to 4 are explicit hypotheses of the deterministic
     lemmas; "convex domain" is a nonempty open convex set; Proposition 7.2 writes the
-    paper's d as d + 1. Lemma 3.2 version 7 and official Lemmas 3.5, 3.6 and 3.7
-    include the valid Bernoulli endpoint p = 1; five remaining Bernoulli paper
+    paper's d as d + 1. Lemma 3.2 version 7 and official Lemmas 3.5, 3.6, 3.7
+    and Proposition 4.1 version 5 include the valid Bernoulli endpoint p = 1; four remaining Bernoulli paper
     rows still restrict p to (0, 1), although the
     source's "Fix p > 0" also includes that deterministic background.
 
@@ -223,7 +226,7 @@ alignment:
         Exact version 4 requires terminal one and a positive volume deadline for all
         permitted seeds under the actual law for 0 < p ≤ 1. No cited-input binder.
         The dated crossing receipt records its exact source, declaration and bounded consumers.
-    - source: "The paper's other propositions and lemmas and Propositions 7.2, 7.3, excluding Lemmas 3.2, 3.5, 3.6, 3.7 and corrected Proposition 2.1"
+    - source: "The paper's other propositions and lemmas and Propositions 7.2, 7.3, excluding Lemmas 3.2, 3.5, 3.6, 3.7, Proposition 4.1 and corrected Proposition 2.1"
       lean: "Exploding.* in Exploding/MainTheorems.lean"
       module: "Exploding.MainTheorems"
       status: "proved"
@@ -232,7 +235,7 @@ alignment:
       lean: "Exploding.Frozen.finite_exploding"
       module: "Exploding.Frozen.FiniteExploding"
       status: "proved"
-      note: "Version 7 includes p = 1 and passed independent statement review, a full isolated build and the configured gates. Five Bernoulli paper rows remain strict, and other statements of the corrected arXiv draft retain source-fidelity gaps."
+      note: "Version 7 includes p = 1 and passed independent statement review, a full isolated build and the configured gates. Four Bernoulli paper rows remain strict, and other statements of the corrected arXiv draft retain source-fidelity gaps."
     - source: "Lemma 3.5 (lemma:last_penultimate_cluster; official arXiv v2)"
       lean: "Exploding.Frozen.last_penultimate_cluster"
       module: "Exploding.Frozen.PenultimateCluster"
@@ -251,6 +254,12 @@ alignment:
       source_pin: "paper/exploding-arxiv.tex; f12deba6e481a3d81c6967bc48ecbbdae1df4fa1c5f6248a38990030b308072d"
       status: "proved"
       note: "Version 5 includes p = 1 by the deterministic all-high law; the three cited inputs remain explicit for the strict branch. Source coverage is limited to this lemma."
+    - source: "Proposition 4.1 (prop:approximate_subadditive; official arXiv v2)"
+      lean: "Exploding.Frozen.approximate_subadditive"
+      module: "Exploding.Frozen.ApproximateSubadditive"
+      source_pin: "paper/exploding-arxiv.tex; f12deba6e481a3d81c6967bc48ecbbdae1df4fa1c5f6248a38990030b308072d"
+      status: "proved"
+      note: "Version 5 includes p = 1 through the ordinary Support endpoint theorem with witnesses (C₁,C₂)=(1,0); the three cited inputs remain explicit for the strict branch. See its dated source audit receipt."
 
 acknowledgements: >-
   Built on Lean 4, Mathlib, Lake, the shared library Lattice-Probability, and

@@ -50,10 +50,31 @@ jobs:
         run: |
           set -o pipefail
           lake build Exploding.Meta.AxiomsAudit 2>&1 | tee axioms-audit.log
-          if grep 'depends on axioms' axioms-audit.log | grep -vE 'depends on axioms: \[propext, Classical.choice, Quot.sound\]$'; then
-            echo "A proved result depends on an axiom other than the three standard ones."
-            exit 1
-          fi
+          python3 - axioms-audit.log <<'PY'
+          import re, sys
+          data = open(sys.argv[1], "rb").read().decode("utf-8", "replace")
+          marker = "depends on axioms"
+          lines = data.split("\n")
+          records, i = [], 0
+          while i < len(lines):
+              if marker in lines[i]:
+                  rec = lines[i].rstrip()
+                  # Lean continues a wrapped axiom list on indented lines that carry no new record.
+                  while (not rec.endswith("]") and i + 1 < len(lines)
+                         and lines[i + 1].startswith(" ") and marker not in lines[i + 1]):
+                      i += 1
+                      rec += " " + lines[i].strip()
+                  records.append(" ".join(rec.split()))
+              i += 1
+          exact = re.compile(r"^.*' depends on axioms: \[propext, Classical\.choice, Quot\.sound\]$")
+          bad = [r for r in records if r.count(marker) != 1 or not exact.match(r)]
+          if not records:
+              sys.exit("The axiom audit printed no axiom lists.")
+          if bad or data.count(marker) != len(records):
+              print("\n".join(bad))
+              sys.exit("A proved result depends on an axiom other than the three standard ones.")
+          print(f"Axiom audit: {len(records)} axiom lists, each exactly propext, Classical.choice and Quot.sound.")
+          PY
 
       - name: Frozen statements, paper correspondence and axiom closures
         run: |

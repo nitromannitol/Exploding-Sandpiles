@@ -304,6 +304,7 @@ import Exploding.Support.ArxivGoodCubeBondBoxCutoff
 import Exploding.Support.ArxivP1FiniteExploding
 import Exploding.Support.ArxivCrossingTerminal
 import Exploding.Support.ArxivCrossingBound
+import Exploding.Support.AllHighGoodCubes
 import Exploding.Support.AllHighWaveTranslation
 import Exploding.Support.AllHighWaveThreshold
 import Exploding.Support.AllHighPenultimateCluster

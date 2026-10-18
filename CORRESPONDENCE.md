@@ -87,7 +87,7 @@ hypotheses, not version 5 on the corrected source or corrected v10 as a whole. S
 
 | id | Lean | paper | source pin | state |
 |---|---|---|---|---|
-| `thm-limit-shape` | [Exploding.Frozen.limit_shape](Exploding/Frozen/LimitShape.lean#L30) | exploding-corrected-arxiv.tex:104-112 (label theorem:limit_shape) | `paper/corrected-arxiv/exploding-corrected-arxiv.tex` (`59b5ac1a5cdf80c5`) | proved, independently audited |
+| `thm-limit-shape` | [Exploding.Frozen.limit_shape](Exploding/Frozen/LimitShape.lean#L31) | exploding-corrected-arxiv.tex:104-112 (label theorem:limit_shape) | `paper/corrected-arxiv/exploding-corrected-arxiv.tex` (`59b5ac1a5cdf80c5`) | proved, independently audited |
 | `thm-time-constant` | [Exploding.Frozen.convergence_of_time_constant](Exploding/Frozen/TimeConstant.lean#L36) | exploding-corrected-arxiv.tex:117-120 (label theorem:convergence_of_time_constant) | `paper/corrected-arxiv/exploding-corrected-arxiv.tex` (`59b5ac1a5cdf80c5`) | proved, independently audited |
 | `thm-explosive` | [Exploding.Frozen.explosive](Exploding/Frozen/Explosive.lean#L28) | exploding.tex:265-268 (label theorem:explosive) | `paper/exploding.tex` (`1d7c2010d8bd29e7`) | proved, independently audited |
 | `prop-renormalization` | [Exploding.Frozen.renormalization_properties](Exploding/Frozen/Renormalization.lean#L42) | exploding-corrected-arxiv.tex:352-367 (label prop:renormalization_properties) | `paper/corrected-arxiv/exploding-corrected-arxiv.tex` (`59b5ac1a5cdf80c5`) | proved, independently audited |

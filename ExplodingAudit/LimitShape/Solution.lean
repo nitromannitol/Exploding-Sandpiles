@@ -51,7 +51,7 @@ theorem limit_shape (d : ℕ) (hd : 2 ≤ d) (p : ℝ) (hp : 0 < p) (hp1 : p < 1
           atTop (nhds 0)
 := by
   set_option smartUnfolding false in
-  exact Exploding.Frozen.limit_shape d hd p hp hp1 hLSSB hHole hChem hSch
+  exact Exploding.Frozen.limit_shape d hd p hp hp1.le hLSSB hHole hChem hSch
 
 end LimitShape
 end StatementAudit

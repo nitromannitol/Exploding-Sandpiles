@@ -11,7 +11,8 @@ import Exploding.External.Schonmann
 
 open Exploding LatticeProb MeasureTheory Filter
 
-/-- **Theorem 1.2** (`exploding.tex:246-254`, label `theorem:limit_shape`).
+/-- **Theorem 1.2** (`paper/corrected-arxiv/exploding-corrected-arxiv.tex:104-112`,
+label `theorem:limit_shape`).
 
 "Let `η` be as in (1.2).  There exists a convex domain `B(p) ⊂ ℝ^d` so that on
 an event of probability 1, `|{v̄_t > 0} △ B(p)| → 0`, where
@@ -27,7 +28,7 @@ before `η`.
 The results the paper cites for Proposition 2.2 (`hLSSB`, `hHole`, `hChem`) and
 Schonmann's bound behind Theorem 1.4 (`hSch`) enter as explicit hypotheses. -/
 -- FROZEN-STATEMENT-BEGIN
-theorem Exploding.Frozen.limit_shape (d : ℕ) (hd : 2 ≤ d) (p : ℝ) (hp : 0 < p) (hp1 : p < 1)
+theorem Exploding.Frozen.limit_shape (d : ℕ) (hd : 2 ≤ d) (p : ℝ) (hp : 0 < p) (hp1 : p ≤ 1)
     (hLSSB : Exploding.External.LiggettSchonmannStaceyBoundedDegree)
     (hHole : Exploding.External.MathieuHoleVolume)
     (hChem : Exploding.External.AntalPisztoraChemicalDistance)

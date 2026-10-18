@@ -4,8 +4,8 @@ project:
   name: "Exploding-Sandpiles"
   description: >-
     Lean 4/Mathlib formalization of the paper's results with source selected per manifest
-    row: 26 rows select the corrected journal source, Proposition 3.1, Lemmas 3.5, 3.6,
-    3.7 and Proposition 4.1 select the official arXiv source, and eight rows select the local
+    row: 25 rows select the corrected journal source, Proposition 3.1, Lemmas 3.5, 3.6,
+    3.7 and Proposition 4.1 select the official arXiv source, and nine rows select the local
     corrected-v10 draft.
     The corrected crossing row gives the terminal-and-deadline event. Seven cited
     inputs remain registered, six also proved in the repository. The comparator
@@ -74,25 +74,28 @@ related_formalizations:
 
 status:
   scope: >-
-    Mixed-source registry: 39 registrations = 26 journal rows, five official-arXiv
-    rows and eight corrected-v10 rows; aggregate 28 theorem rows and 11 definition
-    rows. The journal group has 19 theorem rows (13 paper-owned plus six
+    Mixed-source registry: 39 registrations = 25 journal rows, five official-arXiv
+    rows and nine corrected-v10 rows; aggregate 28 theorem rows and 11 definition
+    rows. The journal group has 18 theorem rows (12 paper-owned plus six
     cited-input companions) and seven cited-input definitions. The official
     group contains Proposition 3.1, Lemmas 3.5, 3.6, 3.7 and Proposition 4.1 as paper theorem rows. The corrected
-    group has four paper theorem rows and four literal definitions; definitions
-    add zero theorem coverage. Structural claims are journal 15/24 (13/22
-    paper-owned), official arXiv 5/24 (5/22), and corrected-v10 4/24 (4/22);
+    group has five paper theorem rows and four literal definitions; definitions
+    add zero theorem coverage. Structural claims are journal 14/24 (12/22
+    paper-owned), official arXiv 5/24 (5/22), and corrected-v10 5/24 (5/22);
     exact uncovered sets are the three manifest allowed-gap entries. Aggregate
     manifest states remain 28 PROVED, 11 FROZEN definitions and zero SEALED.
     The global default remains paper/exploding.tex. Proposition 3.1, Lemmas 3.5, 3.6, 3.7 and Proposition 4.1 select
     paper/exploding-arxiv.tex (SHA-256
     f12deba6e481a3d81c6967bc48ecbbdae1df4fa1c5f6248a38990030b308072d)
-    with paper/defs.tex input. Eight rows select the corrected-v10 TeX (SHA-256
+    with paper/defs.tex input. Nine rows select the corrected-v10 TeX (SHA-256
     59b5ac1a5cdf80c5b550dfc1738414892e0aa3f8cdb0bf03d00c74685a3e1be2)
     and its defs.tex input (SHA-256
     9aba2c73246d79e3c6b87cb1f01cf3e2f636e27c8afd97ccb8ba5c032a9ee65b).
     All seven cited inputs remain registered and unchanged. The counterexample
     and crossing successors have separate receipts; neither has a cited-input binder.
+    Corrected-v10 Theorem 1.2 version 5 states 0 < p ≤ 1 under the corrected homogeneous
+    law and retains its four cited inputs; its source-marker receipt is
+    ledger/audits/2026-10-18-limitshape-v5-source-marker.md.
     The corrected-v10 Theorem 1.3 version 6 retains four cited inputs for the strict
     branch and uses the unconditional ordinary all-high Support theorem at p = 1;
     its source and statement receipt records the exact scope. Official Lemmas 3.5, 3.6 and 3.7 retain explicit cited
@@ -102,11 +105,12 @@ status:
     version 5 keeps its three cited inputs for the strict branch and uses the ordinary
     Support endpoint theorem at p = 1. Other
     statements of either revised source lack certification. Lemma 3.2 version 7
-    retains its historical-pin p = 1 endpoint; corrected crossing version 4 and
-    official Proposition 3.1, Lemmas 3.5, 3.6, 3.7 and Proposition 4.1 version 5 include
-    0 < p ≤ 1. Proposition 2.2 version 5 also includes 0 < p ≤ 1 and retains all three cited inputs;
+    retains its historical-pin p = 1 endpoint; corrected crossing version 4, Theorem 1.2
+    version 5, and official Proposition 3.1, Lemmas 3.5, 3.6, 3.7 and Proposition 4.1
+    version 5 include 0 < p ≤ 1. Proposition 2.2 version 5 also includes 0 < p ≤ 1 and retains all three cited inputs;
     its conclusion includes the maximal infinite good-cube component and uniqueness of every infinite component.
-    One Bernoulli paper row retains p < 1. The comparator remains historical Theorem 1.2 only.
+    No registered Frozen statement keeps a strict Bernoulli endpoint. The comparator remains
+    the historical journal Theorem 1.2 (0 < p < 1) only.
   sorry_count: 0
   sorry_count_scope: "Production library; the comparator challenge has one separately reported intentional sorry"
   comparator_challenge_sorry_count: 1
@@ -198,11 +202,12 @@ review:
 alignment:
   namespace: "Exploding"
   statements:
-    - source: "Theorem 1.2 (theorem:limit_shape)"
+    - source: "Theorem 1.2 (theorem:limit_shape; corrected-v10)"
       lean: "Exploding.Frozen.limit_shape"
       module: "Exploding.Frozen.LimitShape"
       status: "proved"
-      note: "Takes the three percolation results behind Proposition 2.2 and Schonmann's bound as explicit hypotheses; only the chemical distance of Antal and Pisztora is not proved in this repository. Comparator surface: ExplodingAudit/LimitShape/."
+      source_pin: "paper/corrected-arxiv/exploding-corrected-arxiv.tex:104-112; 59b5ac1a5cdf80c5b550dfc1738414892e0aa3f8cdb0bf03d00c74685a3e1be2; defs input 9aba2c73246d79e3c6b87cb1f01cf3e2f636e27c8afd97ccb8ba5c032a9ee65b"
+      note: "Version 5 states 0 < p ≤ 1 under the corrected homogeneous law. It takes the three percolation results behind Proposition 2.2 and Schonmann's bound as explicit hypotheses; only the chemical distance of Antal and Pisztora is not proved in this repository. The comparator surface ExplodingAudit/LimitShape/ checks the historical journal statement with 0 < p < 1. See ledger/audits/2026-10-18-limitshape-v5-source-marker.md."
     - source: "Theorem 1.3 (theorem:convergence_of_time_constant; corrected-v10)"
       lean: "Exploding.Frozen.convergence_of_time_constant"
       module: "Exploding.Frozen.TimeConstant"

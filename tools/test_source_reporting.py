@@ -125,6 +125,38 @@ RENORMALIZATION_V5_BLOCK = """theorem Exploding.Frozen.renormalization_propertie
 """
 
 
+HISTORICAL_LIMITSHAPE_BLOCK = """theorem Exploding.Frozen.limit_shape (d : ℕ) (hd : 2 ≤ d) (p : ℝ) (hp : 0 < p) (hp1 : p < 1)
+    (hLSSB : Exploding.External.LiggettSchonmannStaceyBoundedDegree)
+    (hHole : Exploding.External.MathieuHoleVolume)
+    (hChem : Exploding.External.AntalPisztoraChemicalDistance)
+    (hSch : Exploding.External.SchonmannBootstrap) :
+    ∃ B : Set (Fin d → ℝ),
+      Convex ℝ B ∧ IsOpen B ∧ B.Nonempty ∧
+      ∀ᵐ η ∂(toyLaw d p),
+        Tendsto
+          (fun t : ℕ =>
+            volume (symmDiff
+              {y : Fin d → ℝ | 0 < podo (explodingPile η) t (nearestSite ((t : ℝ) • y))} B))
+          atTop (nhds 0)
+"""
+
+
+LIMITSHAPE_V5_BLOCK = """theorem Exploding.Frozen.limit_shape (d : ℕ) (hd : 2 ≤ d) (p : ℝ) (hp : 0 < p) (hp1 : p ≤ 1)
+    (hLSSB : Exploding.External.LiggettSchonmannStaceyBoundedDegree)
+    (hHole : Exploding.External.MathieuHoleVolume)
+    (hChem : Exploding.External.AntalPisztoraChemicalDistance)
+    (hSch : Exploding.External.SchonmannBootstrap) :
+    ∃ B : Set (Fin d → ℝ),
+      Convex ℝ B ∧ IsOpen B ∧ B.Nonempty ∧
+      ∀ᵐ η ∂(toyLaw d p),
+        Tendsto
+          (fun t : ℕ =>
+            volume (symmDiff
+              {y : Fin d → ℝ | 0 < podo (explodingPile η) t (nearestSite ((t : ℝ) • y))} B))
+          atTop (nhds 0)
+"""
+
+
 class SourceReportingTests(unittest.TestCase):
     def setUp(self):
         original = sync_docs.ROOT
@@ -133,6 +165,9 @@ class SourceReportingTests(unittest.TestCase):
         self.manifest["nodes"] = [n for n in self.manifest["nodes"]
                                   if not sync_docs.is_local_definition(n)]
         historical = {
+            "thm-limit-shape": (
+                "exploding.tex:246-254 (label theorem:limit_shape)",
+                HISTORICAL_LIMITSHAPE_BLOCK),
             "thm-time-constant": (
                 "exploding.tex:259-262 (label theorem:convergence_of_time_constant)",
                 HISTORICAL_TIMECONSTANT_BLOCK),
@@ -178,7 +213,8 @@ class SourceReportingTests(unittest.TestCase):
             gap for gap in journal_gaps["statements"]
             if gap["label"] not in {"prop:approximate_subadditive",
                                     "prop:convergence_of_the_last_wave",
-                                    "theorem:convergence_of_time_constant"}]
+                                    "theorem:convergence_of_time_constant",
+                                    "theorem:limit_shape"}]
         historical_official_gaps = (
             {"kind": "prop", "line": 740, "label": "prop:approximate_subadditive"},
             {"kind": "prop", "line": 706, "label": "prop:convergence_of_the_last_wave"},
@@ -187,6 +223,8 @@ class SourceReportingTests(unittest.TestCase):
             if not any(existing["label"] == gap["label"]
                        for existing in official_gaps["statements"]):
                 official_gaps["statements"].append(gap)
+        corrected_gaps["statements"].append(
+            {"kind": "theorem", "line": 104, "label": "theorem:limit_shape"})
         corrected_gaps["statements"].append(
             {"kind": "theorem", "line": 117,
              "label": "theorem:convergence_of_time_constant"})
@@ -363,27 +401,26 @@ class SourceReportingTests(unittest.TestCase):
         old = groups["paper/exploding.tex"]
         official = groups["paper/exploding-arxiv.tex"]
         revised = groups[self.revised]
-        self.assertEqual((len(old), len(official), len(revised)), (26, 5, 8))
-        self.assertEqual(sum(n["kind"] == "theorem" for n in old), 19)
+        self.assertEqual((len(old), len(official), len(revised)), (25, 5, 9))
+        self.assertEqual(sum(n["kind"] == "theorem" for n in old), 18)
         self.assertEqual(sum(n["kind"] == "definition" for n in old), 7)
         self.assertEqual({n["id"] for n in official},
                          {"lem-penultimate-cluster", "lem-penultimate-upper-bound",
                           "lem-penultimate-close", "prop-approximate-subadditive",
                           "prop-last-wave-convergence"})
         self.assertTrue(all(n["kind"] == "theorem" for n in official))
-        self.assertEqual(sum(n["kind"] == "theorem" for n in revised), 4)
+        self.assertEqual(sum(n["kind"] == "theorem" for n in revised), 5)
         self.assertEqual(sum(n["kind"] == "definition" for n in revised), 4)
         self.assertEqual({n["id"] for n in revised if n["kind"] == "theorem"},
                          {"thm-counterexample", "prop-crossing-time", "thm-time-constant",
-                          "prop-renormalization"})
+                          "prop-renormalization", "thm-limit-shape"})
 
     def test_live_approximate_successor_coverage_and_historical_boundary(self):
         self.restore_live_successors()
         result, output = self.run_main(check_coverage)
         self.assertEqual(result, 0, output)
-        self.assertIn("15/24 statements claimed", output)
-        self.assertIn("5/24 statements claimed", output)
-        self.assertEqual(output.count("4/24 statements claimed"), 1)
+        self.assertIn("14/24 statements claimed", output)
+        self.assertEqual(output.count("5/24 statements claimed"), 2)
 
         saved = copy.deepcopy(self.manifest["coverage_allowed_gaps"])
         journal, official, _ = self.manifest["coverage_allowed_gaps"]
@@ -437,8 +474,8 @@ class SourceReportingTests(unittest.TestCase):
             "(hp1 : p < 1)", "(hp1 : p ≤ 1)"))
         result, output = self.run_main(check_coverage)
         self.assertEqual(result, 0, output)
-        for claim in ("15/24", "5/24", "4/24"):
-            self.assertIn(claim + " statements claimed", output)
+        self.assertIn("14/24 statements claimed", output)
+        self.assertEqual(output.count("5/24 statements claimed"), 2)
         saved_gaps = copy.deepcopy(self.manifest["coverage_allowed_gaps"])
         for defect in ("missing-journal", "stale-corrected", "unclaimed-official"):
             with self.subTest(defect=defect):
@@ -527,8 +564,8 @@ class SourceReportingTests(unittest.TestCase):
 
         result, output = self.run_main(check_coverage)
         self.assertEqual(result, 0, output)
-        for claim in ("15/24", "5/24", "4/24"):
-            self.assertIn(claim + " statements claimed", output)
+        self.assertIn("14/24 statements claimed", output)
+        self.assertEqual(output.count("5/24 statements claimed"), 2)
 
         saved = copy.deepcopy(node)
         node["source_pin"] = {**node["source_pin"], "inputs": []}
@@ -578,6 +615,132 @@ class SourceReportingTests(unittest.TestCase):
         result, output = self.run_main(check_coverage)
         self.assertEqual(result, 1, output)
         self.assertIn("stale gap allowance: prop at line 344", output)
+
+    def test_live_limitshape_v5_partition_source_and_gap_controls(self):
+        self.manifest = copy.deepcopy(self.live_manifest)
+        self.write_manifest()
+        node = next(n for n in self.manifest["nodes"] if n["id"] == "thm-limit-shape")
+        self.assertEqual(node["version"], 5)
+        self.assertEqual(node["source"],
+                         "exploding-corrected-arxiv.tex:104-112 (label theorem:limit_shape)")
+        self.assertEqual(node["source_pin"], {
+            "file": self.revised,
+            "sha256": "59b5ac1a5cdf80c5b550dfc1738414892e0aa3f8cdb0bf03d00c74685a3e1be2",
+            "inputs": [{
+                "file": "paper/corrected-arxiv/defs.tex",
+                "sha256": "9aba2c73246d79e3c6b87cb1f01cf3e2f636e27c8afd97ccb8ba5c032a9ee65b",
+            }],
+        })
+        result, output = self.run_main(check_coverage)
+        self.assertEqual(result, 0, output)
+        self.assertIn("14/24 statements claimed", output)
+        self.assertEqual(output.count("5/24 statements claimed"), 2)
+
+        saved_gaps = copy.deepcopy(self.manifest["coverage_allowed_gaps"])
+        for defect in ("journal-246", "corrected-104", "official-101"):
+            with self.subTest(defect=defect):
+                self.manifest["coverage_allowed_gaps"] = copy.deepcopy(saved_gaps)
+                journal, official, corrected = self.manifest["coverage_allowed_gaps"]
+                if defect == "journal-246":
+                    journal["statements"] = [
+                        gap for gap in journal["statements"]
+                        if gap["label"] != "theorem:limit_shape"]
+                    expected = "unexpected gap: theorem at line 246"
+                elif defect == "corrected-104":
+                    corrected["statements"].append(
+                        {"kind": "theorem", "line": 104, "label": "theorem:limit_shape"})
+                    expected = "stale gap allowance: theorem at line 104"
+                else:
+                    official["statements"] = [
+                        gap for gap in official["statements"]
+                        if gap["label"] != "theorem:limit_shape"]
+                    expected = "unexpected gap: theorem at line 101"
+                self.write_manifest()
+                result, output = self.run_main(check_coverage)
+                self.assertEqual(result, 1, output)
+                self.assertIn(expected, output)
+        self.manifest["coverage_allowed_gaps"] = copy.deepcopy(saved_gaps)
+        self.write_manifest()
+
+        for defect in ("input", "citation"):
+            with self.subTest(defect=defect):
+                saved = copy.deepcopy(node)
+                if defect == "input":
+                    node["source_pin"] = {**node["source_pin"], "inputs": []}
+                else:
+                    node["source"] = "exploding.tex:246-254 (label theorem:limit_shape)"
+                self.write_manifest()
+                for module in (sync_docs, assumptions, check_clauses, check_exponents):
+                    result, output = self.run_main(module)
+                    self.assertEqual(result, 2, output)
+                    self.assertIn("thm-limit-shape", output)
+                node.clear()
+                node.update(saved)
+
+    def test_live_limitshape_v5_frozen_bytes_are_installed(self):
+        node = next(n for n in self.live_manifest["nodes"] if n["id"] == "thm-limit-shape")
+        text = self.live_successor_texts["thm-limit-shape"]
+        block = check_manifest.block_of(text, self.root / node["file"], [])[0]
+        self.assertEqual(block, LIMITSHAPE_V5_BLOCK)
+        self.assertEqual(hashlib.sha256(block.encode("utf-8")).hexdigest(),
+                         node["frozen_sha256"])
+
+    def test_limitshape_v5_marker_bytes_and_single_delta_are_exact(self):
+        node = next(n for n in self.live_manifest["nodes"] if n["id"] == "thm-limit-shape")
+        self.assertEqual(node["version"], 5)
+        self.assertEqual(len(LIMITSHAPE_V5_BLOCK.encode("utf-8")), 652)
+        self.assertEqual(hashlib.sha256(LIMITSHAPE_V5_BLOCK.encode("utf-8")).hexdigest(),
+                         node["frozen_sha256"])
+        self.assertEqual(LIMITSHAPE_V5_BLOCK,
+                         HISTORICAL_LIMITSHAPE_BLOCK.replace("(hp1 : p < 1)", "(hp1 : p ≤ 1)", 1))
+        # Wrong markers must fail the manifest byte binding: the retained strict
+        # endpoint, a dropped cited input, and a dropped conclusion conjunct.
+        wrong_markers = (
+            HISTORICAL_LIMITSHAPE_BLOCK,
+            LIMITSHAPE_V5_BLOCK.replace(
+                "(hChem : Exploding.External.AntalPisztoraChemicalDistance)\n"
+                "    (hSch : Exploding.External.SchonmannBootstrap) :",
+                "(hChem : Exploding.External.AntalPisztoraChemicalDistance) :", 1),
+            LIMITSHAPE_V5_BLOCK.replace("IsOpen B ∧ B.Nonempty ∧", "IsOpen B ∧", 1),
+        )
+        for index, marker in enumerate(wrong_markers):
+            with self.subTest(wrong_marker=index):
+                self.assertNotEqual(marker, LIMITSHAPE_V5_BLOCK)
+                self.assertNotEqual(hashlib.sha256(marker.encode("utf-8")).hexdigest(),
+                                    node["frozen_sha256"])
+
+    def test_limitshape_v4_historical_identity_and_bytes_are_exact(self):
+        node = next(n for n in self.manifest["nodes"] if n["id"] == "thm-limit-shape")
+        self.assertEqual(sync_docs.HISTORICAL_DECLARATIONS["thm-limit-shape"],
+                         (4, "7a9bc664298b2adfc0b528e3f1d6ba565efdcb2da1d055eb6e222032e835b44b"))
+        self.assertEqual(node["version"], 4)
+        self.assertEqual(node["source"], "exploding.tex:246-254 (label theorem:limit_shape)")
+        self.assertNotIn("source_pin", node)
+        path = self.root / node["file"]
+        text = path.read_text(encoding="utf-8")
+        block = check_manifest.block_of(text, path, [])[0]
+        self.assertEqual(block, HISTORICAL_LIMITSHAPE_BLOCK)
+
+        saved = copy.deepcopy(node)
+        node["version"] = 5
+        self.write_manifest()
+        for module in (check_clauses, check_exponents):
+            result, output = self.run_main(module)
+            self.assertEqual(result, 2, output)
+            self.assertIn("historical annotation identity mismatch", output)
+        node.clear()
+        node.update(saved)
+
+        path.write_text(text.replace("(hp1 : p < 1)", "(hp1 : p ≤ 1)", 1), encoding="utf-8")
+        self.write_manifest()
+        for module in (check_clauses, check_exponents):
+            result, output = self.run_main(module)
+            self.assertEqual(result, 2, output)
+            self.assertIn("actual frozen block differs", output)
+        path.write_text(text, encoding="utf-8")
+        node.clear()
+        node.update(saved)
+        self.write_manifest()
 
     def test_renormalization_v4_historical_identity_and_bytes_are_exact(self):
         node = next(n for n in self.manifest["nodes"]

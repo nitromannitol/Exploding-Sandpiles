@@ -1,4 +1,5 @@
 import Exploding.MainTheorems
+import Exploding.Support.ExplosiveVacuity
 import Exploding.Support.ExtFMR
 import Exploding.Support.LSProofAux
 import Exploding.Support.ExtLSSCountable
@@ -11,8 +12,8 @@ import Exploding.Support.ExtSchFLP
 
 Building this module prints the axiom dependencies of the 22 proved paper results restated in
 `Exploding/MainTheorems.lean` and the all-high endpoint check of Theorem 1.4. Each must report
-exactly the three standard foundational axioms of
-Mathlib: `propext`, `Classical.choice`, `Quot.sound`.
+exactly the three standard foundational axioms of Mathlib: `propext`, `Classical.choice`,
+`Quot.sound`.
 
 All of the paper's main results are proved and appear among them: Theorems 1.2, 1.3, 1.4,
 5.1 and 6.1, together with Propositions 2.1, 2.2, 3.1, 4.1, 5.1, 7.1, 7.2, 7.3 and 7.5 and
@@ -31,8 +32,8 @@ bound of Mathieu, `Exploding.xsr_schonmann` proves Schonmann's bootstrap bound, 
 `Exploding.LSProof.ls_flp_from_explosive`.  Only the chemical distance of Antal and Pisztora
 is assumed.
 
-This file is not imported by the library root; the report runs when it is built explicitly
-(`lake build Exploding.Meta.AxiomsAudit`).
+The default library build includes this module. It can also be built explicitly with
+`lake build Exploding.Meta.AxiomsAudit`.
 -/
 
 -- Theorems 1.2, 1.3 and 1.4

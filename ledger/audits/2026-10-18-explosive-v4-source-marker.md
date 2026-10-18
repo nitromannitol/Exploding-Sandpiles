@@ -63,17 +63,17 @@ then `β` is explosive with probability 1.
 | `β` explosive with probability 1 | `∀ᵐ β ∂(…), Explosive β` | conclusion |
 | Schonmann's bound, Proposition 7.4, cited | `(hSch : Exploding.External.SchonmannBootstrap)` | cited input |
 
-The outer binders fall into four classes: typing `d` and `ν` (2); source `hd`, `hν`, `hlow`
-and `hhit` (4); the cited input `hSch` (1); standing and excess (0). The cited input is not
-stated in the corrected theorem. It is the explicit cited-input binder that version 3 already
-carried, and the repository uses this form for every cited Schonmann input. It is not a new
-premise.
+The five-bin audit classifies the outer binders as TYPING `d` and `ν` (2), SOURCE `hd`,
+`hν`, `hlow` and `hhit` (4), RULED cited input `hSch` (1), STANDING (0), and EXCESS (0).
+The corrected theorem does not state `hSch`; this explicit cited-input binder was already
+present in version 3 and remains subject to the cited-input boundary.
 
 `Explosive` is `¬Robust`, and `Robust` quantifies over `Stabilizable (η + nδ₀)` for `n ≥ 1`,
 with stabilizability defined by eventual constancy of the parallel toppling odometer. An
 independent refute-first source and statement audit of this binding, dated 18 October 2026,
-returned PASS for source and statement design. That audit did not run Lean and does not certify
-the proof.
+returned PASS for source and statement design (audit SHA-256
+`19a5489562f77b8bbf96bf7a27d63b24189e3929667e32e230d886bc8844988f`). It did not run Lean
+and does not certify the proof.
 
 ## Caveats carried, not resolved here
 
@@ -83,8 +83,8 @@ the proof.
   handled without `hSch` (`bc_layers_prob_one`); that was not re-verified here.
 - The exact dynamics and exponential rate of Proposition 7.4 have not been checked against
   Schonmann's 1992 text. The operative justification in this repository is the in-repository
-  proof `Exploding.xsr_schonmann`. The manifest checker's sorry and axiom scan of the production
-  tree passes on this commit.
+  proof `Exploding.xsr_schonmann`. The manifest checker's sorry and axiom scan passes on the
+  source/manifest postimage recorded below.
 - Inherited and non-blocking: the source audit notes that the binders `hL`, `hstat`, `herg`
   and `hrec` of `prop-explosion-criteria` are not consumed by its proof
   (`Exploding/Frozen/ExplosionCriteria.lean`, unused-binder line). This does not change the
@@ -117,7 +117,11 @@ are 13/24, 6/24 and 5/24. The historical fixture restores the version 3 identity
 pin and the matching allowed-gap sets, so the historical-world expectations are unchanged. One
 test was added: `test_theorem_1_4_v4_excludes_its_v3_historical_reading`.
 
-## Source checks on the integrated candidate
+## Source checks on the source/manifest postimage
+
+The table records the source checks on commit `edb1b596101abc5c64760e9d4817c3ecb0592e45`
+(tree `f460d1eb4d4384e506c745b16bbeaf467799b981`), whose source and manifest bytes are
+unchanged in this version. The integration gate reruns these checks on the final tree.
 
 | Check | Exit | Result |
 |---|---:|---|
@@ -140,8 +144,10 @@ The source checks above do not replace the fresh full build, axiom probes, or wa
 1. The imported `Exploding.Support.ExplosiveVacuity` theorem proves the exact `hlow` and
    `hhit` for the Dirac law at `2d-1`, discharges `hSch` by
    `Exploding.xsr_schonmann`, and checks an expanding ordinary-odometer front. The strict
-   two-height law at `p = 1/2` separately consumes `hSch` through
-   `Exploding.LSProof.ls_flp_from_explosive`.
+   two-height law separately consumes `hSch` through
+   `Exploding.LSProof.ls_flp_from_explosive` for every `0 < p < 1`, including `p = 1/2`.
+   The expanding-front clause checks the dynamics at the endpoint; the theorem's explosion
+   clause follows by applying `Exploding.Frozen.explosive` to that same product law.
 2. Before credit, run the locked full build, `#print axioms` for the Frozen/public theorem,
    `Exploding.xsr_schonmann` and the nonvacuity theorem, and the configured axiom and warning
    gates. The axiom-audit module prints the nonvacuity theorem's closure explicitly.

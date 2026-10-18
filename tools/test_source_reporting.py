@@ -69,6 +69,23 @@ HISTORICAL_LASTWAVE_BLOCK = """theorem Exploding.Frozen.convergence_of_the_last_
 """
 
 
+HISTORICAL_TIMECONSTANT_BLOCK = """theorem Exploding.Frozen.convergence_of_time_constant (d : ℕ) (hd : 2 ≤ d) (p : ℝ) (hp : 0 < p) (hp1 : p < 1)
+    (hFLP : Exploding.External.FeyLevinePeresExplosive)
+    (hLSSB : Exploding.External.LiggettSchonmannStaceyBoundedDegree)
+    (hHole : Exploding.External.MathieuHoleVolume)
+    (hChem : Exploding.External.AntalPisztoraChemicalDistance) :
+    ∃ N : (Fin d → ℝ) → ℝ,
+      Continuous N ∧
+      ConvexOn ℝ Set.univ N ∧
+      (∀ c : ℝ, 0 ≤ c → ∀ y : Fin d → ℝ, N (c • y) = c * N y) ∧
+      ∀ᵐ η ∂(toyLaw d p),
+        Explosive η ∧ (∀ x : Site d, arrival η x ≠ ⊤) ∧
+          ∀ K : Set (Fin d → ℝ), IsCompact K → ∀ ε : ℝ, 0 < ε →
+            ∀ᶠ n : ℕ in atTop, ∀ y ∈ K,
+              |((arrival η (nearestSite ((n : ℝ) • y))).toNat : ℝ) / (n : ℝ) - N y| ≤ ε
+"""
+
+
 class SourceReportingTests(unittest.TestCase):
     def setUp(self):
         original = sync_docs.ROOT
@@ -77,6 +94,9 @@ class SourceReportingTests(unittest.TestCase):
         self.manifest["nodes"] = [n for n in self.manifest["nodes"]
                                   if not sync_docs.is_local_definition(n)]
         historical = {
+            "thm-time-constant": (
+                "exploding.tex:259-262 (label theorem:convergence_of_time_constant)",
+                HISTORICAL_TIMECONSTANT_BLOCK),
             "thm-counterexample": (
                 "exploding.tex:1351-1361 (label theorem:counterexample)",
                 HISTORICAL_COUNTEREXAMPLE_BLOCK),
@@ -98,6 +118,9 @@ class SourceReportingTests(unittest.TestCase):
             node["version"], node["frozen_sha256"] = sync_docs.HISTORICAL_DECLARATIONS[nid]
             self.assertEqual(hashlib.sha256(block.encode()).hexdigest(), node["frozen_sha256"])
             restored[node["file"]] = block
+        self.live_successor_texts = {
+            n["id"]: (original / n["file"]).read_text(encoding="utf-8")
+            for n in self.live_manifest["nodes"] if n["id"] in historical}
         live_crossing = next(n for n in self.live_manifest["nodes"]
                              if n["id"] == "prop-crossing-time")
         self.live_crossing_text = (original / live_crossing["file"]).read_text(encoding="utf-8")
@@ -107,13 +130,13 @@ class SourceReportingTests(unittest.TestCase):
         live_lastwave = next(n for n in self.live_manifest["nodes"]
                              if n["id"] == "prop-last-wave-convergence")
         self.live_lastwave_text = (original / live_lastwave["file"]).read_text(encoding="utf-8")
-        # These fixtures model the historical @4 rows exactly: they are
-        # journal-pinned, so their matching gaps belong to official arXiv instead.
-        journal_gaps, official_gaps = self.manifest["coverage_allowed_gaps"][:2]
+        # Restore historical journal identities and their matching source gap sets.
+        journal_gaps, official_gaps, corrected_gaps = self.manifest["coverage_allowed_gaps"]
         journal_gaps["statements"] = [
             gap for gap in journal_gaps["statements"]
             if gap["label"] not in {"prop:approximate_subadditive",
-                                    "prop:convergence_of_the_last_wave"}]
+                                    "prop:convergence_of_the_last_wave",
+                                    "theorem:convergence_of_time_constant"}]
         historical_official_gaps = (
             {"kind": "prop", "line": 740, "label": "prop:approximate_subadditive"},
             {"kind": "prop", "line": 706, "label": "prop:convergence_of_the_last_wave"},
@@ -122,6 +145,9 @@ class SourceReportingTests(unittest.TestCase):
             if not any(existing["label"] == gap["label"]
                        for existing in official_gaps["statements"]):
                 official_gaps["statements"].append(gap)
+        corrected_gaps["statements"].append(
+            {"kind": "theorem", "line": 117,
+             "label": "theorem:convergence_of_time_constant"})
         directory = tempfile.TemporaryDirectory(prefix="exploding-source-reporting-")
         self.addCleanup(directory.cleanup)
         self.root = Path(directory.name)
@@ -157,6 +183,22 @@ class SourceReportingTests(unittest.TestCase):
         path = self.root / "ledger/manifest.yaml"
         path.parent.mkdir(exist_ok=True)
         path.write_text(yaml.safe_dump(self.manifest), encoding="utf-8")
+
+    def restore_live_successors(self):
+        """Use live node identities only with the matching complete Frozen bytes."""
+        self.manifest = copy.deepcopy(self.live_manifest)
+        for node in self.manifest["nodes"]:
+            if node["id"] not in self.live_successor_texts:
+                continue
+            text = self.live_successor_texts[node["id"]]
+            path = self.root / node["file"]
+            path.write_text(text, encoding="utf-8")
+            errors = []
+            block = check_manifest.block_of(text, path, errors)
+            self.assertIsNotNone(block, errors)
+            self.assertEqual(hashlib.sha256(block[0].encode("utf-8")).hexdigest(),
+                             node["frozen_sha256"])
+        self.write_manifest()
 
     def mixed_manifest(self, include_crossing=False):
         import hashlib
@@ -273,45 +315,26 @@ class SourceReportingTests(unittest.TestCase):
         old = groups["paper/exploding.tex"]
         official = groups["paper/exploding-arxiv.tex"]
         revised = groups[self.revised]
-        self.assertEqual((len(old), len(official), len(revised)), (28, 5, 6))
-        self.assertEqual(sum(n["kind"] == "theorem" for n in old), 21)
+        self.assertEqual((len(old), len(official), len(revised)), (27, 5, 7))
+        self.assertEqual(sum(n["kind"] == "theorem" for n in old), 20)
         self.assertEqual(sum(n["kind"] == "definition" for n in old), 7)
         self.assertEqual({n["id"] for n in official},
                          {"lem-penultimate-cluster", "lem-penultimate-upper-bound",
                           "lem-penultimate-close", "prop-approximate-subadditive",
                           "prop-last-wave-convergence"})
         self.assertTrue(all(n["kind"] == "theorem" for n in official))
-        self.assertEqual(sum(n["kind"] == "theorem" for n in revised), 2)
+        self.assertEqual(sum(n["kind"] == "theorem" for n in revised), 3)
         self.assertEqual(sum(n["kind"] == "definition" for n in revised), 4)
         self.assertEqual({n["id"] for n in revised if n["kind"] == "theorem"},
-                         {"thm-counterexample", "prop-crossing-time"})
+                         {"thm-counterexample", "prop-crossing-time", "thm-time-constant"})
 
     def test_live_approximate_successor_coverage_and_historical_boundary(self):
-        self.manifest = copy.deepcopy(self.live_manifest)
-        node = next(n for n in self.live_manifest["nodes"]
-                    if n["id"] == "prop-approximate-subadditive")
-        path = self.root / node["file"]
-        path.write_text(self.live_approximate_text, encoding="utf-8")
-        errors = []
-        block = check_manifest.block_of(self.live_approximate_text, path, errors)
-        self.assertIsNotNone(block, errors)
-        self.assertEqual(hashlib.sha256(block[0].encode("utf-8")).hexdigest(),
-                         node["frozen_sha256"])
-        lastwave = next(n for n in self.live_manifest["nodes"]
-                        if n["id"] == "prop-last-wave-convergence")
-        lastwave_path = self.root / lastwave["file"]
-        lastwave_path.write_text(self.live_lastwave_text, encoding="utf-8")
-        errors = []
-        block = check_manifest.block_of(self.live_lastwave_text, lastwave_path, errors)
-        self.assertIsNotNone(block, errors)
-        self.assertEqual(hashlib.sha256(block[0].encode("utf-8")).hexdigest(),
-                         lastwave["frozen_sha256"])
-        self.write_manifest()
+        self.restore_live_successors()
         result, output = self.run_main(check_coverage)
         self.assertEqual(result, 0, output)
-        self.assertIn("17/24 statements claimed", output)
+        self.assertIn("16/24 statements claimed", output)
         self.assertIn("5/24 statements claimed", output)
-        self.assertEqual(output.count("2/24 statements claimed"), 1)
+        self.assertEqual(output.count("3/24 statements claimed"), 1)
 
         saved = copy.deepcopy(self.manifest["coverage_allowed_gaps"])
         journal, official, _ = self.manifest["coverage_allowed_gaps"]
@@ -353,6 +376,79 @@ class SourceReportingTests(unittest.TestCase):
             result, output = self.run_main(module)
             self.assertEqual(result, 0, output)
             self.assertIn("prop-approximate-subadditive: different source pin:", output)
+
+    def test_live_timeconstant_source_move_and_negative_controls(self):
+        self.restore_live_successors()
+        node = next(n for n in self.manifest["nodes"] if n["id"] == "thm-time-constant")
+        self.assertEqual((node["version"], node["frozen_sha256"]),
+                         (6, "83239bc6236e7faecd7ba0ab147fc0af98c324fc90f32cb537a6f368fa478a07"))
+        text = (self.root / node["file"]).read_text(encoding="utf-8")
+        block = check_manifest.block_of(text, self.root / node["file"], [])[0]
+        self.assertEqual(block, HISTORICAL_TIMECONSTANT_BLOCK.replace(
+            "(hp1 : p < 1)", "(hp1 : p ≤ 1)"))
+        result, output = self.run_main(check_coverage)
+        self.assertEqual(result, 0, output)
+        for claim in ("16/24", "5/24", "3/24"):
+            self.assertIn(claim + " statements claimed", output)
+        saved_gaps = copy.deepcopy(self.manifest["coverage_allowed_gaps"])
+        for defect in ("missing-journal", "stale-corrected", "unclaimed-official"):
+            with self.subTest(defect=defect):
+                self.manifest["coverage_allowed_gaps"] = copy.deepcopy(saved_gaps)
+                journal, official, corrected = self.manifest["coverage_allowed_gaps"]
+                if defect == "stale-corrected":
+                    corrected["statements"].append(
+                        {"kind": "theorem", "line": 117,
+                         "label": "theorem:convergence_of_time_constant"})
+                else:
+                    group = journal if defect == "missing-journal" else official
+                    group["statements"] = [g for g in group["statements"]
+                                            if g["label"] != "theorem:convergence_of_time_constant"]
+                self.write_manifest()
+                result, output = self.run_main(check_coverage)
+                self.assertEqual(result, 1, output)
+                self.assertIn("stale gap allowance" if defect == "stale-corrected"
+                              else "unexpected gap", output)
+        self.manifest["coverage_allowed_gaps"] = saved_gaps
+        for defect in ("input", "citation"):
+            with self.subTest(defect=defect):
+                saved = copy.deepcopy(node)
+                if defect == "input":
+                    node["source_pin"] = {**node["source_pin"], "inputs": []}
+                else:
+                    node["source"] = "exploding.tex:259-262 (label theorem:convergence_of_time_constant)"
+                self.write_manifest()
+                for module in (sync_docs, assumptions, check_clauses, check_exponents):
+                    result, output = self.run_main(module)
+                    self.assertEqual(result, 2, output)
+                node.clear()
+                node.update(saved)
+
+    def test_timeconstant_historical_identity_and_extra_binder_fail(self):
+        node = next(n for n in self.manifest["nodes"] if n["id"] == "thm-time-constant")
+        path = self.root / node["file"]
+        text = path.read_text(encoding="utf-8")
+        for defect in ("version", "extra-binder", "rehashed-extra-binder"):
+            with self.subTest(defect=defect):
+                saved = copy.deepcopy(node)
+                path.write_text(text, encoding="utf-8")
+                if defect == "version":
+                    node["version"] = 6
+                else:
+                    changed = text.replace(node["export"],
+                                           node["export"] + " (hEndpoint : False)", 1)
+                    path.write_text(changed, encoding="utf-8")
+                    if defect == "rehashed-extra-binder":
+                        node["version"] = 6
+                        block = check_manifest.block_of(changed, path, [])[0]
+                        node["frozen_sha256"] = hashlib.sha256(block.encode()).hexdigest()
+                self.write_manifest()
+                for module in (check_clauses, check_exponents):
+                    result, output = self.run_main(module)
+                    self.assertEqual(result, 2, output)
+                    self.assertIn("actual frozen block differs" if defect == "extra-binder"
+                                  else "historical annotation identity mismatch", output)
+                node.clear()
+                node.update(saved)
 
     def test_historical_approximate_note_cannot_be_reused_for_v5(self):
         node = next(n for n in self.manifest["nodes"]

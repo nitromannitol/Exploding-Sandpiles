@@ -24,12 +24,14 @@ import Exploding.Frozen.BoxCrossing
 /-!
 # Main results
 
-This file gives the public paper-facing theorem statements. Fifteen paper-owned
+This file gives the public paper-facing theorem statements. Fourteen paper-owned
 journal-source statements retain their corrected-journal contracts, including the proved
 finite-exploding version 7 with `0 < p ≤ 1`. Lemmas 3.5, 3.6 and 3.7 version 5 and
-Propositions 3.1 and 4.1 version 5 select the official arXiv source and include `p = 1`; three
+Propositions 3.1 and 4.1 version 5 select the official arXiv source and include `p = 1`; two
 strict Bernoulli paper rows retain `p < 1`.
 Theorem 6.1 is the proved corrected-v10 v4 counterexample successor.
+Theorem 1.3 version 6 selects corrected-v10 and includes `0 < p ≤ 1`, retaining
+four cited inputs for the strict branch and using the actual all-high law at `p = 1`.
 Proposition 2.1 has the corrected-v10 v4 terminal-and-deadline statement for `0 < p ≤ 1`;
 its separate receipt records the exact declaration and bounded consumer evidence. The remaining
 corrected-v10 statements and the literal official arXiv initialization are not certified.
@@ -151,10 +153,12 @@ theorem Exploding.limit_shape (d : ℕ) (hd : 2 ≤ d) (p : ℝ) (hp : 0 < p) (h
 one-homogeneous function `N` such that almost surely the background is explosive, every
 arrival time `T_η(x)` is finite, and the rescaled arrival times `T_η([n y]) / n` converge to
 `N y` uniformly for `y` in every compact set.  It takes Theorem 1.1 (`hFLP`) and the three
-percolation results behind Proposition 2.2 as hypotheses.  The certified statement is
+percolation results behind Proposition 2.2 as hypotheses. The corrected-v10 version 6
+includes `0 < p ≤ 1`; its `p = 1` branch uses the ordinary all-high Support theorem.
+The certified statement is
 `Exploding.Frozen.convergence_of_time_constant`, restated unchanged. -/
 theorem Exploding.convergence_of_time_constant (d : ℕ) (hd : 2 ≤ d) (p : ℝ) (hp : 0 < p)
-    (hp1 : p < 1)
+    (hp1 : p ≤ 1)
     (hFLP : Exploding.External.FeyLevinePeresExplosive)
     (hLSSB : Exploding.External.LiggettSchonmannStaceyBoundedDegree)
     (hHole : Exploding.External.MathieuHoleVolume)

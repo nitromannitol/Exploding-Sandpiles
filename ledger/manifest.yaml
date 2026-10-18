@@ -135,16 +135,22 @@ nodes:
           sha256: 9aba2c73246d79e3c6b87cb1f01cf3e2f636e27c8afd97ccb8ba5c032a9ee65b
 
   - id: prop-last-wave-convergence
-    version: 4
+    version: 5
     kind: theorem
-    source: exploding.tex:846-852 (label prop:convergence_of_the_last_wave)
+    source: exploding-arxiv.tex:706-718 (label prop:convergence_of_the_last_wave)
     file: Exploding/Frozen/LastWaveConvergence.lean
     export: Exploding.Frozen.convergence_of_the_last_wave
     state: PROVED
-    frozen_sha256: 757cd6a770e4ea98496b4203ac93795842f3cbafac4b0ee55cea24e49f32e679
+    frozen_sha256: 9a80cc4dcaac38eaab62fc1fbfeb46f6b0868d54c397c6b4687823ef3940ff59
     closure_sha256: 7bbd08b1ea43a5a7b547f5f6ed0a1e1ff13299548c88f61b24d4048383f9c1bf
     provider: Exploding.Frozen.convergence_of_the_last_wave
-    approved: "2026-09-24"
+    approved: "2026-10-18"
+    source_pin:
+      file: paper/exploding-arxiv.tex
+      sha256: f12deba6e481a3d81c6967bc48ecbbdae1df4fa1c5f6248a38990030b308072d
+      inputs:
+        - file: paper/defs.tex
+          sha256: 9aba2c73246d79e3c6b87cb1f01cf3e2f636e27c8afd97ccb8ba5c032a9ee65b
 
   - id: prop-approximate-subadditive
     version: 5
@@ -559,7 +565,7 @@ coverage_allowed_gaps:
   - source_pin:
       file: paper/exploding.tex
       sha256: 1d7c2010d8bd29e7fb83e93f19c9ebe0e8aef201f93559b2b18f5ca0dc049b44
-    reason: The counterexample and crossing registrations moved to corrected-source successors; Lemmas 3.5, 3.6 and 3.7 moved to official arXiv successors; Proposition 4.1 moved to its official-source successor.
+    reason: The counterexample and crossing registrations moved to corrected-source successors; Lemmas 3.5, 3.6 and 3.7, Proposition 3.1, and Proposition 4.1 moved to official arXiv successors.
     statements:
       - {kind: theorem, line: 1351, label: "theorem:counterexample"}
       - {kind: prop, line: 416, label: "prop:crossing_time"}
@@ -567,13 +573,14 @@ coverage_allowed_gaps:
       - {kind: lemma, line: 792, label: "lemma:last_penultimate_cluster"}
       - {kind: lemma, line: 807, label: "lemma:penultimate_upper_bound"}
       - {kind: lemma, line: 832, label: "lemma:last_penultimate_close"}
+      - {kind: prop, line: 846, label: "prop:convergence_of_the_last_wave"}
   - source_pin:
       file: paper/exploding-arxiv.tex
       sha256: f12deba6e481a3d81c6967bc48ecbbdae1df4fa1c5f6248a38990030b308072d
       inputs:
         - file: paper/defs.tex
           sha256: 9aba2c73246d79e3c6b87cb1f01cf3e2f636e27c8afd97ccb8ba5c032a9ee65b
-    reason: Only the exact Lemma 3.5, 3.6 and 3.7 successors and Proposition 4.1 successor are registered under this official arXiv pin; its other 20 theorem-like statements remain unclaimed under this pin.
+    reason: Only the exact Proposition 3.1, Lemma 3.5, 3.6 and 3.7 successors and Proposition 4.1 successor are registered under this official arXiv pin; its other 19 theorem-like statements remain unclaimed under this pin.
     statements:
       - {kind: theorem, line: 93, label: "prop:fey_levine_peres_explode"}
       - {kind: theorem, line: 101, label: "theorem:limit_shape"}
@@ -586,7 +593,6 @@ coverage_allowed_gaps:
       - {kind: lemma, line: 580, label: "lemma:finite_exploding"}
       - {kind: lemma, line: 590, label: "lemma:last_wave_bound"}
       - {kind: lemma, line: 620, label: "lemma:approx_subadditivity"}
-      - {kind: prop, line: 706, label: "prop:convergence_of_the_last_wave"}
       - {kind: prop, line: 1057, label: "prop:convergence_of_the_generalized_last_wave"}
       - {kind: theorem, line: 1090, label: null}
       - {kind: theorem, line: 1192, label: "theorem:counterexample"}

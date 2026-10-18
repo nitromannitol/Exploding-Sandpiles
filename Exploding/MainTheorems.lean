@@ -24,10 +24,11 @@ import Exploding.Frozen.BoxCrossing
 /-!
 # Main results
 
-This file gives the public paper-facing theorem statements. Seventeen paper-owned
+This file gives the public paper-facing theorem statements. Sixteen paper-owned
 journal-source statements retain their corrected-journal contracts, including the proved
-finite-exploding version 7 with `0 < p ≤ 1`. Lemmas 3.5, 3.6 and 3.7 version 5 select the official
-arXiv source and include `p = 1`; five strict Bernoulli paper rows retain `p < 1`.
+finite-exploding version 7 with `0 < p ≤ 1`. Lemmas 3.5, 3.6 and 3.7 version 5 and
+Proposition 4.1 version 5 select the official arXiv source and include `p = 1`; four strict
+Bernoulli paper rows retain `p < 1`.
 Theorem 6.1 is the proved corrected-v10 v4 counterexample successor.
 Proposition 2.1 has the corrected-v10 v4 terminal-and-deadline statement for `0 < p ≤ 1`;
 its separate receipt records the exact declaration and bounded consumer evidence. The remaining
@@ -46,9 +47,10 @@ The main theorems are:
 * `Exploding.counterexample`: proved corrected-v10 Theorem 6.1; its complete conclusion
   uses one background for both axial limits and the measurable-volume obstruction.
 
-The other public results summarize journal-source Propositions 2.2, 3.1, 4.1, 5.1, 7.1,
+The other public results summarize journal-source Propositions 2.2, 3.1, 5.1, 7.1,
 7.2, 7.3 and 7.5 and Lemmas 2.1 and 3.1 to 3.4. Proposition 2.1 selects
-the corrected-v10 source; Lemmas 3.5, 3.6 and 3.7 select the official arXiv source.
+the corrected-v10 source; Lemmas 3.5, 3.6, 3.7 and Proposition 4.1 select the official
+arXiv source.
 
 ## Cited results
 
@@ -331,13 +333,13 @@ theorem Exploding.convergence_of_the_last_wave (d : ℕ) (hd : 2 ≤ d) (p : ℝ
                 - N y| ≤ ε := by
   exact Exploding.Frozen.convergence_of_the_last_wave d hd p hp hp1 hLSSB hHole hChem
 
-/-- **Proposition 4.1** (`prop:approximate_subadditive`): the last wave is a bounded
-approximation of the exploding sandpile: almost surely there are constants `C₁` and `C₂` with
+/-- **Proposition 4.1** (`prop:approximate_subadditive`, official arXiv v2 lines 740–752):
+the last wave is a bounded approximation of the exploding sandpile: almost surely there are constants `C₁` and `C₂` with
 `T_η(x) ≤ T̂_η(0, x) + C₁` and `T̂_η(0, x) ≤ T_η(x) + C₂` at every site `x`.  It takes the
 three percolation results behind Proposition 2.2 as hypotheses.  The certified statement is
 `Exploding.Frozen.approximate_subadditive`, restated unchanged. -/
 theorem Exploding.approximate_subadditive (d : ℕ) (hd : 2 ≤ d) (p : ℝ) (hp : 0 < p)
-    (hp1 : p < 1)
+    (hp1 : p ≤ 1)
     (hLSSB : Exploding.External.LiggettSchonmannStaceyBoundedDegree)
     (hHole : Exploding.External.MathieuHoleVolume)
     (hChem : Exploding.External.AntalPisztoraChemicalDistance) :

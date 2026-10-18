@@ -94,8 +94,8 @@ def WaveApproximationHyp (d : ℕ) (P : Measure (Site d → ℤ)) : Prop :=
 
 /-! ### The setting of Section 5 -/
 
-/-- The state space `Ω` of Section 5: backgrounds with `η_min ≤ η ≤ 2d - 1`.  The
-statements that use it take `0 ≤ η_min`, as Section 5 does. -/
+/-- The state space `Ω` of Section 5: backgrounds with `η_min ≤ η ≤ 2d - 1`, for an
+arbitrary integer `η_min` (no sign assumption); the Section-5 setting assumes `d ≥ 2`. -/
 def InOmega (d : ℕ) (ηmin : ℤ) (η : Site d → ℤ) : Prop :=
   ∀ x, ηmin ≤ η x ∧ η x ≤ 2 * (d : ℤ) - 1
 
@@ -108,6 +108,19 @@ def ErgodicOn (d : ℕ) (L : AddSubgroup (Site d)) (P : Measure (Site d → ℤ)
   ∀ E : Set (Site d → ℤ),
     E = ⋂ y ∈ (L : Set (Site d)), (fun η : Site d → ℤ => fun z => η (y + z)) '' E →
       P E = 0 ∨ P E = 1
+
+/-- `P` is *measurably ergodic* with respect to the sublattice `L`: every measurable event
+invariant under the `L`-translations has probability `0` or `1`. -/
+def MeasurableErgodicOn (d : ℕ) (L : AddSubgroup (Site d))
+    (P : Measure (Site d → ℤ)) : Prop :=
+  ∀ E : Set (Site d → ℤ), MeasurableSet E →
+    E = ⋂ y ∈ (L : Set (Site d)), (fun η : Site d → ℤ => fun z => η (y + z)) '' E →
+    P E = 0 ∨ P E = 1
+
+/-- `ErgodicOn` implies `MeasurableErgodicOn`: the latter only tests measurable events. -/
+theorem measurableErgodicOn_of_ergodicOn {L : AddSubgroup (Site d)}
+    {P : Measure (Site d → ℤ)} (h : ErgodicOn d L P) : MeasurableErgodicOn d L P :=
+  fun E _ hE => h E hE
 
 /-- `P` is *explosive*: almost every background is. -/
 def ExplosiveLaw (d : ℕ) (P : Measure (Site d → ℤ)) : Prop := ∀ᵐ η ∂P, Explosive η

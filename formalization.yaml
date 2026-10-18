@@ -115,7 +115,7 @@ status:
     - "propext"
     - "Classical.choice"
     - "Quot.sound"
-  axioms_scope: "Expected closures use propext, Classical.choice and Quot.sound; Proposition 2.2 version 5 has exact proof-consumer evidence in its source-bound receipt, and final integrated audit is pending"
+  axioms_scope: "Proposition 2.2 version 5 has exact proof-consumer evidence for propext, Classical.choice and Quot.sound in its source-bound receipt; the integration gate checks all registered declarations before landing"
   main_results:
     - declaration: "Exploding.Frozen.limit_shape"
       file: "Exploding/Frozen/LimitShape.lean"

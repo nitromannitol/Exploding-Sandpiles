@@ -5,25 +5,26 @@
 `paper/corrected-arxiv/exploding-corrected-arxiv.tex:123-129`, label `theorem:explosive`. The
 bytes between the FROZEN-STATEMENT markers do not change. The closure hash, the provider, the
 state and the proof body are unchanged. This receipt records the exact identities, the
-source-partition change and the checks run on this commit. It does not certify the Lean proof
-on this commit, the paper, or any statement beyond the cited-input boundary described below.
+source-partition change and the included nonvacuity check. Full build and axiom gates are
+required before this version receives corrected-source credit; the paper as a whole is open.
 
 ## Status of this registration
 
-This commit changes manifest metadata and gap records, generated and manual reporting, the
-source-reporting fixtures, and one Lean docstring above the frozen block. It does not change
-any byte between the markers, any proof, any other node, or any paper source.
+This version changes manifest metadata and gap records, generated and manual reporting,
+source-reporting fixtures and source docstrings. It adds an imported Support theorem tying
+the all-high product law to `Exploding.Frozen.explosive` and an expanding ordinary-odometer
+front, together with its axiom-audit line. It does not change any byte between the markers,
+any paper theorem proof, any other manifest node, or any paper source.
 
-Not established by this commit:
+Required before corrected-source credit:
 
-- the locked full build and the axiom closures of `Exploding.Frozen.explosive` and
-  `Exploding.explosive` on this tree; `check_axioms.py` and `check_warnings.py` need the Lean
-  toolchain and cannot run in this source-only tree;
-- the nonvacuity module described under "Required at integration";
-- an independent final-byte review of the integrated tree.
+- a fresh locked full build and the axiom closures of `Exploding.Frozen.explosive`,
+  `Exploding.explosive`, `Exploding.xsr_schonmann`, and
+  `Exploding.explosive_all_high_nonvacuity`;
+- all configured repository gates on the integrated tree and independent final-byte review.
 
 The generated state wording "proved, independently audited" is the tool's convention for every
-`PROVED` row. For this version it is ahead of the final-byte review listed above.
+`PROVED` row. This receipt distinguishes that registry state from the required integrated checks.
 
 ## Exact identities
 
@@ -116,7 +117,7 @@ are 13/24, 6/24 and 5/24. The historical fixture restores the version 3 identity
 pin and the matching allowed-gap sets, so the historical-world expectations are unchanged. One
 test was added: `test_theorem_1_4_v4_excludes_its_v3_historical_reading`.
 
-## Checks on this commit
+## Source checks on the integrated candidate
 
 | Check | Exit | Result |
 |---|---:|---|
@@ -132,22 +133,19 @@ test was added: `test_theorem_1_4_v4_excludes_its_v3_historical_reading`.
 | `python3 -m unittest tools.test_source_reporting` | 0 | 29 tests |
 | `python3 -m unittest tools.test_source_tools` | 0 | 16 tests |
 
-Not run here: Lean and Lake, `tools/check_axioms.py`, `tools/check_warnings.py`, the full
-locked build, and `#print axioms`. This source-only worktree has no `.lake` directory.
+The source checks above do not replace the fresh full build, axiom probes, or warning gates.
 
-## Required at integration
+## Proof and gate obligations
 
-1. A nonvacuity module under `Exploding/Support/`, imported from the root module. At `d = 2`
-   with `ν = Measure.dirac 3`, it proves the exact `hlow` and `hhit`, discharges `hSch` by
-   `Exploding.xsr_schonmann`, and checks an actual expanding front of the ordinary odometer under
-   the all-high law. It should also cover the strict two-height law at `p = 1/2`, which consumes
-   `hSch`. This module is not part of this commit.
-2. The locked full build, `#print axioms` for `Exploding.Frozen.explosive`,
-   `Exploding.explosive` and `Exploding.xsr_schonmann`, `tools/check_axioms.py` and
-   `tools/check_warnings.py`.
-3. The sorry and axiom fields in `formalization.yaml` for `Exploding.Frozen.explosive` are carried
-   from an earlier build. They should be confirmed on the integrated tree.
-4. An independent final-byte review of the integrated union.
+1. The imported `Exploding.Support.ExplosiveVacuity` theorem proves the exact `hlow` and
+   `hhit` for the Dirac law at `2d-1`, discharges `hSch` by
+   `Exploding.xsr_schonmann`, and checks an expanding ordinary-odometer front. The strict
+   two-height law at `p = 1/2` separately consumes `hSch` through
+   `Exploding.LSProof.ls_flp_from_explosive`.
+2. Before credit, run the locked full build, `#print axioms` for the Frozen/public theorem,
+   `Exploding.xsr_schonmann` and the nonvacuity theorem, and the configured axiom and warning
+   gates. The axiom-audit module prints the nonvacuity theorem's closure explicitly.
+3. Confirm the `formalization.yaml` sorry and axiom fields against that fresh build and record
+   the post-landing certificate separately.
+4. Complete independent final-byte review of the integrated tree.
 
-`wip/decomp/ExplosiveAux.lean` still carries the earlier docstring wording. It is outside the
-build and was not edited here.

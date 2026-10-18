@@ -9,9 +9,9 @@ import Exploding.Support.ExtSchFLP
 /-!
 # Axioms audit
 
-Building this module prints the axiom dependencies of the 22 proved results restated in
-`Exploding/MainTheorems.lean`, one for each node registered as `SEALED` in
-`ledger/manifest.yaml`.  Each must report exactly the three standard foundational axioms of
+Building this module prints the axiom dependencies of the 22 proved paper results restated in
+`Exploding/MainTheorems.lean` and the all-high endpoint check of Theorem 1.4. Each must report
+exactly the three standard foundational axioms of
 Mathlib: `propext`, `Classical.choice`, `Quot.sound`.
 
 All of the paper's main results are proved and appear among them: Theorems 1.2, 1.3, 1.4,
@@ -39,6 +39,7 @@ This file is not imported by the library root; the report runs when it is built 
 #print axioms Exploding.limit_shape
 #print axioms Exploding.convergence_of_time_constant
 #print axioms Exploding.explosive
+#print axioms Exploding.explosive_all_high_nonvacuity
 -- Section 2
 #print axioms Exploding.crossing_time
 #print axioms Exploding.renormalization_properties

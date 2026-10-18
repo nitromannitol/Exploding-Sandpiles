@@ -86,6 +86,45 @@ HISTORICAL_TIMECONSTANT_BLOCK = """theorem Exploding.Frozen.convergence_of_time_
 """
 
 
+HISTORICAL_RENORMALIZATION_BLOCK = """theorem Exploding.Frozen.renormalization_properties (d : ℕ) (hd : 2 ≤ d) (p : ℝ) (hp : 0 < p) (hp1 : p < 1)
+    (hLSSB : Exploding.External.LiggettSchonmannStaceyBoundedDegree)
+    (hHole : Exploding.External.MathieuHoleVolume)
+    (hChem : Exploding.External.AntalPisztoraChemicalDistance) :
+    ∃ k0 : ℕ, ∀ k : ℕ, k0 ≤ k → ∃ c C : ℝ, 0 < c ∧ 0 < C ∧
+      ∀ᵐ η ∂(toyLaw d p),
+        ∃ Cinf : Set (Site d), IsInfiniteConnectedGoodSet η k Cinf ∧
+          (∃ n0 : ℕ, ∀ n : ℕ, n0 ≤ n → ∀ x ∈ (cent d n : Set (Site d)),
+            x ∉ Cinf →
+              (componentIn Cinfᶜ x).Finite ∧
+                ((componentIn Cinfᶜ x).ncard : ℝ) < Real.log n ^ ((5 : ℝ) / 2)) ∧
+          (∃ n0 : ℕ, ∀ n : ℕ, n0 ≤ n → ∀ x ∈ Cinf, ∀ y ∈ Cinf,
+            mnorm x ≤ (n : ℤ) → Real.log n ^ (2 : ℕ) ≤ (mnorm (x - y) : ℝ) →
+              ∃ m : ℕ, chemDist Cinf x y = (m : ℕ∞) ∧
+                c * (mnorm (x - y) : ℝ) ≤ (m : ℝ) ∧ (m : ℝ) ≤ C * (mnorm (x - y) : ℝ))
+"""
+
+
+RENORMALIZATION_V5_BLOCK = """theorem Exploding.Frozen.renormalization_properties (d : ℕ) (hd : 2 ≤ d) (p : ℝ) (hp : 0 < p) (hp1 : p ≤ 1)
+    (hLSSB : Exploding.External.LiggettSchonmannStaceyBoundedDegree)
+    (hHole : Exploding.External.MathieuHoleVolume)
+    (hChem : Exploding.External.AntalPisztoraChemicalDistance) :
+    ∃ k0 : ℕ, ∀ k : ℕ, k0 ≤ k → ∃ c C : ℝ, 0 < c ∧ 0 < C ∧
+      ∀ᵐ η ∂(toyLaw d p),
+        ∃ Cinf : Set (Site d), IsInfiniteConnectedGoodSet η k Cinf ∧
+          (∃ n0 : ℕ, ∀ n : ℕ, n0 ≤ n → ∀ x ∈ (cent d n : Set (Site d)),
+            x ∉ Cinf →
+              (componentIn Cinfᶜ x).Finite ∧
+                ((componentIn Cinfᶜ x).ncard : ℝ) < Real.log n ^ ((5 : ℝ) / 2)) ∧
+          (∃ n0 : ℕ, ∀ n : ℕ, n0 ≤ n → ∀ x ∈ Cinf, ∀ y ∈ Cinf,
+            mnorm x ≤ (n : ℤ) → Real.log n ^ (2 : ℕ) ≤ (mnorm (x - y) : ℝ) →
+              ∃ m : ℕ, chemDist Cinf x y = (m : ℕ∞) ∧
+                c * (mnorm (x - y) : ℝ) ≤ (m : ℝ) ∧ (m : ℝ) ≤ C * (mnorm (x - y) : ℝ)) ∧
+          (∃ z ∈ goodSites η k, Cinf = componentIn (goodSites η k) z) ∧
+          (∀ z ∈ goodSites η k, (componentIn (goodSites η k) z).Infinite →
+            componentIn (goodSites η k) z = Cinf)
+"""
+
+
 class SourceReportingTests(unittest.TestCase):
     def setUp(self):
         original = sync_docs.ROOT
@@ -109,6 +148,9 @@ class SourceReportingTests(unittest.TestCase):
             "prop-last-wave-convergence": (
                 "exploding.tex:846-852 (label prop:convergence_of_the_last_wave)",
                 HISTORICAL_LASTWAVE_BLOCK),
+            "prop-renormalization": (
+                "exploding.tex:482-497 (label prop:renormalization_properties)",
+                HISTORICAL_RENORMALIZATION_BLOCK),
         }
         restored = {}
         for nid, (source, block) in historical.items():
@@ -148,6 +190,12 @@ class SourceReportingTests(unittest.TestCase):
         corrected_gaps["statements"].append(
             {"kind": "theorem", "line": 117,
              "label": "theorem:convergence_of_time_constant"})
+        journal_gaps["statements"] = [
+            gap for gap in journal_gaps["statements"]
+            if gap["label"] != "prop:renormalization_properties"]
+        corrected_gaps["statements"].append(
+            {"kind": "prop", "line": 352,
+             "label": "prop:renormalization_properties"})
         directory = tempfile.TemporaryDirectory(prefix="exploding-source-reporting-")
         self.addCleanup(directory.cleanup)
         self.root = Path(directory.name)
@@ -305,7 +353,7 @@ class SourceReportingTests(unittest.TestCase):
             for i in range(4):
                 self.assertIn(f"def-literal-{i}: different source pin:", output)
 
-    def test_live_crossing_migration_has_exact_source_partition(self):
+    def test_live_source_moves_have_exact_source_partition(self):
         nodes = self.live_manifest["nodes"]
         self.assertEqual(len(nodes), 39)
         groups = {}
@@ -315,26 +363,27 @@ class SourceReportingTests(unittest.TestCase):
         old = groups["paper/exploding.tex"]
         official = groups["paper/exploding-arxiv.tex"]
         revised = groups[self.revised]
-        self.assertEqual((len(old), len(official), len(revised)), (27, 5, 7))
-        self.assertEqual(sum(n["kind"] == "theorem" for n in old), 20)
+        self.assertEqual((len(old), len(official), len(revised)), (26, 5, 8))
+        self.assertEqual(sum(n["kind"] == "theorem" for n in old), 19)
         self.assertEqual(sum(n["kind"] == "definition" for n in old), 7)
         self.assertEqual({n["id"] for n in official},
                          {"lem-penultimate-cluster", "lem-penultimate-upper-bound",
                           "lem-penultimate-close", "prop-approximate-subadditive",
                           "prop-last-wave-convergence"})
         self.assertTrue(all(n["kind"] == "theorem" for n in official))
-        self.assertEqual(sum(n["kind"] == "theorem" for n in revised), 3)
+        self.assertEqual(sum(n["kind"] == "theorem" for n in revised), 4)
         self.assertEqual(sum(n["kind"] == "definition" for n in revised), 4)
         self.assertEqual({n["id"] for n in revised if n["kind"] == "theorem"},
-                         {"thm-counterexample", "prop-crossing-time", "thm-time-constant"})
+                         {"thm-counterexample", "prop-crossing-time", "thm-time-constant",
+                          "prop-renormalization"})
 
     def test_live_approximate_successor_coverage_and_historical_boundary(self):
         self.restore_live_successors()
         result, output = self.run_main(check_coverage)
         self.assertEqual(result, 0, output)
-        self.assertIn("16/24 statements claimed", output)
+        self.assertIn("15/24 statements claimed", output)
         self.assertIn("5/24 statements claimed", output)
-        self.assertEqual(output.count("3/24 statements claimed"), 1)
+        self.assertEqual(output.count("4/24 statements claimed"), 1)
 
         saved = copy.deepcopy(self.manifest["coverage_allowed_gaps"])
         journal, official, _ = self.manifest["coverage_allowed_gaps"]
@@ -388,7 +437,7 @@ class SourceReportingTests(unittest.TestCase):
             "(hp1 : p < 1)", "(hp1 : p ≤ 1)"))
         result, output = self.run_main(check_coverage)
         self.assertEqual(result, 0, output)
-        for claim in ("16/24", "5/24", "3/24"):
+        for claim in ("15/24", "5/24", "4/24"):
             self.assertIn(claim + " statements claimed", output)
         saved_gaps = copy.deepcopy(self.manifest["coverage_allowed_gaps"])
         for defect in ("missing-journal", "stale-corrected", "unclaimed-official"):
@@ -422,6 +471,154 @@ class SourceReportingTests(unittest.TestCase):
                     self.assertEqual(result, 2, output)
                 node.clear()
                 node.update(saved)
+
+    def test_live_renormalization_v5_marker_source_and_gap_controls(self):
+        self.restore_live_successors()
+        node = next(n for n in self.manifest["nodes"]
+                    if n["id"] == "prop-renormalization")
+        expected_source = (
+            "exploding-corrected-arxiv.tex:352-367 "
+            "(label prop:renormalization_properties)")
+        expected_pin = {
+            "file": self.revised,
+            "sha256": "59b5ac1a5cdf80c5b550dfc1738414892e0aa3f8cdb0bf03d00c74685a3e1be2",
+            "inputs": [{
+                "file": "paper/corrected-arxiv/defs.tex",
+                "sha256": "9aba2c73246d79e3c6b87cb1f01cf3e2f636e27c8afd97ccb8ba5c032a9ee65b",
+            }],
+        }
+        self.assertEqual(node["version"], 5)
+        self.assertEqual(node["frozen_sha256"],
+                         "5e3c8b09f9ce732c2cad76168fa1d455e515ea8a08ae74716d43967e8e623b21")
+        self.assertEqual(node["source"], expected_source)
+        self.assertEqual(node["source_pin"], expected_pin)
+        path = self.root / node["file"]
+        text = path.read_text(encoding="utf-8")
+        block = check_manifest.block_of(text, path, [])[0]
+        self.assertEqual(len(block.encode("utf-8")), 1298)
+        self.assertEqual(hashlib.sha256(block.encode("utf-8")).hexdigest(),
+                         node["frozen_sha256"])
+        self.assertEqual(block, RENORMALIZATION_V5_BLOCK)
+        self.assertIn("(∃ z ∈ goodSites η k, Cinf = componentIn (goodSites η k) z)", block)
+        self.assertIn("componentIn (goodSites η k) z = Cinf", block)
+
+        for omitted_clause in (
+                " ∧\n          (∀ z ∈ goodSites η k, (componentIn (goodSites η k) z).Infinite →\n"
+                "            componentIn (goodSites η k) z = Cinf)\n",
+                "          (∃ z ∈ goodSites η k, Cinf = componentIn (goodSites η k) z) ∧\n"):
+            mutated = block.replace(omitted_clause, "", 1)
+            self.assertNotEqual(mutated, block)
+            path.write_text(text.replace(block, mutated, 1), encoding="utf-8")
+            mutated_block = check_manifest.block_of(
+                path.read_text(encoding="utf-8"), path, [])[0]
+            node["frozen_sha256"] = hashlib.sha256(
+                mutated_block.encode("utf-8")).hexdigest()
+            self.write_manifest()
+            self.assertEqual(node["frozen_sha256"],
+                             hashlib.sha256(mutated_block.encode("utf-8")).hexdigest())
+            self.assertNotEqual(node["frozen_sha256"],
+                                "5e3c8b09f9ce732c2cad76168fa1d455e515ea8a08ae74716d43967e8e623b21")
+            with self.assertRaises(AssertionError):
+                self.assertEqual(mutated_block, RENORMALIZATION_V5_BLOCK)
+            path.write_text(text, encoding="utf-8")
+            node["frozen_sha256"] = hashlib.sha256(block.encode("utf-8")).hexdigest()
+            self.write_manifest()
+        path.write_text(text, encoding="utf-8")
+
+        result, output = self.run_main(check_coverage)
+        self.assertEqual(result, 0, output)
+        for claim in ("15/24", "5/24", "4/24"):
+            self.assertIn(claim + " statements claimed", output)
+
+        saved = copy.deepcopy(node)
+        node["source_pin"] = {**node["source_pin"], "inputs": []}
+        self.write_manifest()
+        for module in (sync_docs, assumptions, check_clauses, check_exponents):
+            result, output = self.run_main(module)
+            self.assertEqual(result, 2, output)
+        node.clear()
+        node.update(saved)
+
+        node["source"] = "exploding.tex:482-497 (label prop:renormalization_properties)"
+        self.write_manifest()
+        for module in (sync_docs, assumptions, check_clauses, check_exponents):
+            result, output = self.run_main(module)
+            self.assertEqual(result, 2, output)
+        node.clear()
+        node.update(saved)
+
+        saved_gaps = copy.deepcopy(self.manifest["coverage_allowed_gaps"])
+        journal, official, _corrected = self.manifest["coverage_allowed_gaps"]
+        journal["statements"] = [
+            gap for gap in journal["statements"]
+            if gap["label"] != "prop:renormalization_properties"]
+        self.write_manifest()
+        result, output = self.run_main(check_coverage)
+        self.assertEqual(result, 1, output)
+        self.assertIn("unexpected gap: prop at line 482", output)
+
+        self.manifest["coverage_allowed_gaps"] = copy.deepcopy(saved_gaps)
+        self.manifest["coverage_allowed_gaps"][2]["statements"].append(
+            {"kind": "prop", "line": 352,
+             "label": "prop:renormalization_properties"})
+        self.write_manifest()
+        result, output = self.run_main(check_coverage)
+        self.assertEqual(result, 1, output)
+        self.assertIn("stale gap allowance: prop at line 352", output)
+
+        self.manifest["coverage_allowed_gaps"] = copy.deepcopy(saved_gaps)
+        node["source_pin"] = {
+            "file": "paper/exploding-arxiv.tex",
+            "sha256": "f12deba6e481a3d81c6967bc48ecbbdae1df4fa1c5f6248a38990030b308072d",
+            "inputs": [{"file": "paper/defs.tex",
+                        "sha256": "9aba2c73246d79e3c6b87cb1f01cf3e2f636e27c8afd97ccb8ba5c032a9ee65b"}],
+        }
+        node["source"] = "exploding-arxiv.tex:344-359 (label prop:renormalization_properties)"
+        self.write_manifest()
+        result, output = self.run_main(check_coverage)
+        self.assertEqual(result, 1, output)
+        self.assertIn("stale gap allowance: prop at line 344", output)
+
+    def test_renormalization_v4_historical_identity_and_bytes_are_exact(self):
+        node = next(n for n in self.manifest["nodes"]
+                    if n["id"] == "prop-renormalization")
+        self.assertEqual(sync_docs.HISTORICAL_DECLARATIONS["prop-renormalization"],
+                         (4, "79b4e8c59d8d852b23963f9f48ecd2a4c39a6d1e66163c3eaa41f57c08ade127"))
+        self.assertEqual(node["version"], 4)
+        self.assertEqual(node["source"],
+                         "exploding.tex:482-497 (label prop:renormalization_properties)")
+        self.assertNotIn("source_pin", node)
+        path = self.root / node["file"]
+        text = path.read_text(encoding="utf-8")
+        block = check_manifest.block_of(text, path, [])[0]
+        self.assertEqual(block, HISTORICAL_RENORMALIZATION_BLOCK)
+
+        saved = copy.deepcopy(node)
+        node["version"] = 5
+        self.write_manifest()
+        for module in (check_clauses, check_exponents):
+            result, output = self.run_main(module)
+            self.assertEqual(result, 2, output)
+            self.assertIn("historical annotation identity mismatch", output)
+        node.clear()
+        node.update(saved)
+
+        path.write_text(text.replace(
+            "(hp1 : p < 1)", "(hp1 : p ≤ 1)", 1), encoding="utf-8")
+        self.write_manifest()
+        for module in (check_clauses, check_exponents):
+            result, output = self.run_main(module)
+            self.assertEqual(result, 2, output)
+            self.assertIn("actual frozen block differs", output)
+
+        changed = path.read_text(encoding="utf-8")
+        block = check_manifest.block_of(changed, path, [])[0]
+        node["frozen_sha256"] = hashlib.sha256(block.encode("utf-8")).hexdigest()
+        self.write_manifest()
+        for module in (check_clauses, check_exponents):
+            result, output = self.run_main(module)
+            self.assertEqual(result, 2, output)
+            self.assertIn("historical annotation identity mismatch", output)
 
     def test_timeconstant_historical_identity_and_extra_binder_fail(self):
         node = next(n for n in self.manifest["nodes"] if n["id"] == "thm-time-constant")

@@ -24,13 +24,13 @@ import Exploding.Frozen.BoxCrossing
 /-!
 # Main results
 
-This file gives the public paper-facing theorem statements. The 21 existing paper-owned
+This file gives the public paper-facing theorem statements. Twenty paper-owned
 old-source statements retain their corrected-journal contracts, including the proved
-finite-exploding version 7 with `0 < p ≤ 1`. The nine other strict Bernoulli paper rows
-retain their `p < 1` premises. Theorem 6.1 below is the proved corrected-v10 v4 successor.
-Its exact type, standard-three axiom closure and same-background conclusion passed
-integrated Lean checks and independent source/body/consumer audit. This accepts one
-corrected-v10 theorem and does not certify the other v10 statements.
+finite-exploding version 7 with `0 < p ≤ 1`. Eight strict Bernoulli paper rows retain
+`p < 1`. Theorem 6.1 is the proved corrected-v10 v4 counterexample successor.
+Proposition 2.1 has the corrected-v10 v4 terminal-and-deadline statement for `0 < p ≤ 1`;
+its separate receipt records the exact declaration and bounded consumer evidence. The remaining
+corrected-v10 statements and the literal official arXiv initialization are not certified.
 
 The main theorems are:
 
@@ -175,13 +175,23 @@ theorem Exploding.explosive (d : ℕ) (hd : 2 ≤ d) (ν : Measure ℤ) (hν : I
     ∀ᵐ β ∂(Measure.infinitePi fun _ : Site d => ν), Explosive β := by
   exact Exploding.Frozen.explosive d hd ν hν hlow hhit hSch
 
-/-- **Proposition 2.1** (`prop:crossing_time`): for every `δ > 0` there is a side length
-`k` so that with probability at least `1 - δ` every line across the box `Q_k` carries a
-`(2d-1)`-chip catalyst, hence every crossing time is at most `k^d`.  The certified
+/-- **Proposition 2.1** (`prop:crossing_time`, corrected-v10 lines 286–292): for every
+`δ > 0`, a positive cube scale has probability at least `1 - δ` of terminal value one and
+a positive all-one hit by the volume deadline, for every direction and closed-cube seed.
+The delivered-seed initialization is specified at source lines 275–283. The certified
 statement is `Exploding.Frozen.crossing_time`, restated unchanged. -/
-theorem Exploding.crossing_time (d : ℕ) (hd : 2 ≤ d) (p : ℝ) (hp : 0 < p) (hp1 : p < 1)
+theorem Exploding.crossing_time (d : ℕ) (hd : 2 ≤ d)
+    (p : ℝ) (hp : 0 < p) (hp1 : p ≤ 1)
     (δ : ℝ) (hδ : 0 < δ) :
-    ∃ k : ℕ, 1 ≤ k ∧ ENNReal.ofReal (1 - δ) ≤ toyLaw d p {η | GoodCube η k} := by
+    ∃ k : ℕ, 1 ≤ k ∧
+      ENNReal.ofReal (1 - δ) ≤ toyLaw d p
+        {η : Site d → ℤ |
+          ∀ (i : Fin d) (z : Site d), z ∈ closureN (cube d k) →
+            (∀ x ∈ cube d k, ∃ T : ℕ, ∀ t : ℕ, T ≤ t →
+              crossOdo η k i z t x = 1) ∧
+            (∃ n : ℕ, 1 ≤ n ∧ n ≤ k ^ d ∧
+              ∀ x ∈ cube d k, crossOdo η k i z n x = 1)
+        } := by
   exact Exploding.Frozen.crossing_time d hd p hp hp1 δ hδ
 
 /-- **Proposition 2.2** (`prop:renormalization_properties`): on an event of probability 1

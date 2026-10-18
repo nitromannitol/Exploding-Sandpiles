@@ -2,6 +2,7 @@
 
 import contextlib
 import copy
+import hashlib
 import io
 import os
 from pathlib import Path
@@ -17,8 +18,10 @@ import yaml
 
 import assumptions
 import check_clauses
+import check_coverage
 import check_exponents
 import check_manifest
+import paper_anchors
 import sync_docs
 
 
@@ -33,18 +36,38 @@ HISTORICAL_COUNTEREXAMPLE_BLOCK = """theorem Exploding.Frozen.counterexample (d 
 """
 
 
+HISTORICAL_CROSSING_BLOCK = """theorem Exploding.Frozen.crossing_time (d : ℕ) (hd : 2 ≤ d) (p : ℝ) (hp : 0 < p) (hp1 : p < 1)
+    (δ : ℝ) (hδ : 0 < δ) :
+    ∃ k : ℕ, 1 ≤ k ∧ ENNReal.ofReal (1 - δ) ≤ toyLaw d p {η | GoodCube η k}
+"""
+
+
 class SourceReportingTests(unittest.TestCase):
     def setUp(self):
         original = sync_docs.ROOT
-        self.manifest = copy.deepcopy(sync_docs.load_manifest())
+        self.live_manifest = copy.deepcopy(sync_docs.load_manifest())
+        self.manifest = copy.deepcopy(self.live_manifest)
         self.manifest["nodes"] = [n for n in self.manifest["nodes"]
                                   if not sync_docs.is_local_definition(n)]
-        counterexample = next(n for n in self.manifest["nodes"]
-                              if n["id"] == "thm-counterexample")
-        counterexample.pop("source_pin", None)
-        counterexample["source"] = "exploding.tex:1351-1361 (label theorem:counterexample)"
-        counterexample["version"], counterexample["frozen_sha256"] = (
-            sync_docs.HISTORICAL_DECLARATIONS["thm-counterexample"])
+        historical = {
+            "thm-counterexample": (
+                "exploding.tex:1351-1361 (label theorem:counterexample)",
+                HISTORICAL_COUNTEREXAMPLE_BLOCK),
+            "prop-crossing-time": (
+                "exploding.tex:416-422 (label prop:crossing_time)",
+                HISTORICAL_CROSSING_BLOCK),
+        }
+        restored = {}
+        for nid, (source, block) in historical.items():
+            node = next(n for n in self.manifest["nodes"] if n["id"] == nid)
+            node.pop("source_pin", None)
+            node["source"] = source
+            node["version"], node["frozen_sha256"] = sync_docs.HISTORICAL_DECLARATIONS[nid]
+            self.assertEqual(hashlib.sha256(block.encode()).hexdigest(), node["frozen_sha256"])
+            restored[node["file"]] = block
+        live_crossing = next(n for n in self.live_manifest["nodes"]
+                             if n["id"] == "prop-crossing-time")
+        self.live_crossing_text = (original / live_crossing["file"]).read_text(encoding="utf-8")
         directory = tempfile.TemporaryDirectory(prefix="exploding-source-reporting-")
         self.addCleanup(directory.cleanup)
         self.root = Path(directory.name)
@@ -56,13 +79,14 @@ class SourceReportingTests(unittest.TestCase):
             target = self.root / filename
             target.parent.mkdir(parents=True, exist_ok=True)
             shutil.copyfile(original / filename, target)
-            if filename == counterexample["file"]:
+            if filename in restored:
                 text = target.read_text(encoding="utf-8")
                 start = text.index(check_manifest.BEGIN) + len(check_manifest.BEGIN)
                 end = text.index(check_manifest.END)
-                target.write_text(text[:start] + "\n" + HISTORICAL_COUNTEREXAMPLE_BLOCK
+                target.write_text(text[:start] + "\n" + restored[filename]
                                   + text[end:], encoding="utf-8")
-        for module in (sync_docs, assumptions, check_manifest, check_clauses, check_exponents):
+        for module in (sync_docs, assumptions, check_manifest, check_clauses, check_exponents,
+                       check_coverage, paper_anchors):
             self.enterContext(patch.object(module, "ROOT", self.root))
             if hasattr(module, "MANIFEST"):
                 self.enterContext(patch.object(module, "MANIFEST", self.root / "ledger/manifest.yaml"))
@@ -79,7 +103,7 @@ class SourceReportingTests(unittest.TestCase):
         path.parent.mkdir(exist_ok=True)
         path.write_text(yaml.safe_dump(self.manifest), encoding="utf-8")
 
-    def mixed_manifest(self):
+    def mixed_manifest(self, include_crossing=False):
         import hashlib
 
         def pin(filename):
@@ -106,6 +130,14 @@ class SourceReportingTests(unittest.TestCase):
                 "file": filename, "export": export, "source_pin": source_pin,
                 "source": "exploding-corrected-arxiv.tex:1-2 (literal definition)",
             })
+        if include_crossing:
+            crossing = next(n for n in self.manifest["nodes"]
+                            if n["id"] == "prop-crossing-time")
+            live = next(n for n in self.live_manifest["nodes"]
+                        if n["id"] == "prop-crossing-time")
+            for key in ("source_pin", "source", "version", "frozen_sha256"):
+                crossing[key] = copy.deepcopy(live[key])
+            (self.root / crossing["file"]).write_text(self.live_crossing_text, encoding="utf-8")
         self.write_manifest()
 
     def run_main(self, module):
@@ -115,6 +147,7 @@ class SourceReportingTests(unittest.TestCase):
         return result, out.getvalue()
 
     def test_legacy_docs_and_audit_scope(self):
+        self.assertTrue(all("source_pin" not in n for n in self.manifest["nodes"]))
         result, output = self.run_main(sync_docs)
         self.assertEqual(result, 0, output)
         for module, count in ((check_clauses, 24), (check_exponents, 30)):
@@ -172,6 +205,105 @@ class SourceReportingTests(unittest.TestCase):
             self.assertNotIn("thm-counterexample: two displays", output)
             for i in range(4):
                 self.assertIn(f"def-literal-{i}: different source pin:", output)
+
+    def test_live_crossing_migration_has_exact_source_partition(self):
+        nodes = self.live_manifest["nodes"]
+        self.assertEqual(len(nodes), 39)
+        groups = {}
+        for node in nodes:
+            filename = node.get("source_pin", self.live_manifest["source_pin"])["file"]
+            groups.setdefault(filename, []).append(node)
+        old = groups["paper/exploding.tex"]
+        revised = groups[self.revised]
+        self.assertEqual((len(old), len(revised)), (33, 6))
+        self.assertEqual(sum(n["kind"] == "theorem" for n in old), 26)
+        self.assertEqual(sum(n["kind"] == "definition" for n in old), 7)
+        self.assertEqual(sum(n["kind"] == "theorem" for n in revised), 2)
+        self.assertEqual(sum(n["kind"] == "definition" for n in revised), 4)
+        self.assertEqual({n["id"] for n in revised if n["kind"] == "theorem"},
+                         {"thm-counterexample", "prop-crossing-time"})
+
+    def test_two_migrations_exclude_both_historical_readings(self):
+        self.mixed_manifest(include_crossing=True)
+        revised = [n for n in self.manifest["nodes"] if "source_pin" in n]
+        self.assertEqual({n["id"] for n in revised if n["kind"] == "theorem"},
+                         {"thm-counterexample", "prop-crossing-time"})
+        self.assertEqual(sum(n["kind"] == "definition" for n in revised), 4)
+        for module, count in ((check_clauses, 22), (check_exponents, 28)):
+            result, output = self.run_main(module)
+            self.assertEqual(result, 0, output)
+            self.assertIn(f"{count} historical-source statements", output)
+            for nid in ("thm-counterexample", "prop-crossing-time"):
+                self.assertIn(f"{nid}: different source pin:", output)
+            self.assertNotIn("prop-crossing-time: one display", output)
+
+    def test_crossing_corrected_pin_and_citation_are_checked(self):
+        self.mixed_manifest(include_crossing=True)
+        node = next(n for n in self.manifest["nodes"] if n["id"] == "prop-crossing-time")
+        for defect in ("input", "citation"):
+            with self.subTest(defect=defect):
+                saved = copy.deepcopy(node)
+                if defect == "input":
+                    node["source_pin"] = {**node["source_pin"], "inputs": []}
+                else:
+                    node["source"] = "exploding.tex:416-422 (label prop:crossing_time)"
+                self.write_manifest()
+                for module in (sync_docs, assumptions, check_clauses, check_exponents):
+                    result, output = self.run_main(module)
+                    self.assertEqual(result, 2, output)
+                node.clear()
+                node.update(saved)
+
+    def test_crossing_successor_cannot_inherit_historical_identity(self):
+        self.mixed_manifest(include_crossing=True)
+        node = next(n for n in self.manifest["nodes"] if n["id"] == "prop-crossing-time")
+        node.pop("source_pin")
+        node["source"] = "exploding.tex:416-422 (label prop:crossing_time)"
+        self.write_manifest()
+        for module in (check_clauses, check_exponents):
+            result, output = self.run_main(module)
+            self.assertEqual(result, 2, output)
+            self.assertIn("historical annotation identity mismatch", output)
+
+    def test_crossing_historical_byte_and_rehash_mutants_fail(self):
+        node = next(n for n in self.manifest["nodes"] if n["id"] == "prop-crossing-time")
+        path = self.root / node["file"]
+        text = path.read_text(encoding="utf-8")
+        path.write_text(text.replace(node["export"], node["export"] + " (hExtra : False)", 1),
+                        encoding="utf-8")
+        for rehash in (False, True):
+            if rehash:
+                block = check_manifest.block_of(path.read_text(), path, [])[0]
+                node["version"] += 1
+                node["frozen_sha256"] = hashlib.sha256(block.encode()).hexdigest()
+                self.write_manifest()
+            for module in (check_clauses, check_exponents):
+                result, output = self.run_main(module)
+                self.assertEqual(result, 2, output)
+                self.assertIn("historical annotation identity mismatch" if rehash
+                              else "actual frozen block differs", output)
+
+    def test_crossing_coverage_move_rejects_stale_and_missing_allowances(self):
+        self.mixed_manifest(include_crossing=True)
+        result, output = self.run_main(check_coverage)
+        self.assertEqual(result, 0, output)
+        self.assertIn("22/24 statements claimed", output)
+        self.assertIn("2/24 statements claimed", output)
+        saved = copy.deepcopy(self.manifest["coverage_allowed_gaps"])
+        old, revised = self.manifest["coverage_allowed_gaps"]
+        old["statements"] = [s for s in old["statements"]
+                             if s["label"] != "prop:crossing_time"]
+        self.write_manifest()
+        result, output = self.run_main(check_coverage)
+        self.assertEqual(result, 1, output)
+        self.assertIn("unexpected gap", output)
+        self.manifest["coverage_allowed_gaps"] = copy.deepcopy(saved)
+        self.manifest["coverage_allowed_gaps"][1]["statements"].append(
+            {"kind": "prop", "line": 286, "label": "prop:crossing_time"})
+        self.write_manifest()
+        result, output = self.run_main(check_coverage)
+        self.assertEqual(result, 1, output)
+        self.assertIn("stale gap allowance", output)
 
     def test_empty_historical_audit_fails(self):
         self.mixed_manifest()

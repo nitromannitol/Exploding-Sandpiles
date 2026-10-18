@@ -4,9 +4,9 @@ project:
   name: "Exploding-Sandpiles"
   description: >-
     Lean 4/Mathlib formalization of the paper's results with source selected per manifest
-    row. There are 34 rows pinned to the corrected journal source. The
-    proved v4 counterexample theorem and four literal definitions give five corrected-v10
-    rows; no other corrected-v10 endpoint is certified. Seven historical cited
+    row. There are 33 rows pinned to the corrected journal source. The
+    v4 counterexample and crossing theorems and four literal definitions give six corrected-v10
+    rows. The crossing row gives the corrected terminal-and-deadline event; no other corrected-v10 endpoint is certified. Seven historical cited
     inputs remain registered, six also proved in the repository. The comparator remains the
     historical limit-shape pair.
   authors:
@@ -29,7 +29,7 @@ sources:
     type: "journal article"
     relationship: "formalizes by default"
     note: >-
-      Default source for 34 existing rows: paper/exploding.tex, SHA-256
+      Default source for 33 existing rows: paper/exploding.tex, SHA-256
       1d7c2010d8bd29e7fb83e93f19c9ebe0e8aef201f93559b2b18f5ca0dc049b44.
       paper/CHANGES_FROM_ARXIV.md lists the journal-copy differences.
     license: ""
@@ -43,7 +43,7 @@ sources:
     type: "local corrected arXiv-format draft"
     relationship: "partial-source-for"
     note: >-
-      Only the proved counterexample theorem and four literal definitions select
+      The counterexample and corrected crossing theorems and four literal definitions select
       this local v10 draft and its defs.tex input; it is not the official arXiv source.
     license: ""
     author_contacted: "n/a"
@@ -59,30 +59,25 @@ related_formalizations:
 
 status:
   scope: >-
-    Mixed-source registry: 39 registrations = 34 old-source rows and five corrected-v10
-    rows; aggregate 28 theorem rows and 11 definition rows. The old group has 27 theorem
-    rows (21 paper-owned plus six cited-input companions) and seven cited-input definitions.
-    The corrected group has one proved theorem and four literal definitions; definitions
-    add zero theorem coverage. Structural claims are old 23/24 (21/22 paper-owned) and
-    corrected-v10 1/24 (1/22 paper-owned); the exact uncovered sets are the two manifest
-    allowed-gap entries. The counterexample successor is PROVED and the four
-    literal definitions are FROZEN under the 15 October 2026 exact-declaration ruling.
-    Exact-type compilation, standard-three axiom checks, a full locked 9405-job build,
-    all eleven configured checks and independent source/body/consumer audit passed.
-    Aggregate states are 28 PROVED (22 paper-owned across the two pins and six cited-input
-    discharges), 11 FROZEN definitions and zero SEALED. The global source default remains
-    paper/exploding.tex; only those five corrected rows pin
-    paper/corrected-arxiv/exploding-corrected-arxiv.tex (SHA-256
-    59b5ac1a5cdf80c5b550dfc1738414892e0aa3f8cdb0bf03d00c74685a3e1be2) and
-    paper/corrected-arxiv/defs.tex (SHA-256
-    9aba2c73246d79e3c6b87cb1f01cf3e2f636e27c8afd97ccb8ba5c032a9ee65b). The other 21
-    paper-owned baseline results retain their old-source statements and recorded axiom
-    closure. Seven cited results remain registered; the proved theorem has no hFMR binder.
-    Other corrected-v10 statements lack corrected-source certification. The official arXiv
-    extraction remains separate. The comparator remains the historical Theorem 1.2
-    comparison only; the p=1 endpoint inventory is separate. Lemma 3.2 version 7 remains
-    PROVED with 0 < p ≤ 1 under the historical pin. The nine other strict Bernoulli paper
-    rows retain their p < 1 premises.
+    Mixed-source registry: 39 registrations = 33 old-source rows and six corrected-v10
+    rows; aggregate 28 theorem rows and 11 definition rows. The old group has 26 theorem
+    rows (20 paper-owned plus six cited-input companions) and seven cited-input definitions.
+    The corrected group has two paper theorem rows and four literal definitions; definitions
+    add zero theorem coverage. Structural claims are old 22/24 (20/22 paper-owned) and
+    corrected-v10 2/24 (2/22 paper-owned); exact uncovered sets are the two manifest
+    allowed-gap entries. The counterexample and its four literal definitions retain their
+    completed promotion receipt. The corrected crossing version 4 is PROVED under its own exact source pin;
+    its separate receipt records the statement, source correspondence and bounded consumers. Aggregate manifest states remain
+    28 PROVED, 11 FROZEN definitions and zero SEALED. The global default remains
+    paper/exploding.tex; six rows select the corrected-v10 TeX (SHA-256
+    59b5ac1a5cdf80c5b550dfc1738414892e0aa3f8cdb0bf03d00c74685a3e1be2) and defs.tex
+    (SHA-256 9aba2c73246d79e3c6b87cb1f01cf3e2f636e27c8afd97ccb8ba5c032a9ee65b).
+    Twenty paper-owned baseline results retain their old-source statements. All seven cited
+    inputs remain registered and unchanged; neither corrected theorem has a cited-input
+    binder. Other corrected-v10 statements lack corrected-source certification. The official
+    arXiv extraction remains separate, and the comparator remains historical Theorem 1.2
+    only. Lemma 3.2 version 7 retains its historical-pin p = 1 endpoint; corrected crossing
+    version 4 includes 0 < p ≤ 1. Eight strict Bernoulli paper rows retain p < 1.
   sorry_count: 0
   sorry_count_scope: "Production library; the comparator challenge has one separately reported intentional sorry"
   comparator_challenge_sorry_count: 1
@@ -141,9 +136,9 @@ status:
 
 fidelity:
   divergences: >-
-    The old-source default is paper/exploding.tex. Five approved declarations override to
+    The old-source default is paper/exploding.tex. Six declarations override to
     local corrected arXiv-format v10 and defs.tex; the official arXiv extraction remains
-    separate. No other corrected-v10 result is certified here. CORRESPONDENCE.md records how
+    separate. The corrected crossing row explicitly includes terminal one and a positive volume deadline; other corrected-v10 results are not certified here. CORRESPONDENCE.md records how
     each statement of the paper is read in Lean. In summary: arrival and crossing times are
     valued in the extended naturals, so that the paper's infinity is not a junk value, and
     bounds against real quantities assert a natural number equal to the time; locally
@@ -152,7 +147,7 @@ fidelity:
     standing hypotheses of Sections 2 to 4 are explicit hypotheses of the deterministic
     lemmas; "convex domain" is a nonempty open convex set; Proposition 7.2 writes the
     paper's d as d + 1. Lemma 3.2 version 7 includes the valid Bernoulli endpoint p = 1;
-    nine other registered Bernoulli paper rows still restrict p to (0, 1), although the
+    eight remaining registered Bernoulli paper rows still restrict p to (0, 1), although the
     source's "Fix p > 0" also includes that deterministic background.
 
 review:
@@ -160,8 +155,8 @@ review:
   reviewers:
     - "Ahmed Bou-Rabee"
   notes: >-
-    The historic review record applies to the old-source baseline. The exact corrected-v10
-    theorem and four literal definitions separately passed independent source/body/consumer
+    The historic review record applies to the old-source baseline. The corrected-v10
+    counterexample theorem and four literal definitions separately passed independent source/body/consumer
     audit and all integration checks on 15 October 2026; see
     ledger/audits/2026-10-15-counterexample-v4-promotion.md.
 
@@ -195,8 +190,17 @@ alignment:
       status: proved
       note: Exact declaration approved on 15 October 2026; no hFMR binder. Exact-type compilation,
         axiom checks, full locked build and independent source/body/consumer audit passed.
-        This is the only corrected-v10 theorem certified here.
-    - source: "The paper's other propositions and lemmas and Propositions 7.2, 7.3, excluding Lemma 3.2"
+        The corrected crossing theorem has its separate validation receipt.
+    - source: "Proposition 2.1 (prop:crossing_time; corrected-v10)"
+      lean: "Exploding.Frozen.crossing_time"
+      module: "Exploding.Frozen.CrossingTime"
+      source_pin: "paper/corrected-arxiv/exploding-corrected-arxiv.tex; 59b5ac1a5cdf80c5b550dfc1738414892e0aa3f8cdb0bf03d00c74685a3e1be2"
+      status: "proved"
+      note: >-
+        Exact version 4 requires terminal one and a positive volume deadline for all
+        permitted seeds under the actual law for 0 < p ≤ 1. No cited-input binder.
+        The dated crossing receipt records its exact source, declaration and bounded consumers.
+    - source: "The paper's other propositions and lemmas and Propositions 7.2, 7.3, excluding Lemma 3.2 and corrected Proposition 2.1"
       lean: "Exploding.* in Exploding/MainTheorems.lean"
       module: "Exploding.MainTheorems"
       status: "proved"
@@ -205,7 +209,7 @@ alignment:
       lean: "Exploding.Frozen.finite_exploding"
       module: "Exploding.Frozen.FiniteExploding"
       status: "proved"
-      note: "Version 7 includes p = 1 and passed independent statement review, a full isolated build and the configured gates. Nine other Bernoulli rows and the separate corrected arXiv draft still have source-fidelity gaps."
+      note: "Version 7 includes p = 1 and passed independent statement review, a full isolated build and the configured gates. Eight remaining Bernoulli rows and other statements of the corrected arXiv draft retain source-fidelity gaps."
 
 acknowledgements: >-
   Built on Lean 4, Mathlib, Lake, the shared library Lattice-Probability, and

@@ -259,6 +259,15 @@ class SourceReportingTests(unittest.TestCase):
 
     def test_live_approximate_successor_coverage_and_historical_boundary(self):
         self.manifest = copy.deepcopy(self.live_manifest)
+        node = next(n for n in self.live_manifest["nodes"]
+                    if n["id"] == "prop-approximate-subadditive")
+        path = self.root / node["file"]
+        path.write_text(self.live_approximate_text, encoding="utf-8")
+        errors = []
+        block = check_manifest.block_of(self.live_approximate_text, path, errors)
+        self.assertIsNotNone(block, errors)
+        self.assertEqual(hashlib.sha256(block[0].encode("utf-8")).hexdigest(),
+                         node["frozen_sha256"])
         self.write_manifest()
         result, output = self.run_main(check_coverage)
         self.assertEqual(result, 0, output)

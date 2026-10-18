@@ -36,6 +36,13 @@ HISTORICAL_COUNTEREXAMPLE_BLOCK = """theorem Exploding.Frozen.counterexample (d 
 """
 
 
+HISTORICAL_EXPLOSIVE_BLOCK = """theorem Exploding.Frozen.explosive (d : ℕ) (hd : 2 ≤ d) (ν : Measure ℤ) (hν : IsProbabilityMeasure ν)
+    (hlow : ν {m : ℤ | (d : ℤ) ≤ m} = 1) (hhit : 0 < ν {(2 * (d : ℤ) - 1)})
+    (hSch : Exploding.External.SchonmannBootstrap) :
+    ∀ᵐ β ∂(Measure.infinitePi fun _ : Site d => ν), Explosive β
+"""
+
+
 HISTORICAL_CROSSING_BLOCK = """theorem Exploding.Frozen.crossing_time (d : ℕ) (hd : 2 ≤ d) (p : ℝ) (hp : 0 < p) (hp1 : p < 1)
     (δ : ℝ) (hδ : 0 < δ) :
     ∃ k : ℕ, 1 ≤ k ∧ ENNReal.ofReal (1 - δ) ≤ toyLaw d p {η | GoodCube η k}
@@ -186,6 +193,9 @@ class SourceReportingTests(unittest.TestCase):
             "prop-renormalization": (
                 "exploding.tex:482-497 (label prop:renormalization_properties)",
                 HISTORICAL_RENORMALIZATION_BLOCK),
+            "thm-explosive": (
+                "exploding.tex:265-268 (label theorem:explosive)",
+                HISTORICAL_EXPLOSIVE_BLOCK),
         }
         restored = {}
         for nid, (source, block) in historical.items():
@@ -214,7 +224,8 @@ class SourceReportingTests(unittest.TestCase):
             if gap["label"] not in {"prop:approximate_subadditive",
                                     "prop:convergence_of_the_last_wave",
                                     "theorem:convergence_of_time_constant",
-                                    "theorem:limit_shape"}]
+                                    "theorem:limit_shape",
+                                    "theorem:explosive"}]
         historical_official_gaps = (
             {"kind": "prop", "line": 740, "label": "prop:approximate_subadditive"},
             {"kind": "prop", "line": 706, "label": "prop:convergence_of_the_last_wave"},
@@ -234,6 +245,8 @@ class SourceReportingTests(unittest.TestCase):
         corrected_gaps["statements"].append(
             {"kind": "prop", "line": 352,
              "label": "prop:renormalization_properties"})
+        corrected_gaps["statements"].append(
+            {"kind": "theorem", "line": 123, "label": "theorem:explosive"})
         directory = tempfile.TemporaryDirectory(prefix="exploding-source-reporting-")
         self.addCleanup(directory.cleanup)
         self.root = Path(directory.name)
@@ -401,26 +414,42 @@ class SourceReportingTests(unittest.TestCase):
         old = groups["paper/exploding.tex"]
         official = groups["paper/exploding-arxiv.tex"]
         revised = groups[self.revised]
-        self.assertEqual((len(old), len(official), len(revised)), (25, 5, 9))
-        self.assertEqual(sum(n["kind"] == "theorem" for n in old), 18)
+        self.assertEqual((len(old), len(official), len(revised)), (24, 5, 10))
+        self.assertEqual(sum(n["kind"] == "theorem" for n in old), 17)
         self.assertEqual(sum(n["kind"] == "definition" for n in old), 7)
         self.assertEqual({n["id"] for n in official},
                          {"lem-penultimate-cluster", "lem-penultimate-upper-bound",
                           "lem-penultimate-close", "prop-approximate-subadditive",
                           "prop-last-wave-convergence"})
         self.assertTrue(all(n["kind"] == "theorem" for n in official))
-        self.assertEqual(sum(n["kind"] == "theorem" for n in revised), 5)
+        self.assertEqual(sum(n["kind"] == "theorem" for n in revised), 6)
         self.assertEqual(sum(n["kind"] == "definition" for n in revised), 4)
         self.assertEqual({n["id"] for n in revised if n["kind"] == "theorem"},
                          {"thm-counterexample", "prop-crossing-time", "thm-time-constant",
-                          "prop-renormalization", "thm-limit-shape"})
+                          "prop-renormalization", "thm-limit-shape", "thm-explosive"})
+
+    def test_theorem_1_4_v4_excludes_its_v3_historical_reading(self):
+        self.restore_live_successors()
+        result, output = self.run_main(check_clauses)
+        self.assertEqual(result, 0, output)
+        self.assertIn("thm-explosive: different source pin:", output)
+        node = next(n for n in self.manifest["nodes"] if n["id"] == "thm-explosive")
+        self.assertEqual((node["version"], node["source"]),
+                         (4, "exploding-corrected-arxiv.tex:123-129 (label theorem:explosive)"))
+        node.pop("source_pin")
+        node["source"] = "exploding.tex:265-268 (label theorem:explosive)"
+        self.write_manifest()
+        result, output = self.run_main(check_clauses)
+        self.assertEqual(result, 2, output)
+        self.assertIn("thm-explosive: historical annotation identity mismatch", output)
 
     def test_live_approximate_successor_coverage_and_historical_boundary(self):
         self.restore_live_successors()
         result, output = self.run_main(check_coverage)
         self.assertEqual(result, 0, output)
-        self.assertIn("14/24 statements claimed", output)
-        self.assertEqual(output.count("5/24 statements claimed"), 2)
+        self.assertIn("13/24 statements claimed", output)
+        self.assertIn("6/24 statements claimed", output)
+        self.assertEqual(output.count("5/24 statements claimed"), 1)
 
         saved = copy.deepcopy(self.manifest["coverage_allowed_gaps"])
         journal, official, _ = self.manifest["coverage_allowed_gaps"]
@@ -474,8 +503,9 @@ class SourceReportingTests(unittest.TestCase):
             "(hp1 : p < 1)", "(hp1 : p ≤ 1)"))
         result, output = self.run_main(check_coverage)
         self.assertEqual(result, 0, output)
-        self.assertIn("14/24 statements claimed", output)
-        self.assertEqual(output.count("5/24 statements claimed"), 2)
+        self.assertIn("13/24 statements claimed", output)
+        self.assertIn("6/24 statements claimed", output)
+        self.assertEqual(output.count("5/24 statements claimed"), 1)
         saved_gaps = copy.deepcopy(self.manifest["coverage_allowed_gaps"])
         for defect in ("missing-journal", "stale-corrected", "unclaimed-official"):
             with self.subTest(defect=defect):
@@ -564,8 +594,9 @@ class SourceReportingTests(unittest.TestCase):
 
         result, output = self.run_main(check_coverage)
         self.assertEqual(result, 0, output)
-        self.assertIn("14/24 statements claimed", output)
-        self.assertEqual(output.count("5/24 statements claimed"), 2)
+        self.assertIn("13/24 statements claimed", output)
+        self.assertIn("6/24 statements claimed", output)
+        self.assertEqual(output.count("5/24 statements claimed"), 1)
 
         saved = copy.deepcopy(node)
         node["source_pin"] = {**node["source_pin"], "inputs": []}
@@ -633,8 +664,9 @@ class SourceReportingTests(unittest.TestCase):
         })
         result, output = self.run_main(check_coverage)
         self.assertEqual(result, 0, output)
-        self.assertIn("14/24 statements claimed", output)
-        self.assertEqual(output.count("5/24 statements claimed"), 2)
+        self.assertIn("13/24 statements claimed", output)
+        self.assertIn("6/24 statements claimed", output)
+        self.assertEqual(output.count("5/24 statements claimed"), 1)
 
         saved_gaps = copy.deepcopy(self.manifest["coverage_allowed_gaps"])
         for defect in ("journal-246", "corrected-104", "official-101"):

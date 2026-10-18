@@ -42,8 +42,8 @@ The main theorems are:
   converges in measure to a convex domain.
 * `Exploding.convergence_of_time_constant`: Theorem 1.3, the rescaled arrival times converge
   locally uniformly to a continuous, convex, one-homogeneous function.
-* `Exploding.explosive`: Theorem 1.4, a product background with at least `d` chips at every
-  site and a positive density of sites with `2d - 1` chips explodes almost surely.
+* `Exploding.explosive`: corrected-v10 Theorem 1.4, a product background with one common site
+  law `ν` on `ℤ` satisfying `ν {m ≥ d} = 1` and `ν {2d - 1} > 0` explodes almost surely.
 * `Exploding.generalized_convergence`: Theorem 5.1, convergence of the exploding sandpile
   under the hypotheses of Section 5.
 * `Exploding.counterexample`: proved corrected-v10 Theorem 6.1; its complete conclusion
@@ -174,9 +174,10 @@ theorem Exploding.convergence_of_time_constant (d : ℕ) (hd : 2 ≤ d) (p : ℝ
               |((arrival η (nearestSite ((n : ℝ) • y))).toNat : ℝ) / (n : ℝ) - N y| ≤ ε := by
   exact Exploding.Frozen.convergence_of_time_constant d hd p hp hp1 hFLP hLSSB hHole hChem
 
-/-- **Theorem 1.4** (`theorem:explosive`): a product background with at least `d` chips at
-every site and a positive density of sites with `2d - 1` chips explodes almost surely.  The
-certified statement is `Exploding.Frozen.explosive`, restated unchanged. -/
+/-- **Theorem 1.4** (`theorem:explosive`, corrected-v10 lines 123-129): for a probability law
+`ν` on `ℤ` with `ν {m ≥ d} = 1` and `ν {2d - 1} > 0`, the product background with that law
+explodes almost surely, given `hSch`.  The certified statement is `Exploding.Frozen.explosive`,
+restated unchanged. -/
 theorem Exploding.explosive (d : ℕ) (hd : 2 ≤ d) (ν : Measure ℤ) (hν : IsProbabilityMeasure ν)
     (hlow : ν {m : ℤ | (d : ℤ) ≤ m} = 1) (hhit : 0 < ν {(2 * (d : ℤ) - 1)})
     (hSch : Exploding.External.SchonmannBootstrap) :

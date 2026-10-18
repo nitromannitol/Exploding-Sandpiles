@@ -1,7 +1,7 @@
 # Correspondence: paper ↔ Lean
 
 Maps the source-partitioned manifest to A shape theorem for exploding sandpiles
-(Bou-Rabee). The default is the corrected journal source; the v4 counterexample and crossing successors, v5 Theorem 1.2 and Proposition 2.2 successors, v6 time-constant successor
+(Bou-Rabee). The default is the journal source; the v4 Theorem 1.4, counterexample and crossing successors, v5 Theorem 1.2 and Proposition 2.2 successors, v6 time-constant successor
 and four literal definitions override it with corrected arXiv-format v10. Five exact theorem
 rows select the official arXiv v2 extraction.
 
@@ -9,7 +9,7 @@ rows select the official arXiv v2 extraction.
 
 - The global default is paper/exploding.tex, SHA-256
   1d7c2010d8bd29e7fb83e93f19c9ebe0e8aef201f93559b2b18f5ca0dc049b44; row-level
-  overrides pin five declarations to official arXiv v2 and eight declarations to corrected arXiv-format v10 and
+  overrides pin five declarations to official arXiv v2 and ten declarations to corrected arXiv-format v10 and
   its defs.tex input. A source address is tied to its effective pin, range and label
   when present; v10 line 103 has no invented equation label.
 - The bytes between `-- FROZEN-STATEMENT-BEGIN` and `-- FROZEN-STATEMENT-END`
@@ -66,13 +66,13 @@ historical journal Theorem 1.2 reading `0 < p < 1` survives only as comparator s
 certify corrected-v10 endpoints, and version 5 on the corrected source is the registered statement. The proved v4 Theorem 6.1 row has no cited-result binder
 and passed exact compiled type, axiom and independent source/body/consumer checks. The four
 literal definitions passed source/body audit but add no theorem coverage. The dated
-promotion receipt is [ledger/audits/2026-10-15-counterexample-v4-promotion.md](ledger/audits/2026-10-15-counterexample-v4-promotion.md). The corrected Proposition 2.1 terminal-and-deadline successor has its own [validation receipt](ledger/audits/2026-10-15-crossing-v4-promotion.md). Theorem 1.2@5 has its own [source-marker receipt](ledger/audits/2026-10-18-limitshape-v5-source-marker.md). Corrected Proposition 2.2@5 has its own [source-marker and consumer receipt](ledger/audits/2026-10-18-renormalization-v5-source-marker.md). Main theorem rows are:
+promotion receipt is [ledger/audits/2026-10-15-counterexample-v4-promotion.md](ledger/audits/2026-10-15-counterexample-v4-promotion.md). The corrected Proposition 2.1 terminal-and-deadline successor has its own [validation receipt](ledger/audits/2026-10-15-crossing-v4-promotion.md). Theorem 1.2@5 has its own [source-marker receipt](ledger/audits/2026-10-18-limitshape-v5-source-marker.md). Corrected Proposition 2.2@5 has its own [source-marker and consumer receipt](ledger/audits/2026-10-18-renormalization-v5-source-marker.md). Theorem 1.4@4 has its own [source-marker receipt](ledger/audits/2026-10-18-explosive-v4-source-marker.md). Main theorem rows are:
 
 | Source | Frozen statement | State and cited hypotheses carried |
 |---|---|---|
 | Theorem 1.2, `theorem:limit_shape` (corrected-v10, version 5) | `Exploding.Frozen.limit_shape` | proved; states `0 < p ≤ 1` under the corrected homogeneous law and carries the three percolation results behind Proposition 2.2 (`hLSSB`, `hHole`, `hChem`) and Schonmann's bound (`hSch`), which `Exploding.xsr_schonmann` proves |
 | Theorem 1.3, `theorem:convergence_of_time_constant` (corrected-v10) | `Exploding.Frozen.convergence_of_time_constant` | version 6 includes `0 < p ≤ 1`; carries the cited Theorem 1.1 (`hFLP`) and three percolation results for the strict branch, and uses the unconditional ordinary all-high Support theorem at `p = 1`; see the [source/statement receipt](ledger/audits/2026-10-18-timeconstant-v6-source-statement.md) |
-| Theorem 1.4, `theorem:explosive` | `Exploding.Frozen.explosive` | proved; carries Schonmann's bound (`hSch`), which `Exploding.xsr_schonmann` proves |
+| Theorem 1.4, `theorem:explosive` (corrected-v10, version 4) | `Exploding.Frozen.explosive` | proved; one probability law `ν` on `ℤ` at every site, with `ν {m ≥ d} = 1` and `ν {2d - 1} > 0`; carries Schonmann's bound (`hSch`), which `Exploding.xsr_schonmann` proves |
 | Theorem 5.1, "Convergence of the exploding sandpile" | `Exploding.Frozen.generalized_convergence` | proved; carries the general domination theorem (`hLSS`) and the three percolation results |
 | Theorem 6.1, `theorem:counterexample` | `Exploding.Frozen.counterexample` | proved exact-source successor: one and the same explosive background supplies the lower-bound, finite-arrival, both axial-limit and measurable-volume clauses; no cited-result binder; independent source/body/consumer audit and integration checks passed |
 | Proposition 3.1, `prop:convergence_of_the_last_wave` | `Exploding.Frozen.convergence_of_the_last_wave` | version 5 includes `p = 1` through the ordinary Support endpoint theorem and retains its three cited inputs for the strict branch |
@@ -89,7 +89,7 @@ hypotheses, not version 5 on the corrected source or corrected v10 as a whole. S
 |---|---|---|---|---|
 | `thm-limit-shape` | [Exploding.Frozen.limit_shape](Exploding/Frozen/LimitShape.lean#L31) | exploding-corrected-arxiv.tex:104-112 (label theorem:limit_shape) | `paper/corrected-arxiv/exploding-corrected-arxiv.tex` (`59b5ac1a5cdf80c5`) | proved, independently audited |
 | `thm-time-constant` | [Exploding.Frozen.convergence_of_time_constant](Exploding/Frozen/TimeConstant.lean#L36) | exploding-corrected-arxiv.tex:117-120 (label theorem:convergence_of_time_constant) | `paper/corrected-arxiv/exploding-corrected-arxiv.tex` (`59b5ac1a5cdf80c5`) | proved, independently audited |
-| `thm-explosive` | [Exploding.Frozen.explosive](Exploding/Frozen/Explosive.lean#L28) | exploding.tex:265-268 (label theorem:explosive) | `paper/exploding.tex` (`1d7c2010d8bd29e7`) | proved, independently audited |
+| `thm-explosive` | [Exploding.Frozen.explosive](Exploding/Frozen/Explosive.lean#L29) | exploding-corrected-arxiv.tex:123-129 (label theorem:explosive) | `paper/corrected-arxiv/exploding-corrected-arxiv.tex` (`59b5ac1a5cdf80c5`) | proved, independently audited |
 | `prop-renormalization` | [Exploding.Frozen.renormalization_properties](Exploding/Frozen/Renormalization.lean#L42) | exploding-corrected-arxiv.tex:352-367 (label prop:renormalization_properties) | `paper/corrected-arxiv/exploding-corrected-arxiv.tex` (`59b5ac1a5cdf80c5`) | proved, independently audited |
 | `lem-square-lower-bound` | [Exploding.Frozen.square_lower_bound](Exploding/Frozen/SquareLowerBound.lean#L22) | exploding.tex:705-707 (label lemma:square_lower_bound) | `paper/exploding.tex` (`1d7c2010d8bd29e7`) | proved, independently audited |
 | `lem-penultimate-cluster` | [Exploding.Frozen.last_penultimate_cluster](Exploding/Frozen/PenultimateCluster.lean#L31) | exploding-arxiv.tex:652-658 (label lemma:last_penultimate_cluster) | `paper/exploding-arxiv.tex` (`f12deba6e481a3d8`) | proved, independently audited |

@@ -25,7 +25,7 @@ theorem pclose_second (d : ℕ) (hd : 2 ≤ d) (p : ℝ) (hp : 0 < p) (hp1 : p <
   obtain ⟨γ5, hγ5, hclu⟩ :=
     Exploding.Frozen.last_penultimate_cluster d hd p hp hp1.le hLSSB hHole hChem
   obtain ⟨γ6, C6, hγ6, hC6, hub⟩ :=
-    Exploding.Frozen.penultimate_upper_bound d hd p hp hp1 hLSSB hHole hChem
+    Exploding.Frozen.penultimate_upper_bound d hd p hp hp1.le hLSSB hHole hChem
   obtain ⟨k0, hk0⟩ := Exploding.Frozen.renormalization_properties d hd p hp hp1 hLSSB hHole hChem
   obtain ⟨c, C, hc, hC, hren⟩ := hk0 (max k0 1) (le_max_left _ _)
   have hk : 1 ≤ max k0 1 := le_max_right _ _

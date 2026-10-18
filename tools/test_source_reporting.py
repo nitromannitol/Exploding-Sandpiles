@@ -149,10 +149,11 @@ class SourceReportingTests(unittest.TestCase):
 
     def test_legacy_docs_and_audit_scope(self):
         self.assertEqual({n["id"] for n in self.manifest["nodes"] if "source_pin" in n},
-                         {"lem-penultimate-cluster", "lem-penultimate-close"})
+                         {"lem-penultimate-cluster", "lem-penultimate-upper-bound",
+                          "lem-penultimate-close"})
         result, output = self.run_main(sync_docs)
         self.assertEqual(result, 0, output)
-        for module, count in ((check_clauses, 22), (check_exponents, 28)):
+        for module, count in ((check_clauses, 21), (check_exponents, 27)):
             result, output = self.run_main(module)
             self.assertEqual(result, 0, output)
             self.assertIn(f"{count} historical-source statements", output)
@@ -199,7 +200,7 @@ class SourceReportingTests(unittest.TestCase):
 
     def test_revised_rows_never_inherit_historical_audit_notes(self):
         self.mixed_manifest()
-        for module, count in ((check_clauses, 21), (check_exponents, 27)):
+        for module, count in ((check_clauses, 20), (check_exponents, 26)):
             result, output = self.run_main(module)
             self.assertEqual(result, 0, output)
             self.assertIn(f"{count} historical-source statements", output)
@@ -218,11 +219,12 @@ class SourceReportingTests(unittest.TestCase):
         old = groups["paper/exploding.tex"]
         official = groups["paper/exploding-arxiv.tex"]
         revised = groups[self.revised]
-        self.assertEqual((len(old), len(official), len(revised)), (31, 2, 6))
-        self.assertEqual(sum(n["kind"] == "theorem" for n in old), 24)
+        self.assertEqual((len(old), len(official), len(revised)), (30, 3, 6))
+        self.assertEqual(sum(n["kind"] == "theorem" for n in old), 23)
         self.assertEqual(sum(n["kind"] == "definition" for n in old), 7)
         self.assertEqual({n["id"] for n in official},
-                         {"lem-penultimate-cluster", "lem-penultimate-close"})
+                         {"lem-penultimate-cluster", "lem-penultimate-upper-bound",
+                          "lem-penultimate-close"})
         self.assertTrue(all(n["kind"] == "theorem" for n in official))
         self.assertEqual(sum(n["kind"] == "theorem" for n in revised), 2)
         self.assertEqual(sum(n["kind"] == "definition" for n in revised), 4)
@@ -236,7 +238,7 @@ class SourceReportingTests(unittest.TestCase):
         self.assertEqual({n["id"] for n in revised if n["kind"] == "theorem"},
                          {"thm-counterexample", "prop-crossing-time"})
         self.assertEqual(sum(n["kind"] == "definition" for n in revised), 4)
-        for module, count in ((check_clauses, 20), (check_exponents, 26)):
+        for module, count in ((check_clauses, 19), (check_exponents, 25)):
             result, output = self.run_main(module)
             self.assertEqual(result, 0, output)
             self.assertIn(f"{count} historical-source statements", output)
@@ -294,8 +296,9 @@ class SourceReportingTests(unittest.TestCase):
         self.mixed_manifest(include_crossing=True)
         result, output = self.run_main(check_coverage)
         self.assertEqual(result, 0, output)
-        self.assertIn("20/24 statements claimed", output)
-        self.assertEqual(output.count("2/24 statements claimed"), 2)
+        self.assertIn("19/24 statements claimed", output)
+        self.assertIn("3/24 statements claimed", output)
+        self.assertEqual(output.count("2/24 statements claimed"), 1)
         saved = copy.deepcopy(self.manifest["coverage_allowed_gaps"])
         old, official, revised = self.manifest["coverage_allowed_gaps"]
         old["statements"] = [s for s in old["statements"]

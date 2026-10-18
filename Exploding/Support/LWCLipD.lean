@@ -23,7 +23,7 @@ theorem lwcl_lastArrival_lip (d : ℕ) (hd : 2 ≤ d) (p : ℝ) (hp : 0 < p) (hp
           lastArrival η (0 : Site d) x' = (a' : ℕ∞) ∧
             (a' : ℝ) ≤ (a : ℝ) + C * (mnorm (x - x') : ℝ) + Real.log n ^ γ := by
   obtain ⟨γ6, C6, hγ6, hC6, hub⟩ :=
-    Exploding.Frozen.penultimate_upper_bound d hd p hp hp1 hLSSB hHole hChem
+    Exploding.Frozen.penultimate_upper_bound d hd p hp hp1.le hLSSB hHole hChem
   obtain ⟨kb, hkb⟩ := Exploding.Frozen.renormalization_properties d hd p hp hp1 hLSSB hHole hChem
   obtain ⟨c, Cr, hc, hCr, hae⟩ := hkb (max kb 2) (le_max_left kb 2)
   have hd1 : 1 ≤ d := by omega

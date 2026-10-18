@@ -148,4 +148,3 @@ The source checks above do not replace the fresh full build, axiom probes, or wa
 3. Confirm the `formalization.yaml` sorry and axiom fields against that fresh build and record
    the post-landing certificate separately.
 4. Complete independent final-byte review of the integrated tree.
-

@@ -202,10 +202,10 @@ theorem Exploding.crossing_time (d : ℕ) (hd : 2 ≤ d)
         } := by
   exact Exploding.Frozen.crossing_time d hd p hp hp1 δ hδ
 
-/-- **Proposition 2.2** (`prop:renormalization_properties`): on an event of probability 1
-an infinite connected set of good cubes has small holes and linear chemical distance.  The
-certified statement is `Exploding.Frozen.renormalization_properties`, restated unchanged. -/
-theorem Exploding.renormalization_properties (d : ℕ) (hd : 2 ≤ d) (p : ℝ) (hp : 0 < p) (hp1 : p < 1)
+/-- **Proposition 2.2** (`prop:renormalization_properties`): almost surely, the unique infinite
+maximal good-cube component has small holes and linear chemical distance, including at `p = 1`.
+The certified corrected-v10 statement is restated without changing its outputs. -/
+theorem Exploding.renormalization_properties (d : ℕ) (hd : 2 ≤ d) (p : ℝ) (hp : 0 < p) (hp1 : p ≤ 1)
     (hLSSB : Exploding.External.LiggettSchonmannStaceyBoundedDegree)
     (hHole : Exploding.External.MathieuHoleVolume)
     (hChem : Exploding.External.AntalPisztoraChemicalDistance) :
@@ -219,7 +219,10 @@ theorem Exploding.renormalization_properties (d : ℕ) (hd : 2 ≤ d) (p : ℝ) 
           (∃ n0 : ℕ, ∀ n : ℕ, n0 ≤ n → ∀ x ∈ Cinf, ∀ y ∈ Cinf,
             mnorm x ≤ (n : ℤ) → Real.log n ^ (2 : ℕ) ≤ (mnorm (x - y) : ℝ) →
               ∃ m : ℕ, chemDist Cinf x y = (m : ℕ∞) ∧
-                c * (mnorm (x - y) : ℝ) ≤ (m : ℝ) ∧ (m : ℝ) ≤ C * (mnorm (x - y) : ℝ)) := by
+                c * (mnorm (x - y) : ℝ) ≤ (m : ℝ) ∧ (m : ℝ) ≤ C * (mnorm (x - y) : ℝ)) ∧
+          (∃ z ∈ goodSites η k, Cinf = componentIn (goodSites η k) z) ∧
+          (∀ z ∈ goodSites η k, (componentIn (goodSites η k) z).Infinite →
+            componentIn (goodSites η k) z = Cinf) := by
   exact Exploding.Frozen.renormalization_properties d hd p hp hp1 hLSSB hHole hChem
 
 /-- **Lemma 2.1** (`lemma:local_convexity`): a finite path of topplings fills its

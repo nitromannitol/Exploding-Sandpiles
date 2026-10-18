@@ -24,7 +24,7 @@ theorem lwcl_lastArrival_lip (d : ℕ) (hd : 2 ≤ d) (p : ℝ) (hp : 0 < p) (hp
             (a' : ℝ) ≤ (a : ℝ) + C * (mnorm (x - x') : ℝ) + Real.log n ^ γ := by
   obtain ⟨γ6, C6, hγ6, hC6, hub⟩ :=
     Exploding.Frozen.penultimate_upper_bound d hd p hp hp1.le hLSSB hHole hChem
-  obtain ⟨kb, hkb⟩ := Exploding.Frozen.renormalization_properties d hd p hp hp1 hLSSB hHole hChem
+  obtain ⟨kb, hkb⟩ := Exploding.Frozen.renormalization_properties d hd p hp hp1.le hLSSB hHole hChem
   obtain ⟨c, Cr, hc, hCr, hae⟩ := hkb (max kb 2) (le_max_left kb 2)
   have hd1 : 1 ≤ d := by omega
   set k : ℕ := max kb 2 with hkdef
@@ -44,7 +44,7 @@ theorem lwcl_lastArrival_lip (d : ℕ) (hd : 2 ≤ d) (p : ℝ) (hp : 0 < p) (hp
   filter_upwards [hae, hub, aux_pub_reach_eta_bounds d p hp hp1,
     Exploding.Frozen.finite_exploding d hd p hp hp1.le hLSSB hHole hChem] with
     η hη hubη hetabd hexplode
-  obtain ⟨Cinf, hCinf, ⟨n0h, hhole⟩, ⟨n0c, hchem⟩⟩ := hη
+  obtain ⟨Cinf, hCinf, ⟨n0h, hhole⟩, ⟨n0c, hchem⟩, -, -⟩ := hη
   obtain ⟨n06, hn6⟩ := hubη
   have hMmem := Nat.sInf_mem hexplode
   have hS : pub_Setup d η (waveThreshold η (0 : Site d)) k Cinf n0h n0c Cr :=

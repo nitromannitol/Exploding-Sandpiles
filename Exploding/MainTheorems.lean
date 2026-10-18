@@ -27,8 +27,8 @@ import Exploding.Frozen.BoxCrossing
 This file gives the public paper-facing theorem statements. Fourteen paper-owned
 journal-source statements retain their corrected-journal contracts, including the proved
 finite-exploding version 7 with `0 < p ≤ 1`. Lemmas 3.5, 3.6 and 3.7 version 5 and
-Propositions 3.1 and 4.1 version 5 select the official arXiv source and include `p = 1`; two
-strict Bernoulli paper rows retain `p < 1`.
+Propositions 3.1 and 4.1 version 5 select the official arXiv source and include `p = 1`.
+All registered Bernoulli paper rows admit the endpoint.
 Theorem 6.1 is the proved corrected-v10 v4 counterexample successor.
 Theorem 1.3 version 6 selects corrected-v10 and includes `0 < p ≤ 1`, retaining
 four cited inputs for the strict branch and using the actual all-high law at `p = 1`.

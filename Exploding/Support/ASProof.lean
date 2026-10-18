@@ -288,7 +288,7 @@ theorem as_penultimateCluster_finite
     (hChem : Exploding.External.AntalPisztoraChemicalDistance) :
     ∀ᵐ η ∂(toyLaw d p), (penultimateCluster η (0 : Site d)).Finite := by
   obtain ⟨γ, _hγ, hren⟩ :=
-    Exploding.Frozen.last_penultimate_cluster d hd p hp hp1 hLSSB hHole hChem
+    Exploding.Frozen.last_penultimate_cluster d hd p hp hp1.le hLSSB hHole hChem
   filter_upwards [hren] with η hη
   obtain ⟨n0, hn0⟩ := hη
   set n : ℕ := max n0 1 with hn

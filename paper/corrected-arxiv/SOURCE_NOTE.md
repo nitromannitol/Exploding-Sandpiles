@@ -11,9 +11,9 @@ The official [arXiv v2](https://arxiv.org/abs/2102.04422v2) source is preserved 
 [`paper/arxiv/`](../arxiv/). The draft retains the official abstract byte-for-byte.
 
 The global Lean source default remains the corrected journal-format file
-`paper/exploding.tex`. The v4 Theorem 6.1 row, v4 Proposition 2.1 row, v5 Proposition
-2.2 row, v6 Theorem 1.3 row and four FROZEN literal definitions select this draft and
-its `defs.tex` input. The [counterexample promotion receipt](../../ledger/audits/2026-10-15-counterexample-v4-promotion.md)
+`paper/exploding.tex`. The v5 Theorem 1.2 row, v4 Theorem 6.1 row, v4 Proposition 2.1 row,
+v5 Proposition 2.2 row, v6 Theorem 1.3 row and four FROZEN literal definitions select this draft
+and its `defs.tex` input. The [counterexample promotion receipt](../../ledger/audits/2026-10-15-counterexample-v4-promotion.md)
 records its checks. The corrected terminal-and-deadline crossing declaration and its
 bounded checks are recorded in a [separate receipt](../../ledger/audits/2026-10-15-crossing-v4-promotion.md).
 The corrected homogeneous-law Theorem 1.3 for `0 < p ≤ 1` has a [source and statement
@@ -29,9 +29,16 @@ states `0 < p ≤ 1` and includes both existence of a maximal infinite good-cube
 and uniqueness of every infinite good-cube component. Its source-marker and proof-consumer
 evidence is recorded in the [v5 receipt](../../ledger/audits/2026-10-18-renormalization-v5-source-marker.md).
 
-Structural coverage is 4/24 theorem-like statements (4/22 paper-owned); the other 20
-v10 statements remain uncertified. The journal-source group has coverage 15/24
-(13/22 paper-owned). Official arXiv v2 Proposition 3.1, Lemmas 3.5, 3.6, 3.7 and
+Corrected-v10 Theorem 1.2 version 5 selects lines 104–112 with label `theorem:limit_shape`. It
+retains its four cited-input binders, `hLSSB`, `hHole`, `hChem` and `hSch`, unchanged, and
+introduces no new External declaration. The type states `0 < p ≤ 1` under the standing
+homogeneous law of this draft, which fixes the marginal at every site; the official arXiv
+theorem paragraph is text-identical. Its source-marker evidence is recorded in the
+[Theorem 1.2 receipt](../../ledger/audits/2026-10-18-limitshape-v5-source-marker.md).
+
+Structural coverage is 5/24 theorem-like statements (5/22 paper-owned); the other 19
+v10 statements remain uncertified. The journal-source group has coverage 14/24
+(12/22 paper-owned). Official arXiv v2 Proposition 3.1, Lemmas 3.5, 3.6, 3.7 and
 Proposition 4.1 form a separate 5/24 (5/22 paper-owned) group. All five official
 arXiv theorem rows include the endpoint `p = 1`. The four literal definitions add no
 theorem coverage. These registrations do not certify the other statements of the

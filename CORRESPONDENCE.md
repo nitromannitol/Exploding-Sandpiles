@@ -1,7 +1,7 @@
 # Correspondence: paper ↔ Lean
 
 Maps the source-partitioned manifest to A shape theorem for exploding sandpiles
-(Bou-Rabee). The default is the corrected journal source; the v4 counterexample and crossing successors, v5 Proposition 2.2 successor, v6 time-constant successor
+(Bou-Rabee). The default is the corrected journal source; the v4 counterexample and crossing successors, v5 Theorem 1.2 and Proposition 2.2 successors, v6 time-constant successor
 and four literal definitions override it with corrected arXiv-format v10. Five exact theorem
 rows select the official arXiv v2 extraction.
 
@@ -19,7 +19,7 @@ rows select the official arXiv v2 extraction.
 ## External inputs
 
 The seven cited results remain registered in Exploding/External/ under the old source.
-A theorem carries one only when its exact frozen type has that binder. Corrected-v10 Proposition 2.2@5 retains all three percolation binders. The `hHole` cited binder remains in the theorem type but is unused in this proof; the hole obligation is proved through in-repository `Exploding.xmf_proved`. No new External declaration is introduced. The row selects corrected-v10 to record the repaired law and seed definitions. The proved v4 counterexample type has no hFMR binder; the historic FMR citation remains in the old journal-source record.
+A theorem carries one only when its exact frozen type has that binder. Corrected-v10 Theorem 1.2@5 retains its four cited-input binders unchanged. Corrected-v10 Proposition 2.2@5 retains all three percolation binders. The `hHole` cited binder remains in the theorem type but is unused in this proof; the hole obligation is proved through in-repository `Exploding.xmf_proved`. No new External declaration is introduced. The row selects corrected-v10 to record the repaired law and seed definitions. The proved v4 counterexample type has no hFMR binder; the historic FMR citation remains in the old journal-source record.
 
 | node | cited result | used by |
 |---|---|---|
@@ -57,29 +57,29 @@ Six of the seven are proved in this repository, so the hypothesis can be dischar
 | `lemma:square_lower_bound` | "the support of the `m`-wave" is `∃ t, 0 < u_t x` | the wave odometer is nondecreasing in time on a nonnegative background, so this is the support of the terminal odometer when the wave stabilizes, and is the right reading when it does not |
 | old-source statements of Sections 1 to 4 | carry `2 ≤ d` | the standing hypothesis of the historical "Main results" section; the proved v4 statement has its own explicit `2 ≤ d` binder |
 | `s_0' = η` in the frozen-toppling convention (2.3), in Lemma 2.1, the crossing time, Hypotheses 5.2–5.4 and recurrence | the `S`-frozen toppling `fodo S η w₀` evolves `s_t' = η + Δ w_t`, i.e. `s_0 = η` | (2.3) writes `s_0' = s_0 + Δ w_0`, but the paper's later uses and its proofs need the initial firing's chips delivered (`exploding.tex:447`: a `(2d-1)`-site next to a toppled line topples at the next step); the paper's own (2.4) is inconsistent with (2.3) here |
-| the Bernoulli probability `p` of `(1.2)` in paper rows | `0 < p ≤ 1` in `lem-finite-exploding@7`, `prop-last-wave-convergence@5`, `lem-penultimate-cluster@5`, `lem-penultimate-upper-bound@5`, `lem-penultimate-close@5`, `prop-approximate-subadditive@5`, `prop-renormalization_properties@5` and `thm-time-constant@6`; one remaining strict Bernoulli paper row retains `0 < p < 1` | Version 7 includes the deterministic `p = 1` endpoint for Lemma 3.2 under the historical source pin. Proposition 3.1 version 5 and Proposition 4.1 version 5 use the ordinary Support endpoint theorem; Lemmas 3.5–3.7 use the actual all-high law. Proposition 3.1 and Proposition 4.1 retain their three cited inputs for the strict branch. Proposition 2.2 version 5 includes p = 1 and retains its three cited inputs. The corrected-v10 counterexample is deterministic and has no Bernoulli `p`. The corrected crossing version 4 includes p = 1 under its separate pin. Theorem 1.3 version 6 selects corrected-v10 and retains four cited inputs for its strict branch; its endpoint uses the ordinary all-high Support theorem. Other corrected-v10 statements remain uncertified. |
+| the Bernoulli probability `p` of `(1.2)` in paper rows | `0 < p ≤ 1` in `lem-finite-exploding@7`, `prop-last-wave-convergence@5`, `lem-penultimate-cluster@5`, `lem-penultimate-upper-bound@5`, `lem-penultimate-close@5`, `prop-approximate-subadditive@5`, `prop-renormalization_properties@5`, `thm-limit-shape@5` and `thm-time-constant@6`; no registered Bernoulli paper row retains a strict endpoint | Version 7 includes the deterministic `p = 1` endpoint for Lemma 3.2 under the historical source pin. Theorem 1.2 version 5 includes p = 1 and retains its four cited inputs. Proposition 3.1 version 5 and Proposition 4.1 version 5 use the ordinary Support endpoint theorem; Lemmas 3.5–3.7 use the actual all-high law. Proposition 3.1 and Proposition 4.1 retain their three cited inputs for the strict branch. Proposition 2.2 version 5 includes p = 1 and retains its three cited inputs. The corrected-v10 counterexample is deterministic and has no Bernoulli `p`. The corrected crossing version 4 includes p = 1 under its separate pin. Theorem 1.3 version 6 selects corrected-v10 and retains four cited inputs for its strict branch; its endpoint uses the ordinary all-high Support theorem. Other corrected-v10 statements remain uncertified. |
 
 ## Main results
 
 The remaining old-source theorem rows below retain their narrower journal-source contracts. The
-Theorem 1.2 0 < p < 1 row and comparator are historical old-source scope; they do not
-certify corrected-v10 endpoints. The proved v4 Theorem 6.1 row has no cited-result binder
+historical journal Theorem 1.2 reading `0 < p < 1` survives only as comparator scope; it does not
+certify corrected-v10 endpoints, and version 5 on the corrected source is the registered statement. The proved v4 Theorem 6.1 row has no cited-result binder
 and passed exact compiled type, axiom and independent source/body/consumer checks. The four
 literal definitions passed source/body audit but add no theorem coverage. The dated
-promotion receipt is [ledger/audits/2026-10-15-counterexample-v4-promotion.md](ledger/audits/2026-10-15-counterexample-v4-promotion.md). The corrected Proposition 2.1 terminal-and-deadline successor has its own [validation receipt](ledger/audits/2026-10-15-crossing-v4-promotion.md). Corrected Proposition 2.2@5 has its own [source-marker and consumer receipt](ledger/audits/2026-10-18-renormalization-v5-source-marker.md). Main theorem rows are:
+promotion receipt is [ledger/audits/2026-10-15-counterexample-v4-promotion.md](ledger/audits/2026-10-15-counterexample-v4-promotion.md). The corrected Proposition 2.1 terminal-and-deadline successor has its own [validation receipt](ledger/audits/2026-10-15-crossing-v4-promotion.md). Theorem 1.2@5 has its own [source-marker receipt](ledger/audits/2026-10-18-limitshape-v5-source-marker.md). Corrected Proposition 2.2@5 has its own [source-marker and consumer receipt](ledger/audits/2026-10-18-renormalization-v5-source-marker.md). Main theorem rows are:
 
 | Source | Frozen statement | State and cited hypotheses carried |
 |---|---|---|
-| Theorem 1.2, `theorem:limit_shape` | `Exploding.Frozen.limit_shape` | proved; carries the three percolation results behind Proposition 2.2 (`hLSSB`, `hHole`, `hChem`) and Schonmann's bound (`hSch`), which `Exploding.xsr_schonmann` proves |
+| Theorem 1.2, `theorem:limit_shape` (corrected-v10, version 5) | `Exploding.Frozen.limit_shape` | proved; states `0 < p ≤ 1` under the corrected homogeneous law and carries the three percolation results behind Proposition 2.2 (`hLSSB`, `hHole`, `hChem`) and Schonmann's bound (`hSch`), which `Exploding.xsr_schonmann` proves |
 | Theorem 1.3, `theorem:convergence_of_time_constant` (corrected-v10) | `Exploding.Frozen.convergence_of_time_constant` | version 6 includes `0 < p ≤ 1`; carries the cited Theorem 1.1 (`hFLP`) and three percolation results for the strict branch, and uses the unconditional ordinary all-high Support theorem at `p = 1`; see the [source/statement receipt](ledger/audits/2026-10-18-timeconstant-v6-source-statement.md) |
 | Theorem 1.4, `theorem:explosive` | `Exploding.Frozen.explosive` | proved; carries Schonmann's bound (`hSch`), which `Exploding.xsr_schonmann` proves |
 | Theorem 5.1, "Convergence of the exploding sandpile" | `Exploding.Frozen.generalized_convergence` | proved; carries the general domination theorem (`hLSS`) and the three percolation results |
 | Theorem 6.1, `theorem:counterexample` | `Exploding.Frozen.counterexample` | proved exact-source successor: one and the same explosive background supplies the lower-bound, finite-arrival, both axial-limit and measurable-volume clauses; no cited-result binder; independent source/body/consumer audit and integration checks passed |
 | Proposition 3.1, `prop:convergence_of_the_last_wave` | `Exploding.Frozen.convergence_of_the_last_wave` | version 5 includes `p = 1` through the ordinary Support endpoint theorem and retains its three cited inputs for the strict branch |
 
-The historical limit-shape statement (Theorem 1.2) is restated over Mathlib alone and
-checked with leanprover/comparator; this covers only its four explicit old-source hypotheses,
-not v4 or corrected v10 as a whole. See ExplodingAudit/README.md.
+The historical journal limit-shape statement (Theorem 1.2, `0 < p < 1`) is restated over Mathlib
+alone and checked with leanprover/comparator; this covers only its four explicit old-source
+hypotheses, not version 5 on the corrected source or corrected v10 as a whole. See ExplodingAudit/README.md.
 
 ## Frozen surface
 
@@ -87,7 +87,7 @@ not v4 or corrected v10 as a whole. See ExplodingAudit/README.md.
 
 | id | Lean | paper | source pin | state |
 |---|---|---|---|---|
-| `thm-limit-shape` | [Exploding.Frozen.limit_shape](Exploding/Frozen/LimitShape.lean#L30) | exploding.tex:246-254 (label theorem:limit_shape) | `paper/exploding.tex` (`1d7c2010d8bd29e7`) | proved, independently audited |
+| `thm-limit-shape` | [Exploding.Frozen.limit_shape](Exploding/Frozen/LimitShape.lean#L30) | exploding-corrected-arxiv.tex:104-112 (label theorem:limit_shape) | `paper/corrected-arxiv/exploding-corrected-arxiv.tex` (`59b5ac1a5cdf80c5`) | proved, independently audited |
 | `thm-time-constant` | [Exploding.Frozen.convergence_of_time_constant](Exploding/Frozen/TimeConstant.lean#L36) | exploding-corrected-arxiv.tex:117-120 (label theorem:convergence_of_time_constant) | `paper/corrected-arxiv/exploding-corrected-arxiv.tex` (`59b5ac1a5cdf80c5`) | proved, independently audited |
 | `thm-explosive` | [Exploding.Frozen.explosive](Exploding/Frozen/Explosive.lean#L28) | exploding.tex:265-268 (label theorem:explosive) | `paper/exploding.tex` (`1d7c2010d8bd29e7`) | proved, independently audited |
 | `prop-renormalization` | [Exploding.Frozen.renormalization_properties](Exploding/Frozen/Renormalization.lean#L42) | exploding-corrected-arxiv.tex:352-367 (label prop:renormalization_properties) | `paper/corrected-arxiv/exploding-corrected-arxiv.tex` (`59b5ac1a5cdf80c5`) | proved, independently audited |

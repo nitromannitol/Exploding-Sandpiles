@@ -311,13 +311,15 @@ theorem Exploding.last_penultimate_close (d : ℕ) (hd : 2 ≤ d) (p : ℝ) (hp 
             clusterArrival η (0 : Site d) x = (b : ℕ∞) ∧ (b : ℝ) ≤ (a : ℝ) + Real.log n ^ γ := by
   exact Exploding.Frozen.last_penultimate_close d hd p hp hp1 hLSSB hHole hChem
 
-/-- **Proposition 3.1** (`prop:convergence_of_the_last_wave`): the rescaled last-wave arrival
-times `T̂_η(0, [n y]) / n` are almost surely finite and converge to a continuous, convex,
-one-homogeneous function `N`, uniformly on compact sets.  It takes the three percolation
-results behind Proposition 2.2 as hypotheses.  The certified statement is
+/-- **Proposition 3.1** (official arXiv v2, lines 706–718;
+`prop:convergence_of_the_last_wave`): for `0 < p ≤ 1`, the rescaled last-wave arrival times
+`T̂_η(0, [n y]) / n` are almost surely finite and converge to a continuous, convex,
+one-homogeneous function `N`, uniformly on compact sets. The three percolation results behind
+Proposition 2.2 remain explicit hypotheses for the strict branch; the `p = 1` branch uses the
+ordinary Support endpoint theorem. The certified statement is
 `Exploding.Frozen.convergence_of_the_last_wave`, restated unchanged. -/
 theorem Exploding.convergence_of_the_last_wave (d : ℕ) (hd : 2 ≤ d) (p : ℝ) (hp : 0 < p)
-    (hp1 : p < 1)
+    (hp1 : p ≤ 1)
     (hLSSB : Exploding.External.LiggettSchonmannStaceyBoundedDegree)
     (hHole : Exploding.External.MathieuHoleVolume)
     (hChem : Exploding.External.AntalPisztoraChemicalDistance) :

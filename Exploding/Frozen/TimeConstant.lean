@@ -47,7 +47,7 @@ theorem Exploding.Frozen.convergence_of_time_constant (d : ℕ) (hd : 2 ≤ d) (
 -- FROZEN-STATEMENT-END
 := by
   obtain ⟨N, hcont, hconv, hhom, hlast⟩ :=
-    Exploding.Frozen.convergence_of_the_last_wave d hd p hp hp1 hLSSB hHole hChem
+    Exploding.Frozen.convergence_of_the_last_wave d hd p hp hp1.le hLSSB hHole hChem
   have hexp : ∀ᵐ η ∂(toyLaw d p), Explosive η := hFLP d hd p hp hp1
   refine ⟨N, hcont, hconv, hhom, ?_⟩
   filter_upwards [hlast, Exploding.Frozen.approximate_subadditive d hd p hp hp1.le hLSSB hHole hChem, hexp]

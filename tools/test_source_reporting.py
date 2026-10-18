@@ -52,6 +52,23 @@ HISTORICAL_APPROXIMATE_BLOCK = """theorem Exploding.Frozen.approximate_subadditi
 """
 
 
+HISTORICAL_LASTWAVE_BLOCK = """theorem Exploding.Frozen.convergence_of_the_last_wave (d : ℕ) (hd : 2 ≤ d) (p : ℝ) (hp : 0 < p) (hp1 : p < 1)
+    (hLSSB : Exploding.External.LiggettSchonmannStaceyBoundedDegree)
+    (hHole : Exploding.External.MathieuHoleVolume)
+    (hChem : Exploding.External.AntalPisztoraChemicalDistance) :
+    ∃ N : (Fin d → ℝ) → ℝ,
+      Continuous N ∧
+      ConvexOn ℝ Set.univ N ∧
+      (∀ c : ℝ, 0 ≤ c → ∀ y : Fin d → ℝ, N (c • y) = c * N y) ∧
+      ∀ᵐ η ∂(toyLaw d p),
+        (∀ x : Site d, lastArrival η (0 : Site d) x ≠ ⊤) ∧
+          ∀ K : Set (Fin d → ℝ), IsCompact K → ∀ ε : ℝ, 0 < ε →
+            ∀ᶠ n : ℕ in atTop, ∀ y ∈ K,
+              |((lastArrival η (0 : Site d) (nearestSite ((n : ℝ) • y))).toNat : ℝ) / (n : ℝ)
+                - N y| ≤ ε
+"""
+
+
 class SourceReportingTests(unittest.TestCase):
     def setUp(self):
         original = sync_docs.ROOT
@@ -69,6 +86,9 @@ class SourceReportingTests(unittest.TestCase):
             "prop-approximate-subadditive": (
                 "exploding.tex:886-898 (label prop:approximate_subadditive)",
                 HISTORICAL_APPROXIMATE_BLOCK),
+            "prop-last-wave-convergence": (
+                "exploding.tex:846-852 (label prop:convergence_of_the_last_wave)",
+                HISTORICAL_LASTWAVE_BLOCK),
         }
         restored = {}
         for nid, (source, block) in historical.items():
@@ -84,16 +104,24 @@ class SourceReportingTests(unittest.TestCase):
         live_approximate = next(n for n in self.live_manifest["nodes"]
                                 if n["id"] == "prop-approximate-subadditive")
         self.live_approximate_text = (original / live_approximate["file"]).read_text(encoding="utf-8")
-        # This fixture models the historical @4 row exactly: the statement is
-        # journal-pinned, so its matching gap belongs to official arXiv instead.
+        live_lastwave = next(n for n in self.live_manifest["nodes"]
+                             if n["id"] == "prop-last-wave-convergence")
+        self.live_lastwave_text = (original / live_lastwave["file"]).read_text(encoding="utf-8")
+        # These fixtures model the historical @4 rows exactly: they are
+        # journal-pinned, so their matching gaps belong to official arXiv instead.
         journal_gaps, official_gaps = self.manifest["coverage_allowed_gaps"][:2]
         journal_gaps["statements"] = [
             gap for gap in journal_gaps["statements"]
-            if gap["label"] != "prop:approximate_subadditive"]
-        if not any(gap["label"] == "prop:approximate_subadditive"
-                   for gap in official_gaps["statements"]):
-            official_gaps["statements"].append(
-                {"kind": "prop", "line": 740, "label": "prop:approximate_subadditive"})
+            if gap["label"] not in {"prop:approximate_subadditive",
+                                    "prop:convergence_of_the_last_wave"}]
+        historical_official_gaps = (
+            {"kind": "prop", "line": 740, "label": "prop:approximate_subadditive"},
+            {"kind": "prop", "line": 706, "label": "prop:convergence_of_the_last_wave"},
+        )
+        for gap in historical_official_gaps:
+            if not any(existing["label"] == gap["label"]
+                       for existing in official_gaps["statements"]):
+                official_gaps["statements"].append(gap)
         directory = tempfile.TemporaryDirectory(prefix="exploding-source-reporting-")
         self.addCleanup(directory.cleanup)
         self.root = Path(directory.name)
@@ -245,12 +273,13 @@ class SourceReportingTests(unittest.TestCase):
         old = groups["paper/exploding.tex"]
         official = groups["paper/exploding-arxiv.tex"]
         revised = groups[self.revised]
-        self.assertEqual((len(old), len(official), len(revised)), (29, 4, 6))
-        self.assertEqual(sum(n["kind"] == "theorem" for n in old), 22)
+        self.assertEqual((len(old), len(official), len(revised)), (28, 5, 6))
+        self.assertEqual(sum(n["kind"] == "theorem" for n in old), 21)
         self.assertEqual(sum(n["kind"] == "definition" for n in old), 7)
         self.assertEqual({n["id"] for n in official},
                          {"lem-penultimate-cluster", "lem-penultimate-upper-bound",
-                          "lem-penultimate-close", "prop-approximate-subadditive"})
+                          "lem-penultimate-close", "prop-approximate-subadditive",
+                          "prop-last-wave-convergence"})
         self.assertTrue(all(n["kind"] == "theorem" for n in official))
         self.assertEqual(sum(n["kind"] == "theorem" for n in revised), 2)
         self.assertEqual(sum(n["kind"] == "definition" for n in revised), 4)
@@ -268,11 +297,20 @@ class SourceReportingTests(unittest.TestCase):
         self.assertIsNotNone(block, errors)
         self.assertEqual(hashlib.sha256(block[0].encode("utf-8")).hexdigest(),
                          node["frozen_sha256"])
+        lastwave = next(n for n in self.live_manifest["nodes"]
+                        if n["id"] == "prop-last-wave-convergence")
+        lastwave_path = self.root / lastwave["file"]
+        lastwave_path.write_text(self.live_lastwave_text, encoding="utf-8")
+        errors = []
+        block = check_manifest.block_of(self.live_lastwave_text, lastwave_path, errors)
+        self.assertIsNotNone(block, errors)
+        self.assertEqual(hashlib.sha256(block[0].encode("utf-8")).hexdigest(),
+                         lastwave["frozen_sha256"])
         self.write_manifest()
         result, output = self.run_main(check_coverage)
         self.assertEqual(result, 0, output)
-        self.assertIn("18/24 statements claimed", output)
-        self.assertIn("4/24 statements claimed", output)
+        self.assertIn("17/24 statements claimed", output)
+        self.assertIn("5/24 statements claimed", output)
         self.assertEqual(output.count("2/24 statements claimed"), 1)
 
         saved = copy.deepcopy(self.manifest["coverage_allowed_gaps"])

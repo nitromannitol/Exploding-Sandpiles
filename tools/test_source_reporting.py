@@ -73,7 +73,8 @@ class SourceReportingTests(unittest.TestCase):
         self.root = Path(directory.name)
         self.revised = "paper/corrected-arxiv/exploding-corrected-arxiv.tex"
         paths = {n["file"] for n in self.manifest["nodes"]}
-        paths.update(["paper/exploding.tex", self.revised, "paper/corrected-arxiv/defs.tex",
+        paths.update(["paper/exploding.tex", "paper/exploding-arxiv.tex", "paper/defs.tex",
+                      self.revised, "paper/corrected-arxiv/defs.tex",
                       "README.md", "CORRESPONDENCE.md", "ASSUMPTIONS.md"])
         for filename in paths:
             target = self.root / filename
@@ -147,10 +148,11 @@ class SourceReportingTests(unittest.TestCase):
         return result, out.getvalue()
 
     def test_legacy_docs_and_audit_scope(self):
-        self.assertTrue(all("source_pin" not in n for n in self.manifest["nodes"]))
+        self.assertEqual({n["id"] for n in self.manifest["nodes"] if "source_pin" in n},
+                         {"lem-penultimate-cluster", "lem-penultimate-close"})
         result, output = self.run_main(sync_docs)
         self.assertEqual(result, 0, output)
-        for module, count in ((check_clauses, 24), (check_exponents, 30)):
+        for module, count in ((check_clauses, 22), (check_exponents, 28)):
             result, output = self.run_main(module)
             self.assertEqual(result, 0, output)
             self.assertIn(f"{count} historical-source statements", output)
@@ -197,7 +199,7 @@ class SourceReportingTests(unittest.TestCase):
 
     def test_revised_rows_never_inherit_historical_audit_notes(self):
         self.mixed_manifest()
-        for module, count in ((check_clauses, 23), (check_exponents, 29)):
+        for module, count in ((check_clauses, 21), (check_exponents, 27)):
             result, output = self.run_main(module)
             self.assertEqual(result, 0, output)
             self.assertIn(f"{count} historical-source statements", output)
@@ -214,10 +216,14 @@ class SourceReportingTests(unittest.TestCase):
             filename = node.get("source_pin", self.live_manifest["source_pin"])["file"]
             groups.setdefault(filename, []).append(node)
         old = groups["paper/exploding.tex"]
+        official = groups["paper/exploding-arxiv.tex"]
         revised = groups[self.revised]
-        self.assertEqual((len(old), len(revised)), (33, 6))
-        self.assertEqual(sum(n["kind"] == "theorem" for n in old), 26)
+        self.assertEqual((len(old), len(official), len(revised)), (31, 2, 6))
+        self.assertEqual(sum(n["kind"] == "theorem" for n in old), 24)
         self.assertEqual(sum(n["kind"] == "definition" for n in old), 7)
+        self.assertEqual({n["id"] for n in official},
+                         {"lem-penultimate-cluster", "lem-penultimate-close"})
+        self.assertTrue(all(n["kind"] == "theorem" for n in official))
         self.assertEqual(sum(n["kind"] == "theorem" for n in revised), 2)
         self.assertEqual(sum(n["kind"] == "definition" for n in revised), 4)
         self.assertEqual({n["id"] for n in revised if n["kind"] == "theorem"},
@@ -225,11 +231,12 @@ class SourceReportingTests(unittest.TestCase):
 
     def test_two_migrations_exclude_both_historical_readings(self):
         self.mixed_manifest(include_crossing=True)
-        revised = [n for n in self.manifest["nodes"] if "source_pin" in n]
+        revised = [n for n in self.manifest["nodes"]
+                   if n.get("source_pin", {}).get("file") == self.revised]
         self.assertEqual({n["id"] for n in revised if n["kind"] == "theorem"},
                          {"thm-counterexample", "prop-crossing-time"})
         self.assertEqual(sum(n["kind"] == "definition" for n in revised), 4)
-        for module, count in ((check_clauses, 22), (check_exponents, 28)):
+        for module, count in ((check_clauses, 20), (check_exponents, 26)):
             result, output = self.run_main(module)
             self.assertEqual(result, 0, output)
             self.assertIn(f"{count} historical-source statements", output)
@@ -287,10 +294,10 @@ class SourceReportingTests(unittest.TestCase):
         self.mixed_manifest(include_crossing=True)
         result, output = self.run_main(check_coverage)
         self.assertEqual(result, 0, output)
-        self.assertIn("22/24 statements claimed", output)
-        self.assertIn("2/24 statements claimed", output)
+        self.assertIn("20/24 statements claimed", output)
+        self.assertEqual(output.count("2/24 statements claimed"), 2)
         saved = copy.deepcopy(self.manifest["coverage_allowed_gaps"])
-        old, revised = self.manifest["coverage_allowed_gaps"]
+        old, official, revised = self.manifest["coverage_allowed_gaps"]
         old["statements"] = [s for s in old["statements"]
                              if s["label"] != "prop:crossing_time"]
         self.write_manifest()
@@ -298,7 +305,7 @@ class SourceReportingTests(unittest.TestCase):
         self.assertEqual(result, 1, output)
         self.assertIn("unexpected gap", output)
         self.manifest["coverage_allowed_gaps"] = copy.deepcopy(saved)
-        self.manifest["coverage_allowed_gaps"][1]["statements"].append(
+        self.manifest["coverage_allowed_gaps"][2]["statements"].append(
             {"kind": "prop", "line": 286, "label": "prop:crossing_time"})
         self.write_manifest()
         result, output = self.run_main(check_coverage)

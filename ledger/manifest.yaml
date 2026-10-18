@@ -81,16 +81,22 @@ nodes:
     approved: "2026-09-24"
 
   - id: lem-penultimate-cluster
-    version: 4
+    version: 5
     kind: theorem
-    source: exploding.tex:792-798 (label lemma:last_penultimate_cluster)
+    source: exploding-arxiv.tex:652-658 (label lemma:last_penultimate_cluster)
     file: Exploding/Frozen/PenultimateCluster.lean
     export: Exploding.Frozen.last_penultimate_cluster
     state: PROVED
-    frozen_sha256: 3cfbfa23e89ec1c52bed2c12a4a6be62d2cd17bb135b6f9438498d8f244d8544
+    frozen_sha256: 58d7a4ac6a71a4a8145a5c64cb08d305febcbd628497ada2cb10bf250293f4d1
     closure_sha256: 3d5a2f4b74fe32a432a2529ad00f46fac74402eae25e5254079ba54a62d4a7cc
     provider: Exploding.Frozen.last_penultimate_cluster
-    approved: "2026-09-24"
+    approved: "2026-10-18"
+    source_pin:
+      file: paper/exploding-arxiv.tex
+      sha256: f12deba6e481a3d81c6967bc48ecbbdae1df4fa1c5f6248a38990030b308072d
+      inputs:
+        - file: paper/defs.tex
+          sha256: 9aba2c73246d79e3c6b87cb1f01cf3e2f636e27c8afd97ccb8ba5c032a9ee65b
 
   - id: lem-penultimate-upper-bound
     version: 4
@@ -540,10 +546,11 @@ coverage_allowed_gaps:
   - source_pin:
       file: paper/exploding.tex
       sha256: 1d7c2010d8bd29e7fb83e93f19c9ebe0e8aef201f93559b2b18f5ca0dc049b44
-    reason: The counterexample and crossing registrations moved to corrected-source successors; Lemma 3.7 moved to its official arXiv successor.
+    reason: The counterexample and crossing registrations moved to corrected-source successors; Lemmas 3.5 and 3.7 moved to their official arXiv successors.
     statements:
       - {kind: theorem, line: 1351, label: "theorem:counterexample"}
       - {kind: prop, line: 416, label: "prop:crossing_time"}
+      - {kind: lemma, line: 792, label: "lemma:last_penultimate_cluster"}
       - {kind: lemma, line: 832, label: "lemma:last_penultimate_close"}
   - source_pin:
       file: paper/exploding-arxiv.tex
@@ -551,7 +558,7 @@ coverage_allowed_gaps:
       inputs:
         - file: paper/defs.tex
           sha256: 9aba2c73246d79e3c6b87cb1f01cf3e2f636e27c8afd97ccb8ba5c032a9ee65b
-    reason: Only the exact Lemma 3.7 successor is registered under this official arXiv pin; its other 23 theorem-like statements remain unclaimed under this pin.
+    reason: Only the exact Lemma 3.5 and 3.7 successors are registered under this official arXiv pin; its other 22 theorem-like statements remain unclaimed under this pin.
     statements:
       - {kind: theorem, line: 93, label: "prop:fey_levine_peres_explode"}
       - {kind: theorem, line: 101, label: "theorem:limit_shape"}
@@ -564,7 +571,6 @@ coverage_allowed_gaps:
       - {kind: lemma, line: 580, label: "lemma:finite_exploding"}
       - {kind: lemma, line: 590, label: "lemma:last_wave_bound"}
       - {kind: lemma, line: 620, label: "lemma:approx_subadditivity"}
-      - {kind: lemma, line: 652, label: "lemma:last_penultimate_cluster"}
       - {kind: lemma, line: 667, label: "lemma:penultimate_upper_bound"}
       - {kind: prop, line: 706, label: "prop:convergence_of_the_last_wave"}
       - {kind: prop, line: 740, label: "prop:approximate_subadditive"}

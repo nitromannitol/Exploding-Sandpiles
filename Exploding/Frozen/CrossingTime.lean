@@ -1,25 +1,28 @@
-/-
-Proposition 2.1 of the paper: a large box is crossed quickly with high
-probability.
--/
-import Exploding.Support.Vocab
-import Exploding.Support.CrossingTimeAux
+import Exploding.Support.ArxivCrossingBound
 
 open Exploding LatticeProb MeasureTheory
 
-/-- **Proposition 2.1** (`exploding.tex:416-422`, label `prop:crossing_time`).
+/-- Proposition 2.1 (`exploding-corrected-arxiv.tex:286-292`, label
+`prop:crossing_time`).
 
-"For every `δ > 0`, there is a `k` so that `max_{i,z} 𝔠_k^{(i,z)} ≤ k^d` with
-probability at least `(1 - δ)`."
+"For every `δ > 0`, there is a `k` so that `max_{i,z} 𝔠_k^{(i,z)} ≤ k^d`
+with probability at least `(1 - δ)`."
 
-`𝔠_k^{(i,z)}` is `Exploding.crossingTime`, taken in `ℕ∞` so that the paper's
-value `∞` is `⊤`; the maximum over `i` and `z ∈ Q̄_k` being at most `k^d` is
-`Exploding.GoodCube η k`.  The probability is the law `(1.2)`, and the bound is
-written in `ℝ≥0∞` so that no real-valued `toReal` of `⊤` is read. -/
+The event expands the terminal condition and positive minimum from source
+lines 275-283. The actual product law is specified at source lines 85-94. -/
 -- FROZEN-STATEMENT-BEGIN
-theorem Exploding.Frozen.crossing_time (d : ℕ) (hd : 2 ≤ d) (p : ℝ) (hp : 0 < p) (hp1 : p < 1)
+theorem Exploding.Frozen.crossing_time (d : ℕ) (hd : 2 ≤ d)
+    (p : ℝ) (hp : 0 < p) (hp1 : p ≤ 1)
     (δ : ℝ) (hδ : 0 < δ) :
-    ∃ k : ℕ, 1 ≤ k ∧ ENNReal.ofReal (1 - δ) ≤ toyLaw d p {η | GoodCube η k}
+    ∃ k : ℕ, 1 ≤ k ∧
+      ENNReal.ofReal (1 - δ) ≤ toyLaw d p
+        {η : Site d → ℤ |
+          ∀ (i : Fin d) (z : Site d), z ∈ closureN (cube d k) →
+            (∀ x ∈ cube d k, ∃ T : ℕ, ∀ t : ℕ, T ≤ t →
+              crossOdo η k i z t x = 1) ∧
+            (∃ n : ℕ, 1 ≤ n ∧ n ≤ k ^ d ∧
+              ∀ x ∈ cube d k, crossOdo η k i z n x = 1)
+        }
 -- FROZEN-STATEMENT-END
 := by
-  exact aux_ct_assemble d hd p hp hp1 δ hδ
+  exact Exploding.crossing_time_terminal_bound d hd p hp hp1 δ hδ

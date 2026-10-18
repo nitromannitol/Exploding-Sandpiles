@@ -243,7 +243,7 @@ alignment:
       module: "Exploding.Frozen.LastWaveConvergence"
       source_pin: "paper/exploding-arxiv.tex; f12deba6e481a3d81c6967bc48ecbbdae1df4fa1c5f6248a38990030b308072d"
       status: "proved"
-      note: "Staging candidate version 5 includes p = 1 through the ordinary Support endpoint theorem, retaining the three cited inputs for the strict branch. Integration build and gates remain pending; this staging record grants no current-main or paper credit."
+      note: "Version 5 includes p = 1 through the ordinary Support endpoint theorem; the three cited inputs remain explicit for the strict branch."
     - source: "Lemma 3.5 (lemma:last_penultimate_cluster; official arXiv v2)"
       lean: "Exploding.Frozen.last_penultimate_cluster"
       module: "Exploding.Frozen.PenultimateCluster"

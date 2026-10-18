@@ -134,7 +134,7 @@ It takes the three percolation results behind Proposition 2.2 (`hLSSB`, `hHole`,
 and Schonmann's bound (`hSch`) as hypotheses; Theorem 1.1 is discharged in the proof by
 `Exploding.LSProof.ls_flp_from_explosive`.  The certified statement is
 `Exploding.Frozen.limit_shape`, restated unchanged. -/
-theorem Exploding.limit_shape (d : ℕ) (hd : 2 ≤ d) (p : ℝ) (hp : 0 < p) (hp1 : p < 1)
+theorem Exploding.limit_shape (d : ℕ) (hd : 2 ≤ d) (p : ℝ) (hp : 0 < p) (hp1 : p ≤ 1)
     (hLSSB : Exploding.External.LiggettSchonmannStaceyBoundedDegree)
     (hHole : Exploding.External.MathieuHoleVolume)
     (hChem : Exploding.External.AntalPisztoraChemicalDistance)

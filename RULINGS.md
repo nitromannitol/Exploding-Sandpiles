@@ -140,7 +140,7 @@ theorem Exploding.Frozen.dimensional_reduction (d n : ℕ) (hd : 1 ≤ d) (beta 
         bUpConf beta n η t (cons 1 y) = bLowConf beta n η t y + 2)
 ```
 
-The six unchanged last-wave/arrival conclusions retain the same law and exact approved Antal-Pisztora input. Actual consumers supply the LSS and Mathieu proof companions. Garet-Marchand adds no unregistered premise. The separate planar minimum-order bound remains unclaimed until its own proof and registration.
+The six unchanged last-wave/arrival conclusions retain the same law and exact approved Antal-Pisztora input. Actual consumers supply the LSS and Mathieu proof companions. Garet-Marchand adds no unregistered premise. When this ruling was made, the separate planar minimum-order bound was not yet claimed; it is now proved and registered as rem-sharp-planar-obstruction, below.
 
 ## rem-sharp-planar-obstruction — new, version 1
 

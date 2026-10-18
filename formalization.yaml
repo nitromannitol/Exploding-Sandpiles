@@ -2,8 +2,8 @@ version: v0.4
 project:
   name: Exploding-Sandpiles
   description: Lean 4/Mathlib formalization of the 22 numbered paper-owned statements in the corrected
-    arXiv-format draft, with exact source-bound declarations and explicit cited inputs, and the unnumbered
-    planar optimality remark. The comparator checks the historical limit-shape
+    arXiv-format draft, with exact source-bound declarations and explicit cited inputs, and the planar
+    optimality remark (Remark 1). The comparator checks the historical limit-shape
     pair.
   authors:
   - Ahmed Bou-Rabee
@@ -50,7 +50,7 @@ sources:
   note: The default source is paper/corrected-arxiv/exploding-corrected-arxiv.tex, SHA-256 c99ce52a57b7da1f805efe610c474c968c0aa00e0840bd8b0e92ae0d4c53f262.
     It supplies all 22 numbered paper-owned theorem rows, four literal definitions and two new cited-input
     definitions. Its mathematical statements and proofs are unchanged from v10; one obsolete qualification
-    remark is reconciled. The unnumbered planar optimality remark is registered separately. See the exact integration
+    remark is reconciled. The planar optimality remark (Remark 1) is proved and registered separately. See the exact integration
     record and source note.
   license: ''
   author_contacted: n/a
@@ -66,7 +66,7 @@ status:
     select corrected-v11. The 29 theorem rows are PROVED; 13 definitions are FROZEN and add zero theorem
     coverage. Historical citation rows retain explicit old source pins. Numbered coverage is 22/24 in
     the corrected draft: the two excluded statements quote cited results. The numbered-environment count does not
-    see the unnumbered planar optimality remark, which has its own PROVED row. Source,
+    see the planar optimality remark (Remark 1), which has its own PROVED row. Source,
     binder, definition and consumer reviews plus the actual 9842-job native integration are recorded;
     final integrated semantic closure and all final gates remain required. Cited premises stay explicit.
     No paper-owned step is an External. The comparator remains the historical journal limit-shape pair.'
@@ -230,7 +230,7 @@ alignment:
     status: proved
     source_pin: paper/corrected-arxiv/exploding-corrected-arxiv.tex; c99ce52a57b7da1f805efe610c474c968c0aa00e0840bd8b0e92ae0d4c53f262;
       defs input 9aba2c73246d79e3c6b87cb1f01cf3e2f636e27c8afd97ccb8ba5c032a9ee65b
-    note: Exact version 1; the unnumbered planar optimality remark (Remark 1), both bounds for the same least
+    note: Exact version 1; the planar optimality remark (Remark 1), both bounds for the same least
       positive covering order with constants before n. The two cited radius inputs remain explicit. See
       ledger/audits/2026-10-18-sharp-planar-obstruction.md.
   - source: exploding-corrected-arxiv.tex:920-926 (label lemma:last_penultimate_cluster) (corrected-v11)

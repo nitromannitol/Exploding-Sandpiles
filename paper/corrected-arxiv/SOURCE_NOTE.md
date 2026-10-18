@@ -22,8 +22,9 @@ explicitly. The two new radius predicates are cited, unproved inputs. Exact
 source and native integration evidence is in the
 [integration record](../../ledger/audits/2026-10-18-corrected-v11-integration.md).
 
-The unnumbered planar optimality remark (Remark 1, lines 785-823) is
-registered separately as `Exploding.Frozen.sharp_planar_obstruction`; see its
+The planar optimality remark (Remark 1, lines 785-823) is proved, with both
+bounds for the same least covering order, and registered separately as
+`Exploding.Frozen.sharp_planar_obstruction`; see its
 [audit record](../../ledger/audits/2026-10-18-sharp-planar-obstruction.md).
 Compilation does not certify a whole-paper release. Final semantic closure and all
 release gates remain required.

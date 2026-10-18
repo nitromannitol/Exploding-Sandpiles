@@ -1,8 +1,8 @@
 # Sharp planar obstruction, 18 October 2026
 
 This record binds `Exploding.Frozen.sharp_planar_obstruction` (node
-`rem-sharp-planar-obstruction`, version 1) to the unnumbered remark "Sharp planar
-obstruction" at lines 785-823 of the corrected arXiv-format draft, SHA-256
+`rem-sharp-planar-obstruction`, version 1) to the remark "Sharp planar
+obstruction" (printed as Remark 1) at lines 785-823 of the corrected arXiv-format draft, SHA-256
 `c99ce52a57b7da1f805efe610c474c968c0aa00e0840bd8b0e92ae0d4c53f262`, with its
 `defs.tex` input, SHA-256
 `9aba2c73246d79e3c6b87cb1f01cf3e2f636e27c8afd97ccb8ba5c032a9ee65b`.

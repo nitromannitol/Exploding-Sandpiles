@@ -1053,7 +1053,7 @@ class LiveSourceReportingTests(unittest.TestCase):
                          {"paper/exploding.tex": 13,
                           "paper/corrected-arxiv/exploding-corrected-arxiv.tex": 29})
         corrected = groups[(self.manifest["source_pin"]["file"], self.CORRECTED_SHA256)]
-        # 22 numbered paper-owned statements and the unnumbered planar optimality remark.
+        # 22 numbered theorem-like paper statements and the planar optimality remark (Remark 1).
         self.assertEqual(sum(n["kind"] == "theorem" for n in corrected["nodes"]), 23)
         self.assertEqual(sum(sync_docs.is_local_definition(n) for n in nodes), 4)
         self.assertEqual(sum(sync_docs.is_cited_external(n) for n in nodes), 9)

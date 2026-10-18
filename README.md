@@ -6,7 +6,7 @@ A **Lean 4** formalization of the paper
 > [*A shape theorem for exploding sandpiles*](https://arxiv.org/abs/2102.04422),
 > Annals of Applied Probability 34(1A) (2024), 714-742; arXiv:2102.04422.
 
-The 22 numbered paper-owned statements select the [corrected arXiv-format v11 draft](paper/corrected-arxiv/SOURCE_NOTE.md). The official arXiv v2 source and abstract are preserved unchanged. Cited literature remains explicit in theorem types. The unnumbered planar remark (Remark 1, the least covering wave order in the plane is of order n² log(n+1)) is proved as a separate registration. These registrations are not a whole-paper release certificate. The development uses Mathlib and Lattice-Probability.
+The 22 numbered paper-owned statements select the [corrected arXiv-format v11 draft](paper/corrected-arxiv/SOURCE_NOTE.md). The official arXiv v2 source and abstract are preserved unchanged. Cited literature remains explicit in theorem types. The planar optimality remark (Remark 1: the least covering wave order in the plane is of order n² log(n+1)), which lies outside the 22 numbered theorem-like statements, is proved as a separate registration. These registrations are not a whole-paper release certificate. The development uses Mathlib and Lattice-Probability.
 
 A separate corrected arXiv-format draft is available with a source note and compilation instructions at paper/corrected-arxiv/SOURCE_NOTE.md.
 

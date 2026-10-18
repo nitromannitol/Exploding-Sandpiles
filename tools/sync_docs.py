@@ -41,7 +41,6 @@ HISTORICAL_DECLARATIONS = {
     "lem-square-lower-bound": (4, "ef7444fd525fb739159df1b1f18e6d7795f7028ca66531e1c9f675c3b15ab9b7"),
     "lem-penultimate-cluster": (4, "3cfbfa23e89ec1c52bed2c12a4a6be62d2cd17bb135b6f9438498d8f244d8544"),
     "lem-penultimate-upper-bound": (4, "755dc2bd6ea319253c74e38c3f0320cd0b6ec98d60157d330873710e2519e903"),
-    "lem-penultimate-close": (4, "155ee18f906de192a37114b586420bfae02efadb3d6d74235494dccf37ea9af7"),
     "prop-last-wave-convergence": (4, "757cd6a770e4ea98496b4203ac93795842f3cbafac4b0ee55cea24e49f32e679"),
     "prop-approximate-subadditive": (4, "724f16a435a724da7cf5af101b9d248d41329ddd4286e2360a1502aa9f2138a4"),
     "prop-generalized-last-wave": (4, "63edbd1a3a9902f41df41c9c3efbe3e73ae7802ffacce176582e67f10b0cf8f3"),

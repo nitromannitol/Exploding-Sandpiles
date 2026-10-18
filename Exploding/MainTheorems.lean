@@ -24,10 +24,11 @@ import Exploding.Frozen.BoxCrossing
 /-!
 # Main results
 
-This file gives the public paper-facing theorem statements. Twenty paper-owned
-old-source statements retain their corrected-journal contracts, including the proved
-finite-exploding version 7 with `0 < p ≤ 1`. Eight strict Bernoulli paper rows retain
-`p < 1`. Theorem 6.1 is the proved corrected-v10 v4 counterexample successor.
+This file gives the public paper-facing theorem statements. Nineteen paper-owned
+journal-source statements retain their corrected-journal contracts, including the proved
+finite-exploding version 7 with `0 < p ≤ 1`. Lemma 3.7 version 5 selects the official
+arXiv source and includes `p = 1`; seven strict Bernoulli paper rows retain `p < 1`.
+Theorem 6.1 is the proved corrected-v10 v4 counterexample successor.
 Proposition 2.1 has the corrected-v10 v4 terminal-and-deadline statement for `0 < p ≤ 1`;
 its separate receipt records the exact declaration and bounded consumer evidence. The remaining
 corrected-v10 statements and the literal official arXiv initialization are not certified.
@@ -296,7 +297,7 @@ theorem Exploding.penultimate_upper_bound (d : ℕ) (hd : 2 ≤ d) (p : ℝ) (hp
 /-- **Lemma 3.7** (`lemma:last_penultimate_close`): the last-wave and penultimate-cluster
 arrival times are polylogarithmically close.  The certified statement is
 `Exploding.Frozen.last_penultimate_close`, restated unchanged. -/
-theorem Exploding.last_penultimate_close (d : ℕ) (hd : 2 ≤ d) (p : ℝ) (hp : 0 < p) (hp1 : p < 1)
+theorem Exploding.last_penultimate_close (d : ℕ) (hd : 2 ≤ d) (p : ℝ) (hp : 0 < p) (hp1 : p ≤ 1)
     (hLSSB : Exploding.External.LiggettSchonmannStaceyBoundedDegree)
     (hHole : Exploding.External.MathieuHoleVolume)
     (hChem : Exploding.External.AntalPisztoraChemicalDistance) :

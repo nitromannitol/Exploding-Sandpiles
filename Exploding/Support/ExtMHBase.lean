@@ -21,6 +21,32 @@ theorem xmh_rtg_symm {α : Type*} {R : α → α → Prop} (h : ∀ a b, R a b �
   | refl => exact ReflTransGen.refl
   | tail _ hbc ih => exact ReflTransGen.head (h _ _ hbc) ih
 
+/-- A component is closed under an adjacent step that remains in the underlying set. -/
+theorem xmh_componentIn_step {S : Set (Site d)} {x b z : Site d}
+    (hb : b ∈ componentIn S x) (hz : z ∈ S) (hbz : (lattice d).Adj b z) :
+    z ∈ componentIn S x := by
+  obtain ⟨hx, hbS, hreach⟩ := hb
+  refine ⟨hx, hz, hreach.trans ?_⟩
+  exact SimpleGraph.Adj.reachable (by simpa [SimpleGraph.induce_adj] using hbz)
+
+/-- Membership in a component supplies a finite nearest-neighbour walk within the underlying
+set, represented as a sequence of sites. -/
+theorem xmh_walk_of_component {S : Set (Site d)} {x y : Site d}
+    (h : y ∈ componentIn S x) :
+    ∃ (m : ℕ) (c : ℕ → Site d), c 0 = x ∧ c m = y ∧ (∀ s, s ≤ m → c s ∈ S) ∧
+      ∀ s, s < m → (lattice d).Adj (c s) (c (s + 1)) := by
+  obtain ⟨hx, hy, hreach⟩ := h
+  obtain ⟨w⟩ := hreach
+  refine ⟨w.length, fun s => (w.getVert s).1, ?_, ?_, ?_, ?_⟩
+  · simp
+  · simp only
+    rw [SimpleGraph.Walk.getVert_length]
+  · intro s _
+    exact (w.getVert s).2
+  · intro s hs
+    have := w.adj_getVert_succ hs
+    simpa [SimpleGraph.induce_adj] using this
+
 /-! ### King adjacency and `*`-connected sets -/
 
 /-- King adjacency on `ℤ^d`: two distinct sites at sup-norm distance at most one. -/

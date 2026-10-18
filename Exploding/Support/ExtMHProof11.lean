@@ -1,10 +1,11 @@
 /-
 Isolation of the uniqueness input of Mathieu's hole-volume bound.  The connectedness and
-closedness of the clusters and holes are proved from `componentIn` and `glws_component_step`;
+closedness of the clusters and holes are proved from generic induced-graph facts about `componentIn`;
 the only remaining percolation inputs are named explicitly: uniqueness of the infinite
 cluster, localisation of the hole boundary, and the isoperimetric size of that boundary.
 -/
 import Exploding.Support.ExtMHProof10
+import Exploding.Support.ExtMHBase
 
 namespace Exploding
 
@@ -41,15 +42,15 @@ theorem xmh7_componentIn_conn {S : Set (Site d)} {x u v : Site d}
           (fun s hs => hS s (le_trans hs (Nat.le_succ m)))
           (fun s hs => hadj s (lt_of_lt_of_le hs (Nat.le_succ m)))
         have hcmem : c (m + 1) ∈ componentIn S x :=
-          glws_component_step (ihmem m le_rfl) (hS (m + 1) le_rfl)
+          xmh_componentIn_step (ihmem m le_rfl) (hS (m + 1) le_rfl)
             (hadj m (Nat.lt_succ_self m))
         refine ⟨?_, ihtg.tail ⟨ihmem m le_rfl, hcmem, hadj m (Nat.lt_succ_self m)⟩⟩
         intro s hs
         rcases Nat.lt_or_eq_of_le hs with h | h
         · exact ihmem s (Nat.lt_succ_iff.mp h)
         · rw [h]; exact hcmem
-  obtain ⟨mu, cu, hcu0, hcum, hcuS, hcuadj⟩ := glws_walk_of_component hu
-  obtain ⟨mv, cv, hcv0, hcvm, hcvS, hcvadj⟩ := glws_walk_of_component hv
+  obtain ⟨mu, cu, hcu0, hcum, hcuS, hcuadj⟩ := xmh_walk_of_component hu
+  obtain ⟨mv, cv, hcv0, hcvm, hcvS, hcvadj⟩ := xmh_walk_of_component hv
   have h1 := (key mu cu hcu0 hcuS hcuadj).2
   rw [hcum] at h1
   have h2 := (key mv cv hcv0 hcvS hcvadj).2
@@ -60,7 +61,7 @@ theorem xmh7_componentIn_conn {S : Set (Site d)} {x u v : Site d}
 theorem xmh7_componentIn_close {S : Set (Site d)} {x b z : Site d}
     (hb : b ∈ componentIn S x) (hz : z ∈ S) (hbz : (lattice d).Adj b z) :
     z ∈ componentIn S x :=
-  glws_component_step hb hz hbz
+  xmh_componentIn_step hb hz hbz
 
 /-- **Uniqueness of the infinite cluster**: almost surely, every component of the complement
 of an infinite open cluster is finite. -/

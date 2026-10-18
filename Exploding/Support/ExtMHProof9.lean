@@ -6,7 +6,7 @@ opaque `Classical.choose` of `xmh_StarCount`), and the box `[-n,n]^d` is bounded
 `6^d · c^{Nat.log 2 n}` with `c = 2^d K (1-q)`, whose dyadic blocks sum to a finite quantity.
 -/
 import Exploding.Support.ExtMHProof8
-import Exploding.Support.GLWSec3L
+import Exploding.Support.ExtMHBase
 
 namespace Exploding
 
@@ -160,7 +160,7 @@ theorem xmh5_boundary_closed {ω : Site d → Bool} {i : Site d} {B : Set (Site 
     (hc : ∃ c ∈ componentIn (openSites ω) i, (lattice d).Adj c z) : ω z = false := by
   obtain ⟨c, hcC, hcz⟩ := hc
   by_cases hz : ω z = true
-  · exact absurd (glws_component_step hcC (by simpa [openSites] using hz) hcz) (hdisj z hzB)
+  · exact absurd (xmh_componentIn_step hcC (by simpa [openSites] using hz) hcz) (hdisj z hzB)
   · simpa using hz
 
 /-- **A large `*`-connected all-closed set meeting the box gives the bad event.** -/

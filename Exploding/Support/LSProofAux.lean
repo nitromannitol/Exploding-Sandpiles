@@ -934,7 +934,7 @@ theorem ls_assemble (d : ℕ) (hd : 2 ≤ d) (p : ℝ) (hp : 0 < p) (hp1 : p < 1
               {y : Fin d → ℝ | 0 < podo (explodingPile η) t (nearestSite ((t : ℝ) • y))} B))
           atTop (nhds 0) := by
   obtain ⟨N, hcont, hconv, hhom, hae⟩ :=
-    Exploding.Frozen.convergence_of_time_constant d hd p hp hp1 hFLP hLSSB hHole hChem
+    Exploding.Frozen.convergence_of_time_constant d hd p hp hp1.le hFLP hLSSB hHole hChem
   by_cases hμ : toyLaw d p = 0
   · exact ⟨Set.univ, convex_univ, isOpen_univ, Set.univ_nonempty, by simp [hμ]⟩
   · haveI : NeBot (ae (toyLaw d p)) := ae_neBot.mpr hμ

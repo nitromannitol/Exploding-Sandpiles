@@ -1,7 +1,7 @@
 # Correspondence: paper ↔ Lean
 
 Maps the source-partitioned manifest to A shape theorem for exploding sandpiles
-(Bou-Rabee). The default is the corrected journal source; the v4 counterexample and crossing successors, v6 time-constant successor
+(Bou-Rabee). The default is the corrected journal source; the v4 counterexample and crossing successors, v5 Proposition 2.2 successor, v6 time-constant successor
 and four literal definitions override it with corrected arXiv-format v10. Five exact theorem
 rows select the official arXiv v2 extraction.
 
@@ -9,7 +9,7 @@ rows select the official arXiv v2 extraction.
 
 - The global default is paper/exploding.tex, SHA-256
   1d7c2010d8bd29e7fb83e93f19c9ebe0e8aef201f93559b2b18f5ca0dc049b44; row-level
-  overrides pin five declarations to official arXiv v2 and seven declarations to corrected arXiv-format v10 and
+  overrides pin five declarations to official arXiv v2 and eight declarations to corrected arXiv-format v10 and
   its defs.tex input. A source address is tied to its effective pin, range and label
   when present; v10 line 103 has no invented equation label.
 - The bytes between `-- FROZEN-STATEMENT-BEGIN` and `-- FROZEN-STATEMENT-END`
@@ -19,9 +19,7 @@ rows select the official arXiv v2 extraction.
 ## External inputs
 
 The seven cited results remain registered in Exploding/External/ under the old source.
-A theorem carries one only when its exact frozen type has that binder. The proved v4
-counterexample type has no hFMR binder; the historic FMR citation remains in the old
-journal-source record.
+A theorem carries one only when its exact frozen type has that binder. Corrected-v10 Proposition 2.2@5 retains all three percolation binders. The `hHole` cited binder remains in the theorem type but is unused in this proof; the hole obligation is proved through in-repository `Exploding.xmf_proved`. No new External declaration is introduced. The row selects corrected-v10 to record the repaired law and seed definitions. The proved v4 counterexample type has no hFMR binder; the historic FMR citation remains in the old journal-source record.
 
 | node | cited result | used by |
 |---|---|---|
@@ -50,6 +48,7 @@ Six of the seven are proved in this repository, so the hypothesis can be dischar
 | the bounds on arrival times against real quantities | conjoined with `∃ m : ℕ, T = m` | carries the finiteness the paper asserts and avoids `ENat.toNat ⊤ = 0` |
 | locally uniform convergence | written in its `ε`-form, not as a supremum | `sSup ∅ = 0` and an unbounded `sSup` is `0` in `ℝ` |
 | `prop:renormalization_properties`, clause (2) | the finiteness of the component is conjoined with the cardinality bound | `Set.ncard` of an infinite set is `0` |
+| Corrected-v10 Proposition 2.2 version 5 | retains the three percolation inputs, states `0 < p ≤ 1`, and includes maximal-component existence and uniqueness of every infinite good-cube component | its exact marker, source and proof-consumer details have a separate receipt |
 | `lemma:local_convexity` | the finiteness of `br(A)` is carried, and `\|br(A)\|` read off it | same reason |
 | `lemma:local_convexity`, `lemma:last_wave_bound`, `lemma:approx_subadditivity` | the standing hypotheses of Sections 2 and 3 (`2d - 2 ≤ η ≤ 2d - 1`, the last wave well defined) are explicit hypotheses | those lemmas assert nothing probabilistic; the section fixes `η` before stating them |
 | `prop:dimensional_reduction` | the paper's `d` is written `d + 1` | so that the lower-dimensional lattice is `ℤ^d` rather than `ℤ^{d-1}` |
@@ -58,7 +57,7 @@ Six of the seven are proved in this repository, so the hypothesis can be dischar
 | `lemma:square_lower_bound` | "the support of the `m`-wave" is `∃ t, 0 < u_t x` | the wave odometer is nondecreasing in time on a nonnegative background, so this is the support of the terminal odometer when the wave stabilizes, and is the right reading when it does not |
 | old-source statements of Sections 1 to 4 | carry `2 ≤ d` | the standing hypothesis of the historical "Main results" section; the proved v4 statement has its own explicit `2 ≤ d` binder |
 | `s_0' = η` in the frozen-toppling convention (2.3), in Lemma 2.1, the crossing time, Hypotheses 5.2–5.4 and recurrence | the `S`-frozen toppling `fodo S η w₀` evolves `s_t' = η + Δ w_t`, i.e. `s_0 = η` | (2.3) writes `s_0' = s_0 + Δ w_0`, but the paper's later uses and its proofs need the initial firing's chips delivered (`exploding.tex:447`: a `(2d-1)`-site next to a toppled line topples at the next step); the paper's own (2.4) is inconsistent with (2.3) here |
-| the Bernoulli probability `p` of `(1.2)` in paper rows | `0 < p ≤ 1` in `lem-finite-exploding@7`, `prop-last-wave-convergence@5`, `lem-penultimate-cluster@5`, `lem-penultimate-upper-bound@5`, `lem-penultimate-close@5`, `prop-approximate-subadditive@5` and `thm-time-constant@6`; two remaining strict Bernoulli paper rows retain `0 < p < 1` | Version 7 includes the deterministic `p = 1` endpoint for Lemma 3.2 under the historical source pin. Proposition 3.1 version 5 and Proposition 4.1 version 5 use the ordinary Support endpoint theorem; Lemmas 3.5–3.7 use the actual all-high law. Proposition 3.1 and Proposition 4.1 retain their three cited inputs for the strict branch. The corrected-v10 counterexample is deterministic and has no Bernoulli `p`. The corrected crossing version 4 includes p = 1 under its separate pin. Theorem 1.3 version 6 selects corrected-v10 and retains four cited inputs for its strict branch; its endpoint uses the ordinary all-high Support theorem. Other corrected-v10 statements remain uncertified. |
+| the Bernoulli probability `p` of `(1.2)` in paper rows | `0 < p ≤ 1` in `lem-finite-exploding@7`, `prop-last-wave-convergence@5`, `lem-penultimate-cluster@5`, `lem-penultimate-upper-bound@5`, `lem-penultimate-close@5`, `prop-approximate-subadditive@5`, `prop-renormalization_properties@5` and `thm-time-constant@6`; one remaining strict Bernoulli paper row retains `0 < p < 1` | Version 7 includes the deterministic `p = 1` endpoint for Lemma 3.2 under the historical source pin. Proposition 3.1 version 5 and Proposition 4.1 version 5 use the ordinary Support endpoint theorem; Lemmas 3.5–3.7 use the actual all-high law. Proposition 3.1 and Proposition 4.1 retain their three cited inputs for the strict branch. Proposition 2.2 version 5 includes p = 1 and retains its three cited inputs. The corrected-v10 counterexample is deterministic and has no Bernoulli `p`. The corrected crossing version 4 includes p = 1 under its separate pin. Theorem 1.3 version 6 selects corrected-v10 and retains four cited inputs for its strict branch; its endpoint uses the ordinary all-high Support theorem. Other corrected-v10 statements remain uncertified. |
 
 ## Main results
 
@@ -67,7 +66,7 @@ Theorem 1.2 0 < p < 1 row and comparator are historical old-source scope; they d
 certify corrected-v10 endpoints. The proved v4 Theorem 6.1 row has no cited-result binder
 and passed exact compiled type, axiom and independent source/body/consumer checks. The four
 literal definitions passed source/body audit but add no theorem coverage. The dated
-promotion receipt is [ledger/audits/2026-10-15-counterexample-v4-promotion.md](ledger/audits/2026-10-15-counterexample-v4-promotion.md). The corrected Proposition 2.1 terminal-and-deadline successor has its own [validation receipt](ledger/audits/2026-10-15-crossing-v4-promotion.md). Main theorem rows are:
+promotion receipt is [ledger/audits/2026-10-15-counterexample-v4-promotion.md](ledger/audits/2026-10-15-counterexample-v4-promotion.md). The corrected Proposition 2.1 terminal-and-deadline successor has its own [validation receipt](ledger/audits/2026-10-15-crossing-v4-promotion.md). Corrected Proposition 2.2@5 has its own [source-marker and consumer receipt](ledger/audits/2026-10-18-renormalization-v5-source-marker.md). Main theorem rows are:
 
 | Source | Frozen statement | State and cited hypotheses carried |
 |---|---|---|
@@ -91,7 +90,7 @@ not v4 or corrected v10 as a whole. See ExplodingAudit/README.md.
 | `thm-limit-shape` | [Exploding.Frozen.limit_shape](Exploding/Frozen/LimitShape.lean#L30) | exploding.tex:246-254 (label theorem:limit_shape) | `paper/exploding.tex` (`1d7c2010d8bd29e7`) | proved, independently audited |
 | `thm-time-constant` | [Exploding.Frozen.convergence_of_time_constant](Exploding/Frozen/TimeConstant.lean#L36) | exploding-corrected-arxiv.tex:117-120 (label theorem:convergence_of_time_constant) | `paper/corrected-arxiv/exploding-corrected-arxiv.tex` (`59b5ac1a5cdf80c5`) | proved, independently audited |
 | `thm-explosive` | [Exploding.Frozen.explosive](Exploding/Frozen/Explosive.lean#L28) | exploding.tex:265-268 (label theorem:explosive) | `paper/exploding.tex` (`1d7c2010d8bd29e7`) | proved, independently audited |
-| `prop-renormalization` | [Exploding.Frozen.renormalization_properties](Exploding/Frozen/Renormalization.lean#L37) | exploding.tex:482-497 (label prop:renormalization_properties) | `paper/exploding.tex` (`1d7c2010d8bd29e7`) | proved, independently audited |
+| `prop-renormalization` | [Exploding.Frozen.renormalization_properties](Exploding/Frozen/Renormalization.lean#L42) | exploding-corrected-arxiv.tex:352-367 (label prop:renormalization_properties) | `paper/corrected-arxiv/exploding-corrected-arxiv.tex` (`59b5ac1a5cdf80c5`) | proved, independently audited |
 | `lem-square-lower-bound` | [Exploding.Frozen.square_lower_bound](Exploding/Frozen/SquareLowerBound.lean#L22) | exploding.tex:705-707 (label lemma:square_lower_bound) | `paper/exploding.tex` (`1d7c2010d8bd29e7`) | proved, independently audited |
 | `lem-penultimate-cluster` | [Exploding.Frozen.last_penultimate_cluster](Exploding/Frozen/PenultimateCluster.lean#L31) | exploding-arxiv.tex:652-658 (label lemma:last_penultimate_cluster) | `paper/exploding-arxiv.tex` (`f12deba6e481a3d8`) | proved, independently audited |
 | `lem-penultimate-upper-bound` | [Exploding.Frozen.penultimate_upper_bound](Exploding/Frozen/PenultimateUpperBound.lean#L29) | exploding-arxiv.tex:667-672 (label lemma:penultimate_upper_bound) | `paper/exploding-arxiv.tex` (`f12deba6e481a3d8`) | proved, independently audited |
@@ -130,6 +129,6 @@ not v4 or corrected v10 as a whole. See ExplodingAudit/README.md.
 
 <!-- FROZEN-SURFACE-END -->
 
-The table retains the historical thm-counterexample@3 identity: old marker SHA-256 c9c8b8778d204a8280a899f7dda2fefda47e85854c1169bb477828b81f191dd3, semantic-closure SHA-256 ff157998636d1fa5296aa50733454d0a0538d591c0824fd6e6fcab3f9e9b4b9e, and whole-file SHA-256 d9e7f60ec00c1dbdc63a690bba7524dd1fd0f31b30b0ccaa03de3c15bd0dc195. Those v3 values do not certify v4. The registry is 27 journal-source rows, five official-ArXiv rows and seven corrected-v10 rows; exact allowed gaps are source-partitioned. Coverage is respectively 16/24, 5/24 and 3/24, and definitions add zero theorem coverage. The aggregate is 28 PROVED rows (22 paper-owned across the three pins and six cited-input discharges), 11 FROZEN definitions and zero SEALED rows. All seven historical cited inputs, including FMR, remain registered. The ordinary bond-hole geometry, near-root defective-animal bounds and finite-hole tail add no numbered-theorem coverage; corrected Proposition 2.2, the selected infinite-cluster transfer and its exact alpha constant remain outside this promotion.
+The table retains the historical thm-counterexample@3 identity: old marker SHA-256 c9c8b8778d204a8280a899f7dda2fefda47e85854c1169bb477828b81f191dd3, semantic-closure SHA-256 ff157998636d1fa5296aa50733454d0a0538d591c0824fd6e6fcab3f9e9b4b9e, and whole-file SHA-256 d9e7f60ec00c1dbdc63a690bba7524dd1fd0f31b30b0ccaa03de3c15bd0dc195. Those v3 values do not certify v4. The registry is 26 journal-source rows, five official-ArXiv rows and eight corrected-v10 rows; exact allowed gaps are source-partitioned. Coverage is respectively 15/24, 5/24 and 4/24, and definitions add zero theorem coverage. The aggregate is 28 PROVED rows (22 paper-owned across the three pins and six cited-input discharges), 11 FROZEN definitions and zero SEALED rows. All seven historical cited inputs, including FMR, remain registered. Proposition 2.2@5 is pinned to corrected-v10 lines 352–367; journal line 482 remains an explicit source gap, and corrected-v10 line 352 is covered. Other corrected-v10 statements remain outside this registration.
 
-The historical crossing @3 statement retains marker SHA-256 `86d88877abf5e6e1dc37f9bf5e1a1552bb04588de3fa050596b1faf4fb3d5e38` in its dated identity record. The corrected @4 type has a different source pin and explicitly displays terminal one, positive time and `k^d`; the historical GoodCube-only correspondence is not reused for it. Its PROVED registration is bound to the corrected source and its separate exact-declaration receipt.
+The historical crossing @3 statement retains marker SHA-256 `86d88877abf5e6e1dc37f9bf5e1a1552bb04588de3fa050596b1faf4fb3d5e38` in its dated identity record. The corrected @4 type has a different source pin and explicitly displays terminal one, positive time and `k^d`; the historical GoodCube-only correspondence is not reused for it. Its PROVED registration is bound to the corrected source and its separate exact-declaration receipt. Proposition 2.2@5 likewise has an exact corrected-v10 pin and receipt, while the historical @4 type and identity remain preserved by the fixture.

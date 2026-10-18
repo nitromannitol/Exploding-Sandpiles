@@ -6,7 +6,7 @@ A **Lean 4** formalization of the paper
 > [*A shape theorem for exploding sandpiles*](https://arxiv.org/abs/2102.04422),
 > Annals of Applied Probability 34(1A) (2024), 714-742; arXiv:2102.04422.
 
-The manifest selects three exact sources: 27 rows against the corrected journal text `paper/exploding.tex`; Proposition 3.1, Lemmas 3.5, 3.6 and 3.7, and Proposition 4.1 against the official arXiv extraction `paper/exploding-arxiv.tex`; and seven rows against the local corrected arXiv-format v10 draft `paper/corrected-arxiv/exploding-corrected-arxiv.tex`. Structural theorem coverage under those separate pins is respectively 16/24, 5/24 and 3/24; these fractions cannot be added into a whole-paper certificate. The corrected crossing declaration requires terminal value one and a positive volume deadline for every permitted seed, over `0 < p ≤ 1`. Proposition 3.1, Lemmas 3.5, 3.6, 3.7 and Proposition 4.1 include `p = 1` under the official arXiv pin. Theorem 1.3 version 6 selects corrected-v10 for `0 < p ≤ 1`, retaining four cited inputs for the strict branch and using the actual all-high law at `p = 1`. The four literal definitions add no theorem coverage. Cited literature remains explicit in theorem types. The development is built on mathlib and Lattice-Probability (LatticeProb).
+The manifest selects three exact sources: 26 rows against the corrected journal text `paper/exploding.tex`; Proposition 3.1, Lemmas 3.5, 3.6 and 3.7, and Proposition 4.1 against the official arXiv extraction `paper/exploding-arxiv.tex`; and eight rows against the local corrected arXiv-format v10 draft `paper/corrected-arxiv/exploding-corrected-arxiv.tex`. Structural theorem coverage under those separate pins is respectively 15/24, 5/24 and 4/24; these fractions cannot be added into a whole-paper certificate. The corrected crossing declaration requires terminal value one and a positive volume deadline for every permitted seed, over `0 < p ≤ 1`. Proposition 2.2 version 5 selects corrected-v10, retains all three cited inputs, and states both the existence of the maximal infinite good-cube component and uniqueness of every infinite component. Proposition 3.1, Lemmas 3.5, 3.6, 3.7 and Proposition 4.1 include `p = 1` under the official arXiv pin. Theorem 1.3 version 6 selects corrected-v10 for `0 < p ≤ 1`, retaining four cited inputs for the strict branch and using the actual all-high law at `p = 1`. The four literal definitions add no theorem coverage. Cited literature remains explicit in theorem types. The development is built on mathlib and Lattice-Probability (LatticeProb).
 
 A separate corrected arXiv-format draft is available with a source note and compilation instructions at paper/corrected-arxiv/SOURCE_NOTE.md.
 
@@ -31,12 +31,12 @@ renormalization (Section 2), the last wave (Section 3), the proof of Theorem 1.3
 explosive backgrounds with no limit shape (Section 6, Theorem 6.1), and a criterion for
 explosion through dimensional reduction and bootstrap percolation (Section 7).
 
-The registry has 39 rows: 27 journal-source rows (14 paper theorems, six cited-input companions and seven cited-input definitions), five official-arXiv paper theorems, and seven corrected-v10 rows (three paper theorems and four literal definitions). The aggregate remains 28 theorem rows and 11 definition rows. Structural coverage by exact pin is journal 16/24 (14/22 paper-owned), official arXiv 5/24 (5/22), and corrected-v10 3/24 (3/22). Three exact `coverage_allowed_gaps` entries record the uncovered sets. The manifest has 28 PROVED rows, 11 FROZEN definitions and zero SEALED rows. The dated [counterexample receipt](ledger/audits/2026-10-15-counterexample-v4-promotion.md) and [crossing receipt](ledger/audits/2026-10-15-crossing-v4-promotion.md) distinguish their evidence. Theorem 1.1 and Proposition 7.4 are among the seven preserved cited inputs.
+The registry has 39 rows: 26 journal-source rows (13 paper theorems, six cited-input companions and seven cited-input definitions), five official-arXiv paper theorems, and eight corrected-v10 rows (four paper theorems and four literal definitions). The aggregate remains 28 theorem rows and 11 definition rows. Structural coverage by exact pin is journal 15/24 (13/22 paper-owned), official arXiv 5/24 (5/22), and corrected-v10 4/24 (4/22). Three exact `coverage_allowed_gaps` entries record the uncovered sets. The manifest has 28 PROVED rows, 11 FROZEN definitions and zero SEALED rows. The dated [counterexample receipt](ledger/audits/2026-10-15-counterexample-v4-promotion.md), [crossing receipt](ledger/audits/2026-10-15-crossing-v4-promotion.md), and [Proposition 2.2 source/marker receipt](ledger/audits/2026-10-18-renormalization-v5-source-marker.md) distinguish their evidence. Theorem 1.1 and Proposition 7.4 are among the seven preserved cited inputs.
 
 [`Exploding/MainTheorems.lean`](Exploding/MainTheorems.lean) gives the public statements.
 Theorems 1.2, 1.4 and 5.1 retain their journal-source contracts. Theorem 1.2 remains
 strict at `0 < p < 1`; Theorems 1.4 and 5.1 retain their stated model hypotheses.
-Theorem 1.3 version 6 and Theorem 6.1 version 4 select the corrected-v10 source:
+Theorem 1.3 version 6, Proposition 2.2 version 5, and Theorem 6.1 version 4 select the corrected-v10 source:
 
 - **Theorem 1.2, the limit shape** (`theorem:limit_shape`, `Exploding.Frozen.limit_shape`):
   for `d ≥ 2` and `0 < p < 1` there is a nonempty open convex set `B ⊂ ℝ^d` such that, for
@@ -61,6 +61,13 @@ Theorem 1.3 version 6 and Theorem 6.1 version 4 select the corrected-v10 source:
   and `liminf n⁻¹ T(n) = 1`. For that same `η` and `hη`, no measurable set `B` is a limit
   of the rescaled support in symmetric-difference volume. The full conclusion is proved
   without a cited-result hypothesis.
+- **Proposition 2.2, static renormalization** (`prop:renormalization_properties`,
+  `Exploding.Frozen.renormalization_properties`): for `0 < p ≤ 1`, with all three cited
+  percolation inputs retained in the type, the good-cube cluster satisfies the hole and
+  chemical-distance bounds; the `hHole` cited binder remains in the type but is unused in this proof,
+  while the hole obligation is proved through in-repository `Exploding.xmf_proved`,
+  and the selected `Cinf` is a good-cube component while every infinite good-cube component equals it.
+  It is pinned to corrected-v10 lines 352–367; no new `External` declaration is added.
 
 Highlights among the proved results:
 
@@ -115,14 +122,17 @@ discharged by the proof named:
 Only `hChem` (`Exploding.External.AntalPisztoraChemicalDistance`) is assumed outright. The
 frozen statements carry cited results only where they appear as hypotheses. The proved
 Theorem 6.1 statement has no cited-result binder. Theorem 1.4 and Proposition 7.5 (`hSch := Exploding.xsr_schonmann`)
-hold with no cited hypothesis; Theorems 1.2 and 1.3 rest on `hChem` alone; and Proposition
-2.2, Lemmas 3.2, 3.5, 3.6 and 3.7, Propositions 3.1, 4.1 and 5.1 and Theorem 5.1 rest on
-`hChem` alone, the last two together with the model hypotheses above. The paper-to-Lean map
+hold with no cited hypothesis; Theorems 1.2 and 1.3 rest on `hChem` alone. Proposition
+2.2, Lemmas 3.2, 3.5, 3.6 and 3.7, Propositions 3.1, 4.1 and 5.1 and Theorem 5.1 retain
+their cited binders and can discharge the in-repository results; Proposition 2.2@5 keeps
+`hHole` visible but unused in this proof, while its hole obligation is proved through the
+in-repository `Exploding.xmf_proved`. The last two also use the
+model hypotheses above. The paper-to-Lean map
 of the cited results is
 in [`CORRESPONDENCE.md`](CORRESPONDENCE.md).
 
 Not formalized: the proof outline of Section 1, the examples of Section 5.2 and the figures.
-Other corrected-v10 statements have no corrected-source certification; Lemma 3.2 version 7 is PROVED for 0 < p ≤ 1 under the historical source pin, and official arXiv Proposition 3.1, Lemmas 3.5, 3.6, 3.7 and Proposition 4.1 version 5 include p = 1. Two remaining strict Bernoulli paper rows still exclude p = 1.
+Other corrected-v10 statements have no corrected-source certification; Lemma 3.2 version 7 is PROVED for 0 < p ≤ 1 under the historical source pin, and official arXiv Proposition 3.1, Lemmas 3.5, 3.6, 3.7 and Proposition 4.1 version 5 include p = 1. One remaining strict Bernoulli paper row still excludes p = 1.
 
 <!-- STATUS-BEGIN (generated by tools/sync_docs.py) -->
 
@@ -132,9 +142,9 @@ Source coverage is partial. Each row describes only its selected source; histori
 
 | Pinned source | SHA-256 | Theorem rows | Proved theorem rows | Cited inputs | Non-External definitions |
 |---|---|---|---|---|---|
-| [paper/corrected-arxiv/exploding-corrected-arxiv.tex](paper/corrected-arxiv/exploding-corrected-arxiv.tex) | `59b5ac1a5cdf80c5b550dfc1738414892e0aa3f8cdb0bf03d00c74685a3e1be2` | 3 | 3 | 0 | 4 |
+| [paper/corrected-arxiv/exploding-corrected-arxiv.tex](paper/corrected-arxiv/exploding-corrected-arxiv.tex) | `59b5ac1a5cdf80c5b550dfc1738414892e0aa3f8cdb0bf03d00c74685a3e1be2` | 4 | 4 | 0 | 4 |
 | [paper/exploding-arxiv.tex](paper/exploding-arxiv.tex) | `f12deba6e481a3d81c6967bc48ecbbdae1df4fa1c5f6248a38990030b308072d` | 5 | 5 | 0 | 0 |
-| [paper/exploding.tex](paper/exploding.tex) | `1d7c2010d8bd29e7fb83e93f19c9ebe0e8aef201f93559b2b18f5ca0dc049b44` | 20 | 20 | 7 | 0 |
+| [paper/exploding.tex](paper/exploding.tex) | `1d7c2010d8bd29e7fb83e93f19c9ebe0e8aef201f93559b2b18f5ca0dc049b44` | 19 | 19 | 7 | 0 |
 
 Non-External definitions are not counted as cited inputs or theorem proofs. Their literal-body/source audit is required; directory placement does not establish source fidelity. Theorem states and source pins come from `ledger/manifest.yaml`; independent source and axiom audits remain necessary. Run `python3 tools/check_axioms.py` to check axiom closures.
 
@@ -142,11 +152,11 @@ Non-External definitions are not counted as cited inputs or theorem proofs. Thei
 
 ### Scope and faithfulness
 
-The global source default remains `paper/exploding.tex`, SHA-256 `1d7c2010d8bd29e7fb83e93f19c9ebe0e8aef201f93559b2b18f5ca0dc049b44`. Proposition 3.1 and Lemmas 3.5, 3.6 and 3.7 and Proposition 4.1 version 5 select the official arXiv extraction `paper/exploding-arxiv.tex`, SHA-256 `f12deba6e481a3d81c6967bc48ecbbdae1df4fa1c5f6248a38990030b308072d`, with its pinned `defs.tex` input. The time-constant, counterexample and crossing successors and four literal definitions select the separate corrected-v10 draft, SHA-256 `59b5ac1a5cdf80c5b550dfc1738414892e0aa3f8cdb0bf03d00c74685a3e1be2`. The official arXiv and abstract are preserved; these five rows do not certify the rest of that source or its literal initialization.
+The global source default remains `paper/exploding.tex`, SHA-256 `1d7c2010d8bd29e7fb83e93f19c9ebe0e8aef201f93559b2b18f5ca0dc049b44`. Proposition 3.1 and Lemmas 3.5, 3.6 and 3.7 and Proposition 4.1 version 5 select the official arXiv extraction `paper/exploding-arxiv.tex`, SHA-256 `f12deba6e481a3d81c6967bc48ecbbdae1df4fa1c5f6248a38990030b308072d`, with its pinned `defs.tex` input. The time-constant, counterexample, crossing and Proposition 2.2 version 5 successors and four literal definitions select the separate corrected-v10 draft, SHA-256 `59b5ac1a5cdf80c5b550dfc1738414892e0aa3f8cdb0bf03d00c74685a3e1be2`. The official arXiv source and abstract are preserved; these eight corrected-v10 rows do not certify the rest of that source or its literal initialization.
 
-The partition is 27 journal rows, five official-ArXiv rows and seven corrected-v10 rows. The journal group has 20 theorem rows (14 paper-owned and six cited-input companions) and seven cited-input definitions. The official group has five paper theorems; the corrected group has three paper theorems and four literal definitions. Aggregate counts remain 28 theorem rows and 11 definition rows. Journal coverage is 16/24 theorem-like statements and 14/22 paper-owned statements; its gaps are Theorem 1.3 at line 259, crossing at line 416, Proposition 3.1 at line 846, Proposition 4.1 at line 886, Lemmas 3.5–3.7 at lines 792, 807 and 832, and the counterexample at line 1351. Official-arXiv coverage is 5/24 and 5/22 paper-owned, claiming Proposition 3.1 at line 706, Lemmas 3.5–3.7 at lines 652, 667 and 692, and Proposition 4.1 at line 740; its other 19 statements are explicit allowed gaps. Corrected-v10 coverage is 3/24 and 3/22 paper-owned, claiming Theorem 1.3 at line 117, crossing at line 286 and the counterexample at line 1875; its other 21 statements remain explicit allowed gaps. Definitions add no theorem coverage. These are structural row claims, not whole-paper fidelity certificates.
+The partition is 26 journal rows, five official-ArXiv rows and eight corrected-v10 rows. The journal group has 19 theorem rows (13 paper-owned and six cited-input companions) and seven cited-input definitions. The official group has five paper theorems; the corrected group has four paper theorems and four literal definitions. Aggregate counts remain 28 theorem rows and 11 definition rows. Journal coverage is 15/24 theorem-like statements and 13/22 paper-owned statements; its gaps include Theorem 1.3 at line 259, crossing at line 416, Proposition 2.2 at line 482, Proposition 3.1 at line 846, Proposition 4.1 at line 886, Lemmas 3.5–3.7 at lines 792, 807 and 832, and the counterexample at line 1351. Official-arXiv coverage is 5/24 and 5/22 paper-owned, claiming Proposition 3.1 at line 706, Lemmas 3.5–3.7 at lines 652, 667 and 692, and Proposition 4.1 at line 740; its other 19 statements are explicit allowed gaps. Corrected-v10 coverage is 4/24 and 4/22 paper-owned, claiming Theorem 1.3 at line 117, Proposition 2.2 at line 352, crossing at line 286 and the counterexample at line 1875; its other 20 statements remain explicit allowed gaps. Definitions add no theorem coverage. These are structural row claims, not whole-paper fidelity certificates.
 
-The old thm-counterexample@3 handwritten audit remains bound to exploding.tex:1351-1361, marker SHA-256 c9c8b8778d204a8280a899f7dda2fefda47e85854c1169bb477828b81f191dd3, semantic-closure SHA-256 ff157998636d1fa5296aa50733454d0a0538d591c0824fd6e6fcab3f9e9b4b9e, and whole-file SHA-256 d9e7f60ec00c1dbdc63a690bba7524dd1fd0f31b30b0ccaa03de3c15bd0dc195. The proved v4 successor has a different pin and its own source/body/consumer audit; it is excluded from that historical audit. Handwritten notes apply only to their exact source, version and hashes. Finite-exploding version 7, Proposition 3.1 and Lemmas 3.5, 3.6, 3.7 and Proposition 4.1 version 5 include p = 1 under their respective pins. Two remaining strict Bernoulli paper rows remain narrower at p = 1.
+The old thm-counterexample@3 handwritten audit remains bound to exploding.tex:1351-1361, marker SHA-256 c9c8b8778d204a8280a899f7dda2fefda47e85854c1169bb477828b81f191dd3, semantic-closure SHA-256 ff157998636d1fa5296aa50733454d0a0538d591c0824fd6e6fcab3f9e9b4b9e, and whole-file SHA-256 d9e7f60ec00c1dbdc63a690bba7524dd1fd0f31b30b0ccaa03de3c15bd0dc195. The proved v4 successor has a different pin and its own source/body/consumer audit; it is excluded from that historical audit. Handwritten notes apply only to their exact source, version and hashes. Finite-exploding version 7, Proposition 2.2 version 5, Proposition 3.1 and Lemmas 3.5, 3.6, 3.7 and Proposition 4.1 version 5 include p = 1 under their respective pins. One remaining strict Bernoulli paper row remains narrower at p = 1.
 
 | term | meaning |
 |---|---|
@@ -159,7 +169,7 @@ The old thm-counterexample@3 handwritten audit remains bound to exploding.tex:13
 
 The journal rows' summaries above retain their journal-source scope. Historical handwritten statement/citation audits and `paper_anchors.py` / `paper_citations.py` select only rows pinned to the exact default journal source; the official-ArXiv and corrected-v10 rows are excluded from those old-source endpoint claims. A stale v3 identity must fail against the changed live export, not be silently rebound to v4.
 
-`tools/check_coverage.py` partitions claims by effective source pin and checks the three exact allowed-gap sets in the manifest. It reports journal 16/24, official arXiv 5/24 and corrected-v10 3/24. Definitions contribute zero theorem-like claims. This structural check does not establish mathematical equivalence. Two strict Bernoulli endpoint gaps and the other unclaimed arXiv statements remain outside these rows’ certification.
+`tools/check_coverage.py` partitions claims by effective source pin and checks the three exact allowed-gap sets in the manifest. It reports journal 15/24, official arXiv 5/24 and corrected-v10 4/24. Definitions contribute zero theorem-like claims. This structural check does not establish mathematical equivalence. One strict Bernoulli endpoint gap and the other unclaimed arXiv statements remain outside these rows’ certification.
 
 check_clauses.py and check_exponents.py are review aids bound to recorded source-specific readings. An empty annotation set is not evidence of correspondence; no unreviewed source or proof result is inferred from it. Historical audit fixtures remain bound to their exact v3 identities.
 
@@ -179,6 +189,7 @@ correspondence between the two sources.
 | `paper/corrected-arxiv/exploding-corrected-arxiv.tex` | [Theorem 1.3](paper/corrected-arxiv/exploding-corrected-arxiv.tex#L117)<br>`theorem:convergence_of_time_constant` | The rescaled arrival times converge | [Exploding.Frozen.convergence_of_time_constant](Exploding/Frozen/TimeConstant.lean#L36) | proved, independently audited |
 | `paper/corrected-arxiv/exploding-corrected-arxiv.tex` | [Definition registration, lines 118-118](paper/corrected-arxiv/exploding-corrected-arxiv.tex#L118) | Non-External definition; literal-body/source audit required | [Exploding.counterexampleArrival](Exploding/Frozen/CounterexampleArrival.lean#L13) | FROZEN definition; source/body audit required |
 | `paper/corrected-arxiv/exploding-corrected-arxiv.tex` | [Proposition 2.1](paper/corrected-arxiv/exploding-corrected-arxiv.tex#L286)<br>`prop:crossing_time` | Large boxes are crossed quickly | [Exploding.Frozen.crossing_time](Exploding/Frozen/CrossingTime.lean#L14) | proved, independently audited |
+| `paper/corrected-arxiv/exploding-corrected-arxiv.tex` | [Proposition 2.2](paper/corrected-arxiv/exploding-corrected-arxiv.tex#L352)<br>`prop:renormalization_properties` | The infinite cluster of good cubes | [Exploding.Frozen.renormalization_properties](Exploding/Frozen/Renormalization.lean#L42) | proved, independently audited |
 | `paper/corrected-arxiv/exploding-corrected-arxiv.tex` | [Theorem 6.1](paper/corrected-arxiv/exploding-corrected-arxiv.tex#L1875)<br>`theorem:counterexample` | Explosive backgrounds without a limit shape | [Exploding.Frozen.counterexample](Exploding/Frozen/Counterexample.lean#L13) | proved, independently audited |
 | `paper/exploding-arxiv.tex` | [Lemma 3.5](paper/exploding-arxiv.tex#L652)<br>`lemma:last_penultimate_cluster` | Penultimate clusters are polylogarithmically small | [Exploding.Frozen.last_penultimate_cluster](Exploding/Frozen/PenultimateCluster.lean#L31) | proved, independently audited |
 | `paper/exploding-arxiv.tex` | [Lemma 3.6](paper/exploding-arxiv.tex#L667)<br>`lemma:penultimate_upper_bound` | A linear upper bound on last-wave arrival times | [Exploding.Frozen.penultimate_upper_bound](Exploding/Frozen/PenultimateUpperBound.lean#L29) | proved, independently audited |
@@ -194,7 +205,6 @@ correspondence between the two sources.
 | `paper/exploding.tex` | [Proposition 2.2](paper/exploding.tex#L482)<br>`prop:renormalization_properties` | In-repo discharge of the bounded-degree Liggett, Schonmann and Stacey corollary | [Exploding.lssBoundedDegree](Exploding/External/LSSBoundedDegreeProved.lean#L8) | proved, independently audited |
 | `paper/exploding.tex` | [Proposition 2.2](paper/exploding.tex#L482)<br>`prop:renormalization_properties` | The holes of the infinite cluster of site percolation (Mathieu), cited | [Exploding.External.MathieuHoleVolume](Exploding/External/MathieuHoles.lean#L28) | cited result, hypothesis |
 | `paper/exploding.tex` | [Proposition 2.2](paper/exploding.tex#L482)<br>`prop:renormalization_properties` | In-repo discharge of Mathieu's hole-volume bound | [Exploding.xmf_proved](Exploding/Support/ExtMHHoleVolume.lean#L14) | proved, independently audited |
-| `paper/exploding.tex` | [Proposition 2.2](paper/exploding.tex#L482)<br>`prop:renormalization_properties` | The infinite cluster of good cubes | [Exploding.Frozen.renormalization_properties](Exploding/Frozen/Renormalization.lean#L37) | proved, independently audited |
 | `paper/exploding.tex` | [Lemma 2.1](paper/exploding.tex#L531)<br>`lemma:local_convexity` | A path of topplings fills its bounding rectangle | [Exploding.Frozen.local_convexity](Exploding/Frozen/LocalConvexity.lean#L20) | proved, independently audited |
 | `paper/exploding.tex` | [Lemma 3.1](paper/exploding.tex#L705)<br>`lemma:square_lower_bound` | A wave of order (2d)^(dn) covers the box of radius n | [Exploding.Frozen.square_lower_bound](Exploding/Frozen/SquareLowerBound.lean#L22) | proved, independently audited |
 | `paper/exploding.tex` | [Lemma 3.2](paper/exploding.tex#L720)<br>`lemma:finite_exploding` | The last wave is well defined | [Exploding.Frozen.finite_exploding](Exploding/Frozen/FiniteExploding.lean#L28) | proved, independently audited |
@@ -217,7 +227,7 @@ correspondence between the two sources.
 
 ## Guarantees
 
-The corrected-v10 counterexample and its four literal definitions passed exact integrated Lean checks, a full locked 9,405-job build, all eleven configured checks and independent source/body/consumer audit. That promotion covers its counterexample theorem; the [dated receipt](ledger/audits/2026-10-15-counterexample-v4-promotion.md) records the exact declaration and evidence. The corrected crossing successor has a separate [validation receipt](ledger/audits/2026-10-15-crossing-v4-promotion.md). Theorem 1.3 version 6 has its own [source and statement receipt](ledger/audits/2026-10-18-timeconstant-v6-source-statement.md). The ordinary bond-hole Support modules imported by the root add no numbered-theorem credit; they do not establish corrected Proposition 2.2, a fixed-root hole tail or its exact alpha constant.
+The corrected-v10 counterexample and its four literal definitions passed exact integrated Lean checks, a full locked 9,405-job build, all eleven configured checks and independent source/body/consumer audit. That promotion covers its counterexample theorem; the [dated receipt](ledger/audits/2026-10-15-counterexample-v4-promotion.md) records the exact declaration and evidence. The corrected crossing successor has a separate [validation receipt](ledger/audits/2026-10-15-crossing-v4-promotion.md). Theorem 1.3 version 6 has its own [source and statement receipt](ledger/audits/2026-10-18-timeconstant-v6-source-statement.md). The bond-hole Support modules are proof prerequisites, not separate paper-node registrations. Corrected-v10 Proposition 2.2 version 5 is registered on its exact source pin; its `hHole` cited binder remains in the type but is unused in this proof, while the hole obligation is proved through in-repository `Exploding.xmf_proved`. Its dedicated receipt records the exact declaration and consumer evidence. This row does not certify the other corrected-v10 statements or the full paper.
 
 - No sorry, admit or custom axiom in the production library. The comparator challenge contains one intentional statement-level sorry.
 - Axiom closure. The accepted theorem rows have clean closures; the corrected counterexample and its four definitions were checked against the standard axioms `propext`, `Classical.choice` and `Quot.sound`.

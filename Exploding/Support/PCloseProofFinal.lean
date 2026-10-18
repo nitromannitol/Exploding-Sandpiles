@@ -26,7 +26,7 @@ theorem pclose_second (d : ℕ) (hd : 2 ≤ d) (p : ℝ) (hp : 0 < p) (hp1 : p <
     Exploding.Frozen.last_penultimate_cluster d hd p hp hp1.le hLSSB hHole hChem
   obtain ⟨γ6, C6, hγ6, hC6, hub⟩ :=
     Exploding.Frozen.penultimate_upper_bound d hd p hp hp1.le hLSSB hHole hChem
-  obtain ⟨k0, hk0⟩ := Exploding.Frozen.renormalization_properties d hd p hp hp1 hLSSB hHole hChem
+  obtain ⟨k0, hk0⟩ := Exploding.Frozen.renormalization_properties d hd p hp hp1.le hLSSB hHole hChem
   obtain ⟨c, C, hc, hC, hren⟩ := hk0 (max k0 1) (le_max_left _ _)
   have hk : 1 ≤ max k0 1 := le_max_right _ _
   obtain ⟨E, hE⟩ := pclose_T_le d (by omega)
@@ -46,7 +46,7 @@ theorem pclose_second (d : ℕ) (hd : 2 ≤ d) (p : ℝ) (hp : 0 < p) (hp1 : p <
   refine ⟨e0 * E1 + 1, by nlinarith, ?_⟩
   filter_upwards [hclu, hub, hren, aux_pub_reach_eta_bounds d p hp hp1] with
     η hη5 hη6 hηren hηbd
-  obtain ⟨Cinf, hCinf, ⟨n0h, hhole⟩, ⟨n0c, hchem⟩⟩ := hηren
+  obtain ⟨Cinf, hCinf, ⟨n0h, hhole⟩, ⟨n0c, hchem⟩, -, -⟩ := hηren
   obtain ⟨_, hCsub, _⟩ := hCinf
   obtain ⟨n05, hn5⟩ := hη5
   obtain ⟨n06, hn6⟩ := hη6

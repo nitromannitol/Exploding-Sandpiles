@@ -23,7 +23,7 @@ theorem pub_penultimate_upper_bound (d : ℕ) (hd : 2 ≤ d) (p : ℝ) (hp : 0 <
       ∀ᵐ η ∂(toyLaw d p), ∃ n0 : ℕ, ∀ n : ℕ, n0 ≤ n → ∀ x : Site d, mnorm x ≤ (n : ℤ) →
         ∃ m : ℕ, lastArrival η (0 : Site d) x = (m : ℕ∞) ∧
           (m : ℝ) ≤ C * (mnorm x : ℝ) + Real.log n ^ γ := by
-  obtain ⟨kb, hkb⟩ := Exploding.Frozen.renormalization_properties d hd p hp hp1 hLSSB hHole hChem
+  obtain ⟨kb, hkb⟩ := Exploding.Frozen.renormalization_properties d hd p hp hp1.le hLSSB hHole hChem
   obtain ⟨c, Cr, hc, hCr, hae⟩ := hkb (max kb 2) (le_max_left kb 2)
   refine ⟨4, ((max kb 2 : ℕ) : ℝ) ^ d * Cr, by norm_num, ?_, ?_⟩
   · have : (0 : ℝ) < ((max kb 2 : ℕ) : ℝ) := by
@@ -32,7 +32,7 @@ theorem pub_penultimate_upper_bound (d : ℕ) (hd : 2 ≤ d) (p : ℝ) (hp : 0 <
     positivity
   filter_upwards [hae, aux_pub_reach_eta_bounds d p hp hp1,
     Exploding.Frozen.finite_exploding d hd p hp hp1.le hLSSB hHole hChem] with η hη hetabd hexplode
-  obtain ⟨Cinf, hCinf, ⟨n0h, hn0h⟩, ⟨n0c, hn0c⟩⟩ := hη
+  obtain ⟨Cinf, hCinf, ⟨n0h, hn0h⟩, ⟨n0c, hn0c⟩, -, -⟩ := hη
   have hMmem := Nat.sInf_mem hexplode
   have hS : pub_Setup d η (waveThreshold η (0 : Site d)) (max kb 2) Cinf n0h n0c Cr :=
     { hd := hd

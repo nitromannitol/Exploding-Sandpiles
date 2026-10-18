@@ -338,12 +338,12 @@ theorem aux_finite_exploding_covers (d : ℕ) (hd : 2 ≤ d) (p : ℝ) (hp : 0 <
     ∀ᵐ η ∂(toyLaw d p), ∃ N t k : ℕ, 2 ≤ N ∧ 1 ≤ k ∧ ∃ (Cinf : Set (Site d)) (i : Site d),
       IsInfiniteConnectedGoodSet η k Cinf ∧ i ∈ Cinf ∧
         ∀ x ∈ cube d k, 0 < wave η N (0 : Site d) t (x + (k : ℤ) • i) := by
-  obtain ⟨kb, hkb⟩ := Exploding.Frozen.renormalization_properties d hd p hp hp1 hLSSB hHole hChem
+  obtain ⟨kb, hkb⟩ := Exploding.Frozen.renormalization_properties d hd p hp hp1.le hLSSB hHole hChem
   set k0 : ℕ := max kb 1 with hk0def
   obtain ⟨c, Cr, hc, hCr, hae⟩ := hkb k0 (le_max_left kb 1)
   obtain ⟨m0, hm0⟩ := aux_finite_exploding_growth d hd
   filter_upwards [hae, aux_finite_exploding_bounds d p hp hp1] with η hη hηbd
-  obtain ⟨Cinf, hCinf, ⟨n0, hn0⟩, -⟩ := hη
+  obtain ⟨Cinf, hCinf, ⟨n0, hn0⟩, -, -, -⟩ := hη
   set m := max n0 m0 with hmdef
   obtain ⟨i, hicent, hiCinf⟩ := aux_finite_exploding_meets_cluster d Cinf m
     (fun x hx hnotin => hn0 m (le_max_left _ _) x hx hnotin) (hm0 m (le_max_right _ _))

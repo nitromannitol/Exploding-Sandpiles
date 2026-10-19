@@ -14,7 +14,7 @@ import Exploding.External.AntalPisztora
 
 open Exploding LatticeProb MeasureTheory Filter
 
-/-- **Theorem 1.3** (`exploding-corrected-arxiv.tex:117-120`, label `theorem:convergence_of_time_constant`).
+/-- **Theorem 1.3** (`paper/corrected-arxiv/exploding-corrected-arxiv.tex:117-120`, label `theorem:convergence_of_time_constant`).
 
 "Let `η` be as in (1.2) and let `T_η(x) := min{t ≥ 1 : v_t(x) > 0}`.  On an event
 of probability 1, the rescaled arrival times `T̄_η(x) := n^{-1} T_η([n x])`
@@ -30,7 +30,7 @@ deterministic: it is bound before `η`.
 
 Theorem 1.1 (`hFLP`) and the results the paper cites for Proposition 2.2
 (`hLSSB`, `hHole`, `hChem`) enter as explicit hypotheses for the strict branch.
-The corrected source specifies the homogeneous law for `0 < p ≤ 1`; at `p = 1`
+The paper specifies the homogeneous law for `0 < p ≤ 1`; at `p = 1`
 the ordinary all-high Support theorem supplies the complete conclusion. -/
 -- FROZEN-STATEMENT-BEGIN
 theorem Exploding.Frozen.convergence_of_time_constant (d : ℕ) (hd : 2 ≤ d) (p : ℝ) (hp : 0 < p) (hp1 : p ≤ 1)
@@ -53,7 +53,7 @@ theorem Exploding.Frozen.convergence_of_time_constant (d : ℕ) (hd : 2 ≤ d) (
   ·
     obtain ⟨N, hcont, hconv, hhom, hlast⟩ :=
       Exploding.Frozen.convergence_of_the_last_wave d hd p hp hp_lt.le hLSSB hHole hChem
-    have hexp : ∀ᵐ η ∂(toyLaw d p), Explosive η := hFLP d hd p hp hp_lt
+    have hexp : ∀ᵐ η ∂(toyLaw d p), Explosive η := hFLP d hd p hp hp_lt.le
     refine ⟨N, hcont, hconv, hhom, ?_⟩
     filter_upwards [hlast, Exploding.Frozen.approximate_subadditive d hd p hp hp_lt.le hLSSB hHole hChem, hexp]
       with η hlastη hsub hηexp

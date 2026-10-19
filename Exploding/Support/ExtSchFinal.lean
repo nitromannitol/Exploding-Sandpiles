@@ -73,5 +73,5 @@ theorem Exploding.xsr_schonmann : Exploding.External.SchonmannBootstrap
 -- FROZEN-STATEMENT-END
   :=
   xsch3_schonmann_of_percolation fun _ hd p hp hp1 => by
-    haveI : Fact (0 ≤ p ∧ p ≤ 1) := ⟨⟨hp.le, hp1.le⟩⟩
+    haveI : Fact (0 ≤ p ∧ p ≤ 1) := ⟨⟨hp.le, hp1⟩⟩
     exact xsr_percolation hd hp

@@ -16,7 +16,7 @@
 version: 1
 source_pin:
   file: paper/corrected-arxiv/exploding-corrected-arxiv.tex
-  sha256: c99ce52a57b7da1f805efe610c474c968c0aa00e0840bd8b0e92ae0d4c53f262
+  sha256: 0cefbf3bfc7cc08597d59d36a3473cdf94ee816076f688c978510bb7edc6e019
   inputs:
   - file: paper/corrected-arxiv/defs.tex
     sha256: 9aba2c73246d79e3c6b87cb1f01cf3e2f636e27c8afd97ccb8ba5c032a9ee65b
@@ -29,13 +29,12 @@ nodes:
     export: Exploding.Frozen.limit_shape
     state: PROVED
     frozen_sha256: 3f3707ff2dfa461558934c748b614a3b4472f338425ddf883b0ff4485e72f6d9
-    closure_sha256: 9452aef58fe5be3d2e73376b97502f1c15e8a83ac7db608683db47c60398c6a8
+    closure_sha256: 74af970ff61bd75e4d084f57dc78acb10c3abb2bbff4de6470906efa50165511
     provider: Exploding.Frozen.limit_shape
     approved: '2026-10-18'
-    audit_receipt: ledger/audits/2026-10-18-corrected-v11-integration.md
     source_pin: &id001
       file: paper/corrected-arxiv/exploding-corrected-arxiv.tex
-      sha256: c99ce52a57b7da1f805efe610c474c968c0aa00e0840bd8b0e92ae0d4c53f262
+      sha256: 0cefbf3bfc7cc08597d59d36a3473cdf94ee816076f688c978510bb7edc6e019
       inputs:
       - file: paper/corrected-arxiv/defs.tex
         sha256: 9aba2c73246d79e3c6b87cb1f01cf3e2f636e27c8afd97ccb8ba5c032a9ee65b
@@ -47,16 +46,15 @@ nodes:
     export: Exploding.Frozen.convergence_of_time_constant
     state: PROVED
     frozen_sha256: 83239bc6236e7faecd7ba0ab147fc0af98c324fc90f32cb537a6f368fa478a07
-    closure_sha256: d8de311133b2df87608b8cf2da97975aab922b242cd3966f537d68132d78608b
+    closure_sha256: 88dc28c7cad71ed661805098058fd94f3b6ccda32c20cae801e7d5666e14e612
     provider: Exploding.Frozen.convergence_of_time_constant
     approved: '2026-10-18'
     source_pin:
       file: paper/corrected-arxiv/exploding-corrected-arxiv.tex
-      sha256: c99ce52a57b7da1f805efe610c474c968c0aa00e0840bd8b0e92ae0d4c53f262
+      sha256: 0cefbf3bfc7cc08597d59d36a3473cdf94ee816076f688c978510bb7edc6e019
       inputs:
       - file: paper/corrected-arxiv/defs.tex
         sha256: 9aba2c73246d79e3c6b87cb1f01cf3e2f636e27c8afd97ccb8ba5c032a9ee65b
-    audit_receipt: ledger/audits/2026-10-18-corrected-v11-integration.md
   - id: thm-explosive
     version: 4
     kind: theorem
@@ -65,13 +63,12 @@ nodes:
     export: Exploding.Frozen.explosive
     state: PROVED
     frozen_sha256: 8132c02216ac6b502b1b4e6bb898ead2d8aaeea4a7b9da2795b1f83af4b403ed
-    closure_sha256: 9aab685c9ae56d183558908b6885a177a84707a133f5bb13aa1b6296e92a701e
+    closure_sha256: 7142527a817a97931936a812d145991af594ff87645e793e93531b3434a105f2
     provider: Exploding.Frozen.explosive
     approved: '2026-10-18'
-    audit_receipt: ledger/audits/2026-10-18-corrected-v11-integration.md
     source_pin:
       file: paper/corrected-arxiv/exploding-corrected-arxiv.tex
-      sha256: c99ce52a57b7da1f805efe610c474c968c0aa00e0840bd8b0e92ae0d4c53f262
+      sha256: 0cefbf3bfc7cc08597d59d36a3473cdf94ee816076f688c978510bb7edc6e019
       inputs:
       - file: paper/corrected-arxiv/defs.tex
         sha256: 9aba2c73246d79e3c6b87cb1f01cf3e2f636e27c8afd97ccb8ba5c032a9ee65b
@@ -86,10 +83,9 @@ nodes:
     closure_sha256: e1fbda039f229cc3970c40943ccbabd91047436071447c13c923fe0c65e916fd
     provider: Exploding.Frozen.renormalization_properties
     approved: '2026-10-18'
-    audit_receipt: ledger/audits/2026-10-18-corrected-v11-integration.md
     source_pin:
       file: paper/corrected-arxiv/exploding-corrected-arxiv.tex
-      sha256: c99ce52a57b7da1f805efe610c474c968c0aa00e0840bd8b0e92ae0d4c53f262
+      sha256: 0cefbf3bfc7cc08597d59d36a3473cdf94ee816076f688c978510bb7edc6e019
       inputs:
       - file: paper/corrected-arxiv/defs.tex
         sha256: 9aba2c73246d79e3c6b87cb1f01cf3e2f636e27c8afd97ccb8ba5c032a9ee65b
@@ -106,11 +102,10 @@ nodes:
     approved: '2026-10-18'
     source_pin:
       file: paper/corrected-arxiv/exploding-corrected-arxiv.tex
-      sha256: c99ce52a57b7da1f805efe610c474c968c0aa00e0840bd8b0e92ae0d4c53f262
+      sha256: 0cefbf3bfc7cc08597d59d36a3473cdf94ee816076f688c978510bb7edc6e019
       inputs:
       - file: paper/corrected-arxiv/defs.tex
         sha256: 9aba2c73246d79e3c6b87cb1f01cf3e2f636e27c8afd97ccb8ba5c032a9ee65b
-    audit_receipt: ledger/audits/2026-10-18-corrected-v11-integration.md
   - id: rem-sharp-planar-obstruction
     version: 1
     kind: theorem
@@ -124,11 +119,10 @@ nodes:
     approved: '2026-10-18'
     source_pin:
       file: paper/corrected-arxiv/exploding-corrected-arxiv.tex
-      sha256: c99ce52a57b7da1f805efe610c474c968c0aa00e0840bd8b0e92ae0d4c53f262
+      sha256: 0cefbf3bfc7cc08597d59d36a3473cdf94ee816076f688c978510bb7edc6e019
       inputs:
       - file: paper/corrected-arxiv/defs.tex
         sha256: 9aba2c73246d79e3c6b87cb1f01cf3e2f636e27c8afd97ccb8ba5c032a9ee65b
-    audit_receipt: ledger/audits/2026-10-18-sharp-planar-obstruction.md
   - id: lem-penultimate-cluster
     version: 5
     kind: theorem
@@ -142,11 +136,10 @@ nodes:
     approved: '2026-10-18'
     source_pin:
       file: paper/corrected-arxiv/exploding-corrected-arxiv.tex
-      sha256: c99ce52a57b7da1f805efe610c474c968c0aa00e0840bd8b0e92ae0d4c53f262
+      sha256: 0cefbf3bfc7cc08597d59d36a3473cdf94ee816076f688c978510bb7edc6e019
       inputs:
       - file: paper/corrected-arxiv/defs.tex
         sha256: 9aba2c73246d79e3c6b87cb1f01cf3e2f636e27c8afd97ccb8ba5c032a9ee65b
-    audit_receipt: ledger/audits/2026-10-18-corrected-v11-integration.md
   - id: lem-penultimate-upper-bound
     version: 5
     kind: theorem
@@ -160,11 +153,10 @@ nodes:
     approved: '2026-10-18'
     source_pin:
       file: paper/corrected-arxiv/exploding-corrected-arxiv.tex
-      sha256: c99ce52a57b7da1f805efe610c474c968c0aa00e0840bd8b0e92ae0d4c53f262
+      sha256: 0cefbf3bfc7cc08597d59d36a3473cdf94ee816076f688c978510bb7edc6e019
       inputs:
       - file: paper/corrected-arxiv/defs.tex
         sha256: 9aba2c73246d79e3c6b87cb1f01cf3e2f636e27c8afd97ccb8ba5c032a9ee65b
-    audit_receipt: ledger/audits/2026-10-18-corrected-v11-integration.md
   - id: lem-penultimate-close
     version: 5
     kind: theorem
@@ -178,11 +170,10 @@ nodes:
     approved: '2026-10-18'
     source_pin:
       file: paper/corrected-arxiv/exploding-corrected-arxiv.tex
-      sha256: c99ce52a57b7da1f805efe610c474c968c0aa00e0840bd8b0e92ae0d4c53f262
+      sha256: 0cefbf3bfc7cc08597d59d36a3473cdf94ee816076f688c978510bb7edc6e019
       inputs:
       - file: paper/corrected-arxiv/defs.tex
         sha256: 9aba2c73246d79e3c6b87cb1f01cf3e2f636e27c8afd97ccb8ba5c032a9ee65b
-    audit_receipt: ledger/audits/2026-10-18-corrected-v11-integration.md
   - id: prop-last-wave-convergence
     version: 5
     kind: theorem
@@ -196,11 +187,10 @@ nodes:
     approved: '2026-10-18'
     source_pin:
       file: paper/corrected-arxiv/exploding-corrected-arxiv.tex
-      sha256: c99ce52a57b7da1f805efe610c474c968c0aa00e0840bd8b0e92ae0d4c53f262
+      sha256: 0cefbf3bfc7cc08597d59d36a3473cdf94ee816076f688c978510bb7edc6e019
       inputs:
       - file: paper/corrected-arxiv/defs.tex
         sha256: 9aba2c73246d79e3c6b87cb1f01cf3e2f636e27c8afd97ccb8ba5c032a9ee65b
-    audit_receipt: ledger/audits/2026-10-18-corrected-v11-integration.md
   - id: prop-approximate-subadditive
     version: 5
     kind: theorem
@@ -212,10 +202,9 @@ nodes:
     closure_sha256: fd050d97f3820155430dabbd8a70840b7e97d22490af56cba2f5f1c6a9b2a4d0
     provider: Exploding.Frozen.approximate_subadditive
     approved: '2026-10-18'
-    audit_receipt: ledger/audits/2026-10-18-corrected-v11-integration.md
     source_pin:
       file: paper/corrected-arxiv/exploding-corrected-arxiv.tex
-      sha256: c99ce52a57b7da1f805efe610c474c968c0aa00e0840bd8b0e92ae0d4c53f262
+      sha256: 0cefbf3bfc7cc08597d59d36a3473cdf94ee816076f688c978510bb7edc6e019
       inputs:
       - file: paper/corrected-arxiv/defs.tex
         sha256: 9aba2c73246d79e3c6b87cb1f01cf3e2f636e27c8afd97ccb8ba5c032a9ee65b
@@ -232,11 +221,10 @@ nodes:
     approved: '2026-10-18'
     source_pin:
       file: paper/corrected-arxiv/exploding-corrected-arxiv.tex
-      sha256: c99ce52a57b7da1f805efe610c474c968c0aa00e0840bd8b0e92ae0d4c53f262
+      sha256: 0cefbf3bfc7cc08597d59d36a3473cdf94ee816076f688c978510bb7edc6e019
       inputs:
       - file: paper/corrected-arxiv/defs.tex
         sha256: 9aba2c73246d79e3c6b87cb1f01cf3e2f636e27c8afd97ccb8ba5c032a9ee65b
-    audit_receipt: ledger/audits/2026-10-18-corrected-v11-integration.md
   - id: thm-generalized-convergence
     version: 6
     kind: theorem
@@ -250,11 +238,10 @@ nodes:
     approved: '2026-10-18'
     source_pin:
       file: paper/corrected-arxiv/exploding-corrected-arxiv.tex
-      sha256: c99ce52a57b7da1f805efe610c474c968c0aa00e0840bd8b0e92ae0d4c53f262
+      sha256: 0cefbf3bfc7cc08597d59d36a3473cdf94ee816076f688c978510bb7edc6e019
       inputs:
       - file: paper/corrected-arxiv/defs.tex
         sha256: 9aba2c73246d79e3c6b87cb1f01cf3e2f636e27c8afd97ccb8ba5c032a9ee65b
-    audit_receipt: ledger/audits/2026-10-18-corrected-v11-integration.md
   - id: thm-counterexample
     version: 4
     kind: theorem
@@ -268,11 +255,10 @@ nodes:
     approved: '2026-10-18'
     source_pin:
       file: paper/corrected-arxiv/exploding-corrected-arxiv.tex
-      sha256: c99ce52a57b7da1f805efe610c474c968c0aa00e0840bd8b0e92ae0d4c53f262
+      sha256: 0cefbf3bfc7cc08597d59d36a3473cdf94ee816076f688c978510bb7edc6e019
       inputs:
       - file: paper/corrected-arxiv/defs.tex
         sha256: 9aba2c73246d79e3c6b87cb1f01cf3e2f636e27c8afd97ccb8ba5c032a9ee65b
-    audit_receipt: ledger/audits/2026-10-18-corrected-v11-integration.md
   - id: prop-explosion-criteria
     version: 4
     kind: theorem
@@ -286,11 +272,10 @@ nodes:
     approved: '2026-10-18'
     source_pin:
       file: paper/corrected-arxiv/exploding-corrected-arxiv.tex
-      sha256: c99ce52a57b7da1f805efe610c474c968c0aa00e0840bd8b0e92ae0d4c53f262
+      sha256: 0cefbf3bfc7cc08597d59d36a3473cdf94ee816076f688c978510bb7edc6e019
       inputs:
       - file: paper/corrected-arxiv/defs.tex
         sha256: 9aba2c73246d79e3c6b87cb1f01cf3e2f636e27c8afd97ccb8ba5c032a9ee65b
-    audit_receipt: ledger/audits/2026-10-18-corrected-v11-integration.md
   - id: prop-box-crossing
     version: 4
     kind: theorem
@@ -299,41 +284,40 @@ nodes:
     export: Exploding.Frozen.box_crossing
     state: PROVED
     frozen_sha256: 967eea86ece9bb02ada55289f36b6bb98ab9f02b4099f9067c43565191c91144
-    closure_sha256: 4c609c829820817e8d325fd4616d65e902f9028939fddb11abc860e55b388429
+    closure_sha256: 2c0b9f63f65ef86a0eff2dc1e88601d0a5c79ae87572c4fb16bbcebfd012020a
     provider: Exploding.Frozen.box_crossing
     approved: '2026-10-18'
     source_pin:
       file: paper/corrected-arxiv/exploding-corrected-arxiv.tex
-      sha256: c99ce52a57b7da1f805efe610c474c968c0aa00e0840bd8b0e92ae0d4c53f262
+      sha256: 0cefbf3bfc7cc08597d59d36a3473cdf94ee816076f688c978510bb7edc6e019
       inputs:
       - file: paper/corrected-arxiv/defs.tex
         sha256: 9aba2c73246d79e3c6b87cb1f01cf3e2f636e27c8afd97ccb8ba5c032a9ee65b
-    audit_receipt: ledger/audits/2026-10-18-corrected-v11-integration.md
   - id: ext-fey-levine-peres
-    version: 2
+    version: 3
     kind: definition
     source: exploding.tex:238-240 (label prop:fey_levine_peres_explode)
     file: Exploding/External/FeyLevinePeres.lean
     export: Exploding.External.FeyLevinePeresExplosive
     state: FROZEN
-    frozen_sha256: 16cbe44911cfe7e8ec9c4369cb757275bcb1d30cc51822c13f68488d34e7ca02
-    closure_sha256: 7d32df49d39e9a46798ae2c7fded657a853975017764efa694fa53e31947d473
+    frozen_sha256: bb15c9367cd9630ab65ea5d4d6829aca3ced6da045c2f2e078edb1306a3f890c
+    closure_sha256: 79d873d0ab49226a1616a10d292bba118907e1df4bf9069c4ce73b0b7c4e4c8d
     provider: Exploding.External.FeyLevinePeresExplosive
-    approved: '2026-09-10'
+    approved: '2026-10-19'
     source_pin:
       file: paper/exploding.tex
       sha256: 1d7c2010d8bd29e7fb83e93f19c9ebe0e8aef201f93559b2b18f5ca0dc049b44
   - id: ext-schonmann-bootstrap
-    version: 2
+    version: 3
     kind: definition
     source: exploding.tex:1969-1981 (label prop:schonnmann_bootstrap)
     file: Exploding/External/Schonmann.lean
     export: Exploding.External.SchonmannBootstrap
     state: FROZEN
-    frozen_sha256: 1ef132590c8069beea81e81b996ec77278f3f8614af4224fec242eb74c88e6de
-    closure_sha256: 6fca9aa8f47b3d1b8ec861362ad6e79194487dc5568bdf6282488fd312e76925
+    frozen_sha256: 26fb069d31c8b054743da77918174384ef4a3981145d075fda165b96748b51ce
+    closure_sha256: fcee6f39ea972ad2984e77aff21657323dc4ac4566c0fb9c46aab54ad0d0a712
     provider: Exploding.External.SchonmannBootstrap
-    approved: '2026-09-10'
+    approved: '2026-10-19'
     source_pin:
       file: paper/exploding.tex
       sha256: 1d7c2010d8bd29e7fb83e93f19c9ebe0e8aef201f93559b2b18f5ca0dc049b44
@@ -420,11 +404,10 @@ nodes:
     approved: '2026-10-18'
     source_pin:
       file: paper/corrected-arxiv/exploding-corrected-arxiv.tex
-      sha256: c99ce52a57b7da1f805efe610c474c968c0aa00e0840bd8b0e92ae0d4c53f262
+      sha256: 0cefbf3bfc7cc08597d59d36a3473cdf94ee816076f688c978510bb7edc6e019
       inputs:
       - file: paper/corrected-arxiv/defs.tex
         sha256: 9aba2c73246d79e3c6b87cb1f01cf3e2f636e27c8afd97ccb8ba5c032a9ee65b
-    audit_receipt: ledger/audits/2026-10-18-corrected-v11-integration.md
   - id: prop-dimensional-reduction
     version: 4
     kind: theorem
@@ -438,11 +421,10 @@ nodes:
     approved: '2026-10-18'
     source_pin:
       file: paper/corrected-arxiv/exploding-corrected-arxiv.tex
-      sha256: c99ce52a57b7da1f805efe610c474c968c0aa00e0840bd8b0e92ae0d4c53f262
+      sha256: 0cefbf3bfc7cc08597d59d36a3473cdf94ee816076f688c978510bb7edc6e019
       inputs:
       - file: paper/corrected-arxiv/defs.tex
         sha256: 9aba2c73246d79e3c6b87cb1f01cf3e2f636e27c8afd97ccb8ba5c032a9ee65b
-    audit_receipt: ledger/audits/2026-10-18-corrected-v11-integration.md
   - id: lem-approx-subadditivity
     version: 3
     kind: theorem
@@ -456,11 +438,10 @@ nodes:
     approved: '2026-10-18'
     source_pin:
       file: paper/corrected-arxiv/exploding-corrected-arxiv.tex
-      sha256: c99ce52a57b7da1f805efe610c474c968c0aa00e0840bd8b0e92ae0d4c53f262
+      sha256: 0cefbf3bfc7cc08597d59d36a3473cdf94ee816076f688c978510bb7edc6e019
       inputs:
       - file: paper/corrected-arxiv/defs.tex
         sha256: 9aba2c73246d79e3c6b87cb1f01cf3e2f636e27c8afd97ccb8ba5c032a9ee65b
-    audit_receipt: ledger/audits/2026-10-18-corrected-v11-integration.md
   - id: prop-recurrence
     version: 3
     kind: theorem
@@ -474,11 +455,10 @@ nodes:
     approved: '2026-10-18'
     source_pin:
       file: paper/corrected-arxiv/exploding-corrected-arxiv.tex
-      sha256: c99ce52a57b7da1f805efe610c474c968c0aa00e0840bd8b0e92ae0d4c53f262
+      sha256: 0cefbf3bfc7cc08597d59d36a3473cdf94ee816076f688c978510bb7edc6e019
       inputs:
       - file: paper/corrected-arxiv/defs.tex
         sha256: 9aba2c73246d79e3c6b87cb1f01cf3e2f636e27c8afd97ccb8ba5c032a9ee65b
-    audit_receipt: ledger/audits/2026-10-18-corrected-v11-integration.md
   - id: lem-local-convexity
     version: 4
     kind: theorem
@@ -492,11 +472,10 @@ nodes:
     approved: '2026-10-18'
     source_pin:
       file: paper/corrected-arxiv/exploding-corrected-arxiv.tex
-      sha256: c99ce52a57b7da1f805efe610c474c968c0aa00e0840bd8b0e92ae0d4c53f262
+      sha256: 0cefbf3bfc7cc08597d59d36a3473cdf94ee816076f688c978510bb7edc6e019
       inputs:
       - file: paper/corrected-arxiv/defs.tex
         sha256: 9aba2c73246d79e3c6b87cb1f01cf3e2f636e27c8afd97ccb8ba5c032a9ee65b
-    audit_receipt: ledger/audits/2026-10-18-corrected-v11-integration.md
   - id: lem-finite-exploding
     version: 7
     kind: theorem
@@ -510,11 +489,10 @@ nodes:
     approved: '2026-10-18'
     source_pin:
       file: paper/corrected-arxiv/exploding-corrected-arxiv.tex
-      sha256: c99ce52a57b7da1f805efe610c474c968c0aa00e0840bd8b0e92ae0d4c53f262
+      sha256: 0cefbf3bfc7cc08597d59d36a3473cdf94ee816076f688c978510bb7edc6e019
       inputs:
       - file: paper/corrected-arxiv/defs.tex
         sha256: 9aba2c73246d79e3c6b87cb1f01cf3e2f636e27c8afd97ccb8ba5c032a9ee65b
-    audit_receipt: ledger/audits/2026-10-18-corrected-v11-integration.md
   - id: prop-crossing-time
     version: 4
     kind: theorem
@@ -528,11 +506,10 @@ nodes:
     approved: '2026-10-18'
     source_pin:
       file: paper/corrected-arxiv/exploding-corrected-arxiv.tex
-      sha256: c99ce52a57b7da1f805efe610c474c968c0aa00e0840bd8b0e92ae0d4c53f262
+      sha256: 0cefbf3bfc7cc08597d59d36a3473cdf94ee816076f688c978510bb7edc6e019
       inputs:
       - file: paper/corrected-arxiv/defs.tex
         sha256: 9aba2c73246d79e3c6b87cb1f01cf3e2f636e27c8afd97ccb8ba5c032a9ee65b
-    audit_receipt: ledger/audits/2026-10-18-corrected-v11-integration.md
   - id: ext-fey-levine-peres-proved
     version: 3
     kind: theorem
@@ -541,7 +518,7 @@ nodes:
     export: Exploding.xsr_flp
     state: PROVED
     frozen_sha256: a25c10e2f66ff0a1141aea2274ab888744e3a0a24b8e65077a671b3ea60ecb7a
-    closure_sha256: 7d32df49d39e9a46798ae2c7fded657a853975017764efa694fa53e31947d473
+    closure_sha256: 79d873d0ab49226a1616a10d292bba118907e1df4bf9069c4ce73b0b7c4e4c8d
     provider: Exploding.xsr_flp
     note: \"DISCHARGED at Exploding/Support/ExtSchFLP.lean:11; axiom closure [propext, Classical.choice, Quot.sound]"
     approved: '2026-10-04'
@@ -556,7 +533,7 @@ nodes:
     export: Exploding.xsr_schonmann
     state: PROVED
     frozen_sha256: b2f9d167d3cbd4c150d94c771f06b6055ed809a62378fb549e2c0b7422c1ce89
-    closure_sha256: 6fca9aa8f47b3d1b8ec861362ad6e79194487dc5568bdf6282488fd312e76925
+    closure_sha256: fcee6f39ea972ad2984e77aff21657323dc4ac4566c0fb9c46aab54ad0d0a712
     provider: Exploding.xsr_schonmann
     note: \"DISCHARGED at Exploding/Support/ExtSchFinal.lean:65; axiom closure [propext, Classical.choice, Quot.sound]"
     approved: '2026-10-04'
@@ -636,11 +613,10 @@ nodes:
     approved: '2026-10-15'
     source_pin:
       file: paper/corrected-arxiv/exploding-corrected-arxiv.tex
-      sha256: c99ce52a57b7da1f805efe610c474c968c0aa00e0840bd8b0e92ae0d4c53f262
+      sha256: 0cefbf3bfc7cc08597d59d36a3473cdf94ee816076f688c978510bb7edc6e019
       inputs:
       - file: paper/corrected-arxiv/defs.tex
         sha256: 9aba2c73246d79e3c6b87cb1f01cf3e2f636e27c8afd97ccb8ba5c032a9ee65b
-    audit_receipt: ledger/audits/2026-10-18-corrected-v11-integration.md
   - id: def-counterexample-pile
     version: 1
     kind: definition
@@ -654,11 +630,10 @@ nodes:
     approved: '2026-10-15'
     source_pin:
       file: paper/corrected-arxiv/exploding-corrected-arxiv.tex
-      sha256: c99ce52a57b7da1f805efe610c474c968c0aa00e0840bd8b0e92ae0d4c53f262
+      sha256: 0cefbf3bfc7cc08597d59d36a3473cdf94ee816076f688c978510bb7edc6e019
       inputs:
       - file: paper/corrected-arxiv/defs.tex
         sha256: 9aba2c73246d79e3c6b87cb1f01cf3e2f636e27c8afd97ccb8ba5c032a9ee65b
-    audit_receipt: ledger/audits/2026-10-18-corrected-v11-integration.md
   - id: def-counterexample-arrival
     version: 1
     kind: definition
@@ -672,11 +647,10 @@ nodes:
     approved: '2026-10-15'
     source_pin:
       file: paper/corrected-arxiv/exploding-corrected-arxiv.tex
-      sha256: c99ce52a57b7da1f805efe610c474c968c0aa00e0840bd8b0e92ae0d4c53f262
+      sha256: 0cefbf3bfc7cc08597d59d36a3473cdf94ee816076f688c978510bb7edc6e019
       inputs:
       - file: paper/corrected-arxiv/defs.tex
         sha256: 9aba2c73246d79e3c6b87cb1f01cf3e2f636e27c8afd97ccb8ba5c032a9ee65b
-    audit_receipt: ledger/audits/2026-10-18-corrected-v11-integration.md
   - id: def-counterexample-support
     version: 1
     kind: definition
@@ -690,11 +664,10 @@ nodes:
     approved: '2026-10-15'
     source_pin:
       file: paper/corrected-arxiv/exploding-corrected-arxiv.tex
-      sha256: c99ce52a57b7da1f805efe610c474c968c0aa00e0840bd8b0e92ae0d4c53f262
+      sha256: 0cefbf3bfc7cc08597d59d36a3473cdf94ee816076f688c978510bb7edc6e019
       inputs:
       - file: paper/corrected-arxiv/defs.tex
         sha256: 9aba2c73246d79e3c6b87cb1f01cf3e2f636e27c8afd97ccb8ba5c032a9ee65b
-    audit_receipt: ledger/audits/2026-10-18-corrected-v11-integration.md
   - id: ext-fey-den-boer-redig-cubical-cluster
     version: 2
     kind: definition
@@ -706,10 +679,9 @@ nodes:
     closure_sha256: 061d439c3580510b2684b26a533d465d7d0aaa3532306e416e138172d6c80423
     provider: Exploding.External.FeyDenBoerRedigCubicalCluster
     approved: '2026-10-18'
-    audit_receipt: ledger/audits/2026-10-18-corrected-v11-integration.md
     source_pin:
       file: paper/corrected-arxiv/exploding-corrected-arxiv.tex
-      sha256: c99ce52a57b7da1f805efe610c474c968c0aa00e0840bd8b0e92ae0d4c53f262
+      sha256: 0cefbf3bfc7cc08597d59d36a3473cdf94ee816076f688c978510bb7edc6e019
       inputs:
       - file: paper/corrected-arxiv/defs.tex
         sha256: 9aba2c73246d79e3c6b87cb1f01cf3e2f636e27c8afd97ccb8ba5c032a9ee65b
@@ -724,10 +696,9 @@ nodes:
     closure_sha256: 567bdf3c572686835a075da3828b408335b3af1dc2a14ae16e48b622e30d60e3
     provider: Exploding.External.FeyLevinePeresRadius
     approved: '2026-10-18'
-    audit_receipt: ledger/audits/2026-10-18-corrected-v11-integration.md
     source_pin:
       file: paper/corrected-arxiv/exploding-corrected-arxiv.tex
-      sha256: c99ce52a57b7da1f805efe610c474c968c0aa00e0840bd8b0e92ae0d4c53f262
+      sha256: 0cefbf3bfc7cc08597d59d36a3473cdf94ee816076f688c978510bb7edc6e019
       inputs:
       - file: paper/corrected-arxiv/defs.tex
         sha256: 9aba2c73246d79e3c6b87cb1f01cf3e2f636e27c8afd97ccb8ba5c032a9ee65b

@@ -1,6 +1,7 @@
 # Design of the comparator surface
 
-Each headline theorem has a directory here with the same four files.
+Theorem 1.2 is the only main result with a comparator pair. Its directory, `LimitShape/`,
+holds the four files below. Theorems 1.3, 1.4, 5.1 and 6.1 have no pair.
 
 - `Challenge.lean` imports `Mathlib` and nothing else. It rebuilds from Mathlib primitives
   every object the theorem mentions: the lattice with its unit vectors and graph, the parallel

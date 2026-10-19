@@ -4,7 +4,7 @@ import Mathlib
 # Limit shape of exploding sandpiles: comparator challenge
 
 Mathlib-only comparator challenge for the limit shape theorem (Theorem 1.2,
-`exploding.tex:246-254`, label `theorem:limit_shape`), a main result of *A shape theorem for
+label `theorem:limit_shape`), a main result of *A shape theorem for
 exploding sandpiles* (Ahmed Bou-Rabee).  The library's frozen statement is
 `Exploding.Frozen.limit_shape` in `Exploding/Frozen/LimitShape.lean`.
 
@@ -223,7 +223,7 @@ def AntalPisztoraChemicalDistance : Prop :=
 
 /-- Schonmann's large-deviation bound for bootstrap percolation (Proposition 7.4). -/
 def SchonmannBootstrap : Prop :=
-  ∀ d : ℕ, 1 ≤ d → ∀ p : ℝ, 0 < p → p < 1 →
+  ∀ d : ℕ, 1 ≤ d → ∀ p : ℝ, 0 < p → p ≤ 1 →
     ∃ c C : ℝ, 0 < c ∧ 0 < C ∧ ∀ n : ℕ,
       ENNReal.ofReal (1 - c * Real.exp (-(C * (n : ℝ)))) ≤
         productLaw d (2 * (d : ℤ)) (d : ℤ) p {η | InternallySpanned η n}
@@ -231,13 +231,13 @@ def SchonmannBootstrap : Prop :=
 
 /-! ## The theorem -/
 
-/-- **Theorem 1.2** (`exploding.tex:246-254`, label `theorem:limit_shape`): for `d ≥ 2` and
-`0 < p < 1`, there is a convex open nonempty set `B ⊆ ℝ^d`, bound before the random background
+/-- **Theorem 1.2** (`theorem:limit_shape`): for `d ≥ 2` and
+`0 < p ≤ 1`, there is a convex open nonempty set `B ⊆ ℝ^d`, bound before the random background
 `η` drawn from the law `toyLaw d p`, such that almost surely the symmetric difference of `B` with
 the rescaled support `{y : 0 < v_t([t y])}` of the odometer `v_t` of the exploding sandpile
 `η + M_η δ₀` has Lebesgue measure tending to `0` as `t → ∞`.  The four cited results enter as
 explicit hypotheses. -/
-theorem limit_shape (d : ℕ) (hd : 2 ≤ d) (p : ℝ) (hp : 0 < p) (hp1 : p < 1)
+theorem limit_shape (d : ℕ) (hd : 2 ≤ d) (p : ℝ) (hp : 0 < p) (hp1 : p ≤ 1)
     (hLSSB : LiggettSchonmannStaceyBoundedDegree)
     (hHole : MathieuHoleVolume)
     (hChem : AntalPisztoraChemicalDistance)

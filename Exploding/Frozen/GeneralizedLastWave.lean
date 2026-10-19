@@ -19,10 +19,10 @@ import Exploding.Support.PathFillingNonneg
 
 open Exploding LatticeProb MeasureTheory Filter
 
-/-- **Proposition 5.1** (`paper/corrected-arxiv/exploding-corrected-arxiv.tex:1325-1329`,
-label `prop:convergence_of_the_generalized_last_wave`; setting at lines 1233-1248).
+/-- **Proposition 5.1** (`paper/corrected-arxiv/exploding-corrected-arxiv.tex:1325-1329`, label `prop:convergence_of_the_generalized_last_wave`; setting in
+`sec:sufficient_hypotheses`).
 
-"Under Hypotheses 5.1, 5.3, and 5.4, on an event of probability 1, `η` is explosive and the
+"Under Hypotheses 1, 3, and 5.4, on an event of probability 1, `η` is explosive and the
 rescaled last-wave arrival times `n^{-1} T̂_η([nx]) := n^{-1} min{t > 0 : u_t([nx]) > 0}`
 converge locally uniformly to `N_η`, a deterministic, continuous, convex, one-homogeneous
 function on `ℝ^d` depending only on the law of `η`."
@@ -34,7 +34,7 @@ The setting is that of Section 5 with an arbitrary integer `η_min`: no sign is 
 for `η_min`, and the background satisfies `η_min ≤ η ≤ 2d - 1` almost surely (`hsupp`).
 The ergodicity premise is measurable ergodicity (`MeasurableErgodicOn`), which tests the
 measurable events invariant under the translations in `L`, as the ergodicity on `(Ω, F)`
-of the source does.  The premise `herg` is kept as the source states it; the proof does
+of the paper does.  The premise `herg` is kept as the paper states it; the proof does
 not use it.  Nonnegativity of the background is not assumed: it is derived almost surely
 from `hsupp` and `h3` by `Exploding.pathFillingHyp_nonneg`.
 
@@ -66,7 +66,7 @@ theorem Exploding.Frozen.convergence_of_the_generalized_last_wave (d : ℕ) (hd 
                 - N y| ≤ ε
 -- FROZEN-STATEMENT-END
 := by
-  -- The ergodicity premise is kept as the source states it; this argument does not use it.
+  -- The ergodicity premise is kept as the paper states it; this argument does not use it.
   have _ := herg
   -- Almost surely `η ≤ 2d - 1` by `hsupp`, so the path-filling producer gives `0 ≤ η`.
   have hup : ∀ᵐ η ∂P, ∀ x : Site d, η x ≤ 2 * (d : ℤ) - 1 :=

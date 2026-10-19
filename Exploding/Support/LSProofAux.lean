@@ -989,9 +989,9 @@ theorem ls_flp_from_explosive (hSch : Exploding.External.SchonmannBootstrap) :
     Exploding.External.FeyLevinePeresExplosive := by
   intro d hd p hp hp1
   have hν : IsProbabilityMeasure (chipLaw (2 * d - 1) (2 * d - 2) p) :=
-    ls_chipLaw_isProb (2 * d - 1) (2 * d - 2) p hp.le hp1.le
+    ls_chipLaw_isProb (2 * d - 1) (2 * d - 2) p hp.le hp1
   have hlow : (chipLaw (2 * d - 1) (2 * d - 2) p) {m : ℤ | (d : ℤ) ≤ m} = 1 :=
-    ls_chipLaw_low (2 * d - 1) (2 * d - 2) (d : ℤ) p hp.le hp1.le (by omega) (by omega)
+    ls_chipLaw_low (2 * d - 1) (2 * d - 2) (d : ℤ) p hp.le hp1 (by omega) (by omega)
   have hhit : 0 < (chipLaw (2 * d - 1) (2 * d - 2) p) {2 * (d : ℤ) - 1} :=
     ls_chipLaw_hit (2 * d - 1) (2 * d - 2) p hp
   simpa only [toyLaw, productLaw] using

@@ -1,10 +1,10 @@
 /-
-Step 3-4 of `theorem:counterexample` (`exploding.tex:1443-1747`): the reflected
+Steps 3-4 of the proof of `theorem:counterexample`: the reflected
 cylinder process and the pulsating front.
 
 The paper starts from the all-`ζ₁` tiling, increments the background to the
 cylinder tiling `ζ` (a `4` at the first block's `(0,3)`), and reflects it
-across `x₁ = -1/2`.  This file builds the corrected cylinder objects
+across `x₁ = -1/2`.  This file builds the cylinder objects
 (`ce2_…`, prefix `ce2_`) that the reduction rests on.
 -/
 import Exploding.Support.CEProof
@@ -134,7 +134,7 @@ theorem ce2_podo_period (s0 : Site 2 → ℤ) (hper : ∀ x, s0 (ce2_shift x) = 
 `ce2_cyl s0` is the cylinder background obtained by folding a 2D background along
 the `x₂ mod 4` classes.  `ce2_cylOdo_eq_podo` identifies the cylinder odometer
 of the folded background with the true 2D odometer on the half-plane `x₁ ≥ 0`,
-which is the paper's reduction ("Lemma 2.3 in [bou2020dynamic]"). -/
+which is the reduction used in the paper (see Lemma 2.3 in [bou2020dynamic]). -/
 
 /-- The point `(a,b)` of `Site 2`, with `b` a natural representative. -/
 def ce2_pt (a : ℤ) (b : ℕ) : Site 2 := fun i => if (i : ℕ) = 0 then a else (b : ℤ)
@@ -244,8 +244,8 @@ theorem ce2_cylNbrSum_fold (u : ℤ × Fin 4 → ℤ) (v : Site 2 → ℤ)
     abel
   · exact ce_cylNbrSum_cylProj u v hfold x hge
 
-/-- **The reflected-cylinder identification** (paper `exploding.tex:1490-1518`,
-Step 3a): for a background `s0` symmetric about `x₁ = -1/2` and `4`-periodic in
+/-- **The reflected-cylinder identification** (a reduction in Step 3 of the proof of
+`theorem:counterexample`): for a background `s0` symmetric about `x₁ = -1/2` and `4`-periodic in
 `x₂`, the cylinder odometer of the folded background equals the true 2D odometer
 on the half-plane `x₁ ≥ 0`. -/
 theorem ce2_cylOdo_eq_podo (s0 : Site 2 → ℤ)

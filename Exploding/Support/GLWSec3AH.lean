@@ -34,7 +34,7 @@ theorem glws_inter_lb {Ω : Type*} [MeasurableSpace Ω] (P : Measure Ω) [IsProb
   rw [ENNReal.ofReal_le_iff_le_toReal (measure_ne_top P _)]
   exact hfin
 
-/-- **The probabilistic claim** (the generalization of Proposition 2.2 under Hypotheses 5.1 and 5.4):
+/-- **The probabilistic claim** (the generalization of Proposition 2.2 under Hypotheses 1 and 4):
 the field of strongly box-crossing tiles carries, on an event of probability one, an infinite
 connected cluster of tiles with polylogarithmic holes and linear chemical distance.  The
 good-edge field has dependence graph `glws_bondGraph d K` of bounded degree, so the Liggett,

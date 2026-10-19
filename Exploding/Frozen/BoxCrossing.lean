@@ -1,6 +1,6 @@
 /-
 The box-crossing proposition of the paper, in both of its cases
-(`paper/corrected-arxiv/exploding-corrected-arxiv.tex:2655-2659`). For `d ≥ 2`, a product background
+(Proposition 7.5). For `d ≥ 2`, a product background
 with at least `d` chips and a positive density of `(2d-1)`-sites is box-crossing. In dimension one,
 any law supported on backgrounds `η ≥ 1` is box-crossing. Both clauses are stated here.
 -/
@@ -11,13 +11,13 @@ import Exploding.Support.BCDimOne
 
 open Exploding LatticeProb MeasureTheory
 
-/-- **Box-crossing, both cases** (`paper/corrected-arxiv/exploding-corrected-arxiv.tex:2655-2659`).
+/-- **Box-crossing, both cases** (Proposition 7.5 of the paper).
 
 "For `d ≥ 2`, the original product law `P` is box-crossing. In dimension one, any law supported on
 backgrounds `η ≥ 1` is box-crossing."
 
 The first conjunct is the product case: `P` is the product of `ν` with `ν(m ≥ d) = 1` and
-`ν(2d-1) > 0`. Schonmann's bootstrap (`prop:schonnmann_bootstrap`, corrected source line 2638),
+`ν(2d-1) > 0`. Schonmann's bootstrap (`prop:schonnmann_bootstrap`),
 which the paper cites rather than proves, enters as an explicit hypothesis of this conjunct only.
 The second conjunct is the dimension-one case: any probability law supported on `η ≥ 1`, with no
 product law and no Schonmann hypothesis. -/

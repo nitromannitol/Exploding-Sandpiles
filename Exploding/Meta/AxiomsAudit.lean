@@ -33,34 +33,26 @@ import Exploding.Support.PlanarWaveBarrier
 /-!
 # Axioms audit
 
-Building this module prints the axiom dependencies of the 22 proved paper results restated in
-`Exploding/MainTheorems.lean`, the sharp planar obstruction remark restated there, and the all-high
-endpoint check of Theorem 1.4. Each must report
-exactly the three standard foundational axioms of Mathlib: `propext`, `Classical.choice`,
-`Quot.sound`.
+Building this module prints the axiom dependencies of every result restated in
+`Exploding/MainTheorems.lean` (the numbered results of the paper, Theorem 1.1 and
+Proposition 7.4, which the paper quotes, and the remark after Lemma 3.1), of the proofs of the
+six cited results that this repository proves, and of supporting results used to check that the
+hypotheses of Sections 5 and 7 can be met. Each must report exactly the three standard axioms
+`propext`, `Classical.choice` and `Quot.sound`; `scripts/check_axioms.py` checks this against an
+explicit list of names.
 
-The registered theorem exports listed here include Theorems 1.2, 1.3, 1.4, 5.1 and 6.1,
-Propositions 2.1, 2.2, 3.1, 4.1, 5.1, 7.1, 7.2, 7.3 and 7.5, and Lemmas 2.1 and 3.1 to 3.7.
-Their source pins and the remaining gaps in each source are recorded in `ledger/manifest.yaml`.
-`python3 tools/check_axioms.py` prints the axiom closure of every registered statement.
-
-No `axiom` is declared in this development.  The seven cited results are stated as
-propositions in `Exploding/External/` and taken as explicit hypotheses by the theorems that
-use them (see `ASSUMPTIONS.md`), so they never appear as axioms here.  Six of them are
-discharged by proofs in the repository, and the last seven lines audit those proofs:
-`Exploding.xfmr_proved` proves the least-action principle of Fey, Meester and Redig,
-`Exploding.xlse_lss_bounded_degree` and `Exploding.xlse_lss_general` prove the two
-domination theorems of Liggett, Schonmann and Stacey, `Exploding.xmf_proved` proves the hole
-bound of Mathieu, `Exploding.xsr_schonmann` proves Schonmann's bootstrap bound, and
-`Exploding.xsr_flp` derives the theorem of Fey, Levine and Peres (Theorem 1.1) from it by
-`Exploding.LSProof.ls_flp_from_explosive`.  Only the chemical distance of Antal and Pisztora
-is assumed.
+No `axiom` is declared in this development. The three cited results that are not proved here
+(Antal and Pisztora; Fey, den Boer and Redig; the radius bound of Fey, Levine and Peres) are
+propositions taken as explicit hypotheses by the theorems that use them (see `ASSUMPTIONS.md`),
+so they do not appear in these reports; read each report together with the hypotheses of the
+statement.
 
 The default library build includes this module. It can also be built explicitly with
 `lake build Exploding.Meta.AxiomsAudit`.
 -/
 
--- Theorems 1.2, 1.3 and 1.4
+-- Theorems 1.1, 1.2, 1.3 and 1.4
+#print axioms Exploding.fey_levine_peres_explosive
 #print axioms Exploding.limit_shape
 #print axioms Exploding.convergence_of_time_constant
 #print axioms Exploding.explosive
@@ -89,8 +81,9 @@ The default library build includes this module. It can also be built explicitly 
 #print axioms Exploding.explosion_criteria
 #print axioms Exploding.dimensional_reduction
 #print axioms Exploding.recurrence
+#print axioms Exploding.schonmann_bootstrap
 #print axioms Exploding.box_crossing
--- The proofs that discharge six of the cited results
+-- The proofs of six cited results
 #print axioms Exploding.xfmr_proved
 #print axioms Exploding.xlse_lss_bounded_degree
 #print axioms Exploding.xlse_lss_general

@@ -1,10 +1,11 @@
 /-
-Consumers of the corrected-source Proposition 2.2 and of its six dependent statements.
+Consumers of Proposition 2.2 (`prop:renormalization_properties`) and of the statements that
+depend on it: Lemmas 3.2, 3.5, 3.6 and 3.7, Proposition 3.8 and Proposition 4.1 of the paper.
 
-The projection reads the standing-event fields of the corrected Proposition 2.2 result.
-Each named consumer discharges the Liggett–Schonmann–Stacey and Mathieu hypotheses by
-their in-repository producers, `xlse_lss_bounded_degree` and `xmf_proved`, and keeps the
-Antal–Pisztora chemical-distance hypothesis as the only explicit input.
+The projection `renormalization_standing_fields` reads the standing-event fields of
+Proposition 2.2.  Each named consumer discharges the Liggett–Schonmann–Stacey and Mathieu
+hypotheses by the in-repository producers `xlse_lss_bounded_degree` and `xmf_proved`, and
+keeps the Antal–Pisztora chemical-distance hypothesis as its only explicit input.
 -/
 import Exploding.Frozen.Renormalization
 import Exploding.Frozen.FiniteExploding
@@ -20,10 +21,10 @@ open Exploding LatticeProb MeasureTheory Filter
 
 namespace Exploding.CorrectedSource
 
-/-- The standing-event fields of the corrected Proposition 2.2 result: the infinite
-connected good set, the whole-complement hole bound and the induced chemical-distance
-bound, with the same `k0`, constants `c`, `C`, almost-sure event and law. The
-unique-component clauses of the corrected statement are not used. -/
+/-- The standing-event fields of Proposition 2.2: the infinite connected good set, the
+whole-complement hole bound and the induced chemical-distance bound, with the same `k0`,
+constants `c`, `C`, almost-sure event and law. The unique-component clauses of
+Proposition 2.2 are not used. -/
 theorem renormalization_standing_fields (d : ℕ) (hd : 2 ≤ d) (p : ℝ) (hp : 0 < p) (hp1 : p ≤ 1)
     (hLSSB : Exploding.External.LiggettSchonmannStaceyBoundedDegree)
     (hHole : Exploding.External.MathieuHoleVolume)
@@ -47,16 +48,16 @@ theorem renormalization_standing_fields (d : ℕ) (hd : 2 ≤ d) (p : ℝ) (hp :
   obtain ⟨Cinf, h1, h2, h3, -, -⟩ := hη
   exact ⟨Cinf, h1, h2, h3⟩
 
-/-- Corrected-source `lem-finite-exploding@7`: the whole conclusion of
-`Exploding.Frozen.finite_exploding`, with the proved producers supplied. -/
+/-- Lemma 3.2 (`lemma:finite_exploding`): the whole conclusion of
+`Exploding.Frozen.finite_exploding`, with the in-repository producers supplied. -/
 theorem finite_exploding (d : ℕ) (hd : 2 ≤ d) (p : ℝ) (hp : 0 < p) (hp1 : p ≤ 1)
     (hChem : Exploding.External.AntalPisztoraChemicalDistance) :
     ∀ᵐ η ∂(toyLaw d p), ∃ n : ℕ, 1 ≤ n ∧ ¬ WaveStabilizable η n (0 : Site d) :=
   Exploding.Frozen.finite_exploding d hd p hp hp1 Exploding.xlse_lss_bounded_degree
     Exploding.xmf_proved hChem
 
-/-- Corrected-source `lem-penultimate-cluster@5`: the whole conclusion of
-`Exploding.Frozen.last_penultimate_cluster`, with the proved producers supplied. -/
+/-- Lemma 3.5 (`lemma:last_penultimate_cluster`): the whole conclusion of
+`Exploding.Frozen.last_penultimate_cluster`, with the in-repository producers supplied. -/
 theorem last_penultimate_cluster (d : ℕ) (hd : 2 ≤ d) (p : ℝ) (hp : 0 < p) (hp1 : p ≤ 1)
     (hChem : Exploding.External.AntalPisztoraChemicalDistance) :
     ∃ γ : ℝ, 0 < γ ∧
@@ -65,8 +66,8 @@ theorem last_penultimate_cluster (d : ℕ) (hd : 2 ≤ d) (p : ℝ) (hp : 0 < p)
   Exploding.Frozen.last_penultimate_cluster d hd p hp hp1 Exploding.xlse_lss_bounded_degree
     Exploding.xmf_proved hChem
 
-/-- Corrected-source `lem-penultimate-upper-bound@5`: the whole conclusion of
-`Exploding.Frozen.penultimate_upper_bound`, with the proved producers supplied. -/
+/-- Lemma 3.6 (`lemma:penultimate_upper_bound`): the whole conclusion of
+`Exploding.Frozen.penultimate_upper_bound`, with the in-repository producers supplied. -/
 theorem penultimate_upper_bound (d : ℕ) (hd : 2 ≤ d) (p : ℝ) (hp : 0 < p) (hp1 : p ≤ 1)
     (hChem : Exploding.External.AntalPisztoraChemicalDistance) :
     ∃ γ C : ℝ, 0 < γ ∧ 0 < C ∧
@@ -76,8 +77,8 @@ theorem penultimate_upper_bound (d : ℕ) (hd : 2 ≤ d) (p : ℝ) (hp : 0 < p) 
   Exploding.Frozen.penultimate_upper_bound d hd p hp hp1 Exploding.xlse_lss_bounded_degree
     Exploding.xmf_proved hChem
 
-/-- Corrected-source `lem-penultimate-close@5`: the whole conclusion of
-`Exploding.Frozen.last_penultimate_close`, with the proved producers supplied. -/
+/-- Lemma 3.7 (`lemma:last_penultimate_close`): the whole conclusion of
+`Exploding.Frozen.last_penultimate_close`, with the in-repository producers supplied. -/
 theorem last_penultimate_close (d : ℕ) (hd : 2 ≤ d) (p : ℝ) (hp : 0 < p) (hp1 : p ≤ 1)
     (hChem : Exploding.External.AntalPisztoraChemicalDistance) :
     ∃ γ : ℝ, 0 < γ ∧
@@ -88,8 +89,8 @@ theorem last_penultimate_close (d : ℕ) (hd : 2 ≤ d) (p : ℝ) (hp : 0 < p) (
   Exploding.Frozen.last_penultimate_close d hd p hp hp1 Exploding.xlse_lss_bounded_degree
     Exploding.xmf_proved hChem
 
-/-- Corrected-source `prop-last-wave-convergence@5`: the whole conclusion of
-`Exploding.Frozen.convergence_of_the_last_wave`, with the proved producers supplied. -/
+/-- Proposition 3.8 (`prop:convergence_of_the_last_wave`): the whole conclusion of
+`Exploding.Frozen.convergence_of_the_last_wave`, with the in-repository producers supplied. -/
 theorem convergence_of_the_last_wave (d : ℕ) (hd : 2 ≤ d) (p : ℝ) (hp : 0 < p) (hp1 : p ≤ 1)
     (hChem : Exploding.External.AntalPisztoraChemicalDistance) :
     ∃ N : (Fin d → ℝ) → ℝ,
@@ -105,8 +106,8 @@ theorem convergence_of_the_last_wave (d : ℕ) (hd : 2 ≤ d) (p : ℝ) (hp : 0 
   Exploding.Frozen.convergence_of_the_last_wave d hd p hp hp1 Exploding.xlse_lss_bounded_degree
     Exploding.xmf_proved hChem
 
-/-- Corrected-source `prop-approximate-subadditive@5`: the whole conclusion of
-`Exploding.Frozen.approximate_subadditive`, with the proved producers supplied. -/
+/-- Proposition 4.1 (`prop:approximate_subadditive`): the whole conclusion of
+`Exploding.Frozen.approximate_subadditive`, with the in-repository producers supplied. -/
 theorem approximate_subadditive (d : ℕ) (hd : 2 ≤ d) (p : ℝ) (hp : 0 < p) (hp1 : p ≤ 1)
     (hChem : Exploding.External.AntalPisztoraChemicalDistance) :
     ∀ᵐ η ∂(toyLaw d p), ∃ C1 C2 : ℕ, ∀ x : Site d,

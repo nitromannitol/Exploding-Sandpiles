@@ -1,5 +1,5 @@
 /-
-Proposition 7.1 assembled: under finite range of dependence and box-crossing, almost every
+Proposition 7.1: under finite range of dependence and box-crossing, almost every
 bounded nonnegative background is explosive.  The proof is a Peierls argument on the plane
 of tiles: if a pile of `n` chips at the origin always stabilizes, the tiles that topple
 completely are enclosed by a `*`-connected chain of tiles that are not box-crossing.

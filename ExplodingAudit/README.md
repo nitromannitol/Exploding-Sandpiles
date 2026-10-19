@@ -1,8 +1,8 @@
 # ExplodingAudit Comparator Surface
 
 This directory contains a Mathlib-only comparator challenge for the limit shape theorem
-(Theorem 1.2, `paper/exploding.tex:246-254`, label `theorem:limit_shape`), a headline result of
-the formalization of *A shape theorem for exploding sandpiles* (Ahmed Bou-Rabee).
+(Theorem 1.2 of *A shape theorem for exploding sandpiles*, Ahmed Bou-Rabee, label
+`theorem:limit_shape` at `paper/corrected-arxiv/exploding-corrected-arxiv.tex:104-112`).
 
 | Directory | Checked theorem |
 | --- | --- |
@@ -26,7 +26,7 @@ A *background* is a function `η : ℤ^d → ℤ` counting chips.  Add `n` chips
 topple in parallel: every site holding at least `2d` chips fires, sending one chip to each
 neighbour.  The odometer `v_t = podo s₀ t` counts the topplings by time `t`.  The explosion
 threshold `M_η` is the least `n ≥ 1` for which `η + n δ₀` does not stabilize, and the exploding
-sandpile is `η + M_η δ₀`.  For `d ≥ 2` and `0 < p < 1`, the theorem states that there is a
+sandpile is `η + M_η δ₀`.  For `d ≥ 2` and `0 < p ≤ 1`, the theorem states that there is a
 set `B ⊆ ℝ^d` that is convex, open and nonempty (a convex domain), chosen before the
 background, such that for almost every `η` drawn from `toyLaw d p` (`2d - 1` chips with
 probability `p` and `2d - 2` with probability `1 - p` at each site, independently),
@@ -36,11 +36,11 @@ probability `p` and `2d - 2` with probability `1 - p` at each site, independentl
 ```
 
 where `[·]` is the nearest lattice point `nearestSite`, `|·|` is Lebesgue measure on `ℝ^d`, and
-`△` is the symmetric difference.  The paper writes `Fix p > 0`; the checked statement excludes
-the endpoint `p = 1`, the deterministic background `η ≡ 2d - 1` (see `CORRESPONDENCE.md`).
+`△` is the symmetric difference.  The endpoint `p = 1` is included; it is the deterministic
+background `η ≡ 2d - 1`.
 
-The theorem takes four results that the paper cites, and does not prove, as explicit
-hypotheses; each is a `Prop`-valued definition in the challenge.
+The theorem takes as explicit hypotheses four results that the paper cites; each is a
+`Prop`-valued definition in the challenge.
 
 - `LiggettSchonmannStaceyBoundedDegree`: Corollary 1.4 of Liggett, Schonmann and Stacey,
   *Domination by product measures* (domination of a bounded-degree dependent field of bits by a
@@ -56,10 +56,9 @@ hypotheses; each is a `Prop`-valued definition in the challenge.
 
 The library proves three of them, as `Exploding.xlse_lss_bounded_degree`,
 `Exploding.xmf_proved` and `Exploding.xsr_schonmann`; only `AntalPisztoraChemicalDistance` is
-assumed outright.  The challenge keeps all four as hypotheses, the form of the library's
-certified statement.
+assumed.  The challenge keeps all four as hypotheses, as the library statement does.
 
-The library's certified statement is `Exploding.Frozen.limit_shape`
+The library statement is `Exploding.Frozen.limit_shape`
 (`Exploding/Frozen/LimitShape.lean`), proved by `Exploding.LSProof.ls_assemble`
 (`Exploding/Support/LSProofAux.lean`).  The challenge states the same theorem over the copied
 vocabulary.

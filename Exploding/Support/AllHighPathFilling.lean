@@ -1,5 +1,5 @@
 /-
-The path-filling hypothesis (Hypothesis 5.3 of `paper/exploding.tex`) holds on the
+The path-filling hypothesis (Hypothesis 3 of `paper/exploding.tex`) holds on the
 all-high background in dimension two.
 
 On the background `η ≡ 3 = 2d - 1`, a site outside the seed `A` topples as soon as one

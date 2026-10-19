@@ -13,11 +13,10 @@ import Exploding.Support.ArxivMaximalGoodChemical
 
 open Exploding LatticeProb MeasureTheory
 
--- The cited Mathieu binder stays in the paper-facing statement; the strict
--- support route proves the actual-cluster hole clause internally via `xmf_proved`.
+-- The cited Mathieu binder stays in the statement as the paper gives it; the strict-support
+-- argument proves the actual-cluster hole clause internally via `xmf_proved`.
 set_option linter.unusedVariables false in
-/-- **Proposition 2.2** (`exploding-corrected-arxiv.tex:352-367`, label
-`prop:renormalization_properties`).
+/-- **Proposition 2.2** (`paper/corrected-arxiv/exploding-corrected-arxiv.tex:352-367`, label `prop:renormalization_properties`).
 
 "For fixed `k` large enough, there are constants `c, C` so that the following
 hold on an event of probability 1.

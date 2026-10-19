@@ -10,8 +10,7 @@ import Exploding.Support.PenultimateUpperBoundP1
 
 open Exploding LatticeProb MeasureTheory
 
-/-- **Lemma 3.6** (`exploding-arxiv.tex:667-672`, label
-`lemma:penultimate_upper_bound`).
+/-- **Lemma 3.6** (`paper/corrected-arxiv/exploding-corrected-arxiv.tex:935-940`, label `lemma:penultimate_upper_bound`).
 
 "There are constants `γ` and `C` so that on an event of probability 1, for all
 `n` sufficiently large and `|x| ≤ n`, `T̂(x) ≤ C |x| + (log n)^γ`."

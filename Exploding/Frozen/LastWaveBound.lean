@@ -7,8 +7,7 @@ import Exploding.Support.LastWaveBoundComplete
 
 open Exploding LatticeProb
 
-/-- **Lemma 3.3** (`paper/corrected-arxiv/exploding-corrected-arxiv.tex:858-863`,
-label `lemma:last_wave_bound`).
+/-- **Lemma 3.3** (`paper/corrected-arxiv/exploding-corrected-arxiv.tex:858-863`, label `lemma:last_wave_bound`).
 
 The displayed inequality `u_t^{(z)}(x) ≤ 1 + ũ^{(z)}(x)` is stated in the paper for `t ≥ 1`;
 its proof starts at `t = 0`, so it holds for every `t : ℕ`.  The exterior clause, that the

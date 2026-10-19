@@ -16,5 +16,5 @@ The paper cites this rather than proving it, so it enters as an explicit
 hypothesis; Theorem 1.4 of the paper strengthens it. -/
 -- FROZEN-STATEMENT-BEGIN
 def Exploding.External.FeyLevinePeresExplosive : Prop :=
-  ∀ d : ℕ, 2 ≤ d → ∀ p : ℝ, 0 < p → p < 1 → ∀ᵐ η ∂(toyLaw d p), Explosive η
+  ∀ d : ℕ, 2 ≤ d → ∀ p : ℝ, 0 < p → p ≤ 1 → ∀ᵐ η ∂(toyLaw d p), Explosive η
 -- FROZEN-STATEMENT-END

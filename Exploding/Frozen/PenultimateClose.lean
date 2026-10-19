@@ -14,8 +14,7 @@ import Exploding.External.AntalPisztora
 
 open Exploding LatticeProb MeasureTheory
 
-/-- **Lemma 3.7** (`exploding-arxiv.tex:692-697`, label
-`lemma:last_penultimate_close`).
+/-- **Lemma 3.7** (`paper/corrected-arxiv/exploding-corrected-arxiv.tex:960-965`, label `lemma:last_penultimate_close`).
 
 "There exists a constant `γ > 0` so that on an event of probability 1, for all
 `n` sufficiently large and `|x| ≤ n`, `T̂(x) ≤ T̃(x) ≤ T̂(x) + (log n)^γ`."

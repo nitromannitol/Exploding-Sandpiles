@@ -1,5 +1,5 @@
 /-
-Support for Lemma 3.6 of `paper/exploding.tex`: the probability bounds on the
+Support for Lemma 3.6 (`lemma:penultimate_upper_bound`) of the paper: the probability bounds on the
 toy law, the macroscopic cube index, and the wave's own mass bound.
 -/
 import Exploding.Support.Vocab
@@ -49,12 +49,11 @@ theorem aux_pub_reach_eta_bounds (d : ℕ) (p : ℝ) (hp : 0 < p) (hp1 : p < 1) 
 
 /-! ### (a) the explosion reaches a good cube of the infinite cluster -/
 
--- Re-examined: `Exploding.Frozen.square_lower_bound` IS fully proven in this
--- repo (`Exploding/Frozen/SquareLowerBound.lean`, 0 `sorry`), so the earlier
--- "not transcribed anywhere" assessment was wrong.  It does not, however,
--- transfer directly: it needs mass `m ≥ (2d)^(dn)` to guarantee reaching
+-- The lower bound `Exploding.Frozen.square_lower_bound` (proved in
+-- `Exploding/Frozen/SquareLowerBound.lean`) does not transfer directly to this
+-- argument: it needs mass `m ≥ (2d)^(dn)` to guarantee reaching
 -- `[-n,n]^d`, and `wave_mono_n` (`Exploding/Support/Toppling.lean`) shows the
--- wave is monotone INCREASING in mass, so `Exploding.Frozen.finite_exploding`'s
+-- wave is monotone increasing in mass, so `Exploding.Frozen.finite_exploding`'s
 -- witness `N` (found by making the mass large) says nothing about whether the
 -- true last wave — mass `waveThreshold η 0`, which may be far smaller than
 -- `N` — also reaches a good cube.  The argument below is mass-independent: it
@@ -442,12 +441,11 @@ theorem aux_pub_reach_preimage_finite {d : ℕ} (k : ℕ) (hk : 1 ≤ k) (M : Se
 
 /-- On the a.s. event of `renormalization_properties`, the last wave at the
 origin reaches some site of the infinite good-cube cluster within a constant
-(`η`-dependent) number of steps.  Restated (this lemma is not itself
-FROZEN) to name a witness point `x0` of the good cube rather than insisting on
-its scaled corner `k0•z`: getting from "some point of `Q_{k0}(z)` is touched"
-to "the corner `k0•z` is touched" needs the same crossing-time/domino
-machinery as `aux_pub_far` below, and `aux_pub_near`/`aux_pub_far`/
-`aux_pub_core` compose just as well from this shape. -/
+(`η`-dependent) number of steps.  This version names a witness point `x0` of the
+good cube rather than its scaled corner `k0•z`: getting from "some point of
+`Q_{k0}(z)` is touched" to "the corner `k0•z` is touched" needs the same
+crossing-time/domino machinery as `aux_pub_far` below, and `aux_pub_near`/
+`aux_pub_far`/`aux_pub_core` compose just as well from this shape. -/
 theorem aux_pub_reach (d : ℕ) (hd : 2 ≤ d) (p : ℝ) (hp : 0 < p) (hp1 : p < 1)
     (hLSSB : Exploding.External.LiggettSchonmannStaceyBoundedDegree) (hHole : Exploding.External.MathieuHoleVolume)
     (hChem : Exploding.External.AntalPisztoraChemicalDistance) :

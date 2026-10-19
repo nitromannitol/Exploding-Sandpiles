@@ -50,7 +50,7 @@ REVIEWED: dict[str, dict[str, str]] = {
     },
     "prop-passage-limit": {
         "η": "same standing assumption; the only real existential is `R₀`, bound after "
-             "the rotors `ρ` and `ε` exactly as the paper's almost-sure limit "
+             "the auxiliary sequences `ρ` and `ε` exactly as the paper's almost-sure limit "
              "(exploding.tex:1088-1093) prescribes, and the function `f` does not depend "
              "on η at all (its proof uses only invariance and ergodicity)",
     },

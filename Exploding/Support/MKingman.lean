@@ -1,13 +1,13 @@
 /-
 A moment-free Kingman subadditive ergodic theorem, shared by the generalized
-last-wave node (`glw2_KingmanCore`) and the toy-law last-wave node (the first
+last-wave statement (`glw2_KingmanCore`) and the toy-law last-wave statement (the first
 conjunct of `Exploding.Frozen.convergence_of_the_last_wave`).
 
 `LatticeProb.ae_tendsto_div` requires `Integrable (g 1)`, which neither use case
 supplies.  The statement below keeps only a pointwise eventual linear upper
-bound `g n ≤ C n + K(ω)`; the repair of the paper is to induce on the
-positive-measure set `{∀ n, g n ≤ C n + K}` and use Kac's lemma.  Here the
-uniform-bound case is proved outright, the general case is isolated as the
+bound `g n ≤ C n + K(ω)`; the argument for the general case is to induce on the
+positive-measure set `{∀ n, g n ≤ C n + K}` and use Kac's lemma.  The
+uniform-bound case is proved in this file, and the general case is isolated as the
 single proposition `mk_kingman_linear`, and `glw2_KingmanCore` is derived from
 it.
 -/
@@ -19,7 +19,7 @@ open Exploding LatticeProb MeasureTheory Filter ProbabilityTheory
 
 namespace Exploding
 
-/-- **Moment-free Kingman theorem** (the form both frozen nodes need).  A
+/-- **Moment-free Kingman theorem** (the form needed by both last-wave statements).  A
 nonnegative subadditive cocycle over a measure-preserving ergodic map, with an
 almost-sure eventual linear upper bound `g n ≤ C n + K(ω)`, has an almost-sure
 limit `g n / n → L`. -/

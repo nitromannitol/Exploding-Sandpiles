@@ -201,7 +201,7 @@ def AntalPisztoraChemicalDistance : Prop :=
 
 /-- Schonmann's large-deviation bound for bootstrap percolation (Proposition 7.4). -/
 def SchonmannBootstrap : Prop :=
-  ∀ d : ℕ, 1 ≤ d → ∀ p : ℝ, 0 < p → p < 1 →
+  ∀ d : ℕ, 1 ≤ d → ∀ p : ℝ, 0 < p → p ≤ 1 →
     ∃ c C : ℝ, 0 < c ∧ 0 < C ∧ ∀ n : ℕ,
       ENNReal.ofReal (1 - c * Real.exp (-(C * (n : ℝ)))) ≤
         productLaw d (2 * (d : ℤ)) (d : ℤ) p {η | InternallySpanned η n}

@@ -1,6 +1,6 @@
 /-
 Proposition 5.1 of the paper (generalized last wave): the local bound from the origin
-(`eq:generalized_lipschitz`), proved from Hypotheses 5.1, 5.3 and 5.4 and the cited percolation
+(`eq:generalized_lipschitz`), proved from Hypotheses 1, 3 and 4 and the cited percolation
 results.
 -/
 import Exploding.Support.GLWSec3AC

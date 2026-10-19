@@ -345,7 +345,7 @@ $\max_{i,z} \mathfrak{C}_{k}^{(i,z)} \leq k^d$. For each $i \in \Z^d$, let
 Q_k(i) := Q_k + i \cdot k.
 \end{equation}
 The cubes $\{Q_k(i)\}_{i \in \Z^d}$ define a {\it macroscopic lattice} with edge set $\{ (Q_k(i), Q_k(j)), |j-i| = 1\}$. 
-For $k$ sufficiently large, Proposition \ref{prop:crossing_time} implies that the set of good cubes dominates a high density independent site percolation process on the macroscopic lattice.  This together with large deviations bounds for supercritical percolation \cite{antal1996chemical, garet2007large} imply the following. (See, for example, Section 5 in \cite{mathieu2008quenched} for an explicit proof.)
+For $k$ sufficiently large, Proposition \ref{prop:crossing_time} implies that the good cubes form an independent site process of high density. An edge $(Q_k(i),Q_k(j))$ of the macroscopic lattice is {\it good} when both of its cubes are good. A good edge depends only on its two cubes, so the good edges have a dependence graph of degree $4d-2$, and by Corollary 1.4 of \cite{liggett1997domination} they dominate an independent bond percolation process $\zeta$ of density close to one. The cubes all of whose $\zeta$-edges are open form a site process in which cubes that are not neighbors are independent, so by the same corollary it dominates an independent site percolation process of high density. The infinite open cluster of $\zeta$ consists of good cubes and contains the infinite cluster of this site process, so Lemma 5.2 of \cite{mathieu2008quenched}, applied to the site process, bounds its holes; Theorem 1.1 of \cite{antal1996chemical}, a chemical distance bound for supercritical bond percolation, applied to $\zeta$ together with the Borel--Cantelli lemma, bounds its chemical distances. These bounds give the following. (See, for example, Section 5 in \cite{mathieu2008quenched} for an explicit proof.)
 
 
 
@@ -647,7 +647,7 @@ Thus $B_n\subseteq\operatorname{supp}v_N\subseteq D$, including for
 $n=1$. Increasing $N_0(d)$ avoids applying an asymptotic citation at a
 small scale.
 
-\emph{Finite-domain Green estimates (proved here; paper-owned).}
+\emph{Finite-domain Green estimates (proved here).}
 Let $X_t$ be the continuous-time simple random walk with total jump rate
 one, each jump uniformly chosen among the $2d$ neighbors. Its generator
 is $P-I=\Delta/(2d)$. Put
@@ -726,7 +726,7 @@ Consequently
 \]
 These are finite-domain estimates, including the recurrent planar case.
 
-\emph{Green inversion and the ordinary origin bound (paper-owned).}
+\emph{Green inversion and the ordinary origin bound.}
 Let $P_D$ be the killed discrete transition matrix on $D$, with zero
 extension outside. Then $p_D(t)=e^{-t(I-P_D)}$. Its integrable entries
 and the survival bound show that $p_D(t)\to0$; integrating its derivative
@@ -755,7 +755,7 @@ Furthermore $N\leq(5^d+N_0(d))n^d$ for $n\geq1$, and in dimension
 two $\log(N+1)\leq C_2\log(n+1)$. Enlarge the deterministic constants
 so the lemma's lower bound on $m$ implies $m\geq v_N(0)$.
 
-\emph{Ordinary-to-frozen-wave comparison (paper-owned).}
+\emph{Ordinary-to-frozen-wave comparison.}
 Let $a_t$ be the ordinary parallel odometer for $h+N\delta_0$, starting
 from zero. At every time its height is nonnegative: a toppled site
 loses $2d$ only when it has at least $2d$, and all incoming chips are
@@ -778,17 +778,17 @@ nondecreasing in time, and at most $m$. Nonnegativity and the upper bound
 follow by induction in its floor recurrence. For time monotonicity
 first $u_1\geq u_0$ (with equality at zero), and then use monotonicity of
 the update map. Hence positivity on $B_n$ persists for all $t\geq T$,
-as asserted. These monotonicity arguments are also paper-owned.
+as asserted. These monotonicity arguments are also proved here.
 \end{proof}
 
-% Optional adjacent remark; only the upper bound above is the replacement lemma.
-\begin{remark}[Sharp planar obstruction]
+% Optional adjacent remark; the upper bound above is Lemma \ref{lemma:square_lower_bound}.
+\begin{remark}[Sharp planar obstruction]\label{rem:sharp_planar_obstruction}
 On homogeneous height $2$ in dimension two, the least integer order
 $M_2(n)$ whose wave covers $B_n$ satisfies
 \[
  c n^2\log(n+1)\leq M_2(n)\leq C n^2\log(n+1),\qquad n\geq1.
 \]
-Here is a proof of the lower bound, separate from the replacement lemma.
+We prove the lower bound first; the upper bound is Lemma \ref{lemma:square_lower_bound}.
 For sufficiently large $N$, the cited FLP theorem permits
 $L=\lceil2\sqrt N\rceil$ and $\operatorname{supp}v_N\subseteq B_L$.
 The Green identity above and $s_N-2\leq1$ give
@@ -810,20 +810,20 @@ Therefore
 \]
 Taking $N=\lfloor n^2/16\rfloor$ gives $L<n$ and
 $v_N(0)\geq c n^2\log(n+1)$ for all sufficiently large $n$.
-The comparison in the opposite direction is another paper-owned
+The comparison in the opposite direction is proved by a further
 induction: if an integer-valued $w\geq0$ satisfies $w(0)\geq m$ and
 $2+\Delta w\leq3$ off zero, then $u_t^{(m,0)}\leq w$ at every time.
 At zero this is the frozen inequality; away from zero use
 $\sum w+2\leq4w(x)+3$ and integrality to bound the floor by $w(x)$.
 Applying this to $w=v_N$ shows that every $m\leq v_N(0)$ misses $B_n$.
 For the finitely many remaining $n$, $M_2(n)\geq1$, so reducing $c>0$
-extends the lower bound to all $n\geq1$; the replacement lemma supplies
+extends the lower bound to all $n\geq1$; Lemma \ref{lemma:square_lower_bound} supplies
 the upper bound at every scale. No matching lower bound is claimed for
 arbitrary backgrounds: on homogeneous height $3$ a $1$-wave propagates
 to every site by induction on lattice distance.
 \end{remark}
 
-% Scope of the sharp bound, separate from the replacement assertion and its proof.
+% Scope of the sharp bound, separate from the upper bound and its proof.
 \begin{remark}[Scope of the sharp bound]
 Lemma \ref{lemma:square_lower_bound} is stated only for backgrounds with
 $2d-2\leq\eta(x)\leq2d-1$ at every site, and its sharp rate is not claimed
@@ -979,10 +979,10 @@ We show that the arrival time for the last-wave converges under rescaling.
 	converge locally uniformly to $\mathcal{N}_{p}$, a continuous, convex, one-homogeneous function on $\R^d$. 
 \end{prop}
 \begin{proof}
-	In light of Lemma \ref{lemma:last_penultimate_close} it suffices to prove the result
-	for $\tilde{T}$. Convergence in integer directions follows from the subadditive ergodic theorem. 
-	Everywhere convergence then follows from continuity and approximation. The properties of $\mathcal{N}_p$
-	are immediate from the scaling and microscopic subadditivity.
+	In light of Lemma \ref{lemma:last_penultimate_close} it suffices to prove the result for $\tilde{T}$. On an event of probability 1, for all large $n$ and $x,x'\in[-n,n]^d$, Lemmas \ref{lemma:penultimate_upper_bound} and \ref{lemma:last_penultimate_close} give $\tilde{T}(x)\leq C|x|+(\log n)^{\gamma}$, and $\tilde{T}(x')\leq\tilde{T}(x)+C|x-x'|+(\log n)^{\gamma}$. For the second bound, at time $\hat{T}(x)$ the support of the last wave contains a path of distinct points from the origin to $x$. Lemma \ref{lemma:local_convexity} fills the bounding rectangle of its last $(\log n)^{\gamma'}$ points, which contains a line of a cube of $\mathcal{C}_{\infty}$ by Proposition \ref{prop:renormalization_properties}, and the argument of Lemma \ref{lemma:penultimate_upper_bound} then reaches $\mathcal{P}(x')$.
+	Fix $y\in\mathbb{Z}^d\setminus\{0\}$ and let $A=\{\tilde{T}(0,ny)\leq C'n+K \text{ for all } n\}$, which has positive probability by the bounds above. Translation $\theta_y$ is mixing, hence ergodic, and the first-return map to $A$ preserves the restriction of the probability measure to $A$ and is ergodic. With $r_j$ the successive return times and $S_j=r_1+\dots+r_j$, the induced cocycle $G_j=\tilde{T}(0,S_jy)$ is subadditive by Lemma \ref{lemma:approx_subadditivity}, and $G_1\leq C'r_1+K$ on $A$. The return time $r_1$ is integrable on $A$ by Kac's lemma, so the subadditive ergodic theorem applies to $G_j$ with no integrability bound on $\tilde{T}$ itself.
+	The second bound passes from the return times to all $n$: for $S_j\leq n<S_{j+1}$ it gives $|\tilde{T}(0,ny)-G_j|\leq C r_{j+1}+(\log n)^{\gamma}$, and $r_{j+1}/j\to0$ almost surely by Birkhoff's theorem applied to the integrable $r_1$. Hence on $A$ the limit inferior and superior of $n^{-1}\tilde{T}(0,ny)$ are those of $G_j/S_j$, which converge because $G_j/j$ converges by Kingman's theorem and $S_j/j$ converges by Birkhoff's theorem.
+	The limits inferior and superior of $n^{-1}\tilde{T}(0,ny)$ are invariant under $\theta_y$: by Lemma \ref{lemma:approx_subadditivity}, $\tilde{T}(0,ny)$ and $\tilde{T}(0,(n-1)y)\circ\theta_y$ differ by at most the finite quantity $\tilde{T}(0,y)+\tilde{T}(y,0)$. By ergodicity they are almost surely constant, and they agree on $A$, so the limit exists almost surely. The second bound replaces continuity: it supplies the comparison needed to pass from integer directions to all $x$, giving locally uniform convergence, and the properties of $\mathcal{N}_p$ are immediate from the scaling and microscopic subadditivity.
 \end{proof}
 
 \begin{remark}
@@ -1218,8 +1218,8 @@ It suffices to show that the last-wave is a good approximation of the original p
 	
 	
 \end{proof}
-
-
+\begin{proof}[Proof of Theorem \ref{theorem:limit_shape}] Let $\mathcal{N}_p$ be the limit of Theorem \ref{theorem:convergence_of_time_constant} and let $\mathcal{B}(p)=\{y:\mathcal{N}_p(y)<1\}$. The arrival time satisfies $T_{\eta}(x)\geq\|x\|_1$, because the odometer at time $t$ is supported in the $\ell^1$ ball of radius $t$; hence $\|y\|_1\leq\mathcal{N}_p(y)$ and $\mathcal{B}(p)$ lies in the $\ell^1$ ball of radius one. The set $\mathcal{B}(p)$ is open and convex since $\mathcal{N}_p$ is continuous and convex, and it is nonempty since $\mathcal{N}_p(0)=0$.
+The frontier of $\mathcal{B}(p)$ lies in $\{\mathcal{N}_p=1\}$. By homogeneity $\{\mathcal{N}_p\leq s\}=s\{\mathcal{N}_p\leq1\}$ for $s>0$, so $|\mathcal{B}(p)|\geq s^d|\{\mathcal{N}_p\leq1\}|$ for every $s<1$. Since $|\{\mathcal{N}_p\leq1\}|<\infty$, this gives $|\mathcal{B}(p)|=|\{\mathcal{N}_p\leq1\}|$, so $\{\mathcal{N}_p=1\}$ and the frontier of $\mathcal{B}(p)$ are Lebesgue-null. Since $v_t(x)>0$ if and only if $T_{\eta}(x)\leq t$, we have $\{\bar{v}_t>0\}=\{y:t^{-1}T_{\eta}([ty])\leq1\}$. Let $K$ be the closed $\ell^1$ ball of radius $2$. For large $t$ both $\{\bar{v}_t>0\}$ and $\mathcal{B}(p)$ lie in $K$, and by the locally uniform convergence of Theorem \ref{theorem:convergence_of_time_constant} on $K$, for each $\varepsilon>0$ the symmetric difference $\{\bar{v}_t>0\}\triangle\mathcal{B}(p)$ lies in $\{y\in K:|\mathcal{N}_p(y)-1|\leq\varepsilon\}$ for all large $t$. Hence $\limsup_{t}|\{\bar{v}_t>0\}\triangle\mathcal{B}(p)|\leq|\{y\in K:|\mathcal{N}_p(y)-1|\leq\varepsilon\}|$, and the right side tends to $|\{\mathcal{N}_p=1\}\cap K|=0$ as $\varepsilon\downarrow0$. \end{proof}
 \begin{remark}
 	Some qualitative features of the limit shape are immediate. For example, the origin is an interior point and the limit 
 	is invariant with respect to symmetries of the lattice (symmetry may fail in the periodic case introduced in Section \ref{sec:generalization}).	
@@ -1364,8 +1364,8 @@ Let the positive integer side vector $k=(k_1,\ldots,k_d)$ be chosen from Hypothe
 \ref{hyp:box_filling}, with failure probability $\delta$ to be fixed
 below. Put $D=\operatorname{diag}(k_1,\ldots,k_d)$,
 $B_j=\mathcal B_k+Dj$, $V_k=|\mathcal B_k|$, and let $\tau$ be the
-deadline in the definition of strong box-crossing. With the corrected
-definition $\tau=V_k$. Let $X_j$ indicate that $B_j$ is good.
+deadline in the definition of strong box-crossing, which is
+$\tau=V_k$. Let $X_j$ indicate that $B_j$ is good.
 The event $X_j=1$ depends only on $\eta|_{B_j}$. The finite-set
 independence in Hypothesis \ref{hyp:finite_range_of_dependence}
 extends to sigma-fields of separated collections by a monotone-class
@@ -1678,7 +1678,7 @@ Hence, uniformly for $x\in[-n,n]^d$ and all sufficiently large $n$,
 \[
  S(0,b(x))\leq a(x)+C\ell_n^d .
 \]
-Combining these estimates gives the required paper-owned comparison
+Combining these estimates gives the required comparison
 \[
  \sup_{x\in[-n,n]^d}
  |\hat T(x)-S(0,b(x))|
@@ -2386,9 +2386,9 @@ is eventually 1 on $V$: $w_t |_{V} = 1$ for $t \geq |V|$. We say $\eta: \Z^d \to
 restriction to $V$ is recurrent for every finite $V \subset \Z^d$.  The measure $\mathbf{P}$ is recurrent if $\mathbf{P}(\mbox{$\eta$ is recurrent}) = 1$. The following criterion follows from recurrence, finite-range dependence, and ordinary box-crossing. 
 
 \begin{prop} \label{prop:explosion_criteria}
-	If Hypotheses \ref{hyp:finite_range_of_dependence} and \ref{hyp:box_crossing} 
+	Let $d\geq2$. If Hypotheses \ref{hyp:finite_range_of_dependence} and \ref{hyp:box_crossing}
 	are satisfied and $\mathbf{P}$ is recurrent
-	then $\mathbf{P}$ is explosive. 
+	then $\mathbf{P}$ is explosive.
 \end{prop}
 
 \begin{proof}
@@ -2397,7 +2397,7 @@ Recurrence of the singleton $\{x\}$ implies $\eta(x)\geq0$: after all
 $2d$ external neighbors fire once, its height is $\eta(x)+2d$.
 Thus $0\leq\eta\leq2d-1$ almost surely.
 
-First suppose $d\geq2$. Given $\delta>0$, choose the tiling
+Given $\delta>0$, choose the tiling
 $\{\mathcal B_k^{(j)}:j\in\Z^d\}$ from Hypothesis
 \ref{hyp:box_crossing}, and let $X_j$ indicate that the $j$th box can
 be crossed from each external face. Hypothesis
@@ -2437,14 +2437,14 @@ $u_t^{(N,0)}\leq v_\infty$ for every $t$. Since $v_\infty$ has finite
 support and finite values, the nondecreasing integer-valued $N$-wave
 would stabilize, a contradiction. Thus $\eta$ is explosive.
 
-For $d=1$, recurrence of an interval with zero height at both endpoints
-is impossible: firing its two external neighbors starts no toppling.
-Hence a recurrent stable background has at most one zero. Stationarity
-under the finite-index sublattice makes the probability of a zero at
-each site vanish, so $\eta\equiv1$ almost surely. Its $1$-wave from the
-origin reaches both sites at distance $t$ by time $t$; the comparison
-above proves explosion in this case as well.
 \end{proof}
+
+In dimension one the conclusion also holds. Recurrence of an interval with zero height at both endpoints
+is impossible, since firing its two external neighbors starts no toppling. Hence a recurrent stable background has at most one zero.
+Stationarity under the finite-index sublattice makes the probability of a zero at
+each site vanish, so $\eta\equiv1$ almost surely. Its $1$-wave from the origin
+reaches both sites at distance $t$ by time $t$.
+The comparison in the proof above then proves explosion in this case as well.
 
 For the proof of Theorem \ref{theorem:explosive}, now use Proposition \ref{prop:explosion_criteria} as follows.
 Let $\eta$ have the original common product law $\mathbf P=\bigotimes_{x\in\Z^d}\nu$ from that theorem, with $d\geq2$, $\nu(\{m\in\Z:m\geq d\})=1$, and $p:=\nu(\{2d-1\})\in(0,1]$.
@@ -2686,6 +2686,33 @@ $\mathbf P(\Omega'^c)\leq n c\exp(-Cn)$; symmetry gives every
 direction.
 	
 \end{proof}
+
+\section*{Corrections to the published version}
+
+This edition corrects the arXiv v2 text, arXiv:2102.04422v2. Theorem~\ref{theorem:explosive} is stated for one common marginal and $d\geq2$. Theorem~5.1 changes through Hypothesis~\ref{hyp:finite_range_of_dependence} and the restriction to $d\geq2$. Theorems~\ref{theorem:limit_shape} and~\ref{theorem:convergence_of_time_constant} change only in the reading of \eqref{eq:toy-eta-definition}. The other changes concern lemmas, propositions, definitions and proofs.
+
+\begin{enumerate}
+\item Law \eqref{eq:toy-eta-definition}, in the subsection Main results. Published: $\mathbf P(\eta(0)=(2d-2))=1-p$ and $\mathbf P(\eta(0)=(2d-1))=p$, which fix the marginal at the origin only. Corrected: $\nu_p=(1-p)\delta_{2d-2}+p\delta_{2d-1}$ with $0<p\leq1$, and $\mathbf P=\bigotimes_{x\in\mathbb Z^d}\nu_p$, so that every site has the same marginal. Reason: the published law does not determine the background away from the origin. A marginal at the origin alone, with $2d-2$ at every other site, gives a robust background, so $M_\eta$ does not exist.
+\item Theorems~\ref{theorem:limit_shape} and~\ref{theorem:convergence_of_time_constant}, reading of \eqref{eq:toy-eta-definition}. Published: \eqref{eq:toy-eta-definition} fixes only the marginal at the origin, and the term convex domain is not further specified. Corrected: \eqref{eq:toy-eta-definition} is read as in the previous item, and a convex domain is a nonempty open convex set. The displayed statements are unchanged. Reason: the statements require the common marginal, and the reading of convex domain removes an ambiguity in the statement.
+\item Theorem~\ref{theorem:explosive}, statement. Published: ``Suppose $\beta:\Z^d\to\Z$ is drawn from a product measure $\mathbf P$. If $\beta\geq d$ and $\mathbf P(\beta(0)=(2d-1))>0$, then $\beta$ is explosive with probability 1.'' Corrected: ``For $d\geq2$, let $\nu$ be a probability measure on $\Z$ with $\nu(\{m\in\Z:m\geq d\})=1$ and $\nu(\{2d-1\})>0$. If $\beta:\Z^d\to\Z$ has law $\mathbf P=\bigotimes_{x\in\Z^d}\nu$, then $\beta$ is explosive with probability 1.'' Reason: the published statement is false for product laws whose marginals differ between sites, so this main theorem changes. Let $\beta(0)$ equal $d$ or $2d-1$ with probability $\tfrac12$ each, and let $\beta(x)=d$ for $x\neq0$. Then $\beta\geq d$ and $\mathbf P(\beta(0)=2d-1)=\tfrac12$. Since $d\leq2d-2$ for $d\geq2$, the background $\beta+n\delta_0$ lies below $(2d-2)+(n+1)\delta_0$ for every $n\geq1$. The constant background $2d-2$ is not explosive \cite{fey2010growth}, so $(2d-2)+m\delta_0$ is stabilizable for every $m\geq1$. By monotonicity, $\beta+n\delta_0$ is stabilizable for every $n\geq1$, so $\beta$ is robust and not explosive. The restriction to $d\geq2$ is the setting of the main results.
+\item Frozen recursion \eqref{eq:frozen_parallel_toppling_recurse}. Published: $w_{t+1}(x)=\lfloor\frac{s_0(x)+\sum_{y\sim x}w_t(y)}{2d}\rfloor$ for $x\notin\mathcal S$, and $s_{t+1}'(x)=s_0(x)+\Delta(w_{t+1}-w_0)(x)$. Corrected: $w_{t+1}(x)=\max\{w_t(x),\lfloor\frac{s_0(x)+\sum_{y\sim x}w_t(y)}{2d}\rfloor\}$ for $x\notin\mathcal S$, and $s_{t+1}'(x)=s_0(x)+\Delta w_{t+1}(x)$. Reason: the odometer never decreases, and the maximum states this. The published identity for $s_{t+1}'$ holds only when $\Delta w_0=0$, because the seed is $s_0+\Delta w_0$.
+\item Delivered seed in Proposition~\ref{prop:crossing_time} and in the other places listed here. Published: $s_0'=\eta$ with the initial odometer $w_0$ in Proposition~\ref{prop:crossing_time}, Lemma~\ref{lemma:local_convexity}, Hypotheses~\ref{hyp:box_crossing}, \ref{hyp:path_filling} and \ref{hyp:box_filling}, the recurrence criterion of Section~\ref{sec:criteria}, and the proof of Proposition~\ref{prop:approximate_subadditive}. Corrected: $s_0'=\eta+\Delta w_0$, which is the seed of \eqref{eq:frozen_parallel_toppling} for $s_0=\eta$, in each of these places. In Hypothesis~\ref{hyp:path_filling}, the words ``quickly exceeds 1'' are replaced by ``is at least 1'', which is the inequality displayed. Reason: the published $s_0'=\eta$ contradicts \eqref{eq:frozen_parallel_toppling}, which defines $s_0'=s_0+\Delta w_0$. With $s_0'=\eta$, nothing topples on an L-shaped path on $\eta\equiv2d-2$, so Lemma~\ref{lemma:local_convexity} and Proposition~\ref{prop:crossing_time} fail.
+\item The paragraph before Proposition~\ref{prop:renormalization_properties}, proof only. Published: the good cubes dominate a high-density independent site percolation process, and large deviation bounds for supercritical percolation \cite{antal1996chemical, garet2007large} are applied to it. Corrected: the good edges, those whose two cubes are good, dominate an independent bond percolation process $\zeta$ of density close to one by Corollary~1.4 of \cite{liggett1997domination}; the infinite open cluster of $\zeta$ consists of good cubes; Lemma~5.2 of \cite{mathieu2008quenched}, applied to the site process of cubes all of whose $\zeta$-edges are open, bounds its holes, and Theorem~1.1 of \cite{antal1996chemical}, applied to $\zeta$ with the Borel--Cantelli lemma, bounds its chemical distances. Reason: the chemical distance bound of Antal and Pisztora concerns bond percolation, and the good cubes form a site process.
+\item Lemma~\ref{lemma:local_convexity}, initial odometer, and the caption of the figure after it. Published: $w_0|_A=1$, and the caption reads $s_0'=2$. Corrected: $w_0(x)=\mathbf 1\{x\in A\}$ on the whole lattice, zero off $A$, and the caption reads $s_0'=2+\Delta\mathbf 1_A$. Reason: the frozen process \eqref{eq:frozen_parallel_toppling} takes its initial odometer on the whole lattice, so $w_0$ must be defined off $A$.
+\item Lemma~\ref{lemma:square_lower_bound}, statement and proof, and the two remarks after it. Published: ``There is a constant $C:=C_d$ so that for all $n\geq1$, the support of the $(Cn^d)$-wave contains $[-n,n]^d$.'' The proof derives this from Theorem~4.1 of \cite{fey2008limiting}. Corrected: for every integer $d\geq2$ there is $C_d>0$ with the following property. Let $\eta$ satisfy $2d-2\leq\eta(x)\leq2d-1$ at every site. For every $n\geq1$ and every integer $m$ with $m\geq\lceil C_2n^2\log(n+1)\rceil$ when $d=2$, or $m\geq\lceil C_dn^d\rceil$ when $d\geq3$, there is a finite $T$ with $u_t^{(m,0)}(x)>0$ for every $t\geq T$ and every $x\in B_n$. The two remarks after the lemma are new. Remark~\ref{rem:sharp_planar_obstruction} proves $c\,n^2\log(n+1)\leq M_2(n)\leq C\,n^2\log(n+1)$ for homogeneous height $2$ in dimension two. The remark that follows it restricts the sharp rate to $2d-2\leq\eta\leq2d-1$. Reason: the published bound $Cn^2$ is false in dimension two, given the lower bound of Remark~\ref{rem:sharp_planar_obstruction}. That bound uses two cited inputs, the theorem of Fey, den Boer and Redig \cite{fey2008limiting} and the radius bound of Fey, Levine and Peres \cite{fey2010growth}. The corrected proof is written out and uses both inputs.
+\item Proof of Proposition~\ref{prop:convergence_of_the_last_wave}, proof only. Published: convergence in integer directions follows from the subadditive ergodic theorem, and convergence everywhere follows from continuity and approximation. Corrected: two bounds on $\tilde T$ that hold on an event of probability 1, a linear bound and a comparison of $\tilde T$ at two points; the subadditive ergodic theorem applied to the transformation induced on the set where $\tilde T(0,ny)\leq C'n+K$ for every $n$, whose first term is integrable by Kac's lemma; and the comparison bound in place of continuity. Reason: the subadditive ergodic theorem needs $\tilde T(0,y)$ to be integrable, which the published proof does not show, and continuity of $\tilde T$ is not available.
+\item Theorem~\ref{theorem:limit_shape}, proof. Published: the text gives no derivation of Theorem~\ref{theorem:limit_shape}. Corrected: a proof after that of Theorem~\ref{theorem:convergence_of_time_constant} takes $\mathcal B(p)=\{\mathcal N_p<1\}$, writes the region toppled by time $t$ as a sublevel set of the rescaled arrival times, and uses that the level set $\{\mathcal N_p=1\}$ has Lebesgue measure zero. Reason: Theorem~\ref{theorem:limit_shape} is asserted without proof.
+\item Standing assumption of Section~\ref{sec:sufficient_hypotheses}, and Proposition~\ref{prop:convergence_of_the_generalized_last_wave} and Theorem~5.1. Published: no dimension is assumed. Corrected: ``In this section assume $d\geq2$.'' Reason: Proposition~\ref{prop:convergence_of_the_generalized_last_wave} and Theorem~5.1 are false in dimension one. Take $\eta\equiv0$ on $\Z$. It is stationary and ergodic, and it satisfies Hypothesis~\ref{hyp:finite_range_of_dependence}. Hypotheses~\ref{hyp:path_filling} and~\ref{hyp:box_filling} hold, since in dimension one a path or a line already fills its bounding rectangle. Yet $0=2d-2$ is not explosive, so the explosion asserted for $\eta$ fails. Theorem~5.1 is a main theorem. Its statement is unchanged, and the restriction to $d\geq2$ comes from the standing assumption of this section.
+\item Hypothesis~\ref{hyp:finite_range_of_dependence}, statement. Published: ``There exists a constant $K<\infty$ so that for all $x,y\in\Z^d$, $\eta(x)$ and $\eta(y)$ are independent if $|x-y|>K$.'' Corrected: ``There exists $K<\infty$ such that, for every pair of finite sets $F,G\subset\Z^d$ satisfying $|x-y|>K$ for every $x\in F$ and $y\in G$, the $\sigma$-fields $\sigma(\eta(x):x\in F)$ and $\sigma(\eta(y):y\in G)$ are independent.'' Reason: the domination step in the proof of Proposition~\ref{prop:convergence_of_the_generalized_last_wave} needs the joint independence of the families on the two sets, which pairwise independence does not give. This is a strengthened hypothesis, not a correction of a false statement. Whether Proposition~\ref{prop:convergence_of_the_generalized_last_wave}, Proposition~\ref{prop:explosion_criteria} and Theorem~5.1 hold under the published pairwise hypothesis is open.
+\item Hypothesis~\ref{hyp:box_filling}, deadline. Published: $w_{|k|}\geq1\{x\in\mathcal B_k\}$. Corrected: $w_{|\mathcal B_k|}\geq1\{x\in\mathcal B_k\}$. Reason: since $\eta\leq2d-1$, the frozen process adds at least one site at each step until it stops. So crossing by time $|\mathcal B_k|$ is the same as eventual crossing, and the published deadline implies it. The change weakens the hypothesis, so the results that use it are stronger.
+\item Proof of Proposition~\ref{prop:convergence_of_the_generalized_last_wave}, proof only. Published: domination of the strong box-crossing events by independent Bernoulli variables \cite{liggett1997domination}, an infinite supercritical cluster, and the remaining steps as in Section~\ref{sec:last_wave}, with $\eta\geq\eta_{\min}$ in place of $\eta\geq2d-2$ and the wave bound of \cite{levine2009strong}. Corrected: the proof is written out in full. It derives nonnegativity and recurrence of $\eta$ from Hypothesis~\ref{hyp:path_filling}, uses the good-box geometry of Hypothesis~\ref{hyp:box_filling}, and derives that $\eta$ is explosive. Reason: the domination by independent Bernoulli variables needs the joint independence of the families in Hypothesis~\ref{hyp:finite_range_of_dependence}, and the published sketch does not derive the explosion of $\eta$.
+\item Proof of Theorem~\ref{theorem:counterexample}, failure of convergence for $d\geq2$. Published: failure of convergence is shown by comparison with the two-dimensional counterexample. Corrected: the proof checks failure of convergence in the volume sense of Theorem~\ref{theorem:limit_shape}. With $A_t=\{y\in\R^d:\bar v_t(y)>0\}$, it shows that $|(A_t\triangle(A_t-e_2/t))\cap\Omega_d|\geq c_d$ for all large $t$, for a fixed box $\Omega_d$ and a constant $c_d>0$, and a set $B$ with $|A_t\triangle B|\to0$ would contradict this. Reason: the published comparison does not state the sense in which convergence fails, and the sense must be the one in which Theorem~\ref{theorem:limit_shape} asserts convergence.
+\item Proposition~\ref{prop:explosion_criteria}, dimension. Published: no restriction on $d$. Corrected: ``Let $d\geq2$.'' Reason: the case $d=1$, given in the paragraph after the proof, is not covered by the machine-checked statement. The published statement in dimension one is not claimed to be false.
+\item Proof of Proposition~\ref{prop:explosion_criteria}, proof only. Published: ``The arguments in Section~\ref{sec:generalization} imply the following criterion.'' No proof is given. Corrected: a proof for $d\geq2$, followed by the argument for $d=1$ in a separate paragraph. Reason: the published criterion has no proof of its own.
+\item Setup of Proposition~\ref{prop:dimensional_reduction}, initial data and tangential values. Published: $s_0^{(d-1)}(\mathbf x_{d-1})=\eta^{(d)}(\mathbf x_{d-1})-1:=\eta^{(d-1)}(\mathbf x_{d-1})$, and the tangential values are not specified. Corrected: $\eta^{(d-1)}(\mathbf x)=\eta^{(d)}(1,\mathbf x)-1$ and $s_0^{(d-1)}(\mathbf x)=\eta^{(d-1)}(\mathbf x)+\Delta u_0^{(d-1)}(\mathbf x)$. The boundary values are $u_0^{(d-1)}(\mathbf y)=u_0^{(d)}(1,\mathbf y)\in\{0,1\}$, and every Boolean field is admissible: the all-zero field serves box-crossing and the all-one field serves recurrence. Reason: the argument $\mathbf x_{d-1}$ of $\eta^{(d)}$ in the published data is a typo for $(1,\mathbf x_{d-1})$. The published data also omit the term $\Delta u_0^{(d-1)}$, which the initial topplings require, and they do not fix the tangential values.
+\item Proof of Proposition~\ref{prop:recurrence}, proof only. Published: $Q_n^{(d)}=Q_{n-2}^{(d)}\cup\bigcup_{i=1}^{2d}\mathcal F_i(Q_n^{(d)})$, with the inner cube written as $Q_{n-2}^{(d)}$. Corrected: $Q_n^{(d)}=(\mathbf 1+Q_{n-2}^{(d)})\cup\bigcup_{i=1}^{2d}\mathcal F_i(Q_n^{(d)})$ with $\mathbf 1=(1,\ldots,1)$, and the proof is written out with base cases $n=1,2$ and a reduction to translated cubes. Reason: $Q_{n-2}^{(d)}$ is the cube at the corner of $Q_n^{(d)}$, not the inner cube, so the published decomposition does not hold.
+\item Proposition~7.5, box-crossing of $\mathbf P$. Published: ``In all dimensions, $\mathbf P$ is box-crossing.'' Corrected: ``For $d\geq2$, the original product law $\mathbf P$ is box-crossing. In dimension one, every law supported on backgrounds $\eta\geq1$ is box-crossing.'' Reason: the published statement fails for product laws whose marginals differ between sites, by the example in the item for Theorem~\ref{theorem:explosive}, where the boxes away from the origin cannot be crossed. The dimension-one case is stated for every law supported on $\eta\geq1$.
+\end{enumerate}
 
 \bibliography{exploding_rand.bib}{}
 \bibliographystyle{amsalpha}

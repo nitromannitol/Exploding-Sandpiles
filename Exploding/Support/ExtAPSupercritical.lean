@@ -2,9 +2,9 @@
 The supercritical-density reduction of the chemical-distance estimate.
 
 `Exploding.xap12_SupercriticalReduction` asserts that the high-density bound
-`xap12_HighDensityBound` — proved at densities close to one — extends to the
-frozen statement `Exploding.External.AntalPisztoraChemicalDistance`, which holds
-at **every** density `q > bondCritical d`.  The extension is the renormalisation
+`xap12_HighDensityBound`, the bound at densities close to one, extends to the
+Antal--Pisztora chemical-distance statement `Exploding.External.AntalPisztoraChemicalDistance`,
+which covers **every** density `q > bondCritical d`.  The extension is the renormalisation
 of Antal--Pisztora: at such a density the boxes of a fixed large scale are crossed
 with probability close to one (the input `xap15_BoxCrossing`), the crossed boxes
 percolate, and the chemical distance inside the resulting cluster is comparable
@@ -14,11 +14,11 @@ This file isolates the renormalisation as the single named input
 `xmj_BoxCrossingCoarseGraining` and proves the reduction
 `xap12_SupercriticalReduction` from it together with the box-crossing input
 (`xmj_supercriticalReduction_of_boxCrossing`).  It also records that the
-high-density bound is exactly the frozen statement restricted to a density close
+high-density bound is exactly the Antal--Pisztora statement restricted to a density close
 to one (`xmj_highDensity_of_antalPisztora`), so the reduction adds no content at
 high density.
 
-**Refuted route — monotonicity.**  One cannot transfer the high-density bound to
+**Monotonicity does not suffice.**  One cannot transfer the high-density bound to
 lower densities by the pointwise coupling of configurations.  Adding open bonds
 may shorten the shortest path below `ρ |y|` while leaving it finite, so
 `xap12_BigDistance` is not monotone: on `ℤ²` with `y = (2,0)` and `ρ = 3/2`, the
@@ -66,9 +66,9 @@ theorem xmj_supercriticalReduction_iff :
       (xap12_HighDensityBound → Exploding.External.AntalPisztoraChemicalDistance) :=
   Iff.rfl
 
-/-! ### The high-density bound is the frozen statement at high density -/
+/-! ### The high-density bound is the Antal--Pisztora statement at high density -/
 
-/-- The frozen statement is stronger than the high-density bound: its density
+/-- The Antal--Pisztora statement is stronger than the high-density bound: its density
 range `q > bondCritical d` already includes the high-density range, because
 `bondCritical d < 1`. -/
 theorem xmj_highDensity_of_antalPisztora
@@ -77,7 +77,7 @@ theorem xmj_highDensity_of_antalPisztora
     ⟨bondCritical d, xap13_bondCritical_lt_one hd, fun q hq hq1 => h d hd q hq hq1⟩
 
 /-- Consequently the high-density hypothesis of the supercritical reduction is
-redundant as soon as the frozen node is available, and the supercritical
+redundant once the Antal--Pisztora statement is available, and the supercritical
 reduction then holds outright. -/
 theorem xmj_supercriticalReduction_of_antalPisztora
     (h : Exploding.External.AntalPisztoraChemicalDistance) : xap12_SupercriticalReduction :=
@@ -85,8 +85,8 @@ theorem xmj_supercriticalReduction_of_antalPisztora
 
 /-! ### The assembled reduction -/
 
-/-- The frozen statement follows from the supercritical reduction and the two
-corrected cluster halves. -/
+/-- The Antal--Pisztora statement follows from the supercritical reduction and the
+finite-cluster and infinite-cluster bounds. -/
 theorem xmj_antalPisztora_of_parts (hSuper : xap12_SupercriticalReduction)
     (hFin : xap13_FiniteClusterBound) (hInf : xap13_InfiniteClusterBound) :
     Exploding.External.AntalPisztoraChemicalDistance :=

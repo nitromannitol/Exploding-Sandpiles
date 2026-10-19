@@ -1,374 +1,291 @@
-version: v0.4
+version: "v0.4"
+
 project:
-  name: Exploding-Sandpiles
-  description: Lean 4/Mathlib formalization of the 22 numbered paper-owned statements in the corrected
-    arXiv-format draft, with exact source-bound declarations and explicit cited inputs, and the planar
-    optimality remark (Remark 1). The comparator checks the historical limit-shape
-    pair.
+  name: "A shape theorem for exploding sandpiles"
+  description: >-
+    A Lean 4 formalization of the paper "A shape theorem for exploding sandpiles" by Bou-Rabee
+    (Annals of Applied Probability 34(1A) (2024); arXiv:2102.04422), in the corrected edition of
+    its arXiv v2 source. The results are Theorems 1.2, 1.3, 1.4, 5.1 and 6.1, the numbered
+    propositions and lemmas of the corrected edition, and its Remark 1. All 22 numbered results and
+    Remark 1 are proved, from three cited results that enter as explicit hypotheses. The
+    comparator pair under ExplodingAudit/LimitShape/ restates Theorem 1.2 over Mathlib alone.
   authors:
   - Ahmed Bou-Rabee
+  responsible_maintainers:
+  - Ahmed Bou-Rabee
   license: Apache-2.0
+
 classification:
   arxiv:
   - math.PR
   msc2020:
   - 60K35
   - 60K37
+
 sources:
 - title: A shape theorem for exploding sandpiles
   authors:
   - Ahmed Bou-Rabee
-  id: arXiv:2102.04422
+  id: doi:10.1214/23-AAP1976
   url: https://arxiv.org/abs/2102.04422
   type: journal article
-  relationship: historical citation anchors
-  note: The exact journal copy paper/exploding.tex is retained for seven historical cited-input definitions
-    and six proof companions. These rows grant no corrected-source paper-theorem coverage.
-  license: ''
-  author_contacted: n/a
-  prior_work: ''
-- title: A shape theorem for exploding sandpiles, official arXiv v2 extraction
+  relationship: published version, corrected in the corrected edition
+  note: "Annals of Applied Probability 34(1A) (2024), 714-742; arXiv:2102.04422."
+- title: A shape theorem for exploding sandpiles, arXiv v2 source
   authors:
   - Ahmed Bou-Rabee
   id: arXiv:2102.04422v2
   url: https://arxiv.org/abs/2102.04422v2
-  type: official arXiv source extraction
-  relationship: official comparison source
-  note: Official arXiv v2 extraction paper/exploding-arxiv.tex, SHA-256 f12deba6e481a3d81c6967bc48ecbbdae1df4fa1c5f6248a38990030b308072d,
-    is preserved unchanged with its inputs. Corrected declarations select the separately identified draft;
-    no direct whole-arXiv certificate is claimed.
-  license: ''
-  author_contacted: n/a
-  prior_work: ''
-- title: A shape theorem for exploding sandpiles, corrected arXiv-format v11 draft
+  type: arXiv source
+  location: paper/exploding-arxiv.tex
+  relationship: unmodified source of the corrected edition
+- title: A shape theorem for exploding sandpiles, corrected edition
   authors:
   - Ahmed Bou-Rabee
-  id: arXiv:2102.04422v2, local corrected draft
-  url: https://arxiv.org/abs/2102.04422v2
-  type: local corrected arXiv-format draft
-  relationship: formalizes with explicit cited inputs
-  note: The default source is paper/corrected-arxiv/exploding-corrected-arxiv.tex, SHA-256 c99ce52a57b7da1f805efe610c474c968c0aa00e0840bd8b0e92ae0d4c53f262.
-    It supplies all 22 numbered paper-owned theorem rows, four literal definitions and two new cited-input
-    definitions. Its mathematical statements and proofs are unchanged from v10; one obsolete qualification
-    remark is reconciled. The planar optimality remark (Remark 1) is proved and registered separately. See the exact integration
-    record and source note.
-  license: ''
-  author_contacted: n/a
-  prior_work: ''
+  type: corrected source
+  location: paper/corrected-arxiv/exploding-corrected-arxiv.tex
+  relationship: formalized
+  note: "The statements follow this text. Its section \"Corrections to the published version\" lists every change from arXiv v2."
+
 related_formalizations:
 - id: https://github.com/nitromannitol/Lattice-Probability
   relationship: builds-on
-  note: Shared public library Lattice-Probability (LatticeProb), pinned at 78f4b2cec065fa2fb5116b06c41966855f62cf50;
-    Lean 4.32.0 and Mathlib 81a5d257c8e410db227a6665ed08f64fea08e997 are unchanged.
+  note: "Lattice-Probability, at commit 78f4b2cec065fa2fb5116b06c41966855f62cf50."
+
 status:
-  scope: '42 registrations: 22 paper-owned numbered theorem rows, the planar optimality remark, six historical cited-input proof companions,
-    nine cited-input definitions and four literal definitions. All 22 numbered paper-owned statements
-    select corrected-v11. The 29 theorem rows are PROVED; 13 definitions are FROZEN and add zero theorem
-    coverage. Historical citation rows retain explicit old source pins. Numbered coverage is 22/24 in
-    the corrected draft: the two excluded statements quote cited results. The numbered-environment count does not
-    see the planar optimality remark (Remark 1), which has its own PROVED row. Source,
-    binder, definition and consumer reviews plus the actual 9842-job native integration are recorded;
-    final integrated semantic closure and all final gates remain required. Cited premises stay explicit.
-    No paper-owned step is an External. The comparator remains the historical journal limit-shape pair.'
+  scope: >-
+    All 22 numbered results of the corrected edition and its Remark 1 are proved in Lean, with no `sorry` and only the standard axioms, from three cited results that enter as explicit hypotheses; Theorem 6.1 is stated as published, Theorems 1.2 and 1.3 as published with the law (2) read as one common law at every site, and Theorems 1.4 and 5.1 with the corrections listed in the corrected edition.
   sorry_count: 0
-  sorry_count_scope: Production library; the comparator challenge has one separately reported intentional
-    sorry
+  sorry_count_scope: "Exploding/ (the production library)"
   comparator_challenge_sorry_count: 1
   sorry_in_definitions: 0
   axioms:
   - propext
   - Classical.choice
   - Quot.sound
-  axioms_scope: Actual native named declarations and complete new consumers have only propext, Classical.choice
-    and Quot.sound. Explicit cited predicates remain theorem arguments; an axiom report does not prove
-    them. The fresh per-manifest closure gate remains mandatory.
   main_results:
-  - declaration: Exploding.Frozen.limit_shape
-    file: Exploding/Frozen/LimitShape.lean
+  - declaration: "Exploding.limit_shape"
+    file: "Exploding/MainTheorems.lean"
+    statement: "Theorem 1.2"
     sorry_count: 0
-    axioms:
-    - propext
-    - Classical.choice
-    - Quot.sound
-    comparator_config: ExplodingAudit/LimitShape/comparator.json
+    axioms: ["propext", "Classical.choice", "Quot.sound"]
+    comparator_config: "ExplodingAudit/LimitShape/comparator.json"
     literature_dependencies:
-    - statement: Liggett, Schonmann and Stacey, Domination by product measures, Corollary 1.4 (Exploding.External.LiggettSchonmannStaceyBoundedDegree,
-        an explicit hypothesis; proved in this repository by Exploding.xlse_lss_bounded_degree)
-    - statement: Mathieu, Quenched invariance principles for random walks with random conductances, Lemma
-        5.2 (Exploding.External.MathieuHoleVolume, an explicit hypothesis; proved in this repository by
-        Exploding.xmf_proved)
-    - statement: Antal and Pisztora, On the chemical distance for supercritical Bernoulli percolation,
-        Theorem 1.1 (Exploding.External.AntalPisztoraChemicalDistance, an explicit hypothesis, assumed)
-    - statement: Schonmann, On the behavior of some cellular automata related to bootstrap percolation
-        (Exploding.External.SchonmannBootstrap, an explicit hypothesis; proved in this repository by Exploding.xsr_schonmann)
-  - declaration: Exploding.Frozen.convergence_of_time_constant
-    file: Exploding/Frozen/TimeConstant.lean
+    - "Antal and Pisztora, Theorem 1.1 (hChem), an explicit hypothesis"
+  - declaration: "Exploding.convergence_of_time_constant"
+    file: "Exploding/MainTheorems.lean"
+    statement: "Theorem 1.3"
     sorry_count: 0
-    axioms:
-    - propext
-    - Classical.choice
-    - Quot.sound
+    axioms: ["propext", "Classical.choice", "Quot.sound"]
+    comparator_config: "none"
     literature_dependencies:
-    - statement: Fey, Levine and Peres, Growth rates and explosions in sandpiles, Proposition 1.4 (Exploding.External.FeyLevinePeresExplosive,
-        an explicit hypothesis; proved in this repository by Exploding.xsr_flp, which derives it from
-        Schonmann's bound)
-    - statement: Liggett, Schonmann and Stacey, Domination by product measures, Corollary 1.4 (Exploding.External.LiggettSchonmannStaceyBoundedDegree,
-        an explicit hypothesis; proved in this repository by Exploding.xlse_lss_bounded_degree)
-    - statement: Mathieu, Quenched invariance principles for random walks with random conductances, Lemma
-        5.2 (Exploding.External.MathieuHoleVolume, an explicit hypothesis; proved in this repository by
-        Exploding.xmf_proved)
-    - statement: Antal and Pisztora, On the chemical distance for supercritical Bernoulli percolation,
-        Theorem 1.1 (Exploding.External.AntalPisztoraChemicalDistance, an explicit hypothesis, assumed)
-  - declaration: Exploding.Frozen.explosive
-    file: Exploding/Frozen/Explosive.lean
-    source: paper/corrected-arxiv/exploding-corrected-arxiv.tex:123-129
-    source_sha256: 59b5ac1a5cdf80c5b550dfc1738414892e0aa3f8cdb0bf03d00c74685a3e1be2
-    input: paper/corrected-arxiv/defs.tex
-    input_sha256: 9aba2c73246d79e3c6b87cb1f01cf3e2f636e27c8afd97ccb8ba5c032a9ee65b
+    - "Antal and Pisztora, Theorem 1.1 (hChem), an explicit hypothesis"
+  - declaration: "Exploding.explosive"
+    file: "Exploding/MainTheorems.lean"
+    statement: "Theorem 1.4"
     sorry_count: 0
-    axioms:
-    - propext
-    - Classical.choice
-    - Quot.sound
+    axioms: ["propext", "Classical.choice", "Quot.sound"]
+    comparator_config: "none"
+    literature_dependencies: []
+  - declaration: "Exploding.generalized_convergence"
+    file: "Exploding/MainTheorems.lean"
+    statement: "Theorem 5.1"
+    sorry_count: 0
+    axioms: ["propext", "Classical.choice", "Quot.sound"]
+    comparator_config: "none"
     literature_dependencies:
-    - statement: Schonmann, On the behavior of some cellular automata related to bootstrap percolation
-        (Exploding.External.SchonmannBootstrap, an explicit hypothesis; proved in this repository by Exploding.xsr_schonmann)
-  - declaration: Exploding.Frozen.generalized_convergence
-    file: Exploding/Frozen/GeneralizedConvergence.lean
+    - "Antal and Pisztora, Theorem 1.1 (hChem), an explicit hypothesis"
+  - declaration: "Exploding.counterexample"
+    file: "Exploding/MainTheorems.lean"
+    statement: "Theorem 6.1"
     sorry_count: 0
-    axioms:
-    - propext
-    - Classical.choice
-    - Quot.sound
-    literature_dependencies:
-    - statement: Liggett, Schonmann and Stacey, Domination by product measures, Theorem 0.0 (Exploding.External.LiggettSchonmannStacey,
-        an explicit hypothesis; proved in this repository by Exploding.xlse_lss_general)
-    - statement: Liggett, Schonmann and Stacey, Domination by product measures, Corollary 1.4 (Exploding.External.LiggettSchonmannStaceyBoundedDegree,
-        an explicit hypothesis; proved in this repository by Exploding.xlse_lss_bounded_degree)
-    - statement: Mathieu, Quenched invariance principles for random walks with random conductances, Lemma
-        5.2 (Exploding.External.MathieuHoleVolume, an explicit hypothesis; proved in this repository by
-        Exploding.xmf_proved)
-    - statement: Antal and Pisztora, On the chemical distance for supercritical Bernoulli percolation,
-        Theorem 1.1 (Exploding.External.AntalPisztoraChemicalDistance, an explicit hypothesis, assumed)
-  - declaration: Exploding.Frozen.counterexample
-    file: Exploding/Frozen/Counterexample.lean
-    status: PROVED
-    sorry_count: 0
-    axioms:
-    - propext
-    - Classical.choice
-    - Quot.sound
-    audit_receipt: ledger/audits/2026-10-15-counterexample-v4-promotion.md
-    source: paper/corrected-arxiv/exploding-corrected-arxiv.tex:1875-1885
-    source_sha256: 59b5ac1a5cdf80c5b550dfc1738414892e0aa3f8cdb0bf03d00c74685a3e1be2
-    input: paper/corrected-arxiv/defs.tex
-    input_sha256: 9aba2c73246d79e3c6b87cb1f01cf3e2f636e27c8afd97ccb8ba5c032a9ee65b
-    cited_hypotheses: []
+    axioms: ["propext", "Classical.choice", "Quot.sound"]
+    comparator_config: "none"
+    literature_dependencies: []
+
+automation:
+  methods:
+    - method: "agent"
+      models:
+        - "claude-opus-5"
+        - "claude-sonnet-5"
+        - "claude-opus-5-5"
+        - "claude-haiku-5-5"
+      framework: "Claude Code (Anthropic) and the Pi agent harness"
+      tool_setup: >-
+        Lean proof development and review under the Lean toolchain and the Mathlib and
+        Lattice-Probability revisions of this repository; each change was checked by a Lake build
+        and by tools/verify.py.
+      cost:
+        wall_time: "not tracked"
+        spend_usd: "not tracked"
+        hardware: "local Linux machine"
+      prompting_notes: >-
+        Human-directed work, closely supervised by the author, on statements the author fixed.
+    - method: "agent"
+      models:
+        - "gpt-6-sol"
+        - "gpt-6-luna"
+        - "gpt-6.1-sol"
+      framework: "Codex CLI (OpenAI)"
+      tool_setup: >-
+        Lean proof development under the same toolchain and dependency revisions.
+      cost:
+        wall_time: "not tracked"
+        spend_usd: "not tracked"
+        hardware: "local Linux machine"
+      prompting_notes: >-
+        Human-directed work; each task fixed the statements to be proved and forbade changing them.
+    - method: "agent"
+      models:
+        - "gpt-6-astra"
+      framework: "Codex CLI (OpenAI)"
+      tool_setup: >-
+        Mathematical review of the pairwise form of Hypothesis 1; no Lean work.
+      cost:
+        wall_time: "not tracked"
+        spend_usd: "not tracked"
+        hardware: "local Linux machine"
+      prompting_notes: >-
+        Review of the mathematics only.
+    - method: "agent"
+      models:
+        - "deepseek-v4.1-flash"
+        - "leanstral"
+      framework: "API-hosted model driven by project scripts"
+      tool_setup: >-
+        Auxiliary proof search on small typed proof obligations.
+      cost:
+        wall_time: "not tracked"
+        spend_usd: "not tracked"
+        hardware: "API-only"
+  spend_usd: "not tracked"
+  notes: >-
+    The Lean code was written by AI coding agents under the close supervision of the author, who
+    fixed the statements to be formalized. Every proof is checked by the Lean kernel; the library
+    contains no sorry and no custom axiom. The model identifiers listed are those recorded during
+    the work.
+
 fidelity:
-  divergences: The corrected arXiv-format v11 draft is the default source for paper-owned declarations.
-    RULINGS.md records the exact seven source-facing successors, delivered-seed interpretation and source
-    identity transport. Official arXiv v2 and abstract bytes remain unchanged. Arrival times use extended
-    naturals and explicit finite witnesses before real bounds; graph interior uses the existing inner
-    boundary; full Boolean boundary data and time-zero clauses are retained. Nonnegativity is proved from
-    the source hypotheses rather than assumed. Historical input declarations retain their literal bodies
-    and citation scopes. The two radius predicates are unproved cited results; the planar optimality
-    remark has its own registration and audit record.
+  divergences: >-
+    The Lean statements follow the corrected edition in paper/corrected-arxiv/. Theorem 6.1 is
+    stated as published, and Theorems 1.2 and 1.3 as published with the law (2) read as one common
+    law at every site (C01, C02). Theorem 1.4 carries C01 and C03, and Theorem 5.1 carries C11
+    and C12. The changes C01 to C20 to the statements, lemmas, propositions, definitions and proofs
+    are listed, with the published text, the corrected text and a reason, in the corrected edition's
+    section "Corrections to the published version" and in README.md. Hypothesis 1 is used in the form
+    that two finite families at distance more than K are independent (C12); whether Propositions 5.1
+    and 7.1 and Theorem 5.1 hold under the printed pairwise form is open.
+
 review:
-  status: independently-reviewed
-  reviewers: []
-  notes: The old author-review record concerns the historical baseline. The current declaration/source
-    and actual-consumer reviews are summarized in ledger/audits/2026-10-18-corrected-v11-integration.md.
-    The complete imported project built 9842 jobs with named axiom checks; the planar optimality remark is reviewed in
-    ledger/audits/2026-10-18-sharp-planar-obstruction.md; final integrated semantic closure is still outstanding. No whole-paper completion is inferred from
-    these bounded reviews.
+  status: "model review"
+  reviewers:
+  - "Claude Opus 5.5, separate read-only review of the statements, cited results, documentation and repository against the published paper and the corrected edition (2026-10-19)"
+  notes: >-
+    Every proof is checked by the Lean kernel. This is a model review, not external peer review.
+
 alignment:
   namespace: Exploding
   statements:
-  - source: exploding-corrected-arxiv.tex:104-112 (label theorem:limit_shape) (corrected-v11)
-    lean: Exploding.Frozen.limit_shape
-    module: Exploding.Frozen.LimitShape
-    status: proved
-    source_pin: paper/corrected-arxiv/exploding-corrected-arxiv.tex; c99ce52a57b7da1f805efe610c474c968c0aa00e0840bd8b0e92ae0d4c53f262;
-      defs input 9aba2c73246d79e3c6b87cb1f01cf3e2f636e27c8afd97ccb8ba5c032a9ee65b
-    note: Exact version 5; cited premises remain explicit where present. See ledger/audits/2026-10-18-corrected-v11-integration.md.
-      This row grants no coverage to the separate planar optimality remark.
-  - source: exploding-corrected-arxiv.tex:117-120 (label theorem:convergence_of_time_constant) (corrected-v11)
-    lean: Exploding.Frozen.convergence_of_time_constant
-    module: Exploding.Frozen.TimeConstant
-    status: proved
-    source_pin: paper/corrected-arxiv/exploding-corrected-arxiv.tex; c99ce52a57b7da1f805efe610c474c968c0aa00e0840bd8b0e92ae0d4c53f262;
-      defs input 9aba2c73246d79e3c6b87cb1f01cf3e2f636e27c8afd97ccb8ba5c032a9ee65b
-    note: Exact version 6; cited premises remain explicit where present. See ledger/audits/2026-10-18-corrected-v11-integration.md.
-      This row grants no coverage to the separate planar optimality remark.
-  - source: exploding-corrected-arxiv.tex:123-129 (label theorem:explosive) (corrected-v11)
-    lean: Exploding.Frozen.explosive
-    module: Exploding.Frozen.Explosive
-    status: proved
-    source_pin: paper/corrected-arxiv/exploding-corrected-arxiv.tex; c99ce52a57b7da1f805efe610c474c968c0aa00e0840bd8b0e92ae0d4c53f262;
-      defs input 9aba2c73246d79e3c6b87cb1f01cf3e2f636e27c8afd97ccb8ba5c032a9ee65b
-    note: Exact version 4; cited premises remain explicit where present. See ledger/audits/2026-10-18-corrected-v11-integration.md.
-      This row grants no coverage to the separate planar optimality remark.
-  - source: exploding-corrected-arxiv.tex:352-367 (label prop:renormalization_properties) (corrected-v11)
-    lean: Exploding.Frozen.renormalization_properties
-    module: Exploding.Frozen.Renormalization
-    status: proved
-    source_pin: paper/corrected-arxiv/exploding-corrected-arxiv.tex; c99ce52a57b7da1f805efe610c474c968c0aa00e0840bd8b0e92ae0d4c53f262;
-      defs input 9aba2c73246d79e3c6b87cb1f01cf3e2f636e27c8afd97ccb8ba5c032a9ee65b
-    note: Exact version 5; cited premises remain explicit where present. See ledger/audits/2026-10-18-corrected-v11-integration.md.
-      This row grants no coverage to the separate planar optimality remark.
-  - source: exploding-corrected-arxiv.tex:586-603 (label lemma:square_lower_bound) (corrected-v11)
-    lean: Exploding.Frozen.square_lower_bound
-    module: Exploding.Frozen.SquareLowerBound
-    status: proved
-    source_pin: paper/corrected-arxiv/exploding-corrected-arxiv.tex; c99ce52a57b7da1f805efe610c474c968c0aa00e0840bd8b0e92ae0d4c53f262;
-      defs input 9aba2c73246d79e3c6b87cb1f01cf3e2f636e27c8afd97ccb8ba5c032a9ee65b
-    note: Exact version 5; cited premises remain explicit where present. See ledger/audits/2026-10-18-corrected-v11-integration.md.
-      This row grants no coverage to the separate planar optimality remark.
-  - source: exploding-corrected-arxiv.tex:785-823 (remark Sharp planar obstruction) (corrected-v11)
-    lean: Exploding.Frozen.sharp_planar_obstruction
-    module: Exploding.Frozen.SharpPlanarObstruction
-    status: proved
-    source_pin: paper/corrected-arxiv/exploding-corrected-arxiv.tex; c99ce52a57b7da1f805efe610c474c968c0aa00e0840bd8b0e92ae0d4c53f262;
-      defs input 9aba2c73246d79e3c6b87cb1f01cf3e2f636e27c8afd97ccb8ba5c032a9ee65b
-    note: Exact version 1; the planar optimality remark (Remark 1), both bounds for the same least
-      positive covering order with constants before n. The two cited radius inputs remain explicit. See
-      ledger/audits/2026-10-18-sharp-planar-obstruction.md.
-  - source: exploding-corrected-arxiv.tex:920-926 (label lemma:last_penultimate_cluster) (corrected-v11)
-    lean: Exploding.Frozen.last_penultimate_cluster
-    module: Exploding.Frozen.PenultimateCluster
-    status: proved
-    source_pin: paper/corrected-arxiv/exploding-corrected-arxiv.tex; c99ce52a57b7da1f805efe610c474c968c0aa00e0840bd8b0e92ae0d4c53f262;
-      defs input 9aba2c73246d79e3c6b87cb1f01cf3e2f636e27c8afd97ccb8ba5c032a9ee65b
-    note: Exact version 5; cited premises remain explicit where present. See ledger/audits/2026-10-18-corrected-v11-integration.md.
-      This row grants no coverage to the separate planar optimality remark.
-  - source: exploding-corrected-arxiv.tex:935-940 (label lemma:penultimate_upper_bound) (corrected-v11)
-    lean: Exploding.Frozen.penultimate_upper_bound
-    module: Exploding.Frozen.PenultimateUpperBound
-    status: proved
-    source_pin: paper/corrected-arxiv/exploding-corrected-arxiv.tex; c99ce52a57b7da1f805efe610c474c968c0aa00e0840bd8b0e92ae0d4c53f262;
-      defs input 9aba2c73246d79e3c6b87cb1f01cf3e2f636e27c8afd97ccb8ba5c032a9ee65b
-    note: Exact version 5; cited premises remain explicit where present. See ledger/audits/2026-10-18-corrected-v11-integration.md.
-      This row grants no coverage to the separate planar optimality remark.
-  - source: exploding-corrected-arxiv.tex:960-965 (label lemma:last_penultimate_close) (corrected-v11)
-    lean: Exploding.Frozen.last_penultimate_close
-    module: Exploding.Frozen.PenultimateClose
-    status: proved
-    source_pin: paper/corrected-arxiv/exploding-corrected-arxiv.tex; c99ce52a57b7da1f805efe610c474c968c0aa00e0840bd8b0e92ae0d4c53f262;
-      defs input 9aba2c73246d79e3c6b87cb1f01cf3e2f636e27c8afd97ccb8ba5c032a9ee65b
-    note: Exact version 5; cited premises remain explicit where present. See ledger/audits/2026-10-18-corrected-v11-integration.md.
-      This row grants no coverage to the separate planar optimality remark.
-  - source: exploding-corrected-arxiv.tex:974-980 (label prop:convergence_of_the_last_wave) (corrected-v11)
-    lean: Exploding.Frozen.convergence_of_the_last_wave
-    module: Exploding.Frozen.LastWaveConvergence
-    status: proved
-    source_pin: paper/corrected-arxiv/exploding-corrected-arxiv.tex; c99ce52a57b7da1f805efe610c474c968c0aa00e0840bd8b0e92ae0d4c53f262;
-      defs input 9aba2c73246d79e3c6b87cb1f01cf3e2f636e27c8afd97ccb8ba5c032a9ee65b
-    note: Exact version 5; cited premises remain explicit where present. See ledger/audits/2026-10-18-corrected-v11-integration.md.
-      This row grants no coverage to the separate planar optimality remark.
-  - source: exploding-corrected-arxiv.tex:1008-1020 (label prop:approximate_subadditive) (corrected-v11)
-    lean: Exploding.Frozen.approximate_subadditive
-    module: Exploding.Frozen.ApproximateSubadditive
-    status: proved
-    source_pin: paper/corrected-arxiv/exploding-corrected-arxiv.tex; c99ce52a57b7da1f805efe610c474c968c0aa00e0840bd8b0e92ae0d4c53f262;
-      defs input 9aba2c73246d79e3c6b87cb1f01cf3e2f636e27c8afd97ccb8ba5c032a9ee65b
-    note: Exact version 5; cited premises remain explicit where present. See ledger/audits/2026-10-18-corrected-v11-integration.md.
-      This row grants no coverage to the separate planar optimality remark.
-  - source: exploding-corrected-arxiv.tex:1325-1329 (label prop:convergence_of_the_generalized_last_wave)
-      (corrected-v11)
-    lean: Exploding.Frozen.convergence_of_the_generalized_last_wave
-    module: Exploding.Frozen.GeneralizedLastWave
-    status: proved
-    source_pin: paper/corrected-arxiv/exploding-corrected-arxiv.tex; c99ce52a57b7da1f805efe610c474c968c0aa00e0840bd8b0e92ae0d4c53f262;
-      defs input 9aba2c73246d79e3c6b87cb1f01cf3e2f636e27c8afd97ccb8ba5c032a9ee65b
-    note: Exact version 5; cited premises remain explicit where present. See ledger/audits/2026-10-18-corrected-v11-integration.md.
-      This row grants no coverage to the separate planar optimality remark.
-  - source: exploding-corrected-arxiv.tex:1755-1759 (corrected-v11)
-    lean: Exploding.Frozen.generalized_convergence
-    module: Exploding.Frozen.GeneralizedConvergence
-    status: proved
-    source_pin: paper/corrected-arxiv/exploding-corrected-arxiv.tex; c99ce52a57b7da1f805efe610c474c968c0aa00e0840bd8b0e92ae0d4c53f262;
-      defs input 9aba2c73246d79e3c6b87cb1f01cf3e2f636e27c8afd97ccb8ba5c032a9ee65b
-    note: Exact version 6; cited premises remain explicit where present. See ledger/audits/2026-10-18-corrected-v11-integration.md.
-      This row grants no coverage to the separate planar optimality remark.
-  - source: exploding-corrected-arxiv.tex:1877-1887 (label theorem:counterexample) (corrected-v11)
-    lean: Exploding.Frozen.counterexample
-    module: Exploding.Frozen.Counterexample
-    status: proved
-    source_pin: paper/corrected-arxiv/exploding-corrected-arxiv.tex; c99ce52a57b7da1f805efe610c474c968c0aa00e0840bd8b0e92ae0d4c53f262;
-      defs input 9aba2c73246d79e3c6b87cb1f01cf3e2f636e27c8afd97ccb8ba5c032a9ee65b
-    note: Exact version 4; cited premises remain explicit where present. See ledger/audits/2026-10-18-corrected-v11-integration.md.
-      This row grants no coverage to the separate planar optimality remark.
-  - source: exploding-corrected-arxiv.tex:2388-2392 (label prop:explosion_criteria) (corrected-v11)
-    lean: Exploding.Frozen.explosion_criteria
-    module: Exploding.Frozen.ExplosionCriteria
-    status: proved
-    source_pin: paper/corrected-arxiv/exploding-corrected-arxiv.tex; c99ce52a57b7da1f805efe610c474c968c0aa00e0840bd8b0e92ae0d4c53f262;
-      defs input 9aba2c73246d79e3c6b87cb1f01cf3e2f636e27c8afd97ccb8ba5c032a9ee65b
-    note: Exact version 4; cited premises remain explicit where present. See ledger/audits/2026-10-18-corrected-v11-integration.md.
-      This row grants no coverage to the separate planar optimality remark.
-  - source: exploding-corrected-arxiv.tex:2657-2659 (corrected-v11)
-    lean: Exploding.Frozen.box_crossing
-    module: Exploding.Frozen.BoxCrossing
-    status: proved
-    source_pin: paper/corrected-arxiv/exploding-corrected-arxiv.tex; c99ce52a57b7da1f805efe610c474c968c0aa00e0840bd8b0e92ae0d4c53f262;
-      defs input 9aba2c73246d79e3c6b87cb1f01cf3e2f636e27c8afd97ccb8ba5c032a9ee65b
-    note: Exact version 4; cited premises remain explicit where present. See ledger/audits/2026-10-18-corrected-v11-integration.md.
-      This row grants no coverage to the separate planar optimality remark.
-  - source: exploding-corrected-arxiv.tex:858-863 (label lemma:last_wave_bound) (corrected-v11)
-    lean: Exploding.Frozen.last_wave_bound
-    module: Exploding.Frozen.LastWaveBound
-    status: proved
-    source_pin: paper/corrected-arxiv/exploding-corrected-arxiv.tex; c99ce52a57b7da1f805efe610c474c968c0aa00e0840bd8b0e92ae0d4c53f262;
-      defs input 9aba2c73246d79e3c6b87cb1f01cf3e2f636e27c8afd97ccb8ba5c032a9ee65b
-    note: Exact version 4; cited premises remain explicit where present. See ledger/audits/2026-10-18-corrected-v11-integration.md.
-      This row grants no coverage to the separate planar optimality remark.
-  - source: exploding-corrected-arxiv.tex:2526-2535 (label prop:dimensional_reduction) (corrected-v11)
-    lean: Exploding.Frozen.dimensional_reduction
-    module: Exploding.Frozen.DimensionalReduction
-    status: proved
-    source_pin: paper/corrected-arxiv/exploding-corrected-arxiv.tex; c99ce52a57b7da1f805efe610c474c968c0aa00e0840bd8b0e92ae0d4c53f262;
-      defs input 9aba2c73246d79e3c6b87cb1f01cf3e2f636e27c8afd97ccb8ba5c032a9ee65b
-    note: Exact version 4; cited premises remain explicit where present. See ledger/audits/2026-10-18-corrected-v11-integration.md.
-      This row grants no coverage to the separate planar optimality remark.
-  - source: exploding-corrected-arxiv.tex:888-893 (label lemma:approx_subadditivity) (corrected-v11)
-    lean: Exploding.Frozen.approx_subadditivity
-    module: Exploding.Frozen.ApproxSubadditivity
-    status: proved
-    source_pin: paper/corrected-arxiv/exploding-corrected-arxiv.tex; c99ce52a57b7da1f805efe610c474c968c0aa00e0840bd8b0e92ae0d4c53f262;
-      defs input 9aba2c73246d79e3c6b87cb1f01cf3e2f636e27c8afd97ccb8ba5c032a9ee65b
-    note: Exact version 3; cited premises remain explicit where present. See ledger/audits/2026-10-18-corrected-v11-integration.md.
-      This row grants no coverage to the separate planar optimality remark.
-  - source: exploding-corrected-arxiv.tex:2575-2577 (label prop:recurrence) (corrected-v11)
-    lean: Exploding.Frozen.recurrence
-    module: Exploding.Frozen.Recurrence
-    status: proved
-    source_pin: paper/corrected-arxiv/exploding-corrected-arxiv.tex; c99ce52a57b7da1f805efe610c474c968c0aa00e0840bd8b0e92ae0d4c53f262;
-      defs input 9aba2c73246d79e3c6b87cb1f01cf3e2f636e27c8afd97ccb8ba5c032a9ee65b
-    note: Exact version 3; cited premises remain explicit where present. See ledger/audits/2026-10-18-corrected-v11-integration.md.
-      This row grants no coverage to the separate planar optimality remark.
-  - source: exploding-corrected-arxiv.tex:401-405 (label lemma:local_convexity) (corrected-v11)
-    lean: Exploding.Frozen.local_convexity
-    module: Exploding.Frozen.LocalConvexity
-    status: proved
-    source_pin: paper/corrected-arxiv/exploding-corrected-arxiv.tex; c99ce52a57b7da1f805efe610c474c968c0aa00e0840bd8b0e92ae0d4c53f262;
-      defs input 9aba2c73246d79e3c6b87cb1f01cf3e2f636e27c8afd97ccb8ba5c032a9ee65b
-    note: Exact version 4; cited premises remain explicit where present. See ledger/audits/2026-10-18-corrected-v11-integration.md.
-      This row grants no coverage to the separate planar optimality remark.
-  - source: exploding-corrected-arxiv.tex:848-850 (label lemma:finite_exploding) (corrected-v11)
-    lean: Exploding.Frozen.finite_exploding
-    module: Exploding.Frozen.FiniteExploding
-    status: proved
-    source_pin: paper/corrected-arxiv/exploding-corrected-arxiv.tex; c99ce52a57b7da1f805efe610c474c968c0aa00e0840bd8b0e92ae0d4c53f262;
-      defs input 9aba2c73246d79e3c6b87cb1f01cf3e2f636e27c8afd97ccb8ba5c032a9ee65b
-    note: Exact version 7; cited premises remain explicit where present. See ledger/audits/2026-10-18-corrected-v11-integration.md.
-      This row grants no coverage to the separate planar optimality remark.
-  - source: exploding-corrected-arxiv.tex:286-292 (label prop:crossing_time) (corrected-v11)
-    lean: Exploding.Frozen.crossing_time
-    module: Exploding.Frozen.CrossingTime
-    status: proved
-    source_pin: paper/corrected-arxiv/exploding-corrected-arxiv.tex; c99ce52a57b7da1f805efe610c474c968c0aa00e0840bd8b0e92ae0d4c53f262;
-      defs input 9aba2c73246d79e3c6b87cb1f01cf3e2f636e27c8afd97ccb8ba5c032a9ee65b
-    note: Exact version 4; cited premises remain explicit where present. See ledger/audits/2026-10-18-corrected-v11-integration.md.
-      This row grants no coverage to the separate planar optimality remark.
-acknowledgements: Built on Lean 4, Mathlib, Lake, Lattice-Probability and leanprover/comparator. The exact
-  cited inputs and their proof-companion scopes are listed in ASSUMPTIONS.md.
+  - source: "Theorem 1.1 (quoted in the paper)"
+    lean: "Exploding.fey_levine_peres_explosive"
+    status: "proved"
+    note: "Proved for 0 < p ≤ 1."
+  - source: "Theorem 1.2"
+    lean: "Exploding.limit_shape"
+    status: "proved"
+    note: "As published, with the law (2) read as in C01 (C02); proof added (C10); cited input hChem."
+  - source: "Theorem 1.3"
+    lean: "Exploding.convergence_of_time_constant"
+    status: "proved"
+    note: "As published, with the law (2) read as in C01 (C02); cited input hChem."
+  - source: "Theorem 1.4"
+    lean: "Exploding.explosive"
+    status: "proved"
+    note: "Corrected (C01, C03)."
+  - source: "Proposition 2.1"
+    lean: "Exploding.crossing_time"
+    status: "proved"
+    note: "Seed corrected (C05)."
+  - source: "Proposition 2.2"
+    lean: "Exploding.renormalization_properties"
+    status: "proved"
+    note: "Proof corrected (C06); cited input hChem."
+  - source: "Lemma 2.1"
+    lean: "Exploding.local_convexity"
+    status: "proved"
+    note: "Initial odometer corrected (C07)."
+  - source: "Lemma 3.1"
+    lean: "Exploding.square_lower_bound"
+    status: "proved"
+    note: "Corrected (C08); cited inputs hFdBR and hFLP."
+  - source: "Remark 1"
+    lean: "Exploding.sharp_planar_obstruction"
+    status: "proved"
+    note: "Added with the corrected sharp rate (C08)."
+  - source: "Lemma 3.2"
+    lean: "Exploding.finite_exploding"
+    status: "proved"
+    note: "Cited input hChem."
+  - source: "Lemma 3.3"
+    lean: "Exploding.last_wave_bound"
+    status: "proved"
+    note: "As published."
+  - source: "Lemma 3.4"
+    lean: "Exploding.approx_subadditivity"
+    status: "proved"
+    note: "As published."
+  - source: "Lemma 3.5"
+    lean: "Exploding.last_penultimate_cluster"
+    status: "proved"
+    note: "Cited input hChem."
+  - source: "Lemma 3.6"
+    lean: "Exploding.penultimate_upper_bound"
+    status: "proved"
+    note: "Cited input hChem."
+  - source: "Lemma 3.7"
+    lean: "Exploding.last_penultimate_close"
+    status: "proved"
+    note: "Cited input hChem."
+  - source: "Proposition 3.1"
+    lean: "Exploding.convergence_of_the_last_wave"
+    status: "proved"
+    note: "Proof corrected (C09); cited input hChem."
+  - source: "Proposition 4.1"
+    lean: "Exploding.approximate_subadditive"
+    status: "proved"
+    note: "Seed in the proof corrected (C05); cited input hChem."
+  - source: "Proposition 5.1"
+    lean: "Exploding.convergence_of_the_generalized_last_wave"
+    status: "proved"
+    note: "Standing assumption d ≥ 2 (C11); cited input hChem."
+  - source: "Theorem 5.1"
+    lean: "Exploding.generalized_convergence"
+    status: "proved"
+    note: "Corrected (C11, C12); cited input hChem."
+  - source: "Theorem 6.1"
+    lean: "Exploding.counterexample"
+    status: "proved"
+    note: "Stated as published; proof corrected (C15)."
+  - source: "Proposition 7.1"
+    lean: "Exploding.explosion_criteria"
+    status: "proved"
+    note: "Restricted to d ≥ 2 (C16); proof corrected (C17)."
+  - source: "Proposition 7.2"
+    lean: "Exploding.dimensional_reduction"
+    status: "proved"
+    note: "Setup corrected (C18)."
+  - source: "Proposition 7.3"
+    lean: "Exploding.recurrence"
+    status: "proved"
+    note: "Proof corrected (C19)."
+  - source: "Proposition 7.4 (quoted in the paper)"
+    lean: "Exploding.schonmann_bootstrap"
+    status: "proved"
+    note: "Proved for 0 < p ≤ 1."
+  - source: "Proposition 7.5"
+    lean: "Exploding.box_crossing"
+    status: "proved"
+    note: "Corrected (C20)."
+
+acknowledgements: Built on Lean 4, Mathlib, Lake, Lattice-Probability and leanprover/comparator. The cited inputs and their sources are listed in ASSUMPTIONS.md.

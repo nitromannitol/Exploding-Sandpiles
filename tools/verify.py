@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
-"""Run every verification check of this work-in-progress formalization.
+"""Run every verification check of this formalization.
 
 Every checker must pass, with one exception by design: `check_axioms.py` fails
-while any registered statement is open, because the axiom closure of an open
+while any statement is open, because the axiom closure of an open
 node contains `sorryAx`.  Its report is therefore compared with the manifest
 instead: a `SEALED` node must be clean, and every node whose closure contains
 `sorryAx` must be recorded as `DRAFT_SORRY` or `CONDITIONAL`.  A sealed node

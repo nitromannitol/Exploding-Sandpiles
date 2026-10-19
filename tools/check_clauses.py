@@ -3,9 +3,9 @@
 Every other checker here compares a statement with *itself*: the hash pins the
 bytes, the axiom check pins the proof.  None of them notices when a frozen
 statement quietly asserts less than the paper statement it claims to transcribe.
-That is how, in the ORRW formalization this tooling comes from, `lem:schur`
-came to be frozen without one of the three displays its paper statement
-asserts, while every other gate passed.
+That is how a frozen statement can end up without one of the three displays its
+paper statement
+asserts, while every other check passed.
 
 This counts assertion units on each side and reports the pairs where the paper
 asserts more:
@@ -17,11 +17,12 @@ The counts are a heuristic, not a proof of correspondence: one Lean conjunct can
 faithfully carry two paper displays, and one paper display can need three Lean
 conjuncts.  So a mismatch is a prompt to look, not a verdict, and every node is
 listed with its counts so the reader can judge. The recorded readings apply
-only to the exact historical source pin. Revised-source rows, non-External
+only to the exact earlier source file, `paper/exploding.tex` at its recorded
+SHA-256. Statements selected from the corrected edition, non-External
 definitions, and citations without a statement range or label are explicitly
-excluded. A successful run must compare at least one historical statement.
-Every compared declaration must retain its recorded version and frozen hash;
-the marker-block hash is recomputed before any historical reading is reused.
+excluded. A successful run must compare at least one statement from the earlier
+source. Every compared declaration must retain its recorded version and frozen
+hash; the marker-block hash is recomputed before any recorded reading is reused.
 
     python3 tools/check_clauses.py            # report
     python3 tools/check_clauses.py --strict   # exit 1 if any node is unreviewed

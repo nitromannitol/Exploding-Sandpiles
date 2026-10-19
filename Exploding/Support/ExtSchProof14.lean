@@ -119,7 +119,7 @@ theorem xsch14_base_of_Percolates {p : ℝ} [Fact (0 ≤ p ∧ p ≤ 1)]
 /-- **Conditional assembly.**  The coarse block-percolation estimate implies the
 target `Exploding.External.SchonmannBootstrap`. -/
 theorem xsch14_schonmann_of_blockPercolation
-    (h : ∀ d : ℕ, 1 ≤ d → ∀ p : ℝ, 0 < p → p < 1 → xsch7_BlockPercolation d p) :
+    (h : ∀ d : ℕ, 1 ≤ d → ∀ p : ℝ, 0 < p → p ≤ 1 → xsch7_BlockPercolation d p) :
     Exploding.External.SchonmannBootstrap :=
   xsch7_schonmann_of_blockPercolation h
 

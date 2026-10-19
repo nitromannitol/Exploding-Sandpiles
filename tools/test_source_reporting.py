@@ -256,10 +256,10 @@ class SourceReportingTests(unittest.TestCase):
             target.write_text(contents, encoding="utf-8")
         # Only generated-block delimiters are needed; no production docs are copied.
         (self.root / "README.md").write_text(
-            "\n".join((sync_docs.STATUS_BEGIN, sync_docs.STATUS_END,
-                       sync_docs.MAP_BEGIN, sync_docs.MAP_END)), encoding="utf-8")
+            "\n".join((sync_docs.STATUS_BEGIN, sync_docs.STATUS_END)), encoding="utf-8")
         (self.root / "CORRESPONDENCE.md").write_text(
-            sync_docs.SURFACE_BEGIN + "\n" + sync_docs.SURFACE_END, encoding="utf-8")
+            "\n".join((sync_docs.SURFACE_BEGIN, sync_docs.SURFACE_END,
+                       sync_docs.MAP_BEGIN, sync_docs.MAP_END)), encoding="utf-8")
         for module in (sync_docs, assumptions, check_manifest, check_clauses, check_exponents,
                        check_coverage, paper_anchors):
             self.enterContext(patch.object(module, "ROOT", self.root))
@@ -353,15 +353,15 @@ class SourceReportingTests(unittest.TestCase):
         nodes = self.manifest["nodes"]
         pins = sync_docs.source_pins(nodes, self.manifest)
         status = sync_docs.status_block(nodes, pins)
-        self.assertIn("39 registered declarations", status)
-        self.assertIn("7 `FROZEN` cited inputs", status)
-        self.assertIn("4 `FROZEN` non-External definitions", status)
-        self.assertIn("Their literal-body/source audit is required", status)
-        self.assertIn("Source coverage is partial", status)
+        self.assertIn("39 statements", status)
+        self.assertIn("7 cited results", status)
+        self.assertIn("4 definitions", status)
+        self.assertIn("Definitions are not counted as theorems", status)
+        self.assertIn("Each statement is taken from one source file", status)
         self.assertIn(sync_docs.HISTORICAL_SHA256, status)
         mapping = sync_docs.paper_map(nodes, pins)
         self.assertIn(f"]({self.revised}#L", mapping)
-        self.assertEqual(mapping.count("Non-External definition; literal-body/source audit required"), 4)
+        self.assertEqual(mapping.count("A definition stated separately"), 4)
         self.assertNotIn("Literal source definition", mapping)
         self.assertIn("TestLiteral0.lean#L2", mapping)
         with patch.object(sys, "argv", ["sync_docs.py", "--write"]):
@@ -375,8 +375,8 @@ class SourceReportingTests(unittest.TestCase):
         text = assumptions.render()
         self.assertEqual(text.count("\n## `"), 7)
         self.assertNotIn("## `def-literal-", text)
-        self.assertIn("4 non-External FROZEN definitions", text)
-        self.assertIn("Source pin: `paper/exploding.tex`", text)
+        self.assertIn("4 definitions stated separately", text)
+        self.assertIn("Source: `paper/exploding.tex`", text)
 
     def test_only_literal_definitions_do_not_imply_every_result_is_proved(self):
         self.mixed_manifest()
@@ -384,8 +384,8 @@ class SourceReportingTests(unittest.TestCase):
                                   if n["id"].startswith("def-literal-")]
         self.write_manifest()
         text = assumptions.render()
-        self.assertIn("No cited inputs are registered", text)
-        self.assertIn("4 non-External FROZEN definitions", text)
+        self.assertIn("No cited inputs are declared", text)
+        self.assertIn("4 definitions stated separately", text)
         self.assertNotIn("every registered", text)
 
     def test_revised_rows_never_inherit_historical_audit_notes(self):
@@ -1014,7 +1014,7 @@ class SourceReportingTests(unittest.TestCase):
 class LiveSourceReportingTests(unittest.TestCase):
     """Check the actual corrected v11 registry separately from historical data."""
 
-    CORRECTED_SHA256 = "c99ce52a57b7da1f805efe610c474c968c0aa00e0840bd8b0e92ae0d4c53f262"
+    CORRECTED_SHA256 = "0cefbf3bfc7cc08597d59d36a3473cdf94ee816076f688c978510bb7edc6e019"
 
     def setUp(self):
         original = sync_docs.ROOT

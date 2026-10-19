@@ -3,9 +3,9 @@ Proposition 5.1 of the paper (generalized last wave): a long lit path lights a t
 
 A path of `p + 1` distinct adjacent sites lit by the `N`-wave at time `t`, with
 `p + 1 ≥ (log n')^{γ_p}` and `p + 1 ≥ (∑ k (r + 2))^d`, has a bounding rectangle with a side of length
-at least `∑ k (r + 2)` and is entirely lit at time `t + (p+1)^d` (Hypothesis 5.3); a row of more than
+at least `∑ k (r + 2)` and is entirely lit at time `t + (p+1)^d` (Hypothesis 3); a row of more than
 `(log n')^{5/2}` macroscopic sites inside that side meets `C_∞`, and the line of the tile in the lit
-rectangle lights the tile `∏ k` steps later (Hypothesis 5.4).
+rectangle lights the tile `∏ k` steps later (Hypothesis 4).
 -/
 import Exploding.Support.GLWSec3S
 

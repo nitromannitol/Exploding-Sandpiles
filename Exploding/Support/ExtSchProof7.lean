@@ -44,12 +44,12 @@ def xsch7_BlockPercolation (d : ℕ) (p : ℝ) : Prop :=
 estimate `xsch3_PercolationBound`; the proof is exactly the deterministic
 coverage-to-spanning conversion. -/
 theorem xsch7_percolation_of_blockPercolation
-    (h : ∀ d : ℕ, 1 ≤ d → ∀ p : ℝ, 0 < p → p < 1 → xsch7_BlockPercolation d p) :
-    ∀ d : ℕ, 1 ≤ d → ∀ p : ℝ, 0 < p → p < 1 → xsch3_PercolationBound d p := by
+    (h : ∀ d : ℕ, 1 ≤ d → ∀ p : ℝ, 0 < p → p ≤ 1 → xsch7_BlockPercolation d p) :
+    ∀ d : ℕ, 1 ≤ d → ∀ p : ℝ, 0 < p → p ≤ 1 → xsch3_PercolationBound d p := by
   intro d hd p hp hp1
   obtain ⟨c, C, hc, hC, hbound⟩ := h d hd p hp hp1
   refine ⟨c, C, hc, hC, fun n => ?_⟩
-  haveI : Fact (0 ≤ p ∧ p ≤ 1) := ⟨⟨hp.le, hp1.le⟩⟩
+  haveI : Fact (0 ≤ p ∧ p ≤ 1) := ⟨⟨hp.le, hp1⟩⟩
   have hsub : {η : Site d → ℤ | ¬ xsch_Sp (Finset.univ : Finset (Fin d)) (cube d n) η}
       ⊆ {η : Site d → ℤ | η ∉ xsch7_BlockCover d n} := by
     intro η hη hcov
@@ -58,7 +58,7 @@ theorem xsch7_percolation_of_blockPercolation
 
 /-- **Assembly into the target.** -/
 theorem xsch7_schonmann_of_blockPercolation
-    (h : ∀ d : ℕ, 1 ≤ d → ∀ p : ℝ, 0 < p → p < 1 → xsch7_BlockPercolation d p) :
+    (h : ∀ d : ℕ, 1 ≤ d → ∀ p : ℝ, 0 < p → p ≤ 1 → xsch7_BlockPercolation d p) :
     Exploding.External.SchonmannBootstrap :=
   xsch3_schonmann_of_percolation (xsch7_percolation_of_blockPercolation h)
 

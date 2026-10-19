@@ -1,25 +1,25 @@
 /-
-What the box-crossing coarse-graining input is.
+The box-crossing coarse-graining input.
 
 The named input `Exploding.xmj_BoxCrossingCoarseGraining` asserts that, at every
 density above `bondCritical d`, the box crossings imply the exponential upper tail
-of the chemical distance.  This note records that the input is not a reduction of
-the frozen node `Exploding.External.AntalPisztoraChemicalDistance` to anything
+of the chemical distance.  This file shows that the input is not a reduction of the
+Antal--Pisztora statement `Exploding.External.AntalPisztoraChemicalDistance` to anything
 simpler.
 
-Write `BC d` for `Exploding.xap15_BoxCrossing d` and `AP` for the frozen node.  The
-frozen node is `∀ d, 2 ≤ d → AP d`, where `AP d` is its statement at dimension `d`
+Write `BC d` for `Exploding.xap15_BoxCrossing d` and `AP` for the Antal--Pisztora statement.
+The statement is `∀ d, 2 ≤ d → AP d`, where `AP d` is its statement at dimension `d`
 (a tail bound at every density above `bondCritical d`), and the coarse-graining
 input is exactly `∀ d, 2 ≤ d → BC d → AP d`.  Hence
 
-* the frozen node implies the coarse-graining input, the box-crossing hypothesis
-  being discarded;
-* box crossing and the coarse-graining input together imply the frozen node;
+* the Antal--Pisztora statement implies the coarse-graining input, the box-crossing
+  hypothesis being discarded;
+* box crossing and the coarse-graining input together imply the Antal--Pisztora statement;
 * consequently, once box crossing is available in every dimension, the
-  coarse-graining input is *equivalent* to the frozen node.  Since box crossing is
-  itself equivalent to the RSW extension `xmj2_SupercriticalCrossingExtension`, the
-  same equivalence holds with either hypothesis.  Proving the coarse-graining is
-  therefore proving the frozen node; it isolates no smaller statement.
+  coarse-graining input is *equivalent* to the Antal--Pisztora statement.  Since box
+  crossing is itself equivalent to the RSW extension `xmj2_SupercriticalCrossingExtension`,
+  the same equivalence holds with either hypothesis.  Proving the coarse-graining is
+  therefore proving the Antal--Pisztora statement; it isolates no smaller statement.
 
 The route that one might hope to use --- transferring the high-density bound down
 to lower densities by the pointwise coupling of configurations --- is refuted:
@@ -35,25 +35,25 @@ namespace Exploding
 
 variable {d : ℕ}
 
-/-! ### The coarse-graining input is the frozen node under box crossing -/
+/-! ### The coarse-graining input and the Antal--Pisztora statement under box crossing -/
 
-/-- The coarse-graining input follows from the frozen Antal--Pisztora node: the
+/-- The coarse-graining input follows from the Antal--Pisztora statement: the
 box-crossing hypothesis is simply discarded. -/
 theorem xmy_coarseGraining_of_antalPisztora
     (h : Exploding.External.AntalPisztoraChemicalDistance) :
     xmj_BoxCrossingCoarseGraining :=
   fun d _hd _hbc => h d _hd
 
-/-- Box crossing and the coarse-graining input together give the frozen node. -/
+/-- Box crossing and the coarse-graining input together give the Antal--Pisztora statement. -/
 theorem xmy_antalPisztora_of_boxCrossing_coarseGraining
     (hbc : ∀ d : ℕ, 2 ≤ d → xap15_BoxCrossing d)
     (hcg : xmj_BoxCrossingCoarseGraining) :
     Exploding.External.AntalPisztoraChemicalDistance :=
   fun d hd => hcg d hd (hbc d hd)
 
-/-- **The coarse-graining input is exactly the frozen node once box crossing is
+/-- **The coarse-graining input is exactly the Antal--Pisztora statement once box crossing is
 available.**  Under box crossing in every dimension the two statements are
-equivalent, so the coarse-graining input does not reduce the frozen node to a
+equivalent, so the coarse-graining input does not reduce the Antal--Pisztora statement to a
 weaker claim. -/
 theorem xmy_coarseGraining_iff_antalPisztora_of_boxCrossing
     (hbc : ∀ d : ℕ, 2 ≤ d → xap15_BoxCrossing d) :
@@ -69,8 +69,8 @@ theorem xmy_coarseGraining_iff_antalPisztora_of_extension
     (fun d hd => xmx_boxCrossing_of_extension d hd (hext d hd))
 
 /-- The supercritical reduction assembled from box crossing and the coarse-graining
-input; by the equivalence above this is the frozen node in another form and adds
-nothing to its direct use. -/
+input; by the equivalence above this is the Antal--Pisztora statement in another form and
+adds nothing to its direct use. -/
 theorem xmy_supercriticalReduction_of_boxCrossing_coarseGraining
     (hbc : ∀ d : ℕ, 2 ≤ d → xap15_BoxCrossing d)
     (hcg : xmj_BoxCrossingCoarseGraining) :

@@ -1,5 +1,5 @@
 /-
-The finite-comparison form of the wave-approximation hypothesis (Hypothesis 5.5).
+The finite-comparison form of the wave-approximation hypothesis (Hypothesis 5).
 
 The paper's display `sup over cent(n) |T̂(0,x) - T(x)| = o(n)` compares two `ℕ∞`-valued
 arrival times.  `SourceWaveApproximationHyp` states it with an explicit pair of natural
@@ -14,7 +14,7 @@ namespace Exploding
 
 open LatticeProb MeasureTheory Filter
 
-/-- **Hypothesis 5.5, finite-comparison form.** For almost every background `η` that is
+/-- **Hypothesis 5, finite-comparison form.** For almost every background `η` that is
 explosive, every `ε > 0` gives, eventually in `n`, on every `x ∈ cent d n`, natural numbers
 `a` and `b` with `T̂(0,x) = a`, `T(x) = b` and `|a - b| ≤ ε n`. -/
 def SourceWaveApproximationHyp (d : ℕ) (P : Measure (Site d → ℤ)) : Prop :=

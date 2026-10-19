@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Register (or refresh) a frozen node in ledger/manifest.yaml.
+"""Add (or refresh) a frozen statement in ledger/manifest.yaml.
 
     python3 tools/freeze.py ID FILE EXPORT KIND STATE "SOURCE"
 

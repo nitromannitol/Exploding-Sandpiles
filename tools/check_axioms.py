@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
-"""Axiom-closure gate for the frozen manifest.
+"""Axiom-closure check for the frozen manifest.
 
 `check_manifest.py` counts `sorry` tokens per file.  That is not enough: a file
 can contain no `sorry` and still depend on one transitively, through an import
-of another node that is still a draft.  `Exploding.Frozen.insertion_inequality` was
-exactly that -- zero `sorry`s of its own, `sorryAx` in its axiom closure.
+of another node that is still a draft.  Such a declaration has no `sorry` of its
+own, yet `sorryAx` appears in its axiom closure.
 
 A node may be SEALED only if `#print axioms` on its export shows no `sorryAx`.
 This runs Lean and is the authority; the token count is only a fast prefilter.

@@ -1,22 +1,21 @@
 /-
 Proposition 4.1 of the paper: the last-wave is a bounded approximation of the
-exploding sandpile.  Support file for the proof of
-`Exploding.Frozen.approximate_subadditive`, sorry-free.
+exploding sandpile.  This file supports the proof of
+`Exploding.Frozen.approximate_subadditive`.
 
 It contains
 
 * the deterministic toolkit and the a.e. wrappers,
-* the fully proved leaves: `eq:ineq1`'s comparison `wave_le_fodo` without the
-  vacuous `hn` hypothesis, the finite-set reach `as_coord_bdd_finite`, the
+* the proved leaves: `eq:ineq1`'s comparison `wave_le_fodo`, the finite-set reach `as_coord_bdd_finite`, the
   `podo`/`fodo` comparison `as_podo_dominates_fodo`, the inner-boundary bound
   `as_lastWave_le_one_on_inner_boundary`, `as_penultimateCluster_finite` (from
-  the frozen `last_penultimate_cluster`), `as_podoTerminal_bound`,
-  `as_tildeV_regular`, `as_tildeV_lap_nonpos_off_tildeP` and the delicate
+  `Exploding.Frozen.last_penultimate_cluster`), `as_podoTerminal_bound`,
+  `as_tildeV_regular`, `as_tildeV_lap_nonpos_off_tildeP` and the
   floor-arithmetic step `as_step2_approx2_step`,
 * the conditional assemblies `as_ineq1` and `as_ineq2`, which take the
   five claims as hypotheses.
 
-The five claims, proved in the `ASProof2`–`ASProof7` companion files, are:
+The five claims, established in the companion files `ASProof2`–`ASProof7`, are:
 robustness implies every centred wave stabilizes (the two explosion notions
 agree), finite-sink stabilization (`as_tildeP`'s reach), `eq:approx1`'s
 reach of the last wave to `as_tildeP`, `|as_tildeP| < ∞`, and
@@ -40,7 +39,7 @@ set_option linter.unusedVariables false
 
 /-! ### Setup: the a.e. bound on `η` -/
 
-/-- **Near-trivial, real.** The standing bound of `(1.2)`: `η ∼ toyLaw d p`
+/-- The standing bound on the toy law: `η ∼ toyLaw d p`
 takes only the two values `2d-2` and `2d-1`, almost surely. -/
 lemma as_eta_bounds (d : ℕ) (hd : 2 ≤ d) (p : ℝ)
     (hp : 0 < p) (hp1 : p < 1) :
@@ -77,14 +76,14 @@ lemma as_eta_bounds (d : ℕ) (hd : 2 ≤ d) (p : ℝ)
 
 /-! ### `eq:ineq1` -/
 
-/-- **Real, structural.** `podo` never goes negative, whatever the background. -/
+/-- `podo` never goes negative, whatever the background. -/
 lemma as_podo_nonneg
     {d : ℕ} (σ : Site d → ℤ) (t : ℕ) (x : Site d) : 0 ≤ podo σ t x := by
   induction t generalizing x with
   | zero => simp [podo_zero]
   | succ t ih => rw [podo_succ]; have := ih x; split_ifs <;> omega
 
-/-- **Real, structural.** `podo` is monotone across an arbitrary (not just
+/-- `podo` is monotone across an arbitrary (not just
 one-step) gap in time. -/
 lemma as_podo_mono
     {d : ℕ} (σ : Site d → ℤ) {t t' : ℕ} (htt' : t ≤ t') (x : Site d) :
@@ -93,7 +92,7 @@ lemma as_podo_mono
   | base => exact le_rfl
   | succ t' _ ih => exact le_trans ih (podo_mono_step σ t' x)
 
-/-- **Real, structural.** `fodo` moves by at most one unit per step, on or off
+/-- `fodo` moves by at most one unit per step, on or off
 its frozen set. -/
 lemma as_fodo_succ_le
     {d : ℕ} (S : Set (Site d)) (s0 w0 : Site d → ℤ) (t : ℕ) (x : Site d) :
@@ -103,12 +102,12 @@ lemma as_fodo_succ_le
   · rw [fodo_of_mem S s0 w0 (t + 1) hx, fodo_of_mem S s0 w0 t hx]; omega
   · rw [fodo_succ_of_notMem S s0 w0 t hx]; split_ifs <;> omega
 
-/-- **Real, genuinely new (the paper's uncited `(2.4)`, one half of
-`eq:odometer_wave_comp`).** If the free (`podo`) and frozen (`fodo`)
+/-- The domination of the frozen process by the free one (one half of
+`eq:odometer_wave_comp`). If the free (`podo`) and frozen (`fodo`)
 recursions share the same background off the frozen set `S`, and the free
 process already dominates the frozen initial data everywhere by time `t0`,
 then it dominates the whole frozen process forever after, with the same time
-shift.  Difficulty: medium; proof is a two-case induction (the frozen value is
+shift.  The proof is a two-case induction (the frozen value is
 either already strictly behind, in which case one-step growth bounds close the
 gap, or tied, in which case the two recursions' instability tests agree
 because their neighbour sums agree). -/
@@ -148,7 +147,7 @@ theorem as_podo_dominates_fodo
         · rw [if_neg hc, add_zero, heq]
           exact hmono
 
-/-- **Real, near-trivial once you notice the fact.** Off its own penultimate
+/-- Near-trivial. Off its own penultimate
 cluster the penultimate wave vanishes (`Exploding.Support.Wave.
 penultimateWave_eq_zero_of_not_mem`); combined with the elementary fact that a
 neighbour-closure's inner boundary can never touch the closed-over set itself,
@@ -194,7 +193,7 @@ theorem as_lastWave_le_one_on_inner_boundary
     rw [hnotmem y hy] at hpb
     simpa using hpb
 
-/-- **Real, near-trivial once found.** `Exploding.Support.SubWave.wave_le_fodo`
+/-- Near-trivial. `Exploding.Support.SubWave.wave_le_fodo`
 verbatim, with its unused hypothesis `hn : (n:ℤ) ≤ w0 z` dropped: reading its
 own proof shows `hn` is never appealed to, yet as stated it forces `n ≤ 1`
 whenever `w0 ≤ 1` (its other hypothesis `hw0`), so it can only ever be invoked
@@ -244,12 +243,10 @@ theorem as_wave_le_fodo_general
         (nbrSumZ (wave η n z t) x + η x) (fodo S s0 w0 t x) hBA hw0' hw1' hA
         (by have hh := hc; simp only [fconf, lap] at hh; linarith)
 
-/-- **New, real (finiteness half of the old GAP, closed for real).** A set all
-of whose points lie within a fixed real bound `R` of `x` in every coordinate is
-finite: it is a subset of `Set.pi Set.univ (fun _ => Finset.Icc (x i - ⌈R⌉)
-(x i + ⌈R⌉))`-style box, itself finite by `Set.Finite.pi` (same technique as
-`aux_finite_exploding_cent_card` used elsewhere in this project for `cent`,
-restated here since only this node's file may be edited). -/
+/-- A set all of whose points lie within a fixed real bound `R` of `x` in every
+coordinate is finite. It is contained in a box `Set.pi Set.univ (fun i => Finset.Icc
+(x i - ⌈R⌉) (x i + ⌈R⌉))`, which is finite by `Set.Finite.pi`. The same technique
+is used for `cent` in `aux_finite_exploding_cent_card`. -/
 theorem as_coord_bdd_finite {d : ℕ} (x : Site d) (R : ℝ)
     (S : Set (Site d)) (hS : ∀ y ∈ S, ∀ i, ((|y i - x i| : ℤ) : ℝ) ≤ R) : S.Finite := by
   have h_bound (y : Site d) (hy : y ∈ S) (i : Fin d) : y i ∈ Finset.Icc (x i - ⌈R⌉) (x i + ⌈R⌉) := by
@@ -274,10 +271,9 @@ theorem as_coord_bdd_finite {d : ℕ} (x : Site d) (R : ℝ)
     refine Set.Finite.pi (fun i => Finset.finite_toSet _)
   exact h_finite.subset h_subset
 
-/-- **New, real modulo `Exploding.Frozen.last_penultimate_cluster` (a FROZEN
-statement of this project, cf. `PenultimateCluster.lean`; it is a valid
-citable target exactly like
-`Exploding.Frozen.renormalization_properties` elsewhere).** Applies it at
+/-- This uses the input `Exploding.Frozen.last_penultimate_cluster`, which is taken as a
+citable statement, like `Exploding.Frozen.renormalization_properties`. It applies that
+statement at
 `x := 0` (using `mnorm (0:Site d) = 0 ≤ n` for any `n ≥ n0`) to bound
 `penultimateCluster η 0` inside a coordinatewise box of radius `(log n)^γ`,
 then closes with `as_coord_bdd_finite`. -/
@@ -301,30 +297,21 @@ theorem as_penultimateCluster_finite
   intro y hy i
   simpa using hn0 n hn0le (0 : Site d) hmnorm y hy i
 
--- NEEDS-PROOF-DESIGN: this is the genuinely hard half of the old GAP ((ii) in
--- the removed comment above). `podo` is the *unfrozen, sink-free* parallel
--- toppling odometer (Exploding/Support/Toppling.lean: `podo_succ` increments a
--- site by exactly `1` iff it is currently unstable — a different recursion
--- from `wave`/`fodo`'s floor-recompute, so the boundedness-by-mass argument
--- that works for `wave` (its centre carries a *fixed* mass `n` forever, giving
--- an a priori pointwise bound `wave η n z t x ≤ n` by an easy induction) does
--- NOT transfer: here `σ 0 = η 0 + M_η` is a fixed but possibly *huge*
--- background value, not a capped source, so no analogous a priori bound on
--- `podo σ t x` is available from the hypotheses alone. What is actually true
--- here is the classical fact that a finite abelian sandpile with a dissipating
--- boundary ("sink") always stabilizes however large its initial excess is
--- (proved via a strictly-decreasing potential over unstable configurations,
--- e.g. Σ_{x ∈ V} (pconf σ t x)² restricted to a closed, sink-bounded system);
--- taking the contrapositive on `V := any finite set on which `podo σ` is
--- confined forever` would give exactly the statement below. This finite-sink
--- stabilization theorem is standard sandpile theory but is not present
--- anywhere in this toolkit (no `RecurrentOn`/`Recurrent`-style lemma here
--- proves it either — those describe a *different*, already-frozen recursion).
--- The frozen top-level `Exploding.Frozen.approximate_subadditive` also does
--- not carry a literature hypothesis (à la `hLSSB`/`hHole`/`hChem`) that could
--- discharge it as a citation, so it is isolated here precisely rather than
--- forced.
-/-- **Assembly input (the genuinely hard reach step is threaded as `hreach`).**
+-- The finite-sink reach step is not proved in this file. Here `podo` is the unfrozen,
+-- sink-free parallel toppling odometer (`Exploding/Support/Toppling.lean`: `podo_succ`
+-- increments a site by exactly `1` when it is unstable). This recursion differs from the
+-- floor recursion of `wave` and `fodo`. The boundedness-by-mass argument for `wave` does
+-- not transfer. There the centre carries a fixed mass `n`, which gives the a priori bound
+-- `wave η n z t x ≤ n`. Here `σ 0 = η 0 + M_η` is a fixed background value that may be
+-- large, not a capped source, so no a priori bound on `podo σ t x` follows from the
+-- hypotheses alone. The needed fact is the classical stabilization of a finite abelian
+-- sandpile with a dissipating boundary, which holds for any initial excess. It can be
+-- proved with a strictly decreasing potential over unstable configurations. Taking the
+-- contrapositive on a finite set on which `podo σ` stays confined gives the statement
+-- below. This theorem is not in the toolkit. The `Exploding.Frozen.approximate_subadditive`
+-- statement carries no literature hypothesis (such as `hLSSB`, `hHole`, `hChem`) that
+-- could supply it, so it enters as the explicit input `hreach`.
+/-- **Assembly input (the reach step, taken as `hreach`).**
 The callers supply the classical finite-sink stabilization claim: a
 non-stabilizable `η + M_η δ_0` (which is `≤ 2d-1` off the origin by `hhigh`)
 eventually lights up the finite penultimate cluster.  Bump the common time up to
@@ -340,34 +327,24 @@ theorem as_exists_t0
   refine ⟨max t1 1, le_max_right _ _, fun x hx => ?_⟩
   exact le_trans (ht1 x hx) (as_podo_mono (explodingPile η) (le_max_left t1 1) x)
 
--- NEEDS-PROOF-DESIGN: investigated concretely (not left open on first sight).
--- `wave η n 0` and `podo (η + n·δ_0)` are genuinely different recursions with
--- no immediate one-line domination in either direction: at `t = 0`,
--- `wave η n 0 0 0 = n` (the centre is *pinned* at the full mass from the
--- start, `wave_zero`) while `podo (η+n·δ_0) 0 0 = 0` (`podo` always starts at
--- the zero odometer, `podo_zero`, regardless of background) — so
--- `wave ≤ podo` fails already at `t = 0`, and the reverse `podo ≤ wave` is not
--- expected either since `podo`'s dynamics also let the origin itself keep
--- toppling (feeding more mass into its own neighbours over time) which the
--- wave's fixed-source convention does not model. `Exploding.Support.
--- SubWave.wave_le_fodo` / this node's own `..._wave_le_fodo_general` compare
--- `wave` only to `fodo` (a *frozen* comparison process), not to `podo`;
--- `Exploding.Frozen.LastWaveBound` (real, `lemma:last_wave_bound`) bounds the
--- last wave by `1 + (penultimate wave)`, again not by `podo`. The genuine
--- content needed — that `Robust η` (mass-addition stabilizes for every added
--- mass `n`) forces every `n`-wave centred at `0` to *also* stabilize — is
--- exactly the (nontrivial) equivalence between the paper's two notions of
--- "explosive" (`Explosive`/`explosionThreshold`, defined via `podo`, and
--- `waveThreshold`, defined via `wave`); the paper never proves this
--- equivalence directly either, it establishes both a.e. via the *same*
--- external `Cinf`/renormalization machinery
--- (`Exploding.Frozen.finite_exploding` needs `hLSSB, hHole, hChem` to produce
--- *any* witness `n` with `¬ WaveStabilizable η n 0`, which is strong evidence
--- this equivalence is not otherwise elementary). Since
--- `Exploding.Frozen.approximate_subadditive`'s frozen signature carries no
--- such literature hypothesis to fall back on, this is isolated here precisely
--- rather than forced with an incorrect elementary argument.
-/-- **Real, modulo the reach input `hreach`.** `eq:ineq1`:
+-- `wave η n 0` and `podo (η + n·δ_0)` are different recursions with no one-line
+-- domination in either direction. At `t = 0`, `wave η n 0 0 0 = n` (the centre starts
+-- at the full mass, `wave_zero`), while `podo (η+n·δ_0) 0 0 = 0` (`podo` starts at the
+-- zero odometer, `podo_zero`). So `wave ≤ podo` fails at `t = 0`. The reverse inequality
+-- is not expected either, since `podo` lets the origin keep toppling and feed its
+-- neighbours, which the fixed-source convention of `wave` does not model.
+-- `Exploding.Support.SubWave.wave_le_fodo` and `as_wave_le_fodo_general` compare `wave`
+-- only to `fodo`, not to `podo`. `Exploding.Frozen.LastWaveBound` bounds the last wave
+-- by `1 + (penultimate wave)`, again not by `podo`. The step needed is that `Robust η`
+-- (stabilization after adding any mass `n`) forces every `n`-wave centred at `0` to
+-- stabilize as well. This is the equivalence of the two notions of explosion,
+-- `Explosive`/`explosionThreshold` (via `podo`) and `waveThreshold` (via `wave`). It is
+-- not proved here. The external renormalization input `hLSSB, hHole, hChem` in
+-- `Exploding.Frozen.finite_exploding` produces a witness `n` with
+-- `¬ WaveStabilizable η n 0`, which suggests the equivalence is not elementary.
+-- `Exploding.Frozen.approximate_subadditive` carries no literature hypothesis that
+-- supplies it, so it is isolated here as an input.
+/-- Proved from the reach input `hreach`. `eq:ineq1`:
 `T(x) ≤ T̂(x) + C1(η)`. -/
 theorem as_ineq1
     {d : ℕ} (hd : 2 ≤ d) (η : Site d → ℤ)
@@ -433,7 +410,7 @@ theorem as_ineq1
       rw [hlaeq]
       exact harr
 
-/-! ### `eq:ineq2` (Step 1 and Step 2 of `exploding.tex:910-1090`)
+/-! ### `eq:ineq2` (Step 1 and Step 2 of the proof of `prop:approximate_subadditive`)
 
 Step 2's construction is the fully general argument; Step 1 (the special case
 `M̂_η(0) = 1`) is not a separate top-level branch but the sub-argument Step 2
@@ -442,7 +419,7 @@ reuses "the same argument as in Step 1" for `eq:induction_specialcase2`
 background that is critical at exactly one point by *construction* rather than
 by hypothesis.  All the local objects of Step 2 (`ṽ`, `P̃`, `w̃`, `s`, `w`) are
 introduced here as plain (non-frozen) definitions matching
-`exploding.tex:1025-1042`. -/
+the constructions in the proof of `prop:approximate_subadditive`. -/
 
 /-- The terminal (unfrozen) odometer of a stabilizable initial sandpile: its
 value from the (finite) stabilization time on.  Paper's `ṽ` is
@@ -480,7 +457,7 @@ noncomputable def as_wOdo {d : ℕ} (η : Site d → ℤ) : ℕ → Site d → �
 noncomputable def as_expOdo {d : ℕ} (η : Site d → ℤ) : ℕ → Site d → ℤ :=
   podo (fun x => η x + (explosionThreshold η : ℤ) * dirac (0 : Site d) x)
 
-/-- **Assembly input (`eq:approx1`'s reach step, threaded as `hlastreach`).**
+/-- Assembly input: the reach step of `eq:approx1`, taken as the hypothesis `hlastreach`.
 The paper's claim that the last wave lights up the finite set `P̃` at one
 common time is genuine renormalization content, so it enters as the hypothesis
 `hlastreach` (the same shape as the decomp's
@@ -528,7 +505,7 @@ theorem as_step2_approx1
   rw [show t + c = c + t from Nat.add_comm t c]
   simpa [as_tildeW, lastWave] using h
 
-/-- **New, real.** For `Stabilizable s0` (stabilization time `T`), `podo s0 T`
+/-- For `Stabilizable s0` (stabilization time `T`), `podo s0 T`
 does not change at `T + 1` (`T` lies in the defining `sInf` set of
 `Stabilizable`, and `T ≤ T + 1`), so `podo_succ`'s `1`-or-`0` increment at
 `T + 1` must be the `0` branch, i.e. `pconf s0 T x < 2 * d`; `as_podoTerminal s0 =
@@ -561,9 +538,8 @@ theorem as_podoTerminal_bound
   simp only [pconf] at hpconf
   linarith
 
-/-- **New, real (uniform regularity of `ṽ`, `exploding.tex`'s uncited
-"`Δṽ(x) + (M_η - 1)δ_0(x) + η(x) ≤ 2d - 1`" underlying `eq:approx2`'s third
-inequality).** Case split on whether `as_tildeV η`'s own background `η + (M_η -
+/-- **Uniform regularity of `ṽ`** (the bound `Δṽ(x) + (M_η - 1)δ_0(x) + η(x) ≤ 2d - 1`
+underlying the third inequality of `eq:approx2`). Case split on whether `as_tildeV η`'s own background `η + (M_η -
 1)δ_0` is stabilizable: if so, `as_
 podoTerminal_bound` gives the bound directly. If not, minimality of
 `explosionThreshold` forces `M_η = 1` (else `M_η - 1 ≥ 1` would itself lie in
@@ -619,7 +595,7 @@ theorem as_tildeV_regular
     exact hhigh x
 
 
-/-- **New, real.** Off `as_tildeP η` (and hence, since `0 ∈ as_tildeP η` always, at
+/-- Off `as_tildeP η` (and hence, since `0 ∈ as_tildeP η` always, at
 some `x ≠ 0`), *every* neighbour `y` of `x` has `as_tildeV η y = 0` (else `x`
 would be in `as_tildeP η` by its own defining clause), so `nbrSumZ (as_tildeV η) x =
 0` and `lap (as_tildeV η) x = -2 * d * as_tildeV η x ≤ 0` since `as_tildeV η ≥ 0`
@@ -648,7 +624,7 @@ theorem as_tildeV_lap_nonpos_off_tildeP
   linarith
 
 
-/-- **New, real.** `as_tildeV η ≥ 0`: it is (by definition) a value of `podo`
+/-- `as_tildeV η ≥ 0`: it is (by definition) a value of `podo`
 applied to some background at some time, and `podo` is nonnegative for *any*
 background (`as_podo_nonneg`, already proved
 above for arbitrary `σ`), so unfolding `as_tildeV`/`as_podoTerminal` and applying it
@@ -659,11 +635,10 @@ theorem as_tildeV_nonneg {d : ℕ} (η : Site d → ℤ) (x : Site d) :
   exact as_podo_nonneg _ _ x
 
 
-/-- **New, real (`eq:approx2`'s inductive step, `exploding.tex:1082-1090`,
-isolated as one piece since the surrounding floor-arithmetic bookkeeping is
-delicate enough to deserve its own lemma).** If the three-way domination
+/-- The inductive step of `eq:approx2`, isolated as one lemma because the surrounding
+floor-arithmetic bookkeeping is delicate. If the three-way domination
 `as_expOdo η t x ≤ as_wOdo η t x + as_tildeV η x` holds at every `x` at time `t`, it
-holds at `t + 1`. Proof sketch (the paper's own calculation): case split on
+holds at `t + 1`. Proof sketch (as in the paper): case split on
 whether the inequality at `x` and time `t` is strict (then `podo_succ`'s
 `+1`-cap on the left and `podo_mono_step` on the right close it immediately)
 or tight (then compare the two `podo_succ` instability tests: `nbrSumZ_mono`
@@ -736,7 +711,7 @@ theorem as_step2_approx2_step
     · rw [if_neg hc, add_zero, heq]
       split_ifs <;> omega
 
-/-- **Real, given the two pieces above (`eq:approx2`).** Plain induction on
+/-- A consequence of the two pieces above (`eq:approx2`). Plain induction on
 `t`: the base case is `0 ≤ as_tildeV η x` (`as_
 tildeV_nonneg`), since `as_expOdo η 0 = 0` and `as_wOdo η 0 = 0` (`podo_zero`); the
 step is exactly `as_step2_approx2_step`. -/
@@ -754,22 +729,18 @@ theorem as_step2_approx2
   | succ t ih =>
     exact as_step2_approx2_step hd η hlow hhigh hexp1 t ih
 
-/- **New, GAP but precisely paper-specified (`exploding.tex:918-1030`, Step
-1's three simultaneous inductions `eq:induction1/2/3`, specialized to `w :=
-as_wOdo η`, `w̃ := as_tildeW η` and the critical-at-origin background `s :=
-as_sBackground η`).** Combines `eq:induction1` (reachable-set inclusion `R_t ⊆
-R̃_t`), `eq:induction2` (no two axis- or diagonal-adjacent values of `w_t`
-differ by more than `1`) and `eq:induction3` (`w_t(0) = max_x w_t(x)`) into
-one conjunction proved by simultaneous induction on `t`, exactly as the paper
-does.  This is the single largest piece of genuinely new content in this node
-and enters `as_ineq2` as the hypothesis `hspecial` (its first conjunct,
-`eq:induction_specialcase2`: `R_t ⊆ R̃_t`). -/
+/- The three simultaneous inductions of Step 1 (`eq:induction1/2/3`), specialized to
+`w := as_wOdo η`, `w̃ := as_tildeW η` and the critical-at-origin background `s :=
+as_sBackground η`. Combines `eq:induction1` (reachable-set inclusion `R_t ⊆ R̃_t`),
+`eq:induction2` (no two axis- or diagonal-adjacent values of `w_t` differ by more than
+`1`) and `eq:induction3` (`w_t(0) = max_x w_t(x)`) into one conjunction, proved by
+simultaneous induction on `t`, as in the paper. This conjunction enters `as_ineq2` as the
+hypothesis `hspecial` (its first conjunct, `eq:induction_specialcase2`: `R_t ⊆ R̃_t`). -/
 
--- GAP-closing pieces for the micro-step below (all new, all real: verified to compile as a
--- chain, given the general facts `podo_zero`/`podo_succ`/`podo_mono_step`/`nbrSumZ`/`lap`
--- already in `Exploding.Support.Toppling`, plus `podo_mono'`-in-spirit reuse of this node's own
--- `as_podo_mono` and `as_podo_nonneg`).
-/-- **New, real (discrete "first-crossing time").** If `podo s0 T x > 0`, there is a last time
+-- Auxiliary facts for the micro-step below. They are built from `podo_zero`, `podo_succ`,
+-- `podo_mono_step`, `nbrSumZ` and `lap` in `Exploding.Support.Toppling`, together with
+-- `as_podo_mono` and `as_podo_nonneg` from this file.
+/-- Discrete first-crossing time. If `podo s0 T x > 0`, there is a last time
 `t0 < T` at which `podo s0 · x` is still `0`, and it becomes (exactly) `1` at `t0 + 1`: take
 `t0 + 1 := Nat.find` of `{t | 0 < podo s0 t x}` (nonempty, witnessed by `T`; nonzero since
 `podo s0 0 x = 0`, `podo_zero`), so `Nat.find_min` rules out positivity at any smaller time
@@ -822,7 +793,7 @@ theorem as_ineq2_first_crossing
   refine ⟨t0, ht0_lt_T, h_podo_t0_eq_zero, ?_⟩
   rw [h_podo_t0_succ_eq_one]
 
-/-- **New, real.** At a first-crossing time `t0` for a site `x` with `s0 x ≤ 2d - 1`, some
+/-- At a first-crossing time `t0` for a site `x` with `s0 x ≤ 2d - 1`, some
 neighbour `y` of `x` already has `podo s0 t0 y ≥ 1`: unfolding `podo_succ`/`pconf`/`lap` at `x`
 (where `podo s0 t0 x = 0`) turns `1 ≤ podo s0 (t0+1) x` into the firing threshold `2d ≤ s0 x +
 nbrSumZ (podo s0 t0) x`, forcing `nbrSumZ (podo s0 t0) x ≥ 1`; since `nbrSumZ` sums `2d`
@@ -856,7 +827,7 @@ theorem as_ineq2_neighbor_witness
   exact ⟨y, hy, by omega⟩
 
 
-/-- **New, real (closes the `-- GAP` below).** `0 < as_tildeV η x` places `x` itself in `as_tildeP η`:
+/-- `0 < as_tildeV η x` places `x` itself in `as_tildeP η`:
 if `x = 0` this is `as_tildeP`'s first disjunct; otherwise, unfold `as_tildeV η x = as_podoTerminal s0 x
 = podo s0 T x` (`s0` the background of `as_tildeV`, `T` its stabilization `sInf`), apply
 `as_ineq2_first_crossing` to get a first-crossing time `t0 < T`,
@@ -887,14 +858,13 @@ theorem as_ineq2_mem_tildeP
     have := as_podo_mono s0 ht0T.le y
     omega
 
-/-- **Real, modulo the three gaps above (`eq:ineq2`'s final gluing,
-`exploding.tex:1048-1052`).** Combines `approx1`, `approx2` and
+/-- The final gluing of `eq:ineq2`. Combines `approx1`, `approx2` and
 `specialcase2` exactly as the paper does: if `v_t(x) > 0` then `approx2` gives
 `w_t(x) > 0` or `ṽ(x) > 0`; in the first case `specialcase2` gives
 `w̃_t(x) > 0`, and in the second `w̃_t(x) = 1 > 0` directly since `x ∈ P̃` by
 `ṽ(x) > 0`'s very definition of `P̃` (`as_tildeP`'s second disjunct, taking `x`
 adjacent to itself is not needed — `x`'s own positivity places it in `P̃` only
-through a neighbour, so we instead note `as_tildeP` also contains `0`
+through a neighbour, so instead note that `as_tildeP` also contains `0`
 unconditionally and re-derive `x ∈ as_tildeP η` from `ṽ(x) > 0` via the
 neighbour clause at any neighbour of `x`, closed above by
 `as_ineq2_mem_tildeP`). Either way

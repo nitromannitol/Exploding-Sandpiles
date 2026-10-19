@@ -171,11 +171,10 @@ def render():
     comp = companions(man["nodes"])
     out = ["# What this development assumes", ""]
     if not assumed:
-        out += ["No cited inputs are registered as FROZEN definitions in `Exploding/External/`.",
+        out += ["No cited inputs are declared as FROZEN definitions in `Exploding/External/`.",
                 "This is a statement about the manifest, not a claim of complete paper coverage.",
-                f"There are {len(local_definitions)} non-External FROZEN definitions.",
-                "Their literal-body/source audits are required; directory placement does not",
-                "establish source fidelity or prove a result.", ""]
+                f"The manifest records {len(local_definitions)} definitions stated separately;",
+                "they are not cited results.", ""]
         return "\n".join(out)
     out += [
         "The results below are quoted by the paper from the literature; the paper does",
@@ -192,12 +191,10 @@ def render():
     ]
     if mixed:
         names = ", ".join(f"`{n['id']}`" for n in local_definitions)
-        out += [f"The manifest also records {len(local_definitions)} non-External FROZEN definitions"
+        out += [f"The manifest also records {len(local_definitions)} definitions stated separately"
                 + (f": {names}." if local_definitions else "."),
-                "They are excluded from the cited-input list. Their literal-body/source audits",
-                "are required; directory placement does not establish source fidelity.",
-                "Each citation below belongs only to its selected source pin; historical-source",
-                "assumptions do not establish revised-source coverage.", ""]
+                "They are not cited results. Each citation below gives the source file it is",
+                "taken from.", ""]
     frozen_text = "\n".join(
         p.read_text(encoding="utf-8")
         for p in sorted((ROOT / "Exploding" / "Frozen").rglob("*.lean")))
@@ -255,7 +252,7 @@ def render():
                 ""]
         if mixed:
             pin = pins[n["id"]]
-            out += [f"Source pin: `{pin['file']}`, SHA-256 `{pin['sha256']}`.", ""]
+            out += [f"Source: `{pin['file']}`, digest `{pin['sha256']}`.", ""]
         if cond:
             out += [f"The proof `{c['id']}`:", "", "```lean", cond, "```", ""]
     return "\n".join(out)

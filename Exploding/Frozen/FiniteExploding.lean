@@ -11,7 +11,7 @@ import Exploding.External.AntalPisztora
 
 open Exploding LatticeProb MeasureTheory
 
-/-- **Lemma 3.2** (`exploding.tex:720-722`, label `lemma:finite_exploding`).
+/-- **Lemma 3.2** (`paper/corrected-arxiv/exploding-corrected-arxiv.tex:848-850`, label `lemma:finite_exploding`).
 
 "The last-wave is well-defined, `M̂_η(0) < ∞`."
 

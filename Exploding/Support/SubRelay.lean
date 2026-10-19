@@ -1,8 +1,8 @@
 /-
-The relay induction of the counterexample of `paper/exploding.tex` Section 6
-(`exploding.tex:1386-1389`): on the stacked checkerboard background the front on
+The relay induction in the two-dimensional case of the counterexample
+(`sec:counterexample_2D`): on the stacked checkerboard background the front on
 the relay row `x₁ = 1` advances at unit speed, reaching position `k` by time
-`k + 2`.  This is Step 1's upper bound in the proof of `theorem:counterexample`.
+`k + 2`.  This is the upper bound of Step 1 in the proof of `theorem:counterexample`.
 -/
 import Exploding.Support.Vocab
 
@@ -12,7 +12,7 @@ open LatticeProb Filter
 
 variable {d : ℕ}
 
-/-- The modified block `ζ'` of `exploding.tex:1490-1500`, transcribed from the
+/-- The modified block `ζ'` of the counterexample (`sec:counterexample_2D`), transcribed from the
 paper's display `[[4,2,2,3],[2,3,3,2],[3,3,3,2],[3,3,2,3]]` with the origin at the
 bottom left and `x₂` increasing upwards. -/
 def zeta1' (a b : ℤ) : ℤ :=
@@ -23,7 +23,7 @@ def zeta1' (a b : ℤ) : ℤ :=
   | 0, 3 => 4 | 1, 3 => 2 | 2, 3 => 2 | 3, 3 => 3
   | _, _ => 0
 
-/-- The checkerboard block `ζ₁` of `exploding.tex:1370-1376`. -/
+/-- The checkerboard block `ζ₁` of the counterexample (`sec:counterexample_2D`). -/
 def zeta1 (a b : ℤ) : ℤ :=
   if (a % 4 = 0 ∨ a % 4 = 3) ∧ (b % 4 = 0 ∨ b % 4 = 3) then 1 else 3
 
@@ -266,7 +266,7 @@ theorem aux_ce_row0_high (d : ℕ) (hd : 2 ≤ d) (k : ℤ) (hk : k % 4 = 1 ∨ 
   rw [hce, hx0, hx1, hz]
   ring
 
-/-- One further step beyond the relay (`exploding.tex:1389`): a row-`0` point of
+/-- One further step beyond the relay: a row-`0` point of
 "high" type gets fed by its own relay-row point above it. -/
 theorem aux_ce_row0_lands (d : ℕ) (hd : 2 ≤ d) (k : ℤ) (hk : k % 4 = 1 ∨ k % 4 = 2)
     (hk0 : 0 ≤ k) :
@@ -678,11 +678,10 @@ theorem aux_ce_stack_eta_eq (d : ℕ) (hd : 2 ≤ d) (x : Site d) :
   simp [h0, h1]
   ring
 
-/-- The inductive step of Step 3' (exploding.tex:1797-1811), the hard core:
+/-- The inductive step of the stacked-background comparison, the hard core:
 if the `d`-dim odometer at time `t` is dominated pointwise by the projected
-2D odometer (`ih`), it still is at `t+1`.  PROOF PLAN (paper's own case
-split).  Fix `x`, write `x̄` for its projection.  If `podo d t x < podo 2D t
-x̄` (strict): `podo d (t+1) x ≤ podo d t x + 1 ≤ podo 2D t x̄ ≤ podo 2D (t+1)
+2D odometer (`ih`), it still is at `t+1`.  Case split: fix `x`, write `x̄` for its projection.
+If `podo d t x < podo 2D t x̄` (strict): `podo d (t+1) x ≤ podo d t x + 1 ≤ podo 2D t x̄ ≤ podo 2D (t+1)
 x̄` via `podo_mono_step`, done.  Otherwise `podo d t x = podo 2D t x̄ =: v`
 (equality, from `ih`).  Unfold `pconf d t x = ceEta d x + nbrSumZ (podo d t)
 x - 2d*v` (`pconf`, `lap_eq`) and split the `2d`-term sum `∑_{i:Fin d}` at
@@ -695,7 +694,7 @@ corresponding `podo 2D t` neighbour values via `ih`.  Summing, `nbrSumZ (podo
 d t) x ≤ nbrSumZ (podo 2D t) x̄ + 2*(d-2)*v`.  With `aux_ce_stack_eta_eq`,
 `pconf d t x ≤ ceEta 2 x̄ + 2*(d-2) + nbrSumZ (podo 2D t) x̄ + 2*(d-2)*v -
 2d*v = pconf 2D t x̄ + 2*(d-2) - 2*(d-2)*v ... ` reduces (using `v` common to
-both sides, exactly the paper's algebra at exploding.tex:1801-1811) to
+both sides, exactly the algebra of the paper's proof) to
 `pconf d t x ≥ 2d ↔ pconf 2D t x̄ ≥ 4`, so `d`'s firing at `x` forces `2D`'s
 firing at `x̄`, giving `podo d (t+1) x = v + 1 = podo 2D (t+1) x̄` (or `≤` if
 `2D` alone fires without `d` needing to). -/
@@ -885,55 +884,31 @@ theorem aux_ce_stack_le_2D_step (d : ℕ) (hd : 2 ≤ d) (t : ℕ)
       · rw [if_neg h_fire_d]
         omega
 
-/-- Steps 3-4 (exploding.tex:1443-1726), hard, `T((3+8n)e₁) ≥ 12n` in 2D.
-CONFIRMED (this pass) genuinely NOT a mechanical further split of the current
-toolkit: the paper's own four sub-steps split into two that need brand-new
-Lean INFRASTRUCTURE (not new mathematics -- the paper supplies the full
-argument) rather than a restatement from existing pieces, and two that are
-routine given that infrastructure:
-(3a) `-- GAP`, NEEDS-PROOF-DESIGN: replace `ζ₁` by the cylinder background
-     `ζ`, reflect across `x₁ = -1/2` (`v_t(-1,x₂) := v_t(0,x₂)`, an extra
-     SELF-LOOP at the boundary, not a frozen exterior) and fold `x₂` mod `4`
-     onto a symmetrised Laplacian on `{x₁ ≥ 0} × ℤ/4`.  Checked: no cylinder,
-     reflection, or folded-Laplacian object exists anywhere in this
-     repository (`grep`-confirmed empty in `Exploding/`), and
-     `Exploding.fodo`'s `S`-frozen odometer only supports a FROZEN exterior
-     held at a fixed `w₀`, not this reflected/coupled one, so it cannot
-     stand in for it.  The paper cites "Lemma 2.3 in [bou2020dynamic]" for
-     identifying the resulting folded process with the honest `Site 2`
-     odometer's restriction to `{x₁ ≥ 0}`; formalizing it needs a NEW
-     recursive definition (a `cylOdo` on, e.g., `ℤ × Fin 4` with a
-     hand-written reflected/toroidal neighbour-sum) plus the symmetry lemma
-     identifying it with `podo (explodingPile (ceEta 2))` restricted to the
-     half-plane -- a genuine, self-contained but substantial design task for
-     a future pass, not attempted here.
-(3b) TRACTABLE once (3a)'s objects exist: the comparison `v_t ≤ w_t + ũ`, a
-     clean induction written out in full at exploding.tex:1506-1513, in
-     exactly the same style as `aux_te_podo_mono`/`aux_ce_stack_le_2D_step`
-     above (compare two odometers on the SAME domain via a fixed pointwise
-     offset function).
-(4a) TRACTABLE once (3a)'s objects exist: reduce `w_t` to its last wave with
-     the displayed `{0,1}` initial data, "identical to Step 1 of Proposition
-     4.1" (`prop-approximate-subadditive`'s own already-present machinery,
-     just not yet wired to a cylinder domain).
-(4b) `-- GAP`, NEEDS-PROOF-DESIGN: the pulsating front, 12 steps of the last
-     wave on the cylinder translate the front configuration by 8 columns,
-     which the paper itself verifies "by manual computation" on an explicit
-     `4x13` window.  Recommended route (unchanged from the prior pass):
-     define the front recursion on a fixed finite window as a computable
-     `Fin 13 → Fin 4 → ℤ` iteration and discharge "12 steps shift the front
-     by 8" via `decide`/`native_decide`, then a NEW locality lemma (the front
-     only interacts with columns within distance `1` per step) transfers the
-     window computation to the infinite cylinder.  This needs (3a)'s cylinder
-     object to even state, and is a genuinely separate, self-contained
-     finite-computation task once that object exists.
-Both GAPs need the SAME missing object ((3a)'s cylinder/reflected process);
-until it is designed, (3b)/(4a)/(4b) cannot be stated as separate Lean
-lemmas either (they are all ABOUT that object).  This is why the file's own
-prior "needs further split" note could not, in this pass, be turned into
-additional standalone `sorry` declarations without guessing at that object's
-definition -- which risks a silently wrong formalization more than it helps
-a later prover. -/
+/- Steps 3-4 of the two-dimensional case of the counterexample (`sec:counterexample_2D`)
+give `T((3+8n)e₁) ≥ 12n` in 2D.  This file does not formalize them.
+
+The paper's argument for them uses a reflected cylinder odometer on `{x₁ ≥ 0} × ℤ/4`:
+the block `ζ₁` is replaced by a cylinder background `ζ`, the boundary at `x₁ = -1/2` is
+reflected (`v_t(-1, x₂) := v_t(0, x₂)`, a self-loop at the boundary rather than a fixed
+exterior), and the coordinate `x₂` is taken modulo `4`.  No cylinder, reflected, or folded
+Laplacian object is defined in `Exploding/`.  The odometer `Exploding.fodo` supports only a
+fixed exterior held at a constant `w₀`, so it does not serve in its place.  The identification
+of the folded process with the restriction of the odometer to `{x₁ ≥ 0}`, which the paper
+takes from Lemma 2.3 of [bou2020dynamic], would need a recursive definition of the cylinder
+odometer and a symmetry lemma relating it to `podo (explodingPile (ceEta 2))` on the half-plane.
+
+Once that object is defined, the comparison `v_t ≤ w_t + ũ` is an induction written out in
+full in the paper, in the same style as `aux_te_podo_mono` and `aux_ce_stack_le_2D_step`
+below: two odometers on the same domain are compared through a fixed pointwise offset.  The
+reduction of `w_t` to its last wave, from the displayed `{0,1}` initial data, uses the
+machinery behind `prop:approximate_subadditive`, which still has to be applied to the
+cylinder domain.  The remaining step, that twelve steps of the last
+wave shift the front configuration by eight columns, is a finite computation on an explicit
+`4 × 13` window, which the paper verifies by hand.  It could be discharged by `decide` once the
+window is written as a computable iteration, and a locality lemma (the front interacts only with
+columns within distance one per step) would transfer the window computation to the infinite
+cylinder.  Each of these pieces needs the cylinder object to be stated.
+-/
 
 theorem aux_arrival_unfold (d : ℕ) (η : Site d → ℤ) (x : Site d) :
     arrival η x = sInf {t : ℕ∞ | ∃ k : ℕ, t = (k : ℕ∞) ∧ 1 ≤ k ∧
@@ -1039,7 +1014,7 @@ theorem aux_ce_speed (d : ℕ) (hd : 2 ≤ d) (n m : ℕ)
   have hm := ENat.coe_le_coe.mp key
   omega
 
-/-- Step 1 upper bound (exploding.tex:1386-1389), medium: `T((4n+1)e₁) ≤ 4n+4`.
+/-- Upper bound of Step 1 of the counterexample: `T((4n+1)e₁) ≤ 4n+4`.
 The row `x₁ = 1` is all `2d-1`; the origin fires at `t=1`, `e₂` at `t=2`, the
 row carries the firing one step per unit time, reaching `e₂+(4n+1)e₁` at
 `4n+3`, then `(4n+1)e₁` at `4n+4`.  Explicit induction on `n` along the row.

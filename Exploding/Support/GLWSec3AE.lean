@@ -1,7 +1,7 @@
 /-
 Proposition 5.1 of the paper (generalized last wave): fields of bits that depend on the background
 through finitely many coordinates, and their dependence graph under finite range of dependence
-(Hypothesis 5.1).
+(Hypothesis 1).
 -/
 import Exploding.Support.GLWSec3AD
 import Exploding.Support.GLWSec3AB

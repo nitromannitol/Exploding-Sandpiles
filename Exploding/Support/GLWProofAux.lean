@@ -1,44 +1,48 @@
 /-
-Proposition 5.1 of the paper: convergence of the last-wave under the general
-hypotheses.
+The convergence of the last wave under the general hypotheses
+(`prop:convergence_of_the_generalized_last_wave`, Section 5 of the paper).
 
-DECOMPOSITION (not a proof attempt).  The paper's own proof (exploding.tex:
-1200-1214) is two paragraphs: (i) Hypothesis 5.4 (strongly box-crossing) plus
-a domination theorem of Liggett ("Theorem 0.0 in [liggett1997domination]",
-i.e. the Liggett-Schonmann-Stacey stochastic-domination-by-i.i.d. theorem for
-finite-range-dependent 0/1 fields) gives an i.i.d.-dominated, hence
-supercritical, percolation cluster of "strongly box-crossing" macroscopic
-cells; (ii) "The rest of the argument follows almost exactly the proof in
-Section 3 [Lemmas 3.1-3.7, Prop 3.1].  The proof of Lemma 3.1 uses only
-`η ≥ 0`."
+The paper's proof has two steps. First, Hypothesis 4 (strongly box-crossing,
+`hyp:box_filling`) and a stochastic domination theorem of Liggett (Theorem 0.0
+in [liggett1997domination]) give a supercritical percolation cluster of strongly
+box-crossing macroscopic cells. The domination theorem is the external result
+`Exploding.External.LiggettSchonmannStacey`. It applies to finite-range-dependent
+0/1 fields, and the crossing field is one by Hypothesis 1
+(`hyp:finite_range_of_dependence`). Second, the rest of the argument follows the
+proof in Section 3 almost exactly. The proof of the square lower bound there
+(`lemma:square_lower_bound`) uses only `η ≥ 0`.
 
-So this node is Section 3's ENTIRE argument, re-run with the general
-hypotheses (`FiniteRangeOfDependence`, `PathFillingHyp`,
-`StronglyBoxCrossingHyp` in place of the toy law's i.i.d. structure and
-`lemma:local_convexity`/`prop:renormalization_properties`), PLUS one
-genuinely new ingredient absent from Section 3: Section 3's toy-law proof of
-`Explosive η` a.e. was never separately argued -- `thm-time-constant`
-(`Exploding.Frozen.convergence_of_time_constant`) gets it for free from the
-EXTERNAL citation `Exploding.External.FeyLevinePeresExplosive`.  No such
-external citation exists for a general hypothesis set, so THIS node must
-derive `Explosive η` from the wave construction itself: "the `n`-wave
-started at `z` dominates the `{z}`-frozen parallel toppling process ... but
-may not coincide with it" (Toppling.lean's own docstring, `(2.9)`/
-`eq:odometer_wave_comp` at exploding.tex:386-391).  That domination
-principle between `wave`/`WaveStabilizable` and `podo`/`Stabilizable`/
-`Robust` is NOT formalised anywhere in Exploding/Support/*.lean (confirmed
-by grep); it is also needed by `lem-square-lower-bound`'s decomposition
-(it is also needed by `lem-square-lower-bound`'s decomposition), so it is
-flagged here as shared foundational work rather than duplicated.
+The general hypotheses replace the i.i.d. structure of the toy law of Section 3.
+In Section 3, `Explosive η` almost surely follows from the convergence of the
+time constant (`theorem:convergence_of_time_constant`) and the external result
+`Exploding.External.FeyLevinePeresExplosive`. No such external result is
+available for the general hypotheses, so explosion is derived from the wave
+construction. The tool is the odometer-wave comparison `eq:odometer_wave_comp`:
+the wave started at `z` dominates the `{z}`-frozen parallel toppling process,
+though the two need not coincide.
 
-Given the "almost exactly Section 3" instruction, glw_section3_bundle
-below is NOT further split into the seven Section-3-style sub-lemmas
-(square_lower_bound, finite_exploding, penultimate_cluster,
-penultimate_upper_bound, penultimate_close, last_wave_convergence analogues)
--- that would mean re-doing the entire six-node decomposition already
-produced elsewhere in this development, parametrised by hypotheses instead of
-the toy law.  It is left as ONE explicitly flagged "needs further split"
-lemma with a comment pointing at exactly which six nodes it mirrors.
+The Section-3 argument, re-run with the general hypotheses, is packaged as the
+single hypothesis `glw_Section3Open`. It mirrors Lemmas 3.1-3.7 and Proposition
+3.1 of Section 3. It is kept as one hypothesis.
+
+This file contains the following. The crossing field is measurable and
+`k`-dependent (`glw_box_*`). The square lower bound (`glw_square_lower_bound`)
+holds for `η ≥ 0`. The wave-to-explosion pieces (`glw_wave_to_explosive_*`)
+are the nonnegativity and terminal stability of the parallel odometer, the bound
+`v 0 ≥ n` and the domination of the wave by a stable `v`. The step from these
+to `WaveStabilizable` and `Explosive` is part of `glw_Section3Open`. The last-wave
+bound and approximate subadditivity are proved in the Section 3 setting
+(`glw_last_wave_bound`, `glw_approx_subadditivity`). The shift ergodicity
+(`glw_shift_ergodic`) and the subadditive limit theorem (`glw_kingman_linear`)
+are also here. The Lipschitz estimate for cluster arrival times is
+`glw_cluster_lipschitz`. The reduction `glw_reduce` takes `glw_Section3Open` as a
+hypothesis and derives `glw_Conclusion`.
+
+Some lemmas take a further input as an explicit hypothesis rather than proving
+it. These are `hkd` in `glw_box_field_kdependent`, `hmix` (mixing on cylinder
+events) in `glw_shift_ergodic`, `hcore` (the subadditive core) in
+`glw_kingman_linear`, and `hlocal` (the local cluster bound) in
+`glw_cluster_lipschitz`.
 -/
 import Exploding.Support.Hypotheses
 import Exploding.Support.SquareLowerBoundExponential
@@ -55,14 +59,13 @@ namespace Exploding
 variable {d : ℕ}
 
 /-- Step 1: Liggett-Schonmann-Stacey domination, "Theorem 0.0" in
-[liggett1997domination].  The citation is now the frozen external
-`Exploding.External.LiggettSchonmannStacey`, taken here as `hLSS`, and this step is a direct use of it: for every target density
+[liggett1997domination].  The external result is `Exploding.External.LiggettSchonmannStacey`, taken here as `hLSS`, and this step is a direct use of it: for every target density
 `ρ < 1` there is `p < 1` such that any measurable field of bits `X` on the
 background space whose law is `k`-dependent and whose one-site probabilities are
 at least `p` dominates Bernoulli site percolation of density `ρ` on increasing
 events.
 
-The field of strongly box-crossing tiles is `k`-dependent by Hypothesis 5.1, in its family
+The field of strongly box-crossing tiles is `k`-dependent by Hypothesis 1, in its family
 form, through `glw_box_field_kdependent` below. -/
 theorem glw_liggett_domination (hLSS : Exploding.External.LiggettSchonmannStacey)
     (d : ℕ) (hd : 1 ≤ d) (k : ℕ) (ρ : ℝ) (hρ0 : 0 ≤ ρ) (hρ1 : ρ < 1) :
@@ -88,14 +91,14 @@ theorem glw_liggett_domination (hLSS : Exploding.External.LiggettSchonmannStacey
 section
 open scoped Classical
 
-/-- Step 1b (Hypothesis 5.1, family form).  Whether the tile `B_k + j·k` is strongly
+/-- Step 1b (Hypothesis 1, family form).  Whether the tile `B_k + j·k` is strongly
 box-crossing depends only on `η` restricted to that tile, since the frozen parallel toppling of
 `StronglyBoxCrossed` holds the odometer fixed off the tile.  Tiles whose indices are further
 apart than some `m` in `ℓ^∞` are further apart than `K` in the Manhattan norm, so Hypothesis
-5.1 makes the field of indicators `m`-dependent.  The indicator field is measurable, since each
+1 makes the field of indicators `m`-dependent.  The indicator field is measurable, since each
 coordinate depends on finitely many integer-valued coordinates of `η`.
 
-**Needs further split.**  For fixed `k, j`, `StronglyBoxCrossed η k j` depends only on
+The argument is as follows. For fixed `k, j`, `StronglyBoxCrossed η k j` depends only on
 `η` restricted to the finite tile `rboxShift k j`: unrolling `fodo`'s recursion
 (`fodo_succ`, `fodo_of_mem`) by induction on `t`, a site's frozen odometer value at time `t`
 is determined by the initial data `η` at sites of the (finite) tile reachable in `≤ t` steps
@@ -220,15 +223,16 @@ theorem glw_box_measurable (d : ℕ) (k : Fin d → ℕ) :
   exact measurable_pi_iff.mpr (fun j => glw_box_measurable_fixed d k j)
 
 
-/-- **Needs further split** (the dependence-radius computation).  Two tiles `rboxShift k j`
+/-- The dependence-radius computation. Two tiles `rboxShift k j`
 and `rboxShift k j'` whose macroscopic indices `j, j'` are more than `m` apart in `ℓ^∞`
 (`∀ i, m < |j i - j' i|`) have every microscopic site of one more than `K` (from
 `FiniteRangeOfDependence`) away in Manhattan norm from every microscopic site of the other,
 for `m` large enough depending on `k` and `K` (each tile has diameter `≤ ∑ l, k l` in `mnorm`,
-so `m > K / (min_i k i) + (diameter term)` suffices; the exact arithmetic is the content to
-fill in). Combined with `glw_box_finite_dep` (so events indexed by far-apart macroscopic
+so `m > K / (min_i k i) + (diameter term)` suffices; the exact arithmetic is not carried
+out here). Combined with `glw_box_finite_dep` (so events indexed by far-apart macroscopic
 sites factor through disjoint, far-apart finite coordinate sets of `η`) and
-`FiniteRangeOfDependence` itself, this gives the `k`-dependence conjunct. -/
+`FiniteRangeOfDependence` itself, this would give the `k`-dependence conjunct. The statement
+below takes that conjunct as the hypothesis `hkd`. -/
 theorem glw_box_field_kdependent (d : ℕ) (P : Measure (Site d → ℤ))
     (_h1 : FiniteRangeOfDependence d P) (k : Fin d → ℕ) (_hk : ∀ i, 0 < k i)
     (hkd : ∃ m : ℕ, KDependent m (P.map fun η (j : Site d) => decide (StronglyBoxCrossed η k j))) :
@@ -248,40 +252,29 @@ theorem glw_square_lower_bound (d : ℕ) (hd : 2 ≤ d) (ηmin : ℤ) (hηmin : 
   exact Exploding.square_lower_bound_exponential d hd η (fun y => le_trans hηmin (hη y).1) n hn
     ((2 * d) ^ (d * n)) le_rfl x hx
 
-/-- Step 4 (genuinely new, not present in the toy-law path at all: bridges
-`WaveStabilizable`/`wave` to `Robust`/`Stabilizable`/`Explosive` via the
-odometer-wave comparison `eq:odometer_wave_comp`, exploding.tex:386-391:
-"`v_{t+t0} ≥ w_t` where `t0 = min{t : v_t ≥ w_0}`".  This comparison
-principle between `fodo`/`podo` runs with ordered initial data is not
-formalised anywhere in Exploding/Support/*.lean.  In the toy-law proof this
-step is entirely avoided by citing `Exploding.External.FeyLevinePeresExplosive`
-directly; here there is no such external citation available for a general
-`P`, so `Explosive η` must be derived from `¬ WaveStabilizable η n 0` for
-some `n`.  This is the single most novel piece of mathematical content this
-node's decomposition needs beyond "redo Section 3"; NOT flagged as a
-literature GAP (it should be provable from the existing definitions) but
-flagged "needs further split" since it is a nontrivial domination argument
-in its own right.
+/-- Step 4 bridges `WaveStabilizable`/`wave` to `Robust`/`Stabilizable`/`Explosive` via
+the odometer-wave comparison `eq:odometer_wave_comp`:
+"`v_{t+t0} ≥ w_t` where `t0 = min{t : v_t ≥ w_0}`". This comparison between `fodo`/`podo`
+runs with ordered initial data is the new ingredient here. The toy-law proof avoids it
+by citing `Exploding.External.FeyLevinePeresExplosive` directly. For a general `P` there is
+no such external citation, so `Explosive η` is derived from `¬ WaveStabilizable η n 0` for
+some `n`. The comparison is a nontrivial domination argument in its own right.
 
-The hypothesis `0 ≤ η` is needed (correction 2026-09-24): on `η ≡ -1` every
-`n`-wave decreases without bound, so it is not stabilizable, while
-`η + m δ₀` stabilizes for every `m`.  Proof (paper, proof of Proposition 5.1):
-if `η + 2dn δ₀` stabilizes, its terminal odometer `v` has finite support,
-`v 0 ≥ n` and `v x ≥ ⌊(∑_{y∼x} v y + η x)/(2d)⌋` for `x ≠ 0`, because the
-terminal sandpile is stable; induction on `t` gives `wave η n 0 t ≤ v`, and a
-nondecreasing integer sequence bounded by a finitely supported `v` is
-eventually constant.
+The hypothesis `0 ≤ η` is needed for this route. On `η ≡ -1` every `n`-wave
+decreases without bound, so it is not stabilizable, while `η + m δ₀` stabilizes
+for every `m`. The route to `Explosive` is as follows. If `η + 2dn δ₀` stabilizes,
+its terminal odometer `v` has finite support, `v 0 ≥ n`, and
+`v x ≥ ⌊(∑_{y∼x} v y + η x)/(2d)⌋` for `x ≠ 0`, because the terminal sandpile is
+stable. Induction on `t` gives `wave η n 0 t ≤ v`, and a nondecreasing integer
+sequence bounded by a finitely supported `v` is eventually constant.
 
-CARVED (2026-09-24) into the four real pieces of that route plus one flagged residual
-gap.  The first three pieces (nonnegativity and terminal stability of `podo`, and the
-resulting bound `v 0 ≥ n`) and the domination step `wave ≤ v` are true and provable from
-existing definitions; the "hence `WaveStabilizable`" step genuinely needs `v` to have
-FINITE support (light-cone / bounded propagation speed), which in turn needs an upper
-bound on `η` -- not available from `hη : 0 ≤ η` alone, and not derivable here since the
-only two call sites of this lemma (`glw_section3_bundle`'s `hexpl` parameter and,
-through it, the already-complete `glw_assemble`) only ever supply `0 ≤ η`.  So this
-is flagged as a genuine, not-silently-assumed gap in `glw_wave_to_explosive_uniform`
-below, rather than closed by adding a hypothesis this lemma cannot actually discharge.
+The pieces proved in this file are the nonnegativity and terminal stability of
+`podo` (`glw_wave_to_explosive_pnonneg`, `glw_wave_to_explosive_pstable`), the
+bound `v 0 ≥ n` (`glw_wave_to_explosive_v0`), and the domination `wave ≤ v`
+(`glw_wave_to_explosive_dom`). The last step, from these to `WaveStabilizable`,
+needs the terminal odometer `v` to have finite support. That needs an upper bound
+on `η`, which `0 ≤ η` alone does not give. So this step is not proved here. It
+belongs to the Section-3 bundle `glw_Section3Open`.
 
 The `podo` odometer never decreases below `0`: `podo s0 0 = 0` and each step only adds
 a nonnegative increment (`podo_zero`, `podo_mono_step`), so `0 ≤ podo s0 t x` for every `t`
@@ -371,12 +364,11 @@ theorem glw_wave_to_explosive_d0 (hd0 : d = 0) (η : Site d → ℤ) (n : ℕ) (
   have hxz : x = z := funext fun i => i.elim0
   rw [hxz, wave_at_centre, wave_at_centre]
 
-/-- Lemma 3.3 in the Section 5 setting.  The frozen `Exploding.Frozen.last_wave_bound`
+/-- Lemma 3.3 in the Section 5 setting.  The theorem `Exploding.Frozen.last_wave_bound`
 carries `2d - 2 ≤ η` from Section 3, but its proof uses only `0 ≤ η ≤ 2d - 1`: the
 penultimate wave is the terminal odometer of a stabilizable wave, so
 `Δ ũ x + η x ≤ 2d - 1` for `x ≠ z` (`waveTerminal_fixed`), and when `M̂_η(z) = 1` this
-is `η x ≤ 2d - 1`.  Checked numerically on backgrounds with values in `{0,1,2,3}`
-(d = 2). -/
+is `η x ≤ 2d - 1`. -/
 theorem glw_last_wave_bound (d : ℕ) (hd : 2 ≤ d) (η : Site d → ℤ)
     (hlow : ∀ x, 0 ≤ η x) (hhigh : ∀ x, η x ≤ 2 * (d : ℤ) - 1)
     (z : Site d) (hlast : ∃ n : ℕ, 1 ≤ n ∧ ¬ WaveStabilizable η n z)
@@ -668,10 +660,7 @@ theorem glw_lastWave_dominates (η : Site d → ℤ) (hd : 2 ≤ d)
 
 /-- Lemma 3.4 in the Section 5 setting.  The proof of `Exploding.Frozen.approx_subadditivity`
 uses the background only through Lemma 3.3 and the monotonicity of the last wave in time,
-so it needs only `0 ≤ η ≤ 2d - 1`, through `glw_last_wave_bound`.  The bound is
-sharp: a numerical check shows that the analogue with one unit of slack fails, so the
-test is sensitive.  The proof is the complete one, not split into `glw_<lemma>_<k>`
-sub-pieces. -/
+so it needs only `0 ≤ η ≤ 2d - 1`, through `glw_last_wave_bound`. -/
 theorem glw_approx_subadditivity (d : ℕ) (hd : 2 ≤ d) (η : Site d → ℤ)
     (hlow : ∀ x, 0 ≤ η x) (hhigh : ∀ x, η x ≤ 2 * (d : ℤ) - 1)
     (hlast : ∀ y : Site d, ∃ n : ℕ, 1 ≤ n ∧ ¬ WaveStabilizable η n y)
@@ -701,22 +690,19 @@ theorem glw_approx_subadditivity (d : ℕ) (hd : 2 ≤ d) (η : Site d → ℤ)
       glw_wave_mono_time η hη0 hdz (waveThreshold η a) a (Nat.le_add_right N K) w
     linarith
 
-/-- Ergodicity of a single shift (proof of Proposition 5.1, convergence paragraph).
+/-- Ergodicity of a single shift (proof of the convergence proposition).
 `ErgodicOn` is ergodicity of the group `L`, which does not give ergodicity of one
-translation.  Translation by `y ∈ L` preserves `P` (`StationaryOn`), and Hypothesis 5.1
+translation.  Translation by `y ∈ L` preserves `P` (`StationaryOn`), and Hypothesis 1
 makes it mixing on cylinder events, hence ergodic.
 
-**Route found (2026-09-24):** `LatticeProb.ZeroOne`'s abstract criterion
-`ergodic_of_mixing_on_isSetRing` (mixing on a generating set ring, for ANY probability
-measure and ANY measure-preserving `T` -- it does NOT need `T` to come from an i.i.d./
-`Measure.infinitePi` structure; only its PRODUCT-specific corollary
-`ergodic_coordShift_infinitePi` does) applies directly here with `C = measurableCylinders`,
-exactly as in the proof of `ergodic_coordShift_infinitePi` itself, except the "coordinates
-are independent" input (`iIndepFun_infinitePi`, needing a product law) is replaced by
-`FiniteRangeOfDependence` supplying independence only once the two finite index sets are
-more than `K` apart -- so the iterate count `n` needed for mixing must be chosen using the
-GROWTH of `n • y` (linear in `n`, since `y ≠ 0`), not merely disjointness of `s` from its
-shift as in the i.i.d. case.
+The argument uses `LatticeProb.ZeroOne`'s criterion `ergodic_of_mixing_on_isSetRing`.
+It needs mixing only on a generating ring of sets, for any probability measure and any
+measure-preserving map. The product-specific corollary `ergodic_coordShift_infinitePi`
+is not used. The independence input there, which needs a product law, is replaced by
+the finite-range hypothesis. That hypothesis gives independence once the two finite
+index sets are more than `K` apart. So the iterate count `n` for mixing is chosen from
+the growth of `n • y`, which is linear in `n` since `y ≠ 0`. It is not chosen from the
+disjointness of `s` and its shift, as in the i.i.d. case.
 
 `mnorm (n • y) = n * mnorm y`, so for `y ≠ 0` (`mnorm y ≥ 1`) it exceeds any bound `K` for
 `n` large: `n = K + 1` already works since `mnorm y ≥ 1` gives `n * mnorm y ≥ n`. -/
@@ -762,10 +748,11 @@ theorem glw_shift_ergodic_meas_pres (d : ℕ) (L : AddSubgroup (Site d))
     MeasurePreserving (fun η : Site d → ℤ => fun z => η (y + z)) P P :=
   ⟨measurable_pi_lambda _ (fun z => measurable_pi_apply (y + z)), hstat y hy⟩
 
-/-- **Needs further split** (the independence-to-cylinder-measure computation).  Given `n`
+/-- The mixing identity assumed as `hmix` would follow from the finite-range hypothesis by
+the computation below. The computation is not carried out in this file. Given `n`
 with `s` and `s.image (fun z => (n:ℤ)•y + z)` more than `FiniteRangeOfDependence`'s `K` apart
 in `mnorm` (from `glw_shift_ergodic_growth` plus the triangle inequality over the finite
-set `s`), `h1` gives `IndepFun` of the coordinate-restriction maps to `s` and to that shifted
+set `s`), the finite-range hypothesis gives `IndepFun` of the coordinate-restriction maps to `s` and to that shifted
 image; factoring the shifted restriction map through the reindexing `ρ v i := v (n•y + i)`
 (as in `LatticeProb.infinitePi_inter_preimage_coordShift_cylinder`, whose proof is otherwise
 identical once `iIndepFun_infinitePi` is replaced by this `IndepFun`) turns that into the
@@ -791,9 +778,9 @@ theorem glw_shift_ergodic (d : ℕ) (L : AddSubgroup (Site d))
     obtain ⟨n, hn⟩ := hmix y hy0 s S hS
     exact ⟨n, hn⟩
 
-/-- The subadditive ergodic theorem without a moment bound (proof of Proposition 5.1).
+/-- The subadditive ergodic theorem without a moment bound (proof of the convergence proposition).
 The hypotheses of Section 5 give no bound on the mean of `clusterArrival η 0 y`, since
-Hypothesis 5.3 holds only on an event of probability one, so Kingman's theorem
+the bounds on the background hold only on an event of probability one, so Kingman's theorem
 (`LatticeProb.ae_tendsto_div`, which needs `Integrable (g 1)`) does not apply directly.
 It applies to the process induced on `A = {x : ∀ n, g n x ≤ C n + K}`, which has positive
 measure for `K` large by `hlin`: there the first term is at most `C r_A + K`, integrable
@@ -802,7 +789,7 @@ consecutive terms tend to `1`; `hlip` then gives convergence along all `n` on `A
 functions `liminf g n / n` and `limsup g n / n` are `T`-invariant by subadditivity and
 nonnegativity, hence a.e. constant, and equal the limit on `A`.
 
-Step (i) of the corrected proof: the set `A = {x : ∀ n, g n x ≤ C n + K}` has positive
+Step (i): the set `A = {x : ∀ n, g n x ≤ C n + K}` has positive
 measure for some fixed `C` (from `hlin`) and `K`: it is measurable (a countable intersection
 of measurable sets, `g` being measurable) and, as `K → ∞` over `ℕ`, the sets increase to a
 full-measure set (`hlin`'s witness `K` for a.e. `x`), so some finite `K` already gives
@@ -860,23 +847,21 @@ theorem glw_kingman_linear_setA {Ω : Type*} [MeasurableSpace Ω] (μ : Measure 
   have hKpos : 0 < μ (A K) := hK K (le_refl K)
   refine ⟨(K : ℝ), hA_meas K, hKpos⟩
 
-/-- Steps (ii)-(vi) (**GAP**, needs Kac's lemma and induced-transformation ergodicity, neither
-yet available: only the with-moment-bound `LatticeProb.ae_tendsto_div` is proved.  This is a
-genuinely new piece of subadditive ergodic theory, flagged rather than silently assumed, not
-closed here).  Given the positive-measure set `A` of `glw_kingman_linear_setA`,
-the first-return map to `A` is measure-preserving for the induced (normalised) measure and
-ergodic (standard facts about induced transformations of an ergodic system, e.g. Kac 1947 /
-Cornfeld-Fomin-Sinai Ch. 2); the return time `r_1` is integrable on `A` by Kac's lemma
-(`∫_A r_1 dμ = μ(Ω) = 1`); `G j := g (r_j)` (`r_j` the `j`-th return time) is subadditive
-along the induced map and bounded by `C r_1 + K` at `j = 1`, so `LatticeProb.ae_tendsto_div`
-applied to the induced system gives `G j / j → L'` a.e. on `A`; Birkhoff's theorem gives
-`r_j / j → 1 / μ(A)` a.e. on `A`, so `g (r_j) / r_j → L' · μ(A)` a.e. on `A`; `hlip` extends
-this along-the-return-times convergence to convergence along every `n`; and `liminf g n / n`,
-`limsup g n / n` are `T`-invariant (subadditivity, nonnegativity), hence a.e. constant
-(`herg`, via `Ergodic.ae_eq_const_of_ae_eq_comp₀`), equal to the limit already found on `A`,
-which transfers it to an honest a.e. limit on all of `Ω`. -/
--- Assembly: `glw_kingman_linear_setA` (with the `C` of `hlin`) gives `K` and the measurable
--- positive-measure set `A`; the open `glw_kingman_linear_core` then gives the limit.
+/-- The subadditive limit theorem. The core argument is taken as the hypothesis `hcore`,
+stated for the positive-measure set `A` of `glw_kingman_linear_setA`. The argument behind
+`hcore` runs as follows. The first-return map to `A` is measure-preserving for the induced
+normalised measure and ergodic (standard facts about induced transformations of an ergodic
+system, e.g. Kac 1947 / Cornfeld-Fomin-Sinai Ch. 2). The return time `r_1` is integrable on
+`A` by Kac's lemma (`∫_A r_1 dμ = μ(Ω) = 1`). `G j := g (r_j)` (`r_j` the `j`-th return time)
+is subadditive along the induced map and bounded by `C r_1 + K` at `j = 1`, so
+`LatticeProb.ae_tendsto_div` applied to the induced system gives `G j / j → L'` a.e. on `A`.
+Birkhoff's theorem gives `r_j / j → 1 / μ(A)` a.e. on `A`, so `g (r_j) / r_j → L' · μ(A)` a.e.
+on `A`. `hlip` extends this along-the-return-times convergence to convergence along every `n`.
+Finally `liminf g n / n` and `limsup g n / n` are `T`-invariant (subadditivity, nonnegativity),
+hence a.e. constant (`herg`, via `Ergodic.ae_eq_const_of_ae_eq_comp₀`), equal to the limit
+already found on `A`. This transfers it to an a.e. limit on all of `Ω`. -/
+-- The positive-measure set `A` and the constant `K` come from `glw_kingman_linear_setA`
+-- (with the `C` of `hlin`); `hcore` then gives the limit.
 theorem glw_kingman_linear {Ω : Type*} [MeasurableSpace Ω] (μ : Measure Ω)
     [IsProbabilityMeasure μ] (T : Ω → Ω) (_hT : MeasurePreserving T μ μ) (_herg : Ergodic T μ)
     (g : ℕ → Ω → ℝ) (_hsub : ∀ m n x, g (m + n) x ≤ g m x + g n (T^[m] x))
@@ -936,8 +921,8 @@ theorem glw_cluster_lipschitz (d : ℕ) (hd : 2 ≤ d) (ηmin : ℤ) (hηmin : 0
   have hcast : (a' : ℝ) ≤ (a : ℝ) + (c : ℝ) := by exact_mod_cast htri'
   linarith
 
-/-- The conclusion of Proposition 5.1, packaged so the open Section-3 bundle can
-mention it and the frozen theorem can consume it. -/
+/-- The conclusion of the convergence proposition for the generalized last wave, packaged so
+that the Section-3 bundle can refer to it and the convergence theorem can consume it. -/
 def glw_Conclusion (d : ℕ) (P : Measure (Site d → ℤ)) : Prop :=
   ∃ N : (Fin d → ℝ) → ℝ,
     Continuous N ∧
@@ -950,11 +935,11 @@ def glw_Conclusion (d : ℕ) (P : Measure (Site d → ℤ)) : Prop :=
             |((lastArrival η (0 : Site d) (nearestSite ((n : ℝ) • y))).toNat : ℝ) / (n : ℝ)
               - N y| ≤ ε
 
-/-- The Section-3 bundle of the decomposition, as an implication from the whole
-setting of Proposition 5.1 (including its deterministic macroscopic growth input)
-to the conclusion.  This is the single open claim of the reduction: it contains
-the infinite-cluster construction (Hypotheses 5.1, 5.4), the wave-to-explosion
-step, and the Section-3 re-run of Lemmas 3.1-3.7 and Proposition 3.1. -/
+/-- The Section-3 bundle, as an implication from the whole setting of the convergence
+proposition (including its deterministic macroscopic growth input, the last hypothesis
+below) to the conclusion. It contains the infinite-cluster construction (Hypotheses 1
+and 4), the wave-to-explosion step, and the Section-3 re-run of Lemmas 3.1-3.7 and
+Proposition 3.1. -/
 def glw_Section3Open (d : ℕ) (_hd : 2 ≤ d) (ηmin : ℤ) (_hηmin : 0 ≤ ηmin)
     (L : AddSubgroup (Site d)) (_hL : L.index ≠ 0)
     (P : Measure (Site d → ℤ)) : Prop :=
@@ -969,14 +954,14 @@ def glw_Section3Open (d : ℕ) (_hd : 2 ≤ d) (ηmin : ℤ) (_hηmin : 0 ≤ η
       ∃ t : ℕ, 0 < wave η ((2 * d) ^ (d * n)) (0 : Site d) t x) →
   glw_Conclusion d P
 
-/-- The deterministic assembly.  The single remaining open input is
-`glw_Section3Open`, the Section-3 bundle; fed the deterministic macroscopic growth
-input `glw_square_lower_bound`, it produces the full conclusion, explosion
-included.  Everything else in `wip/decomp/GenLastWaveAux.lean` that is
-deterministic is ported above (box measurability, the wave-to-odometer domination
-arithmetic, the last-wave bound, approximate subadditivity and the cluster
-helpers, the shift growth/iterate identities, and the positive-measure set of the
-subadditive theorem). -/
+/-- The reduction of the convergence proposition to the Section-3 bundle. The hypotheses
+are the standing assumptions on `P` (almost sure membership in `InOmega`, stationarity and
+ergodicity on `L`, and the finite-range, path-filling and strongly box-crossing hypotheses
+`h1`, `h3`, `h4`), the external results `hLSS`, `hLSSB`, `hHole` and `hChem`, and the
+Section-3 bundle `hsec3 : glw_Section3Open`. The proof applies `hsec3` to the deterministic
+macroscopic growth input, which is the square lower bound `glw_square_lower_bound`, proved
+in this file. The result is the full conclusion `glw_Conclusion`, explosion included. This
+reduction uses no other deterministic lemma of this file. -/
 theorem glw_reduce (d : ℕ) (hd : 2 ≤ d) (ηmin : ℤ) (hηmin : 0 ≤ ηmin)
     (L : AddSubgroup (Site d)) (hL : L.index ≠ 0)
     (P : Measure (Site d → ℤ)) (hP : IsProbabilityMeasure P)

@@ -1,297 +1,265 @@
-# Exploding-Sandpiles
+# A shape theorem for exploding sandpiles
 
-A **Lean 4** formalization of the paper
+A machine-checked **Lean 4** formalization of the paper
 
 > Ahmed Bou-Rabee,
 > [*A shape theorem for exploding sandpiles*](https://arxiv.org/abs/2102.04422),
-> Annals of Applied Probability 34(1A) (2024), 714-742; arXiv:2102.04422.
+> Annals of Applied Probability 34(1A) (2024), 714–742; arXiv:2102.04422.
 
-The 22 numbered paper-owned statements select the [corrected arXiv-format v11 draft](paper/corrected-arxiv/SOURCE_NOTE.md). The official arXiv v2 source and abstract are preserved unchanged. Cited literature remains explicit in theorem types. The planar optimality remark (Remark 1: the least covering wave order in the plane is of order n² log(n+1)), which lies outside the 22 numbered theorem-like statements, is proved as a separate registration. These registrations are not a whole-paper release certificate. The development uses Mathlib and Lattice-Probability.
+The formalized text is a corrected edition of the arXiv source (v2), in
+[`paper/corrected-arxiv/`](paper/corrected-arxiv/). Its section "Corrections to the published
+version" lists every change from arXiv v2, and [the table below](#corrections-to-the-published-version)
+repeats that list. The unmodified arXiv v2 source is kept in
+[`paper/exploding-arxiv.tex`](paper/exploding-arxiv.tex).
 
-A separate corrected arXiv-format draft is available with a source note and compilation instructions at paper/corrected-arxiv/SOURCE_NOTE.md.
+All 22 numbered results of the corrected edition and its Remark 1 are proved in Lean, with no `sorry` and only the standard axioms, from three cited results that enter as explicit hypotheses; Theorem 6.1 is stated as published, Theorems 1.2 and 1.3 as published with the law (2) read as one common law at every site, and Theorems 1.4 and 5.1 with the corrections listed in the corrected edition.
 
-[![CI](https://github.com/nitromannitol/Exploding-Sandpiles/actions/workflows/build.yml/badge.svg)](https://github.com/nitromannitol/Exploding-Sandpiles/actions/workflows/build.yml)
-[![Comparator audit](https://github.com/nitromannitol/Exploding-Sandpiles/actions/workflows/comparator.yml/badge.svg)](https://github.com/nitromannitol/Exploding-Sandpiles/actions/workflows/comparator.yml)
+The development is built on [mathlib](https://github.com/leanprover-community/mathlib4) and on the public library [Lattice-Probability](https://github.com/nitromannitol/Lattice-Probability).
 
-## Results and source coverage
+[![CI](https://github.com/nitromannitol/Exploding-Sandpiles/actions/workflows/build.yml/badge.svg?branch=main)](https://github.com/nitromannitol/Exploding-Sandpiles/actions/workflows/build.yml)
+[![Comparator audit](https://github.com/nitromannitol/Exploding-Sandpiles/actions/workflows/comparator.yml/badge.svg?branch=main)](https://github.com/nitromannitol/Exploding-Sandpiles/actions/workflows/comparator.yml)
 
-A *background* is a function `η : ℤ^d → ℤ` counting chips at each site.  Add `n` chips at
-the origin and topple in parallel: every site holding at least `2d` chips fires, sending one
-chip to each neighbour.  The background is *robust* if this halts for every `n`, and
-*explosive* otherwise.  For the Bernoulli background of `(1.2)`, which holds `2d - 2` chips
-with probability `1 - p` and `2d - 1` with probability `p > 0`, Fey, Levine and Peres showed
-that it is explosive almost surely (quoted as Theorem 1.1).  The main theorems of the paper
-say that the explosion has a limit shape: the toppled region, rescaled by time, converges to
-a convex domain (Theorem 1.2), and the rescaled arrival times converge locally uniformly to
-a continuous, convex, one-homogeneous function (Theorem 1.3).  Theorem 1.4 extends the
-explosion theorem to product backgrounds whose common one-site law gives full mass to `{m ≥ d}`
-and positive mass to `{2d - 1}`.  Behind them are crossing speeds and a static
-renormalization (Section 2), the last wave (Section 3), the proof of Theorem 1.3
-(Section 4), general hypotheses under which the convergence holds (Section 5, Theorem 5.1),
-explosive backgrounds with no limit shape (Section 6, Theorem 6.1), and a criterion for
-explosion through dimensional reduction and bootstrap percolation (Section 7).
+## What is proved
 
-The registry contains 42 declarations: 22 paper-owned numbered theorem rows, the planar optimality remark, six historical cited-input proof companions, nine cited-input definitions and four literal definitions. Definitions add no theorem coverage. The actual imported project builds 9,842 jobs. Source/consumer reviews, exact marker hashes and the remaining scope are recorded in [the integration record](ledger/audits/2026-10-18-corrected-v11-integration.md) and, for the planar remark, in [its audit record](ledger/audits/2026-10-18-sharp-planar-obstruction.md). Final semantic closure and release checks are still required.
+A *background* is a function `η : ℤᵈ → ℤ`. Add `n` chips at the origin and topple in parallel;
+the background is *explosive* if for some `n` this never stabilizes. Let `M_η` be the least such
+`n` and `v_t` the parallel-toppling odometer of `η + M_η δ₀`. In Theorems 1.2 and 1.3, `η` has
+independent values, `2d − 1` with probability `p` and `2d − 2` otherwise, with `d ≥ 2` and
+`0 < p ≤ 1`.
 
-[`Exploding/MainTheorems.lean`](Exploding/MainTheorems.lean) gives the public statements.
-Theorem 5.1 retains its journal-source contract and stated model hypotheses.
-Theorem 1.2 version 5, Theorem 1.3 version 6, Proposition 2.2 version 5, Theorem 1.4 version 4, and Theorem 6.1 version 4 select the corrected-v10 source:
+| Paper | Lean declaration | Content |
+| --- | --- | --- |
+| Theorem 1.2 | `Exploding.limit_shape` | The rescaled toppled region converges in volume to a convex domain. |
+| Theorem 1.3 | `Exploding.convergence_of_time_constant` | The rescaled arrival times converge locally uniformly. |
+| Theorem 1.4 | `Exploding.explosive` | A product background with one-site law `ν` explodes. |
+| Theorem 5.1 | `Exploding.generalized_convergence` | Convergence under the hypotheses of Section 5. |
+| Theorem 6.1 | `Exploding.counterexample` | An explosive background with no limit shape. |
 
-- **Theorem 1.2, the limit shape** (`theorem:limit_shape`, `Exploding.Frozen.limit_shape`):
-  for `d ≥ 2` and `0 < p ≤ 1` under the corrected-v10 homogeneous law there is a nonempty open convex set `B ⊂ ℝ^d` such that, for
-  almost every background `η` of that law, the Lebesgue measure of the symmetric difference of
-  `B` and `{y | v_t([t y]) > 0}` tends to `0`.
-- **Theorem 1.3, the time constant** (`theorem:convergence_of_time_constant`,
-  `Exploding.Frozen.convergence_of_time_constant`): for `d ≥ 2` and `0 < p ≤ 1`
-  under the corrected-v10 homogeneous law, there is a continuous, convex,
-  one-homogeneous `N : ℝ^d → ℝ` such that almost surely the background is explosive, every
-  arrival time is finite, and `n⁻¹ T_η([n y])` converges to `N y` uniformly on every compact
-  set.
-- **Theorem 1.4** (`theorem:explosive`, `Exploding.Frozen.explosive`): for `d ≥ 2` and a
-  probability law `ν` on `ℤ` with `ν {m ≥ d} = 1` and `ν {2d - 1} > 0`, the product background
-  with one-site law `ν` at every site is explosive almost surely, with the cited input `hSch`.
-- **Theorem 5.1, convergence under the general hypotheses** (`Exploding.Frozen.generalized_convergence`):
-  under the hypotheses of Section 5, almost surely the background is explosive and the
-  rescaled arrival times converge locally uniformly to a deterministic, continuous, convex,
-  one-homogeneous function.
-- **Theorem 6.1, no limit shape** (`theorem:counterexample`,
-  `Exploding.Frozen.counterexample`): for `d ≥ 2` there is one explosive background `η` not
-  bounded below by `2d - 2`, with finite arrivals along `n e₁`, `limsup n⁻¹ T(n) ≥ 3/2`,
-  and `liminf n⁻¹ T(n) = 1`. For that same `η` and `hη`, no measurable set `B` is a limit
-  of the rescaled support in symmetric-difference volume. The full conclusion is proved
-  without a cited-result hypothesis.
-- **Proposition 2.2, static renormalization** (`prop:renormalization_properties`,
-  `Exploding.Frozen.renormalization_properties`): for `0 < p ≤ 1`, with all three cited
-  percolation inputs retained in the type, the good-cube cluster satisfies the hole and
-  chemical-distance bounds; the `hHole` cited binder remains in the type but is unused in this proof,
-  while the hole obligation is proved through in-repository `Exploding.xmf_proved`,
-  and the selected `Cinf` is a good-cube component while every infinite good-cube component equals it.
-  It is pinned to corrected-v10 lines 352–367; no new `External` declaration is added.
+**Theorem 1.2.** There is a nonempty open convex set `B ⊂ ℝᵈ` such that almost surely
+`|{y : v_t([t y]) > 0} △ B| → 0` as `t → ∞`.
 
-Highlights among the proved results:
+**Theorem 1.3.** There is a continuous, convex, positively one-homogeneous `N` such that almost
+surely `η` is explosive, every arrival time `T(x) = min{t ≥ 1 : v_t(x) > 0}` is finite, and
+`n⁻¹ T([n y]) → N(y)` uniformly on compact sets.
 
-* **`Exploding.square_lower_bound`** (Lemma 3.1): on a nonnegative background, for `n ≥ 1`
-  and `m ≥ (2d)^{dn}`, the `m`-wave from the origin reaches every site of `[-n, n]^d`.
-* **`Exploding.last_wave_bound`** (Lemma 3.3): for `2d - 2 ≤ η ≤ 2d - 1` with a well-defined
-  last wave, the last wave exceeds the penultimate wave by at most one.
-* **`Exploding.approx_subadditivity`** (Lemma 3.4): under the same hypotheses, the
-  penultimate-cluster arrival times are subadditive.
-* **`Exploding.dimensional_reduction`** (Proposition 7.2): on a face of the box, the
-  constrained process in `ℤ^{d+1}` runs the one in `ℤ^d`.
-* **`Exploding.recurrence`** (Proposition 7.3): the constant background `d` is recurrent.
+**Theorem 1.4.** Let `d ≥ 2` and let `ν` be a probability law on `ℤ` with `ν{m ≥ d} = 1` and
+`ν{2d − 1} > 0`. A background whose values are independent, each of law `ν`, is explosive almost
+surely.
 
-**What is assumed.** The seven historical cited results are stated in Lean as propositions in
-`Exploding/External/`; an old-source theorem carries one where it appears in that statement, so
-the type shows its cited premises. The corrected-v10 counterexample and crossing types have no cited-result binder;
-Theorem 1.3 retains `hFLP` and the three percolation inputs for its strict branch. No
-`axiom` is declared. [`ASSUMPTIONS.md`](ASSUMPTIONS.md) lists all seven registered historical
-inputs with their verbatim Lean statements. The registered frozen statements carry them as
-follows, where `perc` stands for the three percolation
-results `hLSSB` (Corollary 1.4 of Liggett, Schonmann and Stacey), `hHole` (Lemma 5.2 of
-Mathieu) and `hChem` (Theorem 1.1 of Antal and Pisztora):
+**Theorem 5.1.** Let `d ≥ 2` and let `P` be a law on backgrounds `η_min ≤ η ≤ 2d − 1` that is
+stationary and ergodic for a sublattice of finite index and satisfies Hypotheses 1 and 3 to 5 of
+Section 5. Then almost surely `η` is explosive, and `n⁻¹ T([n y])` converges locally uniformly to a
+deterministic, continuous, convex, one-homogeneous function.
 
-| statement | cited hypotheses carried |
-|---|---|
-| Theorem 1.2 | `perc`, `hSch` (Schonmann's bound, Proposition 7.4) |
-| Theorem 1.3 | `perc`, `hFLP` (Theorem 1.1, Fey, Levine and Peres) |
-| Theorem 1.4, Proposition 7.5 | `hSch` |
-| Proposition 2.2, Lemmas 3.2, 3.5, 3.6 and 3.7, Propositions 3.1 and 4.1 | `perc` |
-| Proposition 5.1, Theorem 5.1 | `perc`, `hLSS` (Theorem 0.0 of Liggett, Schonmann and Stacey) |
-| Theorem 6.1 and Proposition 2.1, corrected-v10 | none; both exact types have no cited-result binder |
-| Propositions 7.1, 7.2 and 7.3, Lemmas 2.1, 3.1, 3.3 and 3.4 | none |
+**Theorem 6.1.** For every `d ≥ 2` there is an explosive background `η`, not bounded below by
+`2d − 2`, whose arrival times along `e₁` are finite, satisfy `limsup T(n e₁)/n ≥ 3/2` and
+`liminf T(n e₁)/n = 1`, and for which no measurable set is a limit in volume of the rescaled
+toppled regions.
 
-Propositions 5.1 and 7.1 and Theorem 5.1 also carry the model hypotheses of Sections 5 and 7
-(finite range of dependence, path-filling, box-crossing, recurrence, wave approximation);
-these are assumptions on the law of the background, not cited results.
+The other numbered results are proved in the same file, as are Remark 1 and the two results the
+paper quotes, Theorem 1.1 (Fey, Levine and Peres) and Proposition 7.4 (Schonmann), which are proved
+here for `0 < p ≤ 1`. The map from LaTeX labels to Lean names is in
+[`CORRESPONDENCE.md`](CORRESPONDENCE.md).
 
-Six of the seven cited results are proved in this repository, so the hypothesis can be
-discharged by the proof named:
+| Paper | Lean declaration |
+| --- | --- |
+| Theorem 1.1 (quoted) | `Exploding.fey_levine_peres_explosive` |
+| Proposition 2.1 | `Exploding.crossing_time` |
+| Proposition 2.2 | `Exploding.renormalization_properties` |
+| Lemma 2.1 | `Exploding.local_convexity` |
+| Lemma 3.1 | `Exploding.square_lower_bound` |
+| Remark 1 | `Exploding.sharp_planar_obstruction` |
+| Lemma 3.2 | `Exploding.finite_exploding` |
+| Lemma 3.3 | `Exploding.last_wave_bound` |
+| Lemma 3.4 | `Exploding.approx_subadditivity` |
+| Lemma 3.5 | `Exploding.last_penultimate_cluster` |
+| Lemma 3.6 | `Exploding.penultimate_upper_bound` |
+| Lemma 3.7 | `Exploding.last_penultimate_close` |
+| Proposition 3.1 | `Exploding.convergence_of_the_last_wave` |
+| Proposition 4.1 | `Exploding.approximate_subadditive` |
+| Proposition 5.1 | `Exploding.convergence_of_the_generalized_last_wave` |
+| Proposition 7.1 | `Exploding.explosion_criteria` |
+| Proposition 7.2 | `Exploding.dimensional_reduction` |
+| Proposition 7.3 | `Exploding.recurrence` |
+| Proposition 7.4 (quoted) | `Exploding.schonmann_bootstrap` |
+| Proposition 7.5 | `Exploding.box_crossing` |
 
-- The historical FMR registration still has the separate proof `Exploding.xfmr_proved`
-  (`Exploding/Support/ExtFMR.lean`); FMR is not a premise of proved v4 Theorem 6.1.
-- `hLSSB` by `Exploding.xlse_lss_bounded_degree` and `hLSS` by `Exploding.xlse_lss_general`
-  (`Exploding/Support/ExtLSSCountable.lean`);
-- `hHole` by `Exploding.xmf_proved` (`Exploding/Support/ExtMHHoleVolume.lean`);
-- `hSch` by `Exploding.xsr_schonmann` (`Exploding/Support/ExtSchFinal.lean`);
-- `hFLP` by `Exploding.xsr_flp` (`Exploding/Support/ExtSchFLP.lean`), which applies
-  `Exploding.LSProof.ls_flp_from_explosive` (`Exploding/Support/LSProofAux.lean`) to
-  `Exploding.xsr_schonmann`; that derivation is available because Theorem 1.4 strengthens
-  Theorem 1.1, and the proof of Theorem 1.2 already uses it.
+## Corrections to the published version
 
-Only `hChem` (`Exploding.External.AntalPisztoraChemicalDistance`) is assumed outright. The
-frozen statements carry cited results only where they appear as hypotheses. The proved
-Theorem 6.1 statement has no cited-result binder. Theorem 1.4 and Proposition 7.5 (`hSch := Exploding.xsr_schonmann`)
-hold with no cited hypothesis; Theorems 1.2 and 1.3 rest on `hChem` alone. Proposition
-2.2, Lemmas 3.2, 3.5, 3.6 and 3.7, Propositions 3.1, 4.1 and 5.1 and Theorem 5.1 retain
-their cited binders and can discharge the in-repository results; Proposition 2.2@5 keeps
-`hHole` visible but unused in this proof, while its hole obligation is proved through the
-in-repository `Exploding.xmf_proved`. The last two also use the
-model hypotheses above. The paper-to-Lean map
-of the cited results is
-in [`CORRESPONDENCE.md`](CORRESPONDENCE.md).
+The table lists the 20 changes from arXiv v2, in the order of the corrected edition. Each gives the
+published text, the corrected text and the reason. "Where" names the result concerned; "proof only"
+marks a change that leaves the statement unchanged.
 
-Not formalized: the proof outline of Section 1, the examples of Section 5.2 and the figures.
-Other corrected-v10 statements have no corrected-source certification; Lemma 3.2 version 7 is PROVED for 0 < p ≤ 1 under the historical source pin, and official arXiv Proposition 3.1, Lemmas 3.5, 3.6, 3.7 and Proposition 4.1 version 5 include p = 1. One remaining strict Bernoulli paper row still excludes p = 1.
+| Change | Where | Published | Corrected | Reason |
+| --- | --- | --- | --- | --- |
+| C01 | Law (2), Section 1 | $\mathbf P(\eta(0)=2d-2)=1-p$, $\mathbf P(\eta(0)=2d-1)=p$ at the origin only | $\mathbf P=\bigotimes_{x}\nu_p$, $\nu_p=(1-p)\delta_{2d-2}+p\delta_{2d-1}$, $0<p\le1$ | The published law does not fix the marginal away from the origin; with $2d-2$ elsewhere the background is robust. |
+| C02 | Theorems 1.2 and 1.3 | Law (2) fixes the origin marginal only; "convex domain" unspecified | Law read as C01; a convex domain is a nonempty open convex set | The statements need the common marginal, and the term needs a definition. |
+| C03 | Theorem 1.4 | Product measure $\mathbf P$, $\beta\ge d$, $\mathbf P(\beta(0)=2d-1)>0$ | $d\ge2$, $\nu(\{m\ge d\})=1$, $\nu(\{2d-1\})>0$, $\mathbf P=\bigotimes_x\nu$ | The published statement fails for product laws whose marginals differ between sites. |
+| C04 | Frozen parallel toppling recursion | $w_{t+1}(x)=\lfloor\cdot\rfloor$ for $x\notin\mathcal S$; $s'_{t+1}=s_0+\Delta(w_{t+1}-w_0)$ | $w_{t+1}(x)=\max\{w_t(x),\lfloor\cdot\rfloor\}$; $s'_{t+1}=s_0+\Delta w_{t+1}$ | The odometer never decreases; the identity for $s'$ holds only when $\Delta w_0=0$. |
+| C05 | Proposition 2.1, Lemma 2.1, Hypotheses 2 to 4, recurrence criterion, proof of Proposition 4.1 | Delivered seed $s'_0=\eta$ | $s'_0=\eta+\Delta w_0$; "quickly exceeds 1" becomes "is at least 1" in Hypothesis 3 | The published seed contradicts the frozen process; with $s'_0=\eta$ nothing topples on an L-shaped path on $\eta\equiv2d-2$. |
+| C06 | Proof of Proposition 2.2 (paragraph before it, proof only) | Good cubes dominate a site percolation process; large deviations for supercritical percolation | Good edges dominate bond percolation $\zeta$ (Liggett, Schonmann and Stacey, Corollary 1.4); Mathieu's Lemma 5.2 bounds holes; Antal and Pisztora bounds chemical distances | The chemical distance bound concerns bond percolation; good cubes form a site process. |
+| C07 | Lemma 2.1, initial odometer and its figure caption | $w_0\vert_A=1$; caption $s'_0=2$ | $w_0=\mathbf 1_A$ on the whole lattice; caption $s'_0=2+\Delta\mathbf 1_A$ | The frozen process takes its initial odometer on the whole lattice. |
+| C08 | Lemma 3.1, statement, proof and remarks | Constant $C$ with the $(Cn^d)$-wave containing $[-n,n]^d$; proof from Fey, den Boer and Redig | For $d\ge2$, $m\ge\lceil C_2n^2\log(n+1)\rceil$ when $d=2$, or $m\ge\lceil C_dn^d\rceil$ when $d\ge3$; sharp planar rate in Remark 1 | The bound $Cn^2$ is false in dimension two (Remark 1). |
+| C09 | Proof of Proposition 3.1 (proof only) | Convergence in integer directions by the subadditive ergodic theorem; everywhere by continuity | Two bounds on $\tilde T$ on an event of probability one; ergodic theorem on the induced transformation; comparison bound in place of continuity | Integrability of $\tilde T(0,y)$ is not shown, and continuity is not available. |
+| C10 | Proof of Theorem 1.2 | No derivation | Proof via $\mathcal B(p)=\{\mathcal N_p<1\}$; the level set $\{\mathcal N_p=1\}$ has Lebesgue measure zero | Theorem 1.2 is asserted without proof. |
+| C11 | Standing assumption of Section 5; Proposition 5.1; Theorem 5.1 | No dimension assumed | "In this section assume $d\ge2$." | Both statements are false in dimension one: take $\eta\equiv0$ on $\mathbb Z$. |
+| C12 | Hypothesis 1, statement | $\eta(x)$ and $\eta(y)$ independent if $\lvert x-y\rvert>K$ | For finite $F,G$ with $\lvert x-y\rvert>K$ on $F\times G$, the values on $F$ and the values on $G$ are independent | The domination step needs joint independence; pairwise independence does not give it. |
+| C13 | Hypothesis 4, deadline | $w_{\lvert k\rvert}\ge\mathbf 1\{x\in\mathcal B_k\}$ | $w_{\lvert\mathcal B_k\rvert}\ge\mathbf 1\{x\in\mathcal B_k\}$ | Since $\eta\le2d-1$, crossing by that time is the same as eventual crossing. |
+| C14 | Proof of Proposition 5.1 (proof only) | Domination by independent Bernoulli variables; explosion asserted | Proof written out in full, deriving nonnegativity, recurrence and explosion of $\eta$ | The domination needs the joint independence of C12; the sketch does not derive explosion. |
+| C15 | Proof of Theorem 6.1, failure of convergence | Failure shown by comparison with the two-dimensional counterexample | $\lvert(A_t\triangle(A_t-e_2/t))\cap\Omega_d\rvert\ge c_d$ for large $t$, with $A_t=\{y:\bar v_t(y)>0\}$ | The sense of failure must be the one Theorem 1.2 asserts. |
+| C16 | Proposition 7.1, dimension | No restriction on $d$ | $d\ge2$ | The case $d=1$ is not covered by the machine-checked statement. |
+| C17 | Proof of Proposition 7.1 (proof only) | "The arguments in the generalization section imply the criterion"; no proof | A proof for $d\ge2$, and a separate paragraph for $d=1$ | The criterion needs a proof of its own. |
+| C18 | Setup of Proposition 7.2, initial data and tangential values | $s_0^{(d-1)}(\mathbf x_{d-1})=\eta^{(d)}(\mathbf x_{d-1})-1$; tangential values unspecified | $\eta^{(d-1)}(\mathbf x)=\eta^{(d)}(1,\mathbf x)-1$; $s_0^{(d-1)}=\eta^{(d-1)}+\Delta u_0^{(d-1)}$; boundary values in $\{0,1\}$ | The published argument of $\eta^{(d)}$ is a typo; the initial topplings need $\Delta u_0$. |
+| C19 | Proof of Proposition 7.3 (proof only) | $Q_n^{(d)}=Q_{n-2}^{(d)}\cup\bigcup_i\mathcal F_i(Q_n^{(d)})$ | $Q_n^{(d)}=(\mathbf 1+Q_{n-2}^{(d)})\cup\bigcup_{i=1}^{2d}\mathcal F_i(Q_n^{(d)})$, with base cases $n=1,2$ | $Q_{n-2}^{(d)}$ is the corner cube, not the inner cube. |
+| C20 | Proposition 7.5, box-crossing of $\mathbf P$ | "In all dimensions, $\mathbf P$ is box-crossing" | For $d\ge2$, $\mathbf P$ is box-crossing; in dimension one, every law supported on $\eta\ge1$ is | The statement fails for product laws whose marginals differ, as in C03. |
 
-<!-- STATUS-BEGIN (generated by tools/sync_docs.py) -->
+## Standing assumptions and scope
 
-Status: **42 registered declarations: 29 `PROVED`; 9 `FROZEN` cited inputs; 4 `FROZEN` non-External definitions.**
-
-Source coverage is partial. Each row describes only its selected source; historical-source rows provide no revised-source coverage. These counts do not establish that every statement of any paper revision is proved.
-
-| Pinned source | SHA-256 | Theorem rows | Proved theorem rows | Cited inputs | Non-External definitions |
-|---|---|---|---|---|---|
-| [paper/corrected-arxiv/exploding-corrected-arxiv.tex](paper/corrected-arxiv/exploding-corrected-arxiv.tex) | `c99ce52a57b7da1f805efe610c474c968c0aa00e0840bd8b0e92ae0d4c53f262` | 23 | 23 | 2 | 4 |
-| [paper/exploding.tex](paper/exploding.tex) | `1d7c2010d8bd29e7fb83e93f19c9ebe0e8aef201f93559b2b18f5ca0dc049b44` | 6 | 6 | 7 | 0 |
-
-Non-External definitions are not counted as cited inputs or theorem proofs. Their literal-body/source audit is required; directory placement does not establish source fidelity. Theorem states and source pins come from `ledger/manifest.yaml`; independent source and axiom audits remain necessary. Run `python3 tools/check_axioms.py` to check axiom closures.
-
-<!-- STATUS-END -->
-
-### Scope and faithfulness
-
-The global source default remains `paper/exploding.tex`, SHA-256 `1d7c2010d8bd29e7fb83e93f19c9ebe0e8aef201f93559b2b18f5ca0dc049b44`. Proposition 3.1 and Lemmas 3.5, 3.6 and 3.7 and Proposition 4.1 version 5 select the official arXiv extraction `paper/exploding-arxiv.tex`, SHA-256 `f12deba6e481a3d81c6967bc48ecbbdae1df4fa1c5f6248a38990030b308072d`, with its pinned `defs.tex` input. The limit-shape, time-constant, counterexample, crossing, Theorem 1.4 version 4 and Proposition 2.2 version 5 successors and four literal definitions select the separate corrected-v10 draft, SHA-256 `59b5ac1a5cdf80c5b550dfc1738414892e0aa3f8cdb0bf03d00c74685a3e1be2`. The official arXiv source and abstract are preserved; these ten corrected-v10 rows do not certify the rest of that source or its literal initialization.
-
-The partition is 24 journal rows, five official-ArXiv rows and ten corrected-v10 rows. The journal group has 17 theorem rows (11 paper-owned and six cited-input companions) and seven cited-input definitions. The official group has five paper theorems; the corrected group has six paper theorems and four literal definitions. Aggregate counts remain 28 theorem rows and 11 definition rows. Journal coverage is 13/24 theorem-like statements and 11/22 paper-owned statements; its gaps include Theorem 1.2 at line 246, Theorem 1.3 at line 259, Theorem 1.4 at line 265, crossing at line 416, Proposition 2.2 at line 482, Proposition 3.1 at line 846, Proposition 4.1 at line 886, Lemmas 3.5–3.7 at lines 792, 807 and 832, and the counterexample at line 1351. Official-arXiv coverage is 5/24 and 5/22 paper-owned, claiming Proposition 3.1 at line 706, Lemmas 3.5–3.7 at lines 652, 667 and 692, and Proposition 4.1 at line 740; its other 19 statements are explicit allowed gaps. Corrected-v10 coverage is 6/24 and 6/22 paper-owned, claiming Theorem 1.2 at line 104, Theorem 1.3 at line 117, Theorem 1.4 at line 123, Proposition 2.2 at line 352, crossing at line 286 and the counterexample at line 1875; its other 18 statements remain explicit allowed gaps. Definitions add no theorem coverage. These are structural row claims, not whole-paper fidelity certificates.
-
-The old thm-counterexample@3 handwritten audit remains bound to exploding.tex:1351-1361, marker SHA-256 c9c8b8778d204a8280a899f7dda2fefda47e85854c1169bb477828b81f191dd3, semantic-closure SHA-256 ff157998636d1fa5296aa50733454d0a0538d591c0824fd6e6fcab3f9e9b4b9e, and whole-file SHA-256 d9e7f60ec00c1dbdc63a690bba7524dd1fd0f31b30b0ccaa03de3c15bd0dc195. The proved v4 successor has a different pin and its own source/body/consumer audit; it is excluded from that historical audit. Handwritten notes apply only to their exact source, version and hashes. Finite-exploding version 7, Theorem 1.2 version 5, Proposition 2.2 version 5, Proposition 3.1 and Lemmas 3.5, 3.6, 3.7 and Proposition 4.1 version 5 include p = 1 under their respective pins. No registered Frozen statement keeps a strict Bernoulli endpoint.
-
-| term | meaning |
-|---|---|
-| registered node | a manifest-owned declaration. Theorem nodes claim numbered source statements; definition nodes record literal or cited-input definitions and add no theorem coverage. |
-| frozen statement | the declaration text between FROZEN-STATEMENT-BEGIN and FROZEN-STATEMENT-END, pinned by its exact SHA-256; any proof follows the end marker. |
-| PROVED / SEALED | a theorem node with a complete proof and recorded clean axiom closure. PROVED also records passing source/semantic and independent audits; no row is currently SEALED. |
-| FROZEN | a pinned definition contract with no theorem-proof claim. It includes cited-input definitions and, after independent audit, may include literal local definitions; it does not mean every definition is a literature assumption. |
-| axiom closure | the axioms a proof ultimately rests on, as reported by Lean's #print axioms. |
-| sorryAx | the axiom Lean inserts for an unproved sorry; its presence in an axiom closure means the result is not proved. |
-
-The journal rows' summaries above retain their journal-source scope. Historical handwritten statement/citation audits and `paper_anchors.py` / `paper_citations.py` select only rows pinned to the exact default journal source; the official-ArXiv and corrected-v10 rows are excluded from those old-source endpoint claims. A stale v3 identity must fail against the changed live export, not be silently rebound to v4.
-
-`tools/check_coverage.py` partitions claims by effective source pin and checks the three exact allowed-gap sets in the manifest. It reports journal 13/24, official arXiv 5/24 and corrected-v10 6/24. Definitions contribute zero theorem-like claims. This structural check does not establish mathematical equivalence. The journal gaps, including the historical Theorem 1.2 at line 246, and the other unclaimed arXiv statements remain outside these rows’ certification.
-
-check_clauses.py and check_exponents.py are review aids bound to recorded source-specific readings. An empty annotation set is not evidence of correspondence; no unreviewed source or proof result is inferred from it. Historical audit fixtures remain bound to their exact v3 identities.
-
-### Which Lean statement formalizes which result
-
-The table links the paper's statements to the frozen Lean declarations and gives each one's
-state.  It is generated from the manifest and the paper; it does not prove mathematical
-correspondence between the two sources.
-
-<!-- PAPER-MAP-BEGIN (generated by tools/sync_docs.py) -->
-
-| Pinned source | Paper statement or definition | Description | Lean declaration | State |
-|---|---|---|---|---|
-| `paper/corrected-arxiv/exploding-corrected-arxiv.tex` | [Definition registration, lines 100-102](paper/corrected-arxiv/exploding-corrected-arxiv.tex#L100) | Non-External definition; literal-body/source audit required | [Exploding.counterexampleThreshold](Exploding/Frozen/CounterexampleThreshold.lean#L14) | FROZEN definition; source/body audit required |
-| `paper/corrected-arxiv/exploding-corrected-arxiv.tex` | [Definition registration, lines 103-103](paper/corrected-arxiv/exploding-corrected-arxiv.tex#L103) | Non-External definition; literal-body/source audit required | [Exploding.counterexamplePile](Exploding/Frozen/CounterexamplePile.lean#L13) | FROZEN definition; source/body audit required |
-| `paper/corrected-arxiv/exploding-corrected-arxiv.tex` | [Theorem 1.2](paper/corrected-arxiv/exploding-corrected-arxiv.tex#L104)<br>`theorem:limit_shape` | The rescaled toppled region converges to a convex domain | [Exploding.Frozen.limit_shape](Exploding/Frozen/LimitShape.lean#L31) | proved, independently audited |
-| `paper/corrected-arxiv/exploding-corrected-arxiv.tex` | [Definition registration, lines 109-111](paper/corrected-arxiv/exploding-corrected-arxiv.tex#L109) | Non-External definition; literal-body/source audit required | [Exploding.counterexampleSupport](Exploding/Frozen/CounterexampleSupport.lean#L13) | FROZEN definition; source/body audit required |
-| `paper/corrected-arxiv/exploding-corrected-arxiv.tex` | [Definition registration, lines 117-120](paper/corrected-arxiv/exploding-corrected-arxiv.tex#L117) | Non-External definition; literal-body/source audit required | [Exploding.counterexampleArrival](Exploding/Frozen/CounterexampleArrival.lean#L13) | FROZEN definition; source/body audit required |
-| `paper/corrected-arxiv/exploding-corrected-arxiv.tex` | [Theorem 1.3](paper/corrected-arxiv/exploding-corrected-arxiv.tex#L117)<br>`theorem:convergence_of_time_constant` | The rescaled arrival times converge | [Exploding.Frozen.convergence_of_time_constant](Exploding/Frozen/TimeConstant.lean#L36) | proved, independently audited |
-| `paper/corrected-arxiv/exploding-corrected-arxiv.tex` | [Theorem 1.4](paper/corrected-arxiv/exploding-corrected-arxiv.tex#L123)<br>`theorem:explosive` | A criterion for a product background to explode | [Exploding.Frozen.explosive](Exploding/Frozen/Explosive.lean#L29) | proved, independently audited |
-| `paper/corrected-arxiv/exploding-corrected-arxiv.tex` | [Proposition 2.1](paper/corrected-arxiv/exploding-corrected-arxiv.tex#L286)<br>`prop:crossing_time` | Large boxes are crossed quickly | [Exploding.Frozen.crossing_time](Exploding/Frozen/CrossingTime.lean#L14) | proved, independently audited |
-| `paper/corrected-arxiv/exploding-corrected-arxiv.tex` | [Proposition 2.2](paper/corrected-arxiv/exploding-corrected-arxiv.tex#L352)<br>`prop:renormalization_properties` | The infinite cluster of good cubes | [Exploding.Frozen.renormalization_properties](Exploding/Frozen/Renormalization.lean#L42) | proved, independently audited |
-| `paper/corrected-arxiv/exploding-corrected-arxiv.tex` | [Lemma 2.1](paper/corrected-arxiv/exploding-corrected-arxiv.tex#L401)<br>`lemma:local_convexity` | A path of topplings fills its bounding rectangle | [Exploding.Frozen.local_convexity](Exploding/Frozen/LocalConvexity.lean#L20) | proved, independently audited |
-| `paper/corrected-arxiv/exploding-corrected-arxiv.tex` | [Lemma 3.1](paper/corrected-arxiv/exploding-corrected-arxiv.tex#L586)<br>`lemma:square_lower_bound` | Cubical toppled support and lower radius, cited and unproved | [Exploding.External.FeyDenBoerRedigCubicalCluster](Exploding/External/FeyDenBoerRedigCubicalCluster.lean#L25) | cited result, hypothesis |
-| `paper/corrected-arxiv/exploding-corrected-arxiv.tex` | [Lemma 3.1](paper/corrected-arxiv/exploding-corrected-arxiv.tex#L586)<br>`lemma:square_lower_bound` | Upper radius of the ordinary pile, cited and unproved | [Exploding.External.FeyLevinePeresRadius](Exploding/External/FeyLevinePeresRadius.lean#L25) | cited result, hypothesis |
-| `paper/corrected-arxiv/exploding-corrected-arxiv.tex` | [Lemma 3.1](paper/corrected-arxiv/exploding-corrected-arxiv.tex#L586)<br>`lemma:square_lower_bound` | A common eventual square-filling bound of order n^d, with n^2 log(n+1) in the plane | [Exploding.Frozen.square_lower_bound](Exploding/Frozen/SquareLowerBound.lean#L25) | proved, independently audited |
-| `paper/corrected-arxiv/exploding-corrected-arxiv.tex` | [Remark 1](paper/corrected-arxiv/exploding-corrected-arxiv.tex#L785) | The least planar covering wave order is of order n² log(n+1) | [Exploding.Frozen.sharp_planar_obstruction](Exploding/Frozen/SharpPlanarObstruction.lean#L28) | proved, independently audited |
-| `paper/corrected-arxiv/exploding-corrected-arxiv.tex` | [Lemma 3.2](paper/corrected-arxiv/exploding-corrected-arxiv.tex#L848)<br>`lemma:finite_exploding` | The last wave is well defined | [Exploding.Frozen.finite_exploding](Exploding/Frozen/FiniteExploding.lean#L28) | proved, independently audited |
-| `paper/corrected-arxiv/exploding-corrected-arxiv.tex` | [Lemma 3.3](paper/corrected-arxiv/exploding-corrected-arxiv.tex#L858)<br>`lemma:last_wave_bound` | The complete last-wave bound and its exterior-of-interior clause at every time | [Exploding.Frozen.last_wave_bound](Exploding/Frozen/LastWaveBound.lean#L20) | proved, independently audited |
-| `paper/corrected-arxiv/exploding-corrected-arxiv.tex` | [Lemma 3.4](paper/corrected-arxiv/exploding-corrected-arxiv.tex#L888)<br>`lemma:approx_subadditivity` | Penultimate-cluster arrival times are subadditive | [Exploding.Frozen.approx_subadditivity](Exploding/Frozen/ApproxSubadditivity.lean#L104) | proved, independently audited |
-| `paper/corrected-arxiv/exploding-corrected-arxiv.tex` | [Lemma 3.5](paper/corrected-arxiv/exploding-corrected-arxiv.tex#L920)<br>`lemma:last_penultimate_cluster` | Penultimate clusters are polylogarithmically small | [Exploding.Frozen.last_penultimate_cluster](Exploding/Frozen/PenultimateCluster.lean#L31) | proved, independently audited |
-| `paper/corrected-arxiv/exploding-corrected-arxiv.tex` | [Lemma 3.6](paper/corrected-arxiv/exploding-corrected-arxiv.tex#L935)<br>`lemma:penultimate_upper_bound` | A linear upper bound on last-wave arrival times | [Exploding.Frozen.penultimate_upper_bound](Exploding/Frozen/PenultimateUpperBound.lean#L29) | proved, independently audited |
-| `paper/corrected-arxiv/exploding-corrected-arxiv.tex` | [Lemma 3.7](paper/corrected-arxiv/exploding-corrected-arxiv.tex#L960)<br>`lemma:last_penultimate_close` | Last-wave and penultimate-cluster arrival times are close | [Exploding.Frozen.last_penultimate_close](Exploding/Frozen/PenultimateClose.lean#L32) | proved, independently audited |
-| `paper/corrected-arxiv/exploding-corrected-arxiv.tex` | [Proposition 3.1](paper/corrected-arxiv/exploding-corrected-arxiv.tex#L974)<br>`prop:convergence_of_the_last_wave` | Convergence of the last wave | [Exploding.Frozen.convergence_of_the_last_wave](Exploding/Frozen/LastWaveConvergence.lean#L35) | proved, independently audited |
-| `paper/corrected-arxiv/exploding-corrected-arxiv.tex` | [Proposition 4.1](paper/corrected-arxiv/exploding-corrected-arxiv.tex#L1008)<br>`prop:approximate_subadditive` | The last wave approximates the exploding sandpile | [Exploding.Frozen.approximate_subadditive](Exploding/Frozen/ApproximateSubadditive.lean#L34) | proved, independently audited |
-| `paper/corrected-arxiv/exploding-corrected-arxiv.tex` | [Proposition 5.1](paper/corrected-arxiv/exploding-corrected-arxiv.tex#L1325)<br>`prop:convergence_of_the_generalized_last_wave` | Convergence of the last wave under the general hypotheses | [Exploding.Frozen.convergence_of_the_generalized_last_wave](Exploding/Frozen/GeneralizedLastWave.lean#L46) | proved, independently audited |
-| `paper/corrected-arxiv/exploding-corrected-arxiv.tex` | [Theorem 5.1](paper/corrected-arxiv/exploding-corrected-arxiv.tex#L1755) | Convergence of the exploding sandpile under the general hypotheses | [Exploding.Frozen.generalized_convergence](Exploding/Frozen/GeneralizedConvergence.lean#L34) | proved, independently audited |
-| `paper/corrected-arxiv/exploding-corrected-arxiv.tex` | [Theorem 6.1](paper/corrected-arxiv/exploding-corrected-arxiv.tex#L1877)<br>`theorem:counterexample` | Explosive backgrounds without a limit shape | [Exploding.Frozen.counterexample](Exploding/Frozen/Counterexample.lean#L13) | proved, independently audited |
-| `paper/corrected-arxiv/exploding-corrected-arxiv.tex` | [Proposition 7.1](paper/corrected-arxiv/exploding-corrected-arxiv.tex#L2388)<br>`prop:explosion_criteria` | A criterion for a background law to explode | [Exploding.Frozen.explosion_criteria](Exploding/Frozen/ExplosionCriteria.lean#L24) | proved, independently audited |
-| `paper/corrected-arxiv/exploding-corrected-arxiv.tex` | [Proposition 7.2](paper/corrected-arxiv/exploding-corrected-arxiv.tex#L2526)<br>`prop:dimensional_reduction` | Dimension reduction for every Boolean boundary field | [Exploding.Frozen.dimensional_reduction](Exploding/Frozen/DimensionalReduction.lean#L22) | proved, independently audited |
-| `paper/corrected-arxiv/exploding-corrected-arxiv.tex` | [Proposition 7.3](paper/corrected-arxiv/exploding-corrected-arxiv.tex#L2575)<br>`prop:recurrence` | The constant background d is recurrent | [Exploding.Frozen.recurrence](Exploding/Frozen/Recurrence.lean#L17) | proved, independently audited |
-| `paper/corrected-arxiv/exploding-corrected-arxiv.tex` | [Proposition 7.5](paper/corrected-arxiv/exploding-corrected-arxiv.tex#L2657) | Product-law box crossing and the separate arbitrary-law dimension-one case | [Exploding.Frozen.box_crossing](Exploding/Frozen/BoxCrossing.lean#L25) | proved, independently audited |
-| `paper/exploding.tex` | [Theorem 1.1](paper/exploding.tex#L238)<br>`prop:fey_levine_peres_explode` | Explosion of the Bernoulli background (Fey, Levine and Peres), cited | [Exploding.External.FeyLevinePeresExplosive](Exploding/External/FeyLevinePeres.lean#L18) | cited result, hypothesis |
-| `paper/exploding.tex` | [Theorem 1.1](paper/exploding.tex#L238)<br>`prop:fey_levine_peres_explode` | In-repo discharge of the Fey, Levine and Peres explosion theorem | [Exploding.xsr_flp](Exploding/Support/ExtSchFLP.lean#L8) | proved, independently audited |
-| `paper/exploding.tex` | [Proposition 2.2](paper/exploding.tex#L482)<br>`prop:renormalization_properties` | The chemical distance in supercritical bond percolation (Antal and Pisztora), cited | [Exploding.External.AntalPisztoraChemicalDistance](Exploding/External/AntalPisztora.lean#L29) | cited result, hypothesis |
-| `paper/exploding.tex` | [Proposition 2.2](paper/exploding.tex#L482)<br>`prop:renormalization_properties` | Domination by a product measure on a dependence graph of bounded degree (Liggett, Schonmann and Stacey), cited | [Exploding.External.LiggettSchonmannStaceyBoundedDegree](Exploding/External/LiggettSchonmannStaceyBoundedDegree.lean#L31) | cited result, hypothesis |
-| `paper/exploding.tex` | [Proposition 2.2](paper/exploding.tex#L482)<br>`prop:renormalization_properties` | In-repo discharge of the bounded-degree Liggett, Schonmann and Stacey corollary | [Exploding.lssBoundedDegree](Exploding/External/LSSBoundedDegreeProved.lean#L8) | proved, independently audited |
-| `paper/exploding.tex` | [Proposition 2.2](paper/exploding.tex#L482)<br>`prop:renormalization_properties` | The holes of the infinite cluster of site percolation (Mathieu), cited | [Exploding.External.MathieuHoleVolume](Exploding/External/MathieuHoles.lean#L28) | cited result, hypothesis |
-| `paper/exploding.tex` | [Proposition 2.2](paper/exploding.tex#L482)<br>`prop:renormalization_properties` | In-repo discharge of Mathieu's hole-volume bound | [Exploding.xmf_proved](Exploding/Support/ExtMHHoleVolume.lean#L14) | proved, independently audited |
-| `paper/exploding.tex` | [Proposition 5.1](paper/exploding.tex#L1203)<br>`prop:convergence_of_the_generalized_last_wave` | Domination of a finitely dependent field by a product measure (Liggett, Schonmann and Stacey), cited | [Exploding.External.LiggettSchonmannStacey](Exploding/External/LiggettSchonmannStacey.lean#L26) | cited result, hypothesis |
-| `paper/exploding.tex` | [Proposition 5.1](paper/exploding.tex#L1203)<br>`prop:convergence_of_the_generalized_last_wave` | In-repo discharge of the Liggett, Schonmann and Stacey domination theorem | [Exploding.xlse_lss_general](Exploding/Support/ExtLSSCountable.lean#L120) | proved, independently audited |
-| `paper/exploding.tex` | [Theorem 6.1](paper/exploding.tex#L1351)<br>`theorem:counterexample` | The least action principle (Fey, Meester and Redig), cited | [Exploding.External.FeyMeesterRedigLeastAction](Exploding/External/FeyMeesterRedig.lean#L40) | cited result, hypothesis |
-| `paper/exploding.tex` | [Theorem 6.1](paper/exploding.tex#L1351)<br>`theorem:counterexample` | In-repo discharge of the Fey, Meester and Redig least action principle | [Exploding.xfmr_proved](Exploding/Support/ExtFMR.lean#L58) | proved, independently audited |
-| `paper/exploding.tex` | [Proposition 7.4](paper/exploding.tex#L1969)<br>`prop:schonnmann_bootstrap` | Schonmann's bound for bootstrap percolation, cited | [Exploding.External.SchonmannBootstrap](Exploding/External/Schonmann.lean#L23) | cited result, hypothesis |
-| `paper/exploding.tex` | [Proposition 7.4](paper/exploding.tex#L1969)<br>`prop:schonnmann_bootstrap` | In-repo discharge of Schonmann's bootstrap bound | [Exploding.xsr_schonmann](Exploding/Support/ExtSchFinal.lean#L72) | proved, independently audited |
-
-<!-- PAPER-MAP-END -->
+1. **Cited results assumed.** Three results of the literature enter as explicit hypotheses of the
+   statements that use them; none is an `axiom`:
+   - Antal and Pisztora, Theorem 1.1 (chemical distance in supercritical bond percolation), `hChem`:
+     Theorems 1.2, 1.3 and 5.1, Propositions 2.2, 3.1, 4.1 and 5.1, and Lemmas 3.2 and 3.5 to 3.7;
+   - Fey, den Boer and Redig, Theorem 4.1, and Fey, Levine and Peres, Theorem 1.1 (radius of the
+     toppled cluster): Lemma 3.1 and Remark 1 only.
+2. **Cited results proved here.** Six other cited results are proved in this repository:
+   Liggett, Schonmann and Stacey, Theorem 0.0 and Corollary 1.4; Mathieu, Lemma 5.2; Schonmann's
+   bound (Proposition 7.4); Fey, Levine and Peres, Proposition 1.4; and Fey, Meester and Redig,
+   Theorem 2.8, which no result uses. The statements in `Exploding/MainTheorems.lean` do not take
+   them as hypotheses. The cited results and their precise sources are listed in
+   [`ASSUMPTIONS.md`](ASSUMPTIONS.md).
+3. **Departures.** Hypothesis 1 is used in the form "the values on two finite sets at distance more
+   than `K` are independent", meaning that the two families generate independent σ-fields. The
+   paper prints pairwise independence. Whether Propositions 5.1 and 7.1 and Theorem 5.1 hold under
+   the printed form is open. Proposition 7.1 is proved for `d ≥ 2`; the case `d = 1` is argued in a
+   paragraph after its proof and is not formalized.
+4. **Axioms.** The library contains no `sorry`, `admit`, `native_decide` or new `axiom`. Each main
+   theorem depends on exactly `propext`, `Classical.choice` and `Quot.sound`.
+5. **Conventions.** Arrival times are valued in `ℕ∞`; `[x]` is the nearest lattice point, with ties
+   broken by the coordinatewise minimum; locally uniform convergence is stated in its `ε`-form; the
+   floor in the toppling rules is integer division on `ℤ`.
+6. **Not formalized.** The proof outline of Section 1, the examples of Section 5.2, the qualitative
+   claims of Remarks 4, 5 and 6, the case `d = 1` of Proposition 7.1, and the figures.
 
 ## Guarantees
 
-The corrected-v10 counterexample and its four literal definitions passed exact integrated Lean checks, a full locked 9,405-job build, all eleven configured checks and independent source/body/consumer audit. That promotion covers its counterexample theorem; the [dated receipt](ledger/audits/2026-10-15-counterexample-v4-promotion.md) records the exact declaration and evidence. The corrected crossing successor has a separate [validation receipt](ledger/audits/2026-10-15-crossing-v4-promotion.md). Theorem 1.2 version 5 has its own [source-marker receipt](ledger/audits/2026-10-18-limitshape-v5-source-marker.md). Theorem 1.3 version 6 has its own [source and statement receipt](ledger/audits/2026-10-18-timeconstant-v6-source-statement.md). The bond-hole Support modules are proof prerequisites, not separate paper-node registrations. Corrected-v10 Proposition 2.2 version 5 is registered on its exact source pin; its `hHole` cited binder remains in the type but is unused in this proof, while the hole obligation is proved through in-repository `Exploding.xmf_proved`. Its dedicated receipt records the exact declaration and consumer evidence. This row does not certify the other corrected-v10 statements or the full paper.
+All 22 numbered results of the corrected edition and its Remark 1 are proved in Lean, with no `sorry` and only the standard axioms, from three cited results that enter as explicit hypotheses; Theorem 6.1 is stated as published, Theorems 1.2 and 1.3 as published with the law (2) read as one common law at every site, and Theorems 1.4 and 5.1 with the corrections listed in the corrected edition.
 
-- No sorry, admit or custom axiom in the production library. The comparator challenge contains one intentional statement-level sorry.
-- Axiom closure. The accepted theorem rows have clean closures; the corrected counterexample and its four definitions were checked against the standard axioms `propext`, `Classical.choice` and `Quot.sound`.
-- Comparator scope. The comparator remains the historical journal Theorem 1.2 limit-shape comparison, `0 < p < 1`, with its four explicit hypotheses. It is not a comparator for the corrected-v10 version 5 statement (`0 < p ≤ 1`) or for corrected v10 as a whole.
-- Pinned toolchain. The build uses the toolchain and dependency revisions recorded in lean-toolchain and lake-manifest.json.
+<!-- STATUS-BEGIN (generated by tools/sync_docs.py) -->
+
+Status: **42 statements: 29 proved; 9 cited results; 4 definitions.**
+
+Each statement is taken from one source file. For each source the table gives its theorem statements, how many of them are proved, the cited results stated as hypotheses, and the definitions stated separately.
+
+| Source | SHA-256 | Theorem statements | Proved | Cited results | Definitions |
+|---|---|---|---|---|---|
+| [paper/corrected-arxiv/exploding-corrected-arxiv.tex](paper/corrected-arxiv/exploding-corrected-arxiv.tex) | `0cefbf3bfc7cc08597d59d36a3473cdf94ee816076f688c978510bb7edc6e019` | 23 | 23 | 2 | 4 |
+| [paper/exploding.tex](paper/exploding.tex) | `1d7c2010d8bd29e7fb83e93f19c9ebe0e8aef201f93559b2b18f5ca0dc049b44` | 6 | 6 | 7 | 0 |
+
+A cited result is a hypothesis of the theorems that use it, not an axiom (see ASSUMPTIONS.md). Definitions are not counted as theorems. These counts are generated from `ledger/manifest.yaml` by `python3 tools/sync_docs.py`; `python3 tools/check_axioms.py` checks the axiom closures.
+
+<!-- STATUS-END -->
+
+- **No `sorry`.** The build emits no warning and contains no `sorry` in `Exploding/`. The
+  comparator challenge [`ExplodingAudit/LimitShape/Challenge.lean`](ExplodingAudit/LimitShape/Challenge.lean)
+  has one intentional statement-level `sorry`.
+- **Standard axioms only.** [`Exploding/Meta/AxiomsAudit.lean`](Exploding/Meta/AxiomsAudit.lean)
+  prints the axioms of 95 theorems, and [`scripts/check_axioms.py`](scripts/check_axioms.py)
+  requires exactly `propext`, `Classical.choice` and `Quot.sound` for each theorem of its explicit
+  list.
+- **Comparator.** The Mathlib-only pair [`ExplodingAudit/LimitShape/`](ExplodingAudit/LimitShape/)
+  restates Theorem 1.2 for `0 < p ≤ 1` over Mathlib alone, with the four cited results its
+  statement takes as hypotheses. It is the only pair.
+- **Statements.** The SHA-256 of each statement is recorded in
+  [`ledger/manifest.yaml`](ledger/manifest.yaml). `python3 tools/verify.py` checks the hashes, the
+  correspondence with the paper and the axiom closures.
+- **Toolchain and dependencies.** Lean `v4.32.0`, Mathlib `81a5d257c8e410db227a6665ed08f64fea08e997` and
+  Lattice-Probability `78f4b2cec065fa2fb5116b06c41966855f62cf50`, as recorded in
+  [`lean-toolchain`](lean-toolchain) and [`lake-manifest.json`](lake-manifest.json).
 
 ## Size
 
-The production library contains 357 Lean modules, including the root module and the two ordinary bond-hole Support modules.
+`Exploding/` and `Exploding.lean`: 420 Lean files with 75,785 lines. `ExplodingAudit/`: 4 Lean
+files with 697 lines.
 
 ## Building
 
-The project uses elan and Lake. The toolchain is pinned in lean-toolchain, with dependency revisions in lakefile.lean and lake-manifest.json.
+Install [elan](https://github.com/leanprover/elan). The toolchain is in
+[`lean-toolchain`](lean-toolchain), and Lake fetches the dependencies.
+
+```bash
+lake exe cache get                                 # prebuilt Mathlib
+lake build                                         # the library
+lake build Exploding.Meta.AxiomsAudit 2>&1 | tee axioms-audit.log
+python3 scripts/check_axioms.py axioms-audit.log   # the axioms of the main results
+lake build ExplodingAudit                          # the comparator surface
+python3 tools/verify.py                            # every check; needs PyYAML
+```
+
+PyYAML is installed by `python3 -m pip install -r tools/requirements.txt`.
+[`CONTRIBUTING.md`](CONTRIBUTING.md) describes each check.
+
+## Running the comparators
+
+The comparator pair is [`ExplodingAudit/LimitShape/`](ExplodingAudit/LimitShape/). Its
+[`comparator.json`](ExplodingAudit/LimitShape/comparator.json) permits exactly `propext`,
+`Classical.choice` and `Quot.sound`, and enables the nanoda kernel. Build `leanprover/comparator`,
+`lean4export` and `landrun` at the revisions listed in
+[`.github/workflows/comparator.yml`](.github/workflows/comparator.yml), then run from the
+repository root
+
+```bash
+COMPARATOR_LANDRUN=<landrun> COMPARATOR_LEAN4EXPORT=<lean4export> COMPARATOR_NANODA=<nanoda_bin> \
+  lake env <comparator>/.lake/build/bin/comparator ExplodingAudit/LimitShape/comparator.json
+```
+
+which prints `Your solution is okay!`. The [comparator workflow](.github/workflows/comparator.yml)
+runs the pair on manual dispatch, and [`ExplodingAudit/README.md`](ExplodingAudit/README.md)
+describes it.
 
 ## Repository layout
 
-```
+```text
 Exploding/
-  MainTheorems.lean   the proved results, stated in full; the main theorems named
-  Frozen/             the frozen statement surface, one frozen statement per file
-  External/           the seven cited results, stated as propositions
-  Support/            the model and the lemmas the frozen statements are proved from
-    Toppling.lean     parallel toppling, the n-wave, stabilizable, robust and explosive
-    Vocab.lean        boxes, crossing times, good cubes, the last wave, the background law
-    Hypotheses.lean   the five hypotheses of Section 5
-    Reduction.lean    the constrained processes of Section 7.1
-    Percolation.lean  Bernoulli site and bond percolation and the dependence graph
-    LSProofAux.lean   the assembly of Theorem 1.2, and Theorem 1.1 from Schonmann's bound
-    Ext*.lean         the proofs of the cited results that are proved here (ExtFMR, ExtLSS*,
-                      ExtMH*, ExtSch*) and lemmas toward the Antal-Pisztora result (ExtAP*),
-                      which is assumed
+  MainTheorems.lean   the numbered results, stated in full
+  Frozen/             one statement per file, each followed by its proof
+  External/           the cited results, stated as propositions
+  Support/            the model and the lemmas the statements are proved from
   Meta/               AxiomsAudit.lean
-Exploding.lean        the root module (imports the whole library)
-ExplodingAudit/       the Mathlib-only restatement of Theorem 1.2 and its solution:
-                      README.md, DESIGN.md, LimitShape/ (Challenge, Solution, comparator.json),
-                      Support/, check_standalone.sh
-ASSUMPTIONS.md        the seven cited results and which are also proved here (generated)
-CORRESPONDENCE.md     paper ↔ Lean: conventions, cited inputs, differences, node table
-CONTRIBUTING.md       building notes and the elaboration policy for new files
-CITATION.cff          citation metadata
-formalization.yaml    source, statement, axiom and review metadata
-ledger/manifest.yaml  one row per registered statement: hash, paper source, state
-paper/exploding.tex   the paper, pinned by the SHA-256 in ledger/manifest.yaml
-paper/exploding-arxiv.tex, paper/arxiv/
-                      the unmodified arXiv source
-paper/CHANGES_FROM_ARXIV.md
-                      every difference between the two
-tools/                the checkers and generators listed under Building
-.github/workflows/    build.yml and comparator.yml
-lakefile.lean, lake-manifest.json, lean-toolchain
-                      the pinned build
+Exploding.lean        the root module
+ExplodingAudit/       the Mathlib-only comparator pair, its solution and checks
+paper/corrected-arxiv/      the corrected edition: source, bibliography, figures, source note
+paper/exploding-arxiv.tex   the unmodified arXiv v2 source
+paper/exploding.tex         an earlier journal-format revision, superseded by the corrected edition
+paper/README.md             the three texts in paper/
+ledger/manifest.yaml        the statements, with their SHA-256 and sources
+ASSUMPTIONS.md              the cited results and where each is proved
+CORRESPONDENCE.md           paper ↔ Lean: conventions, cited inputs, statement table
+CONTRIBUTING.md             building notes and checks
+CITATION.cff                citation metadata
+formalization.yaml          source, statement, automation and review metadata
+scripts/                    check_axioms.py, the explicit-list axiom check
+tools/                      verify.py and the checkers it runs
+.github/workflows/          build.yml and comparator.yml
+lakefile.lean, lake-manifest.json, lean-toolchain   the build
 ```
 
-## Authors, citation, acknowledgements
+## How this was built
+
+The Lean code was written by AI coding agents under the close supervision of the author. Anthropic
+Claude models (Opus 5, Sonnet 5, Opus 5.5 and Haiku 5.5) worked through Claude Code and the Pi agent
+harness. OpenAI GPT-6 Sol, GPT-6 Luna and GPT-6.1-Sol worked through the Codex CLI on the Lean
+work, and GPT-6-Astra reviewed the mathematics of the pairwise form of Hypothesis 1. DeepSeek V4.1
+Flash and Mistral Leanstral searched for auxiliary proofs. Every proof is checked by the Lean
+kernel. The models and tools are listed in [`formalization.yaml`](formalization.yaml), following the
+[mathlib-initiative](https://github.com/mathlib-initiative/formalization.yaml) standard.
+
+## Authors and citation
 
 The Lean development is by **Ahmed Bou-Rabee**, who is also the author of the paper it
-formalizes.  If you use this formalization, please cite it using the metadata in
-[`CITATION.cff`](CITATION.cff).  This formalization is built on
-[Lean 4](https://lean-lang.org), [Mathlib](https://github.com/leanprover-community/mathlib4)
-and the shared library
-[`Lattice-Probability`](https://github.com/nitromannitol/Lattice-Probability). The cited
-inputs recorded as hypotheses and their precise sources are listed in
-[`ASSUMPTIONS.md`](ASSUMPTIONS.md).
+formalizes. If you use this formalization, please cite it using the metadata in
+[`CITATION.cff`](CITATION.cff). This formalization is built on [Lean 4](https://lean-lang.org),
+[Mathlib](https://github.com/leanprover-community/mathlib4) and the library
+[`Lattice-Probability`](https://github.com/nitromannitol/Lattice-Probability).
 
 ## License
 

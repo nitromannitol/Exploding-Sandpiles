@@ -3,10 +3,12 @@ name: Comparator audit
 # Runs the official leanprover/comparator on every ExplodingAudit/<X> pair: for each pair it checks
 # that Solution proves a statement whose full dependency closure matches Challenge's, uses only
 # the permitted axioms, and is accepted by BOTH the Lean kernel (replay) and the independent
-# nanoda kernel.  No `pull_request` trigger.  Manual dispatch only until the public release; the
-# release adds `push: branches: [main]`.
+# nanoda kernel.  It runs on manual dispatch; there is no `pull_request` trigger.
 on:
   workflow_dispatch:
+
+permissions:
+  contents: read
 
 concurrency:
   group: comparator-${{ github.ref }}
@@ -21,11 +23,13 @@ env:
 jobs:
   comparator:
     name: Comparator over the audit pairs
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 350
     steps:
       - name: Checkout
-        uses: actions/checkout@v5
+        uses: actions/checkout@v7
+        with:
+          persist-credentials: false
 
       - name: Reclaim runner disk space
         shell: bash
@@ -40,6 +44,11 @@ jobs:
           curl https://elan.lean-lang.org/elan-init.sh -sSf | sh -s -- -y --default-toolchain none
           echo "$HOME/.elan/bin" >> "$GITHUB_PATH"
 
+      # elan retries a failed toolchain download only once; this step retries the pinned
+      # release asset with backoff and checks its SHA-256.
+      - name: Prefetch the pinned Lean toolchain with retries
+        run: python3 tools/prefetch_toolchain.py
+
       - name: Get the Mathlib cache
         run: lake exe cache get
 
@@ -48,7 +57,7 @@ jobs:
 
       - name: Restore verification tools
         id: tools-cache
-        uses: actions/cache/restore@v4
+        uses: actions/cache/restore@v6.1.0
         with:
           path: ~/tools
           key: cmp-tools-${{ env.COMPARATOR_REV }}-${{ env.LEAN4EXPORT_REV }}-${{ env.NANODA_REV }}-${{ env.LANDRUN_REV }}
@@ -71,7 +80,7 @@ jobs:
 
       - name: Set up Go (for landrun)
         if: steps.tools-cache.outputs.cache-hit != 'true'
-        uses: actions/setup-go@v5
+        uses: actions/setup-go@v7
         with:
           go-version: '1.24'
 
@@ -99,7 +108,7 @@ jobs:
 
       - name: Save verification tools
         if: steps.tools-cache.outputs.cache-hit != 'true'
-        uses: actions/cache/save@v4
+        uses: actions/cache/save@v6.1.0
         with:
           path: ~/tools
           key: cmp-tools-${{ env.COMPARATOR_REV }}-${{ env.LEAN4EXPORT_REV }}-${{ env.NANODA_REV }}-${{ env.LANDRUN_REV }}
@@ -127,7 +136,7 @@ jobs:
           fail=0
           for cfg in ExplodingAudit/*/comparator.json; do
             X="$(basename "$(dirname "$cfg")")"
-            [ -f "$(dirname "$cfg")/Solution.lean" ] || { echo "$X: no Solution.lean, skipped"; continue; }
+            [ -f "$(dirname "$cfg")/Solution.lean" ] || { echo "$X: no Solution.lean"; fail=1; continue; }
             echo "::group::$X"
             if lake env ~/tools/comparator/.lake/build/bin/comparator "$cfg" \
                  | tee "/tmp/comparator-$X.log" \
@@ -142,7 +151,7 @@ jobs:
 
       - name: Upload comparator logs
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7.0.2
         with:
           name: comparator-logs
           path: /tmp/comparator-*.log

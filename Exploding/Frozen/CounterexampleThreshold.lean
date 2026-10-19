@@ -8,7 +8,7 @@ The first positive added mass for which an explosive background fails to stabili
 
 open Exploding LatticeProb
 
-/-- The source minimum on the carrier of explosive backgrounds.
+/-- The minimum on the carrier of explosive backgrounds.
 The carrier supplies nonemptiness of the defining set. -/
 -- FROZEN-STATEMENT-BEGIN
 noncomputable def Exploding.counterexampleThreshold {d : ℕ}

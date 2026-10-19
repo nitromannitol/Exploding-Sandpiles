@@ -5,11 +5,14 @@ import Exploding.Support.Vocab
 import Exploding.Support.SubFill
 
 open Exploding LatticeProb
-/-- **Lemma 2.1** (`exploding.tex:531-535`, label `lemma:local_convexity`).
+/-- **Lemma 2.1** (`paper/corrected-arxiv/exploding-corrected-arxiv.tex:401-405`, label `lemma:local_convexity`).
 
 "Let `A := {z^(i)}` be a finite path `z^(i) ∼ z^(i+1)`.  Let `w_t` denote
-`A`-frozen parallel toppling with initial conditions `w_0|_A = 1`, `s_0' = η`.
-Then, `w_t|_{br(A)} = 1`, for all `t ≥ |br(A)|`."
+`A`-frozen parallel toppling with initial conditions `w_0(x) = 1{x ∈ A}` on the whole
+lattice (zero off `A`), `s_0' = η + Δw_0`.  Then, `w_t|_{br(A)} = 1`, for all `t ≥ |br(A)|`."
+
+`fodo A η w₀` evolves `s_t' = η + Δ w_t`, so its initial configuration is the delivered
+seed `η + Δ w₀`.
 
 The path is given by its vertices `z 0, …, z m`, consecutive ones adjacent, and
 `A` is their image.  Section 2 fixes `η` as in `(1.2)`, so `2d - 2 ≤ η ≤ 2d - 1`.

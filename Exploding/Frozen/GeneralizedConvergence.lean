@@ -12,10 +12,9 @@ import Exploding.External.AntalPisztora
 
 open Exploding LatticeProb MeasureTheory Filter
 
-/-- **Theorem 5.1** (`paper/corrected-arxiv/exploding-corrected-arxiv.tex:1753-1757`,
-"Convergence of the exploding sandpile", the unlabelled theorem of Section 5).
+/-- **Theorem 5.1** of the paper ("Convergence of the exploding sandpile").
 
-"Under the assumptions in Proposition 5.1 and Hypothesis 5.5, on an event of
+"Under the assumptions in Proposition 5.1 and Hypothesis 5, on an event of
 probability 1, `η` is explosive and the rescaled arrival times
 `n^{-1} T_η([nx]) := n^{-1} min{t > 0 : v_t([nx]) > 0}` converge locally
 uniformly to `N_η`, a deterministic, continuous, convex, one-homogeneous
@@ -23,11 +22,11 @@ function on `ℝ^d` depending only on the law of `η`."
 
 The assumptions of Proposition 5.1 are the Section 5 setting, with an arbitrary integer
 `η_min` (no sign assumption) and measurable ergodicity (`MeasurableErgodicOn`), together
-with Hypotheses 5.1, 5.3 and 5.4; Hypothesis 5.5 is the wave-approximation hypothesis `h5`,
+with Hypotheses 1, 3 and 4; Hypothesis 5 is the wave-approximation hypothesis `h5`,
 which enters unchanged.
 
 The results the paper cites in the proof enter as explicit hypotheses: `hLSS`
-(Liggett, Schonmann and Stacey, Theorem 0.0), and, for the rerun of Section 3,
+(Liggett, Schonmann and Stacey, Theorem 0.0), and, for the argument of Section 3,
 `hLSSB` (Liggett, Schonmann and Stacey, Corollary 1.4), `hHole` (Mathieu,
 Lemma 5.2) and `hChem` (Antal and Pisztora, Theorem 1.1). -/
 -- FROZEN-STATEMENT-BEGIN

@@ -1,8 +1,8 @@
 /-
-Proposition 2.1 of the paper (`exploding.tex:416-449`, `prop:crossing_time`):
-a large box is crossed quickly with high probability.
+Proposition 2.1 (`prop:crossing_time`): a large box is crossed quickly with high
+probability.
 
-DECOMPOSITION (not a proof attempt).  The paper's proof outline:
+The proof has the following steps:
 
   (a) a deterministic "domino" propagation fact: if every line of `Q_k`, in
       every direction, carries a `(2d-1)`-chip catalyst, then `Q_k` is a good
@@ -23,20 +23,17 @@ DECOMPOSITION (not a proof attempt).  The paper's proof outline:
   (e) assembly: pick `ε ∈ (0,p)` and `k` large enough that (d)'s bound is
       `< δ`, using the standard polynomial-times-geometric decay
       (`tendsto_pow_const_mul_const_pow_of_lt_one`,
-      `Mathlib.Analysis.SpecificLimits.Normed`, confirmed present); intersect
+      `Mathlib.Analysis.SpecificLimits.Normed`); intersect
       the resulting `≥ 1-δ` event with the a.s. pointwise bound on `η`
       (needed since (a) takes `η` bounded *everywhere*, not merely a.e.), and
       apply (a) pointwise.
 
-Where this decomposition differs in shape from a byte-for-byte transcription
-of the paper: the union bound in (c)+(d) is taken over *every* `y ∈ cube d k`
-in *every* direction, giving a factor `d · |cube d k|` rather than the paper's
-tighter `d · k^{d-1}` (the paper only counts the `k^{d-1}` distinct lines in a
-direction, since a line depends solely on the off-axis coordinates of `y`).
-The looser count still `→ 0`, so no mathematical content is lost; only the
-paper's display `(eq:crossing_time_bound)`'s exact rate is not reproduced,
-which the target theorem does not ask for (it only asserts *existence* of a
-good `k`).
+The union bound in (c)+(d) is taken over every `y ∈ cube d k` in every direction. This
+gives a factor `d · |cube d k|` rather than the paper's tighter `d · k^{d-1}`, since the
+paper counts only the `k^{d-1}` distinct lines in a direction (a line depends solely on
+the off-axis coordinates of `y`). The looser count still tends to `0`. The exact rate in
+the display `eq:crossing_time_bound` is therefore not reproduced. The proposition only
+asserts the existence of a good `k`.
 
 The boundary between (c)/(e) and (a) is the delicate step: (c)/(e) reduce to a
 real-analysis decay estimate, while (a) needs the deterministic inclusion. A
@@ -44,8 +41,8 @@ second, exact route for (b) is available: `prob_line_no_high_chip` computes the
 no-catalyst probability on a line exactly as `(1-p)^k` via
 `Measure.infinitePi_pi`, which is simpler than Hoeffding and closes the gap
 between "no catalyst" and the tail event without a concentration inequality.
-That route is a legitimate, easier substitute for (b)+(c) below; both are
-stated here since the paper's own argument is the Hoeffding one.
+That route is simpler than the Hoeffding bound and avoids a concentration inequality.
+The paper's argument uses Hoeffding.
 -/
 import Exploding.Support.Vocab
 import Exploding.Support.Wave
@@ -64,8 +61,8 @@ variable {d : ℕ}
 
 /-! ### (b) Hoeffding's inequality, one line -/
 
--- GAP-closing pieces (both new, both real), used by `aux_ct_hoeffding` below:
-/-- **New, real.** The coordinates of `toyLaw d p` at the `k` sites of the line
+-- Auxiliary facts used by `aux_ct_hoeffding` below:
+/-- The coordinates of `toyLaw d p` at the `k` sites of the line
 `j ↦ Function.update y i j`, viewed through `v ↦ p - 1{v = 2d-1}`, are
 independent: `toyLaw d p` is `Measure.infinitePi` of the same one-site law at
 every site (`Toppling`/`Vocab`), so `ProbabilityTheory.iIndepFun_infinitePi`
@@ -102,7 +99,7 @@ theorem aux_ct_hoeffding_indep (d : ℕ) (p : ℝ) (hp : 0 ≤ p) (hp1 : p ≤ 1
   exact Measurable.sub measurable_const (Measurable.ite (measurableSet_singleton _)
     measurable_const measurable_const)
 
-/-- **New, real.** Each `η ↦ p - 1{η(Function.update y i j) = 2d-1}` has a
+/-- Each `η ↦ p - 1{η(Function.update y i j) = 2d-1}` has a
 sub-Gaussian MGF with parameter `1/4` under `toyLaw d p`: it is (everywhere,
 not just a.e.) valued in `Set.Icc (p-1) p`, is measurable (as above), and has
 mean `0` (the marginal of `toyLaw d p` at any one site is `chipLaw (2d-1)
@@ -187,7 +184,7 @@ theorem aux_ct_hoeffding_subgauss (d : ℕ) (p : ℝ) (hp : 0 < p) (hp1 : p < 1)
   -- The parameter simplifies to (2 ^ 2)⁻¹ in h_subgauss but 4⁻¹ in the goal
   simpa [show ((2 : NNReal) ^ 2)⁻¹ = (4⁻¹ : NNReal) by norm_num] using h_subgauss
 
-/-- **(b)** (`exploding.tex:433-436`). Fix a direction `i` and an off-axis
+/-- **(b)**. Fix a direction `i` and an off-axis
 point `y`. Parametrize the line `line d k i y` by `j ↦ Function.update y i j`,
 `j ∈ Finset.Icc 1 k` (so `j` ranges over exactly the `k` values the paper's
 line takes in coordinate `i`). Under the toy law, the count of sites along the
@@ -330,11 +327,11 @@ theorem aux_ct_union_bound (d k : ℕ) (hd : 2 ≤ d) (p : ℝ) (hp : 0 < p) (hp
 
 /-! ### (d) Uniformity across directions ("symmetry", no Harris/FKG needed) -/
 
-/-- **(d)**. `aux_ct_union_bound` did not use any special property of the
-direction `i`; the identical computation gives the identical bound
-`|cube d k| · exp(-2 ε² k)` for every one of the `d` directions (this *is* the
-paper's "by symmetry" step, realized as literal syntactic uniformity in `i`
-rather than as an appeal to a measure-preserving coordinate permutation). A
+/-- **(d)**. The bound of `aux_ct_union_bound` does not use any special property of the
+direction `i`; the same computation gives the same bound `|cube d k| · exp(-2 ε² k)` for
+every one of the `d` directions. This is the paper's "by symmetry" step, realized as
+literal uniformity in `i` rather than as an appeal to a measure-preserving coordinate
+permutation. A
 further union (Boole's inequality) over the `d` directions therefore bounds
 the probability that *some* direction has a catalyst-free line by `d` times
 the single-direction bound; no Harris/FKG correlation inequality is invoked
@@ -437,7 +434,7 @@ theorem aux_ct_ae_bounded (d : ℕ) (hd : 2 ≤ d) (p : ℝ) (hp : 0 < p) (hp1 :
 
 /-! ### (a) The deterministic propagation lemma -/
 
-/-- **New, real.** `fodo` is nondecreasing in time, for any frozen set,
+/-- `fodo` is nondecreasing in time, for any frozen set,
 background, and initial condition: on the frozen set the value never moves
 (`fodo_of_mem`), and off it each step only ever adds `0` or `1`
 (`fodo_succ_of_notMem`).  Induction on the time gap exactly mirrors
@@ -650,10 +647,8 @@ theorem aux_ct_off_step4 {d k : ℕ} (i : Fin d) (x y : Site d)
     rw [hsingle, hother] at h1
     omega
 
--- GAP-closing piece for the domino mechanism (`exploding.tex:446-447`), the
--- crux of the whole propagation lemma.
-/-- **The peel step** (real content, not a literature gap: this is the paper's
-own one-paragraph mechanism, made precise).  If the off-axis-adjacent line
+-- The domino mechanism, which is the crux of the propagation lemma.
+/-- **The peel step.** This is the paper's one-paragraph mechanism, made precise. If the off-axis-adjacent line
 through `Yref` (agreeing with `Y` on axis `i`, `(lattice d).Adj Y Yref`) is
 already entirely toppled by time `T`, and `Y`'s own off-axis coordinates are a
 genuine row of the cube (`hYoff`, so every point of `line d k i Y` lies in
@@ -1167,11 +1162,10 @@ theorem aux_ct_propagate_line_fill (d k : ℕ) (hd : 2 ≤ d) (η : Site d → �
   exact hmono (by omega) w
 
 
--- GAP-closing piece: the paper's own chain-length count
--- (`exploding.tex:447-449`, "every line in `Q_k` is joined to `L_k^{(1,z)}`
--- by a chain of at most `(d-1)(k-1)+1` neighbouring lines").
-/-- **The off-axis distance bound** (elementary case analysis on `closureN`/`outerBoundary`,
-not a literature gap).  For `x` a genuine row of the cube and `z` anywhere in
+-- The chain-length count of the paper: every line in `Q_k` is joined to `L_k^{(1,z)}`
+-- by a chain of at most `(d-1)(k-1)+1` neighbouring lines.
+/-- **The off-axis distance bound.** This is an elementary case analysis on
+`closureN`/`outerBoundary`. For `x` a genuine row of the cube and `z` anywhere in
 its closed neighbourhood, the off-axis `ℓ¹` distance from `z` to `x` is at
 most `(d-1)(k-1) + 1`: on the (at most one) coordinate where `z` strays
 outside `[1,k]` the gap to `x`'s in-range value is at most `k` rather than
@@ -1275,7 +1269,7 @@ theorem aux_ct_propagate_bound_off_dist (d k : ℕ) (i : Fin d) (z x : Site d)
   exact aux_ct_bd_gen d k i z x hx hz
 
 
-/-- **New, real.** The arithmetic close of the chain-length bound: for
+/-- The arithmetic close of the chain-length bound: for
 `d ≥ 2` (any `k`), `((d-1)k + 1)(k+1) ≤ (k+1)^d`.  Induction on `d` (written
 as `d0 + 2`), the base case an equality (`ring`), the step reducing to
 `k ≤ (k+1)^{d0+2}` via `Nat.le_self_pow`. -/
@@ -1290,7 +1284,7 @@ theorem aux_ct_propagate_key_ineq (d0 k : ℕ) :
     rw [hpow]
     nlinarith [ih, hself]
 
-/-- **New, real.** By induction on `n`, using `aux_ct_propagate_off_step` and
+/-- By induction on `n`, using `aux_ct_propagate_off_step` and
 `aux_ct_propagate_line_fill`: `n` steps of coordinate-peeling from `z` towards
 a fixed `x ∈ cube d k` reach a point at off-axis distance `(off-dist z x) - n`
 from `x`, whose line is toppled by time `n * k`.  The base case (`n = 0`) is
@@ -1344,7 +1338,7 @@ theorem aux_ct_propagate_chain (d k : ℕ) (hd : 2 ≤ d) (η : Site d → ℤ)
     have heq : m * k + k = (m + 1) * k := by ring
     rwa [heq] at this
 
-/-- **(a)** (`exploding.tex:445-449`).  If `η` is pointwise bounded as in
+/-- **(a)**.  If `η` is pointwise bounded as in
 `(1.2)` and every line of `Q_k`, in every direction, carries a `(2d-1)`-chip
 catalyst, then `Q_k` is a good cube: every crossing time `𝔠_k^{(i,z)}`,
 `z ∈ closureN (cube d k)`, is at most `k^d`.  Assembled from
@@ -1415,10 +1409,9 @@ theorem aux_ct_propagate (d k : ℕ) (hd : 2 ≤ d) (η : Site d → ℤ)
 
 /-! ### (e) Assembly -/
 
--- GAP-closing pieces (all new, all real except `aux_ct_decay_eventually`),
--- used by `aux_ct_assemble` below.
+-- Auxiliary facts used by `aux_ct_assemble` below.
 
-/-- **New, real.** `cube d k` is the `Fin d`-indexed product of `d` copies of
+/-- `cube d k` is the `Fin d`-indexed product of `d` copies of
 `Set.Icc (1:ℤ) k`, so its finiteness and cardinality reduce to
 `Set.Finite.pi`/`Set.encard_pi_eq_prod_encard`. -/
 theorem aux_ct_assemble_cube_eq_pi (d k : ℕ) :
@@ -1426,7 +1419,7 @@ theorem aux_ct_assemble_cube_eq_pi (d k : ℕ) :
   ext x
   simp [cube, Pi.le_def, forall_and]
 
-/-- **New, real.** `cube d k` is finite: it is the product (via
+/-- `cube d k` is finite: it is the product (via
 `aux_ct_assemble_cube_eq_pi`) of `d` copies of the finite set `Set.Icc 1 k`
 (`Set.finite_Icc`), and `Set.Finite.pi` gives finiteness of the product. -/
 theorem aux_ct_assemble_cube_finite (d k : ℕ) : (cube d k).Finite := by
@@ -1434,7 +1427,7 @@ theorem aux_ct_assemble_cube_finite (d k : ℕ) : (cube d k).Finite := by
   intro x hx i _
   exact hx i
 
-/-- **New, real.** `(cube d k).ncard = k ^ d`: rewrite via
+/-- `(cube d k).ncard = k ^ d`: rewrite via
 `aux_ct_assemble_cube_eq_pi`, compute `(Set.Icc (1:ℤ) k).encard = k` (`Finset.
 coe_Icc`/`Set.encard_coe_eq_coe_finsetCard`, `Int.card_Icc`), multiply the `d`
 equal factors with `Set.encard_pi_eq_prod_encard`/`Finset.prod_const`, and
@@ -1455,7 +1448,7 @@ theorem aux_ct_assemble_cube_ncard (d k : ℕ) : (cube d k).ncard = k ^ d := by
   exact aux_ct_enat_toNat_pow k d
 
 
-/-- **New, real (standard).** The polynomial-times-geometric decay
+/-- The polynomial-times-geometric decay
 `n^d · r^n → 0` for `r := exp(-2ε²) ∈ [0,1)`
 (`tendsto_pow_const_mul_const_pow_of_lt_one`, `Mathlib.Analysis.
 SpecificLimits.Normed`), unwound via `Filter.Tendsto.eventually` at the
@@ -1481,8 +1474,7 @@ theorem aux_ct_decay_eventually (d : ℕ) (ε δ : ℝ) (hε : 0 < ε) (hδ : 0 
   rcases h_event.exists_forall_of_atTop with ⟨N, hN⟩
   exact ⟨N, hN⟩
 
-/-- **New, real (the "(e)" real-analysis step, modulo
-`aux_ct_decay_eventually`).** From `aux_ct_decay_eventually`'s `N`, take
+/-- The "(e)" real-analysis step, using `aux_ct_decay_eventually`. From `aux_ct_decay_eventually`'s `N`, take
 `k := max N 1`; `Real.exp_nat_mul` turns `r^k` back into `exp(-2ε²k)`, and
 `(d:ℝ) < (d:ℝ)+1` closes the final bound. -/
 theorem aux_ct_decay (d : ℕ) (ε δ : ℝ) (hε : 0 < ε) (hδ : 0 < δ) :

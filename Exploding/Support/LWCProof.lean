@@ -1,101 +1,30 @@
--- Every declaration in this file is proved
--- outright, and the file contains no unfinished proof.  The single open claim of the reduction -- the locally
--- uniform convergence of the rescaled penultimate-cluster arrival times, together with the
--- moment-free Kingman step and the far Lipschitz bound it rests on -- is stated as one `have`
--- in `Exploding/Frozen/LastWaveConvergence.lean`.
+-- Every declaration in this file is proved, and the file contains no `sorry`.  The file
+-- carries out the transfer of the last-wave arrival times from `clusterArrival` to
+-- `lastArrival`.  The locally uniform convergence of the rescaled `clusterArrival` enters
+-- that transfer as the hypothesis `hunif` of `lwc_transfer`.
 /-
-Proposition 3.8 of the paper: the rescaled last-wave arrival times converge.
+Proposition 3.8 (`prop:convergence_of_the_last_wave`) of the paper: the rescaled last-wave
+arrival times converge.
 
-DECOMPOSITION (not a proof of the theorem).  The paper's proof
-(`exploding.tex:846-850`) is three sentences:
+This file proves the reduction of the proposition to the penultimate-cluster arrival times
+`clusterArrival`, and the transfer from `clusterArrival` to `lastArrival`.  The ingredients
+are:
 
-  "In light of Lemma 3.7 it suffices to prove the result for `T̃`.  Convergence
-  in integer directions follows from the subadditive ergodic theorem.
-  Everywhere convergence then follows from continuity and approximation.  The
-  properties of `N_p` are immediate from the scaling and microscopic
-  subadditivity."
+* Translation covariance of `clusterArrival`, and ergodicity of translation by a nonzero
+  lattice vector for the i.i.d. background `toyLaw` (`lwc_cluster_shift`, `lwc_shift_ergodic`).
+* A shift-invariant event of full measure on which the approximate subadditivity
+  (`lemma:approx_subadditivity`) holds and every `clusterArrival` from the origin is finite
+  (`lwc_good_event`).
+* Measurability of `clusterArrival` in the background (`lwc_measurable`).
+* Lipschitz-type bounds on `clusterArrival` (`lwc_cluster_lipschitz_1`), built from
+  Lemma 3.6 (`lemma:penultimate_upper_bound`) and Lemma 3.7 (`lemma:last_penultimate_close`).
+* Homogeneity of the limit under integer scaling of a lattice direction (`lwc_homog`).
+* The transfer from `clusterArrival` to `lastArrival` (`lwc_transfer`), which takes the
+  locally uniform convergence of the rescaled `clusterArrival` as the hypothesis `hunif`.
 
-Decomposed into:
-
-  (a) `lwc_kingman`  -- Kingman's theorem applied to `clusterArrival` along
-                            each lattice direction (GAP: see the report below)
-  (b) `lwc_homog`    -- `N` is homogeneous under integer scaling of a
-                            lattice direction (real, proved from (a)'s
-                            conclusion alone)
-  (c) `lwc_uniform`  -- everywhere convergence, locally uniform on compacts
-                            of `ℝ^d`, by continuity/convexity extension from
-                            the countable set of lattice directions (GAP)
-  (d) `lwc_transfer` -- transfers the `clusterArrival` statement to
-                            `lastArrival` via `Exploding.Frozen.last_penultimate_close`
-                            (GAP: stated precisely, believed a routine
-                            compactness argument, not attempted here for time)
-
-### Verdict on Kingman's subadditive ergodic theorem
-
-Grepped `.lake/packages/mathlib/Mathlib` for "Kingman" and for
-"subadditive ergodic": **no hits**.  `Mathlib/Analysis/Subadditive.lean` is
-confirmed to be *only* Fekete's lemma, the deterministic statement that a
-subadditive real sequence bounded below converges (`Subadditive.tendsto_lim`);
-it has no measure, no transformation, no a.e. statement.  Kingman's theorem is
-**absent from this Mathlib checkout**.
-
-It is, however, **present and fully proved in the shared library**, in the classical
-single-measure-preserving-transformation form: for `T : Ω → Ω` measure
-preserving and `g : ℕ → Ω → ℝ` `SubadditiveAlong T` (`g (m+n) x ≤ g m x +
-g n (T^[m] x)`), nonnegative or bounded below linearly, `g n x / n` converges
-a.e. to a `T`-invariant limit (`LatticeProb.ae_tendsto_gLow`,
-`LatticeProb.ae_tendsto_div`).  Combined with
-`LatticeProb.ergodic_coordShift_infinitePi` (`LatticeProb/IID.lean`), which
-gives that translation by a fixed nonzero lattice vector is *ergodic* — not
-just measure preserving — for an i.i.d. field such as `toyLaw`, and with
-Mathlib's own `Ergodic.ae_eq_const_of_ae_eq_comp₀`
-(`Mathlib/Dynamics/Ergodic/Function.lean`), which turns an a.e.-invariant
-function under an ergodic map into an a.e.-*constant* one, the *entire*
-machinery needed for "convergence in a fixed integer direction, to a
-deterministic constant" is present and unconditionally proved somewhere in
-this workspace.
-
-What is **not** proved anywhere is the bridge from these general theorems to
-`clusterArrival` on `toyLaw`: (i) the shift-equivariance
-`clusterArrival (η ∘ (· + v)) a b = clusterArrival η (a + v) (b + v)`, needed
-to view `n ↦ clusterArrival η 0 (n • v)` as `SubadditiveAlong` the shift-by-`v`
-map (the sealed `approx_subadditivity` gives subadditivity in the *basepoint*
-argument at a *fixed* `η`, not the cocycle identity across a shifted `η`,
-which is a different, translation-equivariance fact about the whole toppling
-construction); and (ii) a first-moment bound
-`Integrable (fun η => (clusterArrival η 0 v).toNat) (toyLaw d p)`, needed to
-invoke `LatticeProb.ae_tendsto_div` at all.  Neither is a Mathlib gap — (i) is
-routine but unformalized equivariance of every definition in
-`Exploding/Support/{Toppling,Vocab,Wave}.lean` under a lattice shift, and (ii)
-is a genuine, unformalized probabilistic fact (a tail estimate) that
-`renormalization_properties` does not by itself supply.  `lwc_kingman`
-below states exactly this combined gap.
-
-### Repair of the proof (2026-09-24, exploding.tex, proof of Proposition 3.1)
-
-The paper's proof applied Kingman's theorem with no moment bound, and no moment bound is
-available: Proposition 2.2 and Lemmas 3.6, 3.7 hold only on an event of probability one,
-and the only bound on `M̂_η(0)` (Lemma 3.1) is exponential in the distance to `C_∞`.  The
-corrected proof (the same argument as the proof of Proposition 5.1, with Lemma 2.1 in place
-of Hypothesis 5.3) needs no integrability.  It uses
-
-  * `lwc_shift_ergodic`     -- translation by `v ≠ 0` is ergodic for `toyLaw`
-                                   (from `LatticeProb.ergodic_coordShift_infinitePi`);
-  * `lwc_cluster_shift`     -- translation covariance of `clusterArrival`;
-  * `lwc_good_event`        -- a shift-invariant event of full measure on which the
-                                   hypotheses of `approx_subadditivity` hold and every
-                                   `clusterArrival` is finite, so `toNat` reads no junk;
-  * `lwc_measurable`        -- measurability of `clusterArrival`;
-  * `lwc_cluster_lipschitz` -- the two bounds `eq:lastwave_lipschitz`, the second from
-                                   any point `x`, proved with Lemma 2.1 and Proposition 2.2;
-  * `lwc_kingman_linear`    -- Kingman's theorem without a moment bound, through the
-                                   transformation induced on `{g n ≤ C n + K for all n}`
-                                   and Kac's lemma (a general result, to be added to
-                                   Lattice-Probability next to `LatticeProb.ae_tendsto_div`).
-
-`lwc_kingman` (its statement unchanged) follows from these with `approx_subadditivity`,
-`penultimate_upper_bound` and `last_penultimate_close`; `lwc_uniform` uses the second
-bound of `lwc_cluster_lipschitz` in place of "continuity".
+The shift-by-`v` ergodicity used below comes from `LatticeProb.ergodic_coordShift_infinitePi`,
+which gives translation by a fixed nonzero lattice vector ergodicity for an i.i.d. field such
+as `toyLaw`.
 -/
 import Exploding.Support.Vocab
 import Exploding.Support.Wave
@@ -113,7 +42,7 @@ import Mathlib.MeasureTheory.MeasurableSpace.Constructions
 
 open Exploding LatticeProb MeasureTheory Filter
 
-/-! ### (a0) the ingredients of the repaired proof -/
+/-! ### Ingredients: the i.i.d. background and translations -/
 
 /-- `chipLaw a b p` is a probability measure for `0 ≤ p ≤ 1`: it is a convex combination of
 two Dirac masses with weights `p` and `1 - p`, which sum to `1`
@@ -333,7 +262,7 @@ theorem lwc_good_event_2 (d : ℕ) (hd : 2 ≤ d) (p : ℝ) (hp : 0 < p) (hp1 : 
   rw [hb]; exact ENat.coe_ne_top b
 
 /-- Promotes an a.s. property `Q` (possibly not itself known to be a measurable predicate) to
-an honest measurable, full-measure set on which `Q` holds, via a measurable null superset of
+a measurable, full-measure set on which `Q` holds, via a measurable null superset of
 `{¬ Q}` (`MeasureTheory.exists_measurable_superset`). -/
 theorem lwc_good_event_3 {d : ℕ} (p : ℝ) (Q : (Site d → ℤ) → Prop)
     (hQ : ∀ᵐ η ∂(toyLaw d p), Q η) :
@@ -994,12 +923,12 @@ noncomputable def lwc_inducedMap {Ω : Type*} (T : Ω → Ω) (A : Set Ω) (x : 
 
 
 
-/-! ### (a) Kingman's theorem applied to `clusterArrival` -/
+/-! ### The case of the zero direction -/
 
-/-- **Real, fully proved**: for `v = 0` the sequence `n • v` is constantly `0`, so
+/-- For `v = 0` the sequence `n • v` is constantly `0`, so
 `clusterArrival η 0 (n • 0) = clusterArrival η 0 0` for every `n` and every `η`, a single fixed
 `ℕ∞`; the rescaled sequence is a constant natural divided by `n`, which tends to `0` regardless
-of whether that constant is finite (`.toNat` reading the honest value) or `⊤` (`.toNat` reading
+of whether that constant is finite (`.toNat` reading the actual value) or `⊤` (`.toNat` reading
 the junk value `0`, giving the already-constant-zero sequence). No a.e. restriction is needed. -/
 theorem lwc_kingman_zero_case (d : ℕ) (p : ℝ) :
     ∀ᵐ η ∂(toyLaw d p),
@@ -1014,16 +943,13 @@ theorem lwc_kingman_zero_case (d : ℕ) (p : ℝ) :
 
 
 
-/-! ### (b) homogeneity under integer scaling of a lattice direction -/
+/-! ### Homogeneity under integer scaling of a lattice direction -/
 
-/-- **Real, proved from (a)'s conclusion alone** (no further citation needed):
-if `N v` is the a.s. limit of the rescaled `clusterArrival` in direction `v`
-for every `v`, then `N` is homogeneous under scaling `v` by a positive
-integer.  This is exploding.tex's "the properties of `N_p` are immediate from
-the scaling", specialized to integer scaling of a lattice vector; the
-paper's passage to general nonnegative real scaling of `N` on `ℝ^d` needs the
-continuity from (c) as well, since `ℤ^d` is not scaled by irrational
-constants. -/
+/-- Homogeneity under integer scaling: if `N v` is the a.s. limit of the rescaled
+`clusterArrival` in direction `v` for every `v`, then `N` is homogeneous under scaling `v`
+by a positive integer.  Extending this to general nonnegative real scalars on `ℝ^d` needs a
+continuity argument, since the lattice directions are not closed under irrational scaling;
+this lemma does not use one. -/
 theorem lwc_homog (d : ℕ) (p : ℝ)
     [MeasureTheory.IsProbabilityMeasure (toyLaw d p)]
     (N : Site d → ℝ)
@@ -1062,26 +988,12 @@ theorem lwc_homog (d : ℕ) (p : ℝ)
     h3.congr (fun n => (hpt n).symm)
   exact tendsto_nhds_unique h2 h4
 
-/-! ### (c) everywhere, locally uniform convergence -/
+/-! ### Transfer from `clusterArrival` to `lastArrival` -/
 
--- GAP: exploding.tex's "everywhere convergence then follows from the second bound
--- in eq:lastwave_lipschitz and approximation" (the arXiv text said "continuity"): the
--- second bound of `lwc_cluster_lipschitz`, applied in both directions, makes the
--- rescaled `clusterArrival` uniformly Lipschitz up to `o(1)` on compacts, which with
--- `lwc_kingman` on a finite net of lattice directions gives locally uniform convergence.
--- The older notes follow.  Standard tool available for this: `ConvexOn` functions
--- are `LocallyLipschitz` (`Mathlib/Analysis/Convex/Continuous.lean`,
--- `ConvexOn.locallyLipschitz`), which is the usual way to upgrade convergence
--- on a dense set to locally uniform convergence for a convex limit.  What is
--- missing is (i) the discrete-`n` family `y ↦ n⁻¹ (clusterArrival η 0
--- (nearestSite (n•y))).toNat` is itself uniformly (in `n`) close to convex /
--- Lipschitz on compacts, which should follow from `approx_subadditivity`
--- (sealed) plus a bound relating `clusterArrival` to `mnorm` on nearby points,
--- neither combination formalized; and (ii) the routine but unwritten
--- extension of `lwc_homog` from positive-integer to nonnegative-real
--- scalars via continuity.  Both are left to whoever discharges this GAP.
-
-/-! ### (d) transfer from `clusterArrival` to `lastArrival` -/
+-- The locally uniform convergence of the rescaled `clusterArrival` is not derived in this
+-- file.  It enters `lwc_transfer` as the hypothesis `hunif`.  In the consumer
+-- `Exploding/Frozen/LastWaveConvergence.lean` it is supplied by the lattice-direction upgrade
+-- `lwc3_lattice_upgrade` (`Exploding/Support/LWCProof3.lean`).
 
 /-- A compact subset of `Fin d → ℝ` is bounded in sup norm: `IsCompact.isBounded` gives a
 norm bound, and `norm_le_pi_norm` reads it off coordinatewise. -/
@@ -1184,8 +1096,8 @@ theorem lwc_transfer_6 {d : ℕ} (η : Site d → ℤ) (γ : ℝ) (n0 : ℕ)
   rw [ha, hb, ENat.toNat_coe, ENat.toNat_coe, abs_of_nonpos (by linarith)]
   linarith
 
-/-- The locally uniform convergence of (c), transferred from `clusterArrival`
-to `lastArrival` via `Exploding.Frozen.last_penultimate_close`.  Every compact `K` has
+/-- The locally uniform convergence of the rescaled `clusterArrival` (the hypothesis `hunif`),
+transferred to `lastArrival` via `Exploding.Frozen.last_penultimate_close`.  Every compact `K` has
 `mnorm (nearestSite (n • y)) ≤ C n` uniformly over `y ∈ K` (`lwc_transfer_3`), so
 `last_penultimate_close` applies at scale `(C+1) n`, and its polylogarithmic error divided
 by `n` still tends to `0` (`lwc_transfer_4`); the triangle inequality against `hunif`

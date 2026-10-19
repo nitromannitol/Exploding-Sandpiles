@@ -1,13 +1,13 @@
 /-
 Proposition 5.1 of the paper (generalized last wave): the tools of the estimates of Section 3
-run with Hypotheses 5.3 and 5.4 in place of the good cubes and local convexity.
+run with Hypotheses 3 and 4 in place of the good cubes and local convexity.
 
 * the support of the wave is connected to its centre by a path of distinct sites;
 * a path of `m ≥ (log n)^γ` distinct sites lit by the wave lights its bounding rectangle `m^d`
-  steps later (Hypothesis 5.3);
+  steps later (Hypothesis 3);
 * a row of more than `(log n)^{5/2}` consecutive macroscopic sites meets `C_∞`;
 * a lit bounding rectangle with a long side contains a line of a tile of `C_∞`, which lights the
-  tile (Hypothesis 5.4); a lit tile of `C_∞` lights all of `C_∞`, so the wave cannot stabilize.
+  tile (Hypothesis 4); a lit tile of `C_∞` lights all of `C_∞`, so the wave cannot stabilize.
 -/
 import Exploding.Support.GLWSec3J
 
@@ -135,7 +135,7 @@ theorem glws_path_coord {m : ℕ} (z : ℕ → Site d) (hadj : ∀ i, i < m → 
     push_cast
     linarith
 
-/-! ### Filling the bounding rectangle of a lit path (Hypothesis 5.3) -/
+/-! ### Filling the bounding rectangle of a lit path (Hypothesis 3) -/
 
 /-- **A lit path of distinct sites lights its bounding rectangle.**  If the `N`-wave is positive
 at time `t` on `m ≥ (log n)^γ` distinct sites of a path in `[-n,n]^d`, it is positive on the

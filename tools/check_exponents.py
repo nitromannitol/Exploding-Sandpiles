@@ -1,28 +1,32 @@
 """Compare every exponent in a paper statement with those in its Lean statement.
 
-The exponents `2/3`, `1/3`, `-2/3`, `-1/3` and the `e^{-cR}` tails carry the
-content of this paper, and `2/3` versus `1/3` is a transposition that no type
-error would catch.  So they are compared directly:
+Exponents carry much of the content of a statement, and swapping two of them is
+a transposition that no type error would catch.  So they are compared directly:
 every exponent is extracted from the paper's statement and from the frozen Lean
 statement and the two multisets are matched.
+
+The exponent table below was carried over from another project and holds
+entries only for that project's nodes.  Each entry applies only to the node
+whose id it names, so an entry for a node id that this manifest does not
+contain is never consulted.
 
 Three kinds of difference are expected and are recorded per node rather than
 silently ignored:
 
   notation   the paper writes `\\gamma`, Lean writes `γ`
-  general    the paper writes the `d = 2` case as `2/3` and `1/3`; Lean carries
-             the general `d/(d+1)` and `1/(d+1)`, which agree at `d = 2`
-  split      `thm:return` is one theorem in the paper and three nodes here, so
-             each node sees the whole theorem's line range but carries only its
-             own display
+  general    the paper writes a fixed-dimension exponent as a number; Lean
+             carries the general form, which agrees at that dimension
+  split      one theorem in the paper is several nodes here, so each node sees
+             the whole theorem's line range but carries only its own display
 
     python3 tools/check_exponents.py
 
-The recorded explanations apply only to the exact historical source pin.
-Revised-source rows, non-External definitions, and citations without a statement
-range are explicitly excluded. A run with no compared statements fails.
-Every compared declaration must retain its recorded version and frozen hash;
-the marker-block hash is recomputed before any historical explanation is reused.
+The recorded explanations apply only to the exact earlier source file.
+Statements selected from the corrected edition, non-External definitions, and
+citations without a statement range are explicitly excluded. A run with no
+compared statements fails.  Every compared declaration must retain its recorded
+version and frozen hash; the marker-block hash is recomputed before any recorded
+explanation is reused.
 """
 
 from __future__ import annotations

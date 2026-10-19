@@ -54,7 +54,7 @@ def StronglyBoxCrossed (η : Site d → ℤ) (k : Fin d → ℕ) (j : Site d) : 
 
 /-! ### The five hypotheses of Section 5 -/
 
-/-- **Hypothesis 5.1** (finite range of dependence): the families of coordinates
+/-- **Hypothesis 1** (finite range of dependence): the families of coordinates
 on two finite sets of sites, every site of one further than `K` from every site
 of the other, are independent. -/
 def FiniteRangeOfDependence (d : ℕ) (P : Measure (Site d → ℤ)) : Prop :=
@@ -62,12 +62,12 @@ def FiniteRangeOfDependence (d : ℕ) (P : Measure (Site d → ℤ)) : Prop :=
     ProbabilityTheory.IndepFun (fun η : Site d → ℤ => fun i : I => η i)
       (fun η : Site d → ℤ => fun j : J => η j) P
 
-/-- **Hypothesis 5.2** (box-crossing). -/
+/-- **Hypothesis 2** (box-crossing). -/
 def BoxCrossingHyp (d : ℕ) (P : Measure (Site d → ℤ)) : Prop :=
   ∀ δ : ℝ, 0 < δ → ∃ k : Fin d → ℕ, (∀ i, 0 < k i) ∧
     ∀ j : Site d, ENNReal.ofReal (1 - δ) < P {η | BoxCrossed η k j}
 
-/-- **Hypothesis 5.3** (path-filling): a long path of topplings fills its
+/-- **Hypothesis 3** (path-filling): a long path of topplings fills its
 bounding rectangle. -/
 def PathFillingHyp (d : ℕ) (P : Measure (Site d → ℤ)) : Prop :=
   ∃ γ : ℝ, 0 < γ ∧ ∀ᵐ η ∂P, ∃ n0 : ℕ, ∀ n : ℕ, n0 ≤ n →
@@ -79,12 +79,12 @@ def PathFillingHyp (d : ℕ) (P : Measure (Site d → ℤ)) : Prop :=
       ∀ t : ℕ, m ^ d ≤ t → ∀ x ∈ br (z '' {i : ℕ | i < m}),
         1 ≤ fodo (z '' {i : ℕ | i < m}) η (Set.indicator (z '' {i : ℕ | i < m}) 1) t x
 
-/-- **Hypothesis 5.4** (strongly box-crossing). -/
+/-- **Hypothesis 4** (strongly box-crossing). -/
 def StronglyBoxCrossingHyp (d : ℕ) (P : Measure (Site d → ℤ)) : Prop :=
   ∀ δ : ℝ, 0 < δ → ∃ k : Fin d → ℕ, (∀ i, 0 < k i) ∧
     ∀ j : Site d, ENNReal.ofReal (1 - δ) < P {η | StronglyBoxCrossed η k j}
 
-/-- **Hypothesis 5.5** (wave-approximation): the last-wave and the exploding
+/-- **Hypothesis 5** (wave-approximation): the last-wave and the exploding
 sandpile have arrival times differing by `o(n)` on `[-n,n]^d`. -/
 def WaveApproximationHyp (d : ℕ) (P : Measure (Site d → ℤ)) : Prop :=
   ∀ᵐ η ∂P, Explosive η →

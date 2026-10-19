@@ -4,7 +4,7 @@ import Exploding.Support.ArxivVolumeLower
 # Local translation continuity and the volume obstruction
 
 Translations of arbitrary measurable sets are continuous in measure on a fixed bounded
-window, even when the set has infinite global volume. The audited lower bound for the
+window, even when the set has infinite global volume. The lower bound for the
 threshold-three support then rules out convergence in global symmetric-difference volume.
 -/
 

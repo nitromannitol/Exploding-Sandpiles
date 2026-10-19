@@ -2,7 +2,7 @@
 Proposition 5.1 of the paper (generalized last wave): the two open claims behind the local bound
 and the closeness of the arrival times, isolated as a probabilistic claim (the infinite cluster
 of strongly box-crossing tiles) and a deterministic claim (the Section-3 estimates run on the
-event of that cluster and of Hypothesis 5.3), and their assembly into `glws_Origin` and
+event of that cluster and of Hypothesis 3), and their assembly into `glws_Origin` and
 `glws_Close`.
 
 The finiteness of the last wave at every site is proved here from the cluster
@@ -17,7 +17,7 @@ namespace Exploding
 
 variable {d : ℕ}
 
-/-- The body of Hypothesis 5.3 (path-filling) at a fixed background and exponent. -/
+/-- The body of Hypothesis 3 (path-filling) at a fixed background and exponent. -/
 def glws_PF (d : ℕ) (γ : ℝ) (η : Site d → ℤ) : Prop :=
   ∃ n0 : ℕ, ∀ n : ℕ, n0 ≤ n →
     ∀ (m : ℕ) (z : ℕ → Site d),
@@ -45,7 +45,7 @@ def glws_Clu (d : ℕ) (k : Fin d → ℕ) (c C : ℝ) (η : Site d → ℤ) : P
           c * (mnorm (x - y) : ℝ) ≤ (m : ℝ) ∧ (m : ℝ) ≤ C * (mnorm (x - y) : ℝ))
 
 /-- **The probabilistic claim** (the generalization of Proposition 2.2, paper
-`exploding.tex:1198-1203`).  Under Hypotheses 5.1 and 5.4 the field of strongly box-crossing tiles
+`exploding.tex:1198-1203`).  Under Hypotheses 1 and 4 the field of strongly box-crossing tiles
 is `m`-dependent with marginals close to one; by the Liggett-Schonmann-Stacey domination the good
 edges dominate a supercritical bond percolation (the dependence graph has bounded degree), and the
 argument before Proposition 2.2 (Mathieu's bound on the holes, Antal and Pisztora's chemical

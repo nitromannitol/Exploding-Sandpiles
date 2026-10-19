@@ -13,9 +13,9 @@ stable, so this tool recomputes every range from its label and reports drift.
     python3 tools/paper_anchors.py            # check, exit 1 on drift
     python3 tools/paper_anchors.py --fix      # rewrite the stale source: lines
 
-Nodes whose `source:` names no paper label (the model guards) are skipped.
-Only rows under the default exact source pin are re-anchored. Rows pinned to
-other sources are listed explicitly and require separate anchor review.
+Nodes whose `source:` names no paper label are skipped.
+Only statements under the default source file are re-anchored. Statements tied
+to other sources are listed explicitly and require separate anchor review.
 """
 
 from __future__ import annotations

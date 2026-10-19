@@ -2,7 +2,7 @@
 Proposition 5.1 of the paper (generalized last wave): the lighting of strongly box-crossing tiles
 by the `N`-wave, and the finiteness of the last wave at every site.
 
-Hypothesis 5.4 replaces the crossing time of good cubes: a lit line of a strongly box-crossing tile,
+Hypothesis 4 replaces the crossing time of good cubes: a lit line of a strongly box-crossing tile,
 or of its outer boundary, lights the whole tile within `∏ k` steps.  Along a connected set of
 strongly box-crossing tiles the lighting travels at `∏ k` steps per tile, and an infinite such set
 makes every `N`-wave with `N` large non-stabilizable, since a wave has finite support at each time.

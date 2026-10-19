@@ -92,7 +92,7 @@ theorem bc_layer_spanning_prob (d : ℕ) (hd : 1 ≤ d) (p : ℝ) (hp : 0 < p) (
       ENNReal.ofReal (1 - c * Real.exp (-(C * (n : ℝ)))) ≤
         productLaw (d + 1) (2 * ((d + 1 : ℕ) : ℤ) - 1) ((d + 1 : ℕ) : ℤ) p
           {η | InternallySpanned (fun w : Site d => η (cons i w) - 1) n} := by
-  obtain ⟨c, C, hc, hC, hbound⟩ := hSch d hd p hp hp1
+  obtain ⟨c, C, hc, hC, hbound⟩ := hSch d hd p hp hp1.le
   refine ⟨c, C, hc, hC, fun n i => ?_⟩
   have hmeas : MeasurableSet {η : Site d → ℤ | InternallySpanned η n} := by
     rw [show {η : Site d → ℤ | InternallySpanned η n}

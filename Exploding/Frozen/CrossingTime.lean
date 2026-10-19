@@ -2,14 +2,14 @@ import Exploding.Support.ArxivCrossingBound
 
 open Exploding LatticeProb MeasureTheory
 
-/-- Proposition 2.1 (`exploding-corrected-arxiv.tex:286-292`, label
-`prop:crossing_time`).
+/-- **Proposition 2.1** (`paper/corrected-arxiv/exploding-corrected-arxiv.tex:286-292`, label `prop:crossing_time`).
 
 "For every `δ > 0`, there is a `k` so that `max_{i,z} 𝔠_k^{(i,z)} ≤ k^d`
 with probability at least `(1 - δ)`."
 
-The event expands the terminal condition and positive minimum from source
-lines 275-283. The actual product law is specified at source lines 85-94. -/
+The event expands the terminal condition and positive minimum in the definition of the
+crossing time `𝔠` given before the proposition. The product law is specified in (1.2)
+(`eq:toy-eta-definition`). -/
 -- FROZEN-STATEMENT-BEGIN
 theorem Exploding.Frozen.crossing_time (d : ℕ) (hd : 2 ≤ d)
     (p : ℝ) (hp : 0 < p) (hp1 : p ≤ 1)

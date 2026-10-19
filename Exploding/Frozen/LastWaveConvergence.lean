@@ -16,8 +16,7 @@ import Exploding.Support.LastWaveConvergenceP1
 
 open Exploding LatticeProb MeasureTheory Filter
 
-/-- **Proposition 3.1** (`exploding-arxiv.tex:706-718`, label
-`prop:convergence_of_the_last_wave`).
+/-- **Proposition 3.1** (`paper/corrected-arxiv/exploding-corrected-arxiv.tex:974-980`, label `prop:convergence_of_the_last_wave`).
 
 "On an event of probability 1, the rescaled last-wave arrival times
 `n^{-1} T̂_η([n x])` converge locally uniformly to `N_p`, a continuous, convex,

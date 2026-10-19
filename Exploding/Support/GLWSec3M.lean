@@ -5,8 +5,8 @@ box-crossing tiles.
 
 If the support of the penultimate wave `ũ^{(x)}` left the box of radius `(log n)^γ` around `x`, it
 would contain a long path from `x` (it is connected to `x`), whose bounding rectangle would be
-lit by Hypothesis 5.3 and would contain a line of a tile of `C_∞` (the tiles of a long row cannot all
-lie in a hole); by Hypothesis 5.4 the tile would be lit, and then all of `C_∞`, which a stabilizable
+lit by Hypothesis 3 and would contain a line of a tile of `C_∞` (the tiles of a long row cannot all
+lie in a hole); by Hypothesis 4 the tile would be lit, and then all of `C_∞`, which a stabilizable
 wave, having finite support, cannot do.
 -/
 import Exploding.Support.GLWSec3L

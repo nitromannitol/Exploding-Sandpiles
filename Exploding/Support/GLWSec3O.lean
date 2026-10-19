@@ -4,7 +4,7 @@ Proposition 5.1 of the paper (generalized last wave): lighting a rectangle along
 If a tile `c 0` of a walk of strongly box-crossing tiles is lit at time `τ`, all the tiles of the
 walk are lit at time `τ + L ∏ k`.  Two sites `a, b` in tiles of the last stretch of the walk are
 joined by a path of distinct sites inside that stretch, of at most `V` sites; if the path is long
-enough for Hypothesis 5.3, the bounding rectangle of `a` and `b` is lit `V^d` steps later.
+enough for Hypothesis 3, the bounding rectangle of `a` and `b` is lit `V^d` steps later.
 -/
 import Exploding.Support.GLWSec3N
 

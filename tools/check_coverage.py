@@ -3,10 +3,10 @@
 The manifest says which paper statement each Lean node transcribes.  This asks
 the complementary question, which no other checker asks: is there a statement in
 the paper that no node claims?  A formalization can be entirely axiom-clean and
-still be silently incomplete, so the gap is worth a gate of its own.
+still be silently incomplete, so the gap is worth a check of its own.
 
-Open problems (the `problem` environment of Section 9) are excluded: they are
-questions, not claims.
+Open problems (the `problem` environment) are excluded: they are questions, not
+claims.
 
 Each effective exact source pin is checked separately. Definitions never claim
 theorem coverage. Partial coverage requires an exact, explicit manifest entry:

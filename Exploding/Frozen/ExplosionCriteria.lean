@@ -7,9 +7,8 @@ import Exploding.Support.RecurrenceNonneg
 
 open Exploding LatticeProb MeasureTheory
 
-/-- **Proposition 7.1** (`paper/corrected-arxiv/exploding-corrected-arxiv.tex:2388-2392`,
-label `prop:explosion_criteria`), in the corrected Section-5 setting with `d ≥ 2`
-(lines 1233-1248 and 2377-2379).
+/-- **Proposition 7.1** (`paper/corrected-arxiv/exploding-corrected-arxiv.tex:2388-2392`, label `prop:explosion_criteria`), in the bounded-background setting of
+Section 5 (`sec:generalization`) with `d ≥ 2`.
 
 "If Hypotheses `hyp:finite_range_of_dependence` and `hyp:box_crossing` are satisfied and
 `P` is recurrent then `P` is explosive."
@@ -19,7 +18,7 @@ and measurably ergodic with respect to a sublattice `L`, a finite-index subgroup
 The lower bound `0 ≤ η` is not assumed: recurrence (`recurrent_nonneg`, from the singleton
 `{x}`) gives it almost surely, so the proof uses only the upper bound of `hsupp`. The `herg`
 binder tests measurable events of the ambient product space; identifying it with ergodicity
-on the source's `(Ω, F)` under `hsupp` is a separate step. -/
+on the paper's `(Ω, F)` under `hsupp` is a separate step. -/
 -- FROZEN-STATEMENT-BEGIN
 theorem Exploding.Frozen.explosion_criteria (d : ℕ) (hd : 2 ≤ d) (ηmin : ℤ)
     (L : AddSubgroup (Site d)) (hL : L.index ≠ 0) (P : Measure (Site d → ℤ)) (hP : IsProbabilityMeasure P)

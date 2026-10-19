@@ -5,7 +5,7 @@ cited percolation results.
 
 The tile field `X_j = 1{B_k^{(j)} is strongly box-crossing}` is `(K + 1)`-dependent, uniformly in the
 side lengths `k` (`s3k_kdep`), and its one-site probabilities are at least `1 - δ` for some `k`
-(Hypothesis 5.4).  Choose `ρ` close to one so that Bernoulli site percolation of density `ρ` has the
+(Hypothesis 4).  Choose `ρ` close to one so that Bernoulli site percolation of density `ρ` has the
 cluster of Proposition 2.2 (`rn_core`); the Liggett-Schonmann-Stacey domination (Theorem 0.0) makes
 `X` dominate Bernoulli site percolation of density `ρ` once `δ` is small enough, and the Strassen
 coupling puts a configuration of the cluster below `X` almost surely.

@@ -1,10 +1,9 @@
 /-
-The parts of the proof of `theorem:counterexample` of `paper/exploding.tex`
-Section 6 that reduce to the Step 1 relay / Step 3'-stacking machinery already
-proved in `Exploding/Support/SubRelay.lean`, together with the real-analysis
-assembly of `T(n)/n`.  The genuinely new Step 3-4 material (the reflected
-cylinder front) enters only through the explicit hypotheses `hSlow2D`,
-`hLow` and `hBdd`; the frozen proof supplies those from `Exploding/Support/CESlow4.lean`
+The parts of the proof of `theorem:counterexample` (Section 6 of the paper) that
+reduce to the relay and stacking machinery proved in `Exploding/Support/SubRelay.lean`,
+together with the real-analysis assembly of `T(n)/n`.  The Steps 3-4 material
+(the reflected cylinder front) enters only through the explicit hypotheses `hSlow2D`,
+`hLow` and `hBdd`; those hypotheses are supplied by `Exploding/Support/CESlow4.lean`
 and `Exploding/Support/CELow4.lean`.
 -/
 import Exploding.Support.SubRelay
@@ -26,7 +25,7 @@ theorem ce_not_ge (d : ℕ) (_hd : 2 ≤ d) :
   rw [hce, hz] at h0
   linarith
 
-/-- Step 3' of `exploding.tex:1767-1790`: the `d`-dimensional odometer is
+/-- The stacking step: the `d`-dimensional odometer is
 dominated by the 2D odometer of the projection. -/
 theorem ce_stack_le_2D (d : ℕ) (hd : 2 ≤ d) (t : ℕ) (x : Site d) :
     podo (explodingPile (ceEta d)) t x ≤
@@ -214,10 +213,10 @@ theorem cylLap_le_of_le_add {v w u : ℤ × Fin 4 → ℤ} (h : ∀ y, v y ≤ w
   unfold cylLap
   linarith
 
-/-- **Step 3b of `exploding.tex:1506-1513`** (`eq:topple_compare_induc`), in the
-corrected general form needed here: for an arbitrary cylinder background
+/-- The comparison `eq:topple_compare_induc` in the proof of `theorem:counterexample`,
+in the general form needed here: for an arbitrary cylinder background
 `ζ` and `ũ ≥ 0`, with `ζ' := ζ + Δũ`, the odometer for `ζ` is dominated by the
-odometer for `ζ'` plus `ũ`.  The displayed tables of `exploding.tex` are used only
+odometer for `ζ'` plus `ũ`.  The displayed tables of the paper are used only
 in Step 4. -/
 theorem ce_step3b (ζ u : ℤ × Fin 4 → ℤ) (hu : ∀ x, 0 ≤ u x) :
     ∀ t : ℕ, ∀ x : ℤ × Fin 4,
@@ -253,13 +252,13 @@ theorem ce_step3b (ζ u : ℤ × Fin 4 → ℤ) (hu : ∀ x, 0 ≤ u x) :
           split <;> norm_num
         omega
 
-/-! ### Corrected cylinder projection (fixes the `SubRelay.cylProj` bug)
+/-! ### Cylinder projection through `Int.emod`
 
 `SubRelay.cylProj` folds `x₂` through `Int.toNat`, so `x₂ = -1` lands in
 column `0` instead of `3`; `cylNbrSum_cylProj` is then false for a
 non-constant 4-periodic `v` (e.g. `a = 1`, `b = 0`).  The copies below fold
-`x₂` through `Int.emod · 4`, and `ce_cylNbrSum_cylProj` is the corrected
-identity.
+`x₂` through `Int.emod · 4`, and `ce_cylNbrSum_cylProj` states the identity
+for this fold.
 -/
 
 /-- `Int.toNat ((n+1) % 4) = (Int.toNat (n % 4) + 1) % 4`. -/
@@ -302,7 +301,7 @@ theorem ce_emod_pred (n : ℤ) :
   · have : n % 4 = 3 := by rw [← hnat]; norm_num [h]
     rw [this]; decide
 
-/-- The corrected fold `Site 2 → ℤ × Fin 4`, using `Int.emod 4` so that
+/-- The fold `Site 2 → ℤ × Fin 4`, using `Int.emod 4` so that
 negative `x₂` fold to the right torus column. -/
 def ce_cylProj (x : Site 2) : ℤ × Fin 4 :=
   (x ⟨0, by norm_num⟩, Fin.ofNat 4 (Int.toNat (x ⟨1, by norm_num⟩ % 4)))
@@ -368,7 +367,7 @@ theorem ce_cylProj_sub_zero (x : Site 2) :
       = ((ce_cylProj x).1 - 1, (ce_cylProj x).2) := by
   refine Prod.ext ?_ ?_ <;> simp [ce_cylProj, Pi.sub_apply, unit]
 
-/-- **Corrected `cylNbrSum_cylProj`.**  For the `Int.emod`-fold `ce_cylProj`,
+/-- **`cylNbrSum_cylProj` for the `Int.emod`-fold.**  For `ce_cylProj`,
 the cylinder neighbour sum at the projection of `x` equals the 2D neighbour
 sum, for `x₁ ≥ 1` (away from the reflecting boundary) and `v` agreeing with
 the fold `u` on the half-plane. -/

@@ -95,7 +95,7 @@ theorem glws_core (d : ℕ) (hd : 2 ≤ d) (ηmin : ℤ) (hηmin : 0 ≤ ηmin)
   exact ⟨glws_explosive hd η hlow hhigh ⟨n, hn, hns⟩, hη⟩
 
 /-- **The conclusion of Proposition 5.1** from the paper's local bound and the closeness of the two
-arrival times.  The finite-range mixing (B) is derived here from Hypothesis 5.1, the standing
+arrival times.  The finite-range mixing (B) is derived here from Hypothesis 1, the standing
 hypotheses are those of the frozen statement, and no moment-free Kingman proposition is assumed:
 the subadditive ergodic step is `king_lipKingman`, fed by the local bound. -/
 theorem glws_conclusion (d : ℕ) (hd : 2 ≤ d) (ηmin : ℤ) (hηmin : 0 ≤ ηmin)

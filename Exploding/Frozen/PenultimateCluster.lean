@@ -13,8 +13,7 @@ import Exploding.Support.PenultimateClusterP1
 
 open Exploding LatticeProb MeasureTheory
 
-/-- **Lemma 3.5** (`exploding-arxiv.tex:652-658`, label
-`lemma:last_penultimate_cluster`).
+/-- **Lemma 3.5** (`paper/corrected-arxiv/exploding-corrected-arxiv.tex:920-926`, label `lemma:last_penultimate_cluster`).
 
 "There is a constant `γ > 0` so that for all `n` sufficiently large and
 `|x| ≤ n`, `P(x) ⊂ x + [-(log n)^γ, (log n)^γ]^d`."

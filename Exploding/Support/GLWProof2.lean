@@ -5,7 +5,7 @@ reduction of Proposition 5.1 (convergence of the generalized last wave).
 * **(A)** the field of strongly box-crossing tiles is `m`-dependent, and
 * **(B)** the translation `y ↦ η(y + ·)` is mixing on cylinder events.
 
-Both follow from Hypothesis 5.1 (finite range of dependence).
+Both follow from Hypothesis 1 (finite range of dependence).
 -/
 import Exploding.Support.GLWProofAux
 
@@ -176,7 +176,7 @@ theorem glw2_tile_sep (k : Fin d → ℕ) (hk : ∀ i, 0 < k i) {K : ℕ}
         simpa [mnorm] using
           Finset.single_le_sum (fun i _ => abs_nonneg ((x - y) i)) (Finset.mem_univ l)
 
-/-- **(A)** Hypothesis 5.1 makes the field of strongly box-crossing tiles
+/-- **(A)** Hypothesis 1 makes the field of strongly box-crossing tiles
 `m`-dependent: for tiles more than `K + 1` apart in `ℓ^∞`, the events factor
 through disjoint, far-apart finite restrictions of `η`. -/
 theorem glw2_kdep (d : ℕ) (P : Measure (Site d → ℤ))

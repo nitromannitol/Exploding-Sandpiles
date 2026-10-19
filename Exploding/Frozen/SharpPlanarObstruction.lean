@@ -5,7 +5,7 @@ import Exploding.Support.PlanarWaveOptimality
 /-!
 # Sharp planar obstruction
 
-The remark "Sharp planar obstruction" after `lemma:square_lower_bound` in the corrected paper. On
+The remark "Sharp planar obstruction" (Remark 1 of the paper) after `lemma:square_lower_bound`. On
 the homogeneous height-two background in dimension two, the least positive order `M₂(n)` whose
 wave from the origin reaches every site of the cube `B_n = [-n, n]²` satisfies
 `c n² log (n + 1) ≤ M₂(n) ≤ C n² log (n + 1)` for every `n ≥ 1`.

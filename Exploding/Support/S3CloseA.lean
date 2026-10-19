@@ -1,6 +1,6 @@
 /-
 Proposition 5.1 (generalized last wave), the infinite cluster of strongly box-crossing tiles, part A:
-the field of strongly box-crossing tiles is `(K + 1)`-dependent with `K` the range of Hypothesis 5.1,
+the field of strongly box-crossing tiles is `(K + 1)`-dependent with `K` the range of Hypothesis 1,
 uniformly in the side lengths of the tiles.  The uniformity is what lets the side lengths be chosen
 after the range of dependence in the Liggett-Schonmann-Stacey domination.
 -/
@@ -13,7 +13,7 @@ namespace Exploding
 
 variable {d : ℕ}
 
-/-- **(A) uniformly in the tile.**  Hypothesis 5.1 makes the field of strongly box-crossing tiles
+/-- **(A) uniformly in the tile.**  Hypothesis 1 makes the field of strongly box-crossing tiles
 `(K + 1)`-dependent, with `K` independent of the side lengths. -/
 theorem s3k_kdep (d : ℕ) (P : Measure (Site d → ℤ))
     (h1 : FiniteRangeOfDependence d P) :

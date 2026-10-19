@@ -6,8 +6,8 @@ silently.  A citation that also names the LaTeX `\\label` can be recomputed, so
 this tool resolves those and repairs them.  A citation with no nearby label
 points into the middle of a proof and cannot be resolved mechanically; those are
 listed so they can be checked by hand or dropped.
-The check uses the manifest's default exact source pin. Declaration files
-pinned to other sources are listed and excluded, including from `--fix`.
+The check uses the manifest's default source file. Declaration files tied to
+other sources are listed and excluded, including from `--fix`.
 
     python3 tools/paper_citations.py           # check, exit 1 if a resolvable
                                                # citation is stale

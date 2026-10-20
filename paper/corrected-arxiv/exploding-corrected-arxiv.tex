@@ -2267,7 +2267,7 @@ This shows that
 so the odometer at the front is identical to what it was at the start and the process `resets'. Hence, 
 by induction on $n\geq1$,
 \begin{equation}
-\hat{T}(3 + 8 n) = 12 n, 
+\hat{T}(3 + 8 n) = 12 n\,,
 \end{equation}
 where $\hat{T}(n) := \min\{ t > 0 : \hat{w}_t(n e_1) > 0 \}$. 
 This implies  \eqref{eq:second_limit_upper_bound}, completing the proof by \eqref{eq:second_limit_reduction}.
@@ -2336,121 +2336,65 @@ and by \eqref{eq:stacked_tiling1},
 \]
 completing the proof.
 
-To verify failure of convergence in the volume sense of Theorem
-\ref{theorem:limit_shape}, choose the periodic two-dimensional background
-obtained by using $\zeta_1$ in every tile, and for $d\geq3$ extend it by
-\eqref{eq:stacked_tiling1}. For integer $t\geq1$, write
-$A_t=\{y\in\R^d:\bar v_t(y)>0\}$ and $a_n=3+8n$.
-For every $n\geq1$, $k\in\Z$, and $z\in\Z^{d-2}$, the cylinder
-comparison, followed by \eqref{eq:parabolic_least_action} when $d\geq3$,
-gives
-\[
-v_t(a_n,4k,z)=0\qquad(t<12n).
-\]
-When $d=2$, $z$ is the empty tuple in $\Z^0$, $\|z\|_1=0$, and trailing
-empty coordinates below are omitted.
-The site $e_2$ has fired by time $2$. The nearest-neighbor path from $e_2$
-through $(1,1,0)$, $(1,4k+1,0)$, and $(1,4k+1,z)$ to
-$(a_n,4k+1,z)$ has $a_n+|4k|+\|z\|_1$ edges. Every site after $e_2$
-on this path has background height $2d-1$, so
-\[
-v_{a_n+|4k|+\|z\|_1+2}(a_n,4k+1,z)>0.
-\]
-Fix $\varepsilon_d=1/(100d)$ and
-$\Omega_d=\{y\in\R^d:3/4<y_1<4/5,
-\ |y_i|<\varepsilon_d\ (2\leq i\leq d)\}$.
-For all sufficiently large integer $t$, a fixed positive proportion of the
-nearest-site cells in an interior box of $\Omega_d$ have centers
-$(a_n,4k,z)$ and satisfy $t<12n$ and
-$a_n+|4k|+\|z\|_1+2\leq t$. The congruence conditions on the first two
-coordinates have density $1/32$, and there is no restriction on the
-remaining coordinates. Each such cell is absent from $A_t$, while its
-translate by $e_2/t$ is present. Hence, for some $c_d>0$,
-\[
+To verify failure of convergence in the volume sense of Theorem~\ref{theorem:limit_shape}, choose the periodic two-dimensional background obtained by using $\zeta_1$ in every tile, and for $d\geq3$ extend it by \eqref{eq:stacked_tiling1}. For integer $t\geq1$, write $A_t=\{y\in\R^d:\bar v_t(y)>0\}$ and $a_n=3+8n$.
+For every $n\geq1$, $k\in\Z$, and $z\in\Z^{d-2}$, the cylinder comparison, followed by~\eqref{eq:parabolic_least_action} when $d\geq3$, gives
+\begin{equation*}
+v_t(a_n,4k,z)=0\qquad(t<12n)\,.
+\end{equation*}
+When $d=2$, $z$ is the empty tuple in $\Z^0$, $\|z\|_1=0$, and trailing empty coordinates below are omitted.
+The site $e_2$ has fired by time $2$. The nearest-neighbor path from $e_2$ through $(1,1,0)$, $(1,4k+1,0)$, and $(1,4k+1,z)$ to $(a_n,4k+1,z)$ has $a_n+|4k|+\|z\|_1$ edges. Every site after $e_2$ on this path has background height $2d-1$, so
+\begin{equation*}
+v_{a_n+|4k|+\|z\|_1+2}(a_n,4k+1,z)>0\,.
+\end{equation*}
+Fix $\varepsilon_d=1/(100d)$ and $\Omega_d=\{y\in\R^d:3/4<y_1<4/5,\ |y_i|<\varepsilon_d\ (2\leq i\leq d)\}$.
+For all sufficiently large integers $t$, a fixed positive proportion of the nearest-site cells in an interior box of $\Omega_d$ have centers $(a_n,4k,z)$ and satisfy $t<12n$ and $a_n+|4k|+\|z\|_1+2\leq t$. The congruence conditions on the first two coordinates have density $1/32$, and there is no restriction on the remaining coordinates. Each such cell is absent from $A_t$, while its translate by $e_2/t$ is present. Hence, for some $c_d>0$,
+\begin{equation*}
 \left|(A_t\triangle(A_t-e_2/t))\cap\Omega_d\right|\geq c_d
-\qquad\text{for all sufficiently large integers }t.
-\]
-If $|A_t\triangle B|\to0$ for a measurable set $B$, then the triangle
-inequality and local $L^1$ continuity of translation give
-$|(A_t\triangle(A_t-e_2/t))\cap\Omega_d|\to0$, a contradiction.
+\qquad\text{for all sufficiently large integers }t\,.
+\end{equation*}
+If $|A_t\triangle B|\to0$ for a measurable set $B$, then the triangle inequality and local $L^1$ continuity of translation give $|(A_t\triangle(A_t-e_2/t))\cap\Omega_d|\to0$, a contradiction.
 
 \section{A criterion for exploding} \label{sec:criteria}
 
-For Proposition \ref{prop:explosion_criteria}, let
-$(\Omega,\mathcal F,\mathbf P)$ be the bounded-background probability
-space of Section \ref{sec:generalization}. The criterion below will be
-applied to a bounded reduction of the original product law.
-For a finite domain $V \subset \Z^d$, we say  $\eta: V \to \Z$ is {\it recurrent} if the firing of $\partial V$ causes every site in $V$ to eventually topple. 
-Specifically, the $V^c$-frozen parallel toppling odometer for initial conditions $w_0 = 1\{ x \in \partial V\}$, $s_0' = \eta + \Delta w_0$, 
-is eventually 1 on $V$: $w_t |_{V} = 1$ for $t \geq |V|$. We say $\eta: \Z^d \to \Z$ is recurrent if its
-restriction to $V$ is recurrent for every finite $V \subset \Z^d$.  The measure $\mathbf{P}$ is recurrent if $\mathbf{P}(\mbox{$\eta$ is recurrent}) = 1$. The following criterion follows from recurrence, finite-range dependence, and ordinary box-crossing. 
+For Proposition~\ref{prop:explosion_criteria}, let $(\Omega,\mathcal F,\mathbf P)$ be the bounded-background probability space of Section~\ref{sec:generalization}. The criterion below is applied, in the proof of Theorem~\ref{theorem:explosive}, to the field $\alpha_d$ defined there.
+For a finite domain $V \subset \Z^d$, we say  $\eta: V \to \Z$ is {\it recurrent} if the firing of $\partial V$ causes every site in $V$ to eventually topple. Specifically, the $V^c$-frozen parallel toppling odometer for initial conditions $w_0 = 1\{ x \in \partial V\}$, $s_0' = \eta + \Delta w_0$, is eventually 1 on $V$: $w_t |_{V} = 1$ for $t \geq |V|$. We say $\eta: \Z^d \to \Z$ is recurrent if its restriction to $V$ is recurrent for every finite $V \subset \Z^d$.  The measure $\mathbf{P}$ is recurrent if $\mathbf{P}(\mbox{$\eta$ is recurrent}) = 1$. The following criterion follows from recurrence, finite-range dependence, and box-crossing.
 
 \begin{prop} \label{prop:explosion_criteria}
-	Let $d\geq2$. If Hypotheses \ref{hyp:finite_range_of_dependence} and \ref{hyp:box_crossing}
-	are satisfied and $\mathbf{P}$ is recurrent
-	then $\mathbf{P}$ is explosive.
+	Let $d\geq2$. If Hypotheses~\ref{hyp:finite_range_of_dependence} and~\ref{hyp:box_crossing} are satisfied and $\mathbf{P}$ is recurrent then $\mathbf{P}$ is explosive.
 \end{prop}
 
 \begin{proof}
-The backgrounds of Section \ref{sec:generalization} satisfy $\eta\leq 2d-1$.
+The backgrounds of Section~\ref{sec:generalization} satisfy $\eta\leq 2d-1$.
 Recurrence of the singleton $\{x\}$ implies $\eta(x)\geq0$: after all
 $2d$ external neighbors fire once, its height is $\eta(x)+2d$.
 Thus $0\leq\eta\leq2d-1$ almost surely.
 
-Given $\delta>0$, choose the tiling
-$\{\mathcal B_k^{(j)}:j\in\Z^d\}$ from Hypothesis
-\ref{hyp:box_crossing}, and let $X_j$ indicate that the $j$th box can
-be crossed from each external face. Hypothesis
-\ref{hyp:finite_range_of_dependence} makes $\{X_j\}$ finitely
-dependent, with a dependence range bounded in terms of $K$ independently
-of $k$. The domination theorem of \cite{liggett1997domination}, used
-also in Section \ref{sec:generalization}, therefore gives, for $\delta$
-small enough, a coupling in which $\{X_j\}$ dominates supercritical
-independent site percolation. Almost surely there is an infinite
-nearest-neighbor cluster $\mathcal C_\infty$ of boxes with $X_j=1$.
+Given $\delta>0$, choose the tiling $\{\mathcal B_k^{(j)}:j\in\Z^d\}$ from Hypothesis~\ref{hyp:box_crossing}, and let $X_j$ indicate that the $j$th box can be crossed from each external face. Hypothesis~\ref{hyp:finite_range_of_dependence} makes $\{X_j\}$ finitely dependent, with a dependence range bounded in terms of $K$ independently of $k$. The domination theorem of \cite{liggett1997domination}, used also in Section~\ref{sec:generalization}, therefore gives, for $\delta$ small enough, a coupling in which $\{X_j\}$ dominates supercritical independent site percolation. Almost surely there is an infinite nearest-neighbor cluster $\mathcal C_\infty$ of boxes with $X_j=1$.
 
-Fix one box $\mathcal B_k^{(j_0)}\in\mathcal C_\infty$ and set
-$R=\max\{\|x\|_1:x\in\mathcal B_k^{(j_0)}\}$ and $N=(2d)^R$.
-For the $N$-wave from the origin in \eqref{eq:n_wave}, induction on
-$r=\|x\|_1$ gives
-\[
-u_t^{(N,0)}(x)\geq(2d)^{R-r}\qquad(r\leq R,\ t\geq r),
-\]
+Fix one box $\mathcal B_k^{(j_0)}\in\mathcal C_\infty$ and set $R=\max\{\|x\|_1:x\in\mathcal B_k^{(j_0)}\}$ and $N=(2d)^R$.
+For the $N$-wave from the origin in~\eqref{eq:n_wave}, induction on $r=\|x\|_1$ gives
+\begin{equation*}
+u_t^{(N,0)}(x)\geq(2d)^{R-r}\qquad(r\leq R,\ t\geq r)\,,
+\end{equation*}
 because $\eta\geq0$. Hence every site of the chosen box topples.
-If every site of one box in $\mathcal C_\infty$ has toppled, then all
-sites of the shared external face of any adjacent box have toppled.
-Comparison with that box's $\mathcal B_k^c$-frozen process, started by
-one prescribed firing on this face, shows that every site of the
-adjacent good box subsequently topples. Following finite paths in
-$\mathcal C_\infty$ gives the $N$-wave infinite support, so it cannot
-stabilize.
+If every site of one box in $\mathcal C_\infty$ has toppled, then all sites of the shared external face of every adjacent box have toppled. Comparison with that box's $\mathcal B_k^c$-frozen process, started by one prescribed firing on this face, shows that every site of each adjacent box in $\mathcal C_\infty$ subsequently topples. Following finite paths in $\mathcal C_\infty$ gives the $N$-wave infinite support, so it cannot stabilize.
 
-If $\eta+2dN\delta_0$ stabilized with terminal odometer $v_\infty$,
-its stable origin height would imply $v_\infty(0)\geq N$. At every
-$x\ne0$, stability and $0\leq s_\infty(x)<2d$ give
-\[
+If $\eta+2dN\delta_0$ stabilized with terminal odometer $v_\infty$, then the stable height at the origin would imply $v_\infty(0)\geq N$. At every $x\ne0$, stability and $0\leq s_\infty(x)<2d$ give
+\begin{equation*}
 \left\lfloor\frac{\eta(x)+\sum_{y\sim x}v_\infty(y)}{2d}\right\rfloor
-=v_\infty(x).
-\]
-Induction in \eqref{eq:n_wave} would then give
-$u_t^{(N,0)}\leq v_\infty$ for every $t$. Since $v_\infty$ has finite
-support and finite values, the nondecreasing integer-valued $N$-wave
-would stabilize, a contradiction. Thus $\eta$ is explosive.
+=v_\infty(x)\,.
+\end{equation*}
+Induction in~\eqref{eq:n_wave} would then give $u_t^{(N,0)}\leq v_\infty$ for every $t$. Since $v_\infty$ has finite support and finite values, the nondecreasing integer-valued $N$-wave would stabilize, a contradiction. Thus $\eta$ is explosive.
 
 \end{proof}
 
-In dimension one the conclusion also holds. Recurrence of an interval with zero height at both endpoints
-is impossible, since firing its two external neighbors starts no toppling. Hence a recurrent stable background has at most one zero.
-Stationarity under the finite-index sublattice makes the probability of a zero at
-each site vanish, so $\eta\equiv1$ almost surely. Its $1$-wave from the origin
-reaches both sites at distance $t$ by time $t$.
-The comparison in the proof above then proves explosion in this case as well.
+In dimension one the conclusion also holds. Recurrence of an interval of at least two sites with zero height at both endpoints is impossible, since firing its two external neighbors starts no toppling. Two zeros at distinct sites $x<y$ would be the endpoints of such an interval, so a recurrent stable background has at most one zero. Stationarity under the finite-index sublattice makes the probability of a zero at each site vanish, so $\eta\equiv1$ almost surely. Its $1$-wave from the origin reaches both sites at distance $t$ by time $t$. The comparison in the proof above then proves explosion in this case as well.
 
-For the proof of Theorem \ref{theorem:explosive}, now use Proposition \ref{prop:explosion_criteria} as follows.
+For the proof of Theorem~\ref{theorem:explosive}, now use Proposition~\ref{prop:explosion_criteria} as follows.
 Let $\eta$ have the original common product law $\mathbf P=\bigotimes_{x\in\Z^d}\nu$ from that theorem, with $d\geq2$, $\nu(\{m\in\Z:m\geq d\})=1$, and $p:=\nu(\{2d-1\})\in(0,1]$.
 Define $r_d:\Z\to\Z$ by $r_d(m)=2d-1$ if $m=2d-1$ and $r_d(m)=d$ otherwise, and set $\alpha_d(x):=r_d(\eta(x))$.
 Almost surely $d\leq\alpha_d\leq2d-1$ and $\alpha_d\leq\eta$; the reduced law is $\mathbf P_d:=\bigotimes_{x\in\Z^d}((1-p)\delta_d+p\delta_{2d-1})$.
-We prove exact recurrence and box-crossing for $\mathbf P_d$. Proposition \ref{prop:explosion_criteria} then gives explosion for $\alpha_d$, and monotonicity transfers box-crossing and explosion to the original $\eta$. Exact recurrence is asserted only for the reduced stable field. The dimension-one box-crossing case is separate.
+We prove recurrence and box-crossing for $\mathbf P_d$, the law of $\alpha_d$. Proposition~\ref{prop:explosion_criteria} then gives explosion for $\alpha_d$, and monotonicity transfers box-crossing and explosion to the original $\eta$. Recurrence is asserted only for $\alpha_d$, not for $\eta$. The dimension-one box-crossing case is separate.
 
 
 
@@ -2466,15 +2410,12 @@ We show that after firing the outer boundary of $\mathcal{F}_i(Q_n^{(d)})$,
 the sandpile dynamics on $\mathcal{F}_i(Q_n^{(d)})$ can be coupled
 with $(d-1)$-dimensional sandpile dynamics on $Q_n^{(d-1)}$.
 
-Specifically, fix $i=1$ and write points of
-$\mathcal F_1(Q_n^{(d)})$ as $(1,\mathbf x_{d-1})$. Let
-$\eta^{(d)}:Q_n^{(d)}\to\Z$ be given. In the constrained
-$Q_n^{(d)}$- and $Q_n^{(d-1)}$-frozen processes, prescribe
+Specifically, fix $i=1$ and write points of $\mathcal F_1(Q_n^{(d)})$ as $(1,\mathbf x_{d-1})$. Let $\eta^{(d)}:Q_n^{(d)}\to\Z$ be given, and let $\beta:\partial Q_n^{(d-1)}\to\{0,1\}$ be an arbitrary field of tangential external values. In the constrained $(Q_n^{(d)})^c$- and $(Q_n^{(d-1)})^c$-frozen processes, prescribe
 \begin{equation}\label{eq:constrained_toppling}
 \begin{aligned}
 &u_0^{(d)}(0,\mathbf y)=1
   &&(\mathbf y\in Q_n^{(d-1)}),\\
-&u_0^{(d-1)}(\mathbf y)=u_0^{(d)}(1,\mathbf y)\in\{0,1\}
+&u_0^{(d-1)}(\mathbf y)=u_0^{(d)}(1,\mathbf y)=\beta(\mathbf y)
   &&(\mathbf y\in\partial Q_n^{(d-1)}),\\
 &u_0^{(d-1)}(\mathbf x)=u_0^{(d)}(1,\mathbf x)=0
   &&(\mathbf x\in Q_n^{(d-1)}),\\
@@ -2487,10 +2428,8 @@ $Q_n^{(d)}$- and $Q_n^{(d-1)}$-frozen processes, prescribe
   &&(\mathbf x\in Q_n^{(d-1)}).
 \end{aligned}
 \end{equation}
-All other external odometers are initially zero. The tangential
-external values may be chosen either all zero, for box-crossing, or all
-one, for recurrence.
-and constraints,
+All other external odometers are initially zero. The proof of Proposition~\ref{prop:dimensional_reduction} uses only the initial conditions and the update rules, so it holds for every field $\beta$. The all-zero field is the one used for box-crossing in Proposition~\ref{prop:box_crossing}, and the all-one field is the one used for recurrence in Proposition~\ref{prop:recurrence}.
+The constraints are
 \begin{equation} \label{eq:frozen_constraint}
 \begin{aligned}
 u_t^{(d)}(x_1,\mathbf{x}_{d-1}) &= 0 \quad \mbox{ for all $x_1 > 1$} \\
@@ -2546,21 +2485,13 @@ We prove the following by an induction on time. Note that a symmetric result hol
 	&=s_{t}^{(d-1)}(\mathbf{x}_{d-1})+2.
 	\end{align*}
 	
-The initial conditions give \eqref{eq:odometer_reduction} at $t=0$;
-the calculation above gives \eqref{eq:sandpile_reduction} whenever the
-common face odometer is zero. Suppose both assertions hold at time $t$.
-At a face site where the common odometer is already one, both
-constrained odometers remain one. Where it is zero,
-\eqref{eq:sandpile_reduction} gives
-\[
+The initial conditions give~\eqref{eq:odometer_reduction} at $t=0$; the calculation above gives~\eqref{eq:sandpile_reduction} whenever the common face odometer is zero. Suppose both assertions hold at time $t$. At a face site where the common odometer is already one, both constrained odometers remain one. Where it is zero,~\eqref{eq:sandpile_reduction} gives
+\begin{equation*}
 s_t^{(d)}(1,\mathbf x_{d-1})\geq2d
 \quad\Longleftrightarrow\quad
-s_t^{(d-1)}(\mathbf x_{d-1})\geq2(d-1).
-\]
-Thus both odometers make the same update, proving
-\eqref{eq:odometer_reduction} at time $t+1$; the calculation above then
-proves \eqref{eq:sandpile_reduction} wherever the new common odometer
-is zero.
+s_t^{(d-1)}(\mathbf x_{d-1})\geq2(d-1)\,.
+\end{equation*}
+Thus both odometers make the same update, proving~\eqref{eq:odometer_reduction} at time $t+1$; the calculation above then proves~\eqref{eq:sandpile_reduction} wherever the new common odometer is zero.
 	
 \end{proof}
 
@@ -2571,48 +2502,23 @@ is zero.
 
 
 \subsection{\texorpdfstring{$\mathbf{P}_d$}{P_d} is recurrent}
-Since $d\leq\alpha_d\leq2d-1$, monotonicity of exact recurrence within this stable range reduces the claim for $\mathbf P_d$ to the following deterministic proposition.
+Since $d\leq\alpha_d\leq2d-1$, monotonicity of recurrence among backgrounds with values in $\{d,\ldots,2d-1\}$ reduces the claim for $\mathbf P_d$ to the following deterministic proposition.
 \begin{prop} \label{prop:recurrence}
 	For every $d \geq 1$, $\eta:\Z^d \to \{d\}$ is recurrent.
 \end{prop}
 \begin{proof}
-For a background bounded by $2d-1$, a process with each external
-neighbor fired once has odometer at most one in its domain: the
-constant-one odometer is a supersolution of the toppling update.
-Consequently it suffices to prove recurrence for translated cubes.
-Indeed, put any finite $V$ together with $\partial V$ inside such a
-cube. Once that cube topples throughout, each site of $\partial V$
-has toppled once; comparison with the $V^c$-frozen process, which has
-all of $\partial V$ fired at time zero, makes every site of $V$
-topple. We induct first on dimension and then on cube side length. In dimension one, firing both external
-neighbors of a constant-one interval makes its sites topple successively.
-For every dimension, $n=1$ is immediate because the unique site receives
-one chip from each of its $2d$ external neighbors. For $n=2$, every
-site receives one chip from each of its $d$ external neighbors, bringing
-its height from $d$ to $2d$.
+For a background bounded by $2d-1$, a process with each external neighbor fired once has odometer at most one in its domain: the constant-one odometer is a supersolution of the toppling update. Consequently it suffices to prove recurrence for translated cubes. Indeed, for every finite $V$, put $V$ together with $\partial V$ inside such a cube. Once that cube topples throughout, each site of $\partial V$ has toppled once; comparison with the $V^c$-frozen process, which has all of $\partial V$ fired at time zero, makes every site of $V$ topple.
+We induct first on dimension and then on cube side length. In dimension one, firing both external neighbors of a constant-one interval makes its sites topple successively. For every dimension, $n=1$ is immediate because the unique site receives one chip from each of its $2d$ external neighbors. For $n=2$, every site receives one chip from each of its $d$ external neighbors, bringing its height from $d$ to $2d$.
 
-Now let $n\geq3$ and assume recurrence for side length $n-2$ in
-dimension $d$ and for all side lengths in dimension $d-1$. The correct
-decomposition is
+Now let $n\geq3$ and assume recurrence for side length $n-2$ in dimension $d$ and for all side lengths in dimension $d-1$. We use the decomposition
 \begin{equation}\label{eq:cube_decomp}
 Q_n^{(d)}=\bigl(\mathbf 1+Q_{n-2}^{(d)}\bigr)
  \cup\bigcup_{i=1}^{2d}\mathcal F_i(Q_n^{(d)}),
-\qquad \mathbf 1=(1,\ldots,1).
+\qquad \mathbf 1=(1,\ldots,1)\,.
 \end{equation}
-Fire the external boundary of $Q_n^{(d)}$. For each face, compare the
-resulting process with the constrained process of Proposition
-\ref{prop:dimensional_reduction}: fire its outer normal external face
-and its tangential external neighbors, and freeze all other sites off
-the selected face. Under \eqref{eq:constrained_toppling}, the reduced
-$(d-1)$-dimensional background is the constant $d-1$ with all its
-external neighbors fired once. The dimension induction and
-\eqref{eq:odometer_reduction} therefore make every site of the selected
-face topple. The full boundary-firing process dominates each such
-constrained process, so every outer face topples. Every external
-neighbor of $\mathbf 1+Q_{n-2}^{(d)}$ lies on an outer face. Comparing
-with its boundary-firing process and using the side-length induction
-makes the inner cube topple as well. Equation \eqref{eq:cube_decomp}
-then covers every site of $Q_n^{(d)}$.
+Fire the external boundary of $Q_n^{(d)}$. For each face, compare the resulting process with the constrained process of Proposition~\ref{prop:dimensional_reduction}: fire its outer normal external face and its tangential external neighbors, and freeze all other sites off the selected face. Under~\eqref{eq:constrained_toppling} with the all-one field, the reduced $(d-1)$-dimensional background is the constant $d-1$ with all its external neighbors fired once. The dimension induction and~\eqref{eq:odometer_reduction} therefore make every site of the selected face topple. The full boundary-firing process dominates each such constrained process, so every outer face topples.
+
+Every external neighbor of $\mathbf 1+Q_{n-2}^{(d)}$ lies on an outer face. Comparing with its boundary-firing process and using the side-length induction makes the inner cube topple as well. Equation~\eqref{eq:cube_decomp} then covers every site of $Q_n^{(d)}$.
 \end{proof}
 \begin{remark}
 	The argument given here is similar to the proof of Lemma 3.1 in \cite{schonmann1992behavior}.
@@ -2631,8 +2537,7 @@ Infected sites are those which have toppled, and sites with $2 d$ chips start as
 site beginning with $d$ chips topples if and only if it has at least $d$ neighbors which have toppled.
 
 
-We first prove box-crossing for the reduced law $\mathbf P_d$ using this coupling and Schonmann's large-deviation result, then transfer it to the original law $\mathbf P$ by monotonicity. Borrowing the terminology of Schonmann, we say a cube $Q_n^{(d)} \subset \Z^d$ is $\eta'-${\it internally spanned}
-if the $(Q_n^{(d)})^c$-frozen parallel toppling procedure with $u_0 = 0$, $s_0' = \eta'$, and sites constrained to topple at most once, concludes with every site in $Q_n^{(d)}$ toppling. 
+We first prove box-crossing for the reduced law $\mathbf P_d$ using this coupling and the large-deviation bound of \cite{schonmann1992behavior} in Proposition~\ref{prop:schonnmann_bootstrap}, then transfer it to the original law $\mathbf P$ by monotonicity. Borrowing the terminology of \cite{schonmann1992behavior}, we say a cube $Q_n^{(d)} \subset \Z^d$ is $\eta'-${\it internally spanned} if the $(Q_n^{(d)})^c$-frozen parallel toppling procedure with $u_0 = 0$, $s_0' = \eta'$, and sites constrained to topple at most once, concludes with every site in $Q_n^{(d)}$ toppling.
 
 
 
@@ -2654,36 +2559,25 @@ if the $(Q_n^{(d)})^c$-frozen parallel toppling procedure with $u_0 = 0$, $s_0' 
 
 We use Proposition \ref{prop:schonnmann_bootstrap} to show $\mathbf{P}$ is box-crossing. 
 
-\begin{prop}
-    For $d\geq2$, the original product law $\mathbf P$ is box-crossing. In dimension one, any law supported on backgrounds $\eta\geq1$ is box-crossing.
+\begin{prop} \label{prop:box_crossing}
+    For $d\geq2$, the original product law $\mathbf P$ is box-crossing. In dimension one, every law supported on backgrounds $\eta\geq1$ is box-crossing.
 \end{prop}
 \begin{proof}
 	The claim is immediate in dimension one: a singleton box is crossed from either external face after its prescribed seed delivers one chip, since the height is at least one.
-	Let $D=d+1\geq2$ be the original dimension. In this dimension write $\nu$ for the common original marginal, with $\nu(\{m:m\geq D\})=1$, put $p=\nu(\{2D-1\})\in(0,1]$, let $\eta^{(D)}$ have that product law, and set $\alpha_D=r_D\circ\eta^{(D)}$. Then $\alpha_D\leq\eta^{(D)}$ almost surely and $\alpha_D$ has common marginal $(1-p)\delta_D+p\delta_{2D-1}$. For $n\geq1$, decompose the box into layers
-	\[
-	Q_n^{(D)} = \bigcup_{i=1}^{n} \mathcal{L}_i,
-	\]
-	where $\mathcal{L}_i := \{ x \in Q_n^{(D)} : x = (i, \mathbf{x}_d)\}$.
-	The projection of each layer to a $d$-dimensional box is $\mathcal{L}_i^{(d)}$. Let 
-	\begin{align*}
-	\Omega_i' &:= \{\eta^{(D)} : \mbox{$\mathcal{L}_i^{(d)}$ is $\eta'_i$-internally spanned, where $\eta'_i(\mathbf{x}_d) := \alpha_D(i,\mathbf{x}_d) - 1$} \}
-	\end{align*}
-	The variables $\eta'_i(\mathbf{x}_d)$, over all layers and sites, are independent with common marginal $(1-p)\delta_d+p\delta_{2d}$.
-	Let 
-	\[
-	\Omega'  := \bigcap_{i=1}^n \Omega_i'. 
-	\]
-On $\Omega'$, start with one prescribed firing on the external face
-normal to $e_1$. The internal spanning of $\mathcal L_1^{(d)}$ and
-Proposition \ref{prop:dimensional_reduction}, with zero tangential
-external odometers, make every site of $\mathcal L_1$ topple. Its
-firings deliver the prescribed external face to $\mathcal L_2$; the
-same comparison applies successively to all $n$ layers. Hence
-$Q_n^{(D)}(\alpha_D)$ is crossed in direction $e_1$, and monotonicity
-transfers this crossing to $Q_n^{(D)}(\eta^{(D)})$.
-Proposition \ref{prop:schonnmann_bootstrap} and a union bound give
-$\mathbf P(\Omega'^c)\leq n c\exp(-Cn)$; symmetry gives every
-direction.
+The field $\alpha_d$ and the constant $p$ are as in the proof of Theorem~\ref{theorem:explosive}, so $\alpha_d\leq\eta$ almost surely and $\alpha_d$ has common marginal $(1-p)\delta_d+p\delta_{2d-1}$. For $n\geq1$, decompose the box into layers
+\begin{equation*}
+Q_n^{(d)} = \bigcup_{i=1}^{n} \mathcal{L}_i\,,
+\end{equation*}
+where $\mathcal{L}_i := \{ x \in Q_n^{(d)} : x = (i, \mathbf{x}_{d-1})\}$. The projection of each layer to a $(d-1)$-dimensional box is $\mathcal{L}_i^{(d-1)}$. Let
+\begin{align*}
+\Omega_i' &:= \{\eta : \mbox{$\mathcal{L}_i^{(d-1)}$ is $\eta'_i$-internally spanned, where $\eta'_i(\mathbf{x}_{d-1}) := \alpha_d(i,\mathbf{x}_{d-1}) - 1$} \}\,.
+\end{align*}
+The variables $\eta'_i(\mathbf{x}_{d-1})$, over all layers and sites, are independent with common marginal $(1-p)\delta_{d-1}+p\delta_{2(d-1)}$. Let
+\begin{equation*}
+\Omega'  := \bigcap_{i=1}^n \Omega_i'\,.
+\end{equation*}
+On $\Omega'$, start with one prescribed firing on the external face normal to $e_1$. The internal spanning of $\mathcal L_1^{(d-1)}$ and Proposition~\ref{prop:dimensional_reduction}, with the all-zero tangential field, make every site of $\mathcal L_1$ topple. Its firings deliver the prescribed external face to $\mathcal L_2$; the same comparison applies successively to all $n$ layers. Hence $Q_n^{(d)}(\alpha_d)$ is crossed in direction $e_1$, and monotonicity transfers this crossing to $Q_n^{(d)}(\eta)$.
+Proposition~\ref{prop:schonnmann_bootstrap} and a union bound give $\mathbf P(\Omega'^c)\leq n c\exp(-Cn)$; symmetry gives every direction.
 	
 \end{proof}
 

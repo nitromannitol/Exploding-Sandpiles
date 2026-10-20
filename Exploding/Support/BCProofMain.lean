@@ -1,6 +1,6 @@
 /-
-The assembly of the box-crossing proof (Proposition 7.5 of `paper/exploding.tex`,
-`exploding.tex:1986-2005`): the layer law at every layer, the union bound over the `n`
+The assembly of the box-crossing proof (Proposition 7.5 of `paper/corrected-arxiv/exploding-corrected-arxiv.tex`, label
+`prop:box_crossing`): the layer law at every layer, the union bound over the `n`
 layers, the degenerate case `p = 1`, and the symmetry and translation reductions from the
 low face of the base box to all `2d` faces of all tiles.
 -/

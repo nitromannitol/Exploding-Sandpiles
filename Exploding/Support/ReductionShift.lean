@@ -1,5 +1,5 @@
 /-
-The constrained frozen toppling processes of Section 7.1 of `paper/exploding.tex`
+The constrained frozen toppling processes of Section 7.1 of `paper/corrected-arxiv/exploding-corrected-arxiv.tex`
 with the *floor* at an arbitrary layer `i` rather than at layer `0`: the
 dynamics on the face `x_0 = i + 1` of a cube in `ℤ^{d+1}` are compared with
 `d`-dimensional dynamics on a cube in `ℤ^d`, exactly as in

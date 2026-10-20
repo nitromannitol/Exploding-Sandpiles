@@ -45,7 +45,7 @@ def glws_Clu (d : ℕ) (k : Fin d → ℕ) (c C : ℝ) (η : Site d → ℤ) : P
           c * (mnorm (x - y) : ℝ) ≤ (m : ℝ) ∧ (m : ℝ) ≤ C * (mnorm (x - y) : ℝ))
 
 /-- **The probabilistic claim** (the generalization of Proposition 2.2, paper
-`exploding.tex:1198-1203`).  Under Hypotheses 1 and 4 the field of strongly box-crossing tiles
+`exploding-corrected-arxiv.tex:1195-1200`).  Under Hypotheses 1 and 4 the field of strongly box-crossing tiles
 is `m`-dependent with marginals close to one; by the Liggett-Schonmann-Stacey domination the good
 edges dominate a supercritical bond percolation (the dependence graph has bounded degree), and the
 argument before Proposition 2.2 (Mathieu's bound on the holes, Antal and Pisztora's chemical
@@ -59,7 +59,7 @@ def glws_Renorm (d : ℕ) (P : Measure (Site d → ℤ)) : Prop :=
   ∃ k : Fin d → ℕ, (∀ i, 0 < k i) ∧ ∃ c C : ℝ, 0 < c ∧ 0 < C ∧
     ∀ᵐ η ∂P, glws_Clu d k c C η
 
-/-- **The deterministic claim** (paper `exploding.tex:1217-1230`, "the rest of the argument follows
+/-- **The deterministic claim** (the proof of Proposition 5.1, label `prop:convergence_of_the_generalized_last_wave`, "the rest of the argument follows
 the proof in Section 3 with the boxes of `C_∞` in place of the good cubes", and the proof of
 `eq:generalized_lipschitz`).  On a background with `0 ≤ η ≤ 2d - 1` satisfying path-filling and
 carrying the cluster, the first bound `T̃(x) ≤ C |x| + (log n)^γ`, the second bound

@@ -6,7 +6,7 @@ import Exploding.Support.Vocab
 
 open Exploding LatticeProb MeasureTheory
 
-/-- **Proposition 7.4** of the paper (`exploding.tex:1969-1981`, label
+/-- **Proposition 7.4** of the paper (`exploding-corrected-arxiv.tex:2138-2150`, label
 `prop:schonnmann_bootstrap`), attributed to R. H. Schonmann, *On the behavior of
 some cellular automata related to bootstrap percolation*, Ann. Probab. 20
 (1992).

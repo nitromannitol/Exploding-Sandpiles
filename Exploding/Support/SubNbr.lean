@@ -1,6 +1,6 @@
 /-
 The neighbour sum is monotone in its argument when the comparison is known only
-at the neighbours, which is the form Section 4 of `paper/exploding.tex` needs:
+at the neighbours, which is the form Section 4 of `paper/corrected-arxiv/exploding-corrected-arxiv.tex` needs:
 the frozen odometer dominates the last wave off the frozen set, and on the
 frozen set the domination is read off the inner boundary.
 -/

@@ -1,6 +1,6 @@
 /-
 Stationarity, finite range of dependence and ergodicity of an i.i.d. product law on
-`ℤ^d`, in the form of Hypotheses of Section 5 of `paper/exploding.tex`, and the
+`ℤ^d`, in the form of Hypotheses of Section 5 of `paper/corrected-arxiv/exploding-corrected-arxiv.tex`, and the
 zero-one law for translation-invariant events.
 -/
 import Exploding.Support.Hypotheses

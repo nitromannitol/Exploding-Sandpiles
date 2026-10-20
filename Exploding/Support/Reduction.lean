@@ -1,6 +1,6 @@
 /-
 The constrained frozen toppling processes of Section 7.1 of
-`paper/exploding.tex`, in which the dynamics on the face `x_1 = 1` of a cube in
+`paper/corrected-arxiv/exploding-corrected-arxiv.tex`, in which the dynamics on the face `x_1 = 1` of a cube in
 `ℤ^{d+1}` are compared with `d`-dimensional dynamics on a cube in `ℤ^d`.
 
 A site of `ℤ^{d+1}` is written `cons a y = (a, 𝐲)` with `a ∈ ℤ` and `𝐲 ∈ ℤ^d`.

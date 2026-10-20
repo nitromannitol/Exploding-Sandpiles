@@ -6,7 +6,7 @@ import Exploding.Support.SubFodo
 # Lattice geometry for the filling argument
 
 Elementary geometry of the lattice used by the penultimate-cluster and
-local-convexity arguments of `paper/exploding.tex`: the centred box `cent d m`
+local-convexity arguments of `paper/corrected-arxiv/exploding-corrected-arxiv.tex`: the centred box `cent d m`
 is connected, a segment between two of its points that differ in one coordinate
 stays inside it, the frozen odometer is monotone in time and in its background
 for a zero-one seed, and a site with two toppled neighbours topples next on the
@@ -448,7 +448,7 @@ theorem fodo_mono_background_01 (S : Set (Site d)) (s0 s0' w0 : Site d → ℤ)
         simpa using incr_mono (d := d) hconf
 
 /-- **"By monotonicity of parallel toppling, we may take `η = 2d-2`"**
-(`exploding.tex:539-540`).  A result proved on the extremal background
+(the proof of Lemma 2.1, label `lemma:local_convexity`, in `exploding-corrected-arxiv.tex`).  A result proved on the extremal background
 transports to any background in `[2d-2, 2d-1]`: the frozen odometer is monotone
 in the background (`fodo_mono_background_01`) and is at most `1`
 (`fodo_le_one`). -/
@@ -694,7 +694,7 @@ theorem slab_move (a b : Site d) (i : Fin d) (c : ℤ) {p : Site d}
     · rw [if_neg hkj, mul_zero, add_zero]
       exact h2
 
-/-- **The cap spread** (`exploding.tex:545-553`, the mechanism of the one-turn
+/-- **The cap spread** (`exploding-corrected-arxiv.tex:415-423`, the mechanism of the one-turn
 case): if a box `B` is in the terminal support of the frozen odometer on the
 extremal background, and one point of the cap `S` one step above `B` in
 direction `i` is in the terminal support, then the whole cap is.
@@ -885,7 +885,7 @@ closed under the two-neighbour rule, and one point of the cap above the box is
 in `F`, then the whole cap is.
 
 This is the combinatorial content of the paper's one-turn case
-(`exploding.tex:545-553`), stated without any odometer. -/
+(`exploding-corrected-arxiv.tex:415-423`), stated without any odometer. -/
 theorem closed_slab (F : Set (Site d)) (a b : Site d) (i : Fin d) (hab : a i ≤ b i)
     (hbox : ∀ x, (∀ j, a j ≤ x j ∧ x j ≤ b j) → x ∈ F)
     (hclosed : ∀ x y z' : Site d, y ∈ F → z' ∈ F → y ≠ z' →

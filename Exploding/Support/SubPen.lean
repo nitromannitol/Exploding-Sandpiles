@@ -1,5 +1,5 @@
 /-
-The penultimate cluster of `paper/exploding.tex` Section 3: the a.e. background
+The penultimate cluster of `paper/corrected-arxiv/exploding-corrected-arxiv.tex` Section 3: the a.e. background
 bounds, the connectedness of the penultimate cluster to its centre, and the
 path-filling closure of the penultimate wave.
 

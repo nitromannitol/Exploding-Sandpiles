@@ -9,7 +9,7 @@ open Exploding LatticeProb MeasureTheory
 
 /-- **Lemma 5.2** of P. Mathieu, *Quenched invariance principles for random
 walks with random conductances*, J. Stat. Phys. 130 (2008), cited at
-`exploding.tex:478` for clause (2) of Proposition 2.2 (label
+`exploding-corrected-arxiv.tex` for clause (2) of Proposition 2.2 (label
 `prop:renormalization_properties`), where it bounds the holes of the infinite
 cluster of a high density site percolation process lying inside `C_∞`.
 

@@ -21,7 +21,7 @@ end Exploding.External
 
 /-- **Theorem 2.8** of A. Fey, R. Meester and F. Redig, *Stabilizability and
 percolation in the infinite volume sandpile model*, Ann. Probab. 37 (2009),
-cited at `exploding.tex:1415-1424` in the proof of Theorem 6.1 (label
+cited at `exploding-corrected-arxiv.tex:1534-1543` in the proof of Theorem 6.1 (label
 `theorem:counterexample`).
 
 The source: let `T`, `T'` be legal toppling procedures that are finite for `η`.

@@ -9,7 +9,7 @@ open Exploding LatticeProb MeasureTheory
 
 /-- **Corollary 1.4** of T. M. Liggett, R. H. Schonmann and A. M. Stacey,
 *Domination by product measures*, Ann. Probab. 25 (1997), with Theorem 1.3 of
-the same paper, cited at `exploding.tex:478` for Proposition 2.2 (label
+the same paper, cited at `exploding-corrected-arxiv.tex` for Proposition 2.2 (label
 `prop:renormalization_properties`).
 
 The source: let `G` be a graph with a countable vertex set `S` in which every

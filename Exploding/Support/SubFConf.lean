@@ -1,5 +1,5 @@
 /-
-The frozen sandpile of Section 4 of `paper/exploding.tex` is at most `4d - 1`
+The frozen sandpile of Section 4 of `paper/corrected-arxiv/exploding-corrected-arxiv.tex` is at most `4d - 1`
 when the frozen odometer is in `[0, 1]` and the background is at most `2d - 1`.
 -/
 import Exploding.Support.SubFodo

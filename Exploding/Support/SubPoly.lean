@@ -4,7 +4,7 @@ import Exploding.Support.Vocab
 # Polylogarithmic bounds
 
 Polylogarithmic bounds used by the penultimate-cluster arguments of
-`paper/exploding.tex`: a power of `Real.log` is eventually dominated by a
+`paper/corrected-arxiv/exploding-corrected-arxiv.tex`: a power of `Real.log` is eventually dominated by a
 polynomial, and the centred box `cent d m` has exactly `(2m+1)^d` points.
 -/
 namespace Exploding

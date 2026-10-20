@@ -18,7 +18,7 @@ All 22 numbered results of the corrected edition and its Remark 1 are proved in 
 
 ## Cited results
 
-The paper cites nine results. Six are proved in this repository, and their hypotheses are discharged in `Exploding/MainTheorems.lean`. Three are assumed: Antal–Pisztora, Fey–den Boer–Redig and the Fey–Levine–Peres radius bound. These three are the only cited hypotheses of the main results. Their statements are in [`ASSUMPTIONS.md`](ASSUMPTIONS.md).
+Nine results that the paper cites enter the formalization. Six are proved in this repository, and their hypotheses are discharged in `Exploding/MainTheorems.lean`. Three are assumed: Antal–Pisztora, Fey–den Boer–Redig and the Fey–Levine–Peres radius bound. Of these, the main theorems (Theorems 1.2, 1.3 and 5.1) take only Antal–Pisztora; the other two are hypotheses of Lemma 3.1 and Remark 1. Their statements are in [`ASSUMPTIONS.md`](ASSUMPTIONS.md).
 
 | Cited result | Where the paper uses it | State here |
 |---|---|---|

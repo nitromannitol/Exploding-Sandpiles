@@ -46,7 +46,4 @@ references:
     authors:
       - family-names: Bou-Rabee
         given-names: Ahmed
-    identifiers:
-      - type: other
-        value: "arXiv:2102.04422v2"
-    notes: "The corrected edition of arXiv v2 that the statements follow, with its list of corrections, in paper/corrected-arxiv/."
+    notes: "The corrected edition of the arXiv v2 source (arXiv:2102.04422v2) that the statements follow, with its list of corrections, in paper/corrected-arxiv/."

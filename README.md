@@ -56,7 +56,7 @@ deterministic, continuous, convex, one-homogeneous function.
 `liminf T(n e₁)/n = 1`, and for which no measurable set is a limit in volume of the rescaled
 toppled regions.
 
-The other numbered results are proved in the same file, as are Remark 1 and the two results the
+The other numbered results are proved in [`Exploding/MainTheorems.lean`](Exploding/MainTheorems.lean), as are Remark 1 and the two results the
 paper quotes, Theorem 1.1 (Fey, Levine and Peres) and Proposition 7.4 (Schonmann), which are proved
 here for `0 < p ≤ 1`. The map from LaTeX labels to Lean names is in
 [`CORRESPONDENCE.md`](CORRESPONDENCE.md).

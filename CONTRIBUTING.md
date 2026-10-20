@@ -52,7 +52,8 @@ must consist of exactly `propext`, `Classical.choice` and `Quot.sound`. A theore
 - A result the paper quotes from the literature is a proposition in `Exploding/External/`, and the
   theorems whose proofs use it take it as an explicit hypothesis. It is never an `axiom`. After
   adding one, run `python3 tools/assumptions.py` to regenerate [`ASSUMPTIONS.md`](ASSUMPTIONS.md).
-- Keep Lean files under 1500 lines.
+- Keep new Lean files under 1500 lines; split a file that grows past that. Three older files
+  (`Support/SubPen.lean`, `Support/ReductionShift.lean`, `Support/CrossingTimeAux.lean`) are longer.
 - Close arithmetic goals with named monotonicity lemmas and `calc`, not with `nlinarith` on goals
   involving `Real.rpow` or `Real.exp`. Profile before splitting a file, narrowing imports or adding
   an instance cache: `lake env lean --profile <file>` before and after the change.

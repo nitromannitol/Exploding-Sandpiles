@@ -3,7 +3,7 @@ The crossing property of a good cube, in the form the propagation step of
 Lemma 3.2 uses it: if a line of `Q_k` through a point of its outer boundary has
 already fired, then the whole cube has fired within `k^d` steps.
 
-This is the paper's `exploding.tex:499-501`: a good cube is one whose crossing
+This is the paper's `exploding-corrected-arxiv.tex:369-371`: a good cube is one whose crossing
 time is at most `k^d`, and the crossing time is exactly the first time the
 `{Q_k^c ∪ L}`-frozen odometer is `1` on all of `Q_k`.
 -/
@@ -36,7 +36,7 @@ theorem exists_crossOdo_of_good {d : ℕ} (η : Site d → ℤ) (k : ℕ) (i : F
   rw [← h3] at h1
   exact_mod_cast h1
 
-/-- **The paper's propagation mechanism** (`exploding.tex:499-501`): once the
+/-- **The paper's propagation mechanism** (`exploding-corrected-arxiv.tex:369-371`): once the
 support of the wave contains a line of a good cube `Q_k(j)`, the wave covers the
 whole cube at a later time.  This is the crossing property of a good cube
 (`exists_crossOdo_of_good`) combined with the domination of the frozen odometer

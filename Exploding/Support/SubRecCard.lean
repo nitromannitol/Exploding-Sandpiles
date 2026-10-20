@@ -1,6 +1,6 @@
 /-
 The counting step of the recurrence argument of Proposition 7.3 of
-`paper/exploding.tex`.
+`paper/corrected-arxiv/exploding-corrected-arxiv.tex`.
 -/
 import Exploding.Support.SubRecOne
 import Exploding.Support.SubRecSub

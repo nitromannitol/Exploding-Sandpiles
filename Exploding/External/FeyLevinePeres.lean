@@ -5,7 +5,7 @@ import Exploding.Support.Vocab
 
 open Exploding LatticeProb MeasureTheory
 
-/-- **Theorem 1.1** of the paper (`exploding.tex:238-240`, label
+/-- **Theorem 1.1** of the paper (`exploding-corrected-arxiv.tex:96-98`, label
 `prop:fey_levine_peres_explode`), which the paper attributes to Proposition 1.4
 of A. Fey, L. Levine and Y. Peres, *Growth rates and explosions in sandpiles*,
 J. Stat. Phys. 138 (2010).

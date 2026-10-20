@@ -1,6 +1,6 @@
 /-
 Upper bounds on the arrival times `T(n e₁)` of the counterexample background of
-`paper/exploding.tex` Section 6: a comparison principle for parallel toppling
+`paper/corrected-arxiv/exploding-corrected-arxiv.tex` Section 6: a comparison principle for parallel toppling
 (`cel_subsol`) by which an explicit legal toppling schedule bounds the parallel
 odometer from below.
 -/

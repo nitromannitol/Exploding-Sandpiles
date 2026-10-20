@@ -1,5 +1,5 @@
 /-
-The recurrence odometer of Proposition 7.3 of `paper/exploding.tex`.
+The recurrence odometer of Proposition 7.3 of `paper/corrected-arxiv/exploding-corrected-arxiv.tex`.
 -/
 import Exploding.Support.SubMax
 import Exploding.Support.SubTopple

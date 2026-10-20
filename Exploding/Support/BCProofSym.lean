@@ -1,6 +1,6 @@
 /-
 Lattice symmetries for the box-crossing proof (Proposition 7.5 of
-`paper/exploding.tex`, "We conclude by symmetry").
+`paper/corrected-arxiv/exploding-corrected-arxiv.tex`, "We conclude by symmetry").
 
 A *lattice symmetry* is a bijection `h` of `ℤ^d` that preserves nearest-neighbour
 adjacency and the neighbour sum.  Translations, coordinate permutations and the

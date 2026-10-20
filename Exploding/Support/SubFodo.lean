@@ -1,5 +1,5 @@
 /-
-The comparison lemmas of Section 4 of `paper/exploding.tex` between the frozen
+The comparison lemmas of Section 4 of `paper/corrected-arxiv/exploding-corrected-arxiv.tex` between the frozen
 parallel toppling odometer and the last wave.
 
 The paper's `(4.2)` bound: if the initial sandpile is at most `2d - 1` and the

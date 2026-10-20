@@ -1,5 +1,5 @@
 /-
-The slow front of the counterexample background of `paper/exploding.tex` Section 6,
+The slow front of the counterexample background of `paper/corrected-arxiv/exploding-corrected-arxiv.tex` Section 6,
 Step 4: an explicit supersolution for parallel toppling.
 
 A time-indexed family `w` which is nondecreasing in time, starts nonnegative, and

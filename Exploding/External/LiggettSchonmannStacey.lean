@@ -9,7 +9,7 @@ open Exploding LatticeProb MeasureTheory
 
 /-- **Theorem 0.0 (i) and (ii)** of T. M. Liggett, R. H. Schonmann and
 A. M. Stacey, *Domination by product measures*, Ann. Probab. 25 (1997), cited at
-`exploding.tex:1215-1217` in the proof of Proposition 5.1 (label
+`exploding-corrected-arxiv.tex` in the proof of Proposition 5.1 (label
 `prop:convergence_of_the_generalized_last_wave`).
 
 The source: for each `d` and `k`, when `p` is large enough every `k`-dependent

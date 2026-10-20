@@ -1,5 +1,5 @@
 /-
-One step of the recurrence argument of Proposition 7.3 of `paper/exploding.tex`:
+One step of the recurrence argument of Proposition 7.3 of `paper/corrected-arxiv/exploding-corrected-arxiv.tex`:
 a site of `V` that has not yet toppled and whose `+e_i` neighbours have all
 toppled, topples at the next step.
 -/

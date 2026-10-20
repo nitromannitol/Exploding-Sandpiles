@@ -1,5 +1,5 @@
 /-
-The support lemmas of Lemma 3.2 of `paper/exploding.tex`: the last wave is well
+The support lemmas of Lemma 3.2 of `paper/corrected-arxiv/exploding-corrected-arxiv.tex`: the last wave is well
 defined.  The paper's argument: the `n`-wave for large `n` covers a centred box
 (`square_lower_bound`), that box meets the infinite cluster of good cubes
 (Proposition 2.2), and once the wave's support covers a good cube it never

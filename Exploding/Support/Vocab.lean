@@ -1,5 +1,5 @@
 /-
-The vocabulary of `paper/exploding.tex` beyond the toppling dynamics: boxes and
+The vocabulary of `paper/corrected-arxiv/exploding-corrected-arxiv.tex` beyond the toppling dynamics: boxes and
 their faces, boundaries, bounding rectangles, lines across a box, the crossing
 time and good cubes, the last-wave and its arrival times, recurrence, and the
 product measure the paper's backgrounds are drawn from.

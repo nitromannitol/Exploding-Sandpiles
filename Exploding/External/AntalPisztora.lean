@@ -9,7 +9,7 @@ open Exploding LatticeProb MeasureTheory
 
 /-- **Theorem 1.1** of P. Antal and A. Pisztora, *On the chemical distance for
 supercritical Bernoulli percolation*, Ann. Probab. 24 (1996), cited at
-`exploding.tex:478` for Proposition 2.2 (label `prop:renormalization_properties`).
+`exploding-corrected-arxiv.tex` for Proposition 2.2 (label `prop:renormalization_properties`).
 
 The source: for Bernoulli bond percolation on `ℤ^d`, `d ≥ 2`, with density
 `p > p_c`, there is `ρ = ρ(p, d) ∈ [1, ∞)` with

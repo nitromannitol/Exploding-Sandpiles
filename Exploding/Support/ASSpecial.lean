@@ -1,5 +1,5 @@
 /-
-`eq:induction_specialcase2` of `paper/exploding.tex` (lines 918-1063), the first conjunct of
+`eq:induction_specialcase2` of `paper/corrected-arxiv/exploding-corrected-arxiv.tex` (lines 918-1063), the first conjunct of
 Step 1's three simultaneous inductions, in the form used by Step 2 of Proposition 4.1: for the
 constructed background `s` (equal to `2d` at the origin, to `2d - 1` on the rest of the frozen
 set `P̃`, and to `η ∈ [2d-2, 2d-1]` off `P̃`), positivity of the parallel toppling odometer `w_t`
@@ -315,7 +315,7 @@ theorem assp_incl {s η w0 : Site d → ℤ} (S : Set (Site d))
 
 /-! ### The statement used by the proof of Proposition 4.1 -/
 
-/-- `eq:induction_specialcase2` of the paper (`exploding.tex:1061-1063`): the reachable set of
+/-- `eq:induction_specialcase2` of the paper (`exploding-corrected-arxiv.tex:1058-1060`): the reachable set of
 `w_t` is inside that of `w̃_t`. -/
 theorem assp_special (d : ℕ) (hd : 2 ≤ d) : ∀ η : Site d → ℤ, (∀ x, 2 * (d : ℤ) - 2 ≤ η x) →
     (∀ x, η x ≤ 2 * (d : ℤ) - 1) →

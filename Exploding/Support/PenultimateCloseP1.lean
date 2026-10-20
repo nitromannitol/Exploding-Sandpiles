@@ -7,7 +7,7 @@ import Exploding.Support.ArxivP1Crossing
 
 At parameter one, the actual law is concentrated on the all-high background.
 There the cluster arrival equals the finite last arrival at every target site,
-so the requested logarithmic bound holds with exponent one.
+so the logarithmic bound of Lemma 3.7 holds with exponent one.
 -/
 
 namespace Exploding

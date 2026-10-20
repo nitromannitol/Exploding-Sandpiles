@@ -1,5 +1,5 @@
 /-
-Follow-up to `Exploding/Support/LWCProof.lean`.
+Continuation of `Exploding/Support/LWCProof.lean`.
 
 Two pieces of the last-wave convergence that need no new ergodic theory:
 

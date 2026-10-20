@@ -410,7 +410,7 @@ induction on `t`: away from `z`, `wave η N z (t+1) x` reads only the values of
 `wave η N z t` at the `2d` neighbours of `x`, each at distance `≥ mnorm(x-z)-1`
 from `z`; once `mnorm(x-z) > t+1` those neighbours are all still `0` by the
 induction hypothesis, so the neighbour sum is `0`, and
-`⌊η(x)/2d⌋ = 0` since `0 ≤ η(x) ≤ 2d-1`.  Fully proved: no gap. -/
+`⌊η(x)/2d⌋ = 0` since `0 ≤ η(x) ≤ 2d-1`. -/
 theorem aux_finite_exploding_speed {d : ℕ} (η : Site d → ℤ) (hlow : ∀ x, 0 ≤ η x)
     (hhigh : ∀ x, η x ≤ 2 * (d : ℤ) - 1) (N : ℕ) (z : Site d) :
     ∀ t : ℕ, ∀ x : Site d, (t : ℤ) < mnorm (x - z) → wave η N z t x = 0 := by

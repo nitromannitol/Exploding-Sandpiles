@@ -87,9 +87,9 @@ For expositional clarity, we consider one family of random, explosive background
 \begin{gathered}
 0<p\leq1,\qquad
 \nu_p=(1-p)\delta_{2d-2}+p\delta_{2d-1},\qquad
-\mathbf P=\bigotimes_{x\in\mathbb Z^d}\nu_p,\\
+\mathbf P=\bigotimes_{x\in\Z^d}\nu_p,\\
 \mathbf P(\eta(x)=2d-2)=1-p,\qquad
-\mathbf P(\eta(x)=2d-1)=p\quad(x\in\mathbb Z^d).
+\mathbf P(\eta(x)=2d-1)=p\quad(x\in\Z^d)\,.
 \end{gathered}
 \end{equation}
 Fey, Levine, and Peres showed the following.
@@ -121,11 +121,7 @@ but the rate at which the explosion spreads also converges.
 During our proof of Theorem \ref{theorem:convergence_of_time_constant}, we introduce a quantitative criterion for determining if a sandpile is explosive. The criterion asserts, roughly, that if a sandpile explodes quickly on a finite box, then it must do so on the entire lattice. 
 We use this and a coupling with bootstrap percolation to extend the aforementioned Theorem \ref{prop:fey_levine_peres_explode}. 
 \begin{theorem} \label{theorem:explosive}
-For $d\geq2$, let $\nu$ be a probability measure on $\Z$ with
-$\nu(\{m\in\Z:m\geq d\})=1$ and $\nu(\{2d-1\})>0$.
-If $\beta:\Z^d\to\Z$ has law
-$\mathbf P=\bigotimes_{x\in\Z^d}\nu$,
-	then $\beta$ is explosive with probability 1.
+For $d\geq2$, let $\nu$ be a probability measure on $\Z$ with $\nu(\{m\in\Z:m\geq d\})=1$ and $\nu(\{2d-1\})>0$. If $\beta:\Z^d\to\Z$ has law $\mathbf P=\bigotimes_{x\in\Z^d}\nu$, then $\beta$ is explosive with probability 1.
 \end{theorem}
 
 
@@ -155,6 +151,11 @@ The proof of Theorem \ref{theorem:convergence_of_time_constant} is completed in 
 by presenting sufficient hypotheses under which a limit shape exists. We demonstrate some need of these hypotheses
 by constructing a family of (random and deterministic) exploding sandpiles which fail to have a limit shape in Section \ref{sec:counterexample}. We conclude in Section \ref{sec:criteria} with a proof of Theorem \ref{theorem:explosive}. There we indicate explicit criteria 
 for determining if a sandpile is explosive. 
+
+\subsection*{Use of artificial intelligence}
+The original paper (2021) was written by the author. This corrected edition was prepared while the paper was formalized in the Lean proof assistant. AI coding agents (Anthropic Claude and OpenAI GPT models, with DeepSeek and Mistral models for auxiliary proof search), directed by the author, found the corrections listed in the section ``Corrections to the published version'' and drafted the corrected statements, the new proofs, and Remark~\ref{rem:sharp_planar_obstruction} and the remark that follows it. The author checked these.
+Every numbered result of this edition and Remark~\ref{rem:sharp_planar_obstruction} is proved in Lean. Three cited results enter as explicit hypotheses: Theorem~1.1 of Antal and Pisztora~\cite{antal1996chemical}; Theorem~4.1 of Fey, den Boer and Redig~\cite{fey2008limiting} and the radius bound of Fey, Levine and Peres~\cite{fey2010growth}, which enter for Lemma~\ref{lemma:square_lower_bound} and Remark~\ref{rem:sharp_planar_obstruction}. Proposition~\ref{prop:explosion_criteria} is formalized for $d\geq2$, and Hypothesis~\ref{hyp:finite_range_of_dependence} is used in the form stated in this edition.
+The author takes responsibility for the mathematical content and presentation of the paper.
 
 \subsection*{Acknowledgments}
 Thank you to Charles K. Smart for motivating, helpful discussions 
@@ -199,8 +200,7 @@ and modified.
 	\exists y \in A^c, x \sim y\}$. 
 	\item $C,c$, are positive constants which may change from line to line. Dependence is indicated by, for example, $C_d$ or $C_d(\eta)$.
 	\item  The act of {\it firing} or {\it toppling} a site, $x$, removes $2 d$ chips from $x$ and adds one chip to each $y \sim x$.
-	\item  $\eta \sim \mbox{Bernoulli}(a, b, p)$ is shorthand for: $\eta:\Z^d\to\Z$ has law
-	$\mathbf P=\bigotimes_{x\in\Z^d}((1-p)\delta_b+p\delta_a)$, with this same marginal at every site.
+	\item  $\eta \sim \mbox{Bernoulli}(a, b, p)$ is shorthand for: $\eta:\Z^d\to\Z$ has law $\mathbf P=\bigotimes_{x\in\Z^d}((1-p)\delta_b+p\delta_a)$, with this same marginal at every site.
 \end{itemize}
 
 
@@ -345,7 +345,7 @@ $\max_{i,z} \mathfrak{C}_{k}^{(i,z)} \leq k^d$. For each $i \in \Z^d$, let
 Q_k(i) := Q_k + i \cdot k.
 \end{equation}
 The cubes $\{Q_k(i)\}_{i \in \Z^d}$ define a {\it macroscopic lattice} with edge set $\{ (Q_k(i), Q_k(j)), |j-i| = 1\}$. 
-For $k$ sufficiently large, Proposition \ref{prop:crossing_time} implies that the good cubes form an independent site process of high density. An edge $(Q_k(i),Q_k(j))$ of the macroscopic lattice is {\it good} when both of its cubes are good. A good edge depends only on its two cubes, so the good edges have a dependence graph of degree $4d-2$, and by Corollary 1.4 of \cite{liggett1997domination} they dominate an independent bond percolation process $\zeta$ of density close to one. The cubes all of whose $\zeta$-edges are open form a site process in which cubes that are not neighbors are independent, so by the same corollary it dominates an independent site percolation process of high density. The infinite open cluster of $\zeta$ consists of good cubes and contains the infinite cluster of this site process, so Lemma 5.2 of \cite{mathieu2008quenched}, applied to the site process, bounds its holes; Theorem 1.1 of \cite{antal1996chemical}, a chemical distance bound for supercritical bond percolation, applied to $\zeta$ together with the Borel--Cantelli lemma, bounds its chemical distances. These bounds give the following. (See, for example, Section 5 in \cite{mathieu2008quenched} for an explicit proof.)
+For $k$ sufficiently large, Proposition~\ref{prop:crossing_time} implies that the good cubes form an independent site process of high density. An edge $(Q_k(i),Q_k(j))$ of the macroscopic lattice is {\it good} when both of its cubes are good. A good edge depends only on its two cubes, so the good edges have a dependence graph of degree $4d-2$, and by Corollary~1.4 of~\cite{liggett1997domination} they dominate an independent bond percolation process $\zeta$ of density close to one. The cubes all of whose $\zeta$-edges are open form a finitely dependent site process, and by the same corollary it dominates an independent site percolation process of high density. The infinite cluster of this independent site process lies in an infinite open cluster of $\zeta$, whose cubes are good. Lemma~5.2 of~\cite{mathieu2008quenched} is stated for independent site percolation, so it applies to the independent site process and bounds its holes; Theorem~1.1 of~\cite{antal1996chemical}, a chemical distance bound for supercritical bond percolation, applied to $\zeta$ together with the Borel--Cantelli lemma, bounds its chemical distances. These bounds give the following. (See, for example, Section~5 in~\cite{mathieu2008quenched} for an explicit proof.)
 
 
 
@@ -401,7 +401,7 @@ See Figure \ref{fig:fill_in} for an illustration of this result.
 \begin{lemma}\label{lemma:local_convexity}
 	Let $A := \{z^{(i)}\}$ be a finite path $z^{(i)} \sim z^{(i+1)}$.
 	Let $w_t$ denote $A$-frozen parallel toppling with initial conditions 
-	$w_0(x) = 1\{x \in A\}$ on the whole lattice (zero off $A$), $s_0' = \eta + \Delta w_0$. Then, $w_t|_{\br(A)} = 1$, for all $t \geq |\br(A)|$.   
+	$w_0(x) = 1\{x \in A\}$ on the whole lattice (zero off $A$), $s_0' = \eta + \Delta w_0$. Then $w_t|_{\br(A)} = 1$ for every $t \geq |\br(A)|$.   
 \end{lemma}
 \begin{proof}
 	By monotonicity of parallel toppling, we may take $\eta = (2 d - 2)$. Moreover, 
@@ -570,275 +570,149 @@ We write $\hat{T}(x) := \hat{T}(0,x)$ and $\tilde{T}(x) := \tilde{T}(0,x)$.
 (The choice of the same letter $T$ for all arrival times is intentional --- we will see they are asymptotically close.)
 
 \subsection{Basic properties of the last-wave} \label{sec:last_wave_basic_properties}
-We derive some basic properties of the last-wave. Throughout this section and the next, let $\eta$ be drawn from the event of probability
-1 in Proposition \ref{prop:renormalization_properties} and let $k$ be the (deterministic but large) side length of a good cube.
+We derive some basic properties of the last-wave. Throughout this section and the next, let $\eta$ be drawn from the event of probability 1 in Proposition \ref{prop:renormalization_properties} and let $k$ be the (deterministic but large) side length of a good cube.
 
-For the wave in \eqref{eq:n_wave}, the value at its starting site is frozen:
-$u_t^{(m,z)}(z)=m$ for every $t\geq0$. The parameter $m\in\N$ is a
-prescribed toppling count, not a number of added chips or a time horizon.
-Here the support of a wave means
-$\{x:\text{there exists }t\geq0\text{ with }u_t^{(m,z)}(x)>0\}$.
-Write $B_n=[-n,n]^d\cap\Z^d$; this notation is distinct from the
-side-length cubes $Q_k$ used for renormalization.
+For the wave in \eqref{eq:n_wave}, the value at its starting site is frozen: $u_t^{(m,z)}(z)=m$ for every $t\geq0$. The parameter $m\in\N$ is a prescribed toppling count, not a number of added chips or a time horizon. Here the support of a wave means $\{x:\text{there exists }t\geq0\text{ with }u_t^{(m,z)}(x)>0\}$. Write $\Lambda_n=[-n,n]^d\cap\Z^d$ for the cube of radius $n$. The quantitative estimate below uses a lower bound on the radius of the toppled cube from Fey, den Boer and Redig~\cite{fey2008limiting} and an upper bound on the toppled set from Fey, Levine and Peres~\cite{fey2010growth}.
 
-The quantitative estimate below uses the cubical lower-radius theorem of
-Fey--den Boer--Redig and the upper-radius theorem of Fey--Levine--Peres.
 \begin{lemma}\label{lemma:square_lower_bound}
-For each integer $d\geq2$ there is a deterministic constant $C_d>0$
-with the following property. Let $\eta:\Z^d\to\Z$ satisfy
-$2d-2\leq\eta(x)\leq2d-1$ at every site. For every integer $n\geq1$
-and every integer $m\geq1$ satisfying
-\[
+For each integer $d\geq2$ there is a deterministic constant $C_d>0$ with the following property. Let $\eta:\Z^d\to\Z$ satisfy $2d-2\leq\eta(x)\leq2d-1$ at every site. For every integer $n\geq1$ and every integer $m\geq1$ satisfying
+\begin{equation*}
  m\geq
  \begin{cases}
  \lceil C_2 n^2\log(n+1)\rceil,&d=2,\\
  \lceil C_d n^d\rceil,&d\geq3,
- \end{cases}
-\]
-there exists a finite integer $T$ such that
-$u_t^{(m,0)}(x)>0$ for every $t\geq T$ and every $x\in B_n$.
-In particular the support of this wave contains $B_n$.
-The constant is independent of the background and of all percolation
-parameters and choices. No quantitative bound on $T$ is asserted.
+ \end{cases}\,,
+\end{equation*}
+there exists a finite integer $T$ such that $u_t^{(m,0)}(x)>0$ for every $t\geq T$ and every $x\in\Lambda_n$. In particular the support of this wave contains $\Lambda_n$.
 \end{lemma}
 
 \begin{proof}
-Set $h=2d-2$ and use the unnormalized Laplacian
-$\Delta f(x)=\sum_{y\sim x}f(y)-2df(x)$.
-For $N\geq2$, let $v_N$ be the terminal ordinary toppling odometer for
-$h+N\delta_0$, and let $s_N=h+N\delta_0+\Delta v_N$.
-Throughout this proof $N$ counts extra chips; $m$ counts frozen origin
-topplings. Ordinary legal toppling preserves nonnegative heights, so
-$0\leq s_N\leq2d-1$.
+Set $h=2d-2$. Let $\Delta$ be the unnormalized Laplacian, $\Delta f(x)=\sum_{y\sim x}f(y)-2df(x)$. For $N\geq2$, let $v_N$ be the terminal ordinary toppling odometer for $h+N\delta_0$, and let $s_N=h+N\delta_0+\Delta v_N$. Throughout this proof $N$ counts extra chips and $m$ counts frozen origin topplings. Ordinary legal toppling preserves nonnegative heights, so $0\leq s_N\leq2d-1$.
 
-\emph{The two cited radius inputs.}
-Theorem 4.1 of Fey--den Boer--Redig \cite{fey2008limiting}
-(arXiv:math/0702450v2, printed pp.~7--9) gives finite stabilization and
-a cubical toppled set $\operatorname{supp}v_N=B_{r_N}$, with
-\[
- r_N\geq\frac{N^{1/d}-3}{2}.
-\]
-Their model parametrizes the total origin height, which is $N+h$ here.
-Its displayed lower bound with $N+h$ implies the bound with $N$.
-Equivalently, once the cubical shape is known, chip conservation gives
-$N=\sum_x(s_N(x)-h)\leq|B_{r_N+1}|=(2r_N+3)^d$:
-all height changes lie in $B_{r_N+1}$, each increase is at most one,
-and the sum of the finitely supported Laplacian is zero.
-This conservation deduction is part of the present paper's proof.
-The cited theorem does not supply an origin-odometer bound.
+\emph{Step 1.} We show that $\Lambda_n\subseteq\operatorname{supp}v_N\subseteq\mathcal D$ for the choice of $N$ and $\mathcal D$ made below, using two cited radius bounds.
 
-Theorem 1.1 of Fey--Levine--Peres \cite{fey2010growth}
-(arXiv:0901.3805v2, printed p.~4), applied at $h=2d-2$ and
-$\epsilon=1$, gives
-\[
- \operatorname{supp}v_N\subseteq B_{A_dN^{1/d}},\qquad
- A_d=(d+1)\omega_d^{-1/d},
-\]
-for all $N$ greater than a deterministic threshold depending only on $d$;
-$\omega_d$ is the volume of the Euclidean unit ball. Its hypothesis
-$d\leq h\leq2d-2$ holds for every $d\geq2$ considered here.
-It concerns toppled sites, rather than the particle cluster with its extra
-boundary. Choose an integer $N_0(d)\geq2$ so the bound holds for every
-$N\geq N_0(d)$, and in the remainder take
-\[
- N=(2n+3)^d+N_0(d),\qquad L=\lceil A_dN^{1/d}\rceil,\qquad D=B_L.
-\]
-Thus $B_n\subseteq\operatorname{supp}v_N\subseteq D$, including for
-$n=1$. Increasing $N_0(d)$ avoids applying an asymptotic citation at a
-small scale.
+Theorem 4.1 of Fey, den Boer and Redig~\cite{fey2008limiting} gives finite stabilization and a cubical toppled set $\operatorname{supp}v_N=\Lambda_{r_N}$, with
+\begin{equation*}
+ r_N\geq\frac{N^{1/d}-3}{2}\,.
+\end{equation*}
+Their model parametrizes the total origin height, which is $N+h$ here, so their lower bound with $N+h$ implies the bound with $N$. Equivalently, once the cubical shape is known, chip conservation gives $N=\sum_x(s_N(x)-h)\leq|\Lambda_{r_N+1}|=(2r_N+3)^d$, because all height changes lie in $\Lambda_{r_N+1}$, each increase is at most one, and the sum of the finitely supported Laplacian is zero.
 
-\emph{Finite-domain Green estimates (proved here).}
-Let $X_t$ be the continuous-time simple random walk with total jump rate
-one, each jump uniformly chosen among the $2d$ neighbors. Its generator
-is $P-I=\Delta/(2d)$. Put
-$\tau=\inf\{t\geq0:X_t\notin D\}$ and
-\[
- p_D(t,x,y)=\mathbf P_x(X_t=y,\ t<\tau),\qquad
- G_D(x,y)=\int_0^\infty p_D(t,x,y)dt.
-\]
-The holding times have mean one and are independent of the embedded
-walk, so $G_D$ also equals the usual discrete-time expected number of
-visits before exit. We prove every estimate we use for this Green function.
+Theorem 1.1 of Fey, Levine and Peres~\cite{fey2010growth}, applied at $h=2d-2$ and $\epsilon=1$, gives
+\begin{equation*}
+ \operatorname{supp}v_N\subseteq\Lambda_{A_dN^{1/d}},\qquad
+ A_d=(d+1)\omega_d^{-1/d}\,,
+\end{equation*}
+for all sufficiently large $N$, where $\omega_d$ is the volume of the Euclidean unit ball. Its hypothesis $d\leq h\leq2d-2$ holds for every $d\geq2$ considered here. The bound concerns toppled sites, not the particle cluster with its extra boundary. Choose an integer $N_0(d)\geq2$ so the bound holds for every $N\geq N_0(d)$, and in the remainder take
+\begin{equation*}
+ N=(2n+3)^d+N_0(d),\qquad L=\lceil A_dN^{1/d}\rceil,\qquad \mathcal D=\Lambda_L\,.
+\end{equation*}
+Thus $\Lambda_n\subseteq\operatorname{supp}v_N\subseteq\mathcal D$, including for $n=1$.
 
-For each starting site $x\in D$, the process $|X_t|_2^2-t$ is a
-martingale: averaging one jump increases squared norm by one. Bounded
-stopping at $t\wedge\tau$ gives
-\[
+\emph{Step 2.} We show that the walk killed on leaving $\mathcal D$ has a Green function $G_{\mathcal D}$ with $G_{\mathcal D}(0,0)$ and $\sum_{y\in\mathcal D}G_{\mathcal D}(0,y)$ bounded in terms of $L$.
+
+Let $X_t$ be the continuous-time simple random walk with total jump rate one, each jump uniformly chosen among the $2d$ neighbors. Its generator is $P-I=\Delta/(2d)$. Put $\tau=\inf\{t\geq0:X_t\notin\mathcal D\}$ and
+\begin{equation*}
+ p_{\mathcal D}(t,x,y)=\mathbf P_x(X_t=y,\ t<\tau),\qquad
+ G_{\mathcal D}(x,y)=\int_0^\infty p_{\mathcal D}(t,x,y)\,dt\,.
+\end{equation*}
+The holding times have mean one and are independent of the embedded walk, so $G_{\mathcal D}$ also equals the usual discrete-time expected number of visits before exit.
+
+For each starting site $x\in\mathcal D$, the process $|X_t|_2^2-t$ is a martingale: averaging one jump increases squared norm by one. Bounded stopping at $t\wedge\tau$ gives
+\begin{equation*}
  \mathbf E_x(t\wedge\tau)
  =\mathbf E_x|X_{t\wedge\tau}|_2^2-|x|_2^2
- \leq d(L+1)^2=:b.
-\]
-The stopped walk lies in $B_{L+1}$, including the exit point. Monotone
-convergence proves $\mathbf E_x\tau\leq b$ and almost-sure exit,
-uniformly in $x$. Markov's inequality gives
-$\mathbf P_x(\tau>2b)\leq1/2$. The Markov property, successively at the
-deterministic times $2b,4b,\ldots$, therefore gives
-\[
- \sup_{x\in D}\mathbf P_x(\tau>t)\leq2^{-\lfloor t/(2b)\rfloor}.
-\]
+ \leq d(L+1)^2=:b\,.
+\end{equation*}
+The stopped walk lies in $\Lambda_{L+1}$, including the exit point. Monotone convergence proves $\mathbf E_x\tau\leq b$ and almost-sure exit, uniformly in $x$. Markov's inequality gives $\mathbf P_x(\tau>2b)\leq1/2$. The Markov property, successively at the deterministic times $2b,4b,\ldots$, therefore gives
+\begin{equation*}
+ \sup_{x\in\mathcal D}\mathbf P_x(\tau>t)\leq2^{-\lfloor t/(2b)\rfloor}\,.
+\end{equation*}
 This also proves integrability of every entry of the killed semigroup.
 
-Here is an elementary heat bound requiring no spectral sum or cited
-heat-kernel theorem. The coordinates of $X_t$ are independent symmetric
-continuous-time one-dimensional walks of rate $1/d$, by independent
-Poisson splitting of the jump directions. Fourier inversion of their
-integer-valued distributions gives, for the unrestricted transition
-probability $q(t,0,z)$,
-\[
+The coordinates of $X_t$ are independent symmetric continuous-time one-dimensional walks of rate $1/d$, by independent Poisson splitting of the jump directions. Fourier inversion of their integer-valued distributions gives, for the unrestricted transition probability $q(t,0,z)$,
+\begin{equation*}
  |q(t,0,z)|\leq
  \left(\frac1{2\pi}\int_{-\pi}^{\pi}
  e^{-(t/d)(1-\cos\theta)}d\theta\right)^d
  \leq\min\{1,(d\pi/(8t))^{d/2}\}
- \leq K_d(1+t)^{-d/2}.
-\]
-For completeness, the one-dimensional characteristic function is
-$\exp[(t/d)(\cos\theta-1)]$, obtained by summing its Poisson number of
-independent symmetric jumps. Fourier inversion follows by integrating
-$e^{i\theta(k-z)}$, whose integral is $2\pi$ if $k=z$ and zero otherwise;
-absolute summability permits exchanging the probability sum and integral.
-For the second inequality use
-$1-\cos\theta\geq2\theta^2/\pi^2$ on $[-\pi,\pi]$ and enlarge the
-Gaussian integral to the real line. The last inequality holds with, for
-example, $K_d=(1+\sqrt{d\pi/8})^d$.
+ \leq K_d(1+t)^{-d/2}\,.
+\end{equation*}
+For completeness, the one-dimensional characteristic function is $\exp[(t/d)(\cos\theta-1)]$, obtained by summing its Poisson number of independent symmetric jumps. Fourier inversion follows by integrating $e^{i\theta(k-z)}$, whose integral is $2\pi$ if $k=z$ and zero otherwise; absolute summability permits exchanging the probability sum and integral. For the second inequality use $1-\cos\theta\geq2\theta^2/\pi^2$ on $[-\pi,\pi]$ and enlarge the Gaussian integral to the real line. The last inequality holds with, for example, $K_d=(1+\sqrt{d\pi/8})^d$.
 
-The killed transition matrix is symmetric. Its semigroup identity and
-$0\leq p_D\leq q$ now imply
-\[
+The killed transition matrix is symmetric. Its semigroup identity and $0\leq p_{\mathcal D}\leq q$ now imply
+\begin{equation*}
  \begin{aligned}
- p_D(t,0,0)&=\sum_{y\in D}p_D(t/2,0,y)^2\\
- &\leq K'_d(1+t)^{-d/2}\sum_{y\in D}p_D(t/2,0,y)\\
- &\leq K'_d(1+t)^{-d/2}2^{-\lfloor t/(4b)\rfloor}.
+ p_{\mathcal D}(t,0,0)&=\sum_{y\in\mathcal D}p_{\mathcal D}(t/2,0,y)^2\\
+ &\leq K'_d(1+t)^{-d/2}\sum_{y\in\mathcal D}p_{\mathcal D}(t/2,0,y)\\
+ &\leq K'_d(1+t)^{-d/2}2^{-\lfloor t/(4b)\rfloor}\,.
  \end{aligned}
-\]
-For $d=2$, integrate over $[0,4b]$ to get at most
-$K'_2\log(1+4b)$. On each interval $[4bk,4b(k+1)]$, $k\geq1$,
-the integral is at most $K'_2 2^{-k}/k$. For $d\geq3$, simply discard
-the survival factor and use
-$\int_0^\infty(1+t)^{-d/2}dt=2/(d-2)$.
-Consequently
-\[
- G_D(0,0)\leq
+\end{equation*}
+For $d=2$, integrate over $[0,4b]$ to get at most $K'_2\log(1+4b)$. On each interval $[4bk,4b(k+1)]$, $k\geq1$, the integral is at most $K'_2 2^{-k}/k$. For $d\geq3$, simply discard the survival factor and use $\int_0^\infty(1+t)^{-d/2}dt=2/(d-2)$. Consequently
+\begin{equation*}
+ G_{\mathcal D}(0,0)\leq
  \begin{cases}
  C\log(L+2),&d=2,\\
  C_d,&d\geq3,
  \end{cases}
- \qquad \sum_{y\in D}G_D(0,y)=\mathbf E_0\tau\leq d(L+1)^2.
-\]
-These are finite-domain estimates, including the recurrent planar case.
+ \qquad \sum_{y\in\mathcal D}G_{\mathcal D}(0,y)=\mathbf E_0\tau\leq d(L+1)^2\,.
+\end{equation*}
 
-\emph{Green inversion and the ordinary origin bound.}
-Let $P_D$ be the killed discrete transition matrix on $D$, with zero
-extension outside. Then $p_D(t)=e^{-t(I-P_D)}$. Its integrable entries
-and the survival bound show that $p_D(t)\to0$; integrating its derivative
-on $[0,R]$ and passing to the limit gives
-$(I-P_D)G_D=G_D(I-P_D)=I$. Thus $I-P_D$ is invertible, with inverse
-$G_D$. Since $v_N=0$ off $D$, its conservation equation is exactly
-\[
- (I-P_D)v_N=\frac{N\delta_0-(s_N-h)}{2d}.
-\]
+\emph{Step 3.} We show that $v_N(0)\leq CN\log(N+1)$ for $d=2$ and $v_N(0)\leq C_dN$ for $d\geq3$, using the Green function of Step 2.
+
+Let $P_{\mathcal D}$ be the killed discrete transition matrix on $\mathcal D$, with zero extension outside. Then $p_{\mathcal D}(t)=e^{-t(I-P_{\mathcal D})}$. Its integrable entries and the survival bound show that $p_{\mathcal D}(t)\to0$; integrating its derivative on $[0,R]$ and passing to the limit gives $(I-P_{\mathcal D})G_{\mathcal D}=G_{\mathcal D}(I-P_{\mathcal D})=I$. Thus $I-P_{\mathcal D}$ is invertible, with inverse $G_{\mathcal D}$. Since $v_N=0$ off $\mathcal D$, its conservation equation is exactly
+\begin{equation*}
+ (I-P_{\mathcal D})v_N=\frac{N\delta_0-(s_N-h)}{2d}\,.
+\end{equation*}
 Multiplication by this inverse gives
-\[
- v_N(0)=\frac{N}{2d}G_D(0,0)
-       -\frac1{2d}\sum_{y\in D}G_D(0,y)(s_N(y)-h).
-\]
-The sign and normalization follow from $\Delta=2d(P-I)$.
-Since $s_N-h\geq-h$, positivity of $G_D$ gives
-\[
- v_N(0)\leq\frac{N}{2d}G_D(0,0)+\frac{h}{2d}\mathbf E_0\tau
+\begin{equation*}
+ v_N(0)=\frac{N}{2d}G_{\mathcal D}(0,0)
+       -\frac1{2d}\sum_{y\in\mathcal D}G_{\mathcal D}(0,y)(s_N(y)-h)\,.
+\end{equation*}
+The sign and normalization follow from $\Delta=2d(P-I)$. Since $s_N-h\geq-h$, positivity of $G_{\mathcal D}$ gives
+\begin{equation*}
+ v_N(0)\leq\frac{N}{2d}G_{\mathcal D}(0,0)+\frac{h}{2d}\mathbf E_0\tau
  \leq\begin{cases}
  C N\log(N+1),&d=2,\\
- C_d N,&d\geq3.
- \end{cases}
-\]
-Indeed, $L+1\leq A_dN^{1/d}+2$, and $N^{2/d}\leq N$ for $N\geq1$.
-Furthermore $N\leq(5^d+N_0(d))n^d$ for $n\geq1$, and in dimension
-two $\log(N+1)\leq C_2\log(n+1)$. Enlarge the deterministic constants
-so the lemma's lower bound on $m$ implies $m\geq v_N(0)$.
+ C_d N,&d\geq3,
+ \end{cases}\,.
+\end{equation*}
+Indeed, $L+1\leq A_dN^{1/d}+2$, and $N^{2/d}\leq N$ for $N\geq1$. Furthermore $N\leq(5^d+N_0(d))n^d$ for $n\geq1$, and in dimension two $\log(N+1)\leq C_2\log(n+1)$. Enlarge the deterministic constants so the lemma's lower bound on $m$ implies $m\geq v_N(0)$.
 
-\emph{Ordinary-to-frozen-wave comparison.}
-Let $a_t$ be the ordinary parallel odometer for $h+N\delta_0$, starting
-from zero. At every time its height is nonnegative: a toppled site
-loses $2d$ only when it has at least $2d$, and all incoming chips are
-nonnegative. Away from zero the exact ordinary recurrence is therefore
-\[
+\emph{Step 4.} We show that $u_t^{(m,0)}(x)>0$ for every $x\in\Lambda_n$ and every $t\geq T$, for a finite time $T$.
+
+Let $a_t$ be the ordinary parallel odometer for $h+N\delta_0$, starting from zero. At every time its height is nonnegative: a toppled site loses $2d$ only when it has at least $2d$, and all incoming chips are nonnegative. Away from zero the exact ordinary recurrence is therefore
+\begin{equation*}
  a_{t+1}(x)=\min\left\{a_t(x)+1,
- \left\lfloor\frac{\sum_{y\sim x}a_t(y)+h}{2d}\right\rfloor\right\}.
-\]
-To verify this, the numerator is $2da_t(x)+s_t(x)$. For
-$0\leq s_t(x)<2d$ its floor is $a_t(x)$; for $s_t(x)\geq2d$ the
-minimum is $a_t(x)+1$. At zero, $a_t(0)\leq v_N(0)\leq m$.
-Inductively $a_t\leq u_t^{(m,0)}$: the base case follows from
-$a_0=0\leq m\delta_0$, the origin is frozen at $m$, and away from zero
-use this recurrence, the monotone neighbor sum and floor, and $h\leq\eta$.
-Ordinary stabilization occurs at a finite time $T$, so
-$u_T^{(m,0)}\geq v_N>0$ on $B_n$.
+ \left\lfloor\frac{\sum_{y\sim x}a_t(y)+h}{2d}\right\rfloor\right\}\,.
+\end{equation*}
+To verify this, the numerator is $2da_t(x)+s_t(x)$. For $0\leq s_t(x)<2d$ its floor is $a_t(x)$; for $s_t(x)\geq2d$ the minimum is $a_t(x)+1$. At zero, $a_t(0)\leq v_N(0)\leq m$. Inductively $a_t\leq u_t^{(m,0)}$: the base case follows from $a_0=0\leq m\delta_0$, the origin is frozen at $m$, and away from zero use this recurrence, the monotone neighbor sum and floor, and $h\leq\eta$. Ordinary stabilization occurs at a finite time $T$, so $u_T^{(m,0)}\geq v_N>0$ on $\Lambda_n$.
 
-Finally, for any $0\leq\eta\leq2d-1$ the wave is nonnegative,
-nondecreasing in time, and at most $m$. Nonnegativity and the upper bound
-follow by induction in its floor recurrence. For time monotonicity
-first $u_1\geq u_0$ (with equality at zero), and then use monotonicity of
-the update map. Hence positivity on $B_n$ persists for all $t\geq T$,
-as asserted. These monotonicity arguments are also proved here.
+Finally, for every background with $0\leq\eta\leq2d-1$, the wave is nonnegative, nondecreasing in time, and at most $m$. Nonnegativity and the upper bound follow by induction in its floor recurrence. For time monotonicity first $u_1\geq u_0$ (with equality at zero), and then use monotonicity of the update map. Hence positivity on $\Lambda_n$ persists for every $t\geq T$.
 \end{proof}
 
-% Optional adjacent remark; the upper bound above is Lemma \ref{lemma:square_lower_bound}.
-\begin{remark}[Sharp planar obstruction]\label{rem:sharp_planar_obstruction}
-On homogeneous height $2$ in dimension two, the least integer order
-$M_2(n)$ whose wave covers $B_n$ satisfies
-\[
- c n^2\log(n+1)\leq M_2(n)\leq C n^2\log(n+1),\qquad n\geq1.
-\]
-We prove the lower bound first; the upper bound is Lemma \ref{lemma:square_lower_bound}.
-For sufficiently large $N$, the cited FLP theorem permits
-$L=\lceil2\sqrt N\rceil$ and $\operatorname{supp}v_N\subseteq B_L$.
-The Green identity above and $s_N-2\leq1$ give
-\[
- v_N(0)\geq\frac N4G_{B_L}(0,0)-\frac14\mathbf E_0\tau.
-\]
-For the embedded discrete walk $S_j$, exit from $B_L$ is impossible by
-time $2j\leq L$. The increments of $S^1+S^2$ and $S^1-S^2$ are
-independent symmetric signs, so
-$\mathbf P(S_{2j}=0)=[\binom{2j}j/4^j]^2\geq1/(4j)$ for $j\geq1$.
-The binomial inequality follows by induction: its value at $j=1$ is
-$1/2$, and the ratio of successive values is
-$(2j+1)/(2j+2)\geq\sqrt{j/(j+1)}$.
-Therefore
-\[
- v_N(0)\geq\frac N4+\frac N{16}H_{\lfloor L/2\rfloor}
-                   -\frac{(L+1)^2}{2},
- \qquad H_k=\sum_{j=1}^k\frac1j.
-\]
-Taking $N=\lfloor n^2/16\rfloor$ gives $L<n$ and
-$v_N(0)\geq c n^2\log(n+1)$ for all sufficiently large $n$.
-The comparison in the opposite direction is proved by a further
-induction: if an integer-valued $w\geq0$ satisfies $w(0)\geq m$ and
-$2+\Delta w\leq3$ off zero, then $u_t^{(m,0)}\leq w$ at every time.
-At zero this is the frozen inequality; away from zero use
-$\sum w+2\leq4w(x)+3$ and integrality to bound the floor by $w(x)$.
-Applying this to $w=v_N$ shows that every $m\leq v_N(0)$ misses $B_n$.
-For the finitely many remaining $n$, $M_2(n)\geq1$, so reducing $c>0$
-extends the lower bound to all $n\geq1$; Lemma \ref{lemma:square_lower_bound} supplies
-the upper bound at every scale. No matching lower bound is claimed for
-arbitrary backgrounds: on homogeneous height $3$ a $1$-wave propagates
-to every site by induction on lattice distance.
-\end{remark}
+The constant $C_d$ does not depend on the background, and the lemma gives no bound on $T$.
 
-% Scope of the sharp bound, separate from the upper bound and its proof.
-\begin{remark}[Scope of the sharp bound]
-Lemma \ref{lemma:square_lower_bound} is stated only for backgrounds with
-$2d-2\leq\eta(x)\leq2d-1$ at every site, and its sharp rate is not claimed
-beyond that range. For a background bounded below only by an arbitrary
-integer $\eta_{\min}$, as in Section \ref{sec:generalization}, the wave
-\eqref{eq:n_wave} need not be nonnegative: if $x\neq0$ is not adjacent to the
-origin and $\eta(x)<0$, then $u_1^{(m,0)}(x)=\lfloor\eta(x)/(2d)\rfloor<0$.
-Under Hypothesis \ref{hyp:path_filling}, however, the proof of Proposition
-\ref{prop:convergence_of_the_generalized_last_wave} shows that $\eta\geq0$
-almost surely (paragraph ``Nonnegativity and recurrence''). Almost surely
-$0\leq\eta\leq2d-1$ then holds, so the exponential path argument for
-nonnegative backgrounds in the paragraph ``Existence and finite initial
-comparisons'' of the same proof applies and supplies the qualitative
-finite-box seeding used there. This gives no polynomial seeding rate for general backgrounds, and the
-rate of Lemma \ref{lemma:square_lower_bound} is not transferred to them.
+For a background bounded below only by an integer $\eta_{\min}$, as in Section~\ref{sec:generalization}, the wave~\eqref{eq:n_wave} need not be nonnegative: if $x\neq0$ is not adjacent to the origin and $\eta(x)<0$, then $u_1^{(m,0)}(x)=\lfloor\eta(x)/(2d)\rfloor<0$. Under Hypothesis~\ref{hyp:path_filling}, the proof of Proposition~\ref{prop:convergence_of_the_generalized_last_wave} shows that $\eta\geq0$ almost surely, so $0\leq\eta\leq2d-1$ holds almost surely there, and the exponential path argument for nonnegative backgrounds in that proof gives only a qualitative seeding, with no polynomial rate.
+
+\begin{remark}[Sharp planar obstruction]\label{rem:sharp_planar_obstruction}
+On homogeneous height $2$ in dimension two, the least integer order $M_2(n)$ whose wave covers $\Lambda_n$ satisfies
+\begin{equation*}
+ c n^2\log(n+1)\leq M_2(n)\leq C n^2\log(n+1)\,,
+\end{equation*}
+for every $n\geq1$.
+We prove the lower bound first; the upper bound is Lemma~\ref{lemma:square_lower_bound}.
+For sufficiently large $N$, the radius bound of Fey, Levine and Peres~\cite{fey2010growth} permits $L=\lceil2\sqrt N\rceil$ and $\operatorname{supp}v_N\subseteq\Lambda_L$.
+The Green identity above and $s_N-2\leq1$ give
+\begin{equation*}
+ v_N(0)\geq\frac N4G_{\Lambda_L}(0,0)-\frac14\mathbf E_0\tau\,.
+\end{equation*}
+For the embedded discrete walk $S_j$, exit from $\Lambda_L$ is impossible by time $2j\leq L$. The increments of $S^1+S^2$ and $S^1-S^2$ are independent symmetric signs, so $\mathbf P(S_{2j}=0)=[\binom{2j}j/4^j]^2\geq1/(4j)$ for $j\geq1$. The binomial inequality follows by induction: its value at $j=1$ is $1/2$, and the ratio of successive values is $(2j+1)/(2j+2)\geq\sqrt{j/(j+1)}$. Therefore
+\begin{equation*}
+ v_N(0)\geq\frac N4+\frac N{16}H_{\lfloor L/2\rfloor}
+                   -\frac{(L+1)^2}{2},\qquad H_k=\sum_{j=1}^k\frac1j\,.
+\end{equation*}
+Taking $N=\lfloor n^2/16\rfloor$ gives $L<n$ and $v_N(0)\geq c n^2\log(n+1)$ for all sufficiently large $n$.
+The comparison in the opposite direction is proved by a further induction: if an integer-valued $w\geq0$ satisfies $w(0)\geq m$ and $2+\Delta w\leq3$ off zero, then $u_t^{(m,0)}\leq w$ at every time. At zero this is the frozen inequality; away from zero use $\sum w+2\leq4w(x)+3$ and integrality to bound the floor by $w(x)$. Applying this to $w=v_N$ shows that every $m\leq v_N(0)$ misses $\Lambda_n$. For the finitely many remaining $n$, $M_2(n)\geq1$, so reducing $c>0$ extends the lower bound to all $n\geq1$; Lemma~\ref{lemma:square_lower_bound} supplies the upper bound at every scale. No matching lower bound is claimed for arbitrary backgrounds: on homogeneous height $3$ a $1$-wave propagates to every site by induction on lattice distance.
 \end{remark}
 
 
@@ -979,10 +853,11 @@ We show that the arrival time for the last-wave converges under rescaling.
 	converge locally uniformly to $\mathcal{N}_{p}$, a continuous, convex, one-homogeneous function on $\R^d$. 
 \end{prop}
 \begin{proof}
-	In light of Lemma \ref{lemma:last_penultimate_close} it suffices to prove the result for $\tilde{T}$. On an event of probability 1, for all large $n$ and $x,x'\in[-n,n]^d$, Lemmas \ref{lemma:penultimate_upper_bound} and \ref{lemma:last_penultimate_close} give $\tilde{T}(x)\leq C|x|+(\log n)^{\gamma}$, and $\tilde{T}(x')\leq\tilde{T}(x)+C|x-x'|+(\log n)^{\gamma}$. For the second bound, at time $\hat{T}(x)$ the support of the last wave contains a path of distinct points from the origin to $x$. Lemma \ref{lemma:local_convexity} fills the bounding rectangle of its last $(\log n)^{\gamma'}$ points, which contains a line of a cube of $\mathcal{C}_{\infty}$ by Proposition \ref{prop:renormalization_properties}, and the argument of Lemma \ref{lemma:penultimate_upper_bound} then reaches $\mathcal{P}(x')$.
-	Fix $y\in\mathbb{Z}^d\setminus\{0\}$ and let $A=\{\tilde{T}(0,ny)\leq C'n+K \text{ for all } n\}$, which has positive probability by the bounds above. Translation $\theta_y$ is mixing, hence ergodic, and the first-return map to $A$ preserves the restriction of the probability measure to $A$ and is ergodic. With $r_j$ the successive return times and $S_j=r_1+\dots+r_j$, the induced cocycle $G_j=\tilde{T}(0,S_jy)$ is subadditive by Lemma \ref{lemma:approx_subadditivity}, and $G_1\leq C'r_1+K$ on $A$. The return time $r_1$ is integrable on $A$ by Kac's lemma, so the subadditive ergodic theorem applies to $G_j$ with no integrability bound on $\tilde{T}$ itself.
+	In light of Lemma~\ref{lemma:last_penultimate_close} it suffices to prove the result for $\tilde{T}$. On an event of probability 1, for all large $n$ and $x,x'\in[-n,n]^d$, Lemmas~\ref{lemma:penultimate_upper_bound} and~\ref{lemma:last_penultimate_close} give $\tilde{T}(x)\leq C|x|+(\log n)^{\gamma}$, and $\tilde{T}(x')\leq\tilde{T}(x)+C|x-x'|+(\log n)^{\gamma}$.
+	For the second bound, at time $\hat{T}(x)$ the support of the last wave contains a path of distinct points from the origin to $x$. Lemma~\ref{lemma:local_convexity} fills the bounding rectangle of the last $(\log n)^{\gamma'}$ points of this path, where $\gamma'$ is the constant of Lemma~\ref{lemma:last_penultimate_cluster}. This rectangle contains a line of a cube of $\mathcal{C}_{\infty}$ by Proposition~\ref{prop:renormalization_properties}, and the argument of Lemma~\ref{lemma:penultimate_upper_bound} then reaches $\mathcal{P}(x')$.
+	Fix $y\in\Z^d\setminus\{0\}$. Choose $C'>C|y|$ and $K$ so large that $A=\{\tilde{T}(0,ny)\leq C'n+K \text{ for every } n\geq1\}$ has $\mathbf{P}(A)>0$. This is possible because $\tilde{T}(0,ny)\leq C|y|n+(\log(n|y|))^{\gamma}$ for all large $n$ on an event of probability 1, and $(\log(n|y|))^{\gamma}=o(n)$. Let $\sigma_y$ be the translation of the background by $y$, $(\sigma_y\eta)(x)=\eta(x+y)$, so that $\tilde{T}(y,ny)=\tilde{T}(0,(n-1)y)\circ\sigma_y$. The translation $\sigma_y$ is mixing, hence ergodic, and the first-return map to $A$ preserves the restriction of the probability measure to $A$ and is ergodic. With $r_j$ the successive return times and $S_j=r_1+\dots+r_j$, the induced cocycle $G_j=\tilde{T}(0,S_jy)$ is subadditive by Lemma~\ref{lemma:approx_subadditivity}, and $G_1\leq C'r_1+K$ on $A$. The return time $r_1$ is integrable on $A$ by Kac's lemma, so the subadditive ergodic theorem applies to $G_j$ with no integrability bound on $\tilde{T}$ itself.
 	The second bound passes from the return times to all $n$: for $S_j\leq n<S_{j+1}$ it gives $|\tilde{T}(0,ny)-G_j|\leq C r_{j+1}+(\log n)^{\gamma}$, and $r_{j+1}/j\to0$ almost surely by Birkhoff's theorem applied to the integrable $r_1$. Hence on $A$ the limit inferior and superior of $n^{-1}\tilde{T}(0,ny)$ are those of $G_j/S_j$, which converge because $G_j/j$ converges by Kingman's theorem and $S_j/j$ converges by Birkhoff's theorem.
-	The limits inferior and superior of $n^{-1}\tilde{T}(0,ny)$ are invariant under $\theta_y$: by Lemma \ref{lemma:approx_subadditivity}, $\tilde{T}(0,ny)$ and $\tilde{T}(0,(n-1)y)\circ\theta_y$ differ by at most the finite quantity $\tilde{T}(0,y)+\tilde{T}(y,0)$. By ergodicity they are almost surely constant, and they agree on $A$, so the limit exists almost surely. The second bound replaces continuity: it supplies the comparison needed to pass from integer directions to all $x$, giving locally uniform convergence, and the properties of $\mathcal{N}_p$ are immediate from the scaling and microscopic subadditivity.
+	The limits inferior and superior of $n^{-1}\tilde{T}(0,ny)$ are invariant under $\sigma_y$: by Lemma~\ref{lemma:approx_subadditivity}, $\tilde{T}(0,ny)$ and $\tilde{T}(y,ny)=\tilde{T}(0,(n-1)y)\circ\sigma_y$ differ by at most the finite quantity $\tilde{T}(0,y)+\tilde{T}(y,0)$. By ergodicity they are almost surely constant, and they agree on $A$, so the limit exists almost surely. The second bound replaces continuity: it supplies the comparison needed to pass from integer directions to all $x$, giving locally uniform convergence, and the properties of $\mathcal{N}_p$ are immediate from the scaling and microscopic subadditivity.
 \end{proof}
 
 \begin{remark}
@@ -1218,8 +1093,8 @@ It suffices to show that the last-wave is a good approximation of the original p
 	
 	
 \end{proof}
-\begin{proof}[Proof of Theorem \ref{theorem:limit_shape}] Let $\mathcal{N}_p$ be the limit of Theorem \ref{theorem:convergence_of_time_constant} and let $\mathcal{B}(p)=\{y:\mathcal{N}_p(y)<1\}$. The arrival time satisfies $T_{\eta}(x)\geq\|x\|_1$, because the odometer at time $t$ is supported in the $\ell^1$ ball of radius $t$; hence $\|y\|_1\leq\mathcal{N}_p(y)$ and $\mathcal{B}(p)$ lies in the $\ell^1$ ball of radius one. The set $\mathcal{B}(p)$ is open and convex since $\mathcal{N}_p$ is continuous and convex, and it is nonempty since $\mathcal{N}_p(0)=0$.
-The frontier of $\mathcal{B}(p)$ lies in $\{\mathcal{N}_p=1\}$. By homogeneity $\{\mathcal{N}_p\leq s\}=s\{\mathcal{N}_p\leq1\}$ for $s>0$, so $|\mathcal{B}(p)|\geq s^d|\{\mathcal{N}_p\leq1\}|$ for every $s<1$. Since $|\{\mathcal{N}_p\leq1\}|<\infty$, this gives $|\mathcal{B}(p)|=|\{\mathcal{N}_p\leq1\}|$, so $\{\mathcal{N}_p=1\}$ and the frontier of $\mathcal{B}(p)$ are Lebesgue-null. Since $v_t(x)>0$ if and only if $T_{\eta}(x)\leq t$, we have $\{\bar{v}_t>0\}=\{y:t^{-1}T_{\eta}([ty])\leq1\}$. Let $K$ be the closed $\ell^1$ ball of radius $2$. For large $t$ both $\{\bar{v}_t>0\}$ and $\mathcal{B}(p)$ lie in $K$, and by the locally uniform convergence of Theorem \ref{theorem:convergence_of_time_constant} on $K$, for each $\varepsilon>0$ the symmetric difference $\{\bar{v}_t>0\}\triangle\mathcal{B}(p)$ lies in $\{y\in K:|\mathcal{N}_p(y)-1|\leq\varepsilon\}$ for all large $t$. Hence $\limsup_{t}|\{\bar{v}_t>0\}\triangle\mathcal{B}(p)|\leq|\{y\in K:|\mathcal{N}_p(y)-1|\leq\varepsilon\}|$, and the right side tends to $|\{\mathcal{N}_p=1\}\cap K|=0$ as $\varepsilon\downarrow0$. \end{proof}
+\begin{proof}[Proof of Theorem~\ref{theorem:limit_shape}] Let $\mathcal{N}_p$ be the limit of Theorem~\ref{theorem:convergence_of_time_constant} and let $\mathcal{B}(p)=\{y:\mathcal{N}_p(y)<1\}$. The arrival time satisfies $T_{\eta}(x)\geq\|x\|_1$, because the odometer at time $t$ is supported in the $\ell^1$ ball of radius $t$; hence $\|y\|_1\leq\mathcal{N}_p(y)$ and $\mathcal{B}(p)$ lies in the $\ell^1$ ball of radius one. The set $\mathcal{B}(p)$ is open and convex since $\mathcal{N}_p$ is continuous and convex, and it is nonempty since $\mathcal{N}_p(0)=0$.
+The frontier of $\mathcal{B}(p)$ lies in $\{\mathcal{N}_p=1\}$. By homogeneity $\{\mathcal{N}_p\leq s\}=s\{\mathcal{N}_p\leq1\}$ for $s>0$, so $|\mathcal{B}(p)|\geq s^d|\{\mathcal{N}_p\leq1\}|$ for every $s<1$. Since $|\{\mathcal{N}_p\leq1\}|<\infty$, this gives $|\mathcal{B}(p)|=|\{\mathcal{N}_p\leq1\}|$, so $\{\mathcal{N}_p=1\}$ and the frontier of $\mathcal{B}(p)$ are Lebesgue-null. Since $v_t(x)>0$ if and only if $T_{\eta}(x)\leq t$, we have $\{\bar{v}_t>0\}=\{y:t^{-1}T_{\eta}([ty])\leq1\}$. Let $K$ be the closed $\ell^1$ ball of radius $2$. For large $t$ both $\{\bar{v}_t>0\}$ and $\mathcal{B}(p)$ lie in $K$, and by the locally uniform convergence of Theorem~\ref{theorem:convergence_of_time_constant} on $K$, for each $\varepsilon>0$ the symmetric difference $\{\bar{v}_t>0\}\triangle\mathcal{B}(p)$ lies in $\{y\in K:|\mathcal{N}_p(y)-1|\leq\varepsilon\}$ for all large $t$. Hence $\limsup_{t}|\{\bar{v}_t>0\}\triangle\mathcal{B}(p)|\leq|\{y\in K:|\mathcal{N}_p(y)-1|\leq\varepsilon\}|$, and the right side tends to $|\{\mathcal{N}_p=1\}\cap K|=0$ as $\varepsilon\downarrow0$. \end{proof}
 \begin{remark}
 	Some qualitative features of the limit shape are immediate. For example, the origin is an interior point and the limit 
 	is invariant with respect to symmetries of the lattice (symmetry may fail in the periodic case introduced in Section \ref{sec:generalization}).	

@@ -1203,416 +1203,157 @@ We now have made enough assumptions to prove convergence of the last-wave as in 
 	depending only on the law of $\eta$.
 \end{prop}
 \begin{proof}
-We work in dimension $d\geq2$, with the delivered-seed convention
-$s'_0=\eta+\Delta w_0$. All constants below are deterministic unless
-their dependence on $\eta$ is indicated. Write $|x|=|x|_1$.
+The proof has six steps. Step 1 shows that $\eta$ is nonnegative and recurrent on finite sets. Step 2 builds the cluster $\mathcal C$ of good boxes and bounds its geometry. Step 3 shows that a path of sites produces a full good box, and that full good boxes spread to every site. Step 4 shows that the last wave is finite and compares its arrival times with the binary infection times $a(x)$. Step 5 shows that the passage times $S$ are integrable and subadditive and compares them with the arrival times. Step 6 takes limits along directions and identifies the limit shape.
 
-\emph{Nonnegativity and recurrence.}
-In fact Hypothesis \ref{hyp:path_filling} implies that $\eta$ is
-recurrent on every finite set, in the sense used in Section
-\ref{sec:criteria}. To see this, let $V$ be finite and fire its external
-boundary once, freezing the complement of $V$. Since $\eta\leq2d-1$,
-each site of $V$ fires at most once. If the procedure does not fill $V$,
-its nonempty terminal untoppled set $E$ satisfies
-\[
+We work in dimension $d\geq2$, with initial state $s_0'=\eta+\Delta w_0$, so that the seed $w_0$ is already added to $\eta$. All constants below are deterministic unless their dependence on $\eta$ is indicated. Write $|x|=|x|_1$.
+
+\emph{Step 1.} We show that $\eta$ is recurrent on every finite set in the sense of Section~\ref{sec:criteria}, and that $\eta(x)\geq0$ for every $x$. To see this, let $V$ be finite and fire its external boundary once, freezing the complement of $V$. Since $\eta\leq2d-1$, each site of $V$ fires at most once. If the procedure does not fill $V$, then its nonempty terminal untoppled set $E$ satisfies
+\begin{equation*}
  \eta(x)+2d-\#\{y\in E:y\sim x\}\leq2d-1
- \qquad(x\in E).
-\]
-Such a set cannot be infected by any process whose seeds avoid $E$
-and whose odometers are at most one. Indeed, at a first infection
-time in $E$, every site of $E$ was still uninfected one round
-earlier, while even firing every neighbor outside $E$ once leaves
-the displayed height below $2d$.
-Choose a large integer $R$ with $V\subset(-R,R)^d$ and take the
-monotone edge path on the boundary of $[-R,R]^d$ from
-$(-R,\ldots,-R)$ to $(R,\ldots,R)$, changing coordinates successively.
-It avoids $E$, has $2dR+1$ distinct vertices, and has bounding rectangle
-$[-R,R]^d$. For sufficiently large $R$ it satisfies the threshold in
-Hypothesis \ref{hyp:path_filling}, a contradiction. Thus $V$ is
-recurrent. Taking $V=\{x\}$ proves $\eta(x)\geq0$ for every $x$.
-Moreover, once the whole external boundary of any finite $V$ is
-infected, $V$ fills in at most $|V|$ further parallel steps: before
-completion every nonstationary round adds at least one new site.
+ \qquad(x\in E)\,.
+\end{equation*}
+No process whose seeds avoid $E$ and whose odometers are at most one can infect $E$. Indeed, at a first infection time in $E$, every site of $E$ was still uninfected one round earlier, while even firing every neighbor outside $E$ once leaves the displayed height below $2d$.
 
-\emph{Good-box geometry, including its quantitative input.}
-Let the positive integer side vector $k=(k_1,\ldots,k_d)$ be chosen from Hypothesis
-\ref{hyp:box_filling}, with failure probability $\delta$ to be fixed
-below. Put $D=\operatorname{diag}(k_1,\ldots,k_d)$,
-$B_j=\mathcal B_k+Dj$, $V_k=|\mathcal B_k|$, and let $\tau$ be the
-deadline in the definition of strong box-crossing, which is
-$\tau=V_k$. Let $X_j$ indicate that $B_j$ is good.
-The event $X_j=1$ depends only on $\eta|_{B_j}$. The finite-set
-independence in Hypothesis \ref{hyp:finite_range_of_dependence}
-extends to sigma-fields of separated collections by a monotone-class
-argument. For example
-$r=\lceil K\rceil+2$ bounds its dependence neighborhood in the
-coarse $\ell_\infty$ metric, independently of $k$.
+Choose a large integer $R$ with $V\subset(-R,R)^d$ and take the monotone edge path on the boundary of $[-R,R]^d$ from $(-R,\ldots,-R)$ to $(R,\ldots,R)$, changing coordinates successively. It avoids $E$, has $2dR+1$ distinct vertices, and has bounding rectangle $[-R,R]^d$. For sufficiently large $R$ it satisfies the threshold in Hypothesis~\ref{hyp:path_filling}, a contradiction. Thus $V$ is recurrent. Taking $V=\{x\}$ proves $\eta(x)\geq0$ for every $x$.
 
-Declare a coarse nearest-neighbor edge $\{i,j\}$ admissible when
-$X_iX_j=1$. These edge indicators have a fixed finite dependence
-neighborhood and marginal at least $1-2\delta$. LSS therefore couples
-them above independent bond percolation with parameter $p$ arbitrarily
-close to one as $\delta$ decreases. This is an application of the same
-domination theorem to a bounded-degree index graph; alternatively,
-encode the $d$ positively oriented edges based at $i$ as the sites
-$(di_1+s,i_2,\ldots,i_d)$, $0\leq s<d$, and apply its lattice version.
-The encoded dependence neighborhood is bounded in terms of $d,K$.
-Consequently $\delta$ can be fixed before $k$ is chosen.
+Moreover, once the whole external boundary of every finite $V$ is infected, $V$ fills in at most $|V|$ further parallel steps: before completion every nonstationary round adds at least one new site.
 
-Here are quantitative details for transferring the percolation
-estimates to the entire good-box cluster. Denote the infinite cluster
-of the independent bond process by $I$. Call a coarse vertex defective
-when at least one incident independent bond is closed. Put
-$\Delta_*=3^d-1$ and choose $p$ so close to one that
-\[
- p>p_c(d),\qquad
- \alpha=\Delta_*^2[2d(1-p)]^{1/3^d}<\frac14.
-\]
-By independent-bond infinite-cluster uniqueness, $I$ is almost
-surely the unique infinite cluster of the coupled bond process.
-For any prescribed set of $m$ vertices, one of its residue classes
-modulo $3$ has at least $m/3^d$ vertices. Their incident bond sets are
-disjoint. Thus the probability that every vertex of the prescribed
-set is defective is at most $[2d(1-p)]^{m/3^d}$.
-There are at most $\Delta_*^{2m}$ star-connected sets of size $m$
-through a specified vertex, by a depth-first traversal of a spanning
-tree. Hence defective star-components are finite and have
-exponentially decaying volume tails.
+\emph{Step 2.} We show that the good boxes contain a unique infinite cluster $\mathcal C$, that every component of $\mathcal C^c$ meeting $[-n,n]^d$ has size at most $h_n$ for all large $n$, and that the chemical distance $d_{\mathcal C}$ is at most a constant times the $\ell^1$ distance. Let the positive integer side vector $k=(k_1,\ldots,k_d)$ be chosen from Hypothesis~\ref{hyp:box_filling}, with failure probability $\delta$ to be fixed below. Put $\Lambda=\operatorname{diag}(k_1,\ldots,k_d)$, $\mathcal B^{(j)}_k=\mathcal B_k+\Lambda j$ for $j\in\Z^d$, and $V_k=|\mathcal B_k|$. The deadline in the definition of strong box-crossing is $V_k$.
 
-Every connected component $H$ of $I^c$ has connected complement:
-every other component attaches to $I$. Its inner boundary is
-star-connected and defective. The lattice boundary fact used in
-Lemma 5.2 of \cite{mathieu2008quenched} therefore makes this boundary
-finite. A finite boundary cannot separate two infinite subsets here:
-the complement of a sufficiently large finite box in $\mathbb Z^d$
-is connected for $d\geq2$. Since the complement of $H$ contains $I$,
-it follows that $H$ is finite.
-For its containing defective star-component $G$,
-an elementary coordinate-line count gives
-\[
- |H|\leq|\partial^\circ H|^2\leq|G|^2.
-\]
-Indeed, choose distinct coordinate directions $e_1,e_2$. Each $e_1$-line
-meeting $H$ has a last site in $H$ on its positive ray, giving a distinct
-site of $\partial^\circ H$. For each first-coordinate value attained in
-$H$, choose a site with that value and follow its positive $e_2$-ray to
-its last site in $H$; the first coordinate is preserved, so these
-boundary sites are distinct. A site of $H$ is determined by its
-$e_1$-line and its first coordinate, which gives the product bound.
-Also $H\subseteq\br(G)$. If $z\in H$ and $|G|=m$, a vertex of $G$
-lies within distance $m$ in the $\ell_\infty$ metric of $z$.
-The preceding animal count, now summed over at most $(2m+1)^d$
-possible anchors, proves
-\[
+Call $\mathcal B^{(j)}_k$ good when $\mathcal B^{(j)}_k(\eta)$ is strongly box-crossing, and let $X_j$ indicate this event. The event $X_j=1$ depends only on $\eta|_{\mathcal B^{(j)}_k}$. The finite-set independence in Hypothesis~\ref{hyp:finite_range_of_dependence} extends to sigma-fields of separated collections by a monotone-class argument. For example, $r=\lceil K\rceil+2$ bounds its dependence neighborhood in the coarse $\ell_\infty$ metric, independently of $k$.
+
+Declare a coarse nearest-neighbor edge $\{i,j\}$ admissible when $X_iX_j=1$. These edge indicators have a fixed finite dependence neighborhood and marginal at least $1-2\delta$. The domination theorem of Liggett, Schonmann and Stacey \cite{liggett1997domination} therefore couples them above independent bond percolation with parameter $p_0$ arbitrarily close to one as $\delta$ decreases. This applies the same domination theorem to a bounded-degree index graph. Alternatively, encode the $d$ positively oriented edges based at $i$ as the sites $(di_1+s,i_2,\ldots,i_d)$ with $0\leq s<d$, and apply the lattice version. The encoded dependence neighborhood is bounded in terms of $d$ and $K$. Consequently $\delta$ can be fixed before $k$ is chosen.
+
+We now give the estimates that transfer the percolation bounds to the entire good-box cluster. Denote the infinite cluster of the independent bond process by $I$. Call a coarse vertex defective when at least one incident independent bond is closed. Put $\Delta_*=3^d-1$ and choose $p_0>p_c(d)$ so close to one that $\alpha=\Delta_*^2[2d(1-p_0)]^{1/3^d}<\frac14$.
+
+By independent-bond infinite-cluster uniqueness, $I$ is almost surely the unique infinite cluster of the coupled bond process. For any prescribed set of $m$ vertices, one of its residue classes modulo $3$ has at least $m/3^d$ vertices. Their incident bond sets are disjoint. Thus the probability that every vertex of the prescribed set is defective is at most $[2d(1-p_0)]^{m/3^d}$.
+
+There are at most $\Delta_*^{2m}$ star-connected sets of size $m$ through a specified vertex, by a depth-first traversal of a spanning tree. Hence defective star-components are finite and have exponentially decaying volume tails.
+
+Every connected component $H$ of $I^c$ has connected complement: every other component attaches to $I$. Its inner boundary is star-connected and defective. The lattice boundary fact used in Lemma~5.2 of \cite{mathieu2008quenched} therefore makes this boundary finite. A finite boundary cannot separate two infinite subsets here: the complement of a sufficiently large finite box in $\Z^d$ is connected for $d\geq2$. Since the complement of $H$ contains $I$, it follows that $H$ is finite.
+
+For its containing defective star-component $G$, an elementary coordinate-line count gives
+\begin{equation*}
+ |H|\leq|\partial^\circ H|^2\leq|G|^2\,.
+\end{equation*}
+Indeed, choose distinct coordinate directions $e_1,e_2$. Each $e_1$-line meeting $H$ has a last site in $H$ on its positive ray, giving a distinct site of $\partial^\circ H$. For each first-coordinate value attained in $H$, choose a site with that value and follow its positive $e_2$-ray to its last site in $H$; the first coordinate is preserved, so these boundary sites are distinct. A site of $H$ is determined by its $e_1$-line and its first coordinate, which gives the product bound. Also $H\subseteq\br(G)$. If $z\in H$ and $|G|=m$, a vertex of $G$ lies within distance $m$ of $z$ in the $\ell_\infty$ metric. The preceding animal count, now summed over at most $(2m+1)^d$ possible anchors, proves
+\begin{equation*}
  \mathbf P\bigl(z\in I^c,\ |H(z)|\geq s\bigr)
- \leq C\exp(-c\sqrt{s}),\qquad s\geq1.
-\]
-This argument bounds holes, which may contain finite open islands;
-bounding only clusters of closed vertices would not suffice.
+ \leq C\exp(-c\sqrt{s})\,,\qquad s\geq1\,.
+\end{equation*}
+The bound is for the holes $H(z)$, which may contain finite open islands.
 
-There is a unique infinite component $\mathcal C$ of the good vertices
-$\{X=1\}$. Indeed it contains $I$, while any other infinite component
-would be confined to one of the finite components of $I^c$.
-Every component of $\mathcal C^c$ is contained in one such hole.
-For each coarse vertex $a$, let $\pi(a)$ be its nearest vertex of
-$\mathcal C$, with translation-covariant lexicographic tie breaking.
-Let $d_{\mathcal C}$ be graph distance in $\mathcal C$.
+There is a unique infinite component $\mathcal C$ of the good vertices $\{X=1\}$. Indeed it contains $I$, while any other infinite component would be confined to one of the finite components of $I^c$. Every component of $\mathcal C^c$ is contained in one such hole. For each coarse vertex $a$, let $\pi(a)$ be its nearest vertex of $\mathcal C$, with translation-covariant lexicographic tie breaking. Let $d_{\mathcal C}$ be graph distance in $\mathcal C$.
 
-Choose the domination parameter above as $p=p(d)$ with $\alpha\leq1/8$ in the
-preceding animal estimate, so the constants in the resulting hole
-tail may be chosen in terms of $d$. Write
-$L_n=(\log(n+2))^2$ and $h_n=B L_n$, where the deterministic
-$B=B(d)\geq1$ is large enough that $c\sqrt B>d+2$;
-$c>0$ denotes the exponent in the hole tail. Put
-$W_n=[-4n,4n]^d$. A union over vertices of $W_n$ gives
-\[
+Choose $p_0$ depending only on $d$ with $\alpha\leq1/8$ in the preceding animal estimate, so that the constants in the resulting hole tail depend only on $d$. Write $L_n=(\log(n+2))^2$ and $h_n=\beta L_n$, where the deterministic $\beta=\beta(d)\geq1$ is large enough that $c\sqrt\beta>d+2$, and $c>0$ denotes the exponent in the hole tail. Put $W_n=[-4n,4n]^d$. A union over the vertices of $W_n$ gives
+\begin{equation*}
  \mathbf P\{\text{some $I^c$ hole meeting $W_n$ has size $>h_n$}\}
- \leq Cn^d\exp(-c\sqrt{B L_n}).
-\]
-The all-pair Antal--Pisztora estimate and a union over pairs in $W_n$
-give
-\[
+ \leq Cn^d\exp(-c\sqrt{\beta L_n})\,.
+\end{equation*}
+The all-pair Antal--Pisztora estimate \cite{antal1996chemical} and a union over pairs in $W_n$ give
+\begin{equation*}
  \mathbf P\{\exists a,b\in I\cap W_n:\ |a-b|\geq L_n,\
                     d_I(a,b)>\rho|a-b|\}
- \leq Cn^{2d}\exp(-c'L_n).
-\]
-Both bounds are summable: the first is $O(n^{d-c\sqrt B})$ by
-the choice of $B$. Hence, almost surely, both properties hold for all
-sufficiently large $n$, with a random threshold and deterministic
-$B,\rho$.
+ \leq Cn^{2d}\exp(-c'L_n)\,.
+\end{equation*}
+Both bounds are summable: the first is $O(n^{d-c\sqrt\beta})$ by the choice of $\beta$. Hence, almost surely, both properties hold for all sufficiently large $n$, with a random threshold and deterministic $\beta$ and $\rho$.
 
-For $i\in\mathcal C\cap[-n,n]^d$, follow a simple path in
-$\mathcal C$ to its first vertex $a\in I$; when $i\notin I$ its
-initial segment lies in $H(i)$ and has length at most
-$|H(i)|+1\leq h_n+1$. Take $a=i$ when $i\in I$, and choose $b\in I$
-similarly for $j\in\mathcal C\cap[-n,n]^d$. If $|a-b|\geq L_n$,
-apply AP directly. Otherwise translate $a$ by
-$\lceil10h_n\rceil e_1$ and choose $w\in I$ within $h_n+1$ steps
-of that translate; the hole bound supplies $w$. For all large $n$,
-$a,b,w\in W_n$,
-$|a-w|\geq9h_n-1$ and $|b-w|\geq9h_n-1-L_n$,
-so both exceed $L_n$, and
-$|a-w|+|w-b|\leq C h_n$. The two AP legs and the endpoint paths
-therefore give, with deterministic $A$,
-\[
+For $i\in\mathcal C\cap[-n,n]^d$, follow a simple path in $\mathcal C$ to its first vertex $a\in I$. When $i\notin I$, this initial segment lies in $H(i)$ and has length at most $|H(i)|+1\leq h_n+1$. Take $a=i$ when $i\in I$, and choose $b\in I$ similarly for $j\in\mathcal C\cap[-n,n]^d$. If $|a-b|\geq L_n$, then apply the Antal--Pisztora bound directly. Otherwise translate $a$ by $\lceil10h_n\rceil e_1$ and choose $w\in I$ within $h_n+1$ steps of that translate; the hole bound supplies $w$. For all large $n$, $a,b,w\in W_n$, $|a-w|\geq9h_n-1$ and $|b-w|\geq9h_n-1-L_n$, so both exceed $L_n$, and $|a-w|+|w-b|\leq Ch_n$. The two Antal--Pisztora legs and the endpoint paths therefore give, with a deterministic constant $A$,
+\begin{equation*}
  d_{\mathcal C}(i,j)\leq A(|i-j|+h_n)
- \qquad(i,j\in\mathcal C\cap[-n,n]^d).
-\]
-The same hole bound places each nearest-cluster projection $\pi(a)$
-within $h_n+1$ of $a$. Its connecting paths and the two-leg detour
-stay in $W_n$ for all large $n$. Applying the same argument there
-and adjusting $A$ gives
-\[
+ \qquad(i,j\in\mathcal C\cap[-n,n]^d)\,.
+\end{equation*}
+The same hole bound places each nearest-cluster projection $\pi(a)$ within $h_n+1$ of $a$. Its connecting paths and the two-leg detour stay in $W_n$ for all large $n$. Applying the same argument there and adjusting $A$ gives
+\begin{equation*}
  \begin{split}
  &\text{every component of }\mathcal C^c\text{ meeting }[-n,n]^d
        \text{ has size at most }h_n,\\
  &|\pi(a)-a|\leq h_n+1,\\
  &d_{\mathcal C}(\pi(a),\pi(b))\leq A(|a-b|+h_n)
-       \qquad(a,b\in[-n,n]^d).
+       \qquad(a,b\in[-n,n]^d)\,.
  \end{split}
-\]
+\end{equation*}
+Finally let $x,y\in\mathcal C$, $|x|\leq n$, and $|x-y|\geq(\log n)^2$, and put $N=\max\{n,|y|\}$. The preceding additive estimate at scale $N$ applies to $x$ and $y$. If $|y|\leq2n$, then $h_N\leq C\beta(\log n)^2\leq C\beta|x-y|$. If $|y|>2n$, then $|x-y|\geq N/2$ and $h_N\leq C\beta N\leq C\beta|x-y|$ for all large $n$. Thus, almost surely, $d_{\mathcal C}(x,y)\leq C'|x-y|$ with a deterministic $C'$, for all $n$ above a random threshold. The lower bound $d_{\mathcal C}(x,y)\geq|x-y|$ follows from the nearest-neighbor graph metric.
 
-Finally let $x,y\in\mathcal C$, $|x|\leq n$, and
-$|x-y|\geq(\log n)^2$, and put $N=\max\{n,|y|\}$. The preceding
-additive estimate at scale $N$ applies to $x,y$. If $|y|\leq2n$,
-then $h_N\leq CB(\log n)^2\leq CB|x-y|$; if $|y|>2n$, then
-$|x-y|\geq N/2$ and $h_N\leq CBN\leq CB|x-y|$ for all large $n$.
-Thus $d_{\mathcal C}(x,y)\leq C'|x-y|$ with deterministic $C'$,
-simultaneously above an almost-sure finite threshold. The lower
-bound $d_{\mathcal C}(x,y)\geq|x-y|$ follows from the
-nearest-neighbor graph metric.
-
-We also need a moment bound, not merely an eventual almost-sure
-estimate. For fixed $a,b$ and $R\geq|a-b|+2$, require all $I^c$ holes
-meeting $a+[-40R,40R]^d$ to have size at most $R$ and require the AP
-bound for all pairs in that box separated by at least $R$.
-The failure probability is at most
-$CR^{2d}\exp(-c\sqrt R)$. On this event the projections of $a,b$
-and their connecting vertices in $I$ are within $O(R)$ of $a$.
-A vertex of $I$ near $a+10Re_1$ supplies the same two-leg connection
-as above. Hence for deterministic $A_*,C,c$,
-\[
+We also need a moment bound, not merely an eventual almost-sure estimate. For fixed $a,b$ and $R\geq|a-b|+2$, require all $I^c$ holes meeting $a+[-40R,40R]^d$ to have size at most $R$, and require the Antal--Pisztora bound for all pairs in that box separated by at least $R$. The failure probability is at most $CR^{2d}\exp(-c\sqrt R)$. On this event the projections of $a$ and $b$ and their connecting vertices in $I$ are within $O(R)$ of $a$. A vertex of $I$ near $a+10Re_1$ supplies the same two-leg connection as above. Hence, for deterministic constants $A_*$, $C$ and $c$,
+\begin{equation*}
  \mathbf P\{d_{\mathcal C}(\pi(a),\pi(b))>A_*R\}
- \leq CR^{2d}\exp(-c\sqrt R),
- \qquad R\geq|a-b|+2.
-\]
-The tail is for each fixed pair $a,b$, for every
-$R\geq|a-b|+2$, with deterministic constants independent of that
-pair. Summing the tail over increasing $R$ gives
-$\mathbf E d_{\mathcal C}(\pi(a),\pi(b))<\infty$.
-All constants in this geometry depend only on $d,K$, the chosen
-domination parameter, and, after conversion to physical coordinates,
-the fixed side vector $k$. The auxiliary coupling is used only to
-prove estimates: $\mathcal C$ and $\pi$ are functions of $\eta$ itself.
+ \leq CR^{2d}\exp(-c\sqrt R)\,,
+ \qquad R\geq|a-b|+2\,.
+\end{equation*}
+The constants $A_*$, $C$ and $c$ do not depend on $a$ or $b$. Summing the tail over increasing $R$ gives $\mathbf E d_{\mathcal C}(\pi(a),\pi(b))<\infty$.
 
-\emph{Propagation and activation.}
-A fully infected good box infects every neighboring good box within
-$\tau$ additional steps. A shared external face contains one of the
-line seeds in the strong crossing definition: choose a direction
-tangent to that face, which is possible since $d\geq2$.
-Thus any process which contains one full box of $\mathcal C$ eventually
-contains all of its boxes. It then infects the boundary of every
-finite component of their complement, and recurrence fills each such
-component. It consequently reaches every physical site.
+All constants in this geometry depend only on $d$, $K$, the chosen domination parameter and, after conversion to physical coordinates, the fixed side vector $k$. The auxiliary coupling is used only to prove estimates: $\mathcal C$ and $\pi$ are functions of $\eta$ itself.
 
-Here is the quantitative way to turn a path into a full good box.
-Let $\gamma$ be the exponent in Hypothesis \ref{hyp:path_filling}, put
-\[
- q=\max\{\gamma+1,3d\},\qquad
- \ell_n=\left\lceil(\log(n+2))^q\right\rceil ,
-\]
-and increase the random cutoff so that all preceding estimates and
-H3 apply in the required fixed enlargements of $[-n,n]^d$.
-Suppose that at time $t$ a process contains a self-avoiding path of
-$\ell_n$ sites ending at $x\in[-n,n]^d$.
-The path lies in $[-2n,2n]^d$ for large $n$. Comparison with its
-delivered frozen seed and H3 fill its bounding rectangle by
-$t+\ell_n^d$. That rectangle has a coordinate side containing at
-least $\ell_n^{1/d}$ sites. A line along this side contains more than
-$h_{2n}$ consecutive full coarse-box line segments, since
-$q/d\geq3>5/2$ and $k$ is fixed. They cannot all lie in one component
-of $\mathcal C^c$. Therefore one is a full line in a box of
-$\mathcal C$, which is completely infected by
-$t+\ell_n^d+\tau$. This box is within physical distance
-$O(\ell_n+|k|)$ of $x$.
+\emph{Step 3.} We show that a process containing one full good box of $\mathcal C$ eventually infects every site, and that a path of $\ell_n$ sites produces a full good box of $\mathcal C$ nearby. A fully infected good box infects every neighboring good box within $V_k$ additional steps. A shared external face contains one of the line seeds in the strong crossing definition: choose a direction tangent to that face, which is possible since $d\geq2$. Thus every process containing one full box of $\mathcal C$ eventually contains all of its boxes. It then infects the boundary of every finite component of their complement, and recurrence fills each such component. It consequently reaches every physical site.
 
-The comparison just used applies to the floor waves, to ordinary legal
-parallel toppling, and to delivered binary frozen processes. It is
-an induction on time: when the larger odometer is already at least one
-there is nothing to prove, and otherwise the required neighbor chips
-are dominated. Thus activation is a conclusion proved here, not an
-additional percolation or homogenization input.
+We now turn a path into a full good box. Let $\gamma$ be the exponent in Hypothesis~\ref{hyp:path_filling}, and put $q=\max\{\gamma+1,3d\}$ and $\ell_n=\lceil(\log(n+2))^q\rceil$. Increase the random cutoff so that all preceding estimates and Hypothesis~\ref{hyp:path_filling} apply in the required fixed enlargements of $[-n,n]^d$.
 
-\emph{Existence and finite initial comparisons.}
-For $0\leq\eta\leq2d-1$, the order-$m$ wave is nonnegative,
-nondecreasing in time, bounded above by $m$, and has finite propagation
-speed. These facts follow directly by induction in
-\eqref{eq:n_wave}. With $m=(2d)^R$ that recurrence gives
-\[
+Suppose that at time $t$ a process contains a self-avoiding path of $\ell_n$ sites ending at $x\in[-n,n]^d$. The path lies in $[-2n,2n]^d$ for large $n$. Comparison with the frozen odometer of the path and Hypothesis~\ref{hyp:path_filling} fill its bounding rectangle by time $t+\ell_n^d$. That rectangle has a coordinate side containing at least $\ell_n^{1/d}$ sites. A line along this side contains more than $h_{2n}$ consecutive full coarse-box line segments, since $q/d\geq3>5/2$ and $k$ is fixed. They cannot all lie in one component of $\mathcal C^c$. Therefore one is a full line in a box of $\mathcal C$, which is completely infected by time $t+\ell_n^d+V_k$. This box is within physical distance $O(\ell_n+|k|)$ of $x$. Call this conclusion the path-to-box statement.
+
+The comparison just used applies to the floor waves, to ordinary legal parallel toppling, and to binary frozen processes. It is an induction on time: when the larger odometer is already at least one there is nothing to prove, and otherwise the required neighbor chips are dominated.
+
+\emph{Step 4.} We show that $\hat M_\eta(z)<\infty$ for every $z$, and that the last-wave arrival times differ from the binary infection times $a(x)$ by finite constants. For $0\leq\eta\leq2d-1$, the order-$m$ wave is nonnegative, nondecreasing in time, bounded above by $m$, and has finite propagation speed. These facts follow directly by induction in \eqref{eq:n_wave}. With $m=(2d)^R$ that recurrence gives
+\begin{equation*}
  u_t^{(m,z)}(y)\geq(2d)^{R-|y-z|}
- \quad\text{when }|y-z|\leq R,\ t\geq|y-z|.
-\]
-Choose $R$ so its ball covers a fixed box of $\mathcal C$.
-The resulting wave cannot stabilize, by propagation along
-$\mathcal C$. This proves $\hat M_\eta(z)<\infty$, simultaneously
-for all $z$.
+ \quad\text{when }|y-z|\leq R,\ t\geq|y-z|\,.
+\end{equation*}
+Choose $R$ so that the ball of radius $R$ about $z$ covers a fixed box of $\mathcal C$. The resulting wave cannot stabilize, by propagation along $\mathcal C$. This proves $\hat M_\eta(z)<\infty$ for every $z$, on the common probability-one event.
 
-This also proves ordinary explosion, but it is necessary to respect
-the different clocks. Add $2dm$ chips at the origin. It then topples
-at least $m$ times during its first $m$ rounds. In the legal process
-with the origin frozen at $m=(2d)^R$, once distance $r-1$ has odometer
-at least $(2d)^{R-r+1}$, every site at distance $r$ attains
-$(2d)^{R-r}$ within at most $(2d)^{R-r}$ more rounds, using one
-predecessor and $\eta\geq0$. Hence the whole radius-$R$ ball fills in
-at most $\sum_{r=1}^R(2d)^{R-r}\leq m$ rounds of that frozen legal
-process. Ordinary toppling dominates it after time $m$, by
-\eqref{eq:odometer_wave_comp}. It reaches the good box and cannot
-stabilize. No ordinary-odometer estimate from a compact-growth
-theorem is used.
+This also proves ordinary explosion, but it is necessary to respect the different clocks. Add $2dm$ chips at the origin. It then topples at least $m$ times during its first $m$ rounds. In the legal process with the origin frozen at $m=(2d)^R$, once distance $r-1$ has odometer at least $(2d)^{R-r+1}$, every site at distance $r$ attains $(2d)^{R-r}$ within at most $(2d)^{R-r}$ more rounds, using one predecessor and $\eta\geq0$. Hence the whole radius-$R$ ball fills in at most $\sum_{r=1}^R(2d)^{R-r}\leq m$ rounds of that frozen legal process. Ordinary toppling dominates it after time $m$, by \eqref{eq:odometer_wave_comp}. It reaches the good box and cannot stabilize. No ordinary-odometer estimate from a compact-growth theorem is used.
 
-Fix the last wave from zero. Its penultimate wave has finite support:
-it stabilizes at a finite time and propagation speed is finite.
-The last wave has infinite support, since a nondecreasing,
-integer-valued wave bounded by its finite order would stabilize
-in a finite time if its support were finite. Its positive support
-is connected to its source. It therefore contains arbitrarily long
-self-avoiding paths, each present at some finite time. To apply
-activation to a path based at the source and ending far away, take
-a window radius $n$ larger than its endpoint distance and its
-polylogarithmic terminal segment. As the available path lengths
-grow without bound, $n$ can also exceed the almost-sure random
-cutoff while $\ell_n$ remains shorter than the path.
-The activation argument makes it reach a full box of $\mathcal C$.
-It follows that the last wave reaches every site.
+Fix the last wave from zero. Its penultimate wave has finite support: it stabilizes at a finite time and propagation speed is finite. The last wave has infinite support, since a nondecreasing, integer-valued wave bounded by its finite order would stabilize in a finite time if its support were finite. Its positive support is connected to its source. It therefore contains arbitrarily long self-avoiding paths, each present at some finite time. To apply the path-to-box statement to a path based at the source and ending far away, take a window radius $n$ larger than its endpoint distance and its polylogarithmic terminal segment. As the available path lengths grow without bound, $n$ can also exceed the almost-sure random cutoff while $\ell_n$ remains shorter than the path. The path-to-box statement then makes the last wave reach a full box of $\mathcal C$. It follows that the last wave reaches every site.
 
-For a finite set $A$, write $F_t^A$ for the binary infection process
-with permanent seed $A$, in which an uninfected $x$ is infected when
-at least $2d-\eta(x)$ neighbors are infected. This is exactly the
-delivered $A$-frozen process, whose odometer is at most one.
-Take $A_0=B_{\pi(0)}$ and write
-$a(x)=\min\{t\geq0:x\in F_t^{A_0}\}$.
-The previous propagation argument shows $a(x)<\infty$ for every $x$.
-The last wave eventually covers $A_0$, so for a finite $c_1(\eta)$,
-\[
- \hat T(x)\leq a(x)+c_1(\eta)+1 .
-\]
-Conversely $F_t^{A_0}$ eventually covers the finite set $\mathcal P(0)$.
-Lemma \ref{lemma:last_wave_bound} and its proof use only
-$0\leq\eta\leq2d-1$: the last wave is at most one outside
-$\mathcal P(0)$ and on its inner boundary. Once $F_t^{A_0}$ covers
-$\mathcal P(0)$, the same exterior induction as in
-Lemma \ref{lemma:approx_subadditivity} dominates the last wave outside
-that set; inside it, infection has already occurred. Consequently
-for another finite $c_2(\eta)$,
-\[
- a(x)\leq\hat T(x)+c_2(\eta)\qquad(x\in\mathbb Z^d).
-\]
+For a finite set $Q$, write $\Phi_t^Q$ for the binary infection process with permanent seed $Q$, in which an uninfected $x$ is infected when at least $2d-\eta(x)$ neighbors are infected. This is exactly the $Q$-frozen parallel toppling process, whose odometer is at most one. Take $Q_0=\mathcal B^{(\pi(0))}_k$ and write $a(x)=\min\{t\geq0:x\in\Phi_t^{Q_0}\}$. The previous propagation argument shows $a(x)<\infty$ for every $x$. The last wave eventually covers $Q_0$, so for a finite $c_1(\eta)$,
+\begin{equation*}
+ \hat T(x)\leq a(x)+c_1(\eta)+1\,.
+\end{equation*}
+Conversely, $\Phi_t^{Q_0}$ eventually covers the finite set $\mathcal P(0)$. Lemma~\ref{lemma:last_wave_bound} and its proof use only $0\leq\eta\leq2d-1$: the last wave is at most one outside $\mathcal P(0)$ and on its inner boundary. Once $\Phi_t^{Q_0}$ covers $\mathcal P(0)$, the same exterior induction as in Lemma~\ref{lemma:approx_subadditivity} dominates the last wave outside that set; inside it, infection has already occurred. Consequently, for another finite $c_2(\eta)$,
+\begin{equation*}
+ a(x)\leq\hat T(x)+c_2(\eta)\qquad(x\in\Z^d)\,.
+\end{equation*}
 Neither time shift is required to be integrable.
 
-\emph{An integrable subadditive passage time.}
-For coarse sites $a,b$ define
-\[
+\emph{Step 5.} We show that $\mathbf E S(a,b)<\infty$ for every pair of coarse sites, that $S$ is subadditive, and that $\hat T(x)$ and $S(0,b(x))$ differ by $o(n)$ uniformly on $[-n,n]^d$. For coarse sites $a,b$ define
+\begin{equation*}
  S(a,b)=\min\{t\geq0:
-             B_{\pi(b)}\subseteq F_t^{B_{\pi(a)}}\}.
-\]
+             \mathcal B^{(\pi(b))}_k\subseteq\Phi_t^{\mathcal B^{(\pi(a))}_k}\}\,.
+\end{equation*}
 Restarting from an infected target box and using monotonicity gives
-exactly
-\[
+\begin{equation*}
  S(a,c)\leq S(a,b)+S(b,c),\qquad
- S(a,b)\leq\tau d_{\mathcal C}(\pi(a),\pi(b)).
-\]
-The quantitative geometry therefore gives $\mathbf E S(a,b)<\infty$
-for every fixed pair. It also gives, uniformly for $a,b\in[-n,n]^d$
-and all sufficiently large $n$,
-\[
- |S(0,a)-S(0,b)|\leq \tau A(|a-b|+h_n).
-\]
-
-Let $b(x)$ be the index of the physical box containing $x$.
-We compare the completion time $S(0,b(x))$ with the point time $a(x)$.
-If $b(x)\in\mathcal C$, then $a(x)\leq S(0,b(x))$.
-Otherwise let $H$ be its component of $\mathcal C^c$.
-Its size is at most $h_n$, after a fixed enlargement of the window.
-The projection $\pi(b(x))$ is adjacent to $H$; every other boundary
-vertex of $H$ is within $h_n+1$ coarse steps of it.
-The chemical-distance estimate and propagation infect all boundary
-boxes in at most $C\tau h_n$ more steps. Recurrence then fills
-$\bigcup_{j\in H}B_j$ in at most $V_kh_n$ further steps. Thus
-\[
- a(x)\leq S(0,b(x))+C h_n .
-\]
-For the reverse comparison, trace a path of first infections from
-$A_0$ to $x$ at time $a(x)$; infection times strictly decrease when
-this path is traced backwards. If it has at least $\ell_n$ vertices,
-apply activation to its last $\ell_n$ vertices.
-The resulting full good box is within $O(\ell_n+|k|)$ of $x$.
-Propagation through $\mathcal C$ reaches $B_{\pi(b(x))}$ in at most
-$C(\ell_n+h_n)$ further steps. If the path is shorter, $x$ is already
-within $\ell_n$ of $A_0$, and the same chemical bound applies directly.
-Hence, uniformly for $x\in[-n,n]^d$ and all sufficiently large $n$,
-\[
- S(0,b(x))\leq a(x)+C\ell_n^d .
-\]
+ S(a,b)\leq V_k\,d_{\mathcal C}(\pi(a),\pi(b))\,.
+\end{equation*}
+The quantitative geometry therefore gives $\mathbf E S(a,b)<\infty$ for every fixed pair. It also gives, uniformly for $a,b\in[-n,n]^d$ and all sufficiently large $n$,
+\begin{equation*}
+ |S(0,a)-S(0,b)|\leq V_kA(|a-b|+h_n)\,.
+\end{equation*}
+Let $b(x)$ be the index of the physical box containing $x$. We compare the completion time $S(0,b(x))$ with the point time $a(x)$. If $b(x)\in\mathcal C$, then $a(x)\leq S(0,b(x))$. Otherwise let $H$ be the component of $\mathcal C^c$ containing $b(x)$. Its size is at most $h_n$, after a fixed enlargement of the window. The projection $\pi(b(x))$ is adjacent to $H$, and every other boundary vertex of $H$ is within $h_n+1$ coarse steps of it. The chemical-distance estimate and propagation infect all boundary boxes in at most $CV_kh_n$ more steps. Recurrence then fills $\bigcup_{j\in H}\mathcal B^{(j)}_k$ in at most $V_kh_n$ further steps. Thus
+\begin{equation*}
+ a(x)\leq S(0,b(x))+Ch_n\,.
+\end{equation*}
+For the reverse comparison, trace a path of first infections from $Q_0$ to $x$ at time $a(x)$; infection times strictly decrease when this path is traced backwards. If it has at least $\ell_n$ vertices, then apply the path-to-box statement to its last $\ell_n$ vertices. The resulting full good box is within $O(\ell_n+|k|)$ of $x$. Propagation through $\mathcal C$ reaches $\mathcal B^{(\pi(b(x)))}_k$ in at most $C(\ell_n+h_n)$ further steps. If the path is shorter, then $x$ is already within $\ell_n$ of $Q_0$, and the same chemical bound applies directly. Hence, uniformly for $x\in[-n,n]^d$ and all sufficiently large $n$,
+\begin{equation*}
+ S(0,b(x))\leq a(x)+C\ell_n^d\,.
+\end{equation*}
 Combining these estimates gives the required comparison
-\[
+\begin{equation*}
  \sup_{x\in[-n,n]^d}
  |\hat T(x)-S(0,b(x))|
- \leq c_1(\eta)+c_2(\eta)+1+C\ell_n^d=o(n).
-\]
-Only the almost-sure finiteness of the H3 cutoff has been used.
+ \leq c_1(\eta)+c_2(\eta)+1+C\ell_n^d=o(n)\,.
+\end{equation*}
 
-\emph{Directional limits and the limit shape.}
-Let
-$\Gamma=\{z\in\mathbb Z^d:Dz\in\mathcal L\}$.
-It is a finite-index subgroup. The kernel $S$ is covariant under
-translations by $Dz$, $z\in\Gamma$, and is a measurable function of
-$\eta$. For each nonzero $z\in\Gamma$, the transformation $T_{Dz}$
-is mixing, hence ergodic: separated finite cylinder events are
-independent by H1, and approximation by cylinders proves mixing
-for all events.
+\emph{Step 6.} We show that the directional limits of $S$ exist and extend to a continuous, convex, positively one-homogeneous function $\mu$ on $\R^d$, and that $n^{-1}\hat T_\eta([nx])$ converges locally uniformly to $\mathcal N_\eta(x)=\mu(\Lambda^{-1}x)$. Let $\Gamma=\{z\in\Z^d:\Lambda z\in\mathcal L\}$. It is a finite-index subgroup. The kernel $S$ is covariant under translations by $\Lambda z$ for $z\in\Gamma$, and is a measurable function of $\eta$. For each nonzero $z\in\Gamma$, the transformation $T_{\Lambda z}$ is mixing, hence ergodic: separated finite cylinder events are independent by Hypothesis~\ref{hyp:finite_range_of_dependence}, and approximation by cylinders proves mixing for all events.
 
-Kingman's subadditive ergodic theorem applies to $S(0,nz)$.
-All its hypotheses have now been verified, including integrability.
-On a common probability-one event, for every $z\in\Gamma$,
-\[
- \frac{S(0,nz)}n\longrightarrow\mu(z)
- \quad\text{almost surely and in }L^1,
-\]
-where $\mu(z)$ is deterministic. Integer homogeneity follows by
-subsequences. Taking expectations in
-$S(0,n(z+w))\leq S(0,nz)+S(nz,n(z+w))$, using stationarity and
-$L^1$ convergence, proves
-$\mu(z+w)\leq\mu(z)+\mu(w)$.
-The uniform modulus above gives
-$|\mu(z)-\mu(w)|\leq\tau A|z-w|$.
-Thus rational homogeneity and continuity extend $\mu$ uniquely to
-a continuous, convex, positively one-homogeneous function on
-$\mathbb R^d$. Since $\Gamma$ has finite index, its rational span is
-all of $\mathbb Q^d$. For every fixed $L<\infty$, apply the directional limits on a
-finite net in $[-L,L]^d\cap\mathbb Q^d$. Integer subsequences
-from $\Gamma$ give convergence at its points, and the uniform
-modulus controls every coarse $a$ with $|a|_\infty\leq Ln$
-by a nearby net point. Sending the net mesh to zero proves
-$\sup_{|a|_\infty\leq Ln}|n^{-1}S(0,a)-\mu(a/n)|\to0$
-for each $L$.
+The subadditive ergodic theorem applies to $S(0,nz)$, and its hypotheses have been verified, including integrability. On a common probability-one event, for every $z\in\Gamma$, $S(0,nz)/n\to\mu(z)$ almost surely and in $L^1$, where $\mu(z)$ is deterministic. Integer homogeneity follows by subsequences. Taking expectations in $S(0,n(z+w))\leq S(0,nz)+S(nz,n(z+w))$, using stationarity and $L^1$ convergence, proves $\mu(z+w)\leq\mu(z)+\mu(w)$. The uniform modulus above gives $|\mu(z)-\mu(w)|\leq V_kA|z-w|$. Thus rational homogeneity and continuity extend $\mu$ uniquely to a continuous, convex, positively one-homogeneous function on $\R^d$. Since $\Gamma$ has finite index, its rational span is all of $\Q^d$. For every fixed $L<\infty$, apply the directional limits on a finite net in $[-L,L]^d\cap\Q^d$. Integer subsequences from $\Gamma$ give convergence at the net points, and the uniform modulus controls every coarse $a$ with $|a|_\infty\leq Ln$ by a nearby net point. Sending the net mesh to zero proves $\sup_{|a|_\infty\leq Ln}|n^{-1}S(0,a)-\mu(a/n)|\to0$ for each $L$.
 
-The projection error is $o(n)$ uniformly on bounded rescaled windows.
-Finite propagation speed gives
-$S(0,nz)\geq\operatorname{dist}_1
-(B_{\pi(0)},B_{\pi(nz)})$, so
-$\mu(z)\geq|Dz|$. The chemical estimate gives
-$\mu(z)\leq C|Dz|$.
-Define $\mathcal N_\eta(x)=\mu(D^{-1}x)$.
-The point-to-box comparison now proves
-$n^{-1}\hat T_\eta([nx])\to\mathcal N_\eta(x)$ locally uniformly, with
-\[
- |x|_1\leq\mathcal N_\eta(x)\leq C|x|_1 .
-\]
-This deterministic limit depends only on the law of $\eta$.
-Different permissible choices of the auxiliary tiling give the same
-limit because all have been compared to the same last-wave arrival
-times. No symmetry of the law beyond the stated sublattice
-stationarity was assumed.
+The projection error is $o(n)$ uniformly on bounded rescaled windows. Finite propagation speed gives $S(0,nz)\geq\operatorname{dist}_1(\mathcal B^{(\pi(0))}_k,\mathcal B^{(\pi(nz))}_k)$, so $\mu(z)\geq|\Lambda z|$. The chemical estimate gives $\mu(z)\leq C|\Lambda z|$.
+
+Define $\mathcal N_\eta(x)=\mu(\Lambda^{-1}x)$. The point-to-box comparison now proves $n^{-1}\hat T_\eta([nx])\to\mathcal N_\eta(x)$ locally uniformly, with
+\begin{equation*}
+ |x|_1\leq\mathcal N_\eta(x)\leq C|x|_1\,.
+\end{equation*}
+This deterministic limit depends only on the law of $\eta$. Different choices of the auxiliary tiling give the same limit, since each is compared with the same last-wave arrival times $\hat T_\eta$.
 \end{proof}
 
 If additionally $\eta \geq (2 d - 2)$, then the argument given in Section \ref{sec:proof_of_theorem} implies that the exploding
@@ -1627,7 +1368,7 @@ sandpile is close to the last-wave and hence converges. Simulations indicate $\e
 \end{hyp}
 
 
-\begin{theorem}[Convergence of the exploding sandpile]
+\begin{theorem}[Convergence of the exploding sandpile] \label{theorem:generalized_convergence}
 	Under the assumptions in Proposition \ref{prop:convergence_of_the_generalized_last_wave} and Hypothesis \ref{hyp:wave_approximation},
 	on an event of probability 1, $\eta$ is explosive and the rescaled arrival times, $n^{-1} T_{\eta}([nx]) := n^{-1} \min \{ t > 0 : v_t([nx]) > 0\}$ converge locally uniformly to $\mathcal{N}_{\eta}$, a deterministic, continuous, convex, one-homogeneous function on $\R^d$
 	depending only on the law of $\eta$.
@@ -1656,19 +1397,7 @@ Then, let
 (2d - 2) & \mbox{ otherwise.}
 \end{cases}
 \end{equation}
-The field $\eta(x)$ depends only on the uniforms $U_{x-s}$,
-$s\in\mathcal S$. Thus separated finite sets of heights have
-independent generating uniforms once their distance exceeds
-$\max_{s,t\in\mathcal S}|s-t|$, proving Hypothesis
-\ref{hyp:finite_range_of_dependence}. Choose $s\in\mathcal S$
-and put $q=\min\{p,1\}>0$. The independent indicators
-$1\{U_{x-s}<p\}$ are bounded above by
-$1\{\eta(x)=2d-1\}$. In a side-$k$ cube, a union bound over
-its $d k^{d-1}$ coordinate lines makes the probability that any
-line has no high site at most $d k^{d-1}(1-q)^k\to0$.
-The line-filling argument of Proposition \ref{prop:crossing_time}
-then fills every such box by its volume deadline
-$|\mathcal B_k|$, verifying Hypothesis \ref{hyp:box_filling}. 
+The field $\eta(x)$ depends only on the uniforms $U_{x-s}$, $s\in\mathcal S$. If $|x-y|>\max_{s,t\in\mathcal S}|s-t|$, then $x-s\neq y-t$ for all $s,t\in\mathcal S$, so the fields on separated finite sets depend on disjoint families of independent uniforms and are independent. This is Hypothesis~\ref{hyp:finite_range_of_dependence} with $K=\max_{s,t\in\mathcal S}|s-t|$. Choose $s\in\mathcal S$. The indicators $1\{U_{x-s}<p\}$, $x\in\Z^d$, are independent with mean $\min\{p,1\}>0$, and each is bounded above by $1\{\eta(x)=2d-1\}$. In a side-$k$ cube, a union bound over its $dk^{d-1}$ coordinate lines shows that some line has no high site with probability at most $dk^{d-1}(1-\min\{p,1\})^k$, which tends to zero as $k\to\infty$. On the event that every line has a high site, the line-filling argument of Proposition~\ref{prop:crossing_time} fills the box by its volume deadline $|\mathcal B_k|$. Hence the box is strongly box-crossing with probability tending to one, which verifies Hypothesis~\ref{hyp:box_filling}.
 
 Another family of examples is the {\it random checkerboard}. Fix a box $\mathcal{B}$ which tiles the lattice, $\Z^d = \bigcup_{j \in \Z^d} \mathcal{B}_j$.  Take functions $\zeta_1, \ldots, \zeta_m$, defined on the box,  $\zeta_i: \mathcal{B} \to \{ (2 d - 2), (2 d - 1)\}$. Suppose further that $\mathcal{B}(\zeta_1)$ contains at least one site 
 with $(2d-1)$ chips along every straight line.  Let $\{Y_j\}_{j \in \Z^d}$ be a field of i.i.d. random variables, where $P(Y_j = i) = p_i$, for $i = 1, \ldots, m$. 
@@ -1678,23 +1407,12 @@ Then, let
 \end{equation}
 where $z(x)  \in \mathcal{B}$ is the position of $x$ in its tiled box, $\mathcal{B}_{j(x)}$. 
 Finite range
-of dependence follows from the independent basic-tile choices.
-For a coarse box comprising $L$ basic tiles in each coordinate,
-a fixed coordinate line traverses $L$ independent tile choices.
-It misses type 1 in all of them with probability $(1-p_1)^L$.
-There are $O(L^{d-1})$ such lines. A union bound and the
-line-filling argument of Proposition \ref{prop:crossing_time}
-show that, when $p_1>0$, the coarse box is strongly
-box-crossing by time $|\mathcal B_k|$ with probability tending
-to one. This includes $p_1=1$. 
+Finite range of dependence follows from the independent basic-tile choices. For a coarse box comprising $L$ basic tiles in each coordinate, a fixed coordinate line traverses $L$ independent tile choices, and it misses type 1 in all of them with probability $(1-p_1)^L$. There are $O(L^{d-1})$ such lines. A union bound and the line-filling argument of Proposition~\ref{prop:crossing_time} show that, when $p_1>0$, the coarse box is strongly box-crossing by time $|\mathcal B_k|$ with probability tending to one as $L\to\infty$.
 
 
 The random checkerboard includes the degenerate case $p_1 = 1$, where $\eta$ is a periodic copy of $\zeta_1$. 
 See Table \ref{tab:periodic_exploding_shapes} for pictures. 
-Theorem 4.2 of \cite{fey2010growth} gives a sufficient condition
-for robustness: there is a sequence of enclosing rectangular
-boundaries on which every height is at most $2d-2$. However, it is possible to build random (and periodic) checkerboard, exploding sandpiles with $\eta \not \geq (2 d - 2)$. One could then proceed in an adhoc 
-manner to check the hypotheses.  However, we have not found a general recipe in this case. The counterexample in Section \ref{sec:counterexample} uses $\eta \not \geq (2d - 2)$.  
+Theorem~4.2 of \cite{fey2010growth} gives a sufficient condition for robustness: there is a sequence of enclosing rectangular boundaries on which every height is at most $2d-2$. However, it is possible to build random (and periodic) checkerboard, exploding sandpiles with $\eta \not \geq (2 d - 2)$. One could then proceed in an ad hoc manner to check the hypotheses. However, we have not found a general recipe in this case. The counterexample in Section~\ref{sec:counterexample} uses $\eta \not \geq (2d - 2)$.
 
 \begin{figure}
 	\includegraphics[width=0.2\textwidth]{Figures/bernoulli_cloud/init_condition1.png}

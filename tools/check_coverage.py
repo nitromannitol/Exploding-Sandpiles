@@ -83,7 +83,7 @@ def paper_statements(text: str) -> list[tuple[str, int, str | None]]:
 
 
 def uncovered_statements(text: str, filename: str, nodes: list[dict]) -> tuple[list, list]:
-    """Compare one source only with theorem rows assigned to its exact pin."""
+    """Compare one source file only with the theorem statements recorded for it."""
     claimed, ranges = set(), []
     source_range = re.compile(
         rf"(?:{re.escape(filename)}|{re.escape(Path(filename).name)}):"
@@ -165,7 +165,7 @@ def main() -> int:
             actual = set(uncovered)
             if actual:
                 partial = True
-                print("Not claimed by theorem rows under this exact source pin:")
+                print("Numbered statements of this source with no statement in the manifest:")
                 for kind, line, label in uncovered:
                     print(f"  {Path(filename).name}:{line}  {kind} "
                           f"{label or '(unlabelled)'}")
@@ -176,17 +176,16 @@ def main() -> int:
                 for kind, line, label in sorted(expected - actual, key=lambda item: item[1]):
                     print(f"  stale gap allowance: {kind} at line {line}, {label!r}")
             elif actual:
-                print(f"check_coverage: PARTIAL scope explicitly recorded: {reason}")
+                print(f"check_coverage: recorded as not formalized: {reason}")
         if failed:
             print("check_coverage: FAIL (coverage differs from the explicit scope)",
                   file=sys.stderr)
             return 1
         if partial:
-            print("check_coverage: OK within the explicit partial scopes; "
-                  "whole-paper formalization is not certified")
+            print("check_coverage: OK (every numbered statement is in the manifest, except "
+                  "those recorded above with a reason)")
         else:
-            print("all numbered statements have theorem-row claims under their exact source pins; "
-                  "independent statement and proof audits are still required")
+            print("check_coverage: OK (every numbered statement of the source is in the manifest)")
         return 0
     except (OSError, ValueError, TypeError, yaml.YAMLError) as exc:
         print(f"check_coverage: {exc}", file=sys.stderr)

@@ -16,13 +16,12 @@ asserts more:
 The counts are a heuristic, not a proof of correspondence: one Lean conjunct can
 faithfully carry two paper displays, and one paper display can need three Lean
 conjuncts.  So a mismatch is a prompt to look, not a verdict, and every node is
-listed with its counts so the reader can judge. The recorded readings apply
-only to the exact earlier source file, `paper/exploding.tex` at its recorded
-SHA-256. Statements selected from the corrected edition, non-External
-definitions, and citations without a statement range or label are explicitly
-excluded. A successful run must compare at least one statement from the earlier
-source. Every compared declaration must retain its recorded version and frozen
-hash; the marker-block hash is recomputed before any recorded reading is reused.
+listed with its counts so the reader can judge. The statements compared are
+those of the manifest's source file (the corrected edition); definitions stated
+separately and results cited without a statement range or label are listed as
+excluded. Each reading records the SHA-256 of the frozen statement it was written
+for (`READ_AT`); when a statement changes, its reading must be checked again and
+its hash updated, or the check fails. A run that compares nothing fails.
 
     python3 tools/check_clauses.py            # report
     python3 tools/check_clauses.py --strict   # exit 1 if any node is unreviewed
@@ -36,8 +35,7 @@ import re
 import sys
 from pathlib import Path
 
-from sync_docs import (HISTORICAL_SHA256, historical_audit_nodes, load_manifest,
-                       source_pins, source_range)
+from sync_docs import audit_nodes, frozen_block, load_manifest, source_pins, source_range
 
 ROOT = Path(__file__).resolve().parent.parent
 MANIFEST = ROOT / "ledger" / "manifest.yaml"
@@ -157,10 +155,15 @@ REVIEWED: dict[str, str] = {
 FLAGGED: set[str] = set()
 
 
-def paper_path() -> Path:
-    """The paper: the copy pinned in this repository, or `$EXPLODING_PAPER`."""
+# The SHA-256 of the frozen statement each reading above was checked against.
+READ_AT: dict[str, str] = {
+}
+
+
+def paper_path(manifest: dict) -> Path:
+    """The manifest's source file, or `$EXPLODING_PAPER` (which must have the same hash)."""
     env = os.environ.get("EXPLODING_PAPER")
-    return Path(env) if env else ROOT / "paper" / "exploding.tex"
+    return Path(env) if env else ROOT / manifest["source_pin"]["file"]
 
 
 RELATION = re.compile(r"\\leq|\\geq|\\neq|\\subseteq|(?<!\\not)\\in\b|<|>|=")
@@ -218,14 +221,14 @@ def lean_conjuncts(block: str) -> int:
 
 def main() -> int:
     try:
-        path = paper_path()
-        if hashlib.sha256(path.read_bytes()).hexdigest() != HISTORICAL_SHA256:
-            raise LookupError("recorded clause readings apply only to historical "
-                              "paper/exploding.tex at SHA-256 " + HISTORICAL_SHA256)
-        lines = path.read_text(encoding="utf-8").splitlines()
         manifest = load_manifest(MANIFEST)
+        default = manifest["source_pin"]
+        path = paper_path(manifest)
+        if hashlib.sha256(path.read_bytes()).hexdigest() != default["sha256"]:
+            raise LookupError(f"{path} does not have the SHA-256 recorded in the manifest")
+        lines = path.read_text(encoding="utf-8").splitlines()
         pins = source_pins(manifest["nodes"], manifest)
-        eligible, excluded = historical_audit_nodes(manifest["nodes"], pins)
+        eligible, excluded = audit_nodes(manifest["nodes"], pins, default)
     except (LookupError, KeyError, OSError, ValueError) as exc:
         print(f"check_clauses: {exc}", file=sys.stderr)
         return 2
@@ -235,17 +238,17 @@ def main() -> int:
         src = node["source"]
         lab = re.search(r"label ([A-Za-z][A-Za-z0-9:_-]*)", src)
         if not lab:
-            excluded.append((node["id"], "no labelled statement; no recorded clause reading"))
+            excluded.append((node["id"], "no labelled statement"))
             continue
         a, b = source_range(node, pins[node["id"]])
         segment = "\n".join(lines[a - 1:b])
-        text = (ROOT / node["file"]).read_text(encoding="utf-8")
-        blk = text[text.index("-- FROZEN-STATEMENT-BEGIN"):text.index("-- FROZEN-STATEMENT-END")]
+        blk = frozen_block(node)
         p, l = paper_units(segment), lean_conjuncts(blk)
         rows.append((node["id"], lab.group(1), p, l))
         if p > l or node["id"] in FLAGGED:
             flagged.append(node["id"])
-        if node["id"] not in REVIEWED:
+        current = node["frozen_sha256"]  # checked against the file by check_manifest
+        if node["id"] not in REVIEWED or READ_AT.get(node["id"]) != current:
             unreviewed.append(node["id"])
 
     print(f"{'node':26s} {'label':22s} paper  lean")
@@ -257,19 +260,19 @@ def main() -> int:
     for nid, _, _, _ in rows:
         print(f"  {nid}: {REVIEWED.get(nid, 'NOT REVIEWED')}")
 
-    print("\nExcluded from this historical-source audit:")
+    print("\nExcluded:")
     for nid, reason in excluded:
         print(f"  {nid}: {reason}")
     if not rows:
-        print("\ncheck_clauses: FAIL (no historical-source statements compared)", file=sys.stderr)
+        print("\ncheck_clauses: FAIL (no statement compared)", file=sys.stderr)
         return 1
 
     if unreviewed:
-        print(f"\ncheck_clauses: {len(unreviewed)} statement(s) have no recorded "
-              f"correspondence: {', '.join(unreviewed)}", file=sys.stderr)
+        print(f"\ncheck_clauses: {len(unreviewed)} statement(s) have no reading for their "
+              f"current frozen text: {', '.join(unreviewed)}", file=sys.stderr)
         return 1
-    print(f"\ncheck_clauses: OK ({len(rows)} historical-source statements; "
-          f"{len(excluded)} explicitly excluded; each compared statement read against the paper "
+    print(f"\ncheck_clauses: OK ({len(rows)} statements; "
+          f"{len(excluded)} excluded; each compared statement read against the paper "
           f"and its correspondence recorded; {len(flagged)} where the paper is "
           f"recorded as asserting more, all explained above)")
     return 0

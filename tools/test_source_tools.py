@@ -36,8 +36,10 @@ class SourceToolsTest(unittest.TestCase):
         for name in ("check_manifest", "check_coverage", "paper_anchors", "paper_citations"):
             shutil.copyfile(ROOT / "tools" / f"{name}.py",
                             self.root / "tools" / f"{name}.py")
-        self.text = (ROOT / "paper/exploding.tex").read_text()
-        (self.root / "paper/exploding.tex").write_text(self.text)
+        # The corrected edition serves as sample text; its \\input lines are dropped so that the
+        # temporary sources have no TeX inputs to pin.
+        self.text = re.sub(r"\\(?:input|include)(?![A-Za-z])\s*(?:\{[^{}]+\}|[^\s{}%]+)", "", (ROOT / "paper/corrected-arxiv/exploding-corrected-arxiv.tex").read_text())
+        (self.root / "paper/sample.tex").write_text(self.text)
         (self.root / "paper/revised.tex").write_text(self.text)
         self.pin = {"file": "paper/revised.tex",
                     "sha256": hashlib.sha256(self.text.encode()).hexdigest()}
@@ -56,9 +58,10 @@ class SourceToolsTest(unittest.TestCase):
                 nid, name = "thm-counterexample", "Counterexample"
             elif label == "theorem:limit_shape":
                 nid, name = "thm-limit-shape", "LimitShape"
+                self.limit_range = f"{line}-{end}"
             nodes.append({"id": nid, "version": 1, "kind": "theorem", "state": "PROVED",
                           "file": f"Exploding/Frozen/{name}.lean",
-                          "source": f"exploding.tex:{line}-{end}" +
+                          "source": f"sample.tex:{line}-{end}" +
                           (f" (label {label})" if label else "")})
         for number in range(4):
             node = deepcopy(nodes[0])
@@ -71,13 +74,13 @@ class SourceToolsTest(unittest.TestCase):
                         file=f"Exploding/External/Cited{number}.lean")
             nodes.append(node)
         self.original = {"version": 1,
-                         "source_pin": {**self.pin, "file": "paper/exploding.tex"},
+                         "source_pin": {**self.pin, "file": "paper/sample.tex"},
                          "nodes": nodes}
         self.manifest = deepcopy(self.original)
         self.target = next(node for node in self.manifest["nodes"]
                            if node["id"] == "thm-counterexample")
         self.target["source_pin"] = deepcopy(self.pin)
-        self.target["source"] = self.target["source"].replace("exploding.tex", "revised.tex")
+        self.target["source"] = self.target["source"].replace("sample.tex", "revised.tex")
         self.target["version"] += 1
         for number in range(4):
             self.manifest["nodes"].append({
@@ -114,7 +117,7 @@ class SourceToolsTest(unittest.TestCase):
         result = self.run_script("check_coverage")
         self.assertEqual(result.returncode, 0, result.stderr)
         self.assertIn("24/24 statements claimed", result.stdout)
-        self.assertIn("independent statement and proof audits are still required", result.stdout)
+        self.assertIn("every numbered statement of the source is in the manifest", result.stdout)
         self.assertNotIn("is formalized", result.stdout)
 
     def test_mixed_sources_have_no_cross_source_credit(self):
@@ -129,7 +132,7 @@ class SourceToolsTest(unittest.TestCase):
         self.allow_partial()
         result = self.run_script("check_coverage")
         self.assertEqual(result.returncode, 0, result.stderr)
-        self.assertEqual(result.stdout.count("PARTIAL scope"), 2)
+        self.assertEqual(result.stdout.count("recorded as not formalized"), 2)
         self.assertNotIn("every theorem", result.stdout)
 
     def test_new_gap_is_not_covered_by_partial_permission(self):
@@ -162,7 +165,7 @@ class SourceToolsTest(unittest.TestCase):
                 self.assertIn("SHA-256", result.stderr)
 
     def test_source_address_must_match_pin(self):
-        self.target["source"] = self.target["source"].replace("revised.tex", "exploding.tex")
+        self.target["source"] = self.target["source"].replace("revised.tex", "sample.tex")
         result = self.run_script("check_coverage")
         self.assertEqual(result.returncode, 1)
         self.assertIn("source address does not match", result.stderr)
@@ -207,14 +210,14 @@ class SourceToolsTest(unittest.TestCase):
 
     def test_anchor_fix_preserves_corrected_rows(self):
         old = next(n for n in self.manifest["nodes"] if n["id"] == "thm-limit-shape")
-        old["source"] = "exploding.tex:1-2 (label theorem:limit_shape)"
+        old["source"] = "sample.tex:1-2 (label theorem:limit_shape)"
         self.target["source"] = "revised.tex:1-2 (label theorem:counterexample)"
         corrected = deepcopy([n for n in self.manifest["nodes"] if "source_pin" in n])
         result = self.run_script("paper_anchors", "--fix")
         self.assertEqual(result.returncode, 0, result.stderr)
         changed = yaml.safe_load((self.root / "ledger/manifest.yaml").read_text())
         self.assertEqual([n for n in changed["nodes"] if "source_pin" in n], corrected)
-        self.assertIn("exploding.tex:246-254", (self.root / "ledger/manifest.yaml").read_text())
+        self.assertIn(f"sample.tex:{self.limit_range}", (self.root / "ledger/manifest.yaml").read_text())
 
     def test_citation_fix_preserves_corrected_headers(self):
         corrected = {}
@@ -222,30 +225,30 @@ class SourceToolsTest(unittest.TestCase):
             if "source_pin" in node:
                 path = self.root / node["file"]
                 path.parent.mkdir(parents=True, exist_ok=True)
-                text = ("/-\n`exploding.tex:1-2`, label `theorem:counterexample`\n-/\n"
+                text = ("/-\n`sample.tex:1-2`, label `theorem:counterexample`\n-/\n"
                         "-- FROZEN-STATEMENT-BEGIN\n")
                 path.write_text(text)
                 corrected[path] = text
         old = self.root / "Exploding/Frozen/LimitShape.lean"
-        old.write_text("/-\n`exploding.tex:1-2`, label `theorem:limit_shape`\n-/\n"
+        old.write_text("/-\n`sample.tex:1-2`, label `theorem:limit_shape`\n-/\n"
                        "-- FROZEN-STATEMENT-BEGIN\n")
         result = self.run_script("paper_citations", "--fix")
         self.assertEqual(result.returncode, 0, result.stderr)
         self.assertIn("excluded 5 rows", result.stdout)
-        self.assertIn("exploding.tex:246-254", old.read_text())
+        self.assertIn(f"sample.tex:{self.limit_range}", old.read_text())
         for path, before in corrected.items():
             self.assertEqual(path.read_text(), before)
 
     def test_anchor_fix_is_scoped_even_with_identical_source_strings(self):
-        alternate = self.root / "paper/alternate/exploding.tex"
+        alternate = self.root / "paper/alternate/sample.tex"
         alternate.parent.mkdir()
         alternate.write_text(self.text)
         for node in self.manifest["nodes"]:
             if "source_pin" in node:
-                node["source_pin"]["file"] = "paper/alternate/exploding.tex"
-                node["source"] = node["source"].replace("revised.tex", "exploding.tex")
+                node["source_pin"]["file"] = "paper/alternate/sample.tex"
+                node["source"] = node["source"].replace("revised.tex", "sample.tex")
         old = next(n for n in self.manifest["nodes"] if n["id"] == "thm-limit-shape")
-        old["source"] = self.target["source"] = "exploding.tex:1-2 (label theorem:limit_shape)"
+        old["source"] = self.target["source"] = "sample.tex:1-2 (label theorem:limit_shape)"
         self.manifest["nodes"].remove(self.target)
         self.manifest["nodes"].insert(0, self.target)
         result = self.run_script("paper_anchors", "--fix")

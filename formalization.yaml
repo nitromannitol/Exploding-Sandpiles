@@ -170,8 +170,8 @@ fidelity:
   divergences: >-
     The Lean statements follow the corrected edition in paper/corrected-arxiv/. Theorem 6.1 is
     stated as published, and Theorems 1.2 and 1.3 as published with the law (2) read as one common
-    law at every site (C01, C02). Theorem 1.4 carries C01 and C03, and Theorem 5.1 carries C11
-    and C12. The changes C01 to C20 to the statements, lemmas, propositions, definitions and proofs
+    law at every site (C01, C02). Theorem 1.4 carries C03, and Theorem 5.1 carries C11, C05 and
+    C13 and assumes Hypothesis 1 in the stronger form of C12. The changes C01 to C25 to the statements, lemmas, propositions, definitions and proofs
     are listed, with the published text, the corrected text and a reason, in the corrected edition's
     section "Corrections to the published version" and in README.md. Hypothesis 1 is used in the form
     that two finite families at distance more than K are independent (C12); whether Propositions 5.1
@@ -180,7 +180,7 @@ fidelity:
 review:
   status: "model review"
   reviewers:
-  - "Claude Opus 5.5, separate read-only review of the statements, cited results, documentation and repository against the published paper and the corrected edition (2026-10-19)"
+  - "Claude Opus 5.5, separate read-only review of the statements, cited results, documentation and repository against the published paper and the corrected edition (2026-10-19); outcome: the Lean statements and proofs were found sound, and the documentation and the corrected edition needed the changes made since (the corrections list, the status of Hypothesis 1, the house-style pass and a single source)"
   notes: >-
     Every proof is checked by the Lean kernel. This is a model review, not external peer review.
 
@@ -202,7 +202,7 @@ alignment:
   - source: "Theorem 1.4"
     lean: "Exploding.explosive"
     status: "proved"
-    note: "Corrected (C01, C03)."
+    note: "Corrected (C03); proof through the reduced law (C19)."
   - source: "Proposition 2.1"
     lean: "Exploding.crossing_time"
     status: "proved"
@@ -258,27 +258,27 @@ alignment:
   - source: "Proposition 5.1"
     lean: "Exploding.convergence_of_the_generalized_last_wave"
     status: "proved"
-    note: "Standing assumption d ≥ 2 (C11); cited input hChem."
+    note: "Standing assumption d ≥ 2 (C11); Hypothesis 1 in the stronger form of C12, whose published form is open; proof rewritten (C14); cited input hChem."
   - source: "Theorem 5.1"
     lean: "Exploding.generalized_convergence"
     status: "proved"
-    note: "Corrected (C11, C12); cited input hChem."
+    note: "Corrected (C11, C05, C13); Hypothesis 1 in the stronger form of C12, whose published form is open; cited input hChem."
   - source: "Theorem 6.1"
     lean: "Exploding.counterexample"
     status: "proved"
-    note: "Stated as published; proof corrected (C15)."
+    note: "Stated as published; proof corrected (C16)."
   - source: "Proposition 7.1"
     lean: "Exploding.explosion_criteria"
     status: "proved"
-    note: "Restricted to d ≥ 2 (C16); proof corrected (C17)."
+    note: "Restricted to d ≥ 2 (C17); proof corrected (C18); Hypothesis 1 in the stronger form of C12, whose published form is open."
   - source: "Proposition 7.2"
     lean: "Exploding.dimensional_reduction"
     status: "proved"
-    note: "Setup corrected (C18)."
+    note: "Setup and inductive step corrected (C20, C21)."
   - source: "Proposition 7.3"
     lean: "Exploding.recurrence"
     status: "proved"
-    note: "Proof corrected (C19)."
+    note: "Proof corrected (C22)."
   - source: "Proposition 7.4 (quoted in the paper)"
     lean: "Exploding.schonmann_bootstrap"
     status: "proved"
@@ -286,6 +286,6 @@ alignment:
   - source: "Proposition 7.5"
     lean: "Exploding.box_crossing"
     status: "proved"
-    note: "Corrected (C20)."
+    note: "Corrected (C23); proof rewritten (C24)."
 
 acknowledgements: Built on Lean 4, Mathlib, Lake, Lattice-Probability and leanprover/comparator. The cited inputs and their sources are listed in ASSUMPTIONS.md.

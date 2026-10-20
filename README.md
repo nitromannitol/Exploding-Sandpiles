@@ -86,32 +86,37 @@ here for `0 < p ≤ 1`. The map from LaTeX labels to Lean names is in
 
 ## Corrections to the published version
 
-The table lists the 20 changes from arXiv v2, in the order of the corrected edition. Each gives the
-published text, the corrected text and the reason. "Where" names the result concerned; "proof only"
-marks a change that leaves the statement unchanged.
+The corrected edition ends with the section "Corrections to the published version", which lists every change
+from arXiv v2 with the published text, the corrected text and the reason. The table summarizes it, in the
+same order and with the same numbers.
 
-| Change | Where | Published | Corrected | Reason |
-| --- | --- | --- | --- | --- |
-| C01 | Law (2), Section 1 | $\mathbf P(\eta(0)=2d-2)=1-p$, $\mathbf P(\eta(0)=2d-1)=p$ at the origin only | $\mathbf P=\bigotimes_{x}\nu_p$, $\nu_p=(1-p)\delta_{2d-2}+p\delta_{2d-1}$, $0<p\le1$ | The published law does not fix the marginal away from the origin; with $2d-2$ elsewhere the background is robust. |
-| C02 | Theorems 1.2 and 1.3 | Law (2) fixes the origin marginal only; "convex domain" unspecified | Law read as C01; a convex domain is a nonempty open convex set | The statements need the common marginal, and the term needs a definition. |
-| C03 | Theorem 1.4 | Product measure $\mathbf P$, $\beta\ge d$, $\mathbf P(\beta(0)=2d-1)>0$ | $d\ge2$, $\nu(\{m\ge d\})=1$, $\nu(\{2d-1\})>0$, $\mathbf P=\bigotimes_x\nu$ | The published statement fails for product laws whose marginals differ between sites. |
-| C04 | Frozen parallel toppling recursion | $w_{t+1}(x)=\lfloor\cdot\rfloor$ for $x\notin\mathcal S$; $s'_{t+1}=s_0+\Delta(w_{t+1}-w_0)$ | $w_{t+1}(x)=\max\{w_t(x),\lfloor\cdot\rfloor\}$; $s'_{t+1}=s_0+\Delta w_{t+1}$ | The odometer never decreases; the identity for $s'$ holds only when $\Delta w_0=0$. |
-| C05 | Proposition 2.1, Lemma 2.1, Hypotheses 2 to 4, recurrence criterion, proof of Proposition 4.1 | Delivered seed $s'_0=\eta$ | $s'_0=\eta+\Delta w_0$; "quickly exceeds 1" becomes "is at least 1" in Hypothesis 3 | The published seed contradicts the frozen process; with $s'_0=\eta$ nothing topples on an L-shaped path on $\eta\equiv2d-2$. |
-| C06 | Proof of Proposition 2.2 (paragraph before it, proof only) | Good cubes dominate a site percolation process; large deviations for supercritical percolation | Good edges dominate bond percolation $\zeta$ (Liggett, Schonmann and Stacey, Corollary 1.4); Mathieu's Lemma 5.2 bounds holes; Antal and Pisztora bounds chemical distances | The chemical distance bound concerns bond percolation; good cubes form a site process. |
-| C07 | Lemma 2.1, initial odometer and its figure caption | $w_0\vert_A=1$; caption $s'_0=2$ | $w_0=\mathbf 1_A$ on the whole lattice; caption $s'_0=2+\Delta\mathbf 1_A$ | The frozen process takes its initial odometer on the whole lattice. |
-| C08 | Lemma 3.1, statement, proof and remarks | Constant $C$ with the $(Cn^d)$-wave containing $[-n,n]^d$; proof from Fey, den Boer and Redig | For $d\ge2$, $m\ge\lceil C_2n^2\log(n+1)\rceil$ when $d=2$, or $m\ge\lceil C_dn^d\rceil$ when $d\ge3$; sharp planar rate in Remark 1 | The bound $Cn^2$ is false in dimension two (Remark 1). |
-| C09 | Proof of Proposition 3.1 (proof only) | Convergence in integer directions by the subadditive ergodic theorem; everywhere by continuity | Two bounds on $\tilde T$ on an event of probability one; ergodic theorem on the induced transformation; comparison bound in place of continuity | Integrability of $\tilde T(0,y)$ is not shown, and continuity is not available. |
-| C10 | Proof of Theorem 1.2 | No derivation | Proof via $\mathcal B(p)=\{\mathcal N_p<1\}$; the level set $\{\mathcal N_p=1\}$ has Lebesgue measure zero | Theorem 1.2 is asserted without proof. |
-| C11 | Standing assumption of Section 5; Proposition 5.1; Theorem 5.1 | No dimension assumed | "In this section assume $d\ge2$." | Both statements are false in dimension one: take $\eta\equiv0$ on $\mathbb Z$. |
-| C12 | Hypothesis 1, statement | $\eta(x)$ and $\eta(y)$ independent if $\lvert x-y\rvert>K$ | For finite $F,G$ with $\lvert x-y\rvert>K$ on $F\times G$, the values on $F$ and the values on $G$ are independent | The domination step needs joint independence; pairwise independence does not give it. |
-| C13 | Hypothesis 4, deadline | $w_{\lvert k\rvert}\ge\mathbf 1\{x\in\mathcal B_k\}$ | $w_{\lvert\mathcal B_k\rvert}\ge\mathbf 1\{x\in\mathcal B_k\}$ | Since $\eta\le2d-1$, crossing by that time is the same as eventual crossing. |
-| C14 | Proof of Proposition 5.1 (proof only) | Domination by independent Bernoulli variables; explosion asserted | Proof written out in full, deriving nonnegativity, recurrence and explosion of $\eta$ | The domination needs the joint independence of C12; the sketch does not derive explosion. |
-| C15 | Proof of Theorem 6.1, failure of convergence | Failure shown by comparison with the two-dimensional counterexample | $\lvert(A_t\triangle(A_t-e_2/t))\cap\Omega_d\rvert\ge c_d$ for large $t$, with $A_t=\{y:\bar v_t(y)>0\}$ | The sense of failure must be the one Theorem 1.2 asserts. |
-| C16 | Proposition 7.1, dimension | No restriction on $d$ | $d\ge2$ | The case $d=1$ is not covered by the machine-checked statement. |
-| C17 | Proof of Proposition 7.1 (proof only) | "The arguments in the generalization section imply the criterion"; no proof | A proof for $d\ge2$, and a separate paragraph for $d=1$ | The criterion needs a proof of its own. |
-| C18 | Setup of Proposition 7.2, initial data and tangential values | $s_0^{(d-1)}(\mathbf x_{d-1})=\eta^{(d)}(\mathbf x_{d-1})-1$; tangential values unspecified | $\eta^{(d-1)}(\mathbf x)=\eta^{(d)}(1,\mathbf x)-1$; $s_0^{(d-1)}=\eta^{(d-1)}+\Delta u_0^{(d-1)}$; boundary values in $\{0,1\}$ | The published argument of $\eta^{(d)}$ is a typo; the initial topplings need $\Delta u_0$. |
-| C19 | Proof of Proposition 7.3 (proof only) | $Q_n^{(d)}=Q_{n-2}^{(d)}\cup\bigcup_i\mathcal F_i(Q_n^{(d)})$ | $Q_n^{(d)}=(\mathbf 1+Q_{n-2}^{(d)})\cup\bigcup_{i=1}^{2d}\mathcal F_i(Q_n^{(d)})$, with base cases $n=1,2$ | $Q_{n-2}^{(d)}$ is the corner cube, not the inner cube. |
-| C20 | Proposition 7.5, box-crossing of $\mathbf P$ | "In all dimensions, $\mathbf P$ is box-crossing" | For $d\ge2$, $\mathbf P$ is box-crossing; in dimension one, every law supported on $\eta\ge1$ is | The statement fails for product laws whose marginals differ, as in C03. |
+| Change | Where | Summary |
+| --- | --- | --- |
+| C01 | Main results, law (2); Notation (Bernoulli) | Law (2) and the $\mathrm{Bernoulli}(a,b,p)$ notation become one marginal per site |
+| C02 | Theorems 1.1–1.3, reading of (2); convex domain of Theorem 1.2 | (2) is read as in C01; the convex domain of Theorem 1.2 is a nonempty open convex set, which its proof provides |
+| C03 | Theorem 1.4, statement | Product law needs one common marginal; counterexample to the published statement |
+| C04 | Section 2, frozen recursion | Odometer takes the maximum with its previous value; $s'_{t+1}=s_0+\Delta w_{t+1}$ |
+| C05 | Section 2 (Prop 2.1, Lemma 2.1, Hypotheses 2–4), Section 7 recurrence, Proposition 4.1 proof | Initial seed $s_0'=\eta+\Delta w_0$, not $\eta$ |
+| C06 | Section 2, paragraph before Proposition 2.2 (proof) | Percolation bounds: Mathieu applied to the independent site process, Antal–Pisztora to the bond process |
+| C07 | Lemma 2.1, initial odometer and caption | $w_0$ defined on the whole lattice; caption $s_0'=2+\Delta\mathbf 1_A$ |
+| C08 | Section 3, Lemma 3.1, two paragraphs after proof, Remark 1 | Lemma for every $d\geq2$ with $C_d$; remark gives planar lower bound; $Cn^2$ false in $d=2$ |
+| C09 | Section 4, Proposition 4.1 proof | Comparison of $\tilde T$ at nearby points replaces continuity; integrability via Kac |
+| C10 | Section 4, Theorem 1.2 proof | Proof added: $\mathcal B(p)=\{\mathcal N_p<1\}$, level set Lebesgue-null |
+| C11 | Section 5 standing assumption; Proposition 5.1; Theorem 5.1 | Assume $d\geq2$; $\eta\equiv0$ counterexample in $d=1$; Hyp 5 vacuous |
+| C12 | Hypothesis 1 | Pairwise independence becomes joint independence of finite families; a strengthened hypothesis, not a correction: whether the published form suffices is open |
+| C13 | Hypothesis 4, deadline | Deadline $|\mathcal B_k|$ instead of $|k|$; weaker hypothesis |
+| C14 | Proof of Proposition 5.1 | Six-step proof; published use of Theorem 4.1 of Levine–Peres [LP09] for $\eta\geq\eta_{\min}$ does not transfer |
+| C15 | Section 5.2 examples | Hypotheses 1 and 4 verified for the cloud and checkerboard; Theorem 4.2 sentence replaced; $\mathcal S$ nonempty |
+| C16 | Proof of Theorem 6.1 | Failure of convergence in the volume sense of Theorem 1.2, for $d\geq2$ |
+| C17 | Proposition 7.1, statement | "Let $d\geq2$"; $d=1$ argued after the proof |
+| C18 | Proposition 7.1, proof | Proof for $d\geq2$; criterion sentence replaced; $d=1$ paragraph |
+| C19 | Proof of Theorem 1.4 | Reduced law $\mathbf P_d$ via $\alpha_d$; recurrence and box-crossing for $\mathbf P_d$; explosion transfers |
+| C20 | Proposition 7.2, setup | Tangential field $\beta$; $\eta^{(d-1)}=\eta^{(d)}(1,\cdot)-1$; $\Delta u_0$ term |
+| C21 | Proposition 7.2, inductive step | Both constrained odometers make the same update |
+| C22 | Proposition 7.3, proof | Decomposition $Q_n=(\mathbf 1+Q_{n-2})\cup\dots$; base cases $n=1,2$ |
+| C23 | Proposition 7.5, statement | Box-crossing for $d\geq2$; $d=1$ for every law with $\eta\geq1$ |
+| C24 | Proposition 7.5, proof | Proof for $\alpha_d$ with one-marginal layer variables; $d=1$ immediate |
+| C25 | Minor wording | AI-use subsection and Lean paragraph; $n\geq1$ in counterexample; $\mathbf x_{d-1}$ in Prop 7.2; labels; ties |
 
 ## Standing assumptions and scope
 
@@ -152,8 +157,7 @@ Each statement is taken from one source file. For each source the table gives it
 
 | Source | SHA-256 | Theorem statements | Proved | Cited results | Definitions |
 |---|---|---|---|---|---|
-| [paper/corrected-arxiv/exploding-corrected-arxiv.tex](paper/corrected-arxiv/exploding-corrected-arxiv.tex) | `0cefbf3bfc7cc08597d59d36a3473cdf94ee816076f688c978510bb7edc6e019` | 23 | 23 | 2 | 4 |
-| [paper/exploding.tex](paper/exploding.tex) | `1d7c2010d8bd29e7fb83e93f19c9ebe0e8aef201f93559b2b18f5ca0dc049b44` | 6 | 6 | 7 | 0 |
+| [paper/corrected-arxiv/exploding-corrected-arxiv.tex](paper/corrected-arxiv/exploding-corrected-arxiv.tex) | `6e5a981a0d8d3b7abdf78e31d2630780b9db467e63aea7772e93043e4e804d0c` | 29 | 29 | 9 | 4 |
 
 A cited result is a hypothesis of the theorems that use it, not an axiom (see ASSUMPTIONS.md). Definitions are not counted as theorems. These counts are generated from `ledger/manifest.yaml` by `python3 tools/sync_docs.py`; `python3 tools/check_axioms.py` checks the axiom closures.
 
@@ -178,7 +182,7 @@ A cited result is a hypothesis of the theorems that use it, not an axiom (see AS
 
 ## Size
 
-`Exploding/` and `Exploding.lean`: 420 Lean files with 75,785 lines. `ExplodingAudit/`: 4 Lean
+`Exploding/` and `Exploding.lean`: 420 Lean files with 75,789 lines. `ExplodingAudit/`: 4 Lean
 files with 697 lines.
 
 ## Building

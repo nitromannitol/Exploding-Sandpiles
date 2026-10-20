@@ -14,7 +14,7 @@
 version: 1
 source_pin:
   file: paper/corrected-arxiv/exploding-corrected-arxiv.tex
-  sha256: 4e1051a63fb7900a8ff1e1cb393553c44dd92f096c3924cb7108c4c725f83d21
+  sha256: 6e5a981a0d8d3b7abdf78e31d2630780b9db467e63aea7772e93043e4e804d0c
   inputs:
   - file: paper/corrected-arxiv/defs.tex
     sha256: 9aba2c73246d79e3c6b87cb1f01cf3e2f636e27c8afd97ccb8ba5c032a9ee65b
@@ -30,7 +30,7 @@ nodes:
     provider: Exploding.Frozen.limit_shape
     source_pin: &id001
       file: paper/corrected-arxiv/exploding-corrected-arxiv.tex
-      sha256: 4e1051a63fb7900a8ff1e1cb393553c44dd92f096c3924cb7108c4c725f83d21
+      sha256: 6e5a981a0d8d3b7abdf78e31d2630780b9db467e63aea7772e93043e4e804d0c
       inputs:
       - file: paper/corrected-arxiv/defs.tex
         sha256: 9aba2c73246d79e3c6b87cb1f01cf3e2f636e27c8afd97ccb8ba5c032a9ee65b
@@ -45,7 +45,7 @@ nodes:
     provider: Exploding.Frozen.convergence_of_time_constant
     source_pin:
       file: paper/corrected-arxiv/exploding-corrected-arxiv.tex
-      sha256: 4e1051a63fb7900a8ff1e1cb393553c44dd92f096c3924cb7108c4c725f83d21
+      sha256: 6e5a981a0d8d3b7abdf78e31d2630780b9db467e63aea7772e93043e4e804d0c
       inputs:
       - file: paper/corrected-arxiv/defs.tex
         sha256: 9aba2c73246d79e3c6b87cb1f01cf3e2f636e27c8afd97ccb8ba5c032a9ee65b
@@ -60,7 +60,7 @@ nodes:
     provider: Exploding.Frozen.explosive
     source_pin:
       file: paper/corrected-arxiv/exploding-corrected-arxiv.tex
-      sha256: 4e1051a63fb7900a8ff1e1cb393553c44dd92f096c3924cb7108c4c725f83d21
+      sha256: 6e5a981a0d8d3b7abdf78e31d2630780b9db467e63aea7772e93043e4e804d0c
       inputs:
       - file: paper/corrected-arxiv/defs.tex
         sha256: 9aba2c73246d79e3c6b87cb1f01cf3e2f636e27c8afd97ccb8ba5c032a9ee65b
@@ -75,7 +75,7 @@ nodes:
     provider: Exploding.Frozen.renormalization_properties
     source_pin:
       file: paper/corrected-arxiv/exploding-corrected-arxiv.tex
-      sha256: 4e1051a63fb7900a8ff1e1cb393553c44dd92f096c3924cb7108c4c725f83d21
+      sha256: 6e5a981a0d8d3b7abdf78e31d2630780b9db467e63aea7772e93043e4e804d0c
       inputs:
       - file: paper/corrected-arxiv/defs.tex
         sha256: 9aba2c73246d79e3c6b87cb1f01cf3e2f636e27c8afd97ccb8ba5c032a9ee65b
@@ -90,7 +90,7 @@ nodes:
     provider: Exploding.Frozen.square_lower_bound
     source_pin:
       file: paper/corrected-arxiv/exploding-corrected-arxiv.tex
-      sha256: 4e1051a63fb7900a8ff1e1cb393553c44dd92f096c3924cb7108c4c725f83d21
+      sha256: 6e5a981a0d8d3b7abdf78e31d2630780b9db467e63aea7772e93043e4e804d0c
       inputs:
       - file: paper/corrected-arxiv/defs.tex
         sha256: 9aba2c73246d79e3c6b87cb1f01cf3e2f636e27c8afd97ccb8ba5c032a9ee65b
@@ -105,7 +105,7 @@ nodes:
     provider: Exploding.Frozen.sharp_planar_obstruction
     source_pin:
       file: paper/corrected-arxiv/exploding-corrected-arxiv.tex
-      sha256: 4e1051a63fb7900a8ff1e1cb393553c44dd92f096c3924cb7108c4c725f83d21
+      sha256: 6e5a981a0d8d3b7abdf78e31d2630780b9db467e63aea7772e93043e4e804d0c
       inputs:
       - file: paper/corrected-arxiv/defs.tex
         sha256: 9aba2c73246d79e3c6b87cb1f01cf3e2f636e27c8afd97ccb8ba5c032a9ee65b
@@ -120,7 +120,7 @@ nodes:
     provider: Exploding.Frozen.last_penultimate_cluster
     source_pin:
       file: paper/corrected-arxiv/exploding-corrected-arxiv.tex
-      sha256: 4e1051a63fb7900a8ff1e1cb393553c44dd92f096c3924cb7108c4c725f83d21
+      sha256: 6e5a981a0d8d3b7abdf78e31d2630780b9db467e63aea7772e93043e4e804d0c
       inputs:
       - file: paper/corrected-arxiv/defs.tex
         sha256: 9aba2c73246d79e3c6b87cb1f01cf3e2f636e27c8afd97ccb8ba5c032a9ee65b
@@ -135,7 +135,7 @@ nodes:
     provider: Exploding.Frozen.penultimate_upper_bound
     source_pin:
       file: paper/corrected-arxiv/exploding-corrected-arxiv.tex
-      sha256: 4e1051a63fb7900a8ff1e1cb393553c44dd92f096c3924cb7108c4c725f83d21
+      sha256: 6e5a981a0d8d3b7abdf78e31d2630780b9db467e63aea7772e93043e4e804d0c
       inputs:
       - file: paper/corrected-arxiv/defs.tex
         sha256: 9aba2c73246d79e3c6b87cb1f01cf3e2f636e27c8afd97ccb8ba5c032a9ee65b
@@ -150,7 +150,7 @@ nodes:
     provider: Exploding.Frozen.last_penultimate_close
     source_pin:
       file: paper/corrected-arxiv/exploding-corrected-arxiv.tex
-      sha256: 4e1051a63fb7900a8ff1e1cb393553c44dd92f096c3924cb7108c4c725f83d21
+      sha256: 6e5a981a0d8d3b7abdf78e31d2630780b9db467e63aea7772e93043e4e804d0c
       inputs:
       - file: paper/corrected-arxiv/defs.tex
         sha256: 9aba2c73246d79e3c6b87cb1f01cf3e2f636e27c8afd97ccb8ba5c032a9ee65b
@@ -165,7 +165,7 @@ nodes:
     provider: Exploding.Frozen.convergence_of_the_last_wave
     source_pin:
       file: paper/corrected-arxiv/exploding-corrected-arxiv.tex
-      sha256: 4e1051a63fb7900a8ff1e1cb393553c44dd92f096c3924cb7108c4c725f83d21
+      sha256: 6e5a981a0d8d3b7abdf78e31d2630780b9db467e63aea7772e93043e4e804d0c
       inputs:
       - file: paper/corrected-arxiv/defs.tex
         sha256: 9aba2c73246d79e3c6b87cb1f01cf3e2f636e27c8afd97ccb8ba5c032a9ee65b
@@ -180,7 +180,7 @@ nodes:
     provider: Exploding.Frozen.approximate_subadditive
     source_pin:
       file: paper/corrected-arxiv/exploding-corrected-arxiv.tex
-      sha256: 4e1051a63fb7900a8ff1e1cb393553c44dd92f096c3924cb7108c4c725f83d21
+      sha256: 6e5a981a0d8d3b7abdf78e31d2630780b9db467e63aea7772e93043e4e804d0c
       inputs:
       - file: paper/corrected-arxiv/defs.tex
         sha256: 9aba2c73246d79e3c6b87cb1f01cf3e2f636e27c8afd97ccb8ba5c032a9ee65b
@@ -195,7 +195,7 @@ nodes:
     provider: Exploding.Frozen.convergence_of_the_generalized_last_wave
     source_pin:
       file: paper/corrected-arxiv/exploding-corrected-arxiv.tex
-      sha256: 4e1051a63fb7900a8ff1e1cb393553c44dd92f096c3924cb7108c4c725f83d21
+      sha256: 6e5a981a0d8d3b7abdf78e31d2630780b9db467e63aea7772e93043e4e804d0c
       inputs:
       - file: paper/corrected-arxiv/defs.tex
         sha256: 9aba2c73246d79e3c6b87cb1f01cf3e2f636e27c8afd97ccb8ba5c032a9ee65b
@@ -210,7 +210,7 @@ nodes:
     provider: Exploding.Frozen.generalized_convergence
     source_pin:
       file: paper/corrected-arxiv/exploding-corrected-arxiv.tex
-      sha256: 4e1051a63fb7900a8ff1e1cb393553c44dd92f096c3924cb7108c4c725f83d21
+      sha256: 6e5a981a0d8d3b7abdf78e31d2630780b9db467e63aea7772e93043e4e804d0c
       inputs:
       - file: paper/corrected-arxiv/defs.tex
         sha256: 9aba2c73246d79e3c6b87cb1f01cf3e2f636e27c8afd97ccb8ba5c032a9ee65b
@@ -225,7 +225,7 @@ nodes:
     provider: Exploding.ce_counterexample_complete
     source_pin:
       file: paper/corrected-arxiv/exploding-corrected-arxiv.tex
-      sha256: 4e1051a63fb7900a8ff1e1cb393553c44dd92f096c3924cb7108c4c725f83d21
+      sha256: 6e5a981a0d8d3b7abdf78e31d2630780b9db467e63aea7772e93043e4e804d0c
       inputs:
       - file: paper/corrected-arxiv/defs.tex
         sha256: 9aba2c73246d79e3c6b87cb1f01cf3e2f636e27c8afd97ccb8ba5c032a9ee65b
@@ -240,7 +240,7 @@ nodes:
     provider: Exploding.Frozen.explosion_criteria
     source_pin:
       file: paper/corrected-arxiv/exploding-corrected-arxiv.tex
-      sha256: 4e1051a63fb7900a8ff1e1cb393553c44dd92f096c3924cb7108c4c725f83d21
+      sha256: 6e5a981a0d8d3b7abdf78e31d2630780b9db467e63aea7772e93043e4e804d0c
       inputs:
       - file: paper/corrected-arxiv/defs.tex
         sha256: 9aba2c73246d79e3c6b87cb1f01cf3e2f636e27c8afd97ccb8ba5c032a9ee65b
@@ -255,7 +255,7 @@ nodes:
     provider: Exploding.Frozen.box_crossing
     source_pin:
       file: paper/corrected-arxiv/exploding-corrected-arxiv.tex
-      sha256: 4e1051a63fb7900a8ff1e1cb393553c44dd92f096c3924cb7108c4c725f83d21
+      sha256: 6e5a981a0d8d3b7abdf78e31d2630780b9db467e63aea7772e93043e4e804d0c
       inputs:
       - file: paper/corrected-arxiv/defs.tex
         sha256: 9aba2c73246d79e3c6b87cb1f01cf3e2f636e27c8afd97ccb8ba5c032a9ee65b
@@ -333,7 +333,7 @@ nodes:
     provider: Exploding.Frozen.last_wave_bound
     source_pin:
       file: paper/corrected-arxiv/exploding-corrected-arxiv.tex
-      sha256: 4e1051a63fb7900a8ff1e1cb393553c44dd92f096c3924cb7108c4c725f83d21
+      sha256: 6e5a981a0d8d3b7abdf78e31d2630780b9db467e63aea7772e93043e4e804d0c
       inputs:
       - file: paper/corrected-arxiv/defs.tex
         sha256: 9aba2c73246d79e3c6b87cb1f01cf3e2f636e27c8afd97ccb8ba5c032a9ee65b
@@ -348,7 +348,7 @@ nodes:
     provider: Exploding.Frozen.dimensional_reduction
     source_pin:
       file: paper/corrected-arxiv/exploding-corrected-arxiv.tex
-      sha256: 4e1051a63fb7900a8ff1e1cb393553c44dd92f096c3924cb7108c4c725f83d21
+      sha256: 6e5a981a0d8d3b7abdf78e31d2630780b9db467e63aea7772e93043e4e804d0c
       inputs:
       - file: paper/corrected-arxiv/defs.tex
         sha256: 9aba2c73246d79e3c6b87cb1f01cf3e2f636e27c8afd97ccb8ba5c032a9ee65b
@@ -363,7 +363,7 @@ nodes:
     provider: Exploding.Frozen.approx_subadditivity
     source_pin:
       file: paper/corrected-arxiv/exploding-corrected-arxiv.tex
-      sha256: 4e1051a63fb7900a8ff1e1cb393553c44dd92f096c3924cb7108c4c725f83d21
+      sha256: 6e5a981a0d8d3b7abdf78e31d2630780b9db467e63aea7772e93043e4e804d0c
       inputs:
       - file: paper/corrected-arxiv/defs.tex
         sha256: 9aba2c73246d79e3c6b87cb1f01cf3e2f636e27c8afd97ccb8ba5c032a9ee65b
@@ -378,7 +378,7 @@ nodes:
     provider: Exploding.Frozen.recurrence
     source_pin:
       file: paper/corrected-arxiv/exploding-corrected-arxiv.tex
-      sha256: 4e1051a63fb7900a8ff1e1cb393553c44dd92f096c3924cb7108c4c725f83d21
+      sha256: 6e5a981a0d8d3b7abdf78e31d2630780b9db467e63aea7772e93043e4e804d0c
       inputs:
       - file: paper/corrected-arxiv/defs.tex
         sha256: 9aba2c73246d79e3c6b87cb1f01cf3e2f636e27c8afd97ccb8ba5c032a9ee65b
@@ -393,7 +393,7 @@ nodes:
     provider: Exploding.Frozen.local_convexity
     source_pin:
       file: paper/corrected-arxiv/exploding-corrected-arxiv.tex
-      sha256: 4e1051a63fb7900a8ff1e1cb393553c44dd92f096c3924cb7108c4c725f83d21
+      sha256: 6e5a981a0d8d3b7abdf78e31d2630780b9db467e63aea7772e93043e4e804d0c
       inputs:
       - file: paper/corrected-arxiv/defs.tex
         sha256: 9aba2c73246d79e3c6b87cb1f01cf3e2f636e27c8afd97ccb8ba5c032a9ee65b
@@ -408,7 +408,7 @@ nodes:
     provider: Exploding.Frozen.finite_exploding
     source_pin:
       file: paper/corrected-arxiv/exploding-corrected-arxiv.tex
-      sha256: 4e1051a63fb7900a8ff1e1cb393553c44dd92f096c3924cb7108c4c725f83d21
+      sha256: 6e5a981a0d8d3b7abdf78e31d2630780b9db467e63aea7772e93043e4e804d0c
       inputs:
       - file: paper/corrected-arxiv/defs.tex
         sha256: 9aba2c73246d79e3c6b87cb1f01cf3e2f636e27c8afd97ccb8ba5c032a9ee65b
@@ -423,7 +423,7 @@ nodes:
     provider: Exploding.crossing_time_terminal_bound
     source_pin:
       file: paper/corrected-arxiv/exploding-corrected-arxiv.tex
-      sha256: 4e1051a63fb7900a8ff1e1cb393553c44dd92f096c3924cb7108c4c725f83d21
+      sha256: 6e5a981a0d8d3b7abdf78e31d2630780b9db467e63aea7772e93043e4e804d0c
       inputs:
       - file: paper/corrected-arxiv/defs.tex
         sha256: 9aba2c73246d79e3c6b87cb1f01cf3e2f636e27c8afd97ccb8ba5c032a9ee65b
@@ -498,7 +498,7 @@ nodes:
     provider: Exploding.counterexampleThreshold
     source_pin:
       file: paper/corrected-arxiv/exploding-corrected-arxiv.tex
-      sha256: 4e1051a63fb7900a8ff1e1cb393553c44dd92f096c3924cb7108c4c725f83d21
+      sha256: 6e5a981a0d8d3b7abdf78e31d2630780b9db467e63aea7772e93043e4e804d0c
       inputs:
       - file: paper/corrected-arxiv/defs.tex
         sha256: 9aba2c73246d79e3c6b87cb1f01cf3e2f636e27c8afd97ccb8ba5c032a9ee65b
@@ -513,7 +513,7 @@ nodes:
     provider: Exploding.counterexamplePile
     source_pin:
       file: paper/corrected-arxiv/exploding-corrected-arxiv.tex
-      sha256: 4e1051a63fb7900a8ff1e1cb393553c44dd92f096c3924cb7108c4c725f83d21
+      sha256: 6e5a981a0d8d3b7abdf78e31d2630780b9db467e63aea7772e93043e4e804d0c
       inputs:
       - file: paper/corrected-arxiv/defs.tex
         sha256: 9aba2c73246d79e3c6b87cb1f01cf3e2f636e27c8afd97ccb8ba5c032a9ee65b
@@ -528,7 +528,7 @@ nodes:
     provider: Exploding.counterexampleArrival
     source_pin:
       file: paper/corrected-arxiv/exploding-corrected-arxiv.tex
-      sha256: 4e1051a63fb7900a8ff1e1cb393553c44dd92f096c3924cb7108c4c725f83d21
+      sha256: 6e5a981a0d8d3b7abdf78e31d2630780b9db467e63aea7772e93043e4e804d0c
       inputs:
       - file: paper/corrected-arxiv/defs.tex
         sha256: 9aba2c73246d79e3c6b87cb1f01cf3e2f636e27c8afd97ccb8ba5c032a9ee65b
@@ -543,7 +543,7 @@ nodes:
     provider: Exploding.counterexampleSupport
     source_pin:
       file: paper/corrected-arxiv/exploding-corrected-arxiv.tex
-      sha256: 4e1051a63fb7900a8ff1e1cb393553c44dd92f096c3924cb7108c4c725f83d21
+      sha256: 6e5a981a0d8d3b7abdf78e31d2630780b9db467e63aea7772e93043e4e804d0c
       inputs:
       - file: paper/corrected-arxiv/defs.tex
         sha256: 9aba2c73246d79e3c6b87cb1f01cf3e2f636e27c8afd97ccb8ba5c032a9ee65b
@@ -558,7 +558,7 @@ nodes:
     provider: Exploding.External.FeyDenBoerRedigCubicalCluster
     source_pin:
       file: paper/corrected-arxiv/exploding-corrected-arxiv.tex
-      sha256: 4e1051a63fb7900a8ff1e1cb393553c44dd92f096c3924cb7108c4c725f83d21
+      sha256: 6e5a981a0d8d3b7abdf78e31d2630780b9db467e63aea7772e93043e4e804d0c
       inputs:
       - file: paper/corrected-arxiv/defs.tex
         sha256: 9aba2c73246d79e3c6b87cb1f01cf3e2f636e27c8afd97ccb8ba5c032a9ee65b
@@ -573,7 +573,7 @@ nodes:
     provider: Exploding.External.FeyLevinePeresRadius
     source_pin:
       file: paper/corrected-arxiv/exploding-corrected-arxiv.tex
-      sha256: 4e1051a63fb7900a8ff1e1cb393553c44dd92f096c3924cb7108c4c725f83d21
+      sha256: 6e5a981a0d8d3b7abdf78e31d2630780b9db467e63aea7772e93043e4e804d0c
       inputs:
       - file: paper/corrected-arxiv/defs.tex
         sha256: 9aba2c73246d79e3c6b87cb1f01cf3e2f636e27c8afd97ccb8ba5c032a9ee65b

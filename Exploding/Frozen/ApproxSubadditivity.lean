@@ -98,7 +98,7 @@ open Exploding LatticeProb
 
 The arrival times are taken in `ℕ∞`, where addition is monotone and `⊤` absorbs,
 so the inequality says exactly what the paper's does and never reads a junk
-natural number.  Section 3 fixes `η` as in `(1.2)` and takes every last wave to
+natural number.  Section 3 fixes `η` as in `(2)` and takes every last wave to
 be well defined, which is Lemma 3.2. -/
 -- FROZEN-STATEMENT-BEGIN
 theorem Exploding.Frozen.approx_subadditivity (d : ℕ) (hd : 2 ≤ d) (η : Site d → ℤ)

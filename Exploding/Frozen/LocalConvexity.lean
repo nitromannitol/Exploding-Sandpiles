@@ -15,7 +15,7 @@ lattice (zero off `A`), `s_0' = η + Δw_0`.  Then, `w_t|_{br(A)} = 1`, for all 
 seed `η + Δ w₀`.
 
 The path is given by its vertices `z 0, …, z m`, consecutive ones adjacent, and
-`A` is their image.  Section 2 fixes `η` as in `(1.2)`, so `2d - 2 ≤ η ≤ 2d - 1`.
+`A` is their image.  Section 2 fixes `η` as in `(2)`, so `2d - 2 ≤ η ≤ 2d - 1`.
 `w_0 = 1{x ∈ A}` is `Set.indicator A 1`.
 `|br(A)|` is the cardinality of the bounding rectangle, whose finiteness is
 carried explicitly rather than read through `Set.ncard = 0`. -/

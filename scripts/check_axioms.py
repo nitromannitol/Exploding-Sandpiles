@@ -44,7 +44,7 @@ expected = {
     'Exploding.xsr_schonmann',
     'Exploding.xsr_flp',
     'Exploding.LSProof.ls_flp_from_explosive',
-    'Exploding.explosion_criteria_v4_premises_nonvacuous',
+    'Exploding.explosion_criteria_premises_nonvacuous',
     'Exploding.measurableErgodicOn_iff_omegaErgodicOn',
     'Exploding.omegaCoordMeasurableSpace_eq_subtype',
     'Exploding.omegaCoord_invariant_iff_exists',

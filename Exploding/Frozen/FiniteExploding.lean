@@ -18,7 +18,7 @@ open Exploding LatticeProb MeasureTheory
 `M̂_η(0)` is the least `n ≥ 1` whose `n`-wave at the origin does not stabilize;
 it is finite exactly when such an `n` exists, which is the conclusion here.
 Section 3 draws `η` from the probability-one event of Proposition 2.2, so the
-statement is almost sure under the law `(1.2)`.
+statement is almost sure under the law `(2)`.
 
 Section 3 runs on the event of Proposition 2.2, so the results the paper cites
 for it enter as explicit hypotheses: `hLSSB` (Liggett, Schonmann and Stacey,

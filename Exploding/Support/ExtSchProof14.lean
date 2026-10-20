@@ -2,8 +2,9 @@
 The dimensional obstruction to the base scale.
 
 `xsch8_Base d p` is exactly the finite-volume statement of Schonmann's theorem:
-some cube is internally spanned with probability at least `1 - 2^{-2d}`.  It is
-the last open claim of the renormalization scheme.
+some cube is internally spanned with probability at least `1 - 2^{-2d}`.  It is the
+base case of the renormalization scheme of this route; Schonmann's bound itself is proved by
+a different route in `ExtSchFinal`.
 
 The renormalization recursion `xsch8_Recursion d p` (proved in `ExtSchProof12`)
 relates `xsch8_a d p (2 * n)` to `xsch8_a d p n` *at the same dimension* `d`, and

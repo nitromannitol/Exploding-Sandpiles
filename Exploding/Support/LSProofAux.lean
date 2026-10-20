@@ -57,7 +57,7 @@ triggered by a chain of neighbours ultimately traced back to the extra chips
 `explodingPile η - η` at `0`. -/
 theorem ls_speed_bound_tri_add (a b : ℤ) : |a + b| ≤ |a| + |b| := by
   calc
-    |a + b| = |a - (-b)| := by ring
+    |a + b| = |a - (-b)| := by rw [sub_neg_eq_add]
     _ ≤ |a| + |-b| := abs_sub _ _
     _ = |a| + |b| := by simp
 

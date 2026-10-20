@@ -8,7 +8,7 @@ open Exploding LatticeProb MeasureTheory
 with probability at least `(1 - δ)`."
 
 The event expands the terminal condition and positive minimum in the definition of the
-crossing time `𝔠` given before the proposition. The product law is specified in (1.2)
+crossing time `𝔠` given before the proposition. The product law is specified in (2)
 (`eq:toy-eta-definition`). -/
 -- FROZEN-STATEMENT-BEGIN
 theorem Exploding.Frozen.crossing_time (d : ℕ) (hd : 2 ≤ d)

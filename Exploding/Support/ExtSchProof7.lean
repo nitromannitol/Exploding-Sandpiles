@@ -33,7 +33,7 @@ theorem xsch7_sp_of_blockCover {η : Site d → ℤ} {n : ℕ} (h : η ∈ xsch7
   obtain ⟨ι, _, R, hgood, hsub, hfaces⟩ := h
   exact xsch3_sp_of_block_family R η n hgood hsub hfaces
 
-/-- **The coarse good-block percolation estimate (the remaining gap).**  A
+/-- **The coarse good-block percolation estimate** (a hypothesis of this route).  A
 good-block cover of the lower boundary exists with probability `1 - c exp(-C n)`. -/
 def xsch7_BlockPercolation (d : ℕ) (p : ℝ) : Prop :=
   ∃ c C : ℝ, 0 < c ∧ 0 < C ∧ ∀ n : ℕ,

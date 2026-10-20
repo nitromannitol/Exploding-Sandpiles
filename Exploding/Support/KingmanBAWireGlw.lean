@@ -5,7 +5,7 @@ Proposition 5.1: the Kingman input of the Section 5 assembly, corrected.
 (`king_not_glw2_KingmanCore`), so the implication is vacuously true and says nothing.  The
 corrected assembly consumes `king_LipKingman` (proved: `king_LipKingman_true`) together with the
 local Lipschitz bound `glw2_LipschitzLocal`, which is what the paper's proof of Proposition 5.1
-uses.  The open claims of the reduction of Proposition 5.1 are then the two true statements
+uses.  The hypotheses of the reduction of Proposition 5.1 are then the two true statements
 `glw2_LipschitzLocal d ηmin P` and `king_Section3Convergence d hd ηmin hηmin L hL P`.
 -/
 import Exploding.Support.GLWProof2

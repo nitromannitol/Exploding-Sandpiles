@@ -9,7 +9,7 @@ The source criterion `explosive_of_source_ergodic` is applied to one concrete la
 `2d - 1` for `d = 2`, and let `Q` be its source law on `Ω`, the comap of `P` along the subtype
 inclusion. The law `Q` satisfies every premise of the consumer, and the consumer then gives
 probability one to the explosive event. No hypothesis is assumed; every premise is produced by the
-existing witness `explosion_criteria_v4_premises_nonvacuous` and the source transport lemmas.
+existing witness `explosion_criteria_premises_nonvacuous` and the source transport lemmas.
 -/
 
 namespace Exploding
@@ -38,7 +38,7 @@ theorem source_criterion_vacuity_d2 :
   have hPeq : P = Measure.infinitePi fun _ : Site 2 => Measure.dirac (2 * ((2 : ℕ) : ℤ) - 1) :=
     rfl
   obtain ⟨hidx, hprob, hsupp, hstatP, hergP, h1P, h2P, hrecP⟩ :=
-    explosion_criteria_v4_premises_nonvacuous 2 (le_refl 2) (-1) (by norm_num)
+    explosion_criteria_premises_nonvacuous 2 (le_refl 2) (-1) (by norm_num)
   have hPprob : IsProbabilityMeasure P := by rw [hPeq]; exact hprob
   have hsuppP : ∀ᵐ η ∂P, InOmega 2 (-1) η := by rw [hPeq]; exact hsupp
   have hstatP' : StationaryOn 2 (⊤ : AddSubgroup (Site 2)) P := by rw [hPeq]; exact hstatP

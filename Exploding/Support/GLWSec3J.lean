@@ -1,5 +1,5 @@
 /-
-Proposition 5.1 of the paper (generalized last wave): the two open claims behind the local bound
+Proposition 5.1 of the paper (generalized last wave): the two statements behind the local bound
 and the closeness of the arrival times, isolated as a probabilistic claim (the infinite cluster
 of strongly box-crossing tiles) and a deterministic claim (the Section-3 estimates run on the
 event of that cluster and of Hypothesis 3), and their assembly into `glws_Origin` and

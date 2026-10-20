@@ -27,7 +27,8 @@ theorem xsch3_sp_of_block_family {ι : Type*} (R : ι → Set (Site d)) (η : Si
   exact xsch2_sp_of_faces n η fun x hx hface =>
     xsch_Top_mono hsub (hU x (hfaces x hx hface))
 
-/-- **The percolation estimate of the block argument (the remaining gap).**
+/-- **The percolation estimate of the block argument**, proved as `xsr_percolation` in
+`ExtSchFinal`.
 Good blocks percolate: the cube is spanned with probability `1 - c exp(-C n)`. -/
 def xsch3_PercolationBound (d : ℕ) (p : ℝ) : Prop :=
   ∃ c C : ℝ, 0 < c ∧ 0 < C ∧ ∀ n : ℕ,

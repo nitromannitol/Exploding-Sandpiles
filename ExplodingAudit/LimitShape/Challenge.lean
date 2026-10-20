@@ -140,7 +140,7 @@ noncomputable def chipLaw (a b : ℤ) (p : ℝ) : Measure ℤ :=
 noncomputable def productLaw (d : ℕ) (a b : ℤ) (p : ℝ) : Measure (Site d → ℤ) :=
   Measure.infinitePi fun _ : Site d => chipLaw a b p
 
-/-- The law of `(1.2)`: `2d - 1` chips with probability `p` and `2d - 2` with probability `1 - p`. -/
+/-- The law of `(2)`: `2d - 1` chips with probability `p` and `2d - 2` with probability `1 - p`. -/
 noncomputable def toyLaw (d : ℕ) (p : ℝ) : Measure (Site d → ℤ) :=
   productLaw d (2 * d - 1) (2 * d - 2) p
 

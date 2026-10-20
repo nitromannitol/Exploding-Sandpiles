@@ -93,7 +93,7 @@ The default library build includes this module. It can also be built explicitly 
 #print axioms Exploding.LSProof.ls_flp_from_explosive
 
 -- Source-space transports, concrete laws, and geometric estimates
-#print axioms Exploding.explosion_criteria_v4_premises_nonvacuous
+#print axioms Exploding.explosion_criteria_premises_nonvacuous
 #print axioms Exploding.measurableErgodicOn_iff_omegaErgodicOn
 #print axioms Exploding.omegaCoordMeasurableSpace_eq_subtype
 #print axioms Exploding.omegaCoord_invariant_iff_exists

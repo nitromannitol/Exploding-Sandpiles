@@ -32,7 +32,7 @@ theorem glws_hrobust (hd : 2 ≤ d) (η : Site d → ℤ)
     rw [hv]
     simpa [hs0eq] using this
   have hvn : (n : ℤ) ≤ v (0 : Site d) :=
-    glw_wave_to_explosive_v0 η hη0 hdpos n v hv0nn hstable0
+    glw_wave_to_explosive_of_origin_bound η hη0 hdpos n v hv0nn hstable0
   have hstable : ∀ x, x ≠ (0 : Site d) → η x + lap v x ≤ 2 * (d : ℤ) - 1 := by
     intro x hx
     rw [hv]

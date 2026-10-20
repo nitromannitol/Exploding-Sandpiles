@@ -9,7 +9,7 @@ The persistent-source comparison is already formalised in
 
 * `glw_wave_to_explosive_pstable`: the terminal odometer `v` of a stabilizable
   pile is stable, `s0 x + lap v x ≤ 2d - 1`;
-* `glw_wave_to_explosive_v0`: if `s0 = η + (2dn+1) δ_0` stabilizes with terminal
+* `glw_wave_to_explosive_of_origin_bound`: if `s0 = η + (2dn+1) δ_0` stabilizes with terminal
   `v`, then `v 0 ≥ n` (the extra `2dn+1` chips at the origin force it to topple
   at least `n` times);
 * `glw_wave_to_explosive_dom`: a nonnegative stable `v` with `v 0 ≥ n` dominates
@@ -63,7 +63,7 @@ theorem as4_hrobust (d : ℕ) (hd : 2 ≤ d) (η : Site d → ℤ)
     rw [hv]
     simpa [hs0eq] using this
   have hvn : (n : ℤ) ≤ v (0 : Site d) :=
-    glw_wave_to_explosive_v0 η hη0 hdpos n v hv0nn hstable0
+    glw_wave_to_explosive_of_origin_bound η hη0 hdpos n v hv0nn hstable0
   have hstable : ∀ x, x ≠ (0 : Site d) → η x + lap v x ≤ 2 * (d : ℤ) - 1 := by
     intro x hx
     rw [hv]

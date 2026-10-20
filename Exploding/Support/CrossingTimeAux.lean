@@ -384,7 +384,7 @@ theorem aux_ct_ae_bounded (d : ℕ) (hd : 2 ≤ d) (p : ℝ) (hp : 0 < p) (hp1 :
     calc
       ENNReal.ofReal p + ENNReal.ofReal (1 - p) = ENNReal.ofReal (p + (1 - p)) := by
         rw [ENNReal.ofReal_add hp_nonneg hp1_nonneg]
-      _ = ENNReal.ofReal 1 := by ring
+      _ = ENNReal.ofReal 1 := by congr 1; ring
       _ = 1 := ENNReal.ofReal_one
   have h_chip_ab : (chipLaw a b p) ({b, a} : Set ℤ) = 1 := by
     unfold chipLaw
@@ -1339,7 +1339,7 @@ theorem aux_ct_propagate_chain (d k : ℕ) (hd : 2 ≤ d) (η : Site d → ℤ)
     rwa [heq] at this
 
 /-- **(a)**.  If `η` is pointwise bounded as in
-`(1.2)` and every line of `Q_k`, in every direction, carries a `(2d-1)`-chip
+`(2)` and every line of `Q_k`, in every direction, carries a `(2d-1)`-chip
 catalyst, then `Q_k` is a good cube: every crossing time `𝔠_k^{(i,z)}`,
 `z ∈ closureN (cube d k)`, is at most `k^d`.  Assembled from
 `aux_ct_propagate_chain` (reach `x` from `z` by peeling off-axis coordinates

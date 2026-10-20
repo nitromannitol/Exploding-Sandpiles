@@ -3,7 +3,7 @@
 
 Each manifest node names the paper statement it formalizes as
 
-    source: exploding.tex:<a>-<b> (label <lab>[, ...])
+    source: exploding-corrected-arxiv.tex:<a>-<b> (label <lab>[, ...])
 
 The line range is derived data: it is the span of the LaTeX environment that
 contains `\\label{<lab>}`.  Editing the paper anywhere above a statement shifts

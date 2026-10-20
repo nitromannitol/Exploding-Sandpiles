@@ -1,6 +1,6 @@
 /-
 The first deterministic steps of the second inequality of Lemma 3.7
-(`exploding.tex:828-835`): a site reached by the last wave is reached along a
+(`exploding-corrected-arxiv.tex:830-837`): a site reached by the last wave is reached along a
 path of distinct sites that are all positive, and a path of positive sites
 carries positivity to its bounding rectangle within the size of that rectangle.
 -/

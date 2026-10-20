@@ -1,4 +1,4 @@
-"""Check (or repair) the `exploding.tex:<a>-<b>` citations inside the Lean sources.
+"""Check (or repair) the `exploding-corrected-arxiv.tex:<a>-<b>` citations inside the Lean sources.
 
 The docstrings point at the paper by line range.  Line ranges are derived data:
 inserting a paragraph anywhere above a statement shifts every citation below it,

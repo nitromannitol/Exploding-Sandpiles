@@ -1,5 +1,5 @@
 /-
-The last-wave vocabulary of Section 3 of `paper/exploding.tex`, beyond the
+The last-wave vocabulary of Section 3 of `paper/corrected-arxiv/exploding-corrected-arxiv.tex`, beyond the
 definitions of `Exploding.Support.Vocab`: the neighbours of a site, the `n`-wave
 along a stretch of time, the penultimate wave at its centre and off its cluster,
 and the shape of the `ℕ∞`-valued arrival times.

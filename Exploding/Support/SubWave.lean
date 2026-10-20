@@ -1,5 +1,5 @@
 /-
-The comparison of Section 4 of `paper/exploding.tex`: off the frozen set, the
+The comparison of Section 4 of `paper/corrected-arxiv/exploding-corrected-arxiv.tex`: off the frozen set, the
 frozen parallel toppling odometer dominates the last wave.
 
 This is the paper's `u'_t |_{P(0)^c} ≥ u_t |_{P(0)^c}`: the frozen odometer

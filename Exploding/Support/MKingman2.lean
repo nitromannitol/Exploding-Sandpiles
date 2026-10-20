@@ -1,7 +1,7 @@
 /-
-Follow-up to `MKingman.lean`: the first-return (induced) map used by the
-paper's repair of the moment-free Kingman theorem (Proposition 5.1 and
-Proposition 3.1).  Mathlib has conservativity and Poincaré recurrence
+Continuation of `MKingman.lean`: the first-return (induced) map used by the
+moment-free form of Kingman's theorem in the proofs of Propositions 3.1 and
+5.1.  Mathlib has conservativity and Poincaré recurrence
 (`MeasureTheory.Conservative`) but no induced transformation or Kac lemma, so
 this file builds the parts of the induced system that are needed.
 

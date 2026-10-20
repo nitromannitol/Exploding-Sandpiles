@@ -16,7 +16,7 @@ open Exploding LatticeProb MeasureTheory Filter
 
 /-- **Theorem 1.3** (`paper/corrected-arxiv/exploding-corrected-arxiv.tex:117-120`, label `theorem:convergence_of_time_constant`).
 
-"Let `η` be as in (1.2) and let `T_η(x) := min{t ≥ 1 : v_t(x) > 0}`.  On an event
+"Let `η` be as in (2) and let `T_η(x) := min{t ≥ 1 : v_t(x) > 0}`.  On an event
 of probability 1, the rescaled arrival times `T̄_η(x) := n^{-1} T_η([n x])`
 converge locally uniformly to `N_p`, a continuous, convex, one-homogeneous
 function on `ℝ^d`."

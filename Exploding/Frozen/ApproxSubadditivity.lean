@@ -91,14 +91,14 @@ end Exploding
 
 open Exploding LatticeProb
 
-/-- **Lemma 3.4** (`paper/corrected-arxiv/exploding-corrected-arxiv.tex:888-893`, label `lemma:approx_subadditivity`).
+/-- **Lemma 3.4** (`paper/corrected-arxiv/exploding-corrected-arxiv.tex:762-767`, label `lemma:approx_subadditivity`).
 
 "The penultimate-cluster arrival times are subadditive: for all `a, b, z ∈ ℤ^d`,
 `T̃(a,z) ≤ T̃(a,b) + T̃(b,z)`."
 
 The arrival times are taken in `ℕ∞`, where addition is monotone and `⊤` absorbs,
 so the inequality says exactly what the paper's does and never reads a junk
-natural number.  Section 3 fixes `η` as in `(1.2)` and takes every last wave to
+natural number.  Section 3 fixes `η` as in `(2)` and takes every last wave to
 be well defined, which is Lemma 3.2. -/
 -- FROZEN-STATEMENT-BEGIN
 theorem Exploding.Frozen.approx_subadditivity (d : ℕ) (hd : 2 ≤ d) (η : Site d → ℤ)

@@ -5,7 +5,7 @@ import Exploding.Support.SubGeom
 # Bounding rectangles of paths
 
 The bounding rectangle of a finite path, in the form the local-convexity
-argument of `paper/exploding.tex` uses it: the coordinatewise minimum and
+argument of `paper/corrected-arxiv/exploding-corrected-arxiv.tex` uses it: the coordinatewise minimum and
 maximum of the first `j+1` points of a path, the identification of the
 bounding rectangle `br` of the path's image with the box they define, and the
 fact that a point of the box off the path has a neighbour in the box.
@@ -545,7 +545,7 @@ theorem bmax_succ_up (z : ℕ → Site d) (j : ℕ) (i : Fin d)
   exact max_eq_left (le_bmax z j k (le_refl j))
 
 
-/-- **The box update** (`exploding.tex:545-553`): if the path steps from `z j`
+/-- **The box update** (`exploding-corrected-arxiv.tex:415-423`): if the path steps from `z j`
 to `z (j+1) = z j + e_i` and `z j i` is the maximum of the path in direction
 `i`, the box of the first `j+2` points is the box of the first `j+1` points
 together with the cap above it in direction `i`. -/
@@ -778,7 +778,7 @@ theorem box_succ_down (z : ℕ → Site d) (j : ℕ) (i : Fin d)
           rw [h8, h1]
           exact le_trans (hp.2 k hk).2 (le_max_left _ _)
 
-/-- **The filling lemma for a path** (`exploding.tex:531-535`,
+/-- **The filling lemma for a path** (Lemma 2.1 of `exploding-corrected-arxiv.tex`, label
 `lemma:local_convexity`), on the extremal background: the terminal support of
 the frozen odometer started from the indicator of a lattice path contains the
 bounding box of the path.

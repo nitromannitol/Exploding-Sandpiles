@@ -1,6 +1,6 @@
 /-
 The arithmetic step of the comparison between the frozen odometer and the last
-wave in Section 4 of `paper/exploding.tex`: one step of the frozen recursion
+wave in Section 4 of `paper/corrected-arxiv/exploding-corrected-arxiv.tex`: one step of the frozen recursion
 dominates one step of the wave recursion when the frozen value is in `{0, 1}`
 and the frozen sandpile is at most `4d - 1`.
 -/

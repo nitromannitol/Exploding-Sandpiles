@@ -4,7 +4,7 @@
 A reader who is told that something is assumed should be able to see exactly
 what. This lists FROZEN definitions in `Exploding/External/`, with where the
 paper cites them and the verbatim Lean propositions that are assumed. FROZEN
-definitions elsewhere are classified separately and need source/body review.
+definitions elsewhere are definitions stated separately, not cited results.
 
     python3 tools/assumptions.py            # write ASSUMPTIONS.md
     python3 tools/assumptions.py --check    # fail if the file on disk is stale
@@ -13,7 +13,7 @@ import pathlib, re, sys
 
 sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent))
 from check_manifest import strip_block_comments  # noqa: E402
-from sync_docs import (is_cited_external, is_local_definition, legacy_reporting,
+from sync_docs import (is_cited_external, is_local_definition,
                        load_manifest, source_pins)  # noqa: E402
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
@@ -167,7 +167,7 @@ def render():
     pins = source_pins(man["nodes"], man)
     assumed = [n for n in man["nodes"] if is_cited_external(n)]
     local_definitions = [n for n in man["nodes"] if is_local_definition(n)]
-    mixed = not legacy_reporting(man["nodes"], pins)
+    mixed = bool(local_definitions)
     comp = companions(man["nodes"])
     out = ["# What this development assumes", ""]
     if not assumed:
@@ -179,8 +179,8 @@ def render():
     out += [
         "The results below are quoted by the paper from the literature; the paper does",
         "not prove them.  Each is a proposition carried as an explicit hypothesis by",
-        "every theorem whose proof uses it, so a theorem's statement shows exactly",
-        "which of these it rests on.",
+        "every theorem whose proof uses it, so a theorem's statement shows which of",
+        "these it takes as hypotheses.",
         "",
         f"There are {len(assumed)} of them.  Each entry gives the node id, where the paper",
         "cites the result, and the verbatim Lean proposition that is assumed.",

@@ -12,7 +12,7 @@ on:
     branches: [main]
     paths-ignore:
       - '**/*.md'
-      - 'paper/**'
+      - 'paper/**/*.pdf'
       - 'formalization.yaml'
       - 'CITATION.cff'
   workflow_dispatch:

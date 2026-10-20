@@ -270,7 +270,7 @@ sequence bounded by a finitely supported `v` is eventually constant.
 
 The pieces proved in this file are the nonnegativity and terminal stability of
 `podo` (`glw_wave_to_explosive_pnonneg`, `glw_wave_to_explosive_pstable`), the
-bound `v 0 ≥ n` (`glw_wave_to_explosive_v0`), and the domination `wave ≤ v`
+bound `v 0 ≥ n` (`glw_wave_to_explosive_of_origin_bound`), and the domination `wave ≤ v`
 (`glw_wave_to_explosive_dom`). The last step, from these to `WaveStabilizable`,
 needs the terminal odometer `v` to have finite support. That needs an upper bound
 on `η`, which `0 ≤ η` alone does not give. So this step is not proved here. It
@@ -305,7 +305,7 @@ from `glw_wave_to_explosive_pstable` at `x = 0`,
 `nbrSumZ v 0 ≥ 0` (from `glw_wave_to_explosive_pnonneg` and `nbrSumZ`'s definition as a
 sum of `v`-values), so `2d·v 0 ≥ 2dn + 2 - 2d = 2d(n-1) + 2 > 2d(n-1)`; dividing by `2d > 0`
 gives `v 0 > n - 1`, i.e. `v 0 ≥ n`. -/
-theorem glw_wave_to_explosive_v0 (η : Site d → ℤ) (hη : ∀ x, 0 ≤ η x) (hd : 0 < d)
+theorem glw_wave_to_explosive_of_origin_bound (η : Site d → ℤ) (hη : ∀ x, 0 ≤ η x) (hd : 0 < d)
     (n : ℕ) (v : Site d → ℤ) (hv0nn : ∀ x, 0 ≤ v x)
     (hstable0 : η (0 : Site d) + ((2 * d * n + 1 : ℕ) : ℤ) + lap v (0 : Site d) ≤ 2 * (d : ℤ) - 1) :
     (n : ℤ) ≤ v (0 : Site d) := by

@@ -2,7 +2,7 @@
 Theorem 1.2 of the paper: the support of the exploding sandpile, rescaled by
 time, converges in measure to a convex domain.
 
-The paper gives NO proof of this theorem.  It is stated at exploding.tex:246-254,
+The paper gives NO proof of this theorem.  It is stated at exploding-corrected-arxiv.tex:104-112,
 immediately followed (255-257) by "In fact, we prove something stronger. Not
 only does the support of the explosion converge, but the rate at which the
 explosion spreads also converges" -- i.e. Theorem 1.3
@@ -57,7 +57,7 @@ triggered by a chain of neighbours ultimately traced back to the extra chips
 `explodingPile η - η` at `0`. -/
 theorem ls_speed_bound_tri_add (a b : ℤ) : |a + b| ≤ |a| + |b| := by
   calc
-    |a + b| = |a - (-b)| := by ring
+    |a + b| = |a - (-b)| := by rw [sub_neg_eq_add]
     _ ≤ |a| + |-b| := abs_sub _ _
     _ = |a| + |b| := by simp
 
@@ -956,7 +956,7 @@ Measure.infinitePi (chipLaw (2d-1) (2d-2) p)` proves exactly
 `Exploding.External.FeyLevinePeresExplosive`: the hypothesis `β ≥ d` holds
 since `2d - 2 ≥ d` when `d ≥ 2`, and `P(β(0) = 2d-1) = p > 0`. This is
 literally the relationship the paper itself describes ("we use this ... to
-extend Theorem 1.1", `exploding.tex:264`), so `hFLP` is discharged by it. -/
+extend Theorem 1.1", `exploding-corrected-arxiv.tex:122`), so `hFLP` is discharged by it. -/
 theorem ls_chipLaw_isProb (a b : ℤ) (p : ℝ) (hp : 0 ≤ p) (hp1 : p ≤ 1) :
     IsProbabilityMeasure (chipLaw a b p) := by
   refine ⟨?_⟩

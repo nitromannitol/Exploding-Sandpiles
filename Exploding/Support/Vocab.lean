@@ -1,5 +1,5 @@
 /-
-The vocabulary of `paper/exploding.tex` beyond the toppling dynamics: boxes and
+The vocabulary of `paper/corrected-arxiv/exploding-corrected-arxiv.tex` beyond the toppling dynamics: boxes and
 their faces, boundaries, bounding rectangles, lines across a box, the crossing
 time and good cubes, the last-wave and its arrival times, recurrence, and the
 product measure the paper's backgrounds are drawn from.
@@ -215,7 +215,7 @@ noncomputable def chipLaw (a b : ℤ) (p : ℝ) : Measure ℤ :=
 noncomputable def productLaw (d : ℕ) (a b : ℤ) (p : ℝ) : Measure (Site d → ℤ) :=
   Measure.infinitePi fun _ : Site d => chipLaw a b p
 
-/-- The law of the paper's `(1.2)`: `2d - 1` chips with probability `p` and
+/-- The law of the paper's `(2)`: `2d - 1` chips with probability `p` and
 `2d - 2` with probability `1 - p`. -/
 noncomputable def toyLaw (d : ℕ) (p : ℝ) : Measure (Site d → ℤ) :=
   productLaw d (2 * d - 1) (2 * d - 2) p

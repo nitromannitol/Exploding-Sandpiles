@@ -1,5 +1,5 @@
 /-
-The unstable branch of the arithmetic step of Section 4 of `paper/exploding.tex`.
+The unstable branch of the arithmetic step of Section 4 of `paper/corrected-arxiv/exploding-corrected-arxiv.tex`.
 -/
 import Exploding.Support.SubArith
 

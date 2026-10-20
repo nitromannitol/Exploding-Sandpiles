@@ -1,5 +1,5 @@
 /-
-The setting and the five hypotheses of Section 5 of `paper/exploding.tex`, and
+The setting and the five hypotheses of Section 5 of `paper/corrected-arxiv/exploding-corrected-arxiv.tex`, and
 the box-crossing vocabulary of Section 7.
 
 `B_k` is the rectangular box of side lengths `k : Fin d → ℕ`; `rboxShift k j` is

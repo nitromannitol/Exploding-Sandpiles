@@ -1,6 +1,6 @@
 /-
 The Abelian sandpile under parallel toppling on `ℤ^d`, in the vocabulary of
-`paper/exploding.tex`.
+`paper/corrected-arxiv/exploding-corrected-arxiv.tex`.
 
 A *background* is a function `η : Site d → ℤ`; a *sandpile* is a function
 `s : Site d → ℤ` counting chips.  A site *fires* when it holds at least `2d`

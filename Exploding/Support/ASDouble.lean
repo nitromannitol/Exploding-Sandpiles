@@ -1,5 +1,5 @@
 /-
-The last open claim of `Exploding.Frozen.approximate_subadditive`.
+A step of the proof of `Exploding.Frozen.approximate_subadditive` (Proposition 4.1).
 
 ## The double-toppling claim is false
 

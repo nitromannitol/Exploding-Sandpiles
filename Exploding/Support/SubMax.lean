@@ -1,6 +1,6 @@
 /-
 The maximizer step of the recurrence argument of Proposition 7.3 of
-`paper/exploding.tex`: among the sites of `V` that have not yet toppled, one
+`paper/corrected-arxiv/exploding-corrected-arxiv.tex`: among the sites of `V` that have not yet toppled, one
 maximizing the coordinate sum has all its `+e_i` neighbours toppled.
 -/
 import Exploding.Support.SubRec

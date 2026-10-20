@@ -1,5 +1,5 @@
 /-
-Support for Lemma 3.6 of `paper/exploding.tex`: the logarithmic bookkeeping and the
+Support for Lemma 3.6 of `paper/corrected-arxiv/exploding-corrected-arxiv.tex`: the logarithmic bookkeeping and the
 time to light a cube of the infinite cluster, through the chemical distance of Proposition 2.2.
 -/
 import Exploding.Support.PUBProofC

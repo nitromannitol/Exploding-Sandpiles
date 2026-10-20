@@ -3,7 +3,7 @@
 
 Each manifest node names the paper statement it formalizes as
 
-    source: exploding.tex:<a>-<b> (label <lab>[, ...])
+    source: exploding-corrected-arxiv.tex:<a>-<b> (label <lab>[, ...])
 
 The line range is derived data: it is the span of the LaTeX environment that
 contains `\\label{<lab>}`.  Editing the paper anywhere above a statement shifts
@@ -40,7 +40,7 @@ END_RE = re.compile(r"\\end\{([A-Za-z*]+)\}")
 
 # Environments that carry a statement we would ever anchor to.
 ANCHORABLE = {
-    "theorem", "lemma", "proposition", "prop", "corollary", "definition",
+    "theorem", "lemma", "proposition", "prop", "corollary", "definition", "remark",
     "problem", "conj",
     "equation", "equation*", "align", "align*", "gather", "gather*",
 }

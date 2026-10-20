@@ -1,6 +1,6 @@
 /-
 The recurrence of the constant background `d` (Proposition 7.3 of
-`paper/exploding.tex`).
+`paper/corrected-arxiv/exploding-corrected-arxiv.tex`).
 
 `recOdo d V` is the `Vᶜ`-frozen odometer of the recurrence argument: background
 `d`, initial odometer the indicator of the outer boundary `∂V`.  The paper's

@@ -6,8 +6,8 @@ The star duality `xbc_StarDuality d` is now available in every dimension `d ≥ 
 were phrased conditionally on it can be instantiated: the site crossing probability
 tends to one, and almost surely every large box is eventually crossed.  The
 good-site field of high-density bond percolation gives the corresponding bond
-crossing, and the remaining gap toward `xap15_BoxCrossing d` — the extension from
-high density down to the critical density `bondCritical d` — is isolated.
+crossing. The extension from high density down to the critical density
+`bondCritical d`, needed for `xap15_BoxCrossing d`, is not proved here.
 
 The general measure-theoretic step used below: if `A n` are measurable events and
 almost surely `ω ∈ A n` for all large `n`, then `P(A n) → 1` along `atTop`.

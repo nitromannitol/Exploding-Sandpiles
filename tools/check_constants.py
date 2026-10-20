@@ -1,22 +1,22 @@
 """Check that every constant depends only on the dimension.
 
-The paper's constants are always "depending only on `d`".  In Lean that is a
-property of quantifier order: the existential must be bound before `β` and
-before `n`.  Writing
+A constant of the paper (a real number whose existence a statement asserts) may
+depend on the dimension and on the parameters the statement fixes before it, such
+as `p`, but not on the scale, time or site variables that come after it.  In Lean
+that is a property of quantifier order: the existential must be bound before those
+variables.  Writing
 
-    theorem foo {d : ℕ} (hd : 2 ≤ d) {β : ℝ} (hβ : 1 ≤ β) : ∃ c, ... β ... n ...
+    theorem foo {d : ℕ} (hd : 2 ≤ d) (n : ℕ) : ∃ c : ℝ, ... n ...
 
-reads as `∀ β, ∃ c(β)`, which lets the constant absorb any power of `β` and
-makes a factor like `β^{-d/(d+1)}` decorative -- the statement would hold with
-the wrong exponent.  That is a silent weakening, invisible to every other check
-here, so it gets its own.
+reads as `∀ n, ∃ c(n)`, which lets the constant absorb any function of `n` and
+makes a rate decorative.  That is a silent weakening, invisible to every other
+check here, so it gets its own.
 
 The rule enforced: in a frozen statement that binds a real-valued existential,
-none of `β`, `n`, `k`, `m`, `h` may be a *parameter* of the theorem; they must be
-quantified inside the conclusion, after the existential.  Only `d` may be a
-parameter, which is what the paper's own convention allows: "`c > 0` and
-`C < ∞` are constants that depend only on `d` ... They never depend on `β`, `k`,
-`m`, or `n`."
+none of the names in `FORBIDDEN` may be a *parameter* of the theorem; they must
+be quantified inside the conclusion, after the existential.  A statement in which
+such a name is a parameter by the paper's own standing assumption is listed in
+`REVIEWED` with the reason.
 
     python3 tools/check_constants.py
 """
@@ -42,23 +42,10 @@ FORBIDDEN = ("R", "n", "t", "m", "r", "s", "L", "x", "y", "u", "v", "e", "z", "�
 # paper's own standing assumption, with the reason recorded.  A statement whose
 # existential is an honest constant of the paper (`∃ c ∀ n`) is never listed here.
 REVIEWED: dict[str, dict[str, str]] = {
-    "prop-path-reduction": {
-        "η": "the standing assumption of prop:path-reduction is `for some η > 0` the "
-             "criterion holds (exploding.tex:1007-1011); the paper's `a` in (ii) is chosen "
-             "under that assumption, so it may depend on η, and the only other real "
-             "existentials are the limit-shape constants of (iii), likewise",
-    },
-    "prop-passage-limit": {
-        "η": "same standing assumption; the only real existential is `R₀`, bound after "
-             "the auxiliary sequences `ρ` and `ε` exactly as the paper's almost-sure limit "
-             "(exploding.tex:1088-1093) prescribes, and the function `f` does not depend "
-             "on η at all (its proof uses only invariance and ergodicity)",
-    },
 }
 
-# Only a real-valued existential is a *constant*.  `lem-walk-order` also binds
-# an existential -- the ordering of the visited sites -- and that one must depend
-# on the word and the time, so it is not what this check is about.
+# Only a real-valued existential is a *constant*; an existential over sets, sites
+# or natural numbers may depend on the variables bound before it.
 CONSTANT = re.compile(r"∃\s+[^,:]*:\s*ℝ")
 
 

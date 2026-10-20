@@ -98,7 +98,7 @@ literal are listed in `CORRESPONDENCE.md`.
 open Exploding LatticeProb MeasureTheory Filter
 
 /-- **Theorem 1.1** (`prop:fey_levine_peres_explode`, Proposition 1.4 of Fey, Levine and
-Peres): for `d ≥ 2` and `0 < p ≤ 1`, the background of law `(1.2)` is explosive almost surely. -/
+Peres): for `d ≥ 2` and `0 < p ≤ 1`, the background of law `(2)` is explosive almost surely. -/
 theorem Exploding.fey_levine_peres_explosive :
     ∀ d : ℕ, 2 ≤ d → ∀ p : ℝ, 0 < p → p ≤ 1 → ∀ᵐ η ∂(toyLaw d p), Explosive η :=
   Exploding.xsr_flp

@@ -13,7 +13,7 @@ open Exploding LatticeProb MeasureTheory Filter
 
 /-- **Theorem 1.2** (`paper/corrected-arxiv/exploding-corrected-arxiv.tex:104-112`, label `theorem:limit_shape`).
 
-"Let `η` be as in (1.2).  There exists a convex domain `B(p) ⊂ ℝ^d` so that on
+"Let `η` be as in (2).  There exists a convex domain `B(p) ⊂ ℝ^d` so that on
 an event of probability 1, `|{v̄_t > 0} △ B(p)| → 0`, where
 `v̄_t(x) := v_t([t x])`."
 

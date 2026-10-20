@@ -1,7 +1,7 @@
 /-
-Follow-up AS-2 support file for `Exploding.Frozen.approximate_subadditive`: the
-restated `|P̃| < ∞` claim and the final a.e. assembly taking the smaller set of
-open claims.  Sorry-free.
+Support for `Exploding.Frozen.approximate_subadditive` (Proposition 4.1): the
+restated `|P̃| < ∞` statement and the almost-everywhere assembly from the remaining
+hypotheses, each proved elsewhere.
 
 ## Why the unrestricted `|P̃| < ∞` is false
 
@@ -41,7 +41,7 @@ set_option linter.unusedVariables false
 
 /-- The final a.e. assembly, with `htildePfin` restated under the bounds that
 hold at the use site: the finiteness of `as_tildeP` is only needed for the
-almost-every `η` satisfying `2d - 2 ≤ η ≤ 2d - 1`.  The other open claims
+almost-every `η` satisfying `2d - 2 ≤ η ≤ 2d - 1`.  The other hypotheses
 `hrobust`, `hpodo`, `hlastreach`, `hspecial` are unchanged. -/
 theorem as2_approximate_subadditive_of_gaps
     (d : ℕ) (hd : 2 ≤ d) (p : ℝ) (hp : 0 < p) (hp1 : p < 1)

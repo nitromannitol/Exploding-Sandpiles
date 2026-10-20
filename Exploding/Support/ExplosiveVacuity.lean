@@ -47,7 +47,7 @@ satisfies all eight premises for the same law `P`: the index of `⊤` is nonzero
 probability measure, almost every background lies in `InOmega d ηmin`, `P` is stationary and
 measurably ergodic for `⊤`, it has finite range of dependence, it is box-crossing, and it is
 recurrent. Box-crossing uses the proved `Exploding.xsr_schonmann`, with no added hypothesis. -/
-theorem explosion_criteria_v4_premises_nonvacuous (d : ℕ) (hd : 2 ≤ d) (ηmin : ℤ)
+theorem explosion_criteria_premises_nonvacuous (d : ℕ) (hd : 2 ≤ d) (ηmin : ℤ)
     (hmin : ηmin ≤ 2 * (d : ℤ) - 1) :
     (⊤ : AddSubgroup (Site d)).index ≠ 0 ∧
     IsProbabilityMeasure (Measure.infinitePi fun _ : Site d => Measure.dirac (2 * (d : ℤ) - 1)) ∧

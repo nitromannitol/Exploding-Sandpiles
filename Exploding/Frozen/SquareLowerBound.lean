@@ -17,7 +17,7 @@ of other papers and are not proved here. The proof is `Exploding.square_lower_bo
 
 open Exploding LatticeProb
 
-/-- **Lemma 3.1, sharp form** (`paper/corrected-arxiv/exploding-corrected-arxiv.tex:586-603`, label `lemma:square_lower_bound`). Assume `d ≥ 2` and the two cited
+/-- **Lemma 3.1, sharp form** (`paper/corrected-arxiv/exploding-corrected-arxiv.tex:577-587`, label `lemma:square_lower_bound`). Assume `d ≥ 2` and the two cited
 inputs. There is `C > 0` such that for every `η` with `2d - 2 ≤ η ≤ 2d - 1`, every `n ≥ 1` and
 every `m ≥ 1` with `⌈C n^d (log (n+1) if d = 2)⌉ ≤ m`, there is a finite `T` such that the
 `m`-wave from the origin is positive at every site of `[-n, n]^d` at every time `t ≥ T`. -/

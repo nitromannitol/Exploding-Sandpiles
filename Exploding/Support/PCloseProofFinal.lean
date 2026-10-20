@@ -1,5 +1,5 @@
 /-
-The second inequality of Lemma 3.7 (`exploding.tex:828-835`): almost surely, for all large
+The second inequality of Lemma 3.7 (`exploding-corrected-arxiv.tex:830-837`): almost surely, for all large
 `n` and `|x| ≤ n`, the penultimate-cluster arrival time `T̃(x)` is at most `T̂(x) + (log n)^γ`.
 
 It rests on Lemma 3.5 (the penultimate cluster lies in a polylogarithmic box about `x`),

@@ -14,7 +14,7 @@ import Exploding.Frozen.ExplosionCriteria
 
 open Exploding LatticeProb MeasureTheory
 
-/-- **Theorem 1.4** (`paper/corrected-arxiv/exploding-corrected-arxiv.tex:123-129`, label `theorem:explosive`).
+/-- **Theorem 1.4** (`paper/corrected-arxiv/exploding-corrected-arxiv.tex:123-125`, label `theorem:explosive`).
 
 "For `d ≥ 2`, let `ν` be a probability measure on `ℤ` with `ν({m ∈ ℤ : m ≥ d}) = 1` and
 `ν({2d - 1}) > 0`. If `β : ℤ^d → ℤ` has law `P = ⊗_{x ∈ ℤ^d} ν`, then `β` is explosive

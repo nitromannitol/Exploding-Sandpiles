@@ -40,7 +40,7 @@ END_RE = re.compile(r"\\end\{([A-Za-z*]+)\}")
 
 # Environments that carry a statement we would ever anchor to.
 ANCHORABLE = {
-    "theorem", "lemma", "proposition", "prop", "corollary", "definition",
+    "theorem", "lemma", "proposition", "prop", "corollary", "definition", "remark",
     "problem", "conj",
     "equation", "equation*", "align", "align*", "gather", "gather*",
 }

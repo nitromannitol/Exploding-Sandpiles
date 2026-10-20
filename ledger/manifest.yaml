@@ -1,17 +1,15 @@
-# Frozen-statement manifest for the exploding-sandpile shape theorem.
+# Statement manifest for the exploding-sandpile shape theorem.
 #
-# One entry per frozen declaration.  The bytes between the FROZEN-STATEMENT
-# markers are the contract: a proof attempt may fill in the proof after the end
-# marker, never touch the statement.  `frozen_sha256` is the SHA-256 of exactly
-# those bytes.
+# One entry per Lean statement of the paper.  The bytes between the
+# FROZEN-STATEMENT markers fix the statement: a proof follows the end marker and
+# never changes it.  `frozen_sha256` is the SHA-256 of exactly those bytes, and
+# `closure_sha256` that of the Exploding declarations the statement uses.
 #
-# States: FROZEN (a statement with no proof obligation here, such as a cited
-#           result taken as a hypothesis),
-#         DRAFT_SORRY (the statement is frozen, the proof is still open),
-#         SEALED (a proof exists and its axiom closure is clean).
-# A node may override the global source_pin with its own file and sha256 when
-# that declaration has been audited against a later paper revision. Pin each
-# TeX input under source_pin.inputs and cite the selected file in node.source.
+# States: PROVED (a complete proof exists and its axiom closure contains only the
+# standard axioms) and FROZEN (a cited result, or a definition, stated as a
+# proposition and taken as a hypothesis by the theorems that use it).  Every entry
+# cites the corrected edition `source_pin.file`; its TeX inputs are pinned under
+# `source_pin.inputs`.
 
 version: 1
 source_pin:
@@ -438,7 +436,7 @@ nodes:
     frozen_sha256: a25c10e2f66ff0a1141aea2274ab888744e3a0a24b8e65077a671b3ea60ecb7a
     closure_sha256: 79d873d0ab49226a1616a10d292bba118907e1df4bf9069c4ce73b0b7c4e4c8d
     provider: Exploding.xsr_flp
-    note: \"DISCHARGED at Exploding/Support/ExtSchFLP.lean:11; axiom closure [propext, Classical.choice, Quot.sound]"
+    note: "proved in this repository; axiom closure propext, Classical.choice, Quot.sound"
   - id: ext-schonmann-bootstrap-proved
     kind: theorem
     source: exploding-corrected-arxiv.tex:2138-2150 (label prop:schonnmann_bootstrap)
@@ -448,7 +446,7 @@ nodes:
     frozen_sha256: b2f9d167d3cbd4c150d94c771f06b6055ed809a62378fb549e2c0b7422c1ce89
     closure_sha256: fcee6f39ea972ad2984e77aff21657323dc4ac4566c0fb9c46aab54ad0d0a712
     provider: Exploding.xsr_schonmann
-    note: \"DISCHARGED at Exploding/Support/ExtSchFinal.lean:65; axiom closure [propext, Classical.choice, Quot.sound]"
+    note: "proved in this repository; axiom closure propext, Classical.choice, Quot.sound"
   - id: ext-liggett-schonmann-stacey-proved
     kind: theorem
     source: proof of ext-liggett-schonmann-stacey in this repository; liggett1997domination Theorem 0.0, cited at exploding-corrected-arxiv.tex:1225 in the proof of prop:convergence_of_the_generalized_last_wave
@@ -458,7 +456,7 @@ nodes:
     frozen_sha256: 6e609b780ea329e70e990e77907f747ada26a64305328c08706a8485063f25a8
     closure_sha256: 9ea0611d9fc14746b5411b138a27df13a147c43708c92de8a0c7756f227a0da1
     provider: Exploding.xlse_lss_general
-    note: \"DISCHARGED at Exploding/Support/ExtLSSCountable.lean:116; axiom closure [propext, Classical.choice, Quot.sound]"
+    note: "proved in this repository; axiom closure propext, Classical.choice, Quot.sound"
   - id: ext-lss-bounded-degree-proved
     kind: theorem
     source: proof of ext-lss-bounded-degree in this repository; liggett1997domination Corollary 1.4, cited at exploding-corrected-arxiv.tex:348 for prop:renormalization_properties
@@ -468,7 +466,7 @@ nodes:
     frozen_sha256: 9aa2a465b3b5605a385b58bd5f10bd797dfe19b79ad879443b55c89edcec591c
     closure_sha256: 1d4f6fd2c31b276b7698ba40d8bfd39d6a81032b0ceb93a14a5eddf8e721116c
     provider: Exploding.lssBoundedDegree
-    note: \"DISCHARGED at Exploding/Support/ExtLSSCountable.lean:111 (xlse_lss_bounded_degree); axiom closure [propext, Classical.choice, Quot.sound]"
+    note: "proved in this repository; axiom closure propext, Classical.choice, Quot.sound"
   - id: ext-mathieu-holes-proved
     kind: theorem
     source: proof of ext-mathieu-holes in this repository; mathieu2008quenched Lemma 5.2, cited at exploding-corrected-arxiv.tex:348 for prop:renormalization_properties
@@ -478,7 +476,7 @@ nodes:
     frozen_sha256: a4e5f4c96380f1c0cb7ea3486a314a7a34642385542f07711499380586dc9c72
     closure_sha256: 1f890c0c3f3ffa37fae313b9514e8a14ef983cb6dfeb6f097a2afb4dda458be6
     provider: Exploding.xmf_proved
-    note: \"DISCHARGED at Exploding/Support/ExtMHHoleVolume.lean:16; axiom closure [propext, Classical.choice, Quot.sound]"
+    note: "proved in this repository; axiom closure propext, Classical.choice, Quot.sound"
   - id: ext-fey-meester-redig-proved
     kind: theorem
     source: proof of ext-fey-meester-redig in this repository; fey2009stabilizability Theorem 2.8, cited at exploding-corrected-arxiv.tex:1534 in the proof of theorem:counterexample
@@ -488,7 +486,7 @@ nodes:
     frozen_sha256: 07eb5a1029975901b972459f3aaf76af37efeaac0c826a5f606ed573367f7141
     closure_sha256: 66b134f67c410f8bd472baa957db30202ef9066e0d3fafbb52ed62e177c28604
     provider: Exploding.xfmr_proved
-    note: \"DISCHARGED at Exploding/Support/ExtFMR.lean:53; axiom closure [propext, Classical.choice, Quot.sound]"
+    note: "proved in this repository; axiom closure propext, Classical.choice, Quot.sound"
   - id: def-counterexample-threshold
     kind: definition
     source: exploding-corrected-arxiv.tex:100-102 (label eq:first_explosion); carrier at 28-39 and context at 99

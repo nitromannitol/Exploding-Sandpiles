@@ -59,11 +59,13 @@ EXPECTED_ABSENT: dict[str, dict[str, str]] = {
         "c": "set-complement superscript in C_∞^c, not an exponent of a quantity",
         "d": "dimension superscript from ℤ^d, not an exponent of a quantity"},
     "lem-square-lower-bound": {
-        "d": "box superscript from [-n,n]^d, the dimension, not an exponent of a quantity",
-        "dn": "notation: the paper's (2d)^{d n} is Lean's (2*d)^(d*n)"},
+        "(m,0)": "label superscript on u_t^{(m,0)}: the initial height m and origin 0, carried by the arguments of wave"},
+    "rem-sharp-planar-obstruction": {
+        "(m,0)": "label superscript on u_t^{(m,0)}: the initial height m and origin 0, carried by the arguments of wave",
+        "1": "coordinate label on the embedded walk S^1 in the proof, not an exponent of a quantity"},
     "lem-penultimate-cluster": {
         "\\gamma": "notation: the paper writes \\gamma, Lean writes γ",
-        "d": "box superscript from [-1,1]^d, the dimension, not an exponent of a quantity"},
+        "d": "box superscript on [−(log n)^γ, (log n)^γ]^d, the dimension, carried by Site d and the coordinate index"},
     "lem-penultimate-upper-bound": {"\\gamma": "notation: the paper writes \\gamma, Lean writes γ"},
     "lem-penultimate-close": {"\\gamma": "notation: the paper writes \\gamma, Lean writes γ"},
     "prop-last-wave-convergence": {"d": "dimension superscript from ℝ^d, not an exponent of a quantity"},
@@ -73,10 +75,8 @@ EXPECTED_ABSENT: dict[str, dict[str, str]] = {
     "thm-counterexample": {"d": "dimension superscript from ℤ^d, not an exponent of a quantity"},
     "ext-schonmann-bootstrap": {
         "(d)": "dimension label superscript on Q_n^{(d)}, not an exponent of a quantity"},
-    "ext-liggett-schonmann-stacey": {"d": "dimension superscript from ℤ^d, not an exponent of a quantity"},
     "ext-schonmann-bootstrap-proved": {
         "(d)": "dimension label superscript on Q_n^{(d)}, not an exponent of a quantity"},
-    "ext-liggett-schonmann-stacey-proved": {"d": "dimension superscript from ℤ^d, not an exponent of a quantity"},
     "lem-last-wave-bound": {
         "(z)": "starting-site label superscript on u_t^{(z)}, not an exponent of a quantity",
         "d": "dimension superscript from ℤ^d, not an exponent of a quantity"},
@@ -89,12 +89,33 @@ EXPECTED_ABSENT: dict[str, dict[str, str]] = {
         "(i)": "path-index label superscript on z^{(i)}, not an exponent of a quantity",
         "(i+1)": "path-index label superscript on z^{(i+1)}, not an exponent of a quantity"},
     "prop-crossing-time": {
-        "(i,z)": "direction/site label superscript on the crossing time C_k^{(i,z)}, not an exponent of a quantity",
-        "d": "the exponent k^d is carried by the definition GoodCube (GoodCube η k ≜ max crossing time ≤ k^d), not repeated in the frozen block"},
+        "(i,z)": "direction/site label superscript on the crossing time C_k^{(i,z)}, not an exponent of a quantity"},
 }
 
 # The SHA-256 of the frozen statement each node's explanations were checked against.
 READ_AT: dict[str, str] = {
+    "thm-limit-shape": "3f3707ff2dfa461558934c748b614a3b4472f338425ddf883b0ff4485e72f6d9",
+    "thm-time-constant": "83239bc6236e7faecd7ba0ab147fc0af98c324fc90f32cb537a6f368fa478a07",
+    "thm-explosive": "8132c02216ac6b502b1b4e6bb898ead2d8aaeea4a7b9da2795b1f83af4b403ed",
+    "prop-renormalization": "5e3c8b09f9ce732c2cad76168fa1d455e515ea8a08ae74716d43967e8e623b21",
+    "lem-square-lower-bound": "19f817d7ff3eb7c2f9a112ea3fe3c0070bb13f4e9e9ca3a6c31ad2f0265dcf1b",
+    "rem-sharp-planar-obstruction": "a086ab6a2d98e5e193a5bf73c82335824ffa3b2628bf1f418859acbf9777a03d",
+    "lem-penultimate-cluster": "58d7a4ac6a71a4a8145a5c64cb08d305febcbd628497ada2cb10bf250293f4d1",
+    "lem-penultimate-upper-bound": "5b2ee13157a8d82856757ff4dd81617c9a2c782f2d59e704ccf71b5e14cd6a18",
+    "lem-penultimate-close": "f2ac930203bda0ebdc77f88a7eefb80485e0492766f23f701b3f532d34c3ac18",
+    "prop-last-wave-convergence": "9a80cc4dcaac38eaab62fc1fbfeb46f6b0868d54c397c6b4687823ef3940ff59",
+    "prop-approximate-subadditive": "9b0824a6fef38f45bc7f3c1cc813ab4268d210f0eeb61ea6bf217cd93132cd44",
+    "prop-generalized-last-wave": "aa81aa6cdc69939e486fb145c1d7b7b7643e47511b4dbe84d71ad588ea823eaf",
+    "thm-generalized-convergence": "d32daec0ed262bf93997fd6bf958d784c860b5024f292c5a782cf8b0f332c546",
+    "thm-counterexample": "1af0799acd9eccce67b979a6a59e756398fd513054e9019f1118421bf7ecf178",
+    "ext-schonmann-bootstrap": "26fb069d31c8b054743da77918174384ef4a3981145d075fda165b96748b51ce",
+    "ext-schonmann-bootstrap-proved": "b2f9d167d3cbd4c150d94c771f06b6055ed809a62378fb549e2c0b7422c1ce89",
+    "lem-last-wave-bound": "3760843f3135cb089b2282167e54ccfa110776cff8af977a314b73c7f3179774",
+    "prop-dimensional-reduction": "678347f088aa6399bee44eabb178981923e8fa91f3fa119fb1550a2f5b25d7a1",
+    "lem-approx-subadditivity": "cc8f12ca936e4c7004662f4796489012419c44eb5071f5549ea1fa3cf5fc67f5",
+    "prop-recurrence": "fb09b457811848161a746759e6fd31ee024a56bee43df4e23cca58af7ae87fa1",
+    "lem-local-convexity": "c265b27336538e776144ad00d8ad3e44a93816312863f9b3cb9dc3d5997e91f4",
+    "prop-crossing-time": "0abd7c5aad74dc25d871825907205f3af57bbc7755498247c348ad66592bceae",
 }
 
 

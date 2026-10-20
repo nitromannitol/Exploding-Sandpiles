@@ -153,7 +153,7 @@ by constructing a family of (random and deterministic) exploding sandpiles which
 for determining if a sandpile is explosive. 
 
 \subsection*{Use of artificial intelligence}
-The original paper (2021) was written by the author. This corrected edition was prepared while the paper was formalized in the Lean proof assistant. AI coding agents (Anthropic Claude and OpenAI GPT models, with DeepSeek and Mistral models for auxiliary proof search), directed by the author, found the corrections listed in the section ``Corrections to the published version'' and drafted the corrected statements, the new proofs, and Remark~\ref{rem:sharp_planar_obstruction} and the remark that follows it. The author checked these.
+The original paper (2021) was written by the author. This corrected edition was prepared while the paper was formalized in the Lean proof assistant. AI coding agents (Anthropic Claude and OpenAI GPT models, with DeepSeek and Mistral models for auxiliary proof search), directed by the author, found the corrections listed in the section ``Corrections to the published version'' and drafted the corrected statements, the new proofs and Remark~\ref{rem:sharp_planar_obstruction}. The author checked these.
 Every numbered result of this edition and Remark~\ref{rem:sharp_planar_obstruction} is proved in Lean. Three cited results enter as explicit hypotheses: Theorem~1.1 of Antal and Pisztora~\cite{antal1996chemical}; Theorem~4.1 of Fey, den Boer and Redig~\cite{fey2008limiting} and the radius bound of Fey, Levine and Peres~\cite{fey2010growth}, which enter for Lemma~\ref{lemma:square_lower_bound} and Remark~\ref{rem:sharp_planar_obstruction}. Proposition~\ref{prop:explosion_criteria} is formalized for $d\geq2$, and Hypothesis~\ref{hyp:finite_range_of_dependence} is used in the form stated in this edition.
 The author takes responsibility for the mathematical content and presentation of the paper.
 
@@ -692,7 +692,7 @@ Finally, for every background with $0\leq\eta\leq2d-1$, the wave is nonnegative,
 
 The constant $C_d$ does not depend on the background, and the lemma gives no bound on $T$.
 
-For a background bounded below only by an integer $\eta_{\min}$, as in Section~\ref{sec:generalization}, the wave~\eqref{eq:n_wave} need not be nonnegative: if $x\neq0$ is not adjacent to the origin and $\eta(x)<0$, then $u_1^{(m,0)}(x)=\lfloor\eta(x)/(2d)\rfloor<0$. Under Hypothesis~\ref{hyp:path_filling}, the proof of Proposition~\ref{prop:convergence_of_the_generalized_last_wave} shows that $\eta\geq0$ almost surely, so $0\leq\eta\leq2d-1$ holds almost surely there, and the exponential path argument for nonnegative backgrounds in that proof gives only a qualitative seeding, with no polynomial rate.
+For a background bounded below only by an integer $\eta_{\min}$, as in Section~\ref{sec:generalization}, the wave~\eqref{eq:n_wave} need not be nonnegative: if $x\neq0$ is not adjacent to the origin and $\eta(x)<0$, then $u_1^{(m,0)}(x)=\lfloor\eta(x)/(2d)\rfloor<0$. Under Hypothesis~\ref{hyp:path_filling}, Step~1 of the proof of Proposition~\ref{prop:convergence_of_the_generalized_last_wave} shows that $\eta\geq0$ almost surely, so $0\leq\eta\leq2d-1$ holds almost surely there, and the exponential path argument for nonnegative backgrounds in Step~4 of that proof gives only a qualitative seeding, with no polynomial rate.
 
 \begin{remark}[Sharp planar obstruction]\label{rem:sharp_planar_obstruction}
 On homogeneous height $2$ in dimension two, the least integer order $M_2(n)$ whose wave covers $\Lambda_n$ satisfies

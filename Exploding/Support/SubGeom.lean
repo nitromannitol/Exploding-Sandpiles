@@ -694,7 +694,7 @@ theorem slab_move (a b : Site d) (i : Fin d) (c : ℤ) {p : Site d}
     · rw [if_neg hkj, mul_zero, add_zero]
       exact h2
 
-/-- **The cap spread** (`exploding-corrected-arxiv.tex:415-423`, the mechanism of the one-turn
+/-- **The cap spread** (`exploding-corrected-arxiv.tex:417-425`, the mechanism of the one-turn
 case): if a box `B` is in the terminal support of the frozen odometer on the
 extremal background, and one point of the cap `S` one step above `B` in
 direction `i` is in the terminal support, then the whole cap is.
@@ -885,7 +885,7 @@ closed under the two-neighbour rule, and one point of the cap above the box is
 in `F`, then the whole cap is.
 
 This is the combinatorial content of the paper's one-turn case
-(`exploding-corrected-arxiv.tex:415-423`), stated without any odometer. -/
+(`exploding-corrected-arxiv.tex:417-425`), stated without any odometer. -/
 theorem closed_slab (F : Set (Site d)) (a b : Site d) (i : Fin d) (hab : a i ≤ b i)
     (hbox : ∀ x, (∀ j, a j ≤ x j ∧ x j ≤ b j) → x ∈ F)
     (hclosed : ∀ x y z' : Site d, y ∈ F → z' ∈ F → y ≠ z' →

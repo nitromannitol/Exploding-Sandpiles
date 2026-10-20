@@ -19,7 +19,7 @@ import Exploding.Support.PathFillingNonneg
 
 open Exploding LatticeProb MeasureTheory Filter
 
-/-- **Proposition 5.1** (`paper/corrected-arxiv/exploding-corrected-arxiv.tex:1200-1204`, label `prop:convergence_of_the_generalized_last_wave`; setting in
+/-- **Proposition 5.1** (`paper/corrected-arxiv/exploding-corrected-arxiv.tex:1202-1206`, label `prop:convergence_of_the_generalized_last_wave`; setting in
 `sec:sufficient_hypotheses`).
 
 "Under Hypotheses 1, 3, and 5.4, on an event of probability 1, `η` is explosive and the

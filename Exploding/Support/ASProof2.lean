@@ -3,13 +3,13 @@ Support for `Exploding.Frozen.approximate_subadditive` (Proposition 4.1): the
 restated `|P̃| < ∞` statement and the almost-everywhere assembly from the remaining
 hypotheses, each proved elsewhere.
 
-## Why the unrestricted `|P̃| < ∞` is false
+## `|P̃| < ∞` fails without a hypothesis on `η`
 
-The previous reduction carried
+Consider the statement
 
   `htildePfin : ∀ η : Site d → ℤ, (as_tildeP η).Finite`
 
-with no hypothesis on `η`.  This is refuted as follows.  Take `d = 2` and let
+with no hypothesis on `η`.  It is false, as follows.  Take `d = 2` and let
 `S = {(5n, 0) : n ≥ 1}` be a sparse ray; set `η x = 4` for `x ∈ S` and
 `η x = 0` otherwise.  The sites of `S` are pairwise at distance at least `5`,
 so their unit neighbourhoods are disjoint.  Each `x ∈ S` holds exactly `2d = 4`

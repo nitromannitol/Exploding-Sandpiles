@@ -1,6 +1,6 @@
 /-
 Step 4 of `theorem:counterexample` of `paper/corrected-arxiv/exploding-corrected-arxiv.tex`
-(`exploding-corrected-arxiv.tex:1639-1866`): the pulsating front of the reflected-cylinder
+(`exploding-corrected-arxiv.tex:1640-1867`): the pulsating front of the reflected-cylinder
 counterexample.
 
 This file isolates the *finite computation*.  On the cylinder with the modified
@@ -18,7 +18,7 @@ namespace Exploding
 /-! ### The modified cylinder background `ζ'` -/
 
 /-- The value `ζ'(x,y)` of the modified cylinder background of
-`exploding-corrected-arxiv.tex:1609-1619`, indexed by the column `x : ℕ` and the row `y : ℕ`
+`exploding-corrected-arxiv.tex:1610-1620`, indexed by the column `x : ℕ` and the row `y : ℕ`
 read modulo `4`.  The first two columns are the special origin block; from `x=2`
 on the background is the `4`-periodic block `ζ₁'`. -/
 def ce3_zetaP (x y : ℕ) : ℕ :=
@@ -29,7 +29,7 @@ def ce3_zetaP (x y : ℕ) : ℕ :=
   else if y % 4 = 2 then (if x % 4 = 0 then 2 else if x % 4 = 1 then 3 else if x % 4 = 2 then 3 else 2)
   else (if x % 4 = 0 then 3 else if x % 4 = 1 then 2 else if x % 4 = 2 then 2 else 3)
 
-/-- The displayed `{0,1}` initial condition `ŵ_0` of `exploding-corrected-arxiv.tex:1652-1660`:
+/-- The displayed `{0,1}` initial condition `ŵ_0` of `exploding-corrected-arxiv.tex:1653-1661`:
 all of columns `0,1,2` toppled, plus the two corners `(3,0)`, `(3,3)`. -/
 def ce3_w0 (x y : ℕ) : Bool :=
   if x ≤ 2 then true
@@ -119,7 +119,7 @@ def ce3_reset (N : ℕ) : List Bool :=
     let y := k % 4
     if x ≤ 10 then true else if x = 11 then (y = 0 || y = 3) else false)
 
-/-- **The `12`-period of the finite front** (`exploding-corrected-arxiv.tex:1662-1866`, checked
+/-- **The `12`-period of the finite front** (`exploding-corrected-arxiv.tex:1663-1867`, checked
 by kernel `decide`): after `12` steps the `14`-column slice is the initial
 pattern translated by `8` columns. -/
 theorem ce3_reset_spec : (ce3_step 14)^[12] (ce3_init 14) = ce3_reset 14 := by

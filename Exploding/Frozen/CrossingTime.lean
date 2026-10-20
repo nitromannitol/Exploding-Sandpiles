@@ -2,7 +2,7 @@ import Exploding.Support.ArxivCrossingBound
 
 open Exploding LatticeProb MeasureTheory
 
-/-- **Proposition 2.1** (`paper/corrected-arxiv/exploding-corrected-arxiv.tex:286-292`, label `prop:crossing_time`).
+/-- **Proposition 2.1** (`paper/corrected-arxiv/exploding-corrected-arxiv.tex:288-294`, label `prop:crossing_time`).
 
 "For every `δ > 0`, there is a `k` so that `max_{i,z} 𝔠_k^{(i,z)} ≤ k^d`
 with probability at least `(1 - δ)`."

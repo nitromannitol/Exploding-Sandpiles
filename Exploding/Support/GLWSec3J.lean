@@ -45,7 +45,7 @@ def glws_Clu (d : ℕ) (k : Fin d → ℕ) (c C : ℝ) (η : Site d → ℤ) : P
           c * (mnorm (x - y) : ℝ) ≤ (m : ℝ) ∧ (m : ℝ) ≤ C * (mnorm (x - y) : ℝ))
 
 /-- **The probabilistic claim** (the generalization of Proposition 2.2, paper
-`exploding-corrected-arxiv.tex:1195-1200`).  Under Hypotheses 1 and 4 the field of strongly box-crossing tiles
+`exploding-corrected-arxiv.tex:1197-1202`).  Under Hypotheses 1 and 4 the field of strongly box-crossing tiles
 is `m`-dependent with marginals close to one; by the Liggett-Schonmann-Stacey domination the good
 edges dominate a supercritical bond percolation (the dependence graph has bounded degree), and the
 argument before Proposition 2.2 (Mathieu's bound on the holes, Antal and Pisztora's chemical

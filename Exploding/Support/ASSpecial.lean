@@ -315,7 +315,7 @@ theorem assp_incl {s η w0 : Site d → ℤ} (S : Set (Site d))
 
 /-! ### The statement used by the proof of Proposition 4.1 -/
 
-/-- `eq:induction_specialcase2` of the paper (`exploding-corrected-arxiv.tex:1058-1060`): the reachable set of
+/-- `eq:induction_specialcase2` of the paper (`exploding-corrected-arxiv.tex:1060-1062`): the reachable set of
 `w_t` is inside that of `w̃_t`. -/
 theorem assp_special (d : ℕ) (hd : 2 ≤ d) : ∀ η : Site d → ℤ, (∀ x, 2 * (d : ℤ) - 2 ≤ η x) →
     (∀ x, η x ≤ 2 * (d : ℤ) - 1) →

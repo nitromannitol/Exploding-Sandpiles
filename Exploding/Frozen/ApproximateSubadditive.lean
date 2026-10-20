@@ -16,7 +16,7 @@ import Exploding.External.AntalPisztora
 
 open Exploding LatticeProb MeasureTheory
 
-/-- **Proposition 4.1** (`paper/corrected-arxiv/exploding-corrected-arxiv.tex:883-895`, label `prop:approximate_subadditive`, arXiv:2102.04422v2).
+/-- **Proposition 4.1** (`paper/corrected-arxiv/exploding-corrected-arxiv.tex:885-897`, label `prop:approximate_subadditive`, arXiv:2102.04422v2).
 
 "On an event of probability 1, there are constants `C_1(η), C_2(η)` so that for all
 `x ∈ ℤ^d`, `T(x) ≤ T̂(x) + C_1(η)` and `T̂(x) ≤ T(x) + C_2(η)`, where the last-wave

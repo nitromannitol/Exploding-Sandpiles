@@ -1,5 +1,5 @@
 /-
-Follow-up to `GLWProofAux.lean`: the two concrete open conjuncts of the
+Continues `GLWProofAux.lean`: the two remaining conjuncts of the
 reduction of Proposition 5.1 (convergence of the generalized last wave).
 
 * **(A)** the field of strongly box-crossing tiles is `m`-dependent, and

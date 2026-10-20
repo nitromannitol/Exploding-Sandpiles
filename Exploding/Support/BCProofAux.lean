@@ -267,7 +267,7 @@ theorem bc_nu_good (d : ℕ) (ν : Measure ℤ) [IsProbabilityMeasure ν]
   rw [h_compl_null, measure_univ, add_zero] at h_add
   simpa [μ] using h_add
 
-/-- (`exploding-corrected-arxiv.tex:1926-1928`, "by monotonicity, we may assume `η ∈ {d,
+/-- (`exploding-corrected-arxiv.tex:1927-1929`, "by monotonicity, we may assume `η ∈ {d,
 2d-1}`"), now assembled from the pieces above. A general one-site law `ν` with `ν(η ≥ d) = 1`
 and `ν(η = 2d-1) = p₀ > 0` pointwise-dominates the two-point law `chipLaw (2d-1) d p₀` under the
 coupling `T` that keeps the atom at `2d-1` and collapses every other value to `d`; parallel

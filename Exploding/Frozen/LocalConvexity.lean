@@ -5,7 +5,7 @@ import Exploding.Support.Vocab
 import Exploding.Support.SubFill
 
 open Exploding LatticeProb
-/-- **Lemma 2.1** (`paper/corrected-arxiv/exploding-corrected-arxiv.tex:401-405`, label `lemma:local_convexity`).
+/-- **Lemma 2.1** (`paper/corrected-arxiv/exploding-corrected-arxiv.tex:403-407`, label `lemma:local_convexity`).
 
 "Let `A := {z^(i)}` be a finite path `z^(i) ∼ z^(i+1)`.  Let `w_t` denote
 `A`-frozen parallel toppling with initial conditions `w_0(x) = 1{x ∈ A}` on the whole

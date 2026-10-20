@@ -96,11 +96,11 @@ same order and with the same numbers.
 | C02 | Theorems 1.1–1.3, reading of (2); convex domain of Theorem 1.2 | (2) is read as in C01; the convex domain of Theorem 1.2 is a nonempty open convex set, which its proof provides |
 | C03 | Theorem 1.4, statement | Product law needs one common marginal; counterexample to the published statement |
 | C04 | Section 2, frozen recursion | Odometer takes the maximum with its previous value; $s'_{t+1}=s_0+\Delta w_{t+1}$ |
-| C05 | Section 2 (Prop 2.1, Lemma 2.1, Hypotheses 2–4), Section 7 recurrence, Proposition 4.1 proof | Initial seed $s_0'=\eta+\Delta w_0$, not $\eta$ |
+| C05 | Proposition 2.1 and Lemma 2.1 (Section 2), Hypotheses 2–4 (Section 5), recurrence (Section 7), proof of Proposition 4.1 | Initial seed $s_0'=\eta+\Delta w_0$, not $\eta$ |
 | C06 | Section 2, paragraph before Proposition 2.2 (proof) | Percolation bounds: Mathieu applied to the independent site process, Antal–Pisztora to the bond process |
 | C07 | Lemma 2.1, initial odometer and caption | $w_0$ defined on the whole lattice; caption $s_0'=2+\Delta\mathbf 1_A$ |
 | C08 | Section 3, Lemma 3.1, two paragraphs after proof, Remark 1 | Lemma for every $d\geq2$ with $C_d$; remark gives planar lower bound; $Cn^2$ false in $d=2$ |
-| C09 | Section 4, Proposition 4.1 proof | Comparison of $\tilde T$ at nearby points replaces continuity; integrability via Kac |
+| C09 | Section 3, proof of Proposition 3.1 | Comparison of $\tilde T$ at nearby points replaces continuity; integrability via Kac |
 | C10 | Section 4, Theorem 1.2 proof | Proof added: $\mathcal B(p)=\{\mathcal N_p<1\}$, level set Lebesgue-null |
 | C11 | Section 5 standing assumption; Proposition 5.1; Theorem 5.1 | Assume $d\geq2$; $\eta\equiv0$ counterexample in $d=1$; Hyp 5 vacuous |
 | C12 | Hypothesis 1 | Pairwise independence becomes joint independence of finite families; a strengthened hypothesis, not a correction: whether the published form suffices is open |
@@ -109,14 +109,15 @@ same order and with the same numbers.
 | C15 | Section 5.2 examples | Hypotheses 1 and 4 verified for the cloud and checkerboard; Theorem 4.2 sentence replaced; $\mathcal S$ nonempty |
 | C16 | Proof of Theorem 6.1 | Failure of convergence in the volume sense of Theorem 1.2, for $d\geq2$ |
 | C17 | Proposition 7.1, statement | "Let $d\geq2$"; $d=1$ argued after the proof |
-| C18 | Proposition 7.1, proof | Proof for $d\geq2$; criterion sentence replaced; $d=1$ paragraph |
-| C19 | Proof of Theorem 1.4 | Reduced law $\mathbf P_d$ via $\alpha_d$; recurrence and box-crossing for $\mathbf P_d$; explosion transfers |
-| C20 | Proposition 7.2, setup | Tangential field $\beta$; $\eta^{(d-1)}=\eta^{(d)}(1,\cdot)-1$; $\Delta u_0$ term |
+| C18 | Proposition 7.1: sentence before it, setting of Section 7, proof | Proof for $d\geq2$; criterion sentence replaced; criterion applied to $\alpha_d$; $d=1$ paragraph |
+| C19 | Proof of Theorem 1.4 | Reduced law $\mathbf P_d$ via $\alpha_d$; recurrence and box-crossing for $\mathbf P_d$; explosion transfers; subsection retitled "$\mathbf P_d$ is recurrent" |
+| C20 | Proposition 7.2, setup | Tangential field $\beta$; $\eta^{(d-1)}=\eta^{(d)}(1,\cdot)-1$; $\Delta u_0$ term; interior and other external initial odometers zero |
 | C21 | Proposition 7.2, inductive step | Both constrained odometers make the same update |
-| C22 | Proposition 7.3, proof | Decomposition $Q_n=(\mathbf 1+Q_{n-2})\cup\dots$; base cases $n=1,2$ |
+| C22 | Proposition 7.3: sentence before it, proof | Reduction for $\mathbf P_d$ by monotonicity; decomposition $Q_n=(\mathbf 1+Q_{n-2})\cup\dots$; base cases $n=1,2$ |
 | C23 | Proposition 7.5, statement | Box-crossing for $d\geq2$; $d=1$ for every law with $\eta\geq1$ |
 | C24 | Proposition 7.5, proof | Proof for $\alpha_d$ with one-marginal layer variables; $d=1$ immediate |
-| C25 | Minor wording | AI-use subsection and Lean paragraph; $n\geq1$ in counterexample; $\mathbf x_{d-1}$ in Prop 7.2; labels; ties |
+| C25 | Introduction | New subsection Use of artificial intelligence (who wrote the paper and the Lean formalization, what the agents did) and paragraph on the formalization's coverage |
+| C26 | Wording | Lemma 2.1 "for every"; Section 5 opening sentence; "ad hoc"; $n\geq1$ and a thin space in the counterexample; "The constraints are" and $\mathbf x_{d-1}$ in Prop 7.2; labels; ties and macros |
 
 ## Standing assumptions and scope
 
@@ -157,7 +158,7 @@ Each statement is taken from one source file. For each source the table gives it
 
 | Source | SHA-256 | Theorem statements | Proved | Cited results | Definitions |
 |---|---|---|---|---|---|
-| [paper/corrected-arxiv/exploding-corrected-arxiv.tex](paper/corrected-arxiv/exploding-corrected-arxiv.tex) | `6e5a981a0d8d3b7abdf78e31d2630780b9db467e63aea7772e93043e4e804d0c` | 29 | 29 | 9 | 4 |
+| [paper/corrected-arxiv/exploding-corrected-arxiv.tex](paper/corrected-arxiv/exploding-corrected-arxiv.tex) | `ee4b05b340bff74811db1c3ed88ac7b0ad3fd324f0dad5a52393bc4971c0c8b0` | 29 | 29 | 9 | 4 |
 
 A cited result is a hypothesis of the theorems that use it, not an axiom (see ASSUMPTIONS.md). Definitions are not counted as theorems. These counts are generated from `ledger/manifest.yaml` by `python3 tools/sync_docs.py`; `python3 tools/check_axioms.py` checks the axiom closures.
 
@@ -233,7 +234,7 @@ Exploding.lean        the root module
 ExplodingAudit/       the Mathlib-only comparator pair, its solution and checks
 paper/corrected-arxiv/      the corrected edition: source, bibliography, figures, source note
 paper/exploding-arxiv.tex   the unmodified arXiv v2 source
-paper/README.md             the three texts in paper/
+paper/README.md             the texts in paper/
 ledger/manifest.yaml        the statements, with their SHA-256 and sources
 ASSUMPTIONS.md              the cited results and where each is proved
 CORRESPONDENCE.md           paper ↔ Lean: conventions, cited inputs, statement table

@@ -6,7 +6,7 @@ import Exploding.Support.SubRecMin
 
 open Exploding LatticeProb
 
-/-- **Proposition 7.3** (`paper/corrected-arxiv/exploding-corrected-arxiv.tex:2099-2101`, label `prop:recurrence`).
+/-- **Proposition 7.3** (`paper/corrected-arxiv/exploding-corrected-arxiv.tex:2100-2102`, label `prop:recurrence`).
 
 "For every `d ≥ 1`, `η : ℤ^d → {d}` is recurrent."
 

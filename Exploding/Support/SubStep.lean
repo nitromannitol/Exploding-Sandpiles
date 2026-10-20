@@ -2,7 +2,7 @@
 The propagation step of Lemma 3.2 of `paper/corrected-arxiv/exploding-corrected-arxiv.tex`: once the wave covers
 a good cube `Q_k(i)`, it covers an adjacent good cube `Q_k(j)`.
 
-The paper's mechanism (`exploding-corrected-arxiv.tex:369-371`): a good cube is crossed by a
+The paper's mechanism (`exploding-corrected-arxiv.tex:371-373`): a good cube is crossed by a
 fired line within `k^d` steps.  The line used here is a line of `Q_k(j)` through
 a point of the outer boundary of `Q_k(j)` that the coverage of `Q_k(i)` has
 already fired; the crossing property of the good cube `Q_k(j)` fills `Q_k(j)`

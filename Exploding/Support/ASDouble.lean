@@ -1,15 +1,15 @@
 /-
 A step of the proof of `Exploding.Frozen.approximate_subadditive` (Proposition 4.1).
 
-## The double-toppling claim is false
+## A double-toppling statement that is false for some backgrounds
 
-The previous reduction (`ASProof6.lean`, `ASProof7.lean`) isolated the claim
+Consider the statement
 
   `hdouble : ∃ T, ∀ y, 0 < penultimateWave η 0 y → 2 ≤ podo (explodingPile η) T y`
 
-in the case where no site topples infinitely often.  It is refuted for a deterministic
-background, and with it the unrestricted `hpodo` that the frozen body carried for *every*
-background `η`.
+in the case where no site topples infinitely often.  It fails for the deterministic
+background below, and so does `hpodo` when it is required for *every* background `η`
+rather than almost surely.
 
 Take `d = 2` and the background `η = 3` on
 `{(0,0), (0,1), (-1,-1)} ∪ {(k,0) : k ≥ 2}` and `η = 2` elsewhere, so `2d-2 ≤ η ≤ 2d-1`.

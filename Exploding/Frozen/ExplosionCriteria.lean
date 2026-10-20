@@ -7,7 +7,7 @@ import Exploding.Support.RecurrenceNonneg
 
 open Exploding LatticeProb MeasureTheory
 
-/-- **Proposition 7.1** (`paper/corrected-arxiv/exploding-corrected-arxiv.tex:1955-1957`, label `prop:explosion_criteria`), in the bounded-background setting of
+/-- **Proposition 7.1** (`paper/corrected-arxiv/exploding-corrected-arxiv.tex:1956-1958`, label `prop:explosion_criteria`), in the bounded-background setting of
 Section 5 (`sec:generalization`) with `d ≥ 2`.
 
 "Let `d ≥ 2`. If Hypotheses `hyp:finite_range_of_dependence` and `hyp:box_crossing` are

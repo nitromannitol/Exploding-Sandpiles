@@ -2,15 +2,16 @@
 Theorem 1.2 of the paper: the support of the exploding sandpile, rescaled by
 time, converges in measure to a convex domain.
 
-The paper gives NO proof of this theorem.  It is stated at exploding-corrected-arxiv.tex:104-112,
-immediately followed (255-257) by "In fact, we prove something stronger. Not
+The published paper gives no proof of this theorem; the corrected edition adds one
+(entry C10).  It is stated at exploding-corrected-arxiv.tex:104-112, and line 113
+reads "In fact, we prove something stronger. Not
 only does the support of the explosion converge, but the rate at which the
 explosion spreads also converges" -- i.e. Theorem 1.3
 (`theorem:convergence_of_time_constant`) is presented as the stronger statement
 from which Theorem 1.2 should follow, but the derivation ("locally uniform
 convergence of rescaled arrival times to a homogeneous convex gauge implies
-convergence in measure of the corresponding super-level sets") is never written
-down.  This file reconstructs that standard real-analysis argument and proves it,
+convergence in measure of the corresponding super-level sets") is not written
+in the published paper.  This file proves that standard real-analysis argument,
 culminating in `ls_assemble`.
 
 The key geometric fact needed to make sense of `|{v̄_t > 0} △ B(p)| → 0` at all
@@ -433,7 +434,7 @@ theorem ls_shell_inclusion (η : Site d → ℤ) (N : (Fin d → ℝ) → ℝ)
       have := (abs_le.mp hf).2; linarith
     exact ⟨by linarith, by linarith⟩
 
-/-- Step 6, piece (a) (TRUE, general topology, no gap): the level set `{N=1}`
+/-- Step 6, piece (a) (general topology): the level set `{N=1}`
 sits in the frontier of `B := {N<1}`.  Proof: `{N=1} ⊆ closure B` because
 `y` with `N y = 1` is the limit as `c ↑ 1` of `c • y ∈ B` (`N (c•y) = c*N y =
 c < 1` by `hhom`, and `c•y → y` by continuity of scalar multiplication); and

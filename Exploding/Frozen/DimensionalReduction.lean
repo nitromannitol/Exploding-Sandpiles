@@ -9,7 +9,7 @@ import Exploding.Support.ReductionBoundary
 
 open Exploding LatticeProb
 
-/-- **Proposition 7.2** (`paper/corrected-arxiv/exploding-corrected-arxiv.tex:2058-2067`, label `prop:dimensional_reduction`), with the
+/-- **Proposition 7.2** (`paper/corrected-arxiv/exploding-corrected-arxiv.tex:2059-2068`, label `prop:dimensional_reduction`), with the
 paper's `d` written `d + 1`, so that the lower-dimensional lattice is `ℤ^d`; `(1, 𝐱)` is
 `cons 1 y` and `F_1(Q_n^{(d)})` is the internal face `faceLow (d + 1) n 0`.  The tangential
 external values are the Boolean function `beta`, evaluated at each outer boundary site.

@@ -21,7 +21,7 @@ Of these, **6 are also proved in this repository** and so need not be taken on t
 
 * **Lean name** `Exploding.External.AntalPisztoraChemicalDistance`
 * **File** `Exploding/External/AntalPisztora.lean`
-* **Cited at** antal1996chemical Theorem 1.1, cited at exploding-corrected-arxiv.tex:348 for prop:renormalization_properties
+* **Cited at** antal1996chemical Theorem 1.1, cited at exploding-corrected-arxiv.tex:350 for prop:renormalization_properties
 * **Not proved here**: this one is assumed outright
 
 ```lean
@@ -33,13 +33,13 @@ def Exploding.External.AntalPisztoraChemicalDistance : Prop :=
         ENNReal.ofReal (Real.exp (-(c * (mnorm y : ℝ))))
 ```
 
-Source: `paper/corrected-arxiv/exploding-corrected-arxiv.tex`, digest `6e5a981a0d8d3b7abdf78e31d2630780b9db467e63aea7772e93043e4e804d0c`.
+Source: `paper/corrected-arxiv/exploding-corrected-arxiv.tex`, digest `ee4b05b340bff74811db1c3ed88ac7b0ad3fd324f0dad5a52393bc4971c0c8b0`.
 
 ## `ext-fey-den-boer-redig-cubical-cluster`
 
 * **Lean name** `Exploding.External.FeyDenBoerRedigCubicalCluster`
 * **File** `Exploding/External/FeyDenBoerRedigCubicalCluster.lean`
-* **Cited at** Cited at exploding-corrected-arxiv.tex:584-585 for lemma:square_lower_bound
+* **Cited at** Cited at exploding-corrected-arxiv.tex:586-587 for lemma:square_lower_bound
 * **Not proved here**: this one is assumed outright
 
 ```lean
@@ -47,7 +47,7 @@ def Exploding.External.FeyDenBoerRedigCubicalCluster : Prop :=
   LatticeProb.External.FeyDenBoerRedigCubicalCluster
 ```
 
-Source: `paper/corrected-arxiv/exploding-corrected-arxiv.tex`, digest `6e5a981a0d8d3b7abdf78e31d2630780b9db467e63aea7772e93043e4e804d0c`.
+Source: `paper/corrected-arxiv/exploding-corrected-arxiv.tex`, digest `ee4b05b340bff74811db1c3ed88ac7b0ad3fd324f0dad5a52393bc4971c0c8b0`.
 
 ## `ext-fey-levine-peres`
 
@@ -61,13 +61,13 @@ def Exploding.External.FeyLevinePeresExplosive : Prop :=
   ∀ d : ℕ, 2 ≤ d → ∀ p : ℝ, 0 < p → p ≤ 1 → ∀ᵐ η ∂(toyLaw d p), Explosive η
 ```
 
-Source: `paper/corrected-arxiv/exploding-corrected-arxiv.tex`, digest `6e5a981a0d8d3b7abdf78e31d2630780b9db467e63aea7772e93043e4e804d0c`.
+Source: `paper/corrected-arxiv/exploding-corrected-arxiv.tex`, digest `ee4b05b340bff74811db1c3ed88ac7b0ad3fd324f0dad5a52393bc4971c0c8b0`.
 
 ## `ext-fey-levine-peres-radius`
 
 * **Lean name** `Exploding.External.FeyLevinePeresRadius`
 * **File** `Exploding/External/FeyLevinePeresRadius.lean`
-* **Cited at** Cited at exploding-corrected-arxiv.tex:584-585 for lemma:square_lower_bound
+* **Cited at** Cited at exploding-corrected-arxiv.tex:586-587 for lemma:square_lower_bound
 * **Not proved here**: this one is assumed outright
 
 ```lean
@@ -75,13 +75,13 @@ def Exploding.External.FeyLevinePeresRadius : Prop :=
   LatticeProb.External.FeyLevinePeresRadius
 ```
 
-Source: `paper/corrected-arxiv/exploding-corrected-arxiv.tex`, digest `6e5a981a0d8d3b7abdf78e31d2630780b9db467e63aea7772e93043e4e804d0c`.
+Source: `paper/corrected-arxiv/exploding-corrected-arxiv.tex`, digest `ee4b05b340bff74811db1c3ed88ac7b0ad3fd324f0dad5a52393bc4971c0c8b0`.
 
 ## `ext-fey-meester-redig`
 
 * **Lean name** `Exploding.External.FeyMeesterRedigLeastAction`
 * **File** `Exploding/External/FeyMeesterRedig.lean`
-* **Cited at** fey2009stabilizability Theorem 2.8, cited at exploding-corrected-arxiv.tex:1534 in the proof of theorem:counterexample
+* **Cited at** fey2009stabilizability Theorem 2.8, cited at exploding-corrected-arxiv.tex:1535 in the proof of theorem:counterexample
 * **Also proved here** by `Exploding.xfmr_proved` in `Exploding/Support/ExtFMR.lean`, so this hypothesis can be discharged rather than assumed
 
 ```lean
@@ -94,13 +94,13 @@ def Exploding.External.FeyMeesterRedigLeastAction : Prop :=
         ∀ (k : ℕ) (x : Site d), u k x ≤ w x
 ```
 
-Source: `paper/corrected-arxiv/exploding-corrected-arxiv.tex`, digest `6e5a981a0d8d3b7abdf78e31d2630780b9db467e63aea7772e93043e4e804d0c`.
+Source: `paper/corrected-arxiv/exploding-corrected-arxiv.tex`, digest `ee4b05b340bff74811db1c3ed88ac7b0ad3fd324f0dad5a52393bc4971c0c8b0`.
 
 ## `ext-liggett-schonmann-stacey`
 
 * **Lean name** `Exploding.External.LiggettSchonmannStacey`
 * **File** `Exploding/External/LiggettSchonmannStacey.lean`
-* **Cited at** liggett1997domination Theorem 0.0, cited at exploding-corrected-arxiv.tex:1225 in the proof of prop:convergence_of_the_generalized_last_wave
+* **Cited at** liggett1997domination Theorem 0.0, cited at exploding-corrected-arxiv.tex:1227 in the proof of prop:convergence_of_the_generalized_last_wave
 * **Also proved here** by `Exploding.xlse_lss_general` in `Exploding/Support/ExtLSSCountable.lean`, so this hypothesis can be discharged rather than assumed
 
 ```lean
@@ -112,13 +112,13 @@ def Exploding.External.LiggettSchonmannStacey : Prop :=
         sitePercolation d ρ A ≤ μ A
 ```
 
-Source: `paper/corrected-arxiv/exploding-corrected-arxiv.tex`, digest `6e5a981a0d8d3b7abdf78e31d2630780b9db467e63aea7772e93043e4e804d0c`.
+Source: `paper/corrected-arxiv/exploding-corrected-arxiv.tex`, digest `ee4b05b340bff74811db1c3ed88ac7b0ad3fd324f0dad5a52393bc4971c0c8b0`.
 
 ## `ext-lss-bounded-degree`
 
 * **Lean name** `Exploding.External.LiggettSchonmannStaceyBoundedDegree`
 * **File** `Exploding/External/LiggettSchonmannStaceyBoundedDegree.lean`
-* **Cited at** liggett1997domination Corollary 1.4, cited at exploding-corrected-arxiv.tex:348 for prop:renormalization_properties
+* **Cited at** liggett1997domination Corollary 1.4, cited at exploding-corrected-arxiv.tex:350 for prop:renormalization_properties
 * **Also proved here** by `xlse_lss_bounded_degree` in `Exploding/Support/ExtLSSCountable.lean`, so this hypothesis can be discharged rather than assumed
 
 ```lean
@@ -134,13 +134,13 @@ def Exploding.External.LiggettSchonmannStaceyBoundedDegree : Prop :=
           bernoulliProduct S ρ A ≤ μ A
 ```
 
-Source: `paper/corrected-arxiv/exploding-corrected-arxiv.tex`, digest `6e5a981a0d8d3b7abdf78e31d2630780b9db467e63aea7772e93043e4e804d0c`.
+Source: `paper/corrected-arxiv/exploding-corrected-arxiv.tex`, digest `ee4b05b340bff74811db1c3ed88ac7b0ad3fd324f0dad5a52393bc4971c0c8b0`.
 
 ## `ext-mathieu-holes`
 
 * **Lean name** `Exploding.External.MathieuHoleVolume`
 * **File** `Exploding/External/MathieuHoles.lean`
-* **Cited at** mathieu2008quenched Lemma 5.2, cited at exploding-corrected-arxiv.tex:348 for prop:renormalization_properties
+* **Cited at** mathieu2008quenched Lemma 5.2, cited at exploding-corrected-arxiv.tex:350 for prop:renormalization_properties
 * **Also proved here** by `Exploding.xmf_proved` in `Exploding/Support/ExtMHHoleVolume.lean`, so this hypothesis can be discharged rather than assumed
 
 ```lean
@@ -152,13 +152,13 @@ def Exploding.External.MathieuHoleVolume : Prop :=
           ((componentIn Cᶜ x).ncard : ℝ) < Real.log n ^ ((5 : ℝ) / 2)
 ```
 
-Source: `paper/corrected-arxiv/exploding-corrected-arxiv.tex`, digest `6e5a981a0d8d3b7abdf78e31d2630780b9db467e63aea7772e93043e4e804d0c`.
+Source: `paper/corrected-arxiv/exploding-corrected-arxiv.tex`, digest `ee4b05b340bff74811db1c3ed88ac7b0ad3fd324f0dad5a52393bc4971c0c8b0`.
 
 ## `ext-schonmann-bootstrap`
 
 * **Lean name** `Exploding.External.SchonmannBootstrap`
 * **File** `Exploding/External/Schonmann.lean`
-* **Cited at** exploding-corrected-arxiv.tex:2138-2150 (label prop:schonnmann_bootstrap)
+* **Cited at** exploding-corrected-arxiv.tex:2139-2151 (label prop:schonnmann_bootstrap)
 * **Also proved here** by `Exploding.xsr_schonmann` in `Exploding/Support/ExtSchFinal.lean`, so this hypothesis can be discharged rather than assumed
 
 ```lean
@@ -169,4 +169,4 @@ def Exploding.External.SchonmannBootstrap : Prop :=
         productLaw d (2 * (d : ℤ)) (d : ℤ) p {η | InternallySpanned η n}
 ```
 
-Source: `paper/corrected-arxiv/exploding-corrected-arxiv.tex`, digest `6e5a981a0d8d3b7abdf78e31d2630780b9db467e63aea7772e93043e4e804d0c`.
+Source: `paper/corrected-arxiv/exploding-corrected-arxiv.tex`, digest `ee4b05b340bff74811db1c3ed88ac7b0ad3fd324f0dad5a52393bc4971c0c8b0`.

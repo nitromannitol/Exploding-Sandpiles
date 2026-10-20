@@ -1,5 +1,5 @@
 /-
-Follow-up to `Exploding/Support/LWCProof3.lean`.
+Continues `Exploding/Support/LWCProof3.lean`.
 
 Conjunct (2) of the last-wave reduction: the far Lipschitz bound on the penultimate-cluster
 arrival time `T̃`.  This file starts from the elementary lower bound that the `N`-wave spreads at

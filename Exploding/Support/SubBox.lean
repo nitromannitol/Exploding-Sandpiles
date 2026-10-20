@@ -545,7 +545,7 @@ theorem bmax_succ_up (z : ℕ → Site d) (j : ℕ) (i : Fin d)
   exact max_eq_left (le_bmax z j k (le_refl j))
 
 
-/-- **The box update** (`exploding-corrected-arxiv.tex:415-423`): if the path steps from `z j`
+/-- **The box update** (`exploding-corrected-arxiv.tex:417-425`): if the path steps from `z j`
 to `z (j+1) = z j + e_i` and `z j i` is the maximum of the path in direction
 `i`, the box of the first `j+2` points is the box of the first `j+1` points
 together with the cap above it in direction `i`. -/

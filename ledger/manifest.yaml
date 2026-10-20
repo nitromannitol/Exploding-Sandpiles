@@ -14,7 +14,7 @@
 version: 1
 source_pin:
   file: paper/corrected-arxiv/exploding-corrected-arxiv.tex
-  sha256: 6e5a981a0d8d3b7abdf78e31d2630780b9db467e63aea7772e93043e4e804d0c
+  sha256: ee4b05b340bff74811db1c3ed88ac7b0ad3fd324f0dad5a52393bc4971c0c8b0
   inputs:
   - file: paper/corrected-arxiv/defs.tex
     sha256: 9aba2c73246d79e3c6b87cb1f01cf3e2f636e27c8afd97ccb8ba5c032a9ee65b
@@ -30,7 +30,7 @@ nodes:
     provider: Exploding.Frozen.limit_shape
     source_pin: &id001
       file: paper/corrected-arxiv/exploding-corrected-arxiv.tex
-      sha256: 6e5a981a0d8d3b7abdf78e31d2630780b9db467e63aea7772e93043e4e804d0c
+      sha256: ee4b05b340bff74811db1c3ed88ac7b0ad3fd324f0dad5a52393bc4971c0c8b0
       inputs:
       - file: paper/corrected-arxiv/defs.tex
         sha256: 9aba2c73246d79e3c6b87cb1f01cf3e2f636e27c8afd97ccb8ba5c032a9ee65b
@@ -45,7 +45,7 @@ nodes:
     provider: Exploding.Frozen.convergence_of_time_constant
     source_pin:
       file: paper/corrected-arxiv/exploding-corrected-arxiv.tex
-      sha256: 6e5a981a0d8d3b7abdf78e31d2630780b9db467e63aea7772e93043e4e804d0c
+      sha256: ee4b05b340bff74811db1c3ed88ac7b0ad3fd324f0dad5a52393bc4971c0c8b0
       inputs:
       - file: paper/corrected-arxiv/defs.tex
         sha256: 9aba2c73246d79e3c6b87cb1f01cf3e2f636e27c8afd97ccb8ba5c032a9ee65b
@@ -60,13 +60,13 @@ nodes:
     provider: Exploding.Frozen.explosive
     source_pin:
       file: paper/corrected-arxiv/exploding-corrected-arxiv.tex
-      sha256: 6e5a981a0d8d3b7abdf78e31d2630780b9db467e63aea7772e93043e4e804d0c
+      sha256: ee4b05b340bff74811db1c3ed88ac7b0ad3fd324f0dad5a52393bc4971c0c8b0
       inputs:
       - file: paper/corrected-arxiv/defs.tex
         sha256: 9aba2c73246d79e3c6b87cb1f01cf3e2f636e27c8afd97ccb8ba5c032a9ee65b
   - id: prop-renormalization
     kind: theorem
-    source: exploding-corrected-arxiv.tex:352-367 (label prop:renormalization_properties)
+    source: exploding-corrected-arxiv.tex:354-369 (label prop:renormalization_properties)
     file: Exploding/Frozen/Renormalization.lean
     export: Exploding.Frozen.renormalization_properties
     state: PROVED
@@ -75,13 +75,13 @@ nodes:
     provider: Exploding.Frozen.renormalization_properties
     source_pin:
       file: paper/corrected-arxiv/exploding-corrected-arxiv.tex
-      sha256: 6e5a981a0d8d3b7abdf78e31d2630780b9db467e63aea7772e93043e4e804d0c
+      sha256: ee4b05b340bff74811db1c3ed88ac7b0ad3fd324f0dad5a52393bc4971c0c8b0
       inputs:
       - file: paper/corrected-arxiv/defs.tex
         sha256: 9aba2c73246d79e3c6b87cb1f01cf3e2f636e27c8afd97ccb8ba5c032a9ee65b
   - id: lem-square-lower-bound
     kind: theorem
-    source: exploding-corrected-arxiv.tex:577-587 (label lemma:square_lower_bound)
+    source: exploding-corrected-arxiv.tex:579-589 (label lemma:square_lower_bound)
     file: Exploding/Frozen/SquareLowerBound.lean
     export: Exploding.Frozen.square_lower_bound
     state: PROVED
@@ -90,13 +90,13 @@ nodes:
     provider: Exploding.Frozen.square_lower_bound
     source_pin:
       file: paper/corrected-arxiv/exploding-corrected-arxiv.tex
-      sha256: 6e5a981a0d8d3b7abdf78e31d2630780b9db467e63aea7772e93043e4e804d0c
+      sha256: ee4b05b340bff74811db1c3ed88ac7b0ad3fd324f0dad5a52393bc4971c0c8b0
       inputs:
       - file: paper/corrected-arxiv/defs.tex
         sha256: 9aba2c73246d79e3c6b87cb1f01cf3e2f636e27c8afd97ccb8ba5c032a9ee65b
   - id: rem-sharp-planar-obstruction
     kind: theorem
-    source: exploding-corrected-arxiv.tex:697-716 (label rem:sharp_planar_obstruction)
+    source: exploding-corrected-arxiv.tex:699-718 (label rem:sharp_planar_obstruction)
     file: Exploding/Frozen/SharpPlanarObstruction.lean
     export: Exploding.Frozen.sharp_planar_obstruction
     state: PROVED
@@ -105,13 +105,13 @@ nodes:
     provider: Exploding.Frozen.sharp_planar_obstruction
     source_pin:
       file: paper/corrected-arxiv/exploding-corrected-arxiv.tex
-      sha256: 6e5a981a0d8d3b7abdf78e31d2630780b9db467e63aea7772e93043e4e804d0c
+      sha256: ee4b05b340bff74811db1c3ed88ac7b0ad3fd324f0dad5a52393bc4971c0c8b0
       inputs:
       - file: paper/corrected-arxiv/defs.tex
         sha256: 9aba2c73246d79e3c6b87cb1f01cf3e2f636e27c8afd97ccb8ba5c032a9ee65b
   - id: lem-penultimate-cluster
     kind: theorem
-    source: exploding-corrected-arxiv.tex:794-800 (label lemma:last_penultimate_cluster)
+    source: exploding-corrected-arxiv.tex:796-802 (label lemma:last_penultimate_cluster)
     file: Exploding/Frozen/PenultimateCluster.lean
     export: Exploding.Frozen.last_penultimate_cluster
     state: PROVED
@@ -120,13 +120,13 @@ nodes:
     provider: Exploding.Frozen.last_penultimate_cluster
     source_pin:
       file: paper/corrected-arxiv/exploding-corrected-arxiv.tex
-      sha256: 6e5a981a0d8d3b7abdf78e31d2630780b9db467e63aea7772e93043e4e804d0c
+      sha256: ee4b05b340bff74811db1c3ed88ac7b0ad3fd324f0dad5a52393bc4971c0c8b0
       inputs:
       - file: paper/corrected-arxiv/defs.tex
         sha256: 9aba2c73246d79e3c6b87cb1f01cf3e2f636e27c8afd97ccb8ba5c032a9ee65b
   - id: lem-penultimate-upper-bound
     kind: theorem
-    source: exploding-corrected-arxiv.tex:809-814 (label lemma:penultimate_upper_bound)
+    source: exploding-corrected-arxiv.tex:811-816 (label lemma:penultimate_upper_bound)
     file: Exploding/Frozen/PenultimateUpperBound.lean
     export: Exploding.Frozen.penultimate_upper_bound
     state: PROVED
@@ -135,13 +135,13 @@ nodes:
     provider: Exploding.Frozen.penultimate_upper_bound
     source_pin:
       file: paper/corrected-arxiv/exploding-corrected-arxiv.tex
-      sha256: 6e5a981a0d8d3b7abdf78e31d2630780b9db467e63aea7772e93043e4e804d0c
+      sha256: ee4b05b340bff74811db1c3ed88ac7b0ad3fd324f0dad5a52393bc4971c0c8b0
       inputs:
       - file: paper/corrected-arxiv/defs.tex
         sha256: 9aba2c73246d79e3c6b87cb1f01cf3e2f636e27c8afd97ccb8ba5c032a9ee65b
   - id: lem-penultimate-close
     kind: theorem
-    source: exploding-corrected-arxiv.tex:834-839 (label lemma:last_penultimate_close)
+    source: exploding-corrected-arxiv.tex:836-841 (label lemma:last_penultimate_close)
     file: Exploding/Frozen/PenultimateClose.lean
     export: Exploding.Frozen.last_penultimate_close
     state: PROVED
@@ -150,13 +150,13 @@ nodes:
     provider: Exploding.Frozen.last_penultimate_close
     source_pin:
       file: paper/corrected-arxiv/exploding-corrected-arxiv.tex
-      sha256: 6e5a981a0d8d3b7abdf78e31d2630780b9db467e63aea7772e93043e4e804d0c
+      sha256: ee4b05b340bff74811db1c3ed88ac7b0ad3fd324f0dad5a52393bc4971c0c8b0
       inputs:
       - file: paper/corrected-arxiv/defs.tex
         sha256: 9aba2c73246d79e3c6b87cb1f01cf3e2f636e27c8afd97ccb8ba5c032a9ee65b
   - id: prop-last-wave-convergence
     kind: theorem
-    source: exploding-corrected-arxiv.tex:848-854 (label prop:convergence_of_the_last_wave)
+    source: exploding-corrected-arxiv.tex:850-856 (label prop:convergence_of_the_last_wave)
     file: Exploding/Frozen/LastWaveConvergence.lean
     export: Exploding.Frozen.convergence_of_the_last_wave
     state: PROVED
@@ -165,13 +165,13 @@ nodes:
     provider: Exploding.Frozen.convergence_of_the_last_wave
     source_pin:
       file: paper/corrected-arxiv/exploding-corrected-arxiv.tex
-      sha256: 6e5a981a0d8d3b7abdf78e31d2630780b9db467e63aea7772e93043e4e804d0c
+      sha256: ee4b05b340bff74811db1c3ed88ac7b0ad3fd324f0dad5a52393bc4971c0c8b0
       inputs:
       - file: paper/corrected-arxiv/defs.tex
         sha256: 9aba2c73246d79e3c6b87cb1f01cf3e2f636e27c8afd97ccb8ba5c032a9ee65b
   - id: prop-approximate-subadditive
     kind: theorem
-    source: exploding-corrected-arxiv.tex:883-895 (label prop:approximate_subadditive)
+    source: exploding-corrected-arxiv.tex:885-897 (label prop:approximate_subadditive)
     file: Exploding/Frozen/ApproximateSubadditive.lean
     export: Exploding.Frozen.approximate_subadditive
     state: PROVED
@@ -180,13 +180,13 @@ nodes:
     provider: Exploding.Frozen.approximate_subadditive
     source_pin:
       file: paper/corrected-arxiv/exploding-corrected-arxiv.tex
-      sha256: 6e5a981a0d8d3b7abdf78e31d2630780b9db467e63aea7772e93043e4e804d0c
+      sha256: ee4b05b340bff74811db1c3ed88ac7b0ad3fd324f0dad5a52393bc4971c0c8b0
       inputs:
       - file: paper/corrected-arxiv/defs.tex
         sha256: 9aba2c73246d79e3c6b87cb1f01cf3e2f636e27c8afd97ccb8ba5c032a9ee65b
   - id: prop-generalized-last-wave
     kind: theorem
-    source: exploding-corrected-arxiv.tex:1200-1204 (label prop:convergence_of_the_generalized_last_wave)
+    source: exploding-corrected-arxiv.tex:1202-1206 (label prop:convergence_of_the_generalized_last_wave)
     file: Exploding/Frozen/GeneralizedLastWave.lean
     export: Exploding.Frozen.convergence_of_the_generalized_last_wave
     state: PROVED
@@ -195,13 +195,13 @@ nodes:
     provider: Exploding.Frozen.convergence_of_the_generalized_last_wave
     source_pin:
       file: paper/corrected-arxiv/exploding-corrected-arxiv.tex
-      sha256: 6e5a981a0d8d3b7abdf78e31d2630780b9db467e63aea7772e93043e4e804d0c
+      sha256: ee4b05b340bff74811db1c3ed88ac7b0ad3fd324f0dad5a52393bc4971c0c8b0
       inputs:
       - file: paper/corrected-arxiv/defs.tex
         sha256: 9aba2c73246d79e3c6b87cb1f01cf3e2f636e27c8afd97ccb8ba5c032a9ee65b
   - id: thm-generalized-convergence
     kind: theorem
-    source: exploding-corrected-arxiv.tex:1371-1375 (label theorem:generalized_convergence)
+    source: exploding-corrected-arxiv.tex:1373-1377 (label theorem:generalized_convergence)
     file: Exploding/Frozen/GeneralizedConvergence.lean
     export: Exploding.Frozen.generalized_convergence
     state: PROVED
@@ -210,13 +210,13 @@ nodes:
     provider: Exploding.Frozen.generalized_convergence
     source_pin:
       file: paper/corrected-arxiv/exploding-corrected-arxiv.tex
-      sha256: 6e5a981a0d8d3b7abdf78e31d2630780b9db467e63aea7772e93043e4e804d0c
+      sha256: ee4b05b340bff74811db1c3ed88ac7b0ad3fd324f0dad5a52393bc4971c0c8b0
       inputs:
       - file: paper/corrected-arxiv/defs.tex
         sha256: 9aba2c73246d79e3c6b87cb1f01cf3e2f636e27c8afd97ccb8ba5c032a9ee65b
   - id: thm-counterexample
     kind: theorem
-    source: exploding-corrected-arxiv.tex:1470-1480 (label theorem:counterexample)
+    source: exploding-corrected-arxiv.tex:1471-1481 (label theorem:counterexample)
     file: Exploding/Frozen/Counterexample.lean
     export: Exploding.Frozen.counterexample
     state: PROVED
@@ -225,13 +225,13 @@ nodes:
     provider: Exploding.ce_counterexample_complete
     source_pin:
       file: paper/corrected-arxiv/exploding-corrected-arxiv.tex
-      sha256: 6e5a981a0d8d3b7abdf78e31d2630780b9db467e63aea7772e93043e4e804d0c
+      sha256: ee4b05b340bff74811db1c3ed88ac7b0ad3fd324f0dad5a52393bc4971c0c8b0
       inputs:
       - file: paper/corrected-arxiv/defs.tex
         sha256: 9aba2c73246d79e3c6b87cb1f01cf3e2f636e27c8afd97ccb8ba5c032a9ee65b
   - id: prop-explosion-criteria
     kind: theorem
-    source: exploding-corrected-arxiv.tex:1955-1957 (label prop:explosion_criteria)
+    source: exploding-corrected-arxiv.tex:1956-1958 (label prop:explosion_criteria)
     file: Exploding/Frozen/ExplosionCriteria.lean
     export: Exploding.Frozen.explosion_criteria
     state: PROVED
@@ -240,13 +240,13 @@ nodes:
     provider: Exploding.Frozen.explosion_criteria
     source_pin:
       file: paper/corrected-arxiv/exploding-corrected-arxiv.tex
-      sha256: 6e5a981a0d8d3b7abdf78e31d2630780b9db467e63aea7772e93043e4e804d0c
+      sha256: ee4b05b340bff74811db1c3ed88ac7b0ad3fd324f0dad5a52393bc4971c0c8b0
       inputs:
       - file: paper/corrected-arxiv/defs.tex
         sha256: 9aba2c73246d79e3c6b87cb1f01cf3e2f636e27c8afd97ccb8ba5c032a9ee65b
   - id: prop-box-crossing
     kind: theorem
-    source: exploding-corrected-arxiv.tex:2155-2157 (label prop:box_crossing)
+    source: exploding-corrected-arxiv.tex:2156-2158 (label prop:box_crossing)
     file: Exploding/Frozen/BoxCrossing.lean
     export: Exploding.Frozen.box_crossing
     state: PROVED
@@ -255,7 +255,7 @@ nodes:
     provider: Exploding.Frozen.box_crossing
     source_pin:
       file: paper/corrected-arxiv/exploding-corrected-arxiv.tex
-      sha256: 6e5a981a0d8d3b7abdf78e31d2630780b9db467e63aea7772e93043e4e804d0c
+      sha256: ee4b05b340bff74811db1c3ed88ac7b0ad3fd324f0dad5a52393bc4971c0c8b0
       inputs:
       - file: paper/corrected-arxiv/defs.tex
         sha256: 9aba2c73246d79e3c6b87cb1f01cf3e2f636e27c8afd97ccb8ba5c032a9ee65b
@@ -270,7 +270,7 @@ nodes:
     provider: Exploding.External.FeyLevinePeresExplosive
   - id: ext-schonmann-bootstrap
     kind: definition
-    source: exploding-corrected-arxiv.tex:2138-2150 (label prop:schonnmann_bootstrap)
+    source: exploding-corrected-arxiv.tex:2139-2151 (label prop:schonnmann_bootstrap)
     file: Exploding/External/Schonmann.lean
     export: Exploding.External.SchonmannBootstrap
     state: FROZEN
@@ -279,7 +279,7 @@ nodes:
     provider: Exploding.External.SchonmannBootstrap
   - id: ext-liggett-schonmann-stacey
     kind: definition
-    source: liggett1997domination Theorem 0.0, cited at exploding-corrected-arxiv.tex:1225 in the proof of prop:convergence_of_the_generalized_last_wave
+    source: liggett1997domination Theorem 0.0, cited at exploding-corrected-arxiv.tex:1227 in the proof of prop:convergence_of_the_generalized_last_wave
     file: Exploding/External/LiggettSchonmannStacey.lean
     export: Exploding.External.LiggettSchonmannStacey
     state: FROZEN
@@ -288,7 +288,7 @@ nodes:
     provider: Exploding.External.LiggettSchonmannStacey
   - id: ext-lss-bounded-degree
     kind: definition
-    source: liggett1997domination Corollary 1.4, cited at exploding-corrected-arxiv.tex:348 for prop:renormalization_properties
+    source: liggett1997domination Corollary 1.4, cited at exploding-corrected-arxiv.tex:350 for prop:renormalization_properties
     file: Exploding/External/LiggettSchonmannStaceyBoundedDegree.lean
     export: Exploding.External.LiggettSchonmannStaceyBoundedDegree
     state: FROZEN
@@ -297,7 +297,7 @@ nodes:
     provider: Exploding.External.LiggettSchonmannStaceyBoundedDegree
   - id: ext-antal-pisztora
     kind: definition
-    source: antal1996chemical Theorem 1.1, cited at exploding-corrected-arxiv.tex:348 for prop:renormalization_properties
+    source: antal1996chemical Theorem 1.1, cited at exploding-corrected-arxiv.tex:350 for prop:renormalization_properties
     file: Exploding/External/AntalPisztora.lean
     export: Exploding.External.AntalPisztoraChemicalDistance
     state: FROZEN
@@ -306,7 +306,7 @@ nodes:
     provider: Exploding.External.AntalPisztoraChemicalDistance
   - id: ext-mathieu-holes
     kind: definition
-    source: mathieu2008quenched Lemma 5.2, cited at exploding-corrected-arxiv.tex:348 for prop:renormalization_properties
+    source: mathieu2008quenched Lemma 5.2, cited at exploding-corrected-arxiv.tex:350 for prop:renormalization_properties
     file: Exploding/External/MathieuHoles.lean
     export: Exploding.External.MathieuHoleVolume
     state: FROZEN
@@ -315,7 +315,7 @@ nodes:
     provider: Exploding.External.MathieuHoleVolume
   - id: ext-fey-meester-redig
     kind: definition
-    source: fey2009stabilizability Theorem 2.8, cited at exploding-corrected-arxiv.tex:1534 in the proof of theorem:counterexample
+    source: fey2009stabilizability Theorem 2.8, cited at exploding-corrected-arxiv.tex:1535 in the proof of theorem:counterexample
     file: Exploding/External/FeyMeesterRedig.lean
     export: Exploding.External.FeyMeesterRedigLeastAction
     state: FROZEN
@@ -324,7 +324,7 @@ nodes:
     provider: Exploding.External.FeyMeesterRedigLeastAction
   - id: lem-last-wave-bound
     kind: theorem
-    source: exploding-corrected-arxiv.tex:732-737 (label lemma:last_wave_bound)
+    source: exploding-corrected-arxiv.tex:734-739 (label lemma:last_wave_bound)
     file: Exploding/Frozen/LastWaveBound.lean
     export: Exploding.Frozen.last_wave_bound
     state: PROVED
@@ -333,13 +333,13 @@ nodes:
     provider: Exploding.Frozen.last_wave_bound
     source_pin:
       file: paper/corrected-arxiv/exploding-corrected-arxiv.tex
-      sha256: 6e5a981a0d8d3b7abdf78e31d2630780b9db467e63aea7772e93043e4e804d0c
+      sha256: ee4b05b340bff74811db1c3ed88ac7b0ad3fd324f0dad5a52393bc4971c0c8b0
       inputs:
       - file: paper/corrected-arxiv/defs.tex
         sha256: 9aba2c73246d79e3c6b87cb1f01cf3e2f636e27c8afd97ccb8ba5c032a9ee65b
   - id: prop-dimensional-reduction
     kind: theorem
-    source: exploding-corrected-arxiv.tex:2058-2067 (label prop:dimensional_reduction)
+    source: exploding-corrected-arxiv.tex:2059-2068 (label prop:dimensional_reduction)
     file: Exploding/Frozen/DimensionalReduction.lean
     export: Exploding.Frozen.dimensional_reduction
     state: PROVED
@@ -348,13 +348,13 @@ nodes:
     provider: Exploding.Frozen.dimensional_reduction
     source_pin:
       file: paper/corrected-arxiv/exploding-corrected-arxiv.tex
-      sha256: 6e5a981a0d8d3b7abdf78e31d2630780b9db467e63aea7772e93043e4e804d0c
+      sha256: ee4b05b340bff74811db1c3ed88ac7b0ad3fd324f0dad5a52393bc4971c0c8b0
       inputs:
       - file: paper/corrected-arxiv/defs.tex
         sha256: 9aba2c73246d79e3c6b87cb1f01cf3e2f636e27c8afd97ccb8ba5c032a9ee65b
   - id: lem-approx-subadditivity
     kind: theorem
-    source: exploding-corrected-arxiv.tex:762-767 (label lemma:approx_subadditivity)
+    source: exploding-corrected-arxiv.tex:764-769 (label lemma:approx_subadditivity)
     file: Exploding/Frozen/ApproxSubadditivity.lean
     export: Exploding.Frozen.approx_subadditivity
     state: PROVED
@@ -363,13 +363,13 @@ nodes:
     provider: Exploding.Frozen.approx_subadditivity
     source_pin:
       file: paper/corrected-arxiv/exploding-corrected-arxiv.tex
-      sha256: 6e5a981a0d8d3b7abdf78e31d2630780b9db467e63aea7772e93043e4e804d0c
+      sha256: ee4b05b340bff74811db1c3ed88ac7b0ad3fd324f0dad5a52393bc4971c0c8b0
       inputs:
       - file: paper/corrected-arxiv/defs.tex
         sha256: 9aba2c73246d79e3c6b87cb1f01cf3e2f636e27c8afd97ccb8ba5c032a9ee65b
   - id: prop-recurrence
     kind: theorem
-    source: exploding-corrected-arxiv.tex:2099-2101 (label prop:recurrence)
+    source: exploding-corrected-arxiv.tex:2100-2102 (label prop:recurrence)
     file: Exploding/Frozen/Recurrence.lean
     export: Exploding.Frozen.recurrence
     state: PROVED
@@ -378,13 +378,13 @@ nodes:
     provider: Exploding.Frozen.recurrence
     source_pin:
       file: paper/corrected-arxiv/exploding-corrected-arxiv.tex
-      sha256: 6e5a981a0d8d3b7abdf78e31d2630780b9db467e63aea7772e93043e4e804d0c
+      sha256: ee4b05b340bff74811db1c3ed88ac7b0ad3fd324f0dad5a52393bc4971c0c8b0
       inputs:
       - file: paper/corrected-arxiv/defs.tex
         sha256: 9aba2c73246d79e3c6b87cb1f01cf3e2f636e27c8afd97ccb8ba5c032a9ee65b
   - id: lem-local-convexity
     kind: theorem
-    source: exploding-corrected-arxiv.tex:401-405 (label lemma:local_convexity)
+    source: exploding-corrected-arxiv.tex:403-407 (label lemma:local_convexity)
     file: Exploding/Frozen/LocalConvexity.lean
     export: Exploding.Frozen.local_convexity
     state: PROVED
@@ -393,13 +393,13 @@ nodes:
     provider: Exploding.Frozen.local_convexity
     source_pin:
       file: paper/corrected-arxiv/exploding-corrected-arxiv.tex
-      sha256: 6e5a981a0d8d3b7abdf78e31d2630780b9db467e63aea7772e93043e4e804d0c
+      sha256: ee4b05b340bff74811db1c3ed88ac7b0ad3fd324f0dad5a52393bc4971c0c8b0
       inputs:
       - file: paper/corrected-arxiv/defs.tex
         sha256: 9aba2c73246d79e3c6b87cb1f01cf3e2f636e27c8afd97ccb8ba5c032a9ee65b
   - id: lem-finite-exploding
     kind: theorem
-    source: exploding-corrected-arxiv.tex:722-724 (label lemma:finite_exploding)
+    source: exploding-corrected-arxiv.tex:724-726 (label lemma:finite_exploding)
     file: Exploding/Frozen/FiniteExploding.lean
     export: Exploding.Frozen.finite_exploding
     state: PROVED
@@ -408,13 +408,13 @@ nodes:
     provider: Exploding.Frozen.finite_exploding
     source_pin:
       file: paper/corrected-arxiv/exploding-corrected-arxiv.tex
-      sha256: 6e5a981a0d8d3b7abdf78e31d2630780b9db467e63aea7772e93043e4e804d0c
+      sha256: ee4b05b340bff74811db1c3ed88ac7b0ad3fd324f0dad5a52393bc4971c0c8b0
       inputs:
       - file: paper/corrected-arxiv/defs.tex
         sha256: 9aba2c73246d79e3c6b87cb1f01cf3e2f636e27c8afd97ccb8ba5c032a9ee65b
   - id: prop-crossing-time
     kind: theorem
-    source: exploding-corrected-arxiv.tex:286-292 (label prop:crossing_time)
+    source: exploding-corrected-arxiv.tex:288-294 (label prop:crossing_time)
     file: Exploding/Frozen/CrossingTime.lean
     export: Exploding.Frozen.crossing_time
     state: PROVED
@@ -423,7 +423,7 @@ nodes:
     provider: Exploding.crossing_time_terminal_bound
     source_pin:
       file: paper/corrected-arxiv/exploding-corrected-arxiv.tex
-      sha256: 6e5a981a0d8d3b7abdf78e31d2630780b9db467e63aea7772e93043e4e804d0c
+      sha256: ee4b05b340bff74811db1c3ed88ac7b0ad3fd324f0dad5a52393bc4971c0c8b0
       inputs:
       - file: paper/corrected-arxiv/defs.tex
         sha256: 9aba2c73246d79e3c6b87cb1f01cf3e2f636e27c8afd97ccb8ba5c032a9ee65b
@@ -439,7 +439,7 @@ nodes:
     note: "proved in this repository; axiom closure propext, Classical.choice, Quot.sound"
   - id: ext-schonmann-bootstrap-proved
     kind: theorem
-    source: exploding-corrected-arxiv.tex:2138-2150 (label prop:schonnmann_bootstrap)
+    source: exploding-corrected-arxiv.tex:2139-2151 (label prop:schonnmann_bootstrap)
     file: Exploding/Support/ExtSchFinal.lean
     export: Exploding.xsr_schonmann
     state: PROVED
@@ -449,7 +449,7 @@ nodes:
     note: "proved in this repository; axiom closure propext, Classical.choice, Quot.sound"
   - id: ext-liggett-schonmann-stacey-proved
     kind: theorem
-    source: proof of ext-liggett-schonmann-stacey in this repository; liggett1997domination Theorem 0.0, cited at exploding-corrected-arxiv.tex:1225 in the proof of prop:convergence_of_the_generalized_last_wave
+    source: proof of ext-liggett-schonmann-stacey in this repository; liggett1997domination Theorem 0.0, cited at exploding-corrected-arxiv.tex:1227 in the proof of prop:convergence_of_the_generalized_last_wave
     file: Exploding/Support/ExtLSSCountable.lean
     export: Exploding.xlse_lss_general
     state: PROVED
@@ -459,7 +459,7 @@ nodes:
     note: "proved in this repository; axiom closure propext, Classical.choice, Quot.sound"
   - id: ext-lss-bounded-degree-proved
     kind: theorem
-    source: proof of ext-lss-bounded-degree in this repository; liggett1997domination Corollary 1.4, cited at exploding-corrected-arxiv.tex:348 for prop:renormalization_properties
+    source: proof of ext-lss-bounded-degree in this repository; liggett1997domination Corollary 1.4, cited at exploding-corrected-arxiv.tex:350 for prop:renormalization_properties
     file: Exploding/External/LSSBoundedDegreeProved.lean
     export: Exploding.lssBoundedDegree
     state: PROVED
@@ -469,7 +469,7 @@ nodes:
     note: "proved in this repository; axiom closure propext, Classical.choice, Quot.sound"
   - id: ext-mathieu-holes-proved
     kind: theorem
-    source: proof of ext-mathieu-holes in this repository; mathieu2008quenched Lemma 5.2, cited at exploding-corrected-arxiv.tex:348 for prop:renormalization_properties
+    source: proof of ext-mathieu-holes in this repository; mathieu2008quenched Lemma 5.2, cited at exploding-corrected-arxiv.tex:350 for prop:renormalization_properties
     file: Exploding/Support/ExtMHHoleVolume.lean
     export: Exploding.xmf_proved
     state: PROVED
@@ -479,7 +479,7 @@ nodes:
     note: "proved in this repository; axiom closure propext, Classical.choice, Quot.sound"
   - id: ext-fey-meester-redig-proved
     kind: theorem
-    source: proof of ext-fey-meester-redig in this repository; fey2009stabilizability Theorem 2.8, cited at exploding-corrected-arxiv.tex:1534 in the proof of theorem:counterexample
+    source: proof of ext-fey-meester-redig in this repository; fey2009stabilizability Theorem 2.8, cited at exploding-corrected-arxiv.tex:1535 in the proof of theorem:counterexample
     file: Exploding/Support/ExtFMR.lean
     export: Exploding.xfmr_proved
     state: PROVED
@@ -498,7 +498,7 @@ nodes:
     provider: Exploding.counterexampleThreshold
     source_pin:
       file: paper/corrected-arxiv/exploding-corrected-arxiv.tex
-      sha256: 6e5a981a0d8d3b7abdf78e31d2630780b9db467e63aea7772e93043e4e804d0c
+      sha256: ee4b05b340bff74811db1c3ed88ac7b0ad3fd324f0dad5a52393bc4971c0c8b0
       inputs:
       - file: paper/corrected-arxiv/defs.tex
         sha256: 9aba2c73246d79e3c6b87cb1f01cf3e2f636e27c8afd97ccb8ba5c032a9ee65b
@@ -513,7 +513,7 @@ nodes:
     provider: Exploding.counterexamplePile
     source_pin:
       file: paper/corrected-arxiv/exploding-corrected-arxiv.tex
-      sha256: 6e5a981a0d8d3b7abdf78e31d2630780b9db467e63aea7772e93043e4e804d0c
+      sha256: ee4b05b340bff74811db1c3ed88ac7b0ad3fd324f0dad5a52393bc4971c0c8b0
       inputs:
       - file: paper/corrected-arxiv/defs.tex
         sha256: 9aba2c73246d79e3c6b87cb1f01cf3e2f636e27c8afd97ccb8ba5c032a9ee65b
@@ -528,7 +528,7 @@ nodes:
     provider: Exploding.counterexampleArrival
     source_pin:
       file: paper/corrected-arxiv/exploding-corrected-arxiv.tex
-      sha256: 6e5a981a0d8d3b7abdf78e31d2630780b9db467e63aea7772e93043e4e804d0c
+      sha256: ee4b05b340bff74811db1c3ed88ac7b0ad3fd324f0dad5a52393bc4971c0c8b0
       inputs:
       - file: paper/corrected-arxiv/defs.tex
         sha256: 9aba2c73246d79e3c6b87cb1f01cf3e2f636e27c8afd97ccb8ba5c032a9ee65b
@@ -543,13 +543,13 @@ nodes:
     provider: Exploding.counterexampleSupport
     source_pin:
       file: paper/corrected-arxiv/exploding-corrected-arxiv.tex
-      sha256: 6e5a981a0d8d3b7abdf78e31d2630780b9db467e63aea7772e93043e4e804d0c
+      sha256: ee4b05b340bff74811db1c3ed88ac7b0ad3fd324f0dad5a52393bc4971c0c8b0
       inputs:
       - file: paper/corrected-arxiv/defs.tex
         sha256: 9aba2c73246d79e3c6b87cb1f01cf3e2f636e27c8afd97ccb8ba5c032a9ee65b
   - id: ext-fey-den-boer-redig-cubical-cluster
     kind: definition
-    source: Cited at exploding-corrected-arxiv.tex:584-585 for lemma:square_lower_bound
+    source: Cited at exploding-corrected-arxiv.tex:586-587 for lemma:square_lower_bound
     file: Exploding/External/FeyDenBoerRedigCubicalCluster.lean
     export: Exploding.External.FeyDenBoerRedigCubicalCluster
     state: FROZEN
@@ -558,13 +558,13 @@ nodes:
     provider: Exploding.External.FeyDenBoerRedigCubicalCluster
     source_pin:
       file: paper/corrected-arxiv/exploding-corrected-arxiv.tex
-      sha256: 6e5a981a0d8d3b7abdf78e31d2630780b9db467e63aea7772e93043e4e804d0c
+      sha256: ee4b05b340bff74811db1c3ed88ac7b0ad3fd324f0dad5a52393bc4971c0c8b0
       inputs:
       - file: paper/corrected-arxiv/defs.tex
         sha256: 9aba2c73246d79e3c6b87cb1f01cf3e2f636e27c8afd97ccb8ba5c032a9ee65b
   - id: ext-fey-levine-peres-radius
     kind: definition
-    source: Cited at exploding-corrected-arxiv.tex:584-585 for lemma:square_lower_bound
+    source: Cited at exploding-corrected-arxiv.tex:586-587 for lemma:square_lower_bound
     file: Exploding/External/FeyLevinePeresRadius.lean
     export: Exploding.External.FeyLevinePeresRadius
     state: FROZEN
@@ -573,7 +573,7 @@ nodes:
     provider: Exploding.External.FeyLevinePeresRadius
     source_pin:
       file: paper/corrected-arxiv/exploding-corrected-arxiv.tex
-      sha256: 6e5a981a0d8d3b7abdf78e31d2630780b9db467e63aea7772e93043e4e804d0c
+      sha256: ee4b05b340bff74811db1c3ed88ac7b0ad3fd324f0dad5a52393bc4971c0c8b0
       inputs:
       - file: paper/corrected-arxiv/defs.tex
         sha256: 9aba2c73246d79e3c6b87cb1f01cf3e2f636e27c8afd97ccb8ba5c032a9ee65b

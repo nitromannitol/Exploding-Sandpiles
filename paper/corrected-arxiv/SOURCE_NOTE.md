@@ -6,7 +6,7 @@ whose unmodified source is [`../exploding-arxiv.tex`](../exploding-arxiv.tex). E
 listed, with the published text, the corrected text and the reason, in the section
 "Corrections to the published version" at the end of the edition.
 
-The SHA-256 of the edition is `6e5a981a0d8d3b7abdf78e31d2630780b9db467e63aea7772e93043e4e804d0c`,
+The SHA-256 of the edition is `ee4b05b340bff74811db1c3ed88ac7b0ad3fd324f0dad5a52393bc4971c0c8b0`,
 and that of its `defs.tex` input is `9aba2c73246d79e3c6b87cb1f01cf3e2f636e27c8afd97ccb8ba5c032a9ee65b`.
 Both are recorded as source pins in [`ledger/manifest.yaml`](../../ledger/manifest.yaml).
 

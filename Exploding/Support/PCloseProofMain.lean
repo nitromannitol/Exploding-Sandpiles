@@ -1,5 +1,5 @@
 /-
-The second inequality of Lemma 3.7 (`exploding-corrected-arxiv.tex:830-837`), assembled from the far case
+The second inequality of Lemma 3.7 (`exploding-corrected-arxiv.tex:832-839`), assembled from the far case
 (`pclose_far`), the linear bound of Lemma 3.6 for the near case, and the polylogarithmic
 size of the penultimate cluster from Lemma 3.5.
 -/

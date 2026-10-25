@@ -29,7 +29,7 @@ sources:
   id: doi:10.1214/23-AAP1976
   url: https://arxiv.org/abs/2102.04422
   type: journal article
-  relationship: published version, corrected in the corrected edition
+  relationship: background
   note: "Annals of Applied Probability 34(1A) (2024), 714-742; arXiv:2102.04422."
 - title: A shape theorem for exploding sandpiles, arXiv v2 source
   authors:
@@ -38,13 +38,13 @@ sources:
   url: https://arxiv.org/abs/2102.04422v2
   type: arXiv source
   location: paper/exploding-arxiv.tex
-  relationship: unmodified source of the corrected edition
+  relationship: background
 - title: A shape theorem for exploding sandpiles, corrected edition
   authors:
   - Ahmed Bou-Rabee
   type: corrected source
   location: paper/corrected-arxiv/exploding-corrected-arxiv.tex
-  relationship: formalized
+  relationship: formalizes
   note: "The statements follow this text. Its section \"Corrections to the published version\" lists every change from arXiv v2."
 
 related_formalizations:

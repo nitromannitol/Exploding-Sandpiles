@@ -1,3 +1,5 @@
+module
+
 /-
 Auxiliary lemmas for the box-crossing proof (Proposition 7.5 of
 `paper/corrected-arxiv/exploding-corrected-arxiv.tex`): monotonicity of the frozen odometer in the background,
@@ -5,7 +7,9 @@ the reduction of a general one-site law `ν` with `ν(m ≥ d) = 1` and `ν{2d-1
 to the two-point law `chipLaw (2d-1) d p₀` ("by monotonicity we may assume
 `η ∈ {d, 2d-1}`"), and measurability of the crossing event.
 -/
-import Exploding.Support.Hypotheses
+public import Exploding.Support.Hypotheses
+
+@[expose] public section
 
 open Exploding LatticeProb MeasureTheory
 

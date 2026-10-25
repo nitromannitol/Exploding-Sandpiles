@@ -1,10 +1,14 @@
+module
+
 /-
 A grid of disjoint blocks of a given side inside a near-cube box, the probability that a box is
 fully occupied, and the bound `(1 - π)^N` for the probability that none of `N` independent
 disjoint blocks is good when each is good with probability at least `π`.
 -/
-import Exploding.Support.ExtSchBox
-import Exploding.Support.ExtSchProb
+public import Exploding.Support.ExtSchBox
+public import Exploding.Support.ExtSchProb
+
+@[expose] public section
 
 namespace Exploding
 

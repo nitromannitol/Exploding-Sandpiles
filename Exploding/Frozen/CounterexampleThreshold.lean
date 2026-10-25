@@ -1,4 +1,8 @@
-import Exploding.Support.Vocab
+module
+
+public import Exploding.Support.Vocab
+
+@[expose] public section
 
 /-!
 # Counterexample threshold

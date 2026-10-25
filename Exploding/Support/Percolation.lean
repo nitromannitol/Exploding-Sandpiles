@@ -1,3 +1,5 @@
+module
+
 /-
 The vocabulary of Bernoulli site and bond percolation on `ℤ^d` in which the
 percolation results cited by `paper/corrected-arxiv/exploding-corrected-arxiv.tex` are stated: the product law
@@ -6,7 +8,9 @@ percolation and its critical probability, increasing events, finite-range
 dependence of a field of bits on `ℤ^d`, and fields of bits indexed by the
 vertices of a graph with a given dependence graph.
 -/
-import Exploding.Support.Vocab
+public import Exploding.Support.Vocab
+
+@[expose] public section
 
 namespace Exploding
 

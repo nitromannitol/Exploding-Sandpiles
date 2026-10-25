@@ -1,11 +1,15 @@
+module
+
 /-
 The isoperimetric input for the hole-volume assembly: the inner boundary of a finite
 set is at least its edge boundary divided by `2d`, and (Loomis–Whitney plus line
 counting) the edge boundary grows like the `(d-1)/d` power of the volume.  Together
 these give the lower bound on the inner boundary used in `xmh3_boundary_witness`.
 -/
-import Exploding.Support.ExtMHProof6
-import Exploding.Support.ExtMHProof3
+public import Exploding.Support.ExtMHProof6
+public import Exploding.Support.ExtMHProof3
+
+@[expose] public section
 
 namespace Exploding
 

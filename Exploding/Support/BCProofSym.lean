@@ -1,3 +1,5 @@
+module
+
 /-
 Lattice symmetries for the box-crossing proof (Proposition 7.5 of
 `paper/corrected-arxiv/exploding-corrected-arxiv.tex`, "We conclude by symmetry").
@@ -8,7 +10,9 @@ reflection `x_i ↦ c - x_i` are lattice symmetries; the frozen odometer `fodo`
 commutes with them, which transports crossing of one face of one tile to crossing
 of any other face of any other tile.
 -/
-import Exploding.Support.Hypotheses
+public import Exploding.Support.Hypotheses
+
+@[expose] public section
 
 open Exploding LatticeProb MeasureTheory
 

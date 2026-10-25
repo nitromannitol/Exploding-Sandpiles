@@ -1,4 +1,8 @@
-import Exploding.Support.ArxivCrossingBound
+module
+
+public import Exploding.Support.ArxivCrossingBound
+
+@[expose] public section
 
 open Exploding LatticeProb MeasureTheory
 

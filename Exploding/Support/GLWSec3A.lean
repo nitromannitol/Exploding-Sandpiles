@@ -1,3 +1,5 @@
+module
+
 /-
 Proposition 5.1 of the paper (generalized last wave), the Section-3 assembly, part A:
 the almost sure good event, the two-sided Lipschitz bound for the penultimate-cluster
@@ -7,10 +9,12 @@ Every declaration is prefixed `glws_`.  Nothing here uses the infinite-cluster m
 the inputs are the local bound of `glw2_LipschitzLocal`, the shift covariance of the wave
 objects (`LWCProof`) and the approximate subadditivity of `GLWProofAux`.
 -/
-import Exploding.Support.GLWProof2
-import Exploding.Support.LWCProof
-import Exploding.Support.LWCProof2
-import Exploding.Support.LWCProof3
+public import Exploding.Support.GLWProof2
+public import Exploding.Support.LWCProof
+public import Exploding.Support.LWCProof2
+public import Exploding.Support.LWCProof3
+
+@[expose] public section
 
 open Exploding LatticeProb MeasureTheory Filter
 

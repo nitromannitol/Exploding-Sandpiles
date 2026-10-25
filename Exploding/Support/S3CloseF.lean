@@ -1,3 +1,5 @@
+module
+
 /-
 Proposition 5.1 (generalized last wave), closeness of the arrival times, part F:
 a lit site lights its penultimate cluster polylogarithmically later.
@@ -8,7 +10,9 @@ linear chemical distance.  If the last wave is positive at a site `x` far from t
 the long lit path to `x` lights a tile of `C_∞` near `x`, and the tile lights the penultimate cluster
 of `x` (`s3k_far`); near the origin, the first lit tile of the cluster does the lighting (`s3k_near`).
 -/
-import Exploding.Support.S3CloseE
+public import Exploding.Support.S3CloseE
+
+@[expose] public section
 
 open Exploding LatticeProb MeasureTheory Filter
 

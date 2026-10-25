@@ -1,10 +1,14 @@
+module
+
 /-
 Proposition 2.2 from the percolation facts: the good cubes of a background of the toy law form an
 independent field of density close to one, to which the percolation content of Proposition 2.2
 applies.
 -/
-import Exploding.Support.ReductionShift
-import Exploding.Support.RNProofCore
+public import Exploding.Support.ReductionShift
+public import Exploding.Support.RNProofCore
+
+@[expose] public section
 
 open MeasureTheory ProbabilityTheory Exploding LatticeProb
 

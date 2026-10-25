@@ -1,7 +1,11 @@
-import Exploding.Support.RNProofPercolation
-import Exploding.Support.RNProofPeierls
-import Exploding.External.LSSBoundedDegreeProved
-import Exploding.Support.ExtMHHoleVolume
+module
+
+public import Exploding.Support.RNProofPercolation
+public import Exploding.Support.RNProofPeierls
+public import Exploding.External.LSSBoundedDegreeProved
+public import Exploding.Support.ExtMHHoleVolume
+
+@[expose] public section
 
 /-!
 # Actual bond clusters with finite holes

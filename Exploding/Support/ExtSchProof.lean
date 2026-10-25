@@ -1,10 +1,14 @@
+module
+
 /-
 A deterministic seed for the bootstrap-percolation bound: on the two-dimensional
 cube, a fully occupied diagonal fills the whole cube.  A site off the diagonal
 topples once its two neighbours toward the diagonal have toppled, so the
 occupied diagonal spreads to the whole cube.
 -/
-import Exploding.Support.ExtSchProb
+public import Exploding.Support.ExtSchProb
+
+@[expose] public section
 
 namespace Exploding
 

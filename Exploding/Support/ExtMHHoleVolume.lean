@@ -1,8 +1,12 @@
+module
+
 /-
 The hole-volume bound of Mathieu for the infinite cluster of site percolation.
 -/
-import Exploding.Support.ExtMHDet
-import Exploding.Support.ExtMHFinal
+public import Exploding.Support.ExtMHDet
+public import Exploding.Support.ExtMHFinal
+
+@[expose] public section
 
 open Exploding
 

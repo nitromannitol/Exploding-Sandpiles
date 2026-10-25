@@ -1,3 +1,5 @@
+module
+
 /-
 Continuation of `MKingman4.lean`.
 
@@ -17,8 +19,10 @@ bounded hence integrable, so `mk_kingman_linear_uniform` applies.  The general
 case needs the Akcoglu-Krengel filling scheme, which the library does not
 contain.
 -/
-import Exploding.Support.MKingman4
-import Mathlib.Dynamics.Ergodic.Function
+public import Exploding.Support.MKingman4
+public import Mathlib.Dynamics.Ergodic.Function
+
+@[expose] public section
 
 open Exploding LatticeProb MeasureTheory Filter ProbabilityTheory
 

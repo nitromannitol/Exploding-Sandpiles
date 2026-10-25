@@ -1,3 +1,5 @@
+module
+
 /-
 Proposition 5.1 of the paper (generalized last wave): the tools of the estimates of Section 3
 run with Hypotheses 3 and 4 in place of the good cubes and local convexity.
@@ -9,7 +11,9 @@ run with Hypotheses 3 and 4 in place of the good cubes and local convexity.
 * a lit bounding rectangle with a long side contains a line of a tile of `C_∞`, which lights the
   tile (Hypothesis 4); a lit tile of `C_∞` lights all of `C_∞`, so the wave cannot stabilize.
 -/
-import Exploding.Support.GLWSec3J
+public import Exploding.Support.GLWSec3J
+
+@[expose] public section
 
 open Exploding LatticeProb MeasureTheory Filter
 

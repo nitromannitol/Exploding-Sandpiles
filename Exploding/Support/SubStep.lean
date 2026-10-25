@@ -1,3 +1,5 @@
+module
+
 /-
 The propagation step of Lemma 3.2 of `paper/corrected-arxiv/exploding-corrected-arxiv.tex`: once the wave covers
 a good cube `Q_k(i)`, it covers an adjacent good cube `Q_k(j)`.
@@ -8,9 +10,11 @@ a point of the outer boundary of `Q_k(j)` that the coverage of `Q_k(i)` has
 already fired; the crossing property of the good cube `Q_k(j)` fills `Q_k(j)`
 from it, and the wave dominates that frozen process.
 -/
-import Exploding.Support.Vocab
-import Exploding.Support.Wave
-import Exploding.Support.SubGeom
+public import Exploding.Support.Vocab
+public import Exploding.Support.Wave
+public import Exploding.Support.SubGeom
+
+@[expose] public section
 
 namespace Exploding
 

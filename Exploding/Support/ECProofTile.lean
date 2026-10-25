@@ -1,10 +1,14 @@
+module
+
 /-
 The dynamics of Proposition 7.1 in the plane of tiles: if every constant-`n` pile
 stabilizes, the completely toppled tiles of the plane form a finite set containing the
 origin tile, and every tile next to it fails to be box-crossing.
 -/
-import Exploding.Support.ECProofDyn
-import Exploding.Support.ECProofTop
+public import Exploding.Support.ECProofDyn
+public import Exploding.Support.ECProofTop
+
+@[expose] public section
 
 namespace Exploding
 

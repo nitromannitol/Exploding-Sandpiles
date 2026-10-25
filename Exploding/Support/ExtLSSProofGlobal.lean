@@ -1,3 +1,5 @@
+module
+
 /-
 The finite-coordinate coupling built from a thinning.  The first coordinate is
 the field on the ambient space, the second is the indicator of the thinned
@@ -5,7 +7,9 @@ subset, weighted by the thinning.  Its marginals and support make it a coupling
 of the field to the product law, and the consistent family of these couplings is
 the input to the projective-limit construction of the global coupling.
 -/
-import Exploding.Support.ExtLSSProofCouple
+public import Exploding.Support.ExtLSSProofCouple
+
+@[expose] public section
 
 open MeasureTheory Set Filter
 open scoped Topology ENNReal

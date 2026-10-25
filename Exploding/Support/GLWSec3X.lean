@@ -1,3 +1,5 @@
+module
+
 /-
 Proposition 5.1 of the paper (generalized last wave): the macroscopic site of a microscopic site,
 and the lit tile near a lit site far from the origin.
@@ -6,7 +8,9 @@ If the last wave is positive at `x`, `x` far from the origin, the last stretch o
 `x` to the origin is a long lit path, so a tile of `C_∞` within a polylogarithmic distance of `x` is
 lit a polylogarithmic time later.
 -/
-import Exploding.Support.GLWSec3W
+public import Exploding.Support.GLWSec3W
+
+@[expose] public section
 
 open Exploding LatticeProb MeasureTheory Filter
 

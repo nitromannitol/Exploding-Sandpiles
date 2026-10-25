@@ -1,3 +1,5 @@
+module
+
 /-
 Continuation of `MKingman3.lean`.
 
@@ -23,8 +25,10 @@ the reformulation.  The paper's repair replaces the missing maximal ergodic
 theorem for such processes by the second (Lipschitz) bound of
 `eq:generalized_lipschitz`.
 -/
-import Exploding.Support.MKingman3
-import Mathlib.Dynamics.Ergodic.Function
+public import Exploding.Support.MKingman3
+public import Mathlib.Dynamics.Ergodic.Function
+
+@[expose] public section
 
 open Exploding LatticeProb MeasureTheory Filter ProbabilityTheory
 

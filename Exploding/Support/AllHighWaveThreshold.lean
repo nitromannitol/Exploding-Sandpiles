@@ -1,4 +1,8 @@
-import Exploding.Support.AllHighWaveTranslation
+module
+
+public import Exploding.Support.AllHighWaveTranslation
+
+@[expose] public section
 
 /-!
 # The all-high one-wave threshold

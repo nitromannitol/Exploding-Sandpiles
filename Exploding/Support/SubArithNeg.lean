@@ -1,7 +1,11 @@
+module
+
 /-
 The stable branch of the arithmetic step of Section 4 of `paper/corrected-arxiv/exploding-corrected-arxiv.tex`.
 -/
-import Exploding.Support.SubArith
+public import Exploding.Support.SubArith
+
+@[expose] public section
 
 set_option linter.unusedVariables false
 

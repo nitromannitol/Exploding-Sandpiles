@@ -1,3 +1,5 @@
+module
+
 /-
 The Kingman conjunct of Proposition 3.1 (declarations `lwc7_*`), taking
 `mk_kingman_linear` as a hypothesis.
@@ -9,8 +11,10 @@ with `L` on lattice points, the linear bound and continuity -- and then applies
 `mk_kingman_linear` to the penultimate-cluster arrival cocycle along a fixed
 lattice direction to produce the limit shape `N` of Proposition 3.1.
 -/
-import Exploding.Support.LWCProof6
-import Exploding.Support.MKingman
+public import Exploding.Support.LWCProof6
+public import Exploding.Support.MKingman
+
+@[expose] public section
 
 open Exploding LatticeProb MeasureTheory Filter
 open scoped BigOperators

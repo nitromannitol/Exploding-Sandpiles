@@ -1,3 +1,5 @@
+module
+
 /-
 The last claim `hpodo` of
 `Exploding.Frozen.approximate_subadditive`.  Sorry-free support file.
@@ -9,9 +11,11 @@ connected back to the origin: if the pile is not stabilizable, the origin itself
 must topple.  This is the first ingredient of the `origin-max + Lipschitz`
 route (the others are `assp_podo_inv` and `as3_podo_support_le_time`).
 -/
-import Exploding.Support.ASProof
-import Exploding.Support.ASProof2
-import Exploding.Support.ASSpecial
+public import Exploding.Support.ASProof
+public import Exploding.Support.ASProof2
+public import Exploding.Support.ASSpecial
+
+@[expose] public section
 
 open Exploding LatticeProb MeasureTheory
 

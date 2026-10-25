@@ -1,3 +1,5 @@
+module
+
 /-
 Proposition 5.1 of the paper (generalized last wave): the lighting of the tiles around a target from
 a lit tile of `C_∞` (the generalized spreading step of Lemmas 3.6 and 3.7).
@@ -10,7 +12,9 @@ only.  The proof finds, by the hole estimate on two rows of macroscopic sites, p
 walks of `C_∞` to it and from it to the other; the second walk contains a path of distinct sites
 whose bounding rectangle covers the target, which is lit by path-filling.
 -/
-import Exploding.Support.GLWSec3R
+public import Exploding.Support.GLWSec3R
+
+@[expose] public section
 
 open Exploding LatticeProb MeasureTheory Filter
 

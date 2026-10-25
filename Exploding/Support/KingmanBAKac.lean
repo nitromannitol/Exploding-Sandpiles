@@ -1,3 +1,5 @@
+module
+
 /-
 The measure-theoretic package of the first-return (induced) map: for a measurable set `A` of
 positive measure and a measure-preserving `T` on a probability space, the induced map
@@ -9,8 +11,10 @@ The proof is the standard one: for a measurable `B ⊆ A`, the sets
 `U_N(B) = {x | x, T x, …, T^{N-1} x ∉ A, T^N x ∈ B}` satisfy
 `μ (U_N) = μ (A ∩ {r = N+1} ∩ T^{-(N+1)} B) + μ (U_{N+1})`, and the `U_N` are pairwise disjoint.
 -/
-import Exploding.Support.MKingman4
-import Mathlib.Dynamics.Ergodic.Conservative
+public import Exploding.Support.MKingman4
+public import Mathlib.Dynamics.Ergodic.Conservative
+
+@[expose] public section
 
 open Exploding LatticeProb MeasureTheory Filter ProbabilityTheory
 open scoped ENNReal

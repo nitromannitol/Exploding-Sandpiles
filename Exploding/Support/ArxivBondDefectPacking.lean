@@ -1,4 +1,8 @@
-import Exploding.Support.ArxivBondDefectProbability
+module
+
+public import Exploding.Support.ArxivBondDefectProbability
+
+@[expose] public section
 
 /-!
 # Probability of defects in a prescribed finite set

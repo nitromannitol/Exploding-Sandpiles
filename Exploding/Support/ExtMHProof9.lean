@@ -1,3 +1,5 @@
+module
+
 /-
 The summability of the Peierls bounds for the bad event, completing the Borel–Cantelli
 step.  The Peierls estimate is re-derived with an explicit constant `K` (rather than the
@@ -5,8 +7,10 @@ opaque `Classical.choose` of `xmh_StarCount`), and the box `[-n,n]^d` is bounded
 `6^d (2^d)^{Nat.log 2 n}`, so the bad-event probability is dominated by
 `6^d · c^{Nat.log 2 n}` with `c = 2^d K (1-q)`, whose dyadic blocks sum to a finite quantity.
 -/
-import Exploding.Support.ExtMHProof8
-import Exploding.Support.ExtMHBase
+public import Exploding.Support.ExtMHProof8
+public import Exploding.Support.ExtMHBase
+
+@[expose] public section
 
 namespace Exploding
 

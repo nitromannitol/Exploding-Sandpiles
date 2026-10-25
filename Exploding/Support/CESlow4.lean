@@ -1,9 +1,13 @@
+module
+
 /-
 The slow bound of `theorem:counterexample` in dimension two:
 `T((3 + 8n) e₁) ≥ 12 n` (Step 4 of the proof of `exploding-corrected-arxiv.tex`, Section 6), and
 finiteness of the arrival time.
 -/
-import Exploding.Support.CESlow3
+public import Exploding.Support.CESlow3
+
+@[expose] public section
 
 namespace Exploding
 

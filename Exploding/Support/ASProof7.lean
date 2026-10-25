@@ -1,3 +1,5 @@
+module
+
 /-
 The last claim `hpodo` of
 `Exploding.Frozen.approximate_subadditive`.  Sorry-free support file.
@@ -22,7 +24,9 @@ The last claim `hpodo` of
   follows from the sharper claim that the pile topples every
   positive-penultimate-wave site at least twice.
 -/
-import Exploding.Support.ASProof6
+public import Exploding.Support.ASProof6
+
+@[expose] public section
 
 open Exploding LatticeProb MeasureTheory
 

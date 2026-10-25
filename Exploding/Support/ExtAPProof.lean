@@ -1,11 +1,15 @@
+module
+
 /-
 The high-density percolation input for the chemical-distance bound of Antal and
 Pisztora: the good sites (whose whole unit cube is open) form a finitely
 dependent field, the probability of a good cube is a power of the density, and a
 path of star-adjacent good sites is an open path.
 -/
-import Exploding.Support.ExtAPDefs
-import Exploding.Support.RNProofGraph
+public import Exploding.Support.ExtAPDefs
+public import Exploding.Support.RNProofGraph
+
+@[expose] public section
 
 open Exploding LatticeProb MeasureTheory ProbabilityTheory
 

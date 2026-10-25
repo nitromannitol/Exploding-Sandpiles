@@ -1,6 +1,10 @@
-import Exploding.Support.Toppling
-import LatticeProb.Sandpile.Toppling
-import LatticeProb.Sandpile.Nonnegative
+module
+
+public import Exploding.Support.Toppling
+public import LatticeProb.Sandpile.Toppling
+public import LatticeProb.Sandpile.Nonnegative
+
+@[expose] public section
 
 /-!
 # The parallel toppling process of `Exploding` and the library sandpile

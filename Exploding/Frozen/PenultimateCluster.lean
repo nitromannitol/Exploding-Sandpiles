@@ -1,15 +1,19 @@
+module
+
 /-
 Lemma 3.5 of the paper: penultimate clusters are polylogarithmically small.
 -/
-import Exploding.Support.Vocab
-import Exploding.Support.SubPen
-import Exploding.Support.SubPub
-import Exploding.Support.PCLProof
-import Exploding.Frozen.Renormalization
-import Exploding.External.LiggettSchonmannStaceyBoundedDegree
-import Exploding.External.MathieuHoles
-import Exploding.External.AntalPisztora
-import Exploding.Support.PenultimateClusterP1
+public import Exploding.Support.Vocab
+public import Exploding.Support.SubPen
+public import Exploding.Support.SubPub
+public import Exploding.Support.PCLProof
+public import Exploding.Frozen.Renormalization
+public import Exploding.External.LiggettSchonmannStaceyBoundedDegree
+public import Exploding.External.MathieuHoles
+public import Exploding.External.AntalPisztora
+public import Exploding.Support.PenultimateClusterP1
+
+@[expose] public section
 
 open Exploding LatticeProb MeasureTheory
 

@@ -1,3 +1,5 @@
+module
+
 /-
 Finite-domain lower origin estimate for the ordinary parallel odometer of the pile
 `(2d - 2) + N δ₀`.
@@ -16,10 +18,12 @@ chip-conservation origin identity `squareOrigin_origin_identity` gives the bound
 The terminal time `T`, the constancy of the odometer from `T` on, and the support of the odometer
 on `D` are hypotheses of this estimate.  They are not derived here.
 -/
-import Exploding.Support.SquareGreenOrigin
-import Exploding.Support.GLWProofAux
-import LatticeProb.Graph.Zd
-import LatticeProb.Network.KilledGreen
+public import Exploding.Support.SquareGreenOrigin
+public import Exploding.Support.GLWProofAux
+public import LatticeProb.Graph.Zd
+public import LatticeProb.Network.KilledGreen
+
+@[expose] public section
 
 namespace Exploding
 

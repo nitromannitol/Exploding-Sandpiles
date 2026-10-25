@@ -1,3 +1,5 @@
+module
+
 /-
 The percolation estimate for the cube, and with it Schonmann's bootstrap bound.
 
@@ -7,9 +9,11 @@ doubling recursion `F(s) ≤ 4^d F(s / 2)^2` is reached with `4^d F(s) ≤ 1 / 2
 recursion squares the bound at each halving and gives an exponential rate.  The cube `[1, n]^d`
 is the box with corners `1` and `n`, a near-cube of size `n` along all directions.
 -/
-import Exploding.Support.ExtSchDouble
-import Exploding.Support.ExtSchExp
-import Exploding.Support.ExtSchProof3
+public import Exploding.Support.ExtSchDouble
+public import Exploding.Support.ExtSchExp
+public import Exploding.Support.ExtSchProof3
+
+@[expose] public section
 
 open Exploding
 

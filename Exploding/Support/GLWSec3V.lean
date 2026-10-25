@@ -1,3 +1,5 @@
+module
+
 /-
 Proposition 5.1 of the paper (generalized last wave): the length of the lit paths and the first lit
 tile of the last wave.
@@ -7,7 +9,9 @@ side that contains a row of more than `(log 2n)^{5/2}` macroscopic sites; it is 
 last wave, not stabilizing, has unbounded support, whence a lit path of `glws_Pn` sites and a lit
 tile of the cluster.
 -/
-import Exploding.Support.GLWSec3U
+public import Exploding.Support.GLWSec3U
+
+@[expose] public section
 
 open Exploding LatticeProb MeasureTheory Filter
 

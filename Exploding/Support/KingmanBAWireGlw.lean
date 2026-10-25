@@ -1,3 +1,5 @@
+module
+
 /-
 Proposition 5.1: the Kingman input of the Section 5 assembly, corrected.
 
@@ -8,9 +10,11 @@ local Lipschitz bound `glw2_LipschitzLocal`, which is what the paper's proof of 
 uses.  The hypotheses of the reduction of Proposition 5.1 are then the two true statements
 `glw2_LipschitzLocal d ηmin P` and `king_Section3Convergence d hd ηmin hηmin L hL P`.
 -/
-import Exploding.Support.GLWProof2
-import Exploding.Support.KingmanBALip
-import Exploding.Support.KingmanBARefute
+public import Exploding.Support.GLWProof2
+public import Exploding.Support.KingmanBALip
+public import Exploding.Support.KingmanBARefute
+
+@[expose] public section
 
 open Exploding LatticeProb MeasureTheory Filter ProbabilityTheory
 open scoped Classical

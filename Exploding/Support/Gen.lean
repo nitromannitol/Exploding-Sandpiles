@@ -1,9 +1,13 @@
+module
+
 /-
 Support lemmas for the assembly of Theorem 5.1 and Theorem 1.3: the nearest
 lattice point is within one of the point it rounds, and the arithmetic that
 combines a locally uniform estimate with an `o(n)` estimate.
 -/
-import Exploding.Support.Vocab
+public import Exploding.Support.Vocab
+
+@[expose] public section
 
 namespace Exploding
 

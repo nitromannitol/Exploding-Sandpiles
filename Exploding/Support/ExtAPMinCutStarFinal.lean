@@ -1,3 +1,5 @@
+module
+
 /-
 The star-connectedness of a minimal box cut, assembled from the augmented box
 boundary-star theorem.
@@ -22,9 +24,11 @@ negative face, which must meet `S` because the site is off the negative-face sid
 meeting point with `S` leaves a suffix that stays in `B`.  Hence every site of `B` reaches
 the connected positive face, so `B` is connected (`xmh_B_connected`).
 -/
-import Exploding.Support.ExtAPMinCutStar
-import Exploding.Support.ExtAPKingConnected
-import Exploding.Support.ExtAPMinCutDuality
+public import Exploding.Support.ExtAPMinCutStar
+public import Exploding.Support.ExtAPKingConnected
+public import Exploding.Support.ExtAPMinCutDuality
+
+@[expose] public section
 
 open Exploding LatticeProb Relation
 open scoped Classical

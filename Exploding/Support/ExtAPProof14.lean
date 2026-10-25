@@ -1,3 +1,5 @@
+module
+
 /-
 The next step toward the supercritical-density reduction: bounds on the critical
 density and the existence of an infinite open cluster for every density above it.
@@ -13,9 +15,11 @@ recorded in `xap12_SupercriticalReduction` and the report.
 The file also records that the frozen event forces connectivity, so that the
 chemical-distance tail is supported on the open cluster of the origin.
 -/
-import Exploding.Support.ExtAPProof13
-import Exploding.Support.RNProofCore
-import Exploding.Support.RNProofPeierls
+public import Exploding.Support.ExtAPProof13
+public import Exploding.Support.RNProofCore
+public import Exploding.Support.RNProofPeierls
+
+@[expose] public section
 
 open Exploding LatticeProb MeasureTheory Filter
 open scoped Classical Topology

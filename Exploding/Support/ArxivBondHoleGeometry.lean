@@ -1,6 +1,10 @@
-import Exploding.Support.ArxivBondBoundaryStar
-import Exploding.Support.ArxivBondHoleBoundary
-import Exploding.Support.ExtMHGeom
+module
+
+public import Exploding.Support.ArxivBondBoundaryStar
+public import Exploding.Support.ArxivBondHoleBoundary
+public import Exploding.Support.ExtMHGeom
+
+@[expose] public section
 
 /-!
 # Size and boundary anchors for actual bond holes

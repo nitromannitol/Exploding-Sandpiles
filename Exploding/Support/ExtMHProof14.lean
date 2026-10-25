@@ -1,9 +1,13 @@
+module
+
 /-
 Discharge the summability threshold of Mathieu's hole-volume bound and assemble the final
 statement: above a density `q₀ < 1` close to one, the Peierls summability condition holds, so
 the bound reduces to the localisation of the hole boundary and its isoperimetric size.
 -/
-import Exploding.Support.ExtMHProof13
+public import Exploding.Support.ExtMHProof13
+
+@[expose] public section
 
 namespace Exploding
 

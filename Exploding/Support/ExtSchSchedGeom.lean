@@ -1,9 +1,13 @@
+module
+
 /-
 Geometry of the growth schedule: the box at time `0` is the starting box, the boxes increase
 inside the target and equal the target at the final time, the layers added lie inside the
 target and away from the starting box, and the side of the box is the side of the schedule.
 -/
-import Exploding.Support.ExtSchSched
+public import Exploding.Support.ExtSchSched
+
+@[expose] public section
 
 namespace Exploding
 

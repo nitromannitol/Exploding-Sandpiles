@@ -1,9 +1,13 @@
+module
+
 /-
 Reduction of Mathieu's hole-volume bound to a single percolation input `hDet`, using the
 summability `xmh5_ae_no_bad`, and the attack on `hDet` by the uniqueness of the infinite
 cluster and the boundary witness.
 -/
-import Exploding.Support.ExtMHProof9
+public import Exploding.Support.ExtMHProof9
+
+@[expose] public section
 
 namespace Exploding
 

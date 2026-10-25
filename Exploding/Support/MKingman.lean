@@ -1,3 +1,5 @@
+module
+
 /-
 A moment-free Kingman subadditive ergodic theorem, shared by the generalized
 last-wave statement (`glw2_KingmanCore`) and the toy-law last-wave statement (the first
@@ -11,9 +13,11 @@ uniform-bound case is proved in this file, and the general case is isolated as t
 single proposition `mk_kingman_linear`, and `glw2_KingmanCore` is derived from
 it.
 -/
-import Exploding.Support.GLWProof2
-import LatticeProb.Prob.Kingman
-import Mathlib.Dynamics.Ergodic.Function
+public import Exploding.Support.GLWProof2
+public import LatticeProb.Prob.Kingman
+public import Mathlib.Dynamics.Ergodic.Function
+
+@[expose] public section
 
 open Exploding LatticeProb MeasureTheory Filter ProbabilityTheory
 

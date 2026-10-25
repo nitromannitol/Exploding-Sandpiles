@@ -1,3 +1,5 @@
+module
+
 /-
 Finite-domain origin estimate for the ordinary parallel odometer of the pile `h + N δ₀`.
 
@@ -14,11 +16,13 @@ Nonnegativity of the ordinary sandpile is `Exploding.sqw_pconf_nonneg`, imported
 `Exploding.Support.SquareWaveComparison`.  The support of the odometer on `D` is a premise of the
 estimate; no radius theorem is used.
 -/
-import Exploding.Support.SquareWaveComparison
-import Exploding.Support.Toppling
-import LatticeProb.Graph.Zd
-import LatticeProb.Network.KilledGreen
-import LatticeProb.Network.LaplacianSymmetry
+public import Exploding.Support.SquareWaveComparison
+public import Exploding.Support.Toppling
+public import LatticeProb.Graph.Zd
+public import LatticeProb.Network.KilledGreen
+public import LatticeProb.Network.LaplacianSymmetry
+
+@[expose] public section
 
 namespace Exploding
 

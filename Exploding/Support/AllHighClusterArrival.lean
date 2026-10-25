@@ -1,4 +1,8 @@
-import Exploding.Support.AllHighPenultimateCluster
+module
+
+public import Exploding.Support.AllHighPenultimateCluster
+
+@[expose] public section
 
 /-!
 # Cluster arrival for the all-high background

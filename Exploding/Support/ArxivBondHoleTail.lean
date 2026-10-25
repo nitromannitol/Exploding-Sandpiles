@@ -1,5 +1,9 @@
-import Exploding.Support.ArxivBondDefectiveAnimals
-import Exploding.Support.ExtMHProof8
+module
+
+public import Exploding.Support.ArxivBondDefectiveAnimals
+public import Exploding.Support.ExtMHProof8
+
+@[expose] public section
 
 /-!
 # Near-root defective-animal probability

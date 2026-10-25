@@ -1,3 +1,5 @@
+module
+
 /-
 Proposition 3.1's Kingman conjunct, from the Lipschitz-transfer Kingman theorem.
 
@@ -11,9 +13,11 @@ function) goes through unchanged.  This file reruns the two `LWCProof8` declarat
 consumed `mk_kingman_linear`, with the corrected input, and states the Proposition 3.1 Kingman
 conjunct with only the frozen hypotheses.
 -/
-import Exploding.Support.LWCProof8
-import Exploding.Support.LWCLipE
-import Exploding.Support.KingmanBALip
+public import Exploding.Support.LWCProof8
+public import Exploding.Support.LWCLipE
+public import Exploding.Support.KingmanBALip
+
+@[expose] public section
 
 open Exploding LatticeProb MeasureTheory Filter
 open scoped BigOperators

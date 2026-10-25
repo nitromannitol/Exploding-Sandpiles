@@ -1,3 +1,5 @@
+module
+
 /-
 Kingman's subadditive ergodic theorem with a Lipschitz transfer, and no integrability.
 
@@ -16,8 +18,10 @@ so the subadditive ergodic theorem and Birkhoff's theorem give convergence of
 invariance of the lower limit `gLow` makes the limit constant and extends the convergence
 from `A` to almost every point.
 -/
-import Exploding.Support.KingmanBAKac
-import Exploding.Support.KingmanBATransfer
+public import Exploding.Support.KingmanBAKac
+public import Exploding.Support.KingmanBATransfer
+
+@[expose] public section
 
 open Exploding LatticeProb MeasureTheory Filter ProbabilityTheory Topology
 open scoped ENNReal

@@ -1,8 +1,12 @@
+module
+
 /-
 Measurability of the Bernoulli site box-crossing event: it is determined by the
 finitely many coordinates in the box.
 -/
-import Exploding.Support.ExtBCBernoulli
+public import Exploding.Support.ExtBCBernoulli
+
+@[expose] public section
 
 open Exploding LatticeProb MeasureTheory Filter
 open scoped Classical Topology ENNReal

@@ -1,9 +1,13 @@
+module
+
 /-
 Proposition 5.1 of the paper (generalized last wave): the probabilistic claim `glws_Renorm`,
 the generalization of Proposition 2.2 to a finite-range dependent field of strongly box-crossing
 tiles.
 -/
-import Exploding.Support.GLWSec3AG
+public import Exploding.Support.GLWSec3AG
+
+@[expose] public section
 
 open MeasureTheory ProbabilityTheory Exploding LatticeProb Filter
 

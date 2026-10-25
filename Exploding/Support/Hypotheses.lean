@@ -1,3 +1,5 @@
+module
+
 /-
 The setting and the five hypotheses of Section 5 of `paper/corrected-arxiv/exploding-corrected-arxiv.tex`, and
 the box-crossing vocabulary of Section 7.
@@ -5,7 +7,9 @@ the box-crossing vocabulary of Section 7.
 `B_k` is the rectangular box of side lengths `k : Fin d → ℕ`; `rboxShift k j` is
 the tile `B_k + j·k` of the tiling of `ℤ^d` by translates of `B_k`.
 -/
-import Exploding.Support.Vocab
+public import Exploding.Support.Vocab
+
+@[expose] public section
 
 namespace Exploding
 

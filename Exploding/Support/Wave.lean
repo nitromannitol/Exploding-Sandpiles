@@ -1,3 +1,5 @@
+module
+
 /-
 The last-wave vocabulary of Section 3 of `paper/corrected-arxiv/exploding-corrected-arxiv.tex`, beyond the
 definitions of `Exploding.Support.Vocab`: the neighbours of a site, the `n`-wave
@@ -11,7 +13,9 @@ reads `ũ(x) = ⌊(∑_{y ∼ x} ũ(y) + η(x)) / 2d⌋`, so a positive value wo
 would carry positive mass, putting `x` in the cluster by `(3.3)`.  This is the
 step the proof of Lemma 3.4 reads as "`ũ^{(b)}` is zero on `∂°P(b)`".
 -/
-import Exploding.Support.Vocab
+public import Exploding.Support.Vocab
+
+@[expose] public section
 
 namespace Exploding
 

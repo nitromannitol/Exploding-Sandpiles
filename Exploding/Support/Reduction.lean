@@ -1,3 +1,5 @@
+module
+
 /-
 The constrained frozen toppling processes of Section 7.1 of
 `paper/corrected-arxiv/exploding-corrected-arxiv.tex`, in which the dynamics on the face `x_1 = 1` of a cube in
@@ -7,7 +9,9 @@ A site of `ℤ^{d+1}` is written `cons a y = (a, 𝐲)` with `a ∈ ℤ` and `�
 The initial conditions are `(7.3)` and the updates `(7.4)`, `(7.5)`; the
 sandpiles are `s_t = s_0 + Δ(u_t - u_0)` as in the unconstrained case.
 -/
-import Exploding.Support.Vocab
+public import Exploding.Support.Vocab
+
+@[expose] public section
 
 namespace Exploding
 

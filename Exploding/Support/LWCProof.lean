@@ -1,3 +1,5 @@
+module
+
 -- Every declaration in this file is proved, and the file contains no `sorry`.  The file
 -- carries out the transfer of the last-wave arrival times from `clusterArrival` to
 -- `lastArrival`.  The locally uniform convergence of the rescaled `clusterArrival` enters
@@ -26,19 +28,21 @@ The shift-by-`v` ergodicity used below comes from `LatticeProb.ergodic_coordShif
 which gives translation by a fixed nonzero lattice vector ergodicity for an i.i.d. field such
 as `toyLaw`.
 -/
-import Exploding.Support.Vocab
-import Exploding.Support.Wave
-import Exploding.Frozen.ApproxSubadditivity
-import Exploding.Frozen.PenultimateClose
-import Exploding.Frozen.PenultimateUpperBound
-import Exploding.Frozen.FiniteExploding
-import Exploding.External.LiggettSchonmannStaceyBoundedDegree
-import Exploding.External.MathieuHoles
-import Exploding.External.AntalPisztora
-import Mathlib.Dynamics.Ergodic.Ergodic
-import LatticeProb.Prob.Translation
-import Mathlib.Analysis.SpecialFunctions.Pow.Asymptotics
-import Mathlib.MeasureTheory.MeasurableSpace.Constructions
+public import Exploding.Support.Vocab
+public import Exploding.Support.Wave
+public import Exploding.Frozen.ApproxSubadditivity
+public import Exploding.Frozen.PenultimateClose
+public import Exploding.Frozen.PenultimateUpperBound
+public import Exploding.Frozen.FiniteExploding
+public import Exploding.External.LiggettSchonmannStaceyBoundedDegree
+public import Exploding.External.MathieuHoles
+public import Exploding.External.AntalPisztora
+public import Mathlib.Dynamics.Ergodic.Ergodic
+public import LatticeProb.Prob.Translation
+public import Mathlib.Analysis.SpecialFunctions.Pow.Asymptotics
+public import Mathlib.MeasureTheory.MeasurableSpace.Constructions
+
+@[expose] public section
 
 open Exploding LatticeProb MeasureTheory Filter
 

@@ -1,3 +1,5 @@
+module
+
 /-
 Discharge of the last two claims of
 `Exploding.Frozen.approximate_subadditive`.  Sorry-free support file.
@@ -20,9 +22,11 @@ So if `η` is robust, `v := podo (η + (2dn+1) δ_0) T` (terminal) dominates the
 support of `v` is contained in the finite ball of radius `T`; the wave is thus a
 monotone sequence supported in that finite ball, hence eventually constant.
 -/
-import Exploding.Support.ASProof
-import Exploding.Support.ASProof3
-import Exploding.Support.GLWProofAux
+public import Exploding.Support.ASProof
+public import Exploding.Support.ASProof3
+public import Exploding.Support.GLWProofAux
+
+@[expose] public section
 
 open Exploding LatticeProb MeasureTheory
 

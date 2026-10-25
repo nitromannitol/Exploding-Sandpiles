@@ -1,3 +1,5 @@
+module
+
 /-
 Proposition 3.1's moment-free Kingman conjunct (declarations `lwc6_*`).
 
@@ -7,8 +9,10 @@ lattice `ℤ^d` to a continuous, convex, one-homogeneous function on `ℝ^d`; th
 step produces the lattice function from `mk_kingman_linear` and the `lwc_*` shift
 machinery.
 -/
-import Exploding.Support.LWCProof4
-import Mathlib.Analysis.Convex.Continuous
+public import Exploding.Support.LWCProof4
+public import Mathlib.Analysis.Convex.Continuous
+
+@[expose] public section
 
 open Exploding LatticeProb MeasureTheory Filter
 open scoped BigOperators

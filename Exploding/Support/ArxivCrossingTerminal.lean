@@ -1,6 +1,10 @@
-import Exploding.Support.CrossingTimeAux
-import Exploding.Support.SubCrossTime
-import Exploding.Support.ArxivP1Crossing
+module
+
+public import Exploding.Support.CrossingTimeAux
+public import Exploding.Support.SubCrossTime
+public import Exploding.Support.ArxivP1Crossing
+
+@[expose] public section
 
 /-!
 # Terminal-one characterization for finite crossing cubes

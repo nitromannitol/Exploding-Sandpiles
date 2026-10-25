@@ -1,3 +1,5 @@
+module
+
 /-
 The general Liggett-Schonmann-Stacey domination for `k`-dependent fields of bits
 on `ℤ^d`, `Exploding.External.LiggettSchonmannStacey`, follows from its
@@ -12,8 +14,10 @@ The two statements are otherwise word for word the same: the product law is
 `Measure.infinitePi` of the same Bernoulli law, and increasing events and
 independence of restrictions to finite sets of sites coincide.
 -/
-import Exploding.External.LiggettSchonmannStacey
-import Exploding.External.LiggettSchonmannStaceyBoundedDegree
+public import Exploding.External.LiggettSchonmannStacey
+public import Exploding.External.LiggettSchonmannStaceyBoundedDegree
+
+@[expose] public section
 
 namespace Exploding
 

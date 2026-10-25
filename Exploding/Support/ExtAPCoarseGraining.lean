@@ -1,3 +1,5 @@
+module
+
 /-
 The box-crossing coarse-graining input.
 
@@ -27,7 +29,9 @@ to lower densities by the pointwise coupling of configurations --- is refuted:
 one more bond can shorten the chemical distance below the detour ratio.  The final
 section exhibits the counterexample.
 -/
-import Exploding.Support.ExtAPBoxCrossingSupercritical
+public import Exploding.Support.ExtAPBoxCrossingSupercritical
+
+@[expose] public section
 
 open Exploding LatticeProb MeasureTheory Filter
 

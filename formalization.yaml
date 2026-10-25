@@ -50,7 +50,7 @@ sources:
 related_formalizations:
 - id: https://github.com/nitromannitol/Lattice-Probability
   relationship: builds-on
-  note: "Lattice-Probability, at commit 78f4b2cec065fa2fb5116b06c41966855f62cf50."
+  note: "Lattice-Probability, at commit e5d3fccd014d2af309300c89456da7f3d2005c2f."
 
 status:
   scope: >-

@@ -1,3 +1,5 @@
+module
+
 /-
 Pushing the Antal–Pisztora assembly: the critical density is strictly below one,
 and the finite-cluster half of `ExtAPProof12` is corrected (the old formulation
@@ -15,9 +17,11 @@ the high-density estimate down to `bondCritical`) remains isolated in
 `xap12_SupercriticalReduction`; the file records that `bondCritical d < 1` and
 that the q-range is non-vacuous.
 -/
-import Exploding.Support.ExtAPProof12
-import Exploding.Support.RNProofCore
-import Exploding.Support.RNProofPeierls
+public import Exploding.Support.ExtAPProof12
+public import Exploding.Support.RNProofCore
+public import Exploding.Support.RNProofPeierls
+
+@[expose] public section
 
 open Exploding LatticeProb MeasureTheory Filter
 open scoped Classical Topology

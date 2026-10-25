@@ -1,3 +1,5 @@
+module
+
 /-
 Continues `GLWProofAux.lean`: the two remaining conjuncts of the
 reduction of Proposition 5.1 (convergence of the generalized last wave).
@@ -7,7 +9,9 @@ reduction of Proposition 5.1 (convergence of the generalized last wave).
 
 Both follow from Hypothesis 1 (finite range of dependence).
 -/
-import Exploding.Support.GLWProofAux
+public import Exploding.Support.GLWProofAux
+
+@[expose] public section
 
 open Exploding LatticeProb MeasureTheory Filter ProbabilityTheory
 open scoped Classical

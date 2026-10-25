@@ -1,12 +1,16 @@
+module
+
 /-
 Lemma 3.6 of the paper: a linear upper bound on the last-wave arrival times.
 -/
-import Exploding.Support.Vocab
-import Exploding.External.LiggettSchonmannStaceyBoundedDegree
-import Exploding.External.MathieuHoles
-import Exploding.External.AntalPisztora
-import Exploding.Support.PUBProofF
-import Exploding.Support.PenultimateUpperBoundP1
+public import Exploding.Support.Vocab
+public import Exploding.External.LiggettSchonmannStaceyBoundedDegree
+public import Exploding.External.MathieuHoles
+public import Exploding.External.AntalPisztora
+public import Exploding.Support.PUBProofF
+public import Exploding.Support.PenultimateUpperBoundP1
+
+@[expose] public section
 
 open Exploding LatticeProb MeasureTheory
 

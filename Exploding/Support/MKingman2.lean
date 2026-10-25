@@ -1,3 +1,5 @@
+module
+
 /-
 Continuation of `MKingman.lean`: the first-return (induced) map used by the
 moment-free form of Kingman's theorem in the proofs of Propositions 3.1 and
@@ -12,8 +14,10 @@ along every `n` additionally uses the second bound of `eq:generalized_lipschitz`
 (a Lipschitz transfer).  This file supplies the induced-map
 infrastructure on which that route rests, including the induced cocycle.
 -/
-import Exploding.Support.MKingman
-import Mathlib.Dynamics.Ergodic.Conservative
+public import Exploding.Support.MKingman
+public import Mathlib.Dynamics.Ergodic.Conservative
+
+@[expose] public section
 
 open Exploding LatticeProb MeasureTheory Filter ProbabilityTheory
 

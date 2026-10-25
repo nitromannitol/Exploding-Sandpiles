@@ -1,3 +1,5 @@
+module
+
 /-
 The localisation of the hole boundary needs the box to grow with the hole's diameter: an
 open ball of radius `R` centred in `cent d n` has its boundary at distance `R`, so the
@@ -5,7 +7,9 @@ frozen form `∃ p ∈ ∂°B, p ∈ cent d n` is too strong.  The correct state
 together with the elementary bound that the boundary lies in `cent d (n + R)` when the hole
 lies within sup-norm `R` of a point of `cent d n`.
 -/
-import Exploding.Support.ExtMHProof15
+public import Exploding.Support.ExtMHProof15
+
+@[expose] public section
 
 namespace Exploding
 

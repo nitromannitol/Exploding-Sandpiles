@@ -1,9 +1,13 @@
+module
+
 /-
 Proposition 5.1 (generalized last wave), closeness of the arrival times, part E:
 the lengths `Pn`, `Z` and the lighting times are powers of the logarithm, with an exponent that
 depends only on `d` and on the path-filling exponent.
 -/
-import Exploding.Support.S3CloseD
+public import Exploding.Support.S3CloseD
+
+@[expose] public section
 
 open Exploding LatticeProb MeasureTheory Filter
 

@@ -1,10 +1,14 @@
+module
+
 /-
 The numeric comparison behind the hole-volume bound: a natural number whose square dominates
 `(log n)^{5/2}` dominates `⌊log₂ n⌋`, because `(k log 2)^{5/2}` exceeds `k - 1` for every
 natural `k`.  This is where the exponent `5/2` of Mathieu's lemma is used.
 -/
-import Mathlib
-import Exploding.Support.ExtMHProof8
+public import Mathlib
+public import Exploding.Support.ExtMHProof8
+
+@[expose] public section
 
 namespace Exploding
 

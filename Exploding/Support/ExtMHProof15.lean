@@ -1,9 +1,13 @@
+module
+
 /-
 The arithmetic comparison behind the isoperimetric size of the hole boundary: `Nat.log 2 n`
 is bounded by `(log n)^{5(d-1)/(2d)}/d` for large `n`, since the logarithm outweighs the
 double logarithm.
 -/
-import Exploding.Support.ExtMHProof14
+public import Exploding.Support.ExtMHProof14
+
+@[expose] public section
 
 namespace Exploding
 

@@ -1,3 +1,5 @@
+module
+
 /-
 Measurability of the recurrence events of `RecurrentOn` and `Recurrent`
 (`Exploding.Support.Vocab`), and the source-facing consumer of `RecurrentLaw` on the
@@ -10,7 +12,9 @@ Each frozen odometer `η ↦ fodo (Vᶜ) η w₀ t x` is measurable in the backg
 `x`, and `Recurrent η` a countable intersection of those over finite domains `V`.
 Nothing beyond the definitions is assumed.
 -/
-import Exploding.Support.BCProofAux
+public import Exploding.Support.BCProofAux
+
+@[expose] public section
 
 namespace Exploding
 

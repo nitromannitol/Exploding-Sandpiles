@@ -1,9 +1,13 @@
+module
+
 /-
 The maximalization step for the infinite cluster of good sites: the source
 finite-hole property makes an infinite connected good set intersect every
 infinite connected good set.
 -/
-import Exploding.Support.RNProofPercolation
+public import Exploding.Support.RNProofPercolation
+
+@[expose] public section
 
 open Exploding LatticeProb
 

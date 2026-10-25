@@ -1,8 +1,12 @@
+module
+
 /-
 Proposition 5.1 (generalized last wave), closeness of the arrival times, part D:
 the macroscopic site of a microscopic site, the tiles around it, and the reversal of a lit path.
 -/
-import Exploding.Support.S3CloseC
+public import Exploding.Support.S3CloseC
+
+@[expose] public section
 
 open Exploding LatticeProb MeasureTheory Filter
 

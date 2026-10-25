@@ -1,10 +1,14 @@
+module
+
 /-
 One step of the recurrence argument of Proposition 7.3 of `paper/corrected-arxiv/exploding-corrected-arxiv.tex`:
 a site of `V` that has not yet toppled and whose `+e_i` neighbours have all
 toppled, topples at the next step.
 -/
-import Exploding.Support.SubRec
-import Exploding.Support.Wave
+public import Exploding.Support.SubRec
+public import Exploding.Support.Wave
+
+@[expose] public section
 
 namespace Exploding
 

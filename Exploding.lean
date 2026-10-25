@@ -1,405 +1,409 @@
-import LatticeProb
+module
 
-import Exploding.Support.Toppling
-import Exploding.Support.Vocab
-import Exploding.Support.Hypotheses
-import Exploding.Support.Reduction
-import Exploding.Support.Wave
-import Exploding.Support.SubArith
-import Exploding.Support.SubFodo
-import Exploding.Support.SubGeom
-import Exploding.Support.SubBox
-import Exploding.Support.SubFill
-import Exploding.Support.SubFinite
-import Exploding.Support.SubStep
-import Exploding.Support.SubCross
-import Exploding.Support.SubRelay
-import Exploding.Support.SubPen
-import Exploding.Support.SubPub
-import Exploding.Support.SubPoly
-import Exploding.Support.SubFConf
-import Exploding.Support.SubNbr
-import Exploding.Support.SubWave
-import Exploding.Support.SubRec
-import Exploding.Support.SubTopple
-import Exploding.Support.SubMax
-import Exploding.Support.SubRecOne
-import Exploding.Support.SubRecSub
-import Exploding.Support.SubRecCard
-import Exploding.Support.SubRecMin
-import Exploding.Support.Percolation
-import Exploding.Support.SubLayer
-import Exploding.Support.SubSpanBridge
-import Exploding.Support.SubSpanZero
-import Exploding.Support.SubOdo
-import Exploding.Support.SubCrossTime
-import Exploding.Support.ReductionShift
-import Exploding.Support.LWCProof
-import Exploding.Support.ExtLSSG
-import Exploding.Support.ExtFMR
-import Exploding.Support.ExtLSSLLL
-import Exploding.Support.ExtLSSProofLLL
-import Exploding.Support.ExtLSSProofThin
-import Exploding.Support.ExtLSSProof
-import Exploding.Support.ExtLSSProofDom
-import Exploding.Support.ExtLSSProofContent
-import Exploding.Support.ExtLSSProofFinal
-import Exploding.Support.ExtLSSProofCouple
-import Exploding.Support.ExtLSSProofGlobal
-import Exploding.Support.ExtLSSProofGlobal2
-import Exploding.Support.ExtLSSProofGlobal3
-import Exploding.Support.ExtLSSCyl
-import Exploding.Support.ExtLSSUpHull
-import Exploding.Support.ExtLSSReg
-import Exploding.Support.ExtLSSCountable
-import Exploding.Support.ExtBCBernoulli
-import Exploding.Support.ExtBCBernoulli2
-import Exploding.Support.ExtAPBarrier
-import Exploding.Support.ExtAPBarrierStar
-import Exploding.Support.ExtAPBridge
-import Exploding.Support.ExtAPStarDuality
-import Exploding.Support.ExtAPMinCut
-import Exploding.Support.ExtAPMinCutLine
-import Exploding.Support.ExtAPMinCutDuality
-import Exploding.Support.ExtAPMinCutTwo
-import Exploding.Support.ExtAPFiniteCluster
-import Exploding.Support.ExtAPBoxPoincare
-import Exploding.Support.ExtAPBoxBoundaryStar
-import Exploding.Support.ExtAPInfiniteCluster
-import Exploding.Support.ExtAPSupercritical
-import Exploding.Support.ExtAPKingConnected
-import Exploding.Support.ExtAPMinCutStar
-import Exploding.Support.ExtAPMinCutStarFinal
-import Exploding.Support.ExtAPUncond
-import Exploding.Support.ExtAPUnconditional
-import Exploding.Support.ExtAPBoxCrossingBond
-import Exploding.Support.ExtAPBoxCrossingFinal
-import Exploding.Support.ExtAPBoxCrossingSupercritical
-import Exploding.Support.ExtAPCoarseGraining
-import Exploding.Support.ExtBCBernoulli3
-import Exploding.Support.ExtMHBase
-import Exploding.Support.ExtMHProof
-import Exploding.Support.ExtMHCount
-import Exploding.Support.ExtMHProof2
-import Exploding.Support.ExtMHProof3
-import Exploding.Support.ExtMHProof4
-import Exploding.Support.ExtMHProof5
-import Exploding.Support.ExtMHProof6
-import Exploding.Support.ExtMHProof7
-import Exploding.Support.ExtMHProof8
-import Exploding.Support.ExtMHProof9
-import Exploding.Support.ExtMHProof10
-import Exploding.Support.ExtMHProof11
-import Exploding.Support.ExtMHProof12
-import Exploding.Support.ExtMHProof13
-import Exploding.Support.ExtMHProof14
-import Exploding.Support.ExtMHProof15
-import Exploding.Support.ExtMHProof16
-import Exploding.Support.ExtMHProof17
-import Exploding.Support.ExtMHGeom
-import Exploding.Support.ExtMHNumeric
-import Exploding.Support.ExtMHPeierls
-import Exploding.Support.ExtMHThreshold
-import Exploding.Support.ExtMHDet
-import Exploding.Support.ExtMHFinal
-import Exploding.Support.ExtMHHoleVolume
-import Exploding.Support.ExtAPDefs
-import Exploding.Support.ExtAPProof
-import Exploding.Support.ExtAPProof2
-import Exploding.Support.ExtAPProof3
-import Exploding.Support.ExtAPProof4
-import Exploding.Support.ExtAPProof5
-import Exploding.Support.ExtAPProof6
-import Exploding.Support.ExtAPProof7
-import Exploding.Support.ExtAPProof8
-import Exploding.Support.ExtAPProof9
-import Exploding.Support.ExtAPProof10
-import Exploding.Support.ExtAPProof11
-import Exploding.Support.ExtAPProof12
-import Exploding.Support.ExtAPProof13
-import Exploding.Support.ExtAPProof14
-import Exploding.Support.ExtAPProof15
-import Exploding.Support.ExtAPProof16
-import Exploding.Support.ExtAPProof17
-import Exploding.Support.ExtAPProof18
-import Exploding.Support.ExtSchTop
-import Exploding.Support.ExtSchProb
-import Exploding.Support.ExtSchProof
-import Exploding.Support.ExtSchProof2
-import Exploding.Support.ExtSchProof3
-import Exploding.Support.ExtSchProof4
-import Exploding.Support.ExtSchProof5
-import Exploding.Support.ExtSchProof6
-import Exploding.Support.ExtSchProof7
-import Exploding.Support.ExtSchProof8
-import Exploding.Support.ExtSchProof9
-import Exploding.Support.ExtSchProof10
-import Exploding.Support.ExtSchProof11
-import Exploding.Support.ExtSchProof12
-import Exploding.Support.ExtSchProof13
-import Exploding.Support.ExtSchProof14
-import Exploding.Support.ExtSchProof15
-import Exploding.Support.ExtSchProof16
-import Exploding.Support.ExtSchProof17
-import Exploding.Support.ExtSchProof18
-import Exploding.Support.ExtSchProof19
-import Exploding.Support.ExtSchBox
-import Exploding.Support.ExtSchSched
-import Exploding.Support.ExtSchSeed
-import Exploding.Support.ExtSchSchedGeom
-import Exploding.Support.ExtSchOne
-import Exploding.Support.ExtSchNum
-import Exploding.Support.ExtSchSchedLayer
-import Exploding.Support.ExtSchCorner
-import Exploding.Support.ExtSchGrow
-import Exploding.Support.ExtSchGrowProb
-import Exploding.Support.ExtSchHalf
-import Exploding.Support.ExtSchExp
-import Exploding.Support.ExtSchBlock
-import Exploding.Support.ExtSchGrid
-import Exploding.Support.ExtSchLevel
-import Exploding.Support.ExtSchDouble
-import Exploding.Support.ExtSchFinal
-import Exploding.Support.ExtSchFLP
-import Exploding.Support.S3CloseA
-import Exploding.Support.S3CloseB
-import Exploding.Support.S3CloseC
-import Exploding.Support.S3CloseD
-import Exploding.Support.S3CloseE
-import Exploding.Support.S3CloseF
-import Exploding.Support.S3CloseG
-import Exploding.Support.S3CloseH
-import Exploding.Support.S3CloseI
-import Exploding.Support.GLWSec3AA
-import Exploding.Support.GLWSec3AB
-import Exploding.Support.GLWSec3AC
-import Exploding.Support.GLWSec3AD
-import Exploding.Support.GLWSec3AE
-import Exploding.Support.GLWSec3AF
-import Exploding.Support.GLWSec3AG
-import Exploding.Support.GLWSec3AH
-import Exploding.Support.GLWSec3AI
-import Exploding.Support.GLWSec3X
-import Exploding.Support.GLWSec3Y
-import Exploding.Support.GLWSec3Z
-import Exploding.Support.GLWSec3A
-import Exploding.Support.GLWSec3B
-import Exploding.Support.GLWSec3C
-import Exploding.Support.GLWSec3D
-import Exploding.Support.GLWSec3E
-import Exploding.Support.GLWSec3F
-import Exploding.Support.GLWSec3G
-import Exploding.Support.GLWSec3H
-import Exploding.Support.GLWSec3I
-import Exploding.Support.GLWSec3J
-import Exploding.Support.GLWSec3K
-import Exploding.Support.GLWSec3L
-import Exploding.Support.GLWSec3M
-import Exploding.Support.GLWSec3N
-import Exploding.Support.GLWSec3O
-import Exploding.Support.GLWSec3P
-import Exploding.Support.GLWSec3Q
-import Exploding.Support.GLWSec3R
-import Exploding.Support.GLWSec3S
-import Exploding.Support.GLWSec3T
-import Exploding.Support.GLWSec3U
-import Exploding.Support.GLWSec3V
-import Exploding.Support.GLWSec3W
-import Exploding.Support.KingmanBAWireGlw
-import Exploding.Support.KingmanBAWire
-import Exploding.Support.CESlow
-import Exploding.Support.CESlow2
-import Exploding.Support.CESlow3
-import Exploding.Support.CESlow4
-import Exploding.Support.KingmanBAKac
-import Exploding.Support.KingmanBALip
-import Exploding.Support.KingmanBARefute
-import Exploding.Support.KingmanBATransfer
-import Exploding.Support.LWCProof8
-import Exploding.Support.CELow
-import Exploding.Support.CELow2
-import Exploding.Support.CELow3
-import Exploding.Support.CELow4
-import Exploding.Support.LWCProof7
-import Exploding.Support.ASDouble
-import Exploding.Support.LWCProof6
-import Exploding.Support.LWCLipA
-import Exploding.Support.LWCLipB
-import Exploding.Support.LWCLipC
-import Exploding.Support.LWCLipD
-import Exploding.Support.LWCLipE
-import Exploding.Support.MKingman5
-import Exploding.Support.ASProof7
-import Exploding.Support.MKingman4
-import Exploding.Support.RNProofPeierls
-import Exploding.Support.ASProof6
-import Exploding.Support.MKingman3
-import Exploding.Support.PCloseProofAsymp
-import Exploding.Support.PCloseProofCube
-import Exploding.Support.PCloseProofFar
-import Exploding.Support.PCloseProofFinal
-import Exploding.Support.PCloseProofFirst
-import Exploding.Support.PCloseProofGeom
-import Exploding.Support.PCloseProofMacro
-import Exploding.Support.PCloseProofMain
-import Exploding.Support.PCloseProofPath
-import Exploding.Support.PCloseProofSpread
-import Exploding.Support.PCloseProofWalk
-import Exploding.Support.RNProofChem
-import Exploding.Support.RNProofCore
-import Exploding.Support.RNProofGood
-import Exploding.Support.RNProofGraph
-import Exploding.Support.RNProofPercolation
-import Exploding.Support.RNProofStrassen
-import Exploding.Support.CEProof3
-import Exploding.Support.ASProof5
-import Exploding.Support.LWCProof4
-import Exploding.Support.MKingman2
-import Exploding.Support.LWCProof3
-import Exploding.Support.ECProofPoincare
-import Exploding.Support.ECProofStar
-import Exploding.Support.ECProofTop
-import Exploding.Support.ECProofDyn
-import Exploding.Support.ECProofTile
-import Exploding.Support.ECProofCount
-import Exploding.Support.ECProofProb
-import Exploding.Support.ECProofMain
-import Exploding.Support.MKingman
-import Exploding.Support.ASProof4
-import Exploding.Support.ASProof3
-import Exploding.Support.LWCProof2
-import Exploding.Support.GLWProof2
-import Exploding.Support.ASProof2
-import Exploding.Support.CEProof2
-import Exploding.Support.GLWProofAux
-import Exploding.Support.LSProofAux
-import Exploding.Support.PCLProof
-import Exploding.Support.TEProofRec
-import Exploding.Support.TEProofLaw
-import Exploding.Support.TEProofBlock
-import Exploding.Support.CEProof
-import Exploding.Support.ASProof
-import Exploding.Support.ASSpecial
-import Exploding.Support.BCProofAux
-import Exploding.Support.BCProofSym
-import Exploding.Support.BCProofMain
-import Exploding.Support.PUBProofA
-import Exploding.Support.PUBProofB
-import Exploding.Support.PUBProofC
-import Exploding.Support.PUBProofD
-import Exploding.Support.PUBProofE
-import Exploding.Support.PUBProofF
-import Exploding.Support.ArxivBondBoundaryStar
-import Exploding.Support.ArxivBondDefectiveFiniteness
-import Exploding.Support.ArxivBondFiniteHoles
-import Exploding.Support.ArxivBondHoleGeometry
-import Exploding.Support.ArxivBondHoleTail
-import Exploding.Support.ArxivBondFiniteHoleSeries
-import Exploding.Support.ArxivBondHoleGeometricTerm
-import Exploding.Support.ArxivBondFiniteHoleTail
-import Exploding.Support.ArxivBondFiniteHoleBoxCutoff
-import Exploding.Support.ArxivActualBondClusterHolesAE
-import Exploding.Support.ArxivActualBondBoxCutoffAE
-import Exploding.Support.ArxivGoodCubeBondBoxCutoff
-import Exploding.Support.ArxivP1FiniteExploding
-import Exploding.Support.ArxivCrossingTerminal
-import Exploding.Support.ArxivCrossingBound
-import Exploding.Support.AllHighGoodCubes
-import Exploding.Support.AllHighWaveTranslation
-import Exploding.Support.AllHighWaveThreshold
-import Exploding.Support.AllHighPenultimateCluster
-import Exploding.Support.AllHighLastArrival
-import Exploding.Support.AllHighLastArrivalScaling
-import Exploding.Support.LastWaveConvergenceP1
-import Exploding.Support.ManhattanProfile
-import Exploding.Support.AllHighPodoFront
-import Exploding.Support.ApproximateSubadditiveP1
-import Exploding.Support.TimeConstantP1
-import Exploding.Support.ArxivP1RenormGeometry
-import Exploding.Support.ArxivAllGoodRenormGeometry
-import Exploding.Support.ArxivMaximalGoodChemical
-import Exploding.Support.AllHighClusterArrival
-import Exploding.Support.PenultimateClusterP1
-import Exploding.Support.PenultimateUpperBoundP1
-import Exploding.Support.PenultimateCloseP1
-import Exploding.Support.ExplosiveVacuity
+public import LatticeProb
 
-import Exploding.External.FeyLevinePeres
-import Exploding.External.Schonmann
-import Exploding.External.LiggettSchonmannStaceyBoundedDegree
-import Exploding.External.LiggettSchonmannStacey
-import Exploding.External.AntalPisztora
-import Exploding.External.MathieuHoles
-import Exploding.External.FeyMeesterRedig
-import Exploding.External.LSSBoundedDegreeProved
+public import Exploding.Support.Toppling
+public import Exploding.Support.Vocab
+public import Exploding.Support.Hypotheses
+public import Exploding.Support.Reduction
+public import Exploding.Support.Wave
+public import Exploding.Support.SubArith
+public import Exploding.Support.SubFodo
+public import Exploding.Support.SubGeom
+public import Exploding.Support.SubBox
+public import Exploding.Support.SubFill
+public import Exploding.Support.SubFinite
+public import Exploding.Support.SubStep
+public import Exploding.Support.SubCross
+public import Exploding.Support.SubRelay
+public import Exploding.Support.SubPen
+public import Exploding.Support.SubPub
+public import Exploding.Support.SubPoly
+public import Exploding.Support.SubFConf
+public import Exploding.Support.SubNbr
+public import Exploding.Support.SubWave
+public import Exploding.Support.SubRec
+public import Exploding.Support.SubTopple
+public import Exploding.Support.SubMax
+public import Exploding.Support.SubRecOne
+public import Exploding.Support.SubRecSub
+public import Exploding.Support.SubRecCard
+public import Exploding.Support.SubRecMin
+public import Exploding.Support.Percolation
+public import Exploding.Support.SubLayer
+public import Exploding.Support.SubSpanBridge
+public import Exploding.Support.SubSpanZero
+public import Exploding.Support.SubOdo
+public import Exploding.Support.SubCrossTime
+public import Exploding.Support.ReductionShift
+public import Exploding.Support.LWCProof
+public import Exploding.Support.ExtLSSG
+public import Exploding.Support.ExtFMR
+public import Exploding.Support.ExtLSSLLL
+public import Exploding.Support.ExtLSSProofLLL
+public import Exploding.Support.ExtLSSProofThin
+public import Exploding.Support.ExtLSSProof
+public import Exploding.Support.ExtLSSProofDom
+public import Exploding.Support.ExtLSSProofContent
+public import Exploding.Support.ExtLSSProofFinal
+public import Exploding.Support.ExtLSSProofCouple
+public import Exploding.Support.ExtLSSProofGlobal
+public import Exploding.Support.ExtLSSProofGlobal2
+public import Exploding.Support.ExtLSSProofGlobal3
+public import Exploding.Support.ExtLSSCyl
+public import Exploding.Support.ExtLSSUpHull
+public import Exploding.Support.ExtLSSReg
+public import Exploding.Support.ExtLSSCountable
+public import Exploding.Support.ExtBCBernoulli
+public import Exploding.Support.ExtBCBernoulli2
+public import Exploding.Support.ExtAPBarrier
+public import Exploding.Support.ExtAPBarrierStar
+public import Exploding.Support.ExtAPBridge
+public import Exploding.Support.ExtAPStarDuality
+public import Exploding.Support.ExtAPMinCut
+public import Exploding.Support.ExtAPMinCutLine
+public import Exploding.Support.ExtAPMinCutDuality
+public import Exploding.Support.ExtAPMinCutTwo
+public import Exploding.Support.ExtAPFiniteCluster
+public import Exploding.Support.ExtAPBoxPoincare
+public import Exploding.Support.ExtAPBoxBoundaryStar
+public import Exploding.Support.ExtAPInfiniteCluster
+public import Exploding.Support.ExtAPSupercritical
+public import Exploding.Support.ExtAPKingConnected
+public import Exploding.Support.ExtAPMinCutStar
+public import Exploding.Support.ExtAPMinCutStarFinal
+public import Exploding.Support.ExtAPUncond
+public import Exploding.Support.ExtAPUnconditional
+public import Exploding.Support.ExtAPBoxCrossingBond
+public import Exploding.Support.ExtAPBoxCrossingFinal
+public import Exploding.Support.ExtAPBoxCrossingSupercritical
+public import Exploding.Support.ExtAPCoarseGraining
+public import Exploding.Support.ExtBCBernoulli3
+public import Exploding.Support.ExtMHBase
+public import Exploding.Support.ExtMHProof
+public import Exploding.Support.ExtMHCount
+public import Exploding.Support.ExtMHProof2
+public import Exploding.Support.ExtMHProof3
+public import Exploding.Support.ExtMHProof4
+public import Exploding.Support.ExtMHProof5
+public import Exploding.Support.ExtMHProof6
+public import Exploding.Support.ExtMHProof7
+public import Exploding.Support.ExtMHProof8
+public import Exploding.Support.ExtMHProof9
+public import Exploding.Support.ExtMHProof10
+public import Exploding.Support.ExtMHProof11
+public import Exploding.Support.ExtMHProof12
+public import Exploding.Support.ExtMHProof13
+public import Exploding.Support.ExtMHProof14
+public import Exploding.Support.ExtMHProof15
+public import Exploding.Support.ExtMHProof16
+public import Exploding.Support.ExtMHProof17
+public import Exploding.Support.ExtMHGeom
+public import Exploding.Support.ExtMHNumeric
+public import Exploding.Support.ExtMHPeierls
+public import Exploding.Support.ExtMHThreshold
+public import Exploding.Support.ExtMHDet
+public import Exploding.Support.ExtMHFinal
+public import Exploding.Support.ExtMHHoleVolume
+public import Exploding.Support.ExtAPDefs
+public import Exploding.Support.ExtAPProof
+public import Exploding.Support.ExtAPProof2
+public import Exploding.Support.ExtAPProof3
+public import Exploding.Support.ExtAPProof4
+public import Exploding.Support.ExtAPProof5
+public import Exploding.Support.ExtAPProof6
+public import Exploding.Support.ExtAPProof7
+public import Exploding.Support.ExtAPProof8
+public import Exploding.Support.ExtAPProof9
+public import Exploding.Support.ExtAPProof10
+public import Exploding.Support.ExtAPProof11
+public import Exploding.Support.ExtAPProof12
+public import Exploding.Support.ExtAPProof13
+public import Exploding.Support.ExtAPProof14
+public import Exploding.Support.ExtAPProof15
+public import Exploding.Support.ExtAPProof16
+public import Exploding.Support.ExtAPProof17
+public import Exploding.Support.ExtAPProof18
+public import Exploding.Support.ExtSchTop
+public import Exploding.Support.ExtSchProb
+public import Exploding.Support.ExtSchProof
+public import Exploding.Support.ExtSchProof2
+public import Exploding.Support.ExtSchProof3
+public import Exploding.Support.ExtSchProof4
+public import Exploding.Support.ExtSchProof5
+public import Exploding.Support.ExtSchProof6
+public import Exploding.Support.ExtSchProof7
+public import Exploding.Support.ExtSchProof8
+public import Exploding.Support.ExtSchProof9
+public import Exploding.Support.ExtSchProof10
+public import Exploding.Support.ExtSchProof11
+public import Exploding.Support.ExtSchProof12
+public import Exploding.Support.ExtSchProof13
+public import Exploding.Support.ExtSchProof14
+public import Exploding.Support.ExtSchProof15
+public import Exploding.Support.ExtSchProof16
+public import Exploding.Support.ExtSchProof17
+public import Exploding.Support.ExtSchProof18
+public import Exploding.Support.ExtSchProof19
+public import Exploding.Support.ExtSchBox
+public import Exploding.Support.ExtSchSched
+public import Exploding.Support.ExtSchSeed
+public import Exploding.Support.ExtSchSchedGeom
+public import Exploding.Support.ExtSchOne
+public import Exploding.Support.ExtSchNum
+public import Exploding.Support.ExtSchSchedLayer
+public import Exploding.Support.ExtSchCorner
+public import Exploding.Support.ExtSchGrow
+public import Exploding.Support.ExtSchGrowProb
+public import Exploding.Support.ExtSchHalf
+public import Exploding.Support.ExtSchExp
+public import Exploding.Support.ExtSchBlock
+public import Exploding.Support.ExtSchGrid
+public import Exploding.Support.ExtSchLevel
+public import Exploding.Support.ExtSchDouble
+public import Exploding.Support.ExtSchFinal
+public import Exploding.Support.ExtSchFLP
+public import Exploding.Support.S3CloseA
+public import Exploding.Support.S3CloseB
+public import Exploding.Support.S3CloseC
+public import Exploding.Support.S3CloseD
+public import Exploding.Support.S3CloseE
+public import Exploding.Support.S3CloseF
+public import Exploding.Support.S3CloseG
+public import Exploding.Support.S3CloseH
+public import Exploding.Support.S3CloseI
+public import Exploding.Support.GLWSec3AA
+public import Exploding.Support.GLWSec3AB
+public import Exploding.Support.GLWSec3AC
+public import Exploding.Support.GLWSec3AD
+public import Exploding.Support.GLWSec3AE
+public import Exploding.Support.GLWSec3AF
+public import Exploding.Support.GLWSec3AG
+public import Exploding.Support.GLWSec3AH
+public import Exploding.Support.GLWSec3AI
+public import Exploding.Support.GLWSec3X
+public import Exploding.Support.GLWSec3Y
+public import Exploding.Support.GLWSec3Z
+public import Exploding.Support.GLWSec3A
+public import Exploding.Support.GLWSec3B
+public import Exploding.Support.GLWSec3C
+public import Exploding.Support.GLWSec3D
+public import Exploding.Support.GLWSec3E
+public import Exploding.Support.GLWSec3F
+public import Exploding.Support.GLWSec3G
+public import Exploding.Support.GLWSec3H
+public import Exploding.Support.GLWSec3I
+public import Exploding.Support.GLWSec3J
+public import Exploding.Support.GLWSec3K
+public import Exploding.Support.GLWSec3L
+public import Exploding.Support.GLWSec3M
+public import Exploding.Support.GLWSec3N
+public import Exploding.Support.GLWSec3O
+public import Exploding.Support.GLWSec3P
+public import Exploding.Support.GLWSec3Q
+public import Exploding.Support.GLWSec3R
+public import Exploding.Support.GLWSec3S
+public import Exploding.Support.GLWSec3T
+public import Exploding.Support.GLWSec3U
+public import Exploding.Support.GLWSec3V
+public import Exploding.Support.GLWSec3W
+public import Exploding.Support.KingmanBAWireGlw
+public import Exploding.Support.KingmanBAWire
+public import Exploding.Support.CESlow
+public import Exploding.Support.CESlow2
+public import Exploding.Support.CESlow3
+public import Exploding.Support.CESlow4
+public import Exploding.Support.KingmanBAKac
+public import Exploding.Support.KingmanBALip
+public import Exploding.Support.KingmanBARefute
+public import Exploding.Support.KingmanBATransfer
+public import Exploding.Support.LWCProof8
+public import Exploding.Support.CELow
+public import Exploding.Support.CELow2
+public import Exploding.Support.CELow3
+public import Exploding.Support.CELow4
+public import Exploding.Support.LWCProof7
+public import Exploding.Support.ASDouble
+public import Exploding.Support.LWCProof6
+public import Exploding.Support.LWCLipA
+public import Exploding.Support.LWCLipB
+public import Exploding.Support.LWCLipC
+public import Exploding.Support.LWCLipD
+public import Exploding.Support.LWCLipE
+public import Exploding.Support.MKingman5
+public import Exploding.Support.ASProof7
+public import Exploding.Support.MKingman4
+public import Exploding.Support.RNProofPeierls
+public import Exploding.Support.ASProof6
+public import Exploding.Support.MKingman3
+public import Exploding.Support.PCloseProofAsymp
+public import Exploding.Support.PCloseProofCube
+public import Exploding.Support.PCloseProofFar
+public import Exploding.Support.PCloseProofFinal
+public import Exploding.Support.PCloseProofFirst
+public import Exploding.Support.PCloseProofGeom
+public import Exploding.Support.PCloseProofMacro
+public import Exploding.Support.PCloseProofMain
+public import Exploding.Support.PCloseProofPath
+public import Exploding.Support.PCloseProofSpread
+public import Exploding.Support.PCloseProofWalk
+public import Exploding.Support.RNProofChem
+public import Exploding.Support.RNProofCore
+public import Exploding.Support.RNProofGood
+public import Exploding.Support.RNProofGraph
+public import Exploding.Support.RNProofPercolation
+public import Exploding.Support.RNProofStrassen
+public import Exploding.Support.CEProof3
+public import Exploding.Support.ASProof5
+public import Exploding.Support.LWCProof4
+public import Exploding.Support.MKingman2
+public import Exploding.Support.LWCProof3
+public import Exploding.Support.ECProofPoincare
+public import Exploding.Support.ECProofStar
+public import Exploding.Support.ECProofTop
+public import Exploding.Support.ECProofDyn
+public import Exploding.Support.ECProofTile
+public import Exploding.Support.ECProofCount
+public import Exploding.Support.ECProofProb
+public import Exploding.Support.ECProofMain
+public import Exploding.Support.MKingman
+public import Exploding.Support.ASProof4
+public import Exploding.Support.ASProof3
+public import Exploding.Support.LWCProof2
+public import Exploding.Support.GLWProof2
+public import Exploding.Support.ASProof2
+public import Exploding.Support.CEProof2
+public import Exploding.Support.GLWProofAux
+public import Exploding.Support.LSProofAux
+public import Exploding.Support.PCLProof
+public import Exploding.Support.TEProofRec
+public import Exploding.Support.TEProofLaw
+public import Exploding.Support.TEProofBlock
+public import Exploding.Support.CEProof
+public import Exploding.Support.ASProof
+public import Exploding.Support.ASSpecial
+public import Exploding.Support.BCProofAux
+public import Exploding.Support.BCProofSym
+public import Exploding.Support.BCProofMain
+public import Exploding.Support.PUBProofA
+public import Exploding.Support.PUBProofB
+public import Exploding.Support.PUBProofC
+public import Exploding.Support.PUBProofD
+public import Exploding.Support.PUBProofE
+public import Exploding.Support.PUBProofF
+public import Exploding.Support.ArxivBondBoundaryStar
+public import Exploding.Support.ArxivBondDefectiveFiniteness
+public import Exploding.Support.ArxivBondFiniteHoles
+public import Exploding.Support.ArxivBondHoleGeometry
+public import Exploding.Support.ArxivBondHoleTail
+public import Exploding.Support.ArxivBondFiniteHoleSeries
+public import Exploding.Support.ArxivBondHoleGeometricTerm
+public import Exploding.Support.ArxivBondFiniteHoleTail
+public import Exploding.Support.ArxivBondFiniteHoleBoxCutoff
+public import Exploding.Support.ArxivActualBondClusterHolesAE
+public import Exploding.Support.ArxivActualBondBoxCutoffAE
+public import Exploding.Support.ArxivGoodCubeBondBoxCutoff
+public import Exploding.Support.ArxivP1FiniteExploding
+public import Exploding.Support.ArxivCrossingTerminal
+public import Exploding.Support.ArxivCrossingBound
+public import Exploding.Support.AllHighGoodCubes
+public import Exploding.Support.AllHighWaveTranslation
+public import Exploding.Support.AllHighWaveThreshold
+public import Exploding.Support.AllHighPenultimateCluster
+public import Exploding.Support.AllHighLastArrival
+public import Exploding.Support.AllHighLastArrivalScaling
+public import Exploding.Support.LastWaveConvergenceP1
+public import Exploding.Support.ManhattanProfile
+public import Exploding.Support.AllHighPodoFront
+public import Exploding.Support.ApproximateSubadditiveP1
+public import Exploding.Support.TimeConstantP1
+public import Exploding.Support.ArxivP1RenormGeometry
+public import Exploding.Support.ArxivAllGoodRenormGeometry
+public import Exploding.Support.ArxivMaximalGoodChemical
+public import Exploding.Support.AllHighClusterArrival
+public import Exploding.Support.PenultimateClusterP1
+public import Exploding.Support.PenultimateUpperBoundP1
+public import Exploding.Support.PenultimateCloseP1
+public import Exploding.Support.ExplosiveVacuity
 
-import Exploding.Frozen.LimitShape
-import Exploding.Frozen.TimeConstant
-import Exploding.Frozen.Explosive
-import Exploding.Frozen.CrossingTime
-import Exploding.Frozen.Renormalization
-import Exploding.Frozen.LocalConvexity
-import Exploding.Frozen.SquareLowerBound
-import Exploding.Frozen.SharpPlanarObstruction
-import Exploding.Frozen.FiniteExploding
-import Exploding.Frozen.LastWaveBound
-import Exploding.Frozen.ApproxSubadditivity
-import Exploding.Frozen.PenultimateCluster
-import Exploding.Frozen.PenultimateUpperBound
-import Exploding.Frozen.PenultimateClose
-import Exploding.Frozen.LastWaveConvergence
-import Exploding.Frozen.ApproximateSubadditive
-import Exploding.Frozen.GeneralizedLastWave
-import Exploding.Frozen.GeneralizedConvergence
-import Exploding.Frozen.CounterexampleThreshold
-import Exploding.Frozen.CounterexamplePile
-import Exploding.Frozen.CounterexampleArrival
-import Exploding.Frozen.CounterexampleSupport
-import Exploding.Frozen.Counterexample
-import Exploding.Frozen.ExplosionCriteria
-import Exploding.Frozen.DimensionalReduction
-import Exploding.Frozen.Recurrence
-import Exploding.Frozen.BoxCrossing
-import Exploding.MainTheorems
+public import Exploding.External.FeyLevinePeres
+public import Exploding.External.Schonmann
+public import Exploding.External.LiggettSchonmannStaceyBoundedDegree
+public import Exploding.External.LiggettSchonmannStacey
+public import Exploding.External.AntalPisztora
+public import Exploding.External.MathieuHoles
+public import Exploding.External.FeyMeesterRedig
+public import Exploding.External.LSSBoundedDegreeProved
 
-import Exploding.Support.OmegaErgodic
-import Exploding.Support.OmegaTraceSigma
-import Exploding.Support.OmegaStationary
-import Exploding.Support.RecurrentMeasurable
-import Exploding.Support.ExplosiveMeasurable
-import Exploding.Support.ArxivBondHoleTailMoments
-import Exploding.Support.ArxivActualBondCoreProximity
-import Exploding.Support.ArxivBondTranslatedBoxTail
-import Exploding.Support.ArxivActualBondOne
-import Exploding.Support.PathFillingBarrier
-import Exploding.Support.ReductionBoundary
-import Exploding.Support.PathFillingDetour
-import Exploding.Support.PathFillingNonneg
-import Exploding.Support.OmegaCriterionConsumer
+public import Exploding.Frozen.LimitShape
+public import Exploding.Frozen.TimeConstant
+public import Exploding.Frozen.Explosive
+public import Exploding.Frozen.CrossingTime
+public import Exploding.Frozen.Renormalization
+public import Exploding.Frozen.LocalConvexity
+public import Exploding.Frozen.SquareLowerBound
+public import Exploding.Frozen.SharpPlanarObstruction
+public import Exploding.Frozen.FiniteExploding
+public import Exploding.Frozen.LastWaveBound
+public import Exploding.Frozen.ApproxSubadditivity
+public import Exploding.Frozen.PenultimateCluster
+public import Exploding.Frozen.PenultimateUpperBound
+public import Exploding.Frozen.PenultimateClose
+public import Exploding.Frozen.LastWaveConvergence
+public import Exploding.Frozen.ApproximateSubadditive
+public import Exploding.Frozen.GeneralizedLastWave
+public import Exploding.Frozen.GeneralizedConvergence
+public import Exploding.Frozen.CounterexampleThreshold
+public import Exploding.Frozen.CounterexamplePile
+public import Exploding.Frozen.CounterexampleArrival
+public import Exploding.Frozen.CounterexampleSupport
+public import Exploding.Frozen.Counterexample
+public import Exploding.Frozen.ExplosionCriteria
+public import Exploding.Frozen.DimensionalReduction
+public import Exploding.Frozen.Recurrence
+public import Exploding.Frozen.BoxCrossing
+public import Exploding.MainTheorems
 
-import Exploding.Support.BCDimOne
+public import Exploding.Support.OmegaErgodic
+public import Exploding.Support.OmegaTraceSigma
+public import Exploding.Support.OmegaStationary
+public import Exploding.Support.RecurrentMeasurable
+public import Exploding.Support.ExplosiveMeasurable
+public import Exploding.Support.ArxivBondHoleTailMoments
+public import Exploding.Support.ArxivActualBondCoreProximity
+public import Exploding.Support.ArxivBondTranslatedBoxTail
+public import Exploding.Support.ArxivActualBondOne
+public import Exploding.Support.PathFillingBarrier
+public import Exploding.Support.ReductionBoundary
+public import Exploding.Support.PathFillingDetour
+public import Exploding.Support.PathFillingNonneg
+public import Exploding.Support.OmegaCriterionConsumer
 
-import Exploding.Support.SourceCriterionVacuity
+public import Exploding.Support.BCDimOne
 
-import Exploding.Support.WaveApproximationSource
-import Exploding.Support.AllHighPathFilling
-import Exploding.Support.AllHighGeneralizedHypotheses
-import Exploding.Support.SquareWaveComparison
-import Exploding.Support.SquareGreenOrigin
-import Exploding.Support.LatticeSandpileBridge
-import Exploding.External.FeyDenBoerRedigCubicalCluster
-import Exploding.External.FeyLevinePeresRadius
-import Exploding.Support.SquareRadiusGreen
+public import Exploding.Support.SourceCriterionVacuity
 
-import Exploding.Support.SquareLowerBoundExponential
+public import Exploding.Support.WaveApproximationSource
+public import Exploding.Support.AllHighPathFilling
+public import Exploding.Support.AllHighGeneralizedHypotheses
+public import Exploding.Support.SquareWaveComparison
+public import Exploding.Support.SquareGreenOrigin
+public import Exploding.Support.LatticeSandpileBridge
+public import Exploding.External.FeyDenBoerRedigCubicalCluster
+public import Exploding.External.FeyLevinePeresRadius
+public import Exploding.Support.SquareRadiusGreen
 
-import Exploding.Support.SquareLowerBoundSharp
+public import Exploding.Support.SquareLowerBoundExponential
 
-import Exploding.Support.LastWaveBoundComplete
+public import Exploding.Support.SquareLowerBoundSharp
 
-import Exploding.Support.CorrectedSourceConsumers
+public import Exploding.Support.LastWaveBoundComplete
 
-import Exploding.Support.SquareGreenOriginLower
-import Exploding.Support.PlanarWaveOrder
-import Exploding.Support.PlanarWaveBarrier
-import Exploding.Support.PlanarWaveOptimality
+public import Exploding.Support.CorrectedSourceConsumers
+
+public import Exploding.Support.SquareGreenOriginLower
+public import Exploding.Support.PlanarWaveOrder
+public import Exploding.Support.PlanarWaveBarrier
+public import Exploding.Support.PlanarWaveOptimality
+
+@[expose] public section

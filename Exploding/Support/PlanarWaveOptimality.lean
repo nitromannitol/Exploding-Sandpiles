@@ -1,12 +1,16 @@
-import Exploding.Support.PlanarWaveOrder
-import Exploding.Support.PlanarWaveBarrier
-import Exploding.Support.SquareGreenOriginLower
-import Exploding.Support.SquareLowerBoundSharp
-import Exploding.External.FeyDenBoerRedigCubicalCluster
-import Exploding.External.FeyLevinePeresRadius
-import LatticeProb.Walk.KilledGreenPlanarLower
-import LatticeProb.Walk.KilledGreenDiagonal
-import LatticeProb.Sandpile.RadiusConsequences
+module
+
+public import Exploding.Support.PlanarWaveOrder
+public import Exploding.Support.PlanarWaveBarrier
+public import Exploding.Support.SquareGreenOriginLower
+public import Exploding.Support.SquareLowerBoundSharp
+public import Exploding.External.FeyDenBoerRedigCubicalCluster
+public import Exploding.External.FeyLevinePeresRadius
+public import LatticeProb.Walk.KilledGreenPlanarLower
+public import LatticeProb.Walk.KilledGreenDiagonal
+public import LatticeProb.Sandpile.RadiusConsequences
+
+@[expose] public section
 
 /-!
 # Logarithmic order of the least covering planar wave

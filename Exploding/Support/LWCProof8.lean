@@ -1,3 +1,5 @@
+module
+
 /-
 The Kingman conjunct of Proposition 3.1 (declarations `lwc8_*`), taking
 `mk_kingman_linear` as a hypothesis.
@@ -8,8 +10,10 @@ This file applies `mk_kingman_linear` to the per-direction penultimate-cluster
 arrival cocycle over the shift by a lattice vector, produces the limit `L`, proves
 its subadditivity/nonnegativity/bound, and assembles the conclusion.
 -/
-import Exploding.Support.LWCProof7
-import Exploding.Support.MKingman
+public import Exploding.Support.LWCProof7
+public import Exploding.Support.MKingman
+
+@[expose] public section
 
 open Exploding LatticeProb MeasureTheory Filter
 open scoped BigOperators

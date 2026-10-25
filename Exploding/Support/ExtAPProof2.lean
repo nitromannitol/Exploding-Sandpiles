@@ -1,10 +1,14 @@
+module
+
 /-
 The linear chemical-distance bound from a chain of good cubes: a star-step of
 good sites lies inside one good cube, so the open walk realising it has length at
 most `2 d`, and summing over a good star-chain gives an open path of length at
 most `2 d` per step.
 -/
-import Exploding.Support.ExtAPProof
+public import Exploding.Support.ExtAPProof
+
+@[expose] public section
 
 open Exploding LatticeProb MeasureTheory
 

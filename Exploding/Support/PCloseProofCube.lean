@@ -1,3 +1,5 @@
+module
+
 /-
 The propagation mechanism of a good cube in the form the second inequality of
 Lemma 3.7 uses it: once a line of a good cube has fired, the whole cube has
@@ -5,12 +7,14 @@ fired within `k^d` further steps, and the same holds for a good cube adjacent
 to a fired cube.  The wave is an arbitrary `N`-wave with `N ≥ 1`, and the time
 needed is tracked.
 -/
-import Exploding.Support.Vocab
-import Exploding.Support.Wave
-import Exploding.Support.SubGeom
-import Exploding.Support.SubStep
-import Exploding.Support.SubCross
-import Exploding.Support.PCloseProofPath
+public import Exploding.Support.Vocab
+public import Exploding.Support.Wave
+public import Exploding.Support.SubGeom
+public import Exploding.Support.SubStep
+public import Exploding.Support.SubCross
+public import Exploding.Support.PCloseProofPath
+
+@[expose] public section
 
 namespace Exploding
 

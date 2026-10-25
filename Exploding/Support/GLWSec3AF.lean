@@ -1,8 +1,12 @@
+module
+
 /-
 Proposition 5.1 of the paper (generalized last wave): the event that a tile is strongly box-crossing
 depends on the background only through the tile.
 -/
-import Exploding.Support.GLWSec3AE
+public import Exploding.Support.GLWSec3AE
+
+@[expose] public section
 
 open MeasureTheory ProbabilityTheory Exploding LatticeProb Filter
 

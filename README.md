@@ -177,8 +177,8 @@ A cited result is a hypothesis of the theorems that use it, not an axiom (see AS
 - **Statements.** The SHA-256 of each statement is recorded in
   [`ledger/manifest.yaml`](ledger/manifest.yaml). `python3 tools/verify.py` checks the hashes, the
   correspondence with the paper and the axiom closures.
-- **Toolchain and dependencies.** Lean `v4.32.0`, Mathlib `81a5d257c8e410db227a6665ed08f64fea08e997` and
-  Lattice-Probability `78f4b2cec065fa2fb5116b06c41966855f62cf50`, as recorded in
+- **Toolchain and dependencies.** Lean `v4.35.0-rc2`, Mathlib `065356127b1dc0016f66b7283ce0ce2c4055aa55` and
+  Lattice-Probability `e5d3fccd014d2af309300c89456da7f3d2005c2f`, as recorded in
   [`lean-toolchain`](lean-toolchain) and [`lake-manifest.json`](lake-manifest.json).
 
 ## Size
@@ -280,3 +280,9 @@ Comparator configuration to check. It records the dispatched commit and runs wit
 minimum, source-module, Challenge-closure, licensing and metadata requirements before
 dispatch. A passing preflight is advisory; it is separate from submission, editorial
 review and a public registry record.
+
+The selected Palomar compatibility revision updates public module interfaces and
+uses the exact original Lattice-Probability snapshot with module interfaces and
+existing proof API compatibility fixes. Frozen source statements and mathematical
+definitions are retained. The full official preflight is scoped to the selected
+Challenge/Solution pair at its exact dispatched commit.

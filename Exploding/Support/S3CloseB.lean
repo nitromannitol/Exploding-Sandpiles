@@ -1,3 +1,5 @@
+module
+
 /-
 Proposition 5.1 (generalized last wave), the infinite cluster of strongly box-crossing tiles, part B:
 the probabilistic claim `glws_Renorm` (the generalization of Proposition 2.2), proved from the
@@ -10,11 +12,13 @@ cluster of Proposition 2.2 (`rn_core`); the Liggett-Schonmann-Stacey domination 
 `X` dominate Bernoulli site percolation of density `ρ` once `δ` is small enough, and the Strassen
 coupling puts a configuration of the cluster below `X` almost surely.
 -/
-import Exploding.Support.S3CloseA
-import Exploding.Support.RNProofGood
-import Exploding.Support.RNProofPeierls
-import Exploding.Support.RNProofStrassen
-import Exploding.Support.RNProofCore
+public import Exploding.Support.S3CloseA
+public import Exploding.Support.RNProofGood
+public import Exploding.Support.RNProofPeierls
+public import Exploding.Support.RNProofStrassen
+public import Exploding.Support.RNProofCore
+
+@[expose] public section
 
 open Exploding LatticeProb MeasureTheory Filter ProbabilityTheory
 open scoped Classical

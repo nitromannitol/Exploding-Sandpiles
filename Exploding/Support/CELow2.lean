@@ -1,3 +1,5 @@
+module
+
 /-
 The explicit two-dimensional toppling schedule used to bound the arrival times
 `T(n e₁)` of the counterexample background from above.
@@ -9,7 +11,9 @@ in space and `6` in time.  The legality of every toppling of the schedule is the
 finite check `cel_chk`, verified on the columns `-2 ≤ a ≤ 6` by computation and
 propagated to every column by the translation `(a, t) ↦ (a + 4, t + 6)`.
 -/
-import Exploding.Support.CELow
+public import Exploding.Support.CELow
+
+@[expose] public section
 
 namespace Exploding
 

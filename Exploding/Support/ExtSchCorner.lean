@@ -1,3 +1,5 @@
+module
+
 /-
 Corner growth on a box: if the faces of a box selected by a choice of one face per direction are
 toppled inside a frozen set containing the box, the whole box is toppled.  A point off the
@@ -5,7 +7,9 @@ chosen faces has all `d` neighbours one step nearer the selected corner inside t
 the toppling follows by induction on the distance to that corner.  This is the box version of the
 corner growth of the cube.
 -/
-import Exploding.Support.ExtSchBox
+public import Exploding.Support.ExtSchBox
+
+@[expose] public section
 
 namespace Exploding
 

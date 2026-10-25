@@ -1,3 +1,5 @@
+module
+
 /-
 A reusable supercritical Bernoulli site box-crossing lemma.
 
@@ -11,8 +13,10 @@ domination theorems of Liggett, Schonmann and Stacey
 bits with a bounded-range dependence graph and high one-site marginals, which is
 the form the Schonmann base scale and the Antal-Pisztora box crossing consume.
 -/
-import Exploding.Support.ExtAPProof11
-import Exploding.Support.ExtLSSCountable
+public import Exploding.Support.ExtAPProof11
+public import Exploding.Support.ExtLSSCountable
+
+@[expose] public section
 
 open Exploding LatticeProb MeasureTheory Filter
 open scoped Classical Topology ENNReal

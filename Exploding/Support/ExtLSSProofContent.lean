@@ -1,3 +1,5 @@
+module
+
 /-
 Compactness of the cylinder content.  On `ι → Bool` the measurable cylinders are
 clopen, so a decreasing sequence of them with empty intersection is eventually
@@ -5,7 +7,9 @@ empty.  This is the continuity-at-empty step that makes the projective family
 content sigma-subadditive, and hence gives the projective limit measure through
 Carathéodory's extension theorem.
 -/
-import Exploding.Support.ExtLSSProofDom
+public import Exploding.Support.ExtLSSProofDom
+
+@[expose] public section
 
 open MeasureTheory Set Filter
 open scoped Topology

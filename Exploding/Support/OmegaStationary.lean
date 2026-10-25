@@ -1,3 +1,5 @@
+module
+
 /-
 The source carrier `Ω = {η : Site d → ℤ // InOmega d ηmin η}` of Section 5 of the corrected
 source (`paper/corrected-arxiv/exploding-corrected-arxiv.tex`, `\section{A generalization}`,
@@ -7,7 +9,9 @@ It defines the translation action `T_y` on `Ω` by the coordinates `z ↦ ω(y +
 image-stationarity formula of the source, and its transfer to the ambient pushforward
 `Q.map Subtype.val` of a law `Q` on `Ω`.
 -/
-import Exploding.Support.Hypotheses
+public import Exploding.Support.Hypotheses
+
+@[expose] public section
 
 namespace Exploding
 namespace OmegaStationary

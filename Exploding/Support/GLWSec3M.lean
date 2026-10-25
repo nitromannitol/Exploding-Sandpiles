@@ -1,3 +1,5 @@
+module
+
 /-
 Proposition 5.1 of the paper (generalized last wave): the penultimate cluster is polylogarithmically
 small (Lemma 3.5 in the generalized setting), from path-filling and the cluster of strongly
@@ -9,7 +11,9 @@ lit by Hypothesis 3 and would contain a line of a tile of `C_∞` (the tiles of 
 lie in a hole); by Hypothesis 4 the tile would be lit, and then all of `C_∞`, which a stabilizable
 wave, having finite support, cannot do.
 -/
-import Exploding.Support.GLWSec3L
+public import Exploding.Support.GLWSec3L
+
+@[expose] public section
 
 open Exploding LatticeProb MeasureTheory Filter
 

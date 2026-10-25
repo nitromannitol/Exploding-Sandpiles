@@ -1,11 +1,15 @@
+module
+
 /-
 Probabilistic tools for the background `η` with `η(x) = 2d` with probability `p` and
 `η(x) = d` otherwise: events that read the background only on a finite set of sites,
 independence of such events on disjoint sets, the probability that a finite set of sites is
 fully occupied, and the fact that the background is almost surely at least `d`.
 -/
-import Exploding.Support.ExtSchTop
-import Exploding.Support.ReductionShift
+public import Exploding.Support.ExtSchTop
+public import Exploding.Support.ReductionShift
+
+@[expose] public section
 
 namespace Exploding
 

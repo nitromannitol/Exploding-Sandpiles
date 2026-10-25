@@ -1,11 +1,15 @@
+module
+
 /-
 The exponential count of `*`-connected sets of the Peierls estimate of Lemma 5.2 of Mathieu:
 a connected finite set of sites is the support of a closed king walk of length at most twice
 its number of vertices, so the `*`-connected sets of `m` sites through a fixed point are at
 most `(3 ^ d) ^ (2 * (m - 1))` in number.
 -/
-import Exploding.Support.ExtMHBase
-import Mathlib.Combinatorics.SimpleGraph.Acyclic
+public import Exploding.Support.ExtMHBase
+public import Mathlib.Combinatorics.SimpleGraph.Acyclic
+
+@[expose] public section
 
 namespace Exploding
 

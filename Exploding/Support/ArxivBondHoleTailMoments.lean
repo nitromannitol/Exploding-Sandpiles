@@ -1,5 +1,9 @@
-import Exploding.Support.ArxivBondFiniteHoleTail
-import LatticeProb.Analysis.StretchedExponentialSummability
+module
+
+public import Exploding.Support.ArxivBondFiniteHoleTail
+public import LatticeProb.Analysis.StretchedExponentialSummability
+
+@[expose] public section
 
 /-!
 # Polynomially weighted summability of the finite-hole tail

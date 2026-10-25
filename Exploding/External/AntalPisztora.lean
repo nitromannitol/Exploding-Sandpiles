@@ -1,9 +1,13 @@
+module
+
 /-
 Theorem 1.1 of Antal and Pisztora, the linear upper bound on the chemical
 distance in supercritical bond percolation, quoted before Proposition 2.2 of
 the paper.
 -/
-import Exploding.Support.Percolation
+public import Exploding.Support.Percolation
+
+@[expose] public section
 
 open Exploding LatticeProb MeasureTheory
 

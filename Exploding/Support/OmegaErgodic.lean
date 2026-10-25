@@ -1,3 +1,5 @@
+module
+
 /-
 The state space `Ω = {η | InOmega d ηmin η}` of Section 5 of the corrected source
 `paper/corrected-arxiv/exploding-corrected-arxiv.tex` (`\section{A generalization}`, lines
@@ -8,7 +10,9 @@ product σ-field on `Site d → ℤ` is not formalized in this file. `OmegaErgod
 the measurable sets `E ⊆ Ω` of the ambient product σ-field. Under
 `hsupp : ∀ᵐ η ∂P, InOmega d ηmin η` it is equivalent to `MeasurableErgodicOn`.
 -/
-import Exploding.Support.Hypotheses
+public import Exploding.Support.Hypotheses
+
+@[expose] public section
 
 namespace Exploding
 

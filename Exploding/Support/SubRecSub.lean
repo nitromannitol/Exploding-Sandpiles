@@ -1,9 +1,13 @@
+module
+
 /-
 The recurrence odometer of Proposition 7.3 of `paper/corrected-arxiv/exploding-corrected-arxiv.tex`.
 -/
-import Exploding.Support.SubMax
-import Exploding.Support.SubTopple
-import Exploding.Support.SubRecOne
+public import Exploding.Support.SubMax
+public import Exploding.Support.SubTopple
+public import Exploding.Support.SubRecOne
+
+@[expose] public section
 
 namespace Exploding
 

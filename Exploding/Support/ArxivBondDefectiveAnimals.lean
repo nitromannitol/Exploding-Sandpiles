@@ -1,5 +1,9 @@
-import Exploding.Support.ArxivBondDefectPacking
-import Exploding.Support.ExtMHCount
+module
+
+public import Exploding.Support.ArxivBondDefectPacking
+public import Exploding.Support.ExtMHCount
+
+@[expose] public section
 
 /-!
 # Rooted finite defective star-animals

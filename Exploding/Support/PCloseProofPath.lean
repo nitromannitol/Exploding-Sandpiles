@@ -1,14 +1,18 @@
+module
+
 /-
 The first deterministic steps of the second inequality of Lemma 3.7
 (`exploding-corrected-arxiv.tex:832-839`): a site reached by the last wave is reached along a
 path of distinct sites that are all positive, and a path of positive sites
 carries positivity to its bounding rectangle within the size of that rectangle.
 -/
-import Exploding.Support.Vocab
-import Exploding.Support.Wave
-import Exploding.Support.SubGeom
-import Exploding.Support.SubBox
-import Exploding.Frozen.LocalConvexity
+public import Exploding.Support.Vocab
+public import Exploding.Support.Wave
+public import Exploding.Support.SubGeom
+public import Exploding.Support.SubBox
+public import Exploding.Frozen.LocalConvexity
+
+@[expose] public section
 
 namespace Exploding
 

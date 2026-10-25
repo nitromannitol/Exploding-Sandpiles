@@ -1,9 +1,13 @@
+module
+
 /-
 The combinatorics of the Peierls estimate of Proposition 7.1: `*`-paths of the square
 lattice are few, and a finite set of lattice points contains a proportional subset of
 pairwise far-apart points.
 -/
-import Exploding.Support.ECProofStar
+public import Exploding.Support.ECProofStar
+
+@[expose] public section
 
 namespace Exploding
 

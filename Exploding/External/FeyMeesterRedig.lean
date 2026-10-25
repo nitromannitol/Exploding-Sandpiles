@@ -1,9 +1,13 @@
+module
+
 /-
 Theorem 2.8 of Fey, Meester and Redig, the least action principle for legal
 toppling procedures in infinite volume, quoted in the proof of Theorem 6.1 of
 the paper.
 -/
-import Exploding.Support.Vocab
+public import Exploding.Support.Vocab
+
+@[expose] public section
 
 open Exploding LatticeProb
 

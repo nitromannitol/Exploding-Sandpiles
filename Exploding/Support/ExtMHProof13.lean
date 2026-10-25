@@ -1,3 +1,5 @@
+module
+
 /-
 `xmh8_BoundaryInfinite`: an infinite connected component of the complement of an infinite
 open cluster has infinite inner boundary.  The proof is purely geometric: a finite inner
@@ -5,7 +7,9 @@ boundary would make the outer boundary finite, and an infinite connected set wit
 outer boundary is separated from the rest by finitely many sites, which is impossible in
 `ℤ^d` for `d ≥ 2` because the complement of a box is connected.
 -/
-import Exploding.Support.ExtMHProof12
+public import Exploding.Support.ExtMHProof12
+
+@[expose] public section
 
 namespace Exploding
 

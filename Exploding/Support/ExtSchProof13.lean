@@ -1,3 +1,5 @@
+module
+
 /-
 The base scale of the Schonmann renormalization.
 
@@ -23,8 +25,10 @@ monotonicity of toppling in the occupied set, the complement identity relating
 instance, and the observation that the base alone already produces the doubly
 fast decay along the dyadic tower.
 -/
-import Exploding.Support.ExtSchProof12
-import Exploding.Support.ExtSchProof7
+public import Exploding.Support.ExtSchProof12
+public import Exploding.Support.ExtSchProof7
+
+@[expose] public section
 
 namespace Exploding
 

@@ -1,3 +1,5 @@
+module
+
 /-
 The boundary of a connected set inside a box, closed under adjacency outside a connected
 set within the box, need not be `*`-connected.  Two fingers of the connected set can reach
@@ -5,8 +7,10 @@ the wall of the box and be joined outside it, while the connected set wraps arou
 of the fingers; then the sites adjacent to the connected set fall into two pieces more than
 one king move apart.  This file records the explicit counterexample.
 -/
-import Exploding.Support.ExtMHBase
-import Exploding.Support.Vocab
+public import Exploding.Support.ExtMHBase
+public import Exploding.Support.Vocab
+
+@[expose] public section
 
 namespace Exploding
 

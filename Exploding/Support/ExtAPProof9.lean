@@ -1,3 +1,5 @@
+module
+
 /-
 The finite-cluster case of the Peierls estimate.  If the good cluster of the
 origin is finite, its exterior `*`-boundary is a nonempty `*`-connected all-bad
@@ -10,7 +12,9 @@ The geometric fact that a finite cluster has such a `*`-connected boundary is
 isolated as the hypothesis `xap9_FiniteClusterReduction`; everything after it is
 proved.
 -/
-import Exploding.Support.ExtAPProof8
+public import Exploding.Support.ExtAPProof8
+
+@[expose] public section
 
 open Exploding LatticeProb MeasureTheory
 open scoped Classical

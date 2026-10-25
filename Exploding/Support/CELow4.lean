@@ -1,10 +1,14 @@
+module
+
 /-
 The linear upper bound `T(n e₁) ≤ 2n + 6` for the arrival times of the counterexample
 background of `paper/corrected-arxiv/exploding-corrected-arxiv.tex` Section 6, in every dimension `d ≥ 2`, and the two
 consequences used by the frozen proof of `theorem:counterexample`: finiteness of the
 arrival time at the low-type points, and the eventual linear bound on `T(n)/n`.
 -/
-import Exploding.Support.CELow3
+public import Exploding.Support.CELow3
+
+@[expose] public section
 
 namespace Exploding
 

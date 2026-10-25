@@ -1,5 +1,9 @@
-import Exploding.Support.AllHighLastArrivalScaling
-import Exploding.Support.ArxivP1Crossing
+module
+
+public import Exploding.Support.AllHighLastArrivalScaling
+public import Exploding.Support.ArxivP1Crossing
+
+@[expose] public section
 
 /-!
 # Convergence of the last-wave at parameter one

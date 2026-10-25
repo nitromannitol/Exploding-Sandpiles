@@ -1,9 +1,13 @@
+module
+
 /-
 The conditional bound of Liggett, Schonmann and Stacey for a field of bits with a bounded-degree
 dependence graph, in the form of a Lovász local lemma for weighted expectations.
 -/
-import Mathlib
-import Exploding.Support.Percolation
+public import Mathlib
+public import Exploding.Support.Percolation
+
+@[expose] public section
 
 open MeasureTheory ProbabilityTheory
 

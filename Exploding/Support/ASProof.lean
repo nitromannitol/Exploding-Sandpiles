@@ -1,3 +1,5 @@
+module
+
 /-
 Proposition 4.1 of the paper: the last-wave is a bounded approximation of the
 exploding sandpile.  This file supports the proof of
@@ -21,17 +23,19 @@ agree), finite-sink stabilization (`as_tildeP`'s reach), `eq:approx1`'s
 reach of the last wave to `as_tildeP`, `|as_tildeP| < ∞`, and
 `eq:induction_specialcase2` (the first conjunct of Step 1's three simultaneous
 inductions). -/
-import Exploding.Support.Vocab
-import Exploding.Support.Wave
-import Exploding.Support.SubWave
-import Exploding.Support.SubFodoStep
-import Exploding.Support.SubGeom
-import Exploding.Frozen.FiniteExploding
-import Exploding.Frozen.LastWaveBound
-import Exploding.Frozen.PenultimateCluster
-import Exploding.External.LiggettSchonmannStaceyBoundedDegree
-import Exploding.External.MathieuHoles
-import Exploding.External.AntalPisztora
+public import Exploding.Support.Vocab
+public import Exploding.Support.Wave
+public import Exploding.Support.SubWave
+public import Exploding.Support.SubFodoStep
+public import Exploding.Support.SubGeom
+public import Exploding.Frozen.FiniteExploding
+public import Exploding.Frozen.LastWaveBound
+public import Exploding.Frozen.PenultimateCluster
+public import Exploding.External.LiggettSchonmannStaceyBoundedDegree
+public import Exploding.External.MathieuHoles
+public import Exploding.External.AntalPisztora
+
+@[expose] public section
 
 open Exploding LatticeProb MeasureTheory
 

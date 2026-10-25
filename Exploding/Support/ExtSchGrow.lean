@@ -1,11 +1,15 @@
+module
+
 /-
 Deterministic growth along the schedule: the seed box is toppled, each layer added by the
 schedule lies next to the current box in a direction of `J` and is spanned along the other
 directions, so by growth by a layer (`xsb_grow_up`, `xsb_grow_down`) every box of the schedule is
 toppled inside `B`; the last box is the target.
 -/
-import Exploding.Support.ExtSchSchedGeom
-import Exploding.Support.ExtSchSchedLayer
+public import Exploding.Support.ExtSchSchedGeom
+public import Exploding.Support.ExtSchSchedLayer
+
+@[expose] public section
 
 namespace Exploding
 

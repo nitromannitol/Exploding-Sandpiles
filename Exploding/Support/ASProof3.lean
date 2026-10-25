@@ -1,3 +1,5 @@
+module
+
 /-
 Further discharge of the remaining claims of
 `Exploding.Frozen.approximate_subadditive`.  Sorry-free support file.
@@ -12,11 +14,13 @@ odometer at time `t` is contained in the ball of radius `t`; at the finite
 stabilization time that ball is finite, and hence so is the neighbourhood set
 `as_tildeP`.  This does not need the frozen `last_penultimate_cluster`.
 -/
-import Exploding.Support.ASProof
-import Exploding.Support.PUBProofF
-import Exploding.Support.ASSpecial
-import Exploding.Support.PUBProofB
-import Exploding.Support.PUBProofC
+public import Exploding.Support.ASProof
+public import Exploding.Support.PUBProofF
+public import Exploding.Support.ASSpecial
+public import Exploding.Support.PUBProofB
+public import Exploding.Support.PUBProofC
+
+@[expose] public section
 
 open Exploding LatticeProb MeasureTheory
 

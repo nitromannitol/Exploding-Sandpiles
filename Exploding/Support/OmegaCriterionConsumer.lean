@@ -1,3 +1,5 @@
+module
+
 /-
 The source ergodicity on the state space `Ω = {η | InOmega d ηmin η}` of Section 5 of the corrected
 source `paper/corrected-arxiv/exploding-corrected-arxiv.tex` (`\section{A generalization}`, lines
@@ -9,12 +11,14 @@ source `paper/corrected-arxiv/exploding-corrected-arxiv.tex` (`\section{A genera
 for every measure `Q`, and under the support hypothesis it is ergodicity of the source law
 `OmegaStationary.sourceLaw`.
 -/
-import Exploding.Support.OmegaErgodic
-import Exploding.Support.OmegaTraceSigma
-import Exploding.Support.OmegaStationary
-import Exploding.Support.RecurrentMeasurable
-import Exploding.Support.ExplosiveMeasurable
-import Exploding.Frozen.ExplosionCriteria
+public import Exploding.Support.OmegaErgodic
+public import Exploding.Support.OmegaTraceSigma
+public import Exploding.Support.OmegaStationary
+public import Exploding.Support.RecurrentMeasurable
+public import Exploding.Support.ExplosiveMeasurable
+public import Exploding.Frozen.ExplosionCriteria
+
+@[expose] public section
 
 namespace Exploding
 

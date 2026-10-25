@@ -1,14 +1,18 @@
+module
+
 /-
 Support for Lemma 3.6 of `paper/corrected-arxiv/exploding-corrected-arxiv.tex`: the almost sure statement.  On the
 almost sure event of Proposition 2.2, on which the last wave is well defined, the deterministic core
 gives the linear bound on the last-wave arrival times.
 -/
-import Exploding.Support.PUBProofE
-import Exploding.Frozen.Renormalization
-import Exploding.Frozen.FiniteExploding
-import Exploding.External.LiggettSchonmannStaceyBoundedDegree
-import Exploding.External.MathieuHoles
-import Exploding.External.AntalPisztora
+public import Exploding.Support.PUBProofE
+public import Exploding.Frozen.Renormalization
+public import Exploding.Frozen.FiniteExploding
+public import Exploding.External.LiggettSchonmannStaceyBoundedDegree
+public import Exploding.External.MathieuHoles
+public import Exploding.External.AntalPisztora
+
+@[expose] public section
 
 namespace Exploding
 

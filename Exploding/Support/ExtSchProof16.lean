@@ -1,3 +1,5 @@
+module
+
 /-
 The critical case `r = d`: status of the coarse graining.
 
@@ -20,7 +22,9 @@ Consequently `xsch13_Percolates d p` is proved unconditionally only for `d = 1`
 (a single occupied site topples the interval).  We record the exact reductions and
 do not claim the general case, so `xsch_proved` is not assembled.
 -/
-import Exploding.Support.ExtSchProof15
+public import Exploding.Support.ExtSchProof15
+
+@[expose] public section
 
 namespace Exploding
 

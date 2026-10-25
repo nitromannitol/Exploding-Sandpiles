@@ -1,3 +1,5 @@
+module
+
 /-
 Boxes along a set of directions, and growth of a toppled box by one layer.
 
@@ -9,7 +11,9 @@ those of the box.  If a box is toppled inside a frozen set and the layer next to
 along the other directions of `J`, the box grown by that layer is toppled; this is
 `xsch_Sp_grow` read on boxes.
 -/
-import Exploding.Support.ExtSchProb
+public import Exploding.Support.ExtSchProb
+
+@[expose] public section
 
 namespace Exploding
 

@@ -1,5 +1,9 @@
-import Exploding.Support.Vocab
-import LatticeProb.Walk.Energy
+module
+
+public import Exploding.Support.Vocab
+public import LatticeProb.Walk.Energy
+
+@[expose] public section
 
 /-!
 # Graph distance on the lattice is the Manhattan norm

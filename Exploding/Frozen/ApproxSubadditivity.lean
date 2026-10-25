@@ -1,3 +1,5 @@
+module
+
 /-
 Lemma 3.4 of the paper: the penultimate-cluster arrival times are subadditive.
 
@@ -13,8 +15,10 @@ and monotonicity in time.  The induction step at a site `x` outside the cluster
 uses only the neighbours of `x`, and every neighbour of such an `x` carries no
 penultimate mass, since a neighbour that did would put `x` in the cluster.
 -/
-import Exploding.Support.Wave
-import Exploding.Frozen.LastWaveBound
+public import Exploding.Support.Wave
+public import Exploding.Frozen.LastWaveBound
+
+@[expose] public section
 
 namespace Exploding
 

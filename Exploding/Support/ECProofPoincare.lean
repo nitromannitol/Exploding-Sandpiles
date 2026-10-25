@@ -1,9 +1,13 @@
+module
+
 /-
 Planar topology for the percolation step of Proposition 7.1: a mod-two cocycle on the
 square lattice `ℤ × ℤ` that vanishes on every unit square is a coboundary, and the
 outer boundary of a connected set is `*`-connected.
 -/
-import Mathlib
+public import Mathlib
+
+@[expose] public section
 
 namespace Exploding
 

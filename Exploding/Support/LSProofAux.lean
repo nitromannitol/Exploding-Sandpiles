@@ -1,3 +1,5 @@
+module
+
 /-
 Theorem 1.2 of the paper: the support of the exploding sandpile, rescaled by
 time, converges in measure to a convex domain.
@@ -22,14 +24,16 @@ times can only grow at Manhattan speed 1 (firing moves chips one step per
 unit time), so `T_η(x) ≥ |x|_1` always, hence `N(y) ≥ ‖y‖₁` for the limit `N`,
 which forces `{N < 1}` into the Manhattan unit ball.
 -/
-import Exploding.Support.Vocab
-import Exploding.Frozen.TimeConstant
-import Exploding.Frozen.Explosive
-import Exploding.External.FeyLevinePeres
-import Exploding.External.LiggettSchonmannStaceyBoundedDegree
-import Exploding.External.MathieuHoles
-import Exploding.External.AntalPisztora
-import Exploding.External.Schonmann
+public import Exploding.Support.Vocab
+public import Exploding.Frozen.TimeConstant
+public import Exploding.Frozen.Explosive
+public import Exploding.External.FeyLevinePeres
+public import Exploding.External.LiggettSchonmannStaceyBoundedDegree
+public import Exploding.External.MathieuHoles
+public import Exploding.External.AntalPisztora
+public import Exploding.External.Schonmann
+
+@[expose] public section
 
 open Exploding LatticeProb MeasureTheory Filter
 open scoped symmDiff

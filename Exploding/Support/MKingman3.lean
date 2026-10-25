@@ -1,3 +1,5 @@
+module
+
 /-
 Continuation of `MKingman2.lean`: the measure-theoretic package for the
 induced (first-return) system, and the Kingman step on the induced cocycle.
@@ -8,8 +10,10 @@ measure `μ_A = μ(A)⁻¹ • μ|A`, records the Kac/ergodicity package as
 `mk3_kac`, and derives convergence along return times from it.  The remaining
 transfer from return times to all `n` is the open step.
 -/
-import Exploding.Support.MKingman2
-import Mathlib.Dynamics.Ergodic.Function
+public import Exploding.Support.MKingman2
+public import Mathlib.Dynamics.Ergodic.Function
+
+@[expose] public section
 
 open Exploding LatticeProb MeasureTheory Filter ProbabilityTheory
 

@@ -1,3 +1,5 @@
+module
+
 /-
 The supercritical-density reduction of the chemical-distance estimate.
 
@@ -28,7 +30,9 @@ configuration whose only open bonds form the detour
 `0 → (1,0) → (2,0)` has distance `2 < 3` and does not.  Hence the renormalisation
 is genuinely needed.
 -/
-import Exploding.Support.ExtAPBridge
+public import Exploding.Support.ExtAPBridge
+
+@[expose] public section
 
 open Exploding LatticeProb MeasureTheory Filter
 open scoped Classical Topology

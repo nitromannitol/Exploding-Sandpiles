@@ -1,13 +1,17 @@
+module
+
 /-
 The box-crossing proposition of the paper, in both of its cases
 (Proposition 7.5). For `d ≥ 2`, a product background
 with at least `d` chips and a positive density of `(2d-1)`-sites is box-crossing. In dimension one,
 any law supported on backgrounds `η ≥ 1` is box-crossing. Both clauses are stated here.
 -/
-import Exploding.Support.Hypotheses
-import Exploding.External.Schonmann
-import Exploding.Support.BCProofMain
-import Exploding.Support.BCDimOne
+public import Exploding.Support.Hypotheses
+public import Exploding.External.Schonmann
+public import Exploding.Support.BCProofMain
+public import Exploding.Support.BCDimOne
+
+@[expose] public section
 
 open Exploding LatticeProb MeasureTheory
 

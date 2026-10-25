@@ -1,3 +1,5 @@
+module
+
 /-
 Nonnegativity from the path-filling hypothesis, with no closed producer input.
 
@@ -12,9 +14,11 @@ gives `0` at `x`. This contradiction is the whole argument.
 Only `η ≤ 2d - 1` is used, on the full-measure event where it holds. No sign assumption on the
 background enters, and no stationarity or recurrence is used.
 -/
-import Exploding.Support.Hypotheses
-import Exploding.Support.PathFillingBarrier
-import Exploding.Support.PathFillingDetour
+public import Exploding.Support.Hypotheses
+public import Exploding.Support.PathFillingBarrier
+public import Exploding.Support.PathFillingDetour
+
+@[expose] public section
 
 namespace Exploding
 

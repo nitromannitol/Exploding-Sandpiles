@@ -1,4 +1,8 @@
-import Exploding.Support.ArxivAllHighCrossing
+module
+
+public import Exploding.Support.ArxivAllHighCrossing
+
+@[expose] public section
 
 /-!
 # The deterministic endpoint of the crossing bound

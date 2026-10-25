@@ -1,3 +1,5 @@
+module
+
 /-
 Proposition 5.1 of the paper (generalized last wave): lighting a rectangle along a walk of tiles.
 
@@ -6,7 +8,9 @@ walk are lit at time `τ + L ∏ k`.  Two sites `a, b` in tiles of the last stre
 joined by a path of distinct sites inside that stretch, of at most `V` sites; if the path is long
 enough for Hypothesis 3, the bounding rectangle of `a` and `b` is lit `V^d` steps later.
 -/
-import Exploding.Support.GLWSec3N
+public import Exploding.Support.GLWSec3N
+
+@[expose] public section
 
 open Exploding LatticeProb MeasureTheory Filter
 

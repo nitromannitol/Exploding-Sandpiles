@@ -1,3 +1,5 @@
+module
+
 /-
 Support for the far Lipschitz bound of Proposition 3.1 (`eq:lastwave_lipschitz`, second bound).
 Two ingredients that carry a lit good cube of the infinite cluster to a distant site:
@@ -8,8 +10,10 @@ Two ingredients that carry a lit good cube of the infinite cluster to a distant 
   `ρ = ⌈(log n)^{5/2}⌉` (a copy of the second half of `pub_core` with the first cube `z0` and the
   distance `D = |z0 - [x]|` as parameters rather than the distance to the origin).
 -/
-import Exploding.Support.PUBProofF
-import Exploding.Support.PCloseProofFinal
+public import Exploding.Support.PUBProofF
+public import Exploding.Support.PCloseProofFinal
+
+@[expose] public section
 
 namespace Exploding
 

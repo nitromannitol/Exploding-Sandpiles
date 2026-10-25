@@ -1,9 +1,13 @@
+module
+
 /-
 Support for the far Lipschitz bound of Proposition 3.1: the polynomial bookkeeping.
 The total polylogarithmic overhead of the far case, written in the scale `Z`, is at most a fixed
 power of `Z`.
 -/
-import Exploding.Support.LWCLipA
+public import Exploding.Support.LWCLipA
+
+@[expose] public section
 
 namespace Exploding
 

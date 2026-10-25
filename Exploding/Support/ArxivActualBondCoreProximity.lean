@@ -1,7 +1,11 @@
-import Exploding.Support.ArxivActualBondBoxCutoffAE
-import Exploding.Support.ArxivCoreAttachment
-import Exploding.Support.RNProofCore
-import LatticeProb.Graph.Zd
+module
+
+public import Exploding.Support.ArxivActualBondBoxCutoffAE
+public import Exploding.Support.ArxivCoreAttachment
+public import Exploding.Support.RNProofCore
+public import LatticeProb.Graph.Zd
+
+@[expose] public section
 
 /-!
 # Logarithmic-square proximity to the actual infinite bond core

@@ -1,10 +1,14 @@
+module
+
 /-
 The hole-volume assembly: the union bound over a finite set of starting points for the Peierls
 estimate on `*`-connected closed sets, and its Borel-Cantelli consequence.  The deterministic
 input that a large hole produces such a closed set (the boundary `xmh_BoundaryStar` plus an
 isoperimetric lower bound on its size) is isolated as a hypothesis of the final step.
 -/
-import Exploding.Support.ExtMHProof2
+public import Exploding.Support.ExtMHProof2
+
+@[expose] public section
 
 namespace Exploding
 

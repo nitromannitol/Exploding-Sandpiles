@@ -1,16 +1,20 @@
+module
+
 /-
 Lemma 3.7 of the paper: the last-wave and penultimate-cluster arrival times are
 polylogarithmically close.
 -/
-import Exploding.Support.Vocab
-import Exploding.Support.Wave
-import Exploding.Support.SubPub
-import Exploding.Support.PCloseProofFinal
-import Exploding.Frozen.PenultimateUpperBound
-import Exploding.Support.PenultimateCloseP1
-import Exploding.External.LiggettSchonmannStaceyBoundedDegree
-import Exploding.External.MathieuHoles
-import Exploding.External.AntalPisztora
+public import Exploding.Support.Vocab
+public import Exploding.Support.Wave
+public import Exploding.Support.SubPub
+public import Exploding.Support.PCloseProofFinal
+public import Exploding.Frozen.PenultimateUpperBound
+public import Exploding.Support.PenultimateCloseP1
+public import Exploding.External.LiggettSchonmannStaceyBoundedDegree
+public import Exploding.External.MathieuHoles
+public import Exploding.External.AntalPisztora
+
+@[expose] public section
 
 open Exploding LatticeProb MeasureTheory
 

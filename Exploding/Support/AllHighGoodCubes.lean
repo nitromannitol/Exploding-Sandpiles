@@ -1,5 +1,9 @@
-import Exploding.Support.CrossingTimeAux
-import Exploding.Support.ArxivP1Crossing
+module
+
+public import Exploding.Support.CrossingTimeAux
+public import Exploding.Support.ArxivP1Crossing
+
+@[expose] public section
 
 /-!
 # All-high good cubes at every scale

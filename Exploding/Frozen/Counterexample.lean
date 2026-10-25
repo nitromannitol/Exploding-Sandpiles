@@ -1,6 +1,10 @@
-import Exploding.Frozen.CounterexampleArrival
-import Exploding.Frozen.CounterexampleSupport
-import Exploding.Support.ArxivCounterexampleExact
+module
+
+public import Exploding.Frozen.CounterexampleArrival
+public import Exploding.Frozen.CounterexampleSupport
+public import Exploding.Support.ArxivCounterexampleExact
+
+@[expose] public section
 
 open Exploding LatticeProb MeasureTheory Filter
 open scoped Topology

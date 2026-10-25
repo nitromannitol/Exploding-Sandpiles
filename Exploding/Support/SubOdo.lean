@@ -1,11 +1,15 @@
+module
+
 /-
 The elementary API of the bootstrap odometer `spanOdo` and of the constrained
 odometer `redOdoUp` of the reduction: both are nonnegative, bounded by one on
 the sites that matter, monotone in time, and absorbing at one.  These are the
 facts the layer induction of Proposition 7.5 consumes.
 -/
-import Exploding.Support.SubSpanBridge
-import Exploding.Support.SubLayer
+public import Exploding.Support.SubSpanBridge
+public import Exploding.Support.SubLayer
+
+@[expose] public section
 
 namespace Exploding
 

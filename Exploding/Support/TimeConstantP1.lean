@@ -1,6 +1,10 @@
-import Exploding.Support.ApproximateSubadditiveP1
-import Exploding.Support.AllHighLastArrivalScaling
-import Exploding.Support.ManhattanProfile
+module
+
+public import Exploding.Support.ApproximateSubadditiveP1
+public import Exploding.Support.AllHighLastArrivalScaling
+public import Exploding.Support.ManhattanProfile
+
+@[expose] public section
 
 /-!
 # The time constant at parameter one

@@ -1,9 +1,13 @@
+module
+
 /-
 Proposition 5.1 of the paper (generalized last wave), the Section-3 assembly, part C:
 the limit of the rescaled arrival times along every integer direction, from the limits
 along directions in the sublattice `L` and the Lipschitz bound.
 -/
-import Exploding.Support.GLWSec3B
+public import Exploding.Support.GLWSec3B
+
+@[expose] public section
 
 open Exploding LatticeProb MeasureTheory Filter
 open scoped Classical

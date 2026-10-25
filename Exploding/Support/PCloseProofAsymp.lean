@@ -1,10 +1,14 @@
+module
+
 /-
 The asymptotic bookkeeping for the second inequality of Lemma 3.7: the scale `Z` built
 from `log (2 n)` is at most a constant times a power of `log n`, so any fixed power of
 `Z` is at most a slightly larger power of `log n`, and a power of `log n` is eventually
 smaller than `n`.
 -/
-import Mathlib
+public import Mathlib
+
+@[expose] public section
 
 namespace Exploding
 

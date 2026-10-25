@@ -1,3 +1,5 @@
+module
+
 /-
 The support lemmas of Lemma 3.2 of `paper/corrected-arxiv/exploding-corrected-arxiv.tex`: the last wave is well
 defined.  The paper's argument: the `n`-wave for large `n` covers a centred box
@@ -16,14 +18,16 @@ coverage along a walk of good cubes (`aux_finite_exploding_walk_prop`,
 concludes that covering one good cube of the infinite cluster makes the wave
 non-stabilizable.
 -/
-import Exploding.Support.Vocab
-import Exploding.Support.Wave
-import Exploding.Support.SubGeom
-import Exploding.Support.SquareLowerBoundExponential
-import Exploding.Frozen.Renormalization
-import Exploding.External.LiggettSchonmannStaceyBoundedDegree
-import Exploding.External.MathieuHoles
-import Exploding.External.AntalPisztora
+public import Exploding.Support.Vocab
+public import Exploding.Support.Wave
+public import Exploding.Support.SubGeom
+public import Exploding.Support.SquareLowerBoundExponential
+public import Exploding.Frozen.Renormalization
+public import Exploding.External.LiggettSchonmannStaceyBoundedDegree
+public import Exploding.External.MathieuHoles
+public import Exploding.External.AntalPisztora
+
+@[expose] public section
 
 open Exploding LatticeProb MeasureTheory
 

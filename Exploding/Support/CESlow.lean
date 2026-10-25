@@ -1,3 +1,5 @@
+module
+
 /-
 The slow front of the counterexample background of `paper/corrected-arxiv/exploding-corrected-arxiv.tex` Section 6,
 Step 4: an explicit supersolution for parallel toppling.
@@ -11,7 +13,9 @@ the pile `η̂` is explicit: after the first wave, every site topples with perio
 (`cels_ok`), verified by computation near the wall and propagated by the translations
 `(c, t) ↦ (c, t + 4)` and `(c, t) ↦ (c + 4, t + 6)`.
 -/
-import Exploding.Support.CELow4
+public import Exploding.Support.CELow4
+
+@[expose] public section
 
 namespace Exploding
 

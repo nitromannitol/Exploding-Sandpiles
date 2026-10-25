@@ -1,3 +1,5 @@
+module
+
 /-
 Measurability of the explosive event, and its law consequence on the bounded-background carrier.
 
@@ -13,7 +15,9 @@ that the push-forward of a probability measure `Q` is explosive exactly when `Q`
 event probability one. Nothing here adds a hypothesis: every statement is about `podo`,
 `Stabilizable`, `Robust`, `Explosive`, `ExplosiveLaw` and `InOmega` as they are defined.
 -/
-import Exploding.Support.Hypotheses
+public import Exploding.Support.Hypotheses
+
+@[expose] public section
 
 namespace Exploding
 

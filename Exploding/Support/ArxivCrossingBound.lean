@@ -1,4 +1,8 @@
-import Exploding.Support.ArxivCrossingTerminal
+module
+
+public import Exploding.Support.ArxivCrossingTerminal
+
+@[expose] public section
 
 /-!
 # Crossing bounds for the terminal and deadline event

@@ -1,7 +1,11 @@
-import Exploding.Support.CEProof
-import Exploding.Support.CELow4
-import Exploding.Support.CESlow4
-import Exploding.Support.ArxivVolumeConclusion
+module
+
+public import Exploding.Support.CEProof
+public import Exploding.Support.CELow4
+public import Exploding.Support.CESlow4
+public import Exploding.Support.ArxivVolumeConclusion
+
+@[expose] public section
 
 /-!
 # The counterexample on one explicit background

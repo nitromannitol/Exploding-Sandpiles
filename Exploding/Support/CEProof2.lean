@@ -1,3 +1,5 @@
+module
+
 /-
 Steps 3-4 of the proof of `theorem:counterexample`: the reflected
 cylinder process and the pulsating front.
@@ -7,7 +9,9 @@ cylinder tiling `ζ` (a `4` at the first block's `(0,3)`), and reflects it
 across `x₁ = -1/2`.  This file builds the cylinder objects
 (`ce2_…`, prefix `ce2_`) that the reduction rests on.
 -/
-import Exploding.Support.CEProof
+public import Exploding.Support.CEProof
+
+@[expose] public section
 
 namespace Exploding
 

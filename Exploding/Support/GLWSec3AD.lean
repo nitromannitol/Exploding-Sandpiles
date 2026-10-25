@@ -1,3 +1,5 @@
+module
+
 /-
 Proposition 5.1 of the paper (generalized last wave): the percolation content of the generalization of
 Proposition 2.2.  The good-edge field of an arbitrary law of bits that dominates Bernoulli bond
@@ -5,7 +7,9 @@ percolation of a prescribed density carries an infinite connected set of good si
 and linear chemical distance.  This is the body of `rn_core` after the domination, which there is
 obtained for independent bits.
 -/
-import Exploding.Support.RNProofCore
+public import Exploding.Support.RNProofCore
+
+@[expose] public section
 
 open MeasureTheory ProbabilityTheory Exploding LatticeProb Filter
 

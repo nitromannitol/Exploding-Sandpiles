@@ -1,8 +1,12 @@
+module
+
 /-
 Proposition 5.1 of the paper (generalized last wave): the dependence graph of the good-edge field of
 a finite-range dependent field of tiles, its degree bound and the lower bound on its marginals.
 -/
-import Exploding.Support.GLWSec3AF
+public import Exploding.Support.GLWSec3AF
+
+@[expose] public section
 
 open MeasureTheory ProbabilityTheory Exploding LatticeProb Filter
 

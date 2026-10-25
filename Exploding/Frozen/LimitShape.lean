@@ -1,13 +1,17 @@
+module
+
 /-
 Theorem 1.2 of the paper: the support of the exploding sandpile, rescaled by
 time, converges in measure to a convex domain.
 -/
-import Exploding.Support.Vocab
-import Exploding.Support.LSProofAux
-import Exploding.External.LiggettSchonmannStaceyBoundedDegree
-import Exploding.External.MathieuHoles
-import Exploding.External.AntalPisztora
-import Exploding.External.Schonmann
+public import Exploding.Support.Vocab
+public import Exploding.Support.LSProofAux
+public import Exploding.External.LiggettSchonmannStaceyBoundedDegree
+public import Exploding.External.MathieuHoles
+public import Exploding.External.AntalPisztora
+public import Exploding.External.Schonmann
+
+@[expose] public section
 
 open Exploding LatticeProb MeasureTheory Filter
 

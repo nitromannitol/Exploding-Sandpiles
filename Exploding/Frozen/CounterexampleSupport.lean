@@ -1,4 +1,8 @@
-import Exploding.Frozen.CounterexamplePile
+module
+
+public import Exploding.Frozen.CounterexamplePile
+
+@[expose] public section
 
 /-!
 # Counterexample support

@@ -1,3 +1,5 @@
+module
+
 /-
 The deterministic transfer from convergence along a sparse sequence of times to convergence
 along all times.
@@ -9,7 +11,9 @@ gives from a good time), and is Lipschitz upward up to a sublinear error,
 `u n' ≤ u n + C (n' - n) + ε n` for `n ≤ n' ≤ 2 n` and `n` large.  Then `u n / n` converges to
 the same limit.
 -/
-import Mathlib
+public import Mathlib
+
+@[expose] public section
 
 open Filter Topology
 

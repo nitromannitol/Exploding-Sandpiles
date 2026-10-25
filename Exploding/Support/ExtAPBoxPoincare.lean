@@ -1,11 +1,15 @@
+module
+
 /-
 The mod-two Poincare lemma for the finite box `cent d n`: a one-cochain of edge
 functions that is closed on every unit square lying in the box is the coboundary of a
 site function on the box.  This is the finite-box analogue of `xmh3_poincare`, proved
 by splitting off the first coordinate and integrating along the interval `[-n, n]`.
 -/
-import Exploding.Support.ExtMHProof4
-import Exploding.Support.Percolation
+public import Exploding.Support.ExtMHProof4
+public import Exploding.Support.Percolation
+
+@[expose] public section
 
 namespace Exploding
 

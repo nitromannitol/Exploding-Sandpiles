@@ -1,4 +1,8 @@
-import Exploding.Frozen.CounterexampleThreshold
+module
+
+public import Exploding.Frozen.CounterexampleThreshold
+
+@[expose] public section
 
 /-!
 # Counterexample pile

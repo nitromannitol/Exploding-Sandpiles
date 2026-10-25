@@ -1,9 +1,13 @@
+module
+
 /-
 The minimal vertex cut of the two opposite faces of a box is `*`-connected, hence the
 box-crossing star duality holds in every dimension at least two.
 -/
-import Exploding.Support.ExtAPBoxBoundaryStar
-import Exploding.Support.ExtAPMinCutTwo
+public import Exploding.Support.ExtAPBoxBoundaryStar
+public import Exploding.Support.ExtAPMinCutTwo
+
+@[expose] public section
 
 namespace Exploding
 

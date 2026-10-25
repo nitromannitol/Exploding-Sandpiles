@@ -1,3 +1,5 @@
+module
+
 /-
 A background with arbitrarily large blocks of sites holding at least `2d` chips is
 not stabilizable, and an i.i.d. background with a positive density of such sites has
@@ -9,9 +11,11 @@ the parallel toppling odometer at time `t ≤ R + 1` equals `t` on the block of 
 fired as often as it has.  Hence the odometer at the centre grows to `R + 1` by time
 `R + 1`, while an odometer that is constant from time `T` on is at most `T`.
 -/
-import Exploding.Support.Toppling
-import Exploding.Support.Hypotheses
-import Exploding.Support.TEProofLaw
+public import Exploding.Support.Toppling
+public import Exploding.Support.Hypotheses
+public import Exploding.Support.TEProofLaw
+
+@[expose] public section
 
 namespace Exploding
 

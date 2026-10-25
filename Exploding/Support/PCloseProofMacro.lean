@@ -1,12 +1,16 @@
+module
+
 /-
 Macroscopic bookkeeping for the second inequality of Lemma 3.7: the macroscopic
 index of a site, two far points of the infinite cluster on either side of a site,
 and the concatenation of two walks issuing from a common cube.
 -/
-import Exploding.Support.Vocab
-import Exploding.Support.SubPub
-import Exploding.Support.PCloseProofGeom
-import Exploding.Support.PCloseProofWalk
+public import Exploding.Support.Vocab
+public import Exploding.Support.SubPub
+public import Exploding.Support.PCloseProofGeom
+public import Exploding.Support.PCloseProofWalk
+
+@[expose] public section
 
 namespace Exploding
 

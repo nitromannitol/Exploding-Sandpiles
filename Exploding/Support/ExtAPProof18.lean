@@ -1,3 +1,5 @@
+module
+
 /-
 The good cluster as a countable union of finite approximants.
 
@@ -9,7 +11,9 @@ equal to one of them is finite.  This is the filtration the finite-cluster
 Peierls count needs, and it shows an infinite good cluster is not trapped by any
 finite cut-off.
 -/
-import Exploding.Support.ExtAPProof17
+public import Exploding.Support.ExtAPProof17
+
+@[expose] public section
 
 open Exploding LatticeProb MeasureTheory Filter
 open scoped Classical Topology

@@ -1,9 +1,13 @@
-import Exploding.Support.SquareRadiusGreen
-import Exploding.Support.SquareWaveComparison
-import Exploding.Support.Vocab
-import LatticeProb.Analysis.SandpileScale
-import LatticeProb.External.FeyDenBoerRedigCubicalCluster
-import LatticeProb.External.FeyLevinePeresRadius
+module
+
+public import Exploding.Support.SquareRadiusGreen
+public import Exploding.Support.SquareWaveComparison
+public import Exploding.Support.Vocab
+public import LatticeProb.Analysis.SandpileScale
+public import LatticeProb.External.FeyDenBoerRedigCubicalCluster
+public import LatticeProb.External.FeyLevinePeresRadius
+
+@[expose] public section
 
 /-!
 # Sharp square lower bound

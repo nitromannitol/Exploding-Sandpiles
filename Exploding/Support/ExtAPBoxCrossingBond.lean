@@ -1,3 +1,5 @@
+module
+
 /-
 Assembling the bond box-crossing input from the good-site box crossing.
 
@@ -25,9 +27,11 @@ The confinement transfer is the standard duality step relating a free crossing
 supercritical extension is the RSW step extending the high-density range to all
 densities above the critical one.
 -/
-import Exploding.Support.ExtAPBridge
-import Exploding.Support.ExtAPMinCutStarFinal
-import Exploding.Support.ExtAPSupercritical
+public import Exploding.Support.ExtAPBridge
+public import Exploding.Support.ExtAPMinCutStarFinal
+public import Exploding.Support.ExtAPSupercritical
+
+@[expose] public section
 
 open Exploding LatticeProb MeasureTheory Filter
 open scoped Classical Topology ENNReal

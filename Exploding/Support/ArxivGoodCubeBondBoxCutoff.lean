@@ -1,5 +1,9 @@
-import Exploding.Support.RNProofGood
-import Exploding.Support.ArxivActualBondBoxCutoffAE
+module
+
+public import Exploding.Support.RNProofGood
+public import Exploding.Support.ArxivActualBondBoxCutoffAE
+
+@[expose] public section
 
 /-!
 # Good cubes coupled to an actual bond cluster

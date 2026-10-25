@@ -1,9 +1,13 @@
+module
+
 /-
 Proposition 5.1 of the paper (generalized last wave): the local bound from the origin
 (`eq:generalized_lipschitz`) from the probabilistic claim `glws_Renorm` alone.  The deterministic
 Section-3 estimates are proved (`glws_loc0_of_cl`); no deterministic claim remains.
 -/
-import Exploding.Support.GLWSec3AB
+public import Exploding.Support.GLWSec3AB
+
+@[expose] public section
 
 open Exploding LatticeProb MeasureTheory Filter
 

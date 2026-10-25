@@ -1,3 +1,5 @@
+module
+
 /-
 The growth schedule of a box inside a larger box.
 
@@ -12,7 +14,9 @@ A direction is grown upward until it reaches the target and downward afterwards.
 Everything is given in closed form, as a function of the time, so that the layers do not depend
 on the background.
 -/
-import Exploding.Support.ExtSchBox
+public import Exploding.Support.ExtSchBox
+
+@[expose] public section
 
 namespace Exploding
 

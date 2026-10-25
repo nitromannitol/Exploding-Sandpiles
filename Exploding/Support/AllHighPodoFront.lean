@@ -1,5 +1,9 @@
-import Exploding.Support.Vocab
-import Exploding.Support.Wave
+module
+
+public import Exploding.Support.Vocab
+public import Exploding.Support.Wave
+
+@[expose] public section
 
 /-!
 # The all-high ordinary odometer front

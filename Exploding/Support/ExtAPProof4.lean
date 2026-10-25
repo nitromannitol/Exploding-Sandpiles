@@ -1,3 +1,5 @@
+module
+
 /-
 Two inputs of the high-density Peierls estimate.
 
@@ -11,9 +13,11 @@ and `y` has size at least a constant times `mnorm y` is **false**: the `*`-neigh
 of the origin form a `*`-connected separator of the origin from every `y ≠ 0` whose
 size is `3^d - 1`, independent of `y`.
 -/
-import Exploding.Support.ExtAPProof3
-import LatticeProb.Prob.Blocks
-import Mathlib.Probability.Independence.InfinitePi
+public import Exploding.Support.ExtAPProof3
+public import LatticeProb.Prob.Blocks
+public import Mathlib.Probability.Independence.InfinitePi
+
+@[expose] public section
 
 open Exploding LatticeProb MeasureTheory ProbabilityTheory
 

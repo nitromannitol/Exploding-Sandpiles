@@ -1,10 +1,14 @@
+module
+
 /-
 The exact front of the one-wave when every site has height `2d - 1`.
 
 This is support work for the arXiv-v2 toy law at `p = 1`.  The proof uses only
 the local wave recurrence and the Manhattan norm.
 -/
-import Exploding.Support.Wave
+public import Exploding.Support.Wave
+
+@[expose] public section
 
 namespace Exploding
 

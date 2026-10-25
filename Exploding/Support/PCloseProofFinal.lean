@@ -1,3 +1,5 @@
+module
+
 /-
 The second inequality of Lemma 3.7 (`exploding-corrected-arxiv.tex:832-839`): almost surely, for all large
 `n` and `|x| ≤ n`, the penultimate-cluster arrival time `T̃(x)` is at most `T̂(x) + (log n)^γ`.
@@ -7,7 +9,9 @@ Lemma 3.6 (the linear bound on `T̂`, used near the origin) and Proposition 2.2 
 cluster of good cubes, with small holes and a linear chemical distance), all of which are
 frozen statements used here as inputs.
 -/
-import Exploding.Support.PCloseProofMain
+public import Exploding.Support.PCloseProofMain
+
+@[expose] public section
 
 open Exploding LatticeProb MeasureTheory
 

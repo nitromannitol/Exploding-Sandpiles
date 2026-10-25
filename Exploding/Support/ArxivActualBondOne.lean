@@ -1,5 +1,9 @@
-import Exploding.Support.Percolation
-import LatticeProb.Graph.Zd
+module
+
+public import Exploding.Support.Percolation
+public import LatticeProb.Graph.Zd
+
+@[expose] public section
 
 /-!
 # The actual bond law at parameter one

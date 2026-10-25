@@ -1,6 +1,10 @@
-import Exploding.Support.ArxivP1Crossing
-import Exploding.Support.AllHighPodoFront
-import Exploding.Support.AllHighLastArrival
+module
+
+public import Exploding.Support.ArxivP1Crossing
+public import Exploding.Support.AllHighPodoFront
+public import Exploding.Support.AllHighLastArrival
+
+@[expose] public section
 
 /-!
 # Approximate subadditivity at the endpoint

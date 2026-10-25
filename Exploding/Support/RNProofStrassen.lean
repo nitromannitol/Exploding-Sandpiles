@@ -1,10 +1,14 @@
+module
+
 /-
 Strassen's theorem for a closed preorder on a second countable compact Hausdorff space, and the
 consequence used in the proof of Proposition 2.2: a measurable event of the larger coordinate that
 contains a measurable almost sure event of the smaller one.
 -/
-import Mathlib
-import Exploding.Support.Percolation
+public import Mathlib
+public import Exploding.Support.Percolation
+
+@[expose] public section
 
 open MeasureTheory Set
 open scoped CompactlySupported

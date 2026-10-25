@@ -1,9 +1,13 @@
+module
+
 /-
 Proposition 5.1 (generalized last wave), closeness of the arrival times, part H:
 the closeness `T̂(x) ≤ T̃(x) ≤ T̂(x) + (log n)^γ` on a background carrying the data of `S3kData`,
 with an exponent depending only on `d` and the path-filling exponent.
 -/
-import Exploding.Support.S3CloseG
+public import Exploding.Support.S3CloseG
+
+@[expose] public section
 
 open Exploding LatticeProb MeasureTheory Filter
 

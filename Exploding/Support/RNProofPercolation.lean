@@ -1,15 +1,19 @@
+module
+
 /-
 Events of site percolation behind Proposition 2.2: measurability of the events "there is an infinite
 open cluster" and "there is an infinite open cluster whose holes are small", their monotonicity, and
 the almost sure existence of the infinite cluster at high density, given the positivity of the
 percolation probability of bond percolation at some density below one.
 -/
-import Exploding.Support.Percolation
-import Exploding.Support.RNProofGraph
-import Exploding.Support.RNProofStrassen
-import LatticeProb.Prob.Translation
-import Exploding.External.MathieuHoles
-import Exploding.External.AntalPisztora
+public import Exploding.Support.Percolation
+public import Exploding.Support.RNProofGraph
+public import Exploding.Support.RNProofStrassen
+public import LatticeProb.Prob.Translation
+public import Exploding.External.MathieuHoles
+public import Exploding.External.AntalPisztora
+
+@[expose] public section
 
 open MeasureTheory ProbabilityTheory Exploding LatticeProb
 

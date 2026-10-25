@@ -1,12 +1,16 @@
+module
+
 /-
 The deterministic all-high endpoint of the arXiv-v2 crossing construction.
 
 At scale one the cube has a single site.  An internal seed fixes that site;
 an external face seed delivers one chip to it, so it topples at the first step.
 -/
-import Exploding.Support.SubCrossTime
-import Exploding.Support.SubFodoStep
-import Exploding.Support.SubGeom
+public import Exploding.Support.SubCrossTime
+public import Exploding.Support.SubFodoStep
+public import Exploding.Support.SubGeom
+
+@[expose] public section
 
 namespace Exploding
 

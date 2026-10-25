@@ -1,9 +1,13 @@
+module
+
 /-
 Corollary 1.4 of Liggett, Schonmann and Stacey, domination of a field of bits
 with a bounded-degree dependence graph by a product measure, quoted before
 Proposition 2.2 of the paper.
 -/
-import Exploding.Support.Percolation
+public import Exploding.Support.Percolation
+
+@[expose] public section
 
 open Exploding LatticeProb MeasureTheory
 

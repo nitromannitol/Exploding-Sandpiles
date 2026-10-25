@@ -1,10 +1,14 @@
+module
+
 /-
 The field-of-bits facts behind Proposition 2.2: the line graph of the bonds and the lattice graph as
 dependence graphs, their degree bounds, and the domination of Bernoulli percolation obtained from
 Corollary 1.4 of Liggett, Schonmann and Stacey.
 -/
-import Exploding.Support.Percolation
-import Exploding.External.LiggettSchonmannStaceyBoundedDegree
+public import Exploding.Support.Percolation
+public import Exploding.External.LiggettSchonmannStaceyBoundedDegree
+
+@[expose] public section
 
 open MeasureTheory ProbabilityTheory Exploding LatticeProb
 

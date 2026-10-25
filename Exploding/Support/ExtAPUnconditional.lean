@@ -1,3 +1,5 @@
+module
+
 /-
 Unconditional corollaries of the box-crossing star duality.
 
@@ -12,8 +14,10 @@ crossing. The extension from high density down to the critical density
 The general measure-theoretic step used below: if `A n` are measurable events and
 almost surely `ω ∈ A n` for all large `n`, then `P(A n) → 1` along `atTop`.
 -/
-import Exploding.Support.ExtAPBridge
-import Exploding.Support.ExtAPMinCutStarFinal
+public import Exploding.Support.ExtAPBridge
+public import Exploding.Support.ExtAPMinCutStarFinal
+
+@[expose] public section
 
 open Exploding LatticeProb MeasureTheory Filter
 open scoped Classical Topology ENNReal

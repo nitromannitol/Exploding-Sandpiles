@@ -1,10 +1,14 @@
+module
+
 /-
 The probability estimates of Proposition 7.1: box-crossing events of tiles depend only on
 the tile, tiles far apart are independent under finite range of dependence, and the
 chance that a long `*`-path of tiles fails to be box-crossing is exponentially small.
 -/
-import Exploding.Support.ECProofTile
-import Exploding.Support.ECProofCount
+public import Exploding.Support.ECProofTile
+public import Exploding.Support.ECProofCount
+
+@[expose] public section
 
 namespace Exploding
 

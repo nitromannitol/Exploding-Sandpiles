@@ -1,3 +1,5 @@
+module
+
 /-
 Assembly of the Antal–Pisztora chemical-distance bound, pushing the
 infinite-cluster case and isolating the supercritical-density reduction.
@@ -19,8 +21,10 @@ exponential-comparison lemma), and `xap12_AntalPisztora_of_bounds` then yields t
 frozen statement from the three claims.  Everything except the three claims is
 proved here.
 -/
-import Exploding.Support.ExtAPProof11
-import Exploding.External.AntalPisztora
+public import Exploding.Support.ExtAPProof11
+public import Exploding.External.AntalPisztora
+
+@[expose] public section
 
 open Exploding LatticeProb MeasureTheory
 open scoped Classical

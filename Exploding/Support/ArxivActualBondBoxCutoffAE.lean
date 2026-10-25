@@ -1,5 +1,9 @@
-import Exploding.Support.ArxivBondFiniteHoleBoxCutoff
-import Exploding.Support.ArxivActualBondClusterHolesAE
+module
+
+public import Exploding.Support.ArxivBondFiniteHoleBoxCutoff
+public import Exploding.Support.ArxivActualBondClusterHolesAE
+
+@[expose] public section
 
 /-!
 # Infinite actual bond cluster with a uniform box cutoff

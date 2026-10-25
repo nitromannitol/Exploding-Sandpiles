@@ -1,3 +1,5 @@
+module
+
 /-
 The star-duality statement of `xbc_StarDuality` is false in dimension one: closing the origin
 of the interval `cent 1 n` blocks every open crossing, while the only all-closed `*`-connected
@@ -5,8 +7,10 @@ sets are contained in that one site and so have at most one point rather than th
 `2 * n + 1`.  This file records the counterexample, the correct dimension threshold `2 ≤ d`,
 and the elementary size bound for `*`-connected sets that meet both opposite faces.
 -/
-import Exploding.Support.ExtBCBernoulli2
-import Exploding.Support.ExtMHBase
+public import Exploding.Support.ExtBCBernoulli2
+public import Exploding.Support.ExtMHBase
+
+@[expose] public section
 
 open Exploding LatticeProb MeasureTheory Relation
 

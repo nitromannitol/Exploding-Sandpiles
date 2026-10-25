@@ -1,3 +1,5 @@
+module
+
 /-
 A step of the proof of `Exploding.Frozen.approximate_subadditive` (Proposition 4.1).
 
@@ -49,18 +51,20 @@ finite set), and so `V` is positive wherever the last wave is.
 `asd_reach_ae`: almost surely the last wave reaches every site (Lemma 3.6).
 `asd_approximate_subadditive`: the almost sure assembly with the corrected `hpodo`.
 -/
-import Exploding.Support.ASProof
-import Exploding.Support.ASProof2
-import Exploding.Support.ASProof3
-import Exploding.Support.ASProof4
-import Exploding.Support.ASProof5
-import Exploding.Support.ASProof7
-import Exploding.Support.ASSpecial
-import Exploding.Support.GLWProofAux
-import Exploding.Support.PUBProofF
-import Exploding.External.LiggettSchonmannStaceyBoundedDegree
-import Exploding.External.MathieuHoles
-import Exploding.External.AntalPisztora
+public import Exploding.Support.ASProof
+public import Exploding.Support.ASProof2
+public import Exploding.Support.ASProof3
+public import Exploding.Support.ASProof4
+public import Exploding.Support.ASProof5
+public import Exploding.Support.ASProof7
+public import Exploding.Support.ASSpecial
+public import Exploding.Support.GLWProofAux
+public import Exploding.Support.PUBProofF
+public import Exploding.External.LiggettSchonmannStaceyBoundedDegree
+public import Exploding.External.MathieuHoles
+public import Exploding.External.AntalPisztora
+
+@[expose] public section
 
 open Exploding LatticeProb MeasureTheory
 

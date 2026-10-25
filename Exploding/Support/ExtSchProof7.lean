@@ -1,3 +1,5 @@
+module
+
 /-
 Assembly of the block-percolation estimate.
 
@@ -11,7 +13,9 @@ coarse percolation estimate `xsch7_BlockPercolation`: a good-block cover exists
 with probability `1 - c exp(-C n)`.  This file isolates that estimate and shows
 it implies `xsch3_PercolationBound` and hence `SchonmannBootstrap`.
 -/
-import Exploding.Support.ExtSchProof6
+public import Exploding.Support.ExtSchProof6
+
+@[expose] public section
 
 namespace Exploding
 

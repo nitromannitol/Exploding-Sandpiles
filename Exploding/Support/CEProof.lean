@@ -1,3 +1,5 @@
+module
+
 /-
 The parts of the proof of `theorem:counterexample` (Section 6 of the paper) that
 reduce to the relay and stacking machinery proved in `Exploding/Support/SubRelay.lean`,
@@ -6,7 +8,9 @@ together with the real-analysis assembly of `T(n)/n`.  The Steps 3-4 material
 `hLow` and `hBdd`; those hypotheses are supplied by `Exploding/Support/CESlow4.lean`
 and `Exploding/Support/CELow4.lean`.
 -/
-import Exploding.Support.SubRelay
+public import Exploding.Support.SubRelay
+
+@[expose] public section
 
 namespace Exploding
 

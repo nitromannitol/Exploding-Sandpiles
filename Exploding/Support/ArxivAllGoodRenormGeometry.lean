@@ -1,6 +1,10 @@
-import Exploding.Support.ArxivP1RenormGeometry
-import Exploding.Support.ArxivAllHighCrossing
-import Exploding.Support.RNProofCore
+module
+
+public import Exploding.Support.ArxivP1RenormGeometry
+public import Exploding.Support.ArxivAllHighCrossing
+public import Exploding.Support.RNProofCore
+
+@[expose] public section
 
 open Exploding LatticeProb
 

@@ -1,10 +1,14 @@
+module
+
 /-
 The outer boundary of a connected set of the square lattice is `*`-connected
 (the planar duality behind the Peierls estimate of Proposition 7.1), proved by a
 mod-two parity argument: the indicator of the edges between the set and one part of
 its boundary is a cocycle, hence a coboundary, hence constant on connected sets.
 -/
-import Exploding.Support.ECProofPoincare
+public import Exploding.Support.ECProofPoincare
+
+@[expose] public section
 
 namespace Exploding
 

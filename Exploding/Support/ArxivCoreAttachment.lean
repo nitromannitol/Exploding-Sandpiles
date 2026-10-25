@@ -1,4 +1,8 @@
-import Exploding.Support.ArxivMaximalGoodCluster
+module
+
+public import Exploding.Support.ArxivMaximalGoodCluster
+
+@[expose] public section
 
 /-!
 # Attaching good-cluster endpoints to a core

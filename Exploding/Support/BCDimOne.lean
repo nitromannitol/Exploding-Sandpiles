@@ -1,3 +1,5 @@
+module
+
 /-
 The dimension-one box-crossing clause.
 
@@ -15,12 +17,14 @@ The objects `faceOut`, `rboxShift`, `fodo` and `BoxCrossed` are those of
 The all-dimension wrapper `bc_box_crossing_all_dims` joins this clause to the `d ≥ 2` theorem
 `bc_box_crossing`, with the interface of that theorem.
 -/
-import Exploding.Support.Hypotheses
-import Exploding.Support.SubGeom
-import Exploding.Support.ECProofDyn
-import Exploding.Support.Wave
-import Exploding.Support.BCProofMain
-import Exploding.External.Schonmann
+public import Exploding.Support.Hypotheses
+public import Exploding.Support.SubGeom
+public import Exploding.Support.ECProofDyn
+public import Exploding.Support.Wave
+public import Exploding.Support.BCProofMain
+public import Exploding.External.Schonmann
+
+@[expose] public section
 
 namespace Exploding
 

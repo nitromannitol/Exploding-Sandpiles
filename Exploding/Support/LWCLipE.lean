@@ -1,3 +1,5 @@
+module
+
 /-
 The far Lipschitz bound of Proposition 3.1 (`eq:lastwave_lipschitz`) as a standalone
 theorem.  The bound for the last-wave arrival times `T̂` (`lwcl_lastArrival_lip`) is transferred to
@@ -6,7 +8,9 @@ the penultimate-cluster arrival times `T̃` through Lemma 3.7:
 symmetric form `|T̃(x) - T̃(x')| ≤ C |x - x'| + (log n)^γ`, since `T̂(x') ≤ T̂(x) + ...` and
 `T̂(x) ≤ T̂(x') + ...` are the same statement with the roles of `x` and `x'` exchanged.
 -/
-import Exploding.Support.LWCLipD
+public import Exploding.Support.LWCLipD
+
+@[expose] public section
 
 namespace Exploding
 

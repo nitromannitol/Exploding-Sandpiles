@@ -1,11 +1,15 @@
+module
+
 /-
 The deterministic core of the hole-volume assembly: a finite component `B` of the
 complement of an infinite connected set `C` whose volume exceeds the threshold has a
 `*`-connected inner boundary of at least the prescribed size, because the neighbours of
 `B` outside `B` all lie in `C` and the boundary is `*`-connected in every dimension.
 -/
-import Exploding.Support.ExtMHProof5
-import Exploding.Support.Vocab
+public import Exploding.Support.ExtMHProof5
+public import Exploding.Support.Vocab
+
+@[expose] public section
 
 namespace Exploding
 

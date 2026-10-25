@@ -1,4 +1,8 @@
-import Exploding.Support.ExtLSSCountable
+module
+
+public import Exploding.Support.ExtLSSCountable
+
+@[expose] public section
 
 open Exploding
 

@@ -1,3 +1,5 @@
+module
+
 /-
 Step 4 of `theorem:counterexample` of `paper/corrected-arxiv/exploding-corrected-arxiv.tex`
 (`exploding-corrected-arxiv.tex:1640-1867`): the pulsating front of the reflected-cylinder
@@ -11,7 +13,9 @@ computable one-step map, prove that it is local — the value at column `x` at
 `t+1` depends only on columns `x-1, x, x+1` at `t` — and check the `12`-step
 period by kernel `decide` on the finite table.
 -/
-import Exploding.Support.CEProof
+public import Exploding.Support.CEProof
+
+@[expose] public section
 
 namespace Exploding
 

@@ -1,5 +1,9 @@
-import Exploding.Support.SquareGreenOrigin
-import Exploding.Support.GLWProofAux
+module
+
+public import Exploding.Support.SquareGreenOrigin
+public import Exploding.Support.GLWProofAux
+
+@[expose] public section
 
 /-!
 # Covering wave order against the parallel origin, planar case

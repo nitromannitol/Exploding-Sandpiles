@@ -1,7 +1,11 @@
+module
+
 /-
 Proposition 1.4 of Fey, Levine and Peres, quoted as Theorem 1.1 of the paper.
 -/
-import Exploding.Support.Vocab
+public import Exploding.Support.Vocab
+
+@[expose] public section
 
 open Exploding LatticeProb MeasureTheory
 

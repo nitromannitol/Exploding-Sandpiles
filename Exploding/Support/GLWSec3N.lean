@@ -1,10 +1,14 @@
+module
+
 /-
 Proposition 5.1 of the paper (generalized last wave): connectivity of lit regions.  A box is
 connected inside any set containing it, adjacent tiles contain adjacent sites, and two sites of a
 finite set that are connected inside it are joined by a path of distinct sites of the set.
 -/
-import Exploding.Support.GLWSec3M
-import Exploding.Support.PCloseProofGeom
+public import Exploding.Support.GLWSec3M
+public import Exploding.Support.PCloseProofGeom
+
+@[expose] public section
 
 open Exploding LatticeProb MeasureTheory Filter
 

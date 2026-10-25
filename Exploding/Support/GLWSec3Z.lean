@@ -1,3 +1,5 @@
+module
+
 /-
 Proposition 5.1 of the paper (generalized last wave): from a lit tile of the infinite cluster, the
 penultimate-cluster arrival time of a site.
@@ -5,7 +7,9 @@ penultimate-cluster arrival time of a site.
 The data of the cluster are bundled in `glws_Cl`; its fields are the standing facts used by
 Lemmas 3.5 and 3.6 in the generalized setting.
 -/
-import Exploding.Support.GLWSec3Y
+public import Exploding.Support.GLWSec3Y
+
+@[expose] public section
 
 open Exploding LatticeProb MeasureTheory Filter
 

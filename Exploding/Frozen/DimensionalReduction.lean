@@ -1,3 +1,5 @@
+module
+
 /-
 Proposition 7.2 of the paper: the dynamics on a face of a cube in `ℤ^{d+1}`
 reduce to `d`-dimensional dynamics, with the tangential external values chosen
@@ -5,7 +7,9 @@ pointwise.  The paper prescribes these values as `u_0^{(d-1)}(𝐲) = u_0^{(d)}(
 outer boundary of `Q_n^{(d-1)}`; the function `beta` supplies them pointwise.  The odometers and
 configurations are the literal definitions of `Exploding.Support.ReductionBoundary`.
 -/
-import Exploding.Support.ReductionBoundary
+public import Exploding.Support.ReductionBoundary
+
+@[expose] public section
 
 open Exploding LatticeProb
 

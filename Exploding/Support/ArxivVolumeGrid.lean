@@ -1,4 +1,8 @@
-import Exploding.Support.ArxivVolumeCells
+module
+
+public import Exploding.Support.ArxivVolumeCells
+
+@[expose] public section
 
 /-!
 # A finite grid of slow nearest-site cells

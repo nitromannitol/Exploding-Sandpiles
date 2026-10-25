@@ -1,3 +1,5 @@
+module
+
 /-
 Assembly of the bounded-degree domination of Liggett, Schonmann and Stacey.
 
@@ -21,8 +23,10 @@ increasing sets, together with almost-sure continuity of increasing sets.  The
 route through `Exploding.rn_strassen` consumes the full domination as its
 hypothesis, so it gives no independent reduction.
 -/
-import Exploding.External.LiggettSchonmannStaceyBoundedDegree
-import Exploding.Support.ExtLSSProofThin
+public import Exploding.External.LiggettSchonmannStaceyBoundedDegree
+public import Exploding.Support.ExtLSSProofThin
+
+@[expose] public section
 
 open MeasureTheory ProbabilityTheory
 open scoped ENNReal

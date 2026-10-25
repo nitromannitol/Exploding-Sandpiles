@@ -1,3 +1,5 @@
+module
+
 /-
 Proposition 5.1 of the paper (generalized last wave), the Section-3 assembly, part E:
 subadditivity of the limit `N₀` on integer directions.  The microscopic subadditivity
@@ -5,7 +7,9 @@ subadditivity of the limit `N₀` on integer directions.  The microscopic subadd
 `T̃(na, n(a+b))(η) = T̃(0, nb)(T_{na} η)` give the inequality on an event of positive
 probability, since the shifted copy converges in probability.
 -/
-import Exploding.Support.GLWSec3D
+public import Exploding.Support.GLWSec3D
+
+@[expose] public section
 
 open Exploding LatticeProb MeasureTheory Filter
 open scoped Classical

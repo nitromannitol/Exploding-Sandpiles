@@ -1,3 +1,5 @@
+module
+
 /-
 The far case of the second inequality of Lemma 3.7: if the last wave is positive at a
 site `x` far from the centre, then it is positive on the box of radius `R` about `x`
@@ -5,8 +7,10 @@ after polynomially many further steps.  This combines the first fired good cube
 (`pclose_first_cube`) with the spreading step (`pclose_spread`), and bounds the total
 time by a power of the scale `Z`.
 -/
-import Exploding.Support.PCloseProofFirst
-import Exploding.Support.PCloseProofSpread
+public import Exploding.Support.PCloseProofFirst
+public import Exploding.Support.PCloseProofSpread
+
+@[expose] public section
 
 namespace Exploding
 

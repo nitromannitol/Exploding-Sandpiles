@@ -1,3 +1,5 @@
+module
+
 /-
 The minimal vertex cut of the two opposite faces of the box.
 
@@ -10,7 +12,9 @@ This file fixes the vocabulary and proves the elementary consequences of minimal
 substantive combinatorial input of the star-duality, that a minimal cut is `*`-connected, is
 recorded as `xmc_MinCutStarConnected`.
 -/
-import Exploding.Support.ExtAPStarDuality
+public import Exploding.Support.ExtAPStarDuality
+
+@[expose] public section
 
 open Exploding LatticeProb Relation
 open scoped Classical

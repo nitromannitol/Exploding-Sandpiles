@@ -1,18 +1,22 @@
+module
+
 /-
 Proposition 3.1 of the paper: the rescaled last-wave arrival times converge.
 -/
-import Exploding.Support.Vocab
-import Exploding.Support.LWCProof
-import Exploding.Support.LWCProof2
-import Exploding.Support.LWCProof3
-import Exploding.External.LiggettSchonmannStaceyBoundedDegree
-import Exploding.External.MathieuHoles
-import Exploding.External.AntalPisztora
-import Exploding.Support.LWCLipE
-import Exploding.Support.LWCProof8
-import Exploding.Support.MKingman4
-import Exploding.Support.KingmanBAWire
-import Exploding.Support.LastWaveConvergenceP1
+public import Exploding.Support.Vocab
+public import Exploding.Support.LWCProof
+public import Exploding.Support.LWCProof2
+public import Exploding.Support.LWCProof3
+public import Exploding.External.LiggettSchonmannStaceyBoundedDegree
+public import Exploding.External.MathieuHoles
+public import Exploding.External.AntalPisztora
+public import Exploding.Support.LWCLipE
+public import Exploding.Support.LWCProof8
+public import Exploding.Support.MKingman4
+public import Exploding.Support.KingmanBAWire
+public import Exploding.Support.LastWaveConvergenceP1
+
+@[expose] public section
 
 open Exploding LatticeProb MeasureTheory Filter
 

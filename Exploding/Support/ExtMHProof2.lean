@@ -1,10 +1,14 @@
+module
+
 /-
 The Peierls estimate on `*`-connected closed sets, combining the exponential count of
 `*`-connected sets with the finite-cluster expansion, and its assembly into the hole-volume
 bound for the infinite cluster of site percolation.
 -/
-import Exploding.Support.ExtMHProof
-import Exploding.Support.ExtMHCount
+public import Exploding.Support.ExtMHProof
+public import Exploding.Support.ExtMHCount
+
+@[expose] public section
 
 namespace Exploding
 

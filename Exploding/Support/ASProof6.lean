@@ -1,3 +1,5 @@
+module
+
 /-
 The last claim `hpodo` of
 `Exploding.Frozen.approximate_subadditive`.  Sorry-free support file.
@@ -16,8 +18,10 @@ This isolates the remaining content of `hpodo` as the sharper claim that the
 pile topples the positive-penultimate-wave support twice, which the extra chip
 of `σ` over `η + (M-1) δ_0` is meant to supply.
 -/
-import Exploding.Support.ASProof
-import Exploding.Support.ASProof5
+public import Exploding.Support.ASProof
+public import Exploding.Support.ASProof5
+
+@[expose] public section
 
 open Exploding LatticeProb MeasureTheory
 

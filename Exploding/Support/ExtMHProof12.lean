@@ -1,10 +1,14 @@
+module
+
 /-
 Progress on the uniqueness input of Mathieu's hole-volume bound.  The bad-event machinery
 already rules out infinite `*`-connected all-closed clusters; the remaining uniqueness
 statement (Burton–Keane) is isolated as `xmh8_UniqueOpen`, and the unconditional reduction of
 the bound to it and the two localisation/isoperimetry claims is recorded.
 -/
-import Exploding.Support.ExtMHProof11
+public import Exploding.Support.ExtMHProof11
+
+@[expose] public section
 
 namespace Exploding
 

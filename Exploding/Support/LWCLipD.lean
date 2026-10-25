@@ -1,3 +1,5 @@
+module
+
 /-
 Support for the far Lipschitz bound of Proposition 3.1: the almost sure statement.
 The last-wave arrival times are Lipschitz up to a polylogarithm, `T̂(x') ≤ T̂(x) + C |x - x'| +
@@ -5,8 +7,10 @@ The last-wave arrival times are Lipschitz up to a polylogarithm, `T̂(x') ≤ T�
 Lemma 3.7, the same for the penultimate-cluster arrival times in the form needed by Proposition 3.1
 (`lwcl_far_lipschitz`).
 -/
-import Exploding.Support.LWCLipC
-import Exploding.Support.LWCProof
+public import Exploding.Support.LWCLipC
+public import Exploding.Support.LWCProof
+
+@[expose] public section
 
 namespace Exploding
 

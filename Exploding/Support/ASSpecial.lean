@@ -1,3 +1,5 @@
+module
+
 /-
 `eq:induction_specialcase2` of `paper/corrected-arxiv/exploding-corrected-arxiv.tex` (lines 918-1063), the first conjunct of
 Step 1's three simultaneous inductions, in the form used by Step 2 of Proposition 4.1: for the
@@ -15,7 +17,9 @@ The proof is the paper's simultaneous induction on `t`, in two layers.
 * `assp_incl` carries `eq:induction1` (`R_t ⊆ R̃_t`), using only the one-step Lipschitz bound of
   the first layer at the previous time.
 -/
-import Exploding.Support.ASProof
+public import Exploding.Support.ASProof
+
+@[expose] public section
 
 open Exploding LatticeProb
 

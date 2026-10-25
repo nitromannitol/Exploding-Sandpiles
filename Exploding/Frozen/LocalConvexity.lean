@@ -1,8 +1,12 @@
+module
+
 /-
 Lemma 2.1 of the paper: a path of topplings fills its bounding rectangle.
 -/
-import Exploding.Support.Vocab
-import Exploding.Support.SubFill
+public import Exploding.Support.Vocab
+public import Exploding.Support.SubFill
+
+@[expose] public section
 
 open Exploding LatticeProb
 /-- **Lemma 2.1** (`paper/corrected-arxiv/exploding-corrected-arxiv.tex:403-407`, label `lemma:local_convexity`).

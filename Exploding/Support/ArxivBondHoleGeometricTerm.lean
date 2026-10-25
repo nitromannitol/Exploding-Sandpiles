@@ -1,4 +1,8 @@
-import Exploding.Support.ArxivBondFiniteHoleSeries
+module
+
+public import Exploding.Support.ArxivBondFiniteHoleSeries
+
+@[expose] public section
 
 /-!
 # Geometric bound for the bond-hole series term

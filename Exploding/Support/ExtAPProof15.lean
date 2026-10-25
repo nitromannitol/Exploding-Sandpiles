@@ -1,3 +1,5 @@
+module
+
 /-
 Two concrete steps toward the frozen statement.
 
@@ -13,7 +15,9 @@ open chain staying inside the box joining the two faces
 reduction is isolated as `xap15_BoxCrossing`, the statement that the probability
 of such a crossing tends to one at every density above `bondCritical d`.
 -/
-import Exploding.Support.ExtAPProof14
+public import Exploding.Support.ExtAPProof14
+
+@[expose] public section
 
 open Exploding LatticeProb MeasureTheory Filter
 open scoped Classical Topology

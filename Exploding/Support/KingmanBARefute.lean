@@ -1,3 +1,5 @@
+module
+
 /-
 The bounded-above Kingman statement `mk4_boundedAboveKingman` is false.
 
@@ -14,11 +16,13 @@ The same cocycle (shifted by the linear term) refutes `mk_kingman_linear` and
 return times to all `n` needs the second Lipschitz bound, so it cannot be isolated as a
 Lipschitz-free statement about subadditive cocycles.
 -/
-import Exploding.Support.MKingman4
-import Exploding.Support.GLWProof2
-import LatticeProb.Prob.ZeroOne
-import Mathlib.Probability.BorelCantelli
-import Mathlib.MeasureTheory.Constructions.UnitInterval
+public import Exploding.Support.MKingman4
+public import Exploding.Support.GLWProof2
+public import LatticeProb.Prob.ZeroOne
+public import Mathlib.Probability.BorelCantelli
+public import Mathlib.MeasureTheory.Constructions.UnitInterval
+
+@[expose] public section
 
 open Exploding LatticeProb MeasureTheory Filter ProbabilityTheory Topology
 open scoped ENNReal

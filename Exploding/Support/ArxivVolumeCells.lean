@@ -1,4 +1,8 @@
-import Exploding.Support.ArxivVolumeSlow
+module
+
+public import Exploding.Support.ArxivVolumeSlow
+
+@[expose] public section
 
 /-!
 # Nearest-site cells and their volume

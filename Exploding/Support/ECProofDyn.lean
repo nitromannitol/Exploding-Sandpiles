@@ -1,9 +1,13 @@
+module
+
 /-
 The toppling dynamics behind Proposition 7.1: a stabilizing odometer is finitely
 supported, fills a large ball, dominates frozen odometers, and so propagates the
 complete toppling of one tile to every adjacent box-crossing tile.
 -/
-import Exploding.Support.Hypotheses
+public import Exploding.Support.Hypotheses
+
+@[expose] public section
 
 namespace Exploding
 

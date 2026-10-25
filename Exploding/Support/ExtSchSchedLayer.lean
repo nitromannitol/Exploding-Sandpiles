@@ -1,10 +1,14 @@
+module
+
 /-
 Layers of the growth schedule: the positions of the directions of `J`, the shape of one step
 (no growth, one layer above, or one layer below the box in the visited direction), the layers
 as near-cubes of the lower dimension whose size grows by one every round, and the number of
 layers of each size.
 -/
-import Exploding.Support.ExtSchSched
+public import Exploding.Support.ExtSchSched
+
+@[expose] public section
 
 namespace Exploding
 

@@ -1,9 +1,13 @@
+module
+
 /-
 A sequence with the doubling recursion `a s ≤ C * a (s / 2) ^ 2` and `C * a s ≤ 1 / 2` from the
 scale `s0` on decays exponentially: halving the scale `j` times, as long as the scale stays
 above `s0`, squares the bound `C * a` `2^j` times, and `2^j` is of the order of `s / s0`.
 -/
-import Mathlib
+public import Mathlib
+
+@[expose] public section
 
 namespace Exploding
 

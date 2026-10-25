@@ -1,3 +1,5 @@
+module
+
 /-
 Structural steps for the infinite-cluster case: an infinite good cluster contains
 good star-walks of every length.
@@ -13,7 +15,9 @@ the infinite-cluster case cannot be reached by a fixed-length Peierls count.
 The good-crossing event is monotone in the configuration, matching
 `xap15_openCrosses_mono`.
 -/
-import Exploding.Support.ExtAPProof16
+public import Exploding.Support.ExtAPProof16
+
+@[expose] public section
 
 open Exploding LatticeProb MeasureTheory Filter
 open scoped Classical Topology

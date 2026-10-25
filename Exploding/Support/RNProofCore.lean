@@ -1,12 +1,16 @@
+module
+
 /-
 The percolation content of Proposition 2.2: the coupling of the good-edge field with Bernoulli bond
 percolation, the infinite cluster of the coupled configuration with its holes and chemical distance,
 and the resulting set of good cubes.
 -/
-import Exploding.Support.RNProofGraph
-import Exploding.Support.RNProofStrassen
-import Exploding.Support.RNProofPercolation
-import Exploding.Support.RNProofChem
+public import Exploding.Support.RNProofGraph
+public import Exploding.Support.RNProofStrassen
+public import Exploding.Support.RNProofPercolation
+public import Exploding.Support.RNProofChem
+
+@[expose] public section
 
 open MeasureTheory ProbabilityTheory Exploding LatticeProb Filter
 

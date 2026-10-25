@@ -1,10 +1,14 @@
+module
+
 /-
 The relay induction in the two-dimensional case of the counterexample
 (`sec:counterexample_2D`): on the stacked checkerboard background the front on
 the relay row `x₁ = 1` advances at unit speed, reaching position `k` by time
 `k + 2`.  This is the upper bound of Step 1 in the proof of `theorem:counterexample`.
 -/
-import Exploding.Support.Vocab
+public import Exploding.Support.Vocab
+
+@[expose] public section
 
 namespace Exploding
 

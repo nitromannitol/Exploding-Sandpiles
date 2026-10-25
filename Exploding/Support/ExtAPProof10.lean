@@ -1,3 +1,5 @@
+module
+
 /-
 The finite-cluster Peierls estimate.  The reduction `xap9_FiniteClusterReduction`
 is false as stated: it demands an all-bad `*`-connected set **containing the
@@ -7,8 +9,10 @@ origin-free reduction: every finite cluster has a nonempty all-bad
 `*`-connected set, which is counted by `xap10_starSets` (no base-point
 requirement) and fed to the packed bad-set union bound.
 -/
-import Exploding.Support.ExtAPProof9
-import Mathlib.Data.Fintype.EquivFin
+public import Exploding.Support.ExtAPProof9
+public import Mathlib.Data.Fintype.EquivFin
+
+@[expose] public section
 
 open Exploding LatticeProb MeasureTheory
 open scoped Classical

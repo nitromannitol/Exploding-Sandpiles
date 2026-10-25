@@ -1,5 +1,9 @@
-import Exploding.Support.AllHighLastArrival
-import Exploding.Support.ArxivP1Crossing
+module
+
+public import Exploding.Support.AllHighLastArrival
+public import Exploding.Support.ArxivP1Crossing
+
+@[expose] public section
 
 /-!
 # The penultimate upper bound at parameter one

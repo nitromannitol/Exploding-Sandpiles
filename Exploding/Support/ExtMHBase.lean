@@ -1,3 +1,5 @@
+module
+
 /-
 Combinatorics of `*`-connected sets in `ℤ^d` for the Peierls estimate on the holes of the
 infinite cluster of site percolation: king adjacency, `*`-connected sets, the two combinatorial
@@ -5,7 +7,9 @@ facts quoted from the literature (the `*`-connectedness of the boundary between 
 sets, and the exponential count of `*`-connected sets), the sup-norm, boxes, and the growth of a
 `*`-connected set of prescribed size inside a larger one.
 -/
-import Exploding.Support.Percolation
+public import Exploding.Support.Percolation
+
+@[expose] public section
 
 namespace Exploding
 

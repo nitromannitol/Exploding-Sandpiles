@@ -1,3 +1,5 @@
+module
+
 /-
 The dimensional reduction of Section 7 on the face `F_1(Q_n^{(d+1)})`, with the
 tangential external odometers of the corrected source
@@ -22,7 +24,9 @@ the corrected source.  The bridge at the end shows that the two odometers agree 
 every face site when `beta = fun _ => false`, so the finite normal-face choice is harmless for
 that consumer.
 -/
-import Exploding.Support.Reduction
+public import Exploding.Support.Reduction
+
+@[expose] public section
 
 namespace Exploding
 

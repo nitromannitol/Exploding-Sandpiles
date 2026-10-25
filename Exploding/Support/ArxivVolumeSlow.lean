@@ -1,5 +1,9 @@
-import Exploding.Support.CESlow4
-import Exploding.Support.CEProof
+module
+
+public import Exploding.Support.CESlow4
+public import Exploding.Support.CEProof
+
+@[expose] public section
 
 /-!
 # Slow sites in the stacked checkerboard

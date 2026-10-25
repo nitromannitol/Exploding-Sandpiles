@@ -1,3 +1,5 @@
+module
+
 /-
 Measure assembly for the non-uniform corner boxes.
 
@@ -15,7 +17,9 @@ probability `1 - p^2` exceeds `a 1 = 1 - p`).  Isolating it makes the remaining
 probabilistic ingredient of the all-scales recursion precise.  This file does not
 claim `xsch13_Percolates`.
 -/
-import Exploding.Support.ExtSchProof18
+public import Exploding.Support.ExtSchProof18
+
+@[expose] public section
 
 namespace Exploding
 

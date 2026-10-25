@@ -1,3 +1,5 @@
+module
+
 /-
 The half-split of a box into `2^d` half-boxes, one for each choice of the lower or the upper half
 in every direction, and the L-shape lemma: if all half-boxes but one are internally spanned, the
@@ -5,7 +7,9 @@ whole box is.  The faces selected by the missing half-box lie in other half-boxe
 toppled, and the corner growth of the box finishes.  The half-boxes of a near-cube box of size
 `s` are near-cubes of size `s / 2`.
 -/
-import Exploding.Support.ExtSchCorner
+public import Exploding.Support.ExtSchCorner
+
+@[expose] public section
 
 namespace Exploding
 

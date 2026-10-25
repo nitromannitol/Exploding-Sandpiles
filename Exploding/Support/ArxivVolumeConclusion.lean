@@ -1,4 +1,8 @@
-import Exploding.Support.ArxivVolumeLower
+module
+
+public import Exploding.Support.ArxivVolumeLower
+
+@[expose] public section
 
 /-!
 # Local translation continuity and the volume obstruction

@@ -1,5 +1,9 @@
-import Exploding.Support.ArxivAllHighWave
-import Exploding.Support.ArxivP1Crossing
+module
+
+public import Exploding.Support.ArxivAllHighWave
+public import Exploding.Support.ArxivP1Crossing
+
+@[expose] public section
 
 /-!
 # Finite nonstabilizability at the endpoint

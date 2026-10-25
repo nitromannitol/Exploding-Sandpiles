@@ -1,5 +1,9 @@
-import Exploding.Support.AllHighPenultimateCluster
-import Exploding.Support.ArxivP1Crossing
+module
+
+public import Exploding.Support.AllHighPenultimateCluster
+public import Exploding.Support.ArxivP1Crossing
+
+@[expose] public section
 
 /-!
 # The penultimate cluster at parameter one

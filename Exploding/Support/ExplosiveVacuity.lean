@@ -1,6 +1,10 @@
-import Exploding.Frozen.Explosive
-import Exploding.Support.AllHighPodoFront
-import Exploding.Support.ExtSchFinal
+module
+
+public import Exploding.Frozen.Explosive
+public import Exploding.Support.AllHighPodoFront
+public import Exploding.Support.ExtSchFinal
+
+@[expose] public section
 
 /-!
 # Theorem 1.4 at the all-high endpoint

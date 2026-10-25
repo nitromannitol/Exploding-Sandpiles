@@ -1,3 +1,5 @@
+module
+
 /-
 The step of the induction on the number of directions.  If near-cube boxes along `k - 1`
 directions fail to be spanned with probability decaying faster than any polynomial in their size,
@@ -7,10 +9,12 @@ the failure of the layers of a block at most one half, so that a block of size `
 with probability at least `π = p ^ (ℓ ^ k) / 2`, and the grid of blocks of side
 `Lb = ⌊√s⌋ + 1` gives the decay of the box.
 -/
-import Exploding.Support.ExtSchBlock
-import Exploding.Support.ExtSchGrid
-import Exploding.Support.ExtSchNum
-import Exploding.Support.ExtSchOne
+public import Exploding.Support.ExtSchBlock
+public import Exploding.Support.ExtSchGrid
+public import Exploding.Support.ExtSchNum
+public import Exploding.Support.ExtSchOne
+
+@[expose] public section
 
 namespace Exploding
 

@@ -1,3 +1,5 @@
+module
+
 /-
 The negative-site barrier for the `S`-frozen parallel toppling odometer.
 
@@ -11,7 +13,9 @@ This is the process consumed by `PathFillingHyp`, whose frozen odometer is
 `fodo (z '' {i | i < m}) η (Set.indicator (z '' {i | i < m}) 1)`, with the
 frozen set and the seed support both equal to the path `z '' {i | i < m}`.
 -/
-import Exploding.Support.SubFodo
+public import Exploding.Support.SubFodo
+
+@[expose] public section
 
 namespace Exploding
 

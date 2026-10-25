@@ -1,3 +1,5 @@
+module
+
 /-
 The convergence of the last wave under the general hypotheses
 (`prop:convergence_of_the_generalized_last_wave`, Section 5 of the paper).
@@ -44,13 +46,15 @@ events) in `glw_shift_ergodic`, `hcore` (the subadditive core) in
 `glw_kingman_linear`, and `hlocal` (the local cluster bound) in
 `glw_cluster_lipschitz`.
 -/
-import Exploding.Support.Hypotheses
-import Exploding.Support.SquareLowerBoundExponential
-import Exploding.External.LiggettSchonmannStacey
-import Exploding.External.LiggettSchonmannStaceyBoundedDegree
-import Exploding.External.MathieuHoles
-import Exploding.External.AntalPisztora
-import LatticeProb.Prob.ZeroOne
+public import Exploding.Support.Hypotheses
+public import Exploding.Support.SquareLowerBoundExponential
+public import Exploding.External.LiggettSchonmannStacey
+public import Exploding.External.LiggettSchonmannStaceyBoundedDegree
+public import Exploding.External.MathieuHoles
+public import Exploding.External.AntalPisztora
+public import LatticeProb.Prob.ZeroOne
+
+@[expose] public section
 
 open Exploding LatticeProb MeasureTheory Filter
 

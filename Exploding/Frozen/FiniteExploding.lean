@@ -1,13 +1,17 @@
+module
+
 /-
 Lemma 3.2 of the paper: the last wave is well defined.
 -/
-import Exploding.Support.Vocab
-import Exploding.Support.SubFinite
-import Exploding.Support.SubCross
-import Exploding.Support.ArxivP1FiniteExploding
-import Exploding.External.LiggettSchonmannStaceyBoundedDegree
-import Exploding.External.MathieuHoles
-import Exploding.External.AntalPisztora
+public import Exploding.Support.Vocab
+public import Exploding.Support.SubFinite
+public import Exploding.Support.SubCross
+public import Exploding.Support.ArxivP1FiniteExploding
+public import Exploding.External.LiggettSchonmannStaceyBoundedDegree
+public import Exploding.External.MathieuHoles
+public import Exploding.External.AntalPisztora
+
+@[expose] public section
 
 open Exploding LatticeProb MeasureTheory
 

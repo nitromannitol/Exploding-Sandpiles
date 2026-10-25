@@ -1,12 +1,16 @@
+module
+
 /-
 The base of the induction on the number of directions: a box along a single direction is a line
 segment, and it is internally spanned as soon as one of its sites is occupied, because a site
 topples as soon as one of its two neighbours along the line has toppled.  Hence the probability
 that it is not spanned is at most `(1 - p)` to the number of its sites.
 -/
-import Exploding.Support.ExtSchBox
-import Exploding.Support.ExtSchProof5
-import Exploding.Support.ExtSchSeed
+public import Exploding.Support.ExtSchBox
+public import Exploding.Support.ExtSchProof5
+public import Exploding.Support.ExtSchSeed
+
+@[expose] public section
 
 namespace Exploding
 

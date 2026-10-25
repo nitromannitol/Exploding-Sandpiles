@@ -1,3 +1,5 @@
+module
+
 /-
 The finite-comparison form of the wave-approximation hypothesis (Hypothesis 5).
 
@@ -8,7 +10,9 @@ numbers at each comparison, so no infinite value is read as a number.
 `WaveApproximationHyp` for every `d` and every law `P`: the finiteness of all arrival
 times is derived from the eventual comparison on the growing boxes `cent d n`.
 -/
-import Exploding.Support.Hypotheses
+public import Exploding.Support.Hypotheses
+
+@[expose] public section
 
 namespace Exploding
 

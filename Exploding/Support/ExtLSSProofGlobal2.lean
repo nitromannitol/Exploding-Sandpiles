@@ -1,8 +1,12 @@
+module
+
 /-
 Measurability of the domination support, and the compactness route to the global
 coupling.
 -/
-import Exploding.Support.ExtLSSProofGlobal
+public import Exploding.Support.ExtLSSProofGlobal
+
+@[expose] public section
 
 open MeasureTheory Set Filter
 open scoped Topology ENNReal

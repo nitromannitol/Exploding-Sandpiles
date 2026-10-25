@@ -1,3 +1,5 @@
+module
+
 /-
 A block is spanned with probability bounded below.  A block of size `s` along `J` is spanned
 if its seed, a box of size `L` inside it, is fully occupied and every layer of the growth schedule
@@ -5,9 +7,11 @@ from the seed to the block is spanned along the other directions.  The seed and 
 disjoint sets of sites, so the two events are independent, and the layers fail with probability
 at most `|J|` times the sum of the bounds for one dimension less.
 -/
-import Exploding.Support.ExtSchGrow
-import Exploding.Support.ExtSchGrowProb
-import Exploding.Support.ExtSchSeed
+public import Exploding.Support.ExtSchGrow
+public import Exploding.Support.ExtSchGrowProb
+public import Exploding.Support.ExtSchSeed
+
+@[expose] public section
 
 namespace Exploding
 

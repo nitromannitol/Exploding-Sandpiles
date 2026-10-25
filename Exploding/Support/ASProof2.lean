@@ -1,3 +1,5 @@
+module
+
 /-
 Support for `Exploding.Frozen.approximate_subadditive` (Proposition 4.1): the
 restated `|P̃| < ∞` statement and the almost-everywhere assembly from the remaining
@@ -33,7 +35,9 @@ The counterexample violates both standing assumptions of the use site: the
 bound `2d - 2 ≤ η ≤ 2d - 1` and non-robustness.  The restatement below keeps
 exactly the hypotheses available where `htildePfin` is consumed.
 -/
-import Exploding.Support.ASProof
+public import Exploding.Support.ASProof
+
+@[expose] public section
 
 open Exploding LatticeProb MeasureTheory
 

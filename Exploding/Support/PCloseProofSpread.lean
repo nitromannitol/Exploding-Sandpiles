@@ -1,3 +1,5 @@
+module
+
 /-
 The spreading step of the second inequality of Lemma 3.7: once a good cube of the
 infinite cluster near `x` has fired, the wave is positive on every site within a
@@ -6,13 +8,15 @@ through the infinite cluster, two far cubes on either side of `x`, and the path 
 their corners fills the bounding rectangle, which contains the prescribed box by local
 convexity.
 -/
-import Exploding.Support.Vocab
-import Exploding.Support.SubPub
-import Exploding.Support.PCloseProofPath
-import Exploding.Support.PCloseProofGeom
-import Exploding.Support.PCloseProofCube
-import Exploding.Support.PCloseProofWalk
-import Exploding.Support.PCloseProofMacro
+public import Exploding.Support.Vocab
+public import Exploding.Support.SubPub
+public import Exploding.Support.PCloseProofPath
+public import Exploding.Support.PCloseProofGeom
+public import Exploding.Support.PCloseProofCube
+public import Exploding.Support.PCloseProofWalk
+public import Exploding.Support.PCloseProofMacro
+
+@[expose] public section
 
 namespace Exploding
 

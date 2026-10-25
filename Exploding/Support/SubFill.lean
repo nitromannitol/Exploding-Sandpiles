@@ -1,3 +1,5 @@
+module
+
 /-
 The time bound of the filling lemma of Lemma 2.1 (`lemma:local_convexity` in `paper/corrected-arxiv/exploding-corrected-arxiv.tex`): on the
 extremal background the terminal support of the frozen odometer is reached
@@ -5,9 +7,11 @@ within the cardinality of the bounding rectangle.  The paper's argument is that
 the support grows by at least one site at every step until it saturates, and
 that it never leaves the bounding rectangle.
 -/
-import Exploding.Support.Vocab
-import Exploding.Support.SubGeom
-import Exploding.Support.SubBox
+public import Exploding.Support.Vocab
+public import Exploding.Support.SubGeom
+public import Exploding.Support.SubBox
+
+@[expose] public section
 
 namespace Exploding
 

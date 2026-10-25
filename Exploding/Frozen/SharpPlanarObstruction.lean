@@ -1,6 +1,10 @@
-import Exploding.External.FeyDenBoerRedigCubicalCluster
-import Exploding.External.FeyLevinePeresRadius
-import Exploding.Support.PlanarWaveOptimality
+module
+
+public import Exploding.External.FeyDenBoerRedigCubicalCluster
+public import Exploding.External.FeyLevinePeresRadius
+public import Exploding.Support.PlanarWaveOptimality
+
+@[expose] public section
 
 /-!
 # Sharp planar obstruction

@@ -1,10 +1,14 @@
+module
+
 /-
 Proposition 5.1 of the paper (generalized last wave), the Section-3 assembly, part H:
 `glw_Conclusion` from the paper's local bound `eq:generalized_lipschitz`, the moment-free Kingman
 theorem and the closeness of the two arrival times (`glws_Close`); and `glw2_Section3Convergence`
 from the stronger local bound of `glw2_LipschitzLocal`.
 -/
-import Exploding.Support.GLWSec3G
+public import Exploding.Support.GLWSec3G
+
+@[expose] public section
 
 open Exploding LatticeProb MeasureTheory Filter
 open scoped Classical

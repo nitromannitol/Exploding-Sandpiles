@@ -1,9 +1,13 @@
+module
+
 /-
 A site off the frozen set that has not yet toppled and holds at least `2d` chips
 topples at the next step.  This is the step that drives the line propagation in
 the proof of Proposition 7.5.
 -/
-import Exploding.Support.Hypotheses
+public import Exploding.Support.Hypotheses
+
+@[expose] public section
 
 namespace Exploding
 

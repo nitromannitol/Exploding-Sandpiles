@@ -1,9 +1,13 @@
+module
+
 /-
 Lemma 5.2 of Mathieu, the polylogarithmic volume of the holes of the infinite
 cluster of highly supercritical site percolation, quoted before Proposition 2.2
 of the paper.
 -/
-import Exploding.Support.Percolation
+public import Exploding.Support.Percolation
+
+@[expose] public section
 
 open Exploding LatticeProb MeasureTheory
 

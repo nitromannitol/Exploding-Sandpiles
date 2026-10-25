@@ -1,3 +1,5 @@
+module
+
 /-
 Two counting bounds toward the Antal-Pisztora estimate (a linear separator bound is false, so
 these replace it).
@@ -14,7 +16,9 @@ the one-site cluster has probability `δ (1 - δ)^{3^d - 1}`, so the miss event
 itself does not decay with `mnorm y` and the chemical-distance bound must instead
 count long bad paths.
 -/
-import Exploding.Support.ExtAPProof4
+public import Exploding.Support.ExtAPProof4
+
+@[expose] public section
 
 open Exploding LatticeProb MeasureTheory
 open scoped Classical

@@ -1,8 +1,12 @@
+module
+
 /-
 Proposition 5.1 of the paper (generalized last wave): the last wave from the origin lights a tile of
 the infinite cluster at some finite time.
 -/
-import Exploding.Support.GLWSec3V
+public import Exploding.Support.GLWSec3V
+
+@[expose] public section
 
 open Exploding LatticeProb MeasureTheory Filter
 

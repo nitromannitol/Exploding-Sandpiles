@@ -1,14 +1,18 @@
+module
+
 /-
 The assembly of the box-crossing proof (Proposition 7.5 of `paper/corrected-arxiv/exploding-corrected-arxiv.tex`, label
 `prop:box_crossing`): the layer law at every layer, the union bound over the `n`
 layers, the degenerate case `p = 1`, and the symmetry and translation reductions from the
 low face of the base box to all `2d` faces of all tiles.
 -/
-import Exploding.Support.ReductionShift
-import Exploding.Support.Hypotheses
-import Exploding.Support.BCProofAux
-import Exploding.Support.BCProofSym
-import Exploding.External.Schonmann
+public import Exploding.Support.ReductionShift
+public import Exploding.Support.Hypotheses
+public import Exploding.Support.BCProofAux
+public import Exploding.Support.BCProofSym
+public import Exploding.External.Schonmann
+
+@[expose] public section
 
 open Exploding LatticeProb MeasureTheory
 open scoped Classical

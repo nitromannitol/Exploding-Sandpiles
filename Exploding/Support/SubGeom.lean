@@ -1,6 +1,10 @@
-import Exploding.Support.Vocab
-import Exploding.Support.Wave
-import Exploding.Support.SubFodo
+module
+
+public import Exploding.Support.Vocab
+public import Exploding.Support.Wave
+public import Exploding.Support.SubFodo
+
+@[expose] public section
 
 /-!
 # Lattice geometry for the filling argument

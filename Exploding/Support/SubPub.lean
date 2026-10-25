@@ -1,12 +1,16 @@
+module
+
 /-
 Support for Lemma 3.6 (`lemma:penultimate_upper_bound`) of the paper: the probability bounds on the
 toy law, the macroscopic cube index, and the wave's own mass bound.
 -/
-import Exploding.Support.Vocab
-import LatticeProb.Prob.Blocks
-import Exploding.Support.SubPen
-import Exploding.Frozen.FiniteExploding
-import Exploding.Frozen.Renormalization
+public import Exploding.Support.Vocab
+public import LatticeProb.Prob.Blocks
+public import Exploding.Support.SubPen
+public import Exploding.Frozen.FiniteExploding
+public import Exploding.Frozen.Renormalization
+
+@[expose] public section
 
 open Exploding LatticeProb MeasureTheory
 

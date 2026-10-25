@@ -1,14 +1,18 @@
+module
+
 /-
 Theorem 5.1 of the paper: convergence of the exploding sandpile under the
 general hypotheses.
 -/
-import Exploding.Support.Hypotheses
-import Exploding.Support.Gen
-import Exploding.Frozen.GeneralizedLastWave
-import Exploding.External.LiggettSchonmannStacey
-import Exploding.External.LiggettSchonmannStaceyBoundedDegree
-import Exploding.External.MathieuHoles
-import Exploding.External.AntalPisztora
+public import Exploding.Support.Hypotheses
+public import Exploding.Support.Gen
+public import Exploding.Frozen.GeneralizedLastWave
+public import Exploding.External.LiggettSchonmannStacey
+public import Exploding.External.LiggettSchonmannStaceyBoundedDegree
+public import Exploding.External.MathieuHoles
+public import Exploding.External.AntalPisztora
+
+@[expose] public section
 
 open Exploding LatticeProb MeasureTheory Filter
 

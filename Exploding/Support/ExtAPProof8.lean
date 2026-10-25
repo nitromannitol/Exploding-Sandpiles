@@ -1,3 +1,5 @@
+module
+
 /-
 Infrastructure for the `(3^d)^{2s}` count of finite `*`-connected sets through the
 origin, from the closed star-walk cover of `ExtAPProof7`: each such set is the
@@ -7,7 +9,9 @@ determined by its star-step direction sequence, of which there are at most
 feeds `xap6_biUnion_bad_prob_le` for the finite-cluster case of the Peierls
 estimate.
 -/
-import Exploding.Support.ExtAPProof7
+public import Exploding.Support.ExtAPProof7
+
+@[expose] public section
 
 open Exploding LatticeProb MeasureTheory
 open scoped Classical

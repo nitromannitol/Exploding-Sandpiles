@@ -1,3 +1,5 @@
+module
+
 /-
 The singleton consequence of recurrence: a recurrent background is nonnegative at every
 site.  This is the step in the proof of `prop:explosion_criteria` of
@@ -7,7 +9,9 @@ at time `1 = |{x}|` forces this height to reach `2d`.  The proof evaluates the d
 `fodo` of `RecurrentOn {x}` at time `1` directly from the definitions, and assumes nothing
 beyond `Recurrent η`.
 -/
-import Exploding.Support.Wave
+public import Exploding.Support.Wave
+
+@[expose] public section
 
 namespace Exploding
 

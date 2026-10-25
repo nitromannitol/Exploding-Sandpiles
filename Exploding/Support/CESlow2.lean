@@ -1,8 +1,12 @@
+module
+
 /-
 The explicit odometer on the reflected cylinder and the finite check that it is a
 supersolution; see `CESlow`.
 -/
-import Exploding.Support.CESlow
+public import Exploding.Support.CESlow
+
+@[expose] public section
 
 namespace Exploding
 

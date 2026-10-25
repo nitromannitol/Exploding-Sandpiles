@@ -1,3 +1,5 @@
+module
+
 /-
 Proposition 5.1 (generalized last wave), closeness of the arrival times, part I:
 the closeness of the penultimate-cluster and last-wave arrival times, the general-law Lemma 3.7.
@@ -6,7 +8,9 @@ Almost surely the infinite cluster of strongly box-crossing tiles exists (`s3k_r
 percolation results) and path-filling holds (Hypothesis 3); on such a background the closeness
 holds with an exponent depending only on `d` and the path-filling exponent (`s3k_close_of_data`).
 -/
-import Exploding.Support.S3CloseH
+public import Exploding.Support.S3CloseH
+
+@[expose] public section
 
 open Exploding LatticeProb MeasureTheory Filter
 

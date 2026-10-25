@@ -1,3 +1,5 @@
+module
+
 /-
 The enlarged Peierls event for the holes of the infinite cluster: a `*`-connected all-closed
 set of at least `xmh4_m n` sites with a point within sup-distance `n` plus its size of the
@@ -6,7 +8,9 @@ are summable in `n` when `2 · 6^d · K · (1 - q) < 1`, so almost surely the ev
 large `n`; and a finite `*`-connected all-closed set of the right size near the box realises
 the event.
 -/
-import Exploding.Support.ExtMHProof10
+public import Exploding.Support.ExtMHProof10
+
+@[expose] public section
 
 namespace Exploding
 

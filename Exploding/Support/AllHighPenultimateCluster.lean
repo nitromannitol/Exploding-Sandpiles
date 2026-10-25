@@ -1,4 +1,8 @@
-import Exploding.Support.AllHighWaveThreshold
+module
+
+public import Exploding.Support.AllHighWaveThreshold
+
+@[expose] public section
 
 /-!
 # The all-high penultimate cluster

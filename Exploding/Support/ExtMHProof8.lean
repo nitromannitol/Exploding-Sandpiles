@@ -1,3 +1,5 @@
+module
+
 /-
 The Borel–Cantelli assembly of Mathieu's hole-volume bound: the bad event of a
 `*`-connected all-closed set of at least `Nat.log 2 n` sites meeting the box `[-n,n]^d`,
@@ -5,10 +7,12 @@ its Peierls probability bound, the almost-sure eventual absence, and the combina
 the boundary witness, the inner-boundary growth and the percolation inputs (uniqueness of
 the infinite cluster and localisation of the hole boundary).
 -/
-import Exploding.Support.ExtMHProof7
-import Exploding.External.MathieuHoles
-import Exploding.Support.ExtMHProof6
-import Exploding.Support.ExtMHProof3
+public import Exploding.Support.ExtMHProof7
+public import Exploding.External.MathieuHoles
+public import Exploding.Support.ExtMHProof6
+public import Exploding.Support.ExtMHProof3
+
+@[expose] public section
 
 namespace Exploding
 

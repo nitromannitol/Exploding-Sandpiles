@@ -1,10 +1,14 @@
+module
+
 /-
 Proposition 5.1 of the paper (generalized last wave), the Section-3 assembly, part G:
 explosion from the last wave, the transfer from the penultimate-cluster arrival times to the
 last-wave arrival times, and the assembly of `glw2_Section3Convergence`.
 -/
-import Exploding.Support.GLWSec3F
-import Exploding.Support.ASProof4
+public import Exploding.Support.GLWSec3F
+public import Exploding.Support.ASProof4
+
+@[expose] public section
 
 open Exploding LatticeProb MeasureTheory Filter
 open scoped Classical

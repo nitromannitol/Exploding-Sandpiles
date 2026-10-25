@@ -1,9 +1,13 @@
+module
+
 /-
 Closedness of the domination order on finite fields of bits, an ingredient of the
 compactness route to the global coupling.
 -/
-import Exploding.Support.ExtLSSProofGlobal2
-import Exploding.Support.RNProofStrassen
+public import Exploding.Support.ExtLSSProofGlobal2
+public import Exploding.Support.RNProofStrassen
+
+@[expose] public section
 
 open MeasureTheory Set Filter
 open scoped Topology ENNReal

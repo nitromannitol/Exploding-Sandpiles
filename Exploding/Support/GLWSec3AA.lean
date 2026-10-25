@@ -1,3 +1,5 @@
+module
+
 /-
 Proposition 5.1 of the paper (generalized last wave): the first bound of
 `eq:generalized_lipschitz`, `T̃(x) ≤ C |x| + (log n)^γ`.
@@ -6,7 +8,9 @@ The last wave lights a tile `j*` of the cluster at a finite time `τ0` (`glws_fi
 the penultimate cluster of every `x ∈ [-n,n]^d` is lit within `A |j* - ν(x)| + B Z^d` more steps
 (`glws_cluster_lit`), which is at most `A |x| + (log n)^γ` for `n` large.
 -/
-import Exploding.Support.GLWSec3Z
+public import Exploding.Support.GLWSec3Z
+
+@[expose] public section
 
 open Exploding LatticeProb MeasureTheory Filter
 

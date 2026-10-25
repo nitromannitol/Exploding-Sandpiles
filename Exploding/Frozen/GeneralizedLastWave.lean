@@ -1,21 +1,25 @@
+module
+
 /-
 Proposition 5.1 of the paper: convergence of the last-wave under the general
 hypotheses.
 -/
-import Exploding.Support.Hypotheses
-import Exploding.Support.GLWProofAux
-import Exploding.Support.GLWProof2
-import Exploding.Support.MKingman
-import Exploding.Support.MKingman4
-import Exploding.External.LiggettSchonmannStacey
-import Exploding.External.LiggettSchonmannStaceyBoundedDegree
-import Exploding.External.MathieuHoles
-import Exploding.External.AntalPisztora
-import Exploding.Support.KingmanBAWireGlw
-import Exploding.Support.GLWSec3J
-import Exploding.Support.GLWSec3AI
-import Exploding.Support.S3CloseI
-import Exploding.Support.PathFillingNonneg
+public import Exploding.Support.Hypotheses
+public import Exploding.Support.GLWProofAux
+public import Exploding.Support.GLWProof2
+public import Exploding.Support.MKingman
+public import Exploding.Support.MKingman4
+public import Exploding.External.LiggettSchonmannStacey
+public import Exploding.External.LiggettSchonmannStaceyBoundedDegree
+public import Exploding.External.MathieuHoles
+public import Exploding.External.AntalPisztora
+public import Exploding.Support.KingmanBAWireGlw
+public import Exploding.Support.GLWSec3J
+public import Exploding.Support.GLWSec3AI
+public import Exploding.Support.S3CloseI
+public import Exploding.Support.PathFillingNonneg
+
+@[expose] public section
 
 open Exploding LatticeProb MeasureTheory Filter
 

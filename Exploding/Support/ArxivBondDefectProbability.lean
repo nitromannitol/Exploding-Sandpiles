@@ -1,5 +1,9 @@
-import Exploding.Support.ArxivBondHoleBoundary
-import Exploding.Support.ExtAPProof4
+module
+
+public import Exploding.Support.ArxivBondHoleBoundary
+public import Exploding.Support.ExtAPProof4
+
+@[expose] public section
 
 /-!
 # Probability of separated bond defects

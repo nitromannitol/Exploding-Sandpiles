@@ -1,3 +1,5 @@
+module
+
 /-
 The bond box-crossing interface at the critical density.
 
@@ -16,8 +18,10 @@ the almost-sure-to-limit step `xmu_tendsto_of_ae_eventually` then converts the
 almost-sure statement into the limit of probabilities appearing in
 `xap15_BoxCrossing d`.
 -/
-import Exploding.Support.ExtAPUnconditional
-import Exploding.Support.ExtAPProof16
+public import Exploding.Support.ExtAPUnconditional
+public import Exploding.Support.ExtAPProof16
+
+@[expose] public section
 
 open Exploding LatticeProb MeasureTheory Filter Relation
 open scoped Classical Topology ENNReal

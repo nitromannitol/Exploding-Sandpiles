@@ -1,10 +1,14 @@
+module
+
 /-
 Proposition 5.1 of the paper (generalized last wave), the Section-3 assembly, part B:
 the subadditive cocycle `n ↦ T̃(0, n y)` over the translation by `y ∈ L`, its linear upper
 bound, and the almost sure limit along `y` from the moment-free Kingman theorem.
 -/
-import Exploding.Support.GLWSec3A
-import Exploding.Support.KingmanBALip
+public import Exploding.Support.GLWSec3A
+public import Exploding.Support.KingmanBALip
+
+@[expose] public section
 
 open Exploding LatticeProb MeasureTheory Filter
 open scoped Classical

@@ -1,8 +1,12 @@
+module
+
 /-
 The one-step unfolding of the frozen odometer off its frozen set, the first
 step of the toppling argument in the proof of Proposition 7.5.
 -/
-import Exploding.Support.Hypotheses
+public import Exploding.Support.Hypotheses
+
+@[expose] public section
 
 namespace Exploding
 

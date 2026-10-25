@@ -1,8 +1,12 @@
+module
+
 /-
 Finite-coordinate domination from the thinning, and the consistent projective
 family of couplings giving the unconditional bounded-degree theorem.
 -/
-import Exploding.Support.ExtLSSProofFinal
+public import Exploding.Support.ExtLSSProofFinal
+
+@[expose] public section
 
 open MeasureTheory Set Filter
 open scoped Topology ENNReal

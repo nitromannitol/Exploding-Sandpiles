@@ -1,9 +1,13 @@
+module
+
 /-
 The density threshold of Mathieu's hole bound: above `1 - 1 / (2 · 6^d (K + 1))`, where `K` is
 the star-count constant, the Peierls bounds of the enlarged bad event are summable, and so
 are those of the original event.
 -/
-import Exploding.Support.ExtMHProof10
+public import Exploding.Support.ExtMHProof10
+
+@[expose] public section
 
 namespace Exploding
 

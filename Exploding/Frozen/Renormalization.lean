@@ -1,15 +1,19 @@
+module
+
 /-
 Proposition 2.2 of the paper: an infinite connected set of good cubes on the
 macroscopic lattice, with small holes and a linear chemical distance.
 -/
-import Exploding.Support.Vocab
-import Exploding.External.LiggettSchonmannStaceyBoundedDegree
-import Exploding.External.MathieuHoles
-import Exploding.External.AntalPisztora
-import Exploding.Support.ArxivGoodCubeBondBoxCutoff
-import Exploding.Support.AllHighGoodCubes
-import Exploding.Support.ArxivAllGoodRenormGeometry
-import Exploding.Support.ArxivMaximalGoodChemical
+public import Exploding.Support.Vocab
+public import Exploding.External.LiggettSchonmannStaceyBoundedDegree
+public import Exploding.External.MathieuHoles
+public import Exploding.External.AntalPisztora
+public import Exploding.Support.ArxivGoodCubeBondBoxCutoff
+public import Exploding.Support.AllHighGoodCubes
+public import Exploding.Support.ArxivAllGoodRenormGeometry
+public import Exploding.Support.ArxivMaximalGoodChemical
+
+@[expose] public section
 
 open Exploding LatticeProb MeasureTheory
 

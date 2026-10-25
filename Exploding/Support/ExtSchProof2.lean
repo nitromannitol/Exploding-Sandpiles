@@ -1,3 +1,5 @@
+module
+
 /-
 The down-set (monotone-surface) seed for the bootstrap-percolation bound.
 
@@ -7,7 +9,9 @@ is spanned: a site off the boundary has all `d` of its negative neighbours at a
 strictly smaller coordinate sum, so the toppling fills the cube by induction on
 that sum.
 -/
-import Exploding.Support.ExtSchProof
+public import Exploding.Support.ExtSchProof
+
+@[expose] public section
 
 namespace Exploding
 

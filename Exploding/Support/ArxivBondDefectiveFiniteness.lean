@@ -1,5 +1,9 @@
-import Exploding.Support.ArxivBondDefectiveAnimals
-import Exploding.Support.ExtMHProof3
+module
+
+public import Exploding.Support.ArxivBondDefectiveAnimals
+public import Exploding.Support.ExtMHProof3
+
+@[expose] public section
 
 /-!
 # Finiteness of bond-defective star-connected sets

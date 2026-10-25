@@ -1,3 +1,5 @@
+module
+
 /-
 The renormalization recursion for the Schonmann bound.
 
@@ -12,7 +14,9 @@ Iterating this recursion from a scale `n0` at which `C a n0 < 1` gives
 `a n ≤ (1/C) exp(-c n)`.  The recursion and the existence of the base scale
 `n0` are the two remaining claims, isolated below.
 -/
-import Exploding.Support.ExtSchProof7
+public import Exploding.Support.ExtSchProof7
+
+@[expose] public section
 
 namespace Exploding
 

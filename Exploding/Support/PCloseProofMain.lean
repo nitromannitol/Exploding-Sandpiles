@@ -1,16 +1,20 @@
+module
+
 /-
 The second inequality of Lemma 3.7 (`exploding-corrected-arxiv.tex:832-839`), assembled from the far case
 (`pclose_far`), the linear bound of Lemma 3.6 for the near case, and the polylogarithmic
 size of the penultimate cluster from Lemma 3.5.
 -/
-import Exploding.Support.Vocab
-import Exploding.Support.Wave
-import Exploding.Support.SubPub
-import Exploding.Support.PCloseProofFar
-import Exploding.Support.PCloseProofAsymp
-import Exploding.Frozen.PenultimateUpperBound
-import Exploding.Frozen.PenultimateCluster
-import Exploding.Frozen.Renormalization
+public import Exploding.Support.Vocab
+public import Exploding.Support.Wave
+public import Exploding.Support.SubPub
+public import Exploding.Support.PCloseProofFar
+public import Exploding.Support.PCloseProofAsymp
+public import Exploding.Frozen.PenultimateUpperBound
+public import Exploding.Frozen.PenultimateCluster
+public import Exploding.Frozen.Renormalization
+
+@[expose] public section
 
 open Exploding LatticeProb MeasureTheory
 

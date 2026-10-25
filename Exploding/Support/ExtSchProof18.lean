@@ -1,3 +1,5 @@
+module
+
 /-
 The corner recursion at every scale.
 
@@ -14,7 +16,9 @@ This file provides the deterministic half of the all-scales recursion:
 `xsch18_sub σ n` and the L-shape lemma `xsch18_sp_of_all_but_one`.  It does not
 claim `xsch13_Percolates`.
 -/
-import Exploding.Support.ExtSchProof17
+public import Exploding.Support.ExtSchProof17
+
+@[expose] public section
 
 namespace Exploding
 

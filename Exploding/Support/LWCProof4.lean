@@ -1,3 +1,5 @@
+module
+
 /-
 Continues `Exploding/Support/LWCProof3.lean`.
 
@@ -7,8 +9,10 @@ speed at most one, `mnorm (x - z) ≤ t` whenever `wave η N z t x > 0`, which i
 "near" half of the far-bound split uses together with Lemma 3.6.  All declarations are
 `lwc4_`-prefixed.
 -/
-import Exploding.Support.LWCProof3
-import Exploding.Support.Wave
+public import Exploding.Support.LWCProof3
+public import Exploding.Support.Wave
+
+@[expose] public section
 
 open Exploding LatticeProb MeasureTheory Filter
 

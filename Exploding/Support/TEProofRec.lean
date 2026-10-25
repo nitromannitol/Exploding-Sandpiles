@@ -1,3 +1,5 @@
+module
+
 /-
 Recurrence of the clamped product law, for Theorem 1.4.
 
@@ -6,8 +8,10 @@ A background with `d ≤ η ≤ 2d - 1` is recurrent as soon as the constant bac
 `1` when the background is at most `2d - 1`.  Then the product law with one-site
 law supported in `[d, 2d - 1]` is almost surely recurrent.
 -/
-import Exploding.Support.Hypotheses
-import Exploding.Support.SubFodo
+public import Exploding.Support.Hypotheses
+public import Exploding.Support.SubFodo
+
+@[expose] public section
 
 namespace Exploding
 

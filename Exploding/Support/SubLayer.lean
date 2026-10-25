@@ -1,8 +1,12 @@
+module
+
 /-
 The layer decomposition of the box used in the proof of Proposition 7.5:
 `Q_n^{(d+1)} = ⋃_{i=1}^{n} L_i` with `L_i = {x ∈ Q_n^{(d+1)} : x_0 = i}`.
 -/
-import Exploding.Support.Reduction
+public import Exploding.Support.Reduction
+
+@[expose] public section
 
 namespace Exploding
 

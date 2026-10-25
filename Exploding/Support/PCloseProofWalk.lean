@@ -1,12 +1,16 @@
+module
+
 /-
 Walks in the infinite cluster for the second inequality of Lemma 3.7: a ray
 meets the infinite cluster within the hole volume, a finite chemical distance is
 realised by a walk, and a walk of macroscopic cubes carries a microscopic path
 through the corners of its cubes.
 -/
-import Exploding.Support.Vocab
-import Exploding.Support.SubPub
-import Exploding.Support.PCloseProofGeom
+public import Exploding.Support.Vocab
+public import Exploding.Support.SubPub
+public import Exploding.Support.PCloseProofGeom
+
+@[expose] public section
 
 namespace Exploding
 

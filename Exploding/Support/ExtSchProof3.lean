@@ -1,3 +1,5 @@
+module
+
 /-
 The final step of the Schonmann bootstrap argument.
 
@@ -7,8 +9,10 @@ content is the percolation estimate that such a cover exists with probability
 `1 - c exp(-C n)`; it is isolated as `xsch3_PercolationBound`, and
 `xsch3_schonmann_of_percolation` reduces the target `SchonmannBootstrap` to it.
 -/
-import Exploding.Support.ExtSchProof2
-import Exploding.Support.ExtSchProb
+public import Exploding.Support.ExtSchProof2
+public import Exploding.Support.ExtSchProb
+
+@[expose] public section
 
 namespace Exploding
 

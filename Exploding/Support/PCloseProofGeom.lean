@@ -1,11 +1,15 @@
+module
+
 /-
 Lattice geometry for the second inequality of Lemma 3.7: boxes with given sides
 have the expected cardinality, a set with many points has a long bounding side,
 and a path stays within its length of its endpoint.
 -/
-import Exploding.Support.Vocab
-import Exploding.Support.SubBox
-import Exploding.Support.PCloseProofPath
+public import Exploding.Support.Vocab
+public import Exploding.Support.SubBox
+public import Exploding.Support.PCloseProofPath
+
+@[expose] public section
 
 namespace Exploding
 

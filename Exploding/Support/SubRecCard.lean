@@ -1,11 +1,15 @@
+module
+
 /-
 The counting step of the recurrence argument of Proposition 7.3 of
 `paper/corrected-arxiv/exploding-corrected-arxiv.tex`.
 -/
-import Exploding.Support.SubRecOne
-import Exploding.Support.SubRecSub
-import Exploding.Support.SubMax
-import Exploding.Support.SubTopple
+public import Exploding.Support.SubRecOne
+public import Exploding.Support.SubRecSub
+public import Exploding.Support.SubMax
+public import Exploding.Support.SubTopple
+
+@[expose] public section
 
 namespace Exploding
 

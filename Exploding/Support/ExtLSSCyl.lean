@@ -1,3 +1,5 @@
+module
+
 /-
 Cylinder hulls of a set of configurations over a finite set of coordinates: the
 configurations that agree on the coordinates with some member of the set.  The hull
@@ -5,8 +7,10 @@ contains the set, shrinks as the coordinate set grows, is increasing when the se
 depends only on the coordinates in the finite set, and, for a closed set, the hulls
 over all finite coordinate sets intersect to the set itself.
 -/
-import Mathlib
-import Exploding.Support.Percolation
+public import Mathlib
+public import Exploding.Support.Percolation
+
+@[expose] public section
 
 open MeasureTheory Set Filter
 open scoped Topology

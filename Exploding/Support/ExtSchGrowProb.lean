@@ -1,11 +1,15 @@
+module
+
 /-
 The probability that some layer of the growth schedule is not spanned is at most `|J|` times the
 sum, over the sizes `a` from `L` to `s`, of the bound `g a` for the failure of a near-cube box
 of size `a` in one dimension less.  Each layer is a near-cube of size `L + t / |J|` along
 `J.erase (dir t)` (or empty), and each size occurs at most `|J|` times.
 -/
-import Exploding.Support.ExtSchSchedLayer
-import Exploding.Support.ExtSchProb
+public import Exploding.Support.ExtSchSchedLayer
+public import Exploding.Support.ExtSchProb
+
+@[expose] public section
 
 namespace Exploding
 

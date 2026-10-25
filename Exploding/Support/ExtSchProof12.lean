@@ -1,3 +1,5 @@
+module
+
 /-
 Schonmann renormalization recursion — capstone.
 
@@ -23,7 +25,9 @@ We prove here, under the `xsch12_` prefix:
   pairs, with pair independence from `xsch_indep_iInter`, gives the bound.
 * `xsch12_xsch8_Recursion`, the packaged `xsch8_Recursion d p`.
 -/
-import Exploding.Support.ExtSchProof10
+public import Exploding.Support.ExtSchProof10
+
+@[expose] public section
 
 namespace Exploding
 

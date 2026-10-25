@@ -1,9 +1,13 @@
+module
+
 /-
 Lemma 3.3 of the paper: the last wave exceeds the penultimate wave by at most one at
 every time, and the last wave is at most one outside the interior of the penultimate
 cluster.
 -/
-import Exploding.Support.LastWaveBoundComplete
+public import Exploding.Support.LastWaveBoundComplete
+
+@[expose] public section
 
 open Exploding LatticeProb
 

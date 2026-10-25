@@ -1,9 +1,13 @@
+module
+
 /-
 Theorem 0.0 of Liggett, Schonmann and Stacey, domination of a finite-range
 dependent field of bits by a product measure, quoted in the proof of
 Proposition 5.1 of the paper.
 -/
-import Exploding.Support.Percolation
+public import Exploding.Support.Percolation
+
+@[expose] public section
 
 open Exploding LatticeProb MeasureTheory
 

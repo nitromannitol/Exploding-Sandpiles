@@ -1,3 +1,5 @@
+module
+
 /-
 The Abelian sandpile under parallel toppling on `ℤ^d`, in the vocabulary of
 `paper/corrected-arxiv/exploding-corrected-arxiv.tex`.
@@ -20,7 +22,9 @@ The objects defined here, with the display of the paper they transcribe:
 Integer division `/` on `ℤ` rounds towards `-∞`, so it is the floor `⌊·⌋` of
 the paper: `(-7 : ℤ) / 2 = -4`.
 -/
-import LatticeProb.Site
+public import LatticeProb.Site
+
+@[expose] public section
 
 namespace Exploding
 

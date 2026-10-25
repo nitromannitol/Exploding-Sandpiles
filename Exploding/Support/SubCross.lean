@@ -1,3 +1,5 @@
+module
+
 /-
 The crossing property of a good cube, in the form the propagation step of
 Lemma 3.2 uses it: if a line of `Q_k` through a point of its outer boundary has
@@ -7,10 +9,12 @@ This is the paper's `exploding-corrected-arxiv.tex:371-373`: a good cube is one 
 time is at most `k^d`, and the crossing time is exactly the first time the
 `{Q_k^c ∪ L}`-frozen odometer is `1` on all of `Q_k`.
 -/
-import Exploding.Support.Vocab
-import Exploding.Support.Wave
-import Exploding.Support.SubGeom
-import Exploding.Support.SubStep
+public import Exploding.Support.Vocab
+public import Exploding.Support.Wave
+public import Exploding.Support.SubGeom
+public import Exploding.Support.SubStep
+
+@[expose] public section
 
 namespace Exploding
 

@@ -1,3 +1,5 @@
+module
+
 /-
 The critical case `r = d`: finite seeds do not grow.
 
@@ -15,7 +17,9 @@ global diagonal structure (Schonmann 1992) rather than by a block droplet.
 
 The file records this obstruction; it does not claim `xsch13_Percolates`.
 -/
-import Exploding.Support.ExtSchProof16
+public import Exploding.Support.ExtSchProof16
+
+@[expose] public section
 
 namespace Exploding
 

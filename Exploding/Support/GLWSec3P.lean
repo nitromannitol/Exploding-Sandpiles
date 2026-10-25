@@ -1,3 +1,5 @@
+module
+
 /-
 Proposition 5.1 of the paper (generalized last wave): the lighting of a rectangle from a lit tile
 of `C_∞`, along two walks of `C_∞`.
@@ -7,7 +9,9 @@ from `M_f` to a point `M_o` on the other side of the target; the sites of the ti
 walk near the target contain a path of distinct sites whose bounding rectangle contains the
 target.
 -/
-import Exploding.Support.GLWSec3O
+public import Exploding.Support.GLWSec3O
+
+@[expose] public section
 
 open Exploding LatticeProb MeasureTheory Filter
 

@@ -1,3 +1,5 @@
+module
+
 /-
 The probabilistic block layer of the Schonmann argument.
 
@@ -8,7 +10,9 @@ disjoint blocks is fully occupied is the product of the per-block probabilities
 `p ^ |block|`.  These are the inputs of the block-cover estimate
 `xsch3_PercolationBound`.
 -/
-import Exploding.Support.ExtSchProof3
+public import Exploding.Support.ExtSchProof3
+
+@[expose] public section
 
 namespace Exploding
 

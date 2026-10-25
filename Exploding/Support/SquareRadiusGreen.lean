@@ -1,7 +1,11 @@
-import Exploding.Support.LatticeSandpileBridge
-import Exploding.Support.SquareGreenOrigin
-import LatticeProb.Sandpile.RadiusConsequences
-import LatticeProb.Walk.KilledGreenDiagonal
+module
+
+public import Exploding.Support.LatticeSandpileBridge
+public import Exploding.Support.SquareGreenOrigin
+public import LatticeProb.Sandpile.RadiusConsequences
+public import LatticeProb.Walk.KilledGreenDiagonal
+
+@[expose] public section
 
 /-!
 # Radius and Green origin bound for the square pile

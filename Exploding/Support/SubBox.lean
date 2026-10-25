@@ -1,5 +1,9 @@
-import Exploding.Support.Vocab
-import Exploding.Support.SubGeom
+module
+
+public import Exploding.Support.Vocab
+public import Exploding.Support.SubGeom
+
+@[expose] public section
 
 /-!
 # Bounding rectangles of paths

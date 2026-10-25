@@ -1,11 +1,15 @@
+module
+
 /-
 Isolation of the uniqueness input of Mathieu's hole-volume bound.  The connectedness and
 closedness of the clusters and holes are proved from generic induced-graph facts about `componentIn`;
 the only remaining percolation inputs are named explicitly: uniqueness of the infinite
 cluster, localisation of the hole boundary, and the isoperimetric size of that boundary.
 -/
-import Exploding.Support.ExtMHProof10
-import Exploding.Support.ExtMHBase
+public import Exploding.Support.ExtMHProof10
+public import Exploding.Support.ExtMHBase
+
+@[expose] public section
 
 namespace Exploding
 

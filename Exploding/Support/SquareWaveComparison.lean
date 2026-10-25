@@ -1,3 +1,5 @@
+module
+
 /-
 The ordinary-to-frozen-wave comparison used in the proof of the corrected square
 lemma, `paper/corrected-arxiv/exploding-corrected-arxiv.tex`, lines 758–777.
@@ -12,9 +14,11 @@ corrected proof it is an obligation of the Green-function and radius estimate, a
 is not established in this file.  The file is not the square lemma and uses no
 external radius theorem.
 -/
-import Exploding.Support.Toppling
-import Exploding.Support.LatticeSandpileBridge
-import LatticeProb.Sandpile.Parallel
+public import Exploding.Support.Toppling
+public import Exploding.Support.LatticeSandpileBridge
+public import LatticeProb.Sandpile.Parallel
+
+@[expose] public section
 
 namespace Exploding
 

@@ -1,14 +1,18 @@
-import Mathlib.Algebra.BigOperators.Ring.Finset
-import Mathlib.Algebra.Order.BigOperators.Group.Finset
-import Mathlib.Algebra.Order.Group.Unbundled.Abs
-import Mathlib.Algebra.Order.Ring.Abs
-import Mathlib.Analysis.Convex.Basic
-import Mathlib.Analysis.Convex.Function
-import Mathlib.Data.Real.Basic
-import Mathlib.Topology.Algebra.Monoid
-import Mathlib.Topology.Algebra.Order.Group
-import Mathlib.Topology.Constructions
-import Mathlib.Topology.Instances.Real.Lemmas
+module
+
+public import Mathlib.Algebra.BigOperators.Ring.Finset
+public import Mathlib.Algebra.Order.BigOperators.Group.Finset
+public import Mathlib.Algebra.Order.Group.Unbundled.Abs
+public import Mathlib.Algebra.Order.Ring.Abs
+public import Mathlib.Analysis.Convex.Basic
+public import Mathlib.Analysis.Convex.Function
+public import Mathlib.Data.Real.Basic
+public import Mathlib.Topology.Algebra.Monoid
+public import Mathlib.Topology.Algebra.Order.Group
+public import Mathlib.Topology.Constructions
+public import Mathlib.Topology.Instances.Real.Lemmas
+
+@[expose] public section
 
 /-!
 # The coordinate sum of absolute values on `ℝ^d`

@@ -1,5 +1,9 @@
-import Exploding.Support.ExtSchFinal
-import Exploding.Support.LSProofAux
+module
+
+public import Exploding.Support.ExtSchFinal
+public import Exploding.Support.LSProofAux
+
+@[expose] public section
 
 open Exploding
 

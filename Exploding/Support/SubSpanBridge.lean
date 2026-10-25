@@ -1,11 +1,15 @@
+module
+
 /-
 The coupling between the reduced constrained odometer of Proposition 7.2 and
 bootstrap percolation, used in the proof of Proposition 7.5: the `d`-dimensional
 constrained frozen odometer on the background `η(1, ·) - 1` is the bootstrap
 percolation odometer of that background.
 -/
-import Exploding.Support.Reduction
-import Exploding.Support.SubSpanZero
+public import Exploding.Support.Reduction
+public import Exploding.Support.SubSpanZero
+
+@[expose] public section
 
 namespace Exploding
 

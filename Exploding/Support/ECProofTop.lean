@@ -1,9 +1,13 @@
+module
+
 /-
 The planar duality used in the Peierls estimate of Proposition 7.1: a finite set of
 the square lattice containing the origin is enclosed by a `*`-connected chain of
 boundary vertices running from the positive to the negative `x`-axis.
 -/
-import Exploding.Support.ECProofStar
+public import Exploding.Support.ECProofStar
+
+@[expose] public section
 
 namespace Exploding
 

@@ -1,10 +1,14 @@
+module
+
 /-
 The Peierls layer of Lemma 5.2 of Mathieu: the probability that a prescribed finite set of
 sites is entirely closed, and the union bound over a family of such sets.  These are the
 elementary probabilistic inputs of the finite-cluster expansion on the holes of the infinite
 cluster of site percolation.
 -/
-import Exploding.Support.ExtMHBase
+public import Exploding.Support.ExtMHBase
+
+@[expose] public section
 
 namespace Exploding
 

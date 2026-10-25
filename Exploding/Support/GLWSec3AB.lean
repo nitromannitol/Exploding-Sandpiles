@@ -1,3 +1,5 @@
+module
+
 /-
 Proposition 5.1 of the paper (generalized last wave): the second bound of
 `eq:generalized_lipschitz`, `T̃(x') ≤ T̃(x) + C |x - x'| + (log n)^γ`, and the local bound from the
@@ -9,7 +11,9 @@ path length) a tile of the cluster near `ν(x)` is lit at time `a + Pn^d + ∏ k
 `A |j - ν(x')| + B Z^d` more steps (`glws_cluster_lit`).  For `|x|` below the path length the first
 bound for `x'` suffices.
 -/
-import Exploding.Support.GLWSec3AA
+public import Exploding.Support.GLWSec3AA
+
+@[expose] public section
 
 open Exploding LatticeProb MeasureTheory Filter
 

@@ -1,20 +1,24 @@
+module
+
 /-
 Support for Lemma 3.6 of `paper/corrected-arxiv/exploding-corrected-arxiv.tex`: the last wave is a connected,
 monotone, bounded process; a good cube converts a lit line, or a lit adjacent cube, into a lit
 cube within `k^d` steps, for every wave mass `N ≥ 1`; a walk of good cubes carries a lit cube
 along it at `k^d` steps per edge; and a finite region whose outer boundary is lit is lit.
 -/
-import Exploding.Support.Vocab
-import Exploding.Support.Wave
-import Exploding.Support.SubGeom
-import Exploding.Support.SubFodo
-import Exploding.Support.SubStep
-import Exploding.Support.SubCross
-import Exploding.Support.SubFinite
-import Exploding.Support.SubPen
-import Exploding.Support.SubPub
-import Exploding.Support.ReductionShift
-import Exploding.Frozen.LocalConvexity
+public import Exploding.Support.Vocab
+public import Exploding.Support.Wave
+public import Exploding.Support.SubGeom
+public import Exploding.Support.SubFodo
+public import Exploding.Support.SubStep
+public import Exploding.Support.SubCross
+public import Exploding.Support.SubFinite
+public import Exploding.Support.SubPen
+public import Exploding.Support.SubPub
+public import Exploding.Support.ReductionShift
+public import Exploding.Frozen.LocalConvexity
+
+@[expose] public section
 
 namespace Exploding
 

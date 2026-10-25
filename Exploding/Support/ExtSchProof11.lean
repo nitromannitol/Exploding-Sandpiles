@@ -1,3 +1,5 @@
+module
+
 /-
 The Schonmann renormalization recursion, measure step.
 
@@ -11,7 +13,9 @@ can fail only if two distinct sub-cubes fail; a union bound over the
 `2^d (2^d - 1)` ordered pairs together with the independence of the blocks
 (`xsch_indep_two`, the two-block case of `xsch_indep_iInter`) gives the result.
 -/
-import Exploding.Support.ExtSchProof10
+public import Exploding.Support.ExtSchProof10
+
+@[expose] public section
 
 namespace Exploding
 

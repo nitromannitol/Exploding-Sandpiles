@@ -1,3 +1,5 @@
+module
+
 /-
 The penultimate cluster of `paper/corrected-arxiv/exploding-corrected-arxiv.tex` Section 3: the a.e. background
 bounds, the connectedness of the penultimate cluster to its centre, and the
@@ -7,16 +9,18 @@ The two remaining inputs of Lemma 3.5 are the propagation of penultimate-wave
 positivity through the infinite good cluster and the pigeonhole step that finds
 a good cube on a long line; both are recorded in `FINDINGS.md`.
 -/
-import Exploding.Support.Vocab
-import Exploding.Support.SubFinite
-import Exploding.Support.SubCross
-import Exploding.Frozen.LastWaveBound
-import Exploding.Support.Wave
-import Exploding.Frozen.LocalConvexity
-import Exploding.Frozen.Renormalization
-import Exploding.External.LiggettSchonmannStaceyBoundedDegree
-import Exploding.External.MathieuHoles
-import Exploding.External.AntalPisztora
+public import Exploding.Support.Vocab
+public import Exploding.Support.SubFinite
+public import Exploding.Support.SubCross
+public import Exploding.Frozen.LastWaveBound
+public import Exploding.Support.Wave
+public import Exploding.Frozen.LocalConvexity
+public import Exploding.Frozen.Renormalization
+public import Exploding.External.LiggettSchonmannStaceyBoundedDegree
+public import Exploding.External.MathieuHoles
+public import Exploding.External.AntalPisztora
+
+@[expose] public section
 
 open Exploding LatticeProb MeasureTheory
 

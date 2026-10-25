@@ -1,6 +1,10 @@
-import Exploding.External.FeyDenBoerRedigCubicalCluster
-import Exploding.External.FeyLevinePeresRadius
-import Exploding.Support.SquareLowerBoundSharp
+module
+
+public import Exploding.External.FeyDenBoerRedigCubicalCluster
+public import Exploding.External.FeyLevinePeresRadius
+public import Exploding.Support.SquareLowerBoundSharp
+
+@[expose] public section
 
 /-!
 # Sharp square lower bound

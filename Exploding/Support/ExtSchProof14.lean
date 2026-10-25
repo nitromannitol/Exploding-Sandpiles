@@ -1,3 +1,5 @@
+module
+
 /-
 The dimensional obstruction to the base scale.
 
@@ -33,7 +35,9 @@ The genuine missing input remains the finite-volume percolation estimate
 (`a n → 0`), i.e. the coarse graining to supercritical block percolation; it is
 not a consequence of the recursion plus the one-dimensional base.
 -/
-import Exploding.Support.ExtSchProof13
+public import Exploding.Support.ExtSchProof13
+
+@[expose] public section
 
 namespace Exploding
 

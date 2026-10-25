@@ -1,3 +1,5 @@
+module
+
 /-
 The countable upgrade of the finite-coordinate domination of Liggett, Schonmann and
 Stacey.  A closed increasing set is the intersection of its cylinder hulls over the finite
@@ -8,12 +10,14 @@ closed sets, whose increasing hulls are closed increasing subsets of it.  This d
 the finite-to-countable estimate, and with it Corollary 1.4 and Theorem 0.0 of Liggett,
 Schonmann and Stacey, the two domination theorems cited by the paper.
 -/
-import Exploding.Support.ExtLSSProof
-import Exploding.Support.ExtLSSProofCouple
-import Exploding.Support.ExtLSSCyl
-import Exploding.Support.ExtLSSUpHull
-import Exploding.Support.ExtLSSReg
-import Exploding.Support.ExtLSSG
+public import Exploding.Support.ExtLSSProof
+public import Exploding.Support.ExtLSSProofCouple
+public import Exploding.Support.ExtLSSCyl
+public import Exploding.Support.ExtLSSUpHull
+public import Exploding.Support.ExtLSSReg
+public import Exploding.Support.ExtLSSG
+
+@[expose] public section
 
 open MeasureTheory Set Filter
 open Exploding

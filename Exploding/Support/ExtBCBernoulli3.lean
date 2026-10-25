@@ -1,3 +1,5 @@
+module
+
 /-
 Assembly of the high-density Bernoulli site box-crossing lemma from the star-duality
 input `xbc_StarDuality`.
@@ -9,8 +11,10 @@ probability is bounded by the geometric tail
 `|ball| · r ^ (2n + 1) · (1 - r)⁻¹`, `r = 3 ^ (2d) (1 - q)`, which tends to zero; hence
 at such densities almost surely every large box is crossed.
 -/
-import Exploding.Support.ExtBCBernoulli2
-import Exploding.Support.ExtMHProof3
+public import Exploding.Support.ExtBCBernoulli2
+public import Exploding.Support.ExtMHProof3
+
+@[expose] public section
 
 open Exploding LatticeProb MeasureTheory Filter
 open scoped Classical Topology ENNReal

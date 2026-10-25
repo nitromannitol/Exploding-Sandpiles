@@ -1,10 +1,14 @@
+module
+
 /-
 Proposition 5.1 of the paper (generalized last wave): the local bound from the origin
 (`eq:generalized_lipschitz`), proved from Hypotheses 1, 3 and 4 and the cited percolation
 results.
 -/
-import Exploding.Support.GLWSec3AC
-import Exploding.Support.GLWSec3AH
+public import Exploding.Support.GLWSec3AC
+public import Exploding.Support.GLWSec3AH
+
+@[expose] public section
 
 open Exploding LatticeProb MeasureTheory
 

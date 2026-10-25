@@ -1,3 +1,5 @@
+module
+
 /-
 The reduction of the Bernoulli box-crossing star duality to the minimal-cut input.
 
@@ -6,8 +8,10 @@ two faces; a finite minimisation produces a minimal cut, which the minimal-cut i
 `*`-connected, and the axis-line bound makes it at least the side length long.  Hence
 `xbc_StarDuality` holds in every dimension at least two from `xmc_MinCutStarConnected`.
 -/
-import Exploding.Support.ExtAPMinCutLine
-import Exploding.Support.ExtBCBernoulli2
+public import Exploding.Support.ExtAPMinCutLine
+public import Exploding.Support.ExtBCBernoulli2
+
+@[expose] public section
 
 open Exploding LatticeProb Relation
 open scoped Classical

@@ -1,11 +1,15 @@
+module
+
 /-
 The doubling recursion for the failure probability of a cube.  A box of size `s` splits into `2^d`
 half-boxes, near-cubes of size `s / 2`.  If at most one half-box fails to be spanned the box is
 spanned (L-shape lemma), so the box fails only if two distinct half-boxes fail; they are disjoint,
 hence independent, and there are at most `(2^d)^2 = 4^d` pairs.
 -/
-import Exploding.Support.ExtSchLevel
-import Exploding.Support.ExtSchHalf
+public import Exploding.Support.ExtSchLevel
+public import Exploding.Support.ExtSchHalf
+
+@[expose] public section
 
 namespace Exploding
 

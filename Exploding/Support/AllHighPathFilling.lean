@@ -1,3 +1,5 @@
+module
+
 /-
 The path-filling hypothesis (Hypothesis 3 of `paper/corrected-arxiv/exploding-corrected-arxiv.tex`) holds on the
 all-high background in dimension two.
@@ -13,10 +15,12 @@ most `m - 1` in each direction, so every point of its bounding rectangle lies wi
 Manhattan distance `2(m - 1)` of its first point.  Since `2(m - 1) ≤ m²`, the bound holds
 at every time `t ≥ m²`.
 -/
-import Exploding.Support.Hypotheses
-import Exploding.Support.SubGeom
-import Exploding.Support.AllHighPodoFront
-import LatticeProb.Lattice.PathBoundingRectangle
+public import Exploding.Support.Hypotheses
+public import Exploding.Support.SubGeom
+public import Exploding.Support.AllHighPodoFront
+public import LatticeProb.Lattice.PathBoundingRectangle
+
+@[expose] public section
 
 namespace Exploding
 

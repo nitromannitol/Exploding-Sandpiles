@@ -1,11 +1,15 @@
+module
+
 /-
 The general-dimension Poincaré lemma modulo two, needed to extend the planar
 `ec_star_conn` argument to `ℤ^d`: a closed one-cochain of edge functions is the
 coboundary of a site function.  The proof splits off the first coordinate and
 integrates along it, using the codimension-one slice as the inductive datum.
 -/
-import Exploding.Support.ECProofPoincare
-import Exploding.Support.Percolation
+public import Exploding.Support.ECProofPoincare
+public import Exploding.Support.Percolation
+
+@[expose] public section
 
 namespace Exploding
 

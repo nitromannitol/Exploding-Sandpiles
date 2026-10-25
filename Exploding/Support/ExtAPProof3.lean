@@ -1,3 +1,5 @@
+module
+
 /-
 The high-density Peierls estimate for the good cluster of the origin: if the
 good cluster misses `y`, a `*`-connected set of bad sites separates `0` from `y`;
@@ -6,8 +8,10 @@ is independent, so the chance of a bad set of size `s` is at most `(1 - δ)^{s/3
 Counting the `*`-connected sets against the geometric size of a separating set
 gives the exponential bound.
 -/
-import Exploding.Support.ExtAPProof2
-import Exploding.Support.RNProofGraph
+public import Exploding.Support.ExtAPProof2
+public import Exploding.Support.RNProofGraph
+
+@[expose] public section
 
 open Exploding LatticeProb MeasureTheory ProbabilityTheory
 

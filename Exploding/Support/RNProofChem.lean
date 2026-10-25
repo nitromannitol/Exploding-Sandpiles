@@ -1,11 +1,15 @@
+module
+
 /-
 The chemical distance estimate behind Proposition 2.2: from the large deviation bound of Antal and
 Pisztora, translation invariance of Bernoulli bond percolation, a union bound over pairs of sites
 and the first Borel-Cantelli lemma, almost surely all far pairs in a common open cluster are joined
 by an open path of length at most a fixed multiple of their distance.
 -/
-import Exploding.Support.RNProofGraph
-import Exploding.External.AntalPisztora
+public import Exploding.Support.RNProofGraph
+public import Exploding.External.AntalPisztora
+
+@[expose] public section
 
 
 open MeasureTheory ProbabilityTheory Exploding LatticeProb Filter Topology

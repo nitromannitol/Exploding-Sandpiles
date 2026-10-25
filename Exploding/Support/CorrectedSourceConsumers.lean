@@ -1,3 +1,5 @@
+module
+
 /-
 Consumers of Proposition 2.2 (`prop:renormalization_properties`) and of the statements that
 depend on it: Lemmas 3.2, 3.5, 3.6 and 3.7, Proposition 3.8 and Proposition 4.1 of the paper.
@@ -7,15 +9,17 @@ Proposition 2.2.  Each named consumer discharges the Liggett–Schonmann–Stace
 hypotheses by the in-repository producers `xlse_lss_bounded_degree` and `xmf_proved`, and
 keeps the Antal–Pisztora chemical-distance hypothesis as its only explicit input.
 -/
-import Exploding.Frozen.Renormalization
-import Exploding.Frozen.FiniteExploding
-import Exploding.Frozen.PenultimateCluster
-import Exploding.Frozen.PenultimateUpperBound
-import Exploding.Frozen.PenultimateClose
-import Exploding.Frozen.LastWaveConvergence
-import Exploding.Frozen.ApproximateSubadditive
-import Exploding.Support.ExtLSSCountable
-import Exploding.Support.ExtMHHoleVolume
+public import Exploding.Frozen.Renormalization
+public import Exploding.Frozen.FiniteExploding
+public import Exploding.Frozen.PenultimateCluster
+public import Exploding.Frozen.PenultimateUpperBound
+public import Exploding.Frozen.PenultimateClose
+public import Exploding.Frozen.LastWaveConvergence
+public import Exploding.Frozen.ApproximateSubadditive
+public import Exploding.Support.ExtLSSCountable
+public import Exploding.Support.ExtMHHoleVolume
+
+@[expose] public section
 
 open Exploding LatticeProb MeasureTheory Filter
 

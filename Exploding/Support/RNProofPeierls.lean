@@ -1,10 +1,14 @@
+module
+
 /-
 The planar bonds of `ℤ^d` used in the Peierls estimate for bond percolation: the bond joining
 two adjacent sites of the plane spanned by the first two coordinates, the open cluster of the
 origin in the plane, and the fact that a closed bond lies across the boundary of that cluster.
 -/
-import Exploding.Support.ECProofMain
-import Exploding.Support.Percolation
+public import Exploding.Support.ECProofMain
+public import Exploding.Support.Percolation
+
+@[expose] public section
 
 namespace Exploding
 

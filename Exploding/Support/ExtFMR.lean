@@ -1,3 +1,5 @@
+module
+
 /-
 Least action principle of Fey, Meester and Redig for legal toppling procedures
 on `ℤ^d`, in the form of `Exploding.External.FeyMeesterRedigLeastAction`.
@@ -7,7 +9,9 @@ a site could exceed `w`, it would be unstable although all its neighbours have
 been toppled at most as often as under `w`, which makes its Laplacian at most
 that of `w`, a stable configuration.
 -/
-import Exploding.External.FeyMeesterRedig
+public import Exploding.External.FeyMeesterRedig
+
+@[expose] public section
 
 open Exploding
 

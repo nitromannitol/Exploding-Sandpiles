@@ -1,4 +1,8 @@
-import LatticeProb.External.FeyDenBoerRedigCubicalCluster
+module
+
+public import LatticeProb.External.FeyDenBoerRedigCubicalCluster
+
+@[expose] public section
 
 /-!
 # Cited input: cubical toppling clusters (Fey-den Boer and Redig)

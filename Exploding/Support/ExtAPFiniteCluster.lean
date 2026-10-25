@@ -1,3 +1,5 @@
+module
+
 /-
 The finite-cluster half of the chemical-distance estimate.
 
@@ -20,8 +22,10 @@ ratio `ρ < 1` a finite chemical distance is exactly `BigDistance`; the constrai
 `1 ≤ ρ` in the corrected bound is therefore essential, and the origin-bad event
 alone is not enough to refute it.
 -/
-import Exploding.Support.ExtAPProof13
-import Exploding.Support.PUBProofB
+public import Exploding.Support.ExtAPProof13
+public import Exploding.Support.PUBProofB
+
+@[expose] public section
 
 open Exploding LatticeProb MeasureTheory
 open scoped Classical

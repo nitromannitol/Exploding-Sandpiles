@@ -1,3 +1,5 @@
+module
+
 /-
 Support for Lemma 3.5 (`Exploding.Frozen.last_penultimate_cluster`): the crossing
 comparison, the cube cover, the propagation step and the side bound for the
@@ -8,15 +10,17 @@ The comparison `crossOdo ≤ wave` holds for `N = 1` at the centre too: at the
 preimage of the centre the crossing odometer is at most `1` after the toppling
 (`fodo_le_one` at the next time), and the wave is `N = 1` there.
 -/
-import Exploding.Support.Vocab
-import Exploding.Support.Wave
-import Exploding.Support.SubGeom
-import Exploding.Support.SubStep
-import Exploding.Support.SubCross
-import Exploding.Support.SubFodo
-import Mathlib.Analysis.SpecialFunctions.Pow.Asymptotics
-import Exploding.Support.SubPen
-import Exploding.Support.SubFinite
+public import Exploding.Support.Vocab
+public import Exploding.Support.Wave
+public import Exploding.Support.SubGeom
+public import Exploding.Support.SubStep
+public import Exploding.Support.SubCross
+public import Exploding.Support.SubFodo
+public import Mathlib.Analysis.SpecialFunctions.Pow.Asymptotics
+public import Exploding.Support.SubPen
+public import Exploding.Support.SubFinite
+
+@[expose] public section
 
 namespace Exploding
 

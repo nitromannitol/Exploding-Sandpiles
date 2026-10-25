@@ -1,3 +1,5 @@
+module
+
 /-
 Proposition 5.1 (generalized last wave), closeness of the arrival times, part C:
 a calculus for quantities bounded by a power of the logarithm.
@@ -6,8 +8,10 @@ a calculus for quantities bounded by a power of the logarithm.
 closed under sums, products, powers and ceilings, and a quantity in the class is eventually below
 `(log n)^(e+1)` and eventually below `n` after multiplication by any constant.
 -/
-import Exploding.Support.S3CloseB
-import Exploding.Support.GLWSec3V
+public import Exploding.Support.S3CloseB
+public import Exploding.Support.GLWSec3V
+
+@[expose] public section
 
 open Exploding LatticeProb MeasureTheory Filter
 

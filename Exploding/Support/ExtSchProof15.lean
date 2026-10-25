@@ -1,3 +1,5 @@
+module
+
 /-
 Coarse graining and the finite-volume percolation estimate.
 
@@ -26,7 +28,9 @@ We record the parts that are provable without the critical seed:
 Since `xsch13_Percolates` for `d ≥ 2` is not proved, `xsch_proved` is not
 assembled.
 -/
-import Exploding.Support.ExtSchProof14
+public import Exploding.Support.ExtSchProof14
+
+@[expose] public section
 
 namespace Exploding
 

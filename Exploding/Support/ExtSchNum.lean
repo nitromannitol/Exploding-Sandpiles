@@ -1,10 +1,14 @@
+module
+
 /-
 The arithmetic of one step of the induction on the number of directions: a sequence decaying
 faster than any polynomial is summable with a tail below `1/(2k)` from some index on, and the
 bound `(1 - π)^N + N k Σ g`, with `N` the number of blocks of side `⌊√s⌋ + 1` in a box of side
 `s`, again decays faster than any polynomial.
 -/
-import Mathlib
+public import Mathlib
+
+@[expose] public section
 
 namespace Exploding
 

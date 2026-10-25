@@ -1,10 +1,14 @@
+module
+
 /-
 The paper-facing form of the long detour.  The construction and its logarithmic threshold are
 the generic lattice statement `LatticeProb.exists_long_lattice_path_avoiding_site`; this file
 reads its conclusions through the box `cent` and the bounding rectangle `br` of the paper.
 -/
-import Exploding.Support.Vocab
-import LatticeProb.Lattice.Detour
+public import Exploding.Support.Vocab
+public import LatticeProb.Lattice.Detour
+
+@[expose] public section
 
 namespace Exploding
 

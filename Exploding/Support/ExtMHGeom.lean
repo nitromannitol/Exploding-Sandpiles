@@ -1,3 +1,5 @@
+module
+
 /-
 Boundary geometry of finite subsets of `ℤ^d`.  A ray from a point of a finite set leaves it,
 and the last site inside is an inner-boundary site.  Hence the coordinate values and the
@@ -5,8 +7,10 @@ lines meeting the set are each at most as many as its inner-boundary sites, so t
 at most `|∂B|^2` sites when `d ≥ 2`, and every point of the set is within sup-distance `|∂B|`
 of an inner-boundary site.
 -/
-import Mathlib
-import Exploding.Support.Percolation
+public import Mathlib
+public import Exploding.Support.Percolation
+
+@[expose] public section
 
 namespace Exploding
 

@@ -1,7 +1,11 @@
-import Mathlib
-import Exploding.Frozen.LimitShape
-import ExplodingAudit.LimitShape.SolutionBasic
-import ExplodingAudit.Support.LimitShapeBridge
+module
+
+public import Mathlib
+public import Exploding.Frozen.LimitShape
+public import ExplodingAudit.LimitShape.SolutionBasic
+public import ExplodingAudit.Support.LimitShapeBridge
+
+@[expose] public section
 
 /-!
 # Solution: `LimitShape` (limit shape of exploding sandpiles)

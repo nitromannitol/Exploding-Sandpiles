@@ -1,8 +1,12 @@
+module
+
 /-
 Proposition 5.1 of the paper (generalized last wave): a long row of macroscopic sites meets `C_∞`,
 and a rectangle with a long side contains a line of a tile of `C_∞`.
 -/
-import Exploding.Support.GLWSec3K
+public import Exploding.Support.GLWSec3K
+
+@[expose] public section
 
 open Exploding LatticeProb MeasureTheory Filter
 

@@ -1,9 +1,13 @@
+module
+
 /-
 The one-dimensional base case of the percolation estimate `xsch3_PercolationBound`:
 a single occupied site topples the whole interval, so the probability that the
 interval is not spanned equals the probability that no site is occupied.
 -/
-import Exploding.Support.ExtSchProof4
+public import Exploding.Support.ExtSchProof4
+
+@[expose] public section
 
 namespace Exploding
 

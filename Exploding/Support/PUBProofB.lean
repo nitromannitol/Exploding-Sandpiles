@@ -1,10 +1,14 @@
+module
+
 /-
 Support for Lemma 3.6 of `paper/corrected-arxiv/exploding-corrected-arxiv.tex`: the norm bookkeeping, a walk of a
 finite chemical distance, the unboundedness of the support of a non-stabilizing wave, and the
 first lit good cube: a long lit path lights a rectangle containing a whole line of a good cube
 of the infinite cluster.
 -/
-import Exploding.Support.PUBProofA
+public import Exploding.Support.PUBProofA
+
+@[expose] public section
 
 namespace Exploding
 

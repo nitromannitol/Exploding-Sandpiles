@@ -1,7 +1,11 @@
-import Exploding.Support.ArxivBondDefectiveFiniteness
-import Exploding.Support.ArxivBondBoundaryStar
-import Exploding.Support.ArxivBondHoleBoundary
-import Exploding.Support.ArxivBoundaryInfiniteGeometry
+module
+
+public import Exploding.Support.ArxivBondDefectiveFiniteness
+public import Exploding.Support.ArxivBondBoundaryStar
+public import Exploding.Support.ArxivBondHoleBoundary
+public import Exploding.Support.ArxivBoundaryInfiniteGeometry
+
+@[expose] public section
 
 /-!
 # Finiteness of holes in an actual bond cluster

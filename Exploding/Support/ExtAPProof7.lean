@@ -1,3 +1,5 @@
+module
+
 /-
 The covering-walk lemma: a finite connected graph on `n` vertices has a closed
 walk from any root visiting every vertex, of length at most `2n` (depth-first
@@ -6,8 +8,10 @@ traversal of a spanning tree).  Applied to the king graph on a finite
 `*`-connected sets of size `s`, which feeds the finite-cluster case of the Peierls
 estimate.
 -/
-import Exploding.Support.ExtAPProof6
-import Mathlib.Combinatorics.SimpleGraph.Acyclic
+public import Exploding.Support.ExtAPProof6
+public import Mathlib.Combinatorics.SimpleGraph.Acyclic
+
+@[expose] public section
 
 open Exploding LatticeProb MeasureTheory
 open scoped Classical

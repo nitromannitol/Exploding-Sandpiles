@@ -1,31 +1,35 @@
-import Exploding.Frozen.LimitShape
-import Exploding.Frozen.TimeConstant
-import Exploding.Frozen.Explosive
-import Exploding.Frozen.CrossingTime
-import Exploding.Frozen.Renormalization
-import Exploding.Frozen.LocalConvexity
-import Exploding.Frozen.SquareLowerBound
-import Exploding.Frozen.SharpPlanarObstruction
-import Exploding.Frozen.FiniteExploding
-import Exploding.Frozen.LastWaveBound
-import Exploding.Frozen.ApproxSubadditivity
-import Exploding.Frozen.PenultimateCluster
-import Exploding.Frozen.PenultimateUpperBound
-import Exploding.Frozen.PenultimateClose
-import Exploding.Frozen.LastWaveConvergence
-import Exploding.Frozen.ApproximateSubadditive
-import Exploding.Frozen.GeneralizedLastWave
-import Exploding.Frozen.GeneralizedConvergence
-import Exploding.Frozen.Counterexample
-import Exploding.Frozen.ExplosionCriteria
-import Exploding.Frozen.DimensionalReduction
-import Exploding.Frozen.Recurrence
-import Exploding.Frozen.BoxCrossing
-import Exploding.External.LSSBoundedDegreeProved
-import Exploding.Support.ExtLSSCountable
-import Exploding.Support.ExtMHHoleVolume
-import Exploding.Support.ExtSchFinal
-import Exploding.Support.ExtSchFLP
+module
+
+public import Exploding.Frozen.LimitShape
+public import Exploding.Frozen.TimeConstant
+public import Exploding.Frozen.Explosive
+public import Exploding.Frozen.CrossingTime
+public import Exploding.Frozen.Renormalization
+public import Exploding.Frozen.LocalConvexity
+public import Exploding.Frozen.SquareLowerBound
+public import Exploding.Frozen.SharpPlanarObstruction
+public import Exploding.Frozen.FiniteExploding
+public import Exploding.Frozen.LastWaveBound
+public import Exploding.Frozen.ApproxSubadditivity
+public import Exploding.Frozen.PenultimateCluster
+public import Exploding.Frozen.PenultimateUpperBound
+public import Exploding.Frozen.PenultimateClose
+public import Exploding.Frozen.LastWaveConvergence
+public import Exploding.Frozen.ApproximateSubadditive
+public import Exploding.Frozen.GeneralizedLastWave
+public import Exploding.Frozen.GeneralizedConvergence
+public import Exploding.Frozen.Counterexample
+public import Exploding.Frozen.ExplosionCriteria
+public import Exploding.Frozen.DimensionalReduction
+public import Exploding.Frozen.Recurrence
+public import Exploding.Frozen.BoxCrossing
+public import Exploding.External.LSSBoundedDegreeProved
+public import Exploding.Support.ExtLSSCountable
+public import Exploding.Support.ExtMHHoleVolume
+public import Exploding.Support.ExtSchFinal
+public import Exploding.Support.ExtSchFLP
+
+@[expose] public section
 
 /-!
 # Main results

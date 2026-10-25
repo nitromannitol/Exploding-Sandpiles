@@ -1,5 +1,9 @@
-import Exploding.Support.ArxivBondFiniteHoleTail
-import Exploding.Support.SubPoly
+module
+
+public import Exploding.Support.ArxivBondFiniteHoleTail
+public import Exploding.Support.SubPoly
+
+@[expose] public section
 
 /-!
 # Translated centred-box tail of the finite-hole event

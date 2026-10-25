@@ -1,3 +1,5 @@
+module
+
 /-
 Unconditional consequences of the box-crossing star duality.
 
@@ -6,9 +8,11 @@ conditional lemmas removes the duality hypothesis: the site crossing probability
 almost surely every large box is crossed, and the good sites of bond percolation give an open
 bond crossing.
 -/
-import Exploding.Support.ExtBCBernoulli3
-import Exploding.Support.ExtAPBridge
-import Exploding.Support.ExtAPMinCutStarFinal
+public import Exploding.Support.ExtBCBernoulli3
+public import Exploding.Support.ExtAPBridge
+public import Exploding.Support.ExtAPMinCutStarFinal
+
+@[expose] public section
 
 open Exploding LatticeProb MeasureTheory Filter
 open scoped Classical Topology ENNReal

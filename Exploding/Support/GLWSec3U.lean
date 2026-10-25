@@ -1,3 +1,5 @@
+module
+
 /-
 Proposition 5.1 of the paper (generalized last wave): the last wave lights a tile of `C_∞`.
 
@@ -6,8 +8,10 @@ joined to the centre by a path of distinct lit sites; the part of the path up to
 from a box is a long lit path, and a long lit path lights a tile of `C_∞` near it
 (`glws_path_to_tile`).
 -/
-import Exploding.Support.GLWSec3T
-import Exploding.Support.ASProof4
+public import Exploding.Support.GLWSec3T
+public import Exploding.Support.ASProof4
+
+@[expose] public section
 
 open Exploding LatticeProb MeasureTheory Filter
 

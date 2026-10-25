@@ -1,3 +1,5 @@
+module
+
 /-
 Structural steps for the infinite-cluster case and the crossing interface.
 
@@ -15,7 +17,9 @@ high-density half, where the good cubes percolate, is what a Peierls argument ca
 reach, while the full supercritical statement needs RSW / uniqueness of the
 infinite cluster and is not formalised here.
 -/
-import Exploding.Support.ExtAPProof15
+public import Exploding.Support.ExtAPProof15
+
+@[expose] public section
 
 open Exploding LatticeProb MeasureTheory Filter
 open scoped Classical Topology

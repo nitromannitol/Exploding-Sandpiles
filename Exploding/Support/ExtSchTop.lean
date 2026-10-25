@@ -1,3 +1,5 @@
+module
+
 /-
 The toppling closure of threshold bootstrap percolation along a set of directions,
 and its elementary properties: monotonicity in the frozen set, dependence on the
@@ -10,7 +12,9 @@ toppled.  For `J` the set of all `d` directions this is bootstrap percolation wi
 threshold `d` on `ℤ^d`.  For `J = J'.insert i` the toppling of a site next to a
 toppled region in direction `i` is the `J'`-dynamics.
 -/
-import Exploding.Support.Vocab
+public import Exploding.Support.Vocab
+
+@[expose] public section
 
 namespace Exploding
 

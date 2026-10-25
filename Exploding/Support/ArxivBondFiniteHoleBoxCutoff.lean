@@ -1,5 +1,9 @@
-import Exploding.Support.ArxivBondFiniteHoleTail
-import Exploding.Support.SubPoly
+module
+
+public import Exploding.Support.ArxivBondFiniteHoleTail
+public import Exploding.Support.SubPoly
+
+@[expose] public section
 
 /-!
 # Uniform finite-hole cutoff in growing boxes

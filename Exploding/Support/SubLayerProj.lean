@@ -1,8 +1,12 @@
+module
+
 /-
 The projection of a layer of `Q_n^{(d+1)}` onto `ℤ^d` is the box `Q_n^{(d)}`,
 used in the proof of Proposition 7.5.
 -/
-import Exploding.Support.Reduction
+public import Exploding.Support.Reduction
+
+@[expose] public section
 
 namespace Exploding
 

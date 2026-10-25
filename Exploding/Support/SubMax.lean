@@ -1,10 +1,14 @@
+module
+
 /-
 The maximizer step of the recurrence argument of Proposition 7.3 of
 `paper/corrected-arxiv/exploding-corrected-arxiv.tex`: among the sites of `V` that have not yet toppled, one
 maximizing the coordinate sum has all its `+e_i` neighbours toppled.
 -/
-import Exploding.Support.SubRec
-import Exploding.Support.Wave
+public import Exploding.Support.SubRec
+public import Exploding.Support.Wave
+
+@[expose] public section
 
 namespace Exploding
 

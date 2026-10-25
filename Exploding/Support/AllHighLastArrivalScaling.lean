@@ -1,5 +1,9 @@
-import Exploding.Support.AllHighLastArrival
-import Exploding.Support.Gen
+module
+
+public import Exploding.Support.AllHighLastArrival
+public import Exploding.Support.Gen
+
+@[expose] public section
 
 /-!
 # Scaling error for the all-high last arrival

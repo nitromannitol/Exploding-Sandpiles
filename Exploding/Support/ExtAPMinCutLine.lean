@@ -1,3 +1,5 @@
+module
+
 /-
 The axis-line lower bound for a cut of the two opposite faces of a box.
 
@@ -6,7 +8,9 @@ because a line that the cut misses is an avoiding path.  The box partitions into
 `(2 n + 1) ^ (d - 1)` such lines, so a cut has at least that many points, and in particular at
 least `2 n + 1` for `d ≥ 2`.  This is the size input of the box-crossing reduction.
 -/
-import Exploding.Support.ExtAPMinCut
+public import Exploding.Support.ExtAPMinCut
+
+@[expose] public section
 
 open Exploding LatticeProb Relation
 open scoped Classical

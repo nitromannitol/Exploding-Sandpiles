@@ -1,9 +1,13 @@
+module
+
 /-
 Stacking the two-dimensional schedule of `CELow2` into `ℤ^{n+2}`: the profile `cel_p`,
 its legality (`cel_hstep`), and the resulting linear upper bound on the arrival times
 of the counterexample background.
 -/
-import Exploding.Support.CELow2
+public import Exploding.Support.CELow2
+
+@[expose] public section
 
 namespace Exploding
 

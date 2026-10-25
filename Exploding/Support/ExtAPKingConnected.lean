@@ -1,4 +1,8 @@
-import Exploding.Support.ExtAPMinCutTwo
+module
+
+public import Exploding.Support.ExtAPMinCutTwo
+
+@[expose] public section
 open Exploding LatticeProb
 open scoped Classical
 namespace Exploding

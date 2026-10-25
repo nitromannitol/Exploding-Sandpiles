@@ -1,3 +1,5 @@
+module
+
 /-
 The last-wave bound of Lemma 3.3 for every time, and the exterior clause of the
 penultimate cluster, as one conjunction.
@@ -6,8 +8,10 @@ The paper displays the inequality for `t ≥ 1`.  Its proof starts at `t = 0`, w
 bound also holds.  The exterior clause follows from the inequality, because the
 penultimate wave vanishes outside the penultimate cluster.
 -/
-import Exploding.Support.Vocab
-import Exploding.Support.Wave
+public import Exploding.Support.Vocab
+public import Exploding.Support.Wave
+
+@[expose] public section
 
 namespace Exploding
 

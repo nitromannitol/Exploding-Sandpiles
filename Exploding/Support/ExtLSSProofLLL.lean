@@ -1,3 +1,5 @@
+module
+
 /-
 The weighted Lovász-local-lemma estimate of Liggett, Schonmann and Stacey for
 a field of bits with a bounded-degree dependence graph.
@@ -10,7 +12,9 @@ is `false` is at most `ε` times the weight total, provided
 product set, splitting every induction step into the neighbours and the
 non-neighbours of the tested coordinate.
 -/
-import Exploding.Support.ExtLSSLLL
+public import Exploding.Support.ExtLSSLLL
+
+@[expose] public section
 
 open MeasureTheory ProbabilityTheory
 

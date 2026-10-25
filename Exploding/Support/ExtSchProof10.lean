@@ -1,3 +1,5 @@
+module
+
 /-
 The L-shape renormalization recursion.
 
@@ -8,9 +10,11 @@ sub-cube is high there, upper otherwise) lies inside a *good* sub-cube, hence is
 toppled, and the mixed-face corner-growth seed `xsch9_corner_growth` fills the
 cube.
 -/
-import Exploding.Support.ExtSchProof8
-import Exploding.Support.ExtSchProof9
-import Exploding.Support.ExtSchProb
+public import Exploding.Support.ExtSchProof8
+public import Exploding.Support.ExtSchProof9
+public import Exploding.Support.ExtSchProb
+
+@[expose] public section
 
 namespace Exploding
 

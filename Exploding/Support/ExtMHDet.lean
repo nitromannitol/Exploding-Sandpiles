@@ -1,13 +1,17 @@
+module
+
 /-
 A finite hole of an infinite open cluster, of volume at least `xmh3_V n`, through a point of
 the box `[-n, n]^d`, produces the enlarged Peierls bad event.  The inner boundary of the hole
 is a `*`-connected all-closed set, it has at least `xmh4_m n` sites because the hole has at
 most `|∂B|^2` sites, and it lies within sup-distance `|∂B|` of the point of the box.
 -/
-import Exploding.Support.ExtMHPeierls
-import Exploding.Support.ExtMHGeom
-import Exploding.Support.ExtMHNumeric
-import Exploding.Support.ExtMHProof12
+public import Exploding.Support.ExtMHPeierls
+public import Exploding.Support.ExtMHGeom
+public import Exploding.Support.ExtMHNumeric
+public import Exploding.Support.ExtMHProof12
+
+@[expose] public section
 
 namespace Exploding
 

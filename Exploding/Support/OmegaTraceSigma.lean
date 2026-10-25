@@ -1,3 +1,5 @@
+module
+
 /-
 The coordinate σ-field on the state space `Ω = {η | InOmega d ηmin η}` of Section 5 of the
 corrected source `paper/corrected-arxiv/exploding-corrected-arxiv.tex` (`\section{A generalization}`,
@@ -12,7 +14,9 @@ translations `(T_y η)(z) = η (y + z)` of the source act on `Ω`, and their ima
 are compatible with the ambient translations on the traces. The invariant measurable events
 of `Ω` correspond to the invariant measurable subsets of `Ω` of the ambient σ-field.
 -/
-import Exploding.Support.Hypotheses
+public import Exploding.Support.Hypotheses
+
+@[expose] public section
 
 namespace Exploding
 

@@ -1,3 +1,5 @@
+module
+
 /-
 Proposition 5.1 of the paper (generalized last wave): the lighting of strongly box-crossing tiles
 by the `N`-wave, and the finiteness of the last wave at every site.
@@ -7,11 +9,13 @@ or of its outer boundary, lights the whole tile within `∏ k` steps.  Along a c
 strongly box-crossing tiles the lighting travels at `∏ k` steps per tile, and an infinite such set
 makes every `N`-wave with `N` large non-stabilizable, since a wave has finite support at each time.
 -/
-import Exploding.Support.SquareLowerBoundExponential
-import Exploding.Support.GLWSec3A
-import Exploding.Support.LWCProof4
-import Exploding.Support.PCloseProofPath
-import Exploding.Support.ASProof
+public import Exploding.Support.SquareLowerBoundExponential
+public import Exploding.Support.GLWSec3A
+public import Exploding.Support.LWCProof4
+public import Exploding.Support.PCloseProofPath
+public import Exploding.Support.ASProof
+
+@[expose] public section
 
 open Exploding LatticeProb MeasureTheory Filter
 

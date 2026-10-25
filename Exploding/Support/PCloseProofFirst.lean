@@ -1,3 +1,5 @@
+module
+
 /-
 The first step of the second inequality of Lemma 3.7: a site reached by the last wave
 has, near it, a good cube of the infinite cluster that fires shortly afterwards.  The
@@ -6,13 +8,15 @@ stretch of that path fills by local convexity and has a long side; a long row of
 macroscopic cubes along that side meets the infinite cluster; and the good cube so
 found is crossed by a positive line.
 -/
-import Exploding.Support.Vocab
-import Exploding.Support.SubPub
-import Exploding.Support.PCloseProofPath
-import Exploding.Support.PCloseProofGeom
-import Exploding.Support.PCloseProofCube
-import Exploding.Support.PCloseProofWalk
-import Exploding.Support.PCloseProofMacro
+public import Exploding.Support.Vocab
+public import Exploding.Support.SubPub
+public import Exploding.Support.PCloseProofPath
+public import Exploding.Support.PCloseProofGeom
+public import Exploding.Support.PCloseProofCube
+public import Exploding.Support.PCloseProofWalk
+public import Exploding.Support.PCloseProofMacro
+
+@[expose] public section
 
 namespace Exploding
 

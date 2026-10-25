@@ -1,11 +1,15 @@
+module
+
 /-
 The increasing hull of a set of configurations: the configurations that dominate some
 member of the set coordinatewise.  The hull contains the set, is increasing, lies inside
 every increasing superset of the set, and is closed when the set is closed, because the
 domination relation is closed and the configuration space is compact.
 -/
-import Mathlib
-import Exploding.Support.Percolation
+public import Mathlib
+public import Exploding.Support.Percolation
+
+@[expose] public section
 
 open MeasureTheory Set Filter
 open scoped Topology

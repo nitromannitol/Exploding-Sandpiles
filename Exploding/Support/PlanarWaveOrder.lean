@@ -1,4 +1,8 @@
-import Exploding.Support.SquareLowerBoundExponential
+module
+
+public import Exploding.Support.SquareLowerBoundExponential
+
+@[expose] public section
 
 /-!
 # Least positive covering order of the planar cube

@@ -1,3 +1,5 @@
+module
+
 /-
 Proposition 5.1 of the paper (generalized last wave): the lighting of a box of tiles around a target
 from a lit tile of `C_∞`, with explicit time bounds.
@@ -7,9 +9,11 @@ The key lemma takes the scales as parameters satisfying the size conditions of
 `M_f` to a point `M_o` on the other side of the target `ν`, light the tiles around `ν` within
 `A (|j| + |ν|) + B Z^d` steps, where `Z` is the macroscopic radius.
 -/
-import Exploding.Support.GLWSec3Q
-import Exploding.Support.PUBProofB
-import Exploding.Support.PCloseProofPath
+public import Exploding.Support.GLWSec3Q
+public import Exploding.Support.PUBProofB
+public import Exploding.Support.PCloseProofPath
+
+@[expose] public section
 
 open Exploding LatticeProb MeasureTheory Filter
 

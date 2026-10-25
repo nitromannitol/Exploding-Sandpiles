@@ -1,3 +1,5 @@
+module
+
 /-
 The inner boundary of a connected set of `ℤ^d` is `*`-connected, in every dimension,
 extending the planar parity argument of `Exploding.ec_star_conn` by means of the
@@ -7,9 +9,11 @@ the boundary, or outside; the indicator of the `A`--`D₁` edges is shown to be 
 one-cochain, hence a coboundary, and the coboundary turns out to be constant on `A`
 and on `B`, which forces the two boundary parts to coincide.
 -/
-import Exploding.Support.ExtMHProof4
-import Exploding.Support.ExtMHBase
-import Exploding.Support.ECProofStar
+public import Exploding.Support.ExtMHProof4
+public import Exploding.Support.ExtMHBase
+public import Exploding.Support.ECProofStar
+
+@[expose] public section
 
 namespace Exploding
 

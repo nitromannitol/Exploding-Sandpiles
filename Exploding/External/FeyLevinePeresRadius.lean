@@ -1,4 +1,8 @@
-import LatticeProb.External.FeyLevinePeresRadius
+module
+
+public import LatticeProb.External.FeyLevinePeresRadius
+
+@[expose] public section
 
 /-!
 # Cited input: outer radius of toppled sites (Fey, Levine and Peres)

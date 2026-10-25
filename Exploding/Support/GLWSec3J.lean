@@ -1,3 +1,5 @@
+module
+
 /-
 Proposition 5.1 of the paper (generalized last wave): the two statements behind the local bound
 and the closeness of the arrival times, isolated as a probabilistic claim (the infinite cluster
@@ -8,8 +10,10 @@ event of that cluster and of Hypothesis 3), and their assembly into `glws_Origin
 The finiteness of the last wave at every site is proved here from the cluster
 (`glws_finite_exploding`), so the deterministic claim carries only the quantitative bounds.
 -/
-import Exploding.Support.GLWSec3H
-import Exploding.Support.GLWSec3I
+public import Exploding.Support.GLWSec3H
+public import Exploding.Support.GLWSec3I
+
+@[expose] public section
 
 open Exploding LatticeProb MeasureTheory Filter
 

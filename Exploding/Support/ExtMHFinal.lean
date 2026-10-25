@@ -1,3 +1,5 @@
+module
+
 /-
 Mathieu's hole-volume bound from the deterministic step.  Above the density threshold the
 infinite cluster is almost surely unique, so every hole is finite, and almost surely the
@@ -5,10 +7,12 @@ enlarged Peierls bad event fails for all large scales; a hole of volume at least
 through the box would realise that event, so for large `n` every hole through the box is
 smaller.  The deterministic step is the hypothesis of the reduction.
 -/
-import Exploding.External.MathieuHoles
-import Exploding.Support.ExtMHPeierls
-import Exploding.Support.ExtMHThreshold
-import Exploding.Support.ExtMHProof13
+public import Exploding.External.MathieuHoles
+public import Exploding.Support.ExtMHPeierls
+public import Exploding.Support.ExtMHThreshold
+public import Exploding.Support.ExtMHProof13
+
+@[expose] public section
 
 namespace Exploding
 

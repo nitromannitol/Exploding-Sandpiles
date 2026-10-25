@@ -1,10 +1,14 @@
+module
+
 /-
 The finite-coordinate form of the product law: on a finite set of coordinates the
 product measure of a finite set is the sum of the weights of its elements.  This
 is the building block for the finite-coordinate domination step of the
 bounded-degree theorem.
 -/
-import Exploding.Support.ExtLSSProofThin
+public import Exploding.Support.ExtLSSProofThin
+
+@[expose] public section
 
 open MeasureTheory ProbabilityTheory
 

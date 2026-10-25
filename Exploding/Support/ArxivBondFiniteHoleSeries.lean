@@ -1,5 +1,9 @@
-import Exploding.Support.ArxivBondHoleGeometry
-import Exploding.Support.ArxivBondHoleTail
+module
+
+public import Exploding.Support.ArxivBondHoleGeometry
+public import Exploding.Support.ArxivBondHoleTail
+
+@[expose] public section
 
 /-!
 # A series bound for finite holes of actual bond clusters

@@ -1,3 +1,5 @@
+module
+
 /-
 The failure of a near-cube box from its blocks.  A near-cube box of size `s` along `J` contains a
 grid of `(s / Lb) ^ |J|` disjoint blocks of size `Lb`.  If one block is spanned and every layer
@@ -6,9 +8,11 @@ is spanned.  So the box fails only if no block is spanned, which has probability
 `(1 - π) ^ N` by independence, or some layer of some schedule fails, which has probability at most
 `N` times the union bound over the layers of one schedule.
 -/
-import Exploding.Support.ExtSchGrow
-import Exploding.Support.ExtSchGrowProb
-import Exploding.Support.ExtSchSeed
+public import Exploding.Support.ExtSchGrow
+public import Exploding.Support.ExtSchGrowProb
+public import Exploding.Support.ExtSchSeed
+
+@[expose] public section
 
 namespace Exploding
 

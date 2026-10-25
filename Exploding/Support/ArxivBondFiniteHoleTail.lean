@@ -1,5 +1,9 @@
-import Exploding.Support.ArxivBondFiniteHoleSeries
-import Exploding.Support.ArxivBondHoleGeometricTerm
+module
+
+public import Exploding.Support.ArxivBondFiniteHoleSeries
+public import Exploding.Support.ArxivBondHoleGeometricTerm
+
+@[expose] public section
 
 /-!
 # Exponential tail of the finite-hole event

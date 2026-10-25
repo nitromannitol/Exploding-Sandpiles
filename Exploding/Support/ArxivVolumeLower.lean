@@ -1,7 +1,11 @@
-import Exploding.Support.ArxivVolumeGrid
-import Exploding.Support.ArxivVolumeFast
-import Exploding.Support.ArxivVolumeSlow
-import Exploding.Support.ArxivVolumeCells
+module
+
+public import Exploding.Support.ArxivVolumeGrid
+public import Exploding.Support.ArxivVolumeFast
+public import Exploding.Support.ArxivVolumeSlow
+public import Exploding.Support.ArxivVolumeCells
+
+@[expose] public section
 
 /-!
 # A positive volume bound for translated supports

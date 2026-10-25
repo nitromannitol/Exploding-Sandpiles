@@ -1,10 +1,14 @@
+module
+
 /-
 The packed bad-set probability of the high-density Peierls estimate: the
 probability that a `*`-connected set of `s` bad cubes occurs is at most
 `(1 - q^N)^{s / 3^d}`, because a `3`-spaced subpacking of it is independent and
 covers a `3^{-d}` fraction of the set.
 -/
-import Exploding.Support.ExtAPProof5
+public import Exploding.Support.ExtAPProof5
+
+@[expose] public section
 
 open Exploding LatticeProb MeasureTheory
 open scoped Classical

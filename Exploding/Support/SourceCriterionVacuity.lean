@@ -1,5 +1,9 @@
-import Exploding.Support.OmegaCriterionConsumer
-import Exploding.Support.ExplosiveVacuity
+module
+
+public import Exploding.Support.OmegaCriterionConsumer
+public import Exploding.Support.ExplosiveVacuity
+
+@[expose] public section
 
 /-!
 # Source-criterion nonvacuity at `d = 2`

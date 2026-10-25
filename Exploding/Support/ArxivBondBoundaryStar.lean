@@ -1,5 +1,9 @@
-import Exploding.Support.RNProofCore
-import Exploding.Support.ExtMHProof11
+module
+
+public import Exploding.Support.RNProofCore
+public import Exploding.Support.ExtMHProof11
+
+@[expose] public section
 
 /-!
 # Star-connected inner boundary of a bond-cluster complement component

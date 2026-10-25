@@ -1,10 +1,14 @@
+module
+
 /-
 Proposition 5.1 of the paper (generalized last wave): fields of bits that depend on the background
 through finitely many coordinates, and their dependence graph under finite range of dependence
 (Hypothesis 1).
 -/
-import Exploding.Support.GLWSec3AD
-import Exploding.Support.GLWSec3AB
+public import Exploding.Support.GLWSec3AD
+public import Exploding.Support.GLWSec3AB
+
+@[expose] public section
 
 open MeasureTheory ProbabilityTheory Exploding LatticeProb Filter
 

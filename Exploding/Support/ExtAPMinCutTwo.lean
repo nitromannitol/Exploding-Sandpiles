@@ -1,3 +1,5 @@
+module
+
 /-
 Minimal box cuts and the planar star-duality.
 
@@ -14,7 +16,9 @@ uses only the elementary minimality consequences already available in
 sub-cuts of a cut, using the fact that the sub-cut relation on a finite set `Finset` is
 well founded.
 -/
-import Exploding.Support.ExtAPMinCut
+public import Exploding.Support.ExtAPMinCut
+
+@[expose] public section
 
 open Exploding LatticeProb
 open scoped Classical

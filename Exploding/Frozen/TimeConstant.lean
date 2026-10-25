@@ -1,16 +1,20 @@
+module
+
 /-
 Theorem 1.3 of the paper: the rescaled arrival times of the exploding sandpile
 converge locally uniformly to a continuous, convex, one-homogeneous function.
 -/
-import Exploding.Support.Vocab
-import Exploding.External.FeyLevinePeres
-import Exploding.Frozen.LastWaveConvergence
-import Exploding.Frozen.ApproximateSubadditive
-import Exploding.Support.Gen
-import Exploding.Support.TimeConstantP1
-import Exploding.External.LiggettSchonmannStaceyBoundedDegree
-import Exploding.External.MathieuHoles
-import Exploding.External.AntalPisztora
+public import Exploding.Support.Vocab
+public import Exploding.External.FeyLevinePeres
+public import Exploding.Frozen.LastWaveConvergence
+public import Exploding.Frozen.ApproximateSubadditive
+public import Exploding.Support.Gen
+public import Exploding.Support.TimeConstantP1
+public import Exploding.External.LiggettSchonmannStaceyBoundedDegree
+public import Exploding.External.MathieuHoles
+public import Exploding.External.AntalPisztora
+
+@[expose] public section
 
 open Exploding LatticeProb MeasureTheory Filter
 

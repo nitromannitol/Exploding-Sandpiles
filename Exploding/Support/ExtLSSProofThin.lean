@@ -1,3 +1,5 @@
+module
+
 /-
 The thinning construction of Liggett, Schonmann and Stacey: a finite set of
 coordinates is thinned to a subset whose law is exactly the product law, while
@@ -5,7 +7,9 @@ it is almost surely contained in the set of occupied coordinates of the given
 field.  The one-site extension step is the weighted local-lemma estimate of
 `Exploding.Support.ExtLSSProofLLL`.
 -/
-import Exploding.Support.ExtLSSProofLLL
+public import Exploding.Support.ExtLSSProofLLL
+
+@[expose] public section
 
 open MeasureTheory ProbabilityTheory
 

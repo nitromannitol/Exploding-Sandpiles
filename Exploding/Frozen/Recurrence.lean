@@ -1,8 +1,12 @@
+module
+
 /-
 Proposition 7.3 of the paper: the constant background `d` is recurrent.
 -/
-import Exploding.Support.Vocab
-import Exploding.Support.SubRecMin
+public import Exploding.Support.Vocab
+public import Exploding.Support.SubRecMin
+
+@[expose] public section
 
 open Exploding LatticeProb
 

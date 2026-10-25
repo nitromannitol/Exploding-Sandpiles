@@ -1,3 +1,5 @@
+module
+
 /-
 Proposition 2.1 (`prop:crossing_time`): a large box is crossed quickly with high
 probability.
@@ -44,11 +46,13 @@ between "no catalyst" and the tail event without a concentration inequality.
 That route is simpler than the Hoeffding bound and avoids a concentration inequality.
 The paper's argument uses Hoeffding.
 -/
-import Exploding.Support.Vocab
-import Exploding.Support.Wave
-import Exploding.Support.SubFodo
-import Exploding.Support.SubFodoStep
-import Exploding.Support.SubFodoTopple
+public import Exploding.Support.Vocab
+public import Exploding.Support.Wave
+public import Exploding.Support.SubFodo
+public import Exploding.Support.SubFodoStep
+public import Exploding.Support.SubFodoTopple
+
+@[expose] public section
 
 open Exploding LatticeProb MeasureTheory Filter
 open scoped Classical

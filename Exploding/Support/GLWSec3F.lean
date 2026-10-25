@@ -1,10 +1,14 @@
+module
+
 /-
 Proposition 5.1 of the paper (generalized last wave), the Section-3 assembly, part F:
 a nonnegative-homogeneous, subadditive, Lipschitz function on the integer lattice extends to a
 continuous, convex, one-homogeneous function on `ℝ^d`.  This is the passage from the integer
 directions to the limit shape `N`.
 -/
-import Exploding.Support.GLWSec3E
+public import Exploding.Support.GLWSec3E
+
+@[expose] public section
 
 open Exploding LatticeProb MeasureTheory Filter
 open scoped Classical NNReal

@@ -1,8 +1,12 @@
+module
+
 /-
 The bootstrap-percolation odometer vanishes off its cube, the first ingredient
 of the coupling used in the proof of Proposition 7.5.
 -/
-import Exploding.Support.Hypotheses
+public import Exploding.Support.Hypotheses
+
+@[expose] public section
 
 namespace Exploding
 

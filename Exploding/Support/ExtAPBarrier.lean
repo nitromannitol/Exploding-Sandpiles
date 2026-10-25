@@ -1,3 +1,5 @@
+module
+
 /-
 The closed barrier around the open cluster of the negative face of a box.
 
@@ -9,7 +11,9 @@ the box.  The barrier is all closed; whenever the seed is open and the box has n
 crossing in direction `i`, the barrier is nonempty; and every nearest-neighbour path in
 the box from the cluster to the positive `i`-face meets the barrier.
 -/
-import Exploding.Support.ExtBCBernoulli2
+public import Exploding.Support.ExtBCBernoulli2
+
+@[expose] public section
 
 open Exploding LatticeProb MeasureTheory Filter
 open scoped Classical Topology ENNReal

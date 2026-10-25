@@ -1,34 +1,38 @@
-import Exploding.Support.SquareGreenOriginLower
-import Exploding.Support.CorrectedSourceConsumers
-import Exploding.Support.AllHighGeneralizedHypotheses
-import Exploding.Support.AllHighPathFilling
-import Exploding.Support.WaveApproximationSource
-import Exploding.Support.SourceCriterionVacuity
-import Exploding.Support.BCDimOne
-import Exploding.Support.OmegaErgodic
-import Exploding.Support.OmegaTraceSigma
-import Exploding.Support.OmegaStationary
-import Exploding.Support.RecurrentMeasurable
-import Exploding.Support.ExplosiveMeasurable
-import Exploding.Support.ArxivBondHoleTailMoments
-import Exploding.Support.ArxivActualBondCoreProximity
-import Exploding.Support.ArxivBondTranslatedBoxTail
-import Exploding.Support.ArxivActualBondOne
-import Exploding.Support.PathFillingBarrier
-import Exploding.Support.ReductionBoundary
-import Exploding.Support.PathFillingDetour
-import Exploding.Support.PathFillingNonneg
-import Exploding.Support.OmegaCriterionConsumer
-import Exploding.MainTheorems
-import Exploding.Support.ExplosiveVacuity
-import Exploding.Support.ExtFMR
-import Exploding.Support.LSProofAux
-import Exploding.Support.ExtLSSCountable
-import Exploding.Support.ExtMHHoleVolume
-import Exploding.Support.ExtSchFinal
-import Exploding.Support.ExtSchFLP
-import Exploding.Support.PlanarWaveOrder
-import Exploding.Support.PlanarWaveBarrier
+module
+
+public import Exploding.Support.SquareGreenOriginLower
+public import Exploding.Support.CorrectedSourceConsumers
+public import Exploding.Support.AllHighGeneralizedHypotheses
+public import Exploding.Support.AllHighPathFilling
+public import Exploding.Support.WaveApproximationSource
+public import Exploding.Support.SourceCriterionVacuity
+public import Exploding.Support.BCDimOne
+public import Exploding.Support.OmegaErgodic
+public import Exploding.Support.OmegaTraceSigma
+public import Exploding.Support.OmegaStationary
+public import Exploding.Support.RecurrentMeasurable
+public import Exploding.Support.ExplosiveMeasurable
+public import Exploding.Support.ArxivBondHoleTailMoments
+public import Exploding.Support.ArxivActualBondCoreProximity
+public import Exploding.Support.ArxivBondTranslatedBoxTail
+public import Exploding.Support.ArxivActualBondOne
+public import Exploding.Support.PathFillingBarrier
+public import Exploding.Support.ReductionBoundary
+public import Exploding.Support.PathFillingDetour
+public import Exploding.Support.PathFillingNonneg
+public import Exploding.Support.OmegaCriterionConsumer
+public import Exploding.MainTheorems
+public import Exploding.Support.ExplosiveVacuity
+public import Exploding.Support.ExtFMR
+public import Exploding.Support.LSProofAux
+public import Exploding.Support.ExtLSSCountable
+public import Exploding.Support.ExtMHHoleVolume
+public import Exploding.Support.ExtSchFinal
+public import Exploding.Support.ExtSchFLP
+public import Exploding.Support.PlanarWaveOrder
+public import Exploding.Support.PlanarWaveBarrier
+
+@[expose] public section
 
 /-!
 # Axioms audit

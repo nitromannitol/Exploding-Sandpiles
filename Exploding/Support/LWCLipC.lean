@@ -1,3 +1,5 @@
+module
+
 /-
 Support for the far Lipschitz bound of Proposition 3.1: the deterministic core.  On a
 background carrying an infinite cluster of good cubes with small holes and a linear chemical
@@ -6,7 +8,9 @@ distance, if the last wave reaches `x` at time `a`, it reaches every site `x'` o
 `x` fires polylogarithmically later (`pclose_first_cube`), and from it the cluster carries the
 wave to `x'` at a cost linear in the distance (`lwcl_light_site`).
 -/
-import Exploding.Support.LWCLipB
+public import Exploding.Support.LWCLipB
+
+@[expose] public section
 
 namespace Exploding
 

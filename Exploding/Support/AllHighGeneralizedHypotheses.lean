@@ -1,11 +1,15 @@
-import Exploding.Support.Hypotheses
-import Exploding.Support.CrossingTimeAux
-import Exploding.Support.SubGeom
-import Exploding.Support.AllHighGoodCubes
-import Exploding.Support.AllHighLastArrival
-import Exploding.Support.ApproximateSubadditiveP1
-import Exploding.Support.ExplosiveVacuity
-import LatticeProb.Lattice.Translation
+module
+
+public import Exploding.Support.Hypotheses
+public import Exploding.Support.CrossingTimeAux
+public import Exploding.Support.SubGeom
+public import Exploding.Support.AllHighGoodCubes
+public import Exploding.Support.AllHighLastArrival
+public import Exploding.Support.ApproximateSubadditiveP1
+public import Exploding.Support.ExplosiveVacuity
+public import LatticeProb.Lattice.Translation
+
+@[expose] public section
 
 /-!
 # The all-high background satisfies the generalized hypotheses H4 and H5

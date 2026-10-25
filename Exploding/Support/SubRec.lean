@@ -1,3 +1,5 @@
+module
+
 /-
 The recurrence of the constant background `d` (Proposition 7.3 of
 `paper/corrected-arxiv/exploding-corrected-arxiv.tex`).
@@ -12,7 +14,9 @@ maximizes the coordinate sum has all of `x + e_i` toppled (each is either
 toppled in `V` or lies in `∂V`, which is toppled from the start).  So at every
 step before `V` is full at least one new site topples, and `|V|` steps suffice.
 -/
-import Exploding.Support.SubFodo
+public import Exploding.Support.SubFodo
+
+@[expose] public section
 
 namespace Exploding
 

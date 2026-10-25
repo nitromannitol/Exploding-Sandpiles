@@ -1,3 +1,5 @@
+module
+
 /-
 The finite-cluster geometric-series estimate, reworked so that the all-bad
 `*`-connected set does **not** have to contain the origin (the origin can be good
@@ -11,8 +13,10 @@ event is then bounded by the geometric series
 geometric input `xap11_FiniteClusterReduction` that a finite cluster has an
 all-bad `*`-connected boundary of `s` sites inside the ball of radius `s`.
 -/
-import Exploding.Support.ExtAPProof10
-import Mathlib.Data.Fintype.EquivFin
+public import Exploding.Support.ExtAPProof10
+public import Mathlib.Data.Fintype.EquivFin
+
+@[expose] public section
 
 open Exploding LatticeProb MeasureTheory
 open scoped Classical

@@ -1,11 +1,15 @@
+module
+
 /-
 The product Bernoulli law on a countable index set is a probability measure and is inner
 regular by closed sets: the configuration space is a compact metrizable space whose Borel
 sigma-algebra is the product sigma-algebra, and a finite Borel measure on a metrizable
 space is weakly regular.
 -/
-import Mathlib
-import Exploding.Support.RNProofGraph
+public import Mathlib
+public import Exploding.Support.RNProofGraph
+
+@[expose] public section
 
 open MeasureTheory Set Filter
 open scoped Topology ENNReal

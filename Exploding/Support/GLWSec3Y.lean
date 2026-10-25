@@ -1,3 +1,5 @@
+module
+
 /-
 Proposition 5.1 of the paper (generalized last wave): the polylogarithmic error of the lighting.
 
@@ -7,7 +9,9 @@ a tile from a long path, the time `A · d (2 Pn + ∑ k)` to carry the lighting 
 macroscopic site of the target, and the time `B Z^d` of the lighting itself.  It is bounded by a
 constant times a power of `log n`.
 -/
-import Exploding.Support.GLWSec3X
+public import Exploding.Support.GLWSec3X
+
+@[expose] public section
 
 open Exploding LatticeProb MeasureTheory Filter
 

@@ -1,3 +1,5 @@
+module
+
 /-
 The constrained frozen toppling processes of Section 7.1 of `paper/corrected-arxiv/exploding-corrected-arxiv.tex`
 with the *floor* at an arbitrary layer `i` rather than at layer `0`: the
@@ -10,13 +12,15 @@ The layer induction of Proposition 7.5 consumes this at `i = 1, …, n - 1`, onc
 layer `i` has been toppled and acts as the permanently lit floor for layer
 `i + 1`.
 -/
-import Exploding.Support.Reduction
-import Exploding.Support.SubSpanZero
-import Exploding.Support.SubFodo
-import Exploding.Support.SubOdo
-import Exploding.Support.CrossingTimeAux
-import Exploding.External.Schonmann
-import LatticeProb.Prob.Blocks
+public import Exploding.Support.Reduction
+public import Exploding.Support.SubSpanZero
+public import Exploding.Support.SubFodo
+public import Exploding.Support.SubOdo
+public import Exploding.Support.CrossingTimeAux
+public import Exploding.External.Schonmann
+public import LatticeProb.Prob.Blocks
+
+@[expose] public section
 
 namespace Exploding
 

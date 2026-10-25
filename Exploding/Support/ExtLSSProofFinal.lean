@@ -1,8 +1,12 @@
+module
+
 /-
 Finishing the bounded-degree domination: the finite-coordinate product expansion,
 finite-coordinate domination from the thinning, and the unconditional theorem.
 -/
-import Exploding.Support.ExtLSSProofContent
+public import Exploding.Support.ExtLSSProofContent
+
+@[expose] public section
 
 open MeasureTheory Set Filter
 open scoped Topology ENNReal

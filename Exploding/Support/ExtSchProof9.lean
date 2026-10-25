@@ -1,3 +1,5 @@
+module
+
 /-
 The mixed-face corner-growth seed.
 
@@ -6,7 +8,9 @@ direction `i` if `c i`, the upper one otherwise), if the chosen face is toppled
 in every direction, then the whole cube is spanned.  The toppling spreads from
 the chosen corner by induction on `xsch9_dist c n x = ∑ i (x i - 1 or n - x i)`.
 -/
-import Exploding.Support.ExtSchProof2
+public import Exploding.Support.ExtSchProof2
+
+@[expose] public section
 
 namespace Exploding
 

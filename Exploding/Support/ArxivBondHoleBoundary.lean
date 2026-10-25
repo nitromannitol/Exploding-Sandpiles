@@ -1,4 +1,8 @@
-import Exploding.Support.RNProofPercolation
+module
+
+public import Exploding.Support.RNProofPercolation
+
+@[expose] public section
 
 /-!
 # Defectiveness of bond-hole boundaries

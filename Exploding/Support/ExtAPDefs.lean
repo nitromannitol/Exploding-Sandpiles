@@ -1,11 +1,15 @@
+module
+
 /-
 Vocabulary for a chemical distance bound for bond percolation at high density: cubes of
 sup-norm radius one, good sites (every bond of the cube is open), clusters of bad sites,
 open connectivity inside a prescribed set of sites, and the boundary hypothesis for
 connected sets of `ℤ^d` that the surgery around a cluster rests on.
 -/
-import Exploding.Support.Percolation
-import Exploding.Support.ECProofDyn
+public import Exploding.Support.Percolation
+public import Exploding.Support.ECProofDyn
+
+@[expose] public section
 
 namespace Exploding
 

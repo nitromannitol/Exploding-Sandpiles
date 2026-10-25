@@ -1,9 +1,13 @@
+module
+
 /-
 The crossing time of a box, read off the odometer: `crossingTime η k i z ≤ m` holds
 exactly when some time `n ≤ m` has toppled the whole box, and a good cube therefore
 topples completely once one of its lines is lit.
 -/
-import Exploding.Support.Vocab
+public import Exploding.Support.Vocab
+
+@[expose] public section
 
 namespace Exploding
 

@@ -1,7 +1,11 @@
-import Exploding.Support.ArxivCoreAttachment
-import Exploding.Support.ArxivMaximalGoodCluster
-import Exploding.Support.RNProofCore
-import Exploding.Support.SubPoly
+module
+
+public import Exploding.Support.ArxivCoreAttachment
+public import Exploding.Support.ArxivMaximalGoodCluster
+public import Exploding.Support.RNProofCore
+public import Exploding.Support.SubPoly
+
+@[expose] public section
 
 /-!
 # Chemical distance transfer to the maximal good-site component

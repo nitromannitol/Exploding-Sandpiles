@@ -1,3 +1,5 @@
+module
+
 /-
 The comparison lemmas of Section 4 of `paper/corrected-arxiv/exploding-corrected-arxiv.tex` between the frozen
 parallel toppling odometer and the last wave.
@@ -7,7 +9,9 @@ frozen odometer starts in `[0, 1]`, then it stays at most `1` everywhere.  The
 cap in the frozen recursion is inactive precisely because the value is already
 `1`: then the frozen sandpile is at most `2d - 1`.
 -/
-import Exploding.Support.Vocab
+public import Exploding.Support.Vocab
+
+@[expose] public section
 
 namespace Exploding
 

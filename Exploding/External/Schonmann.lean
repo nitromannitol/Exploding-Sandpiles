@@ -1,8 +1,12 @@
+module
+
 /-
 Schonmann's large-deviation bound for bootstrap percolation, quoted as
 Proposition 7.4 of the paper.
 -/
-import Exploding.Support.Vocab
+public import Exploding.Support.Vocab
+
+@[expose] public section
 
 open Exploding LatticeProb MeasureTheory
 

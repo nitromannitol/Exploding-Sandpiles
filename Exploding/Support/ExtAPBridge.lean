@@ -1,3 +1,5 @@
+module
+
 /-
 Bridge from the Antal–Pisztora good sites of high-density bond percolation to the
 box-crossing interface of the site field.
@@ -10,9 +12,11 @@ density, `q ^ (xap_cubeBonds z).card`.  The Liggett–Schonmann–Stacey transfe
 `xbc_ae_eventually_crosses`, shows that at high density almost surely every large box
 has an open bond crossing.
 -/
-import Exploding.Support.ExtAPProof15
-import Exploding.Support.ExtBCBernoulli3
-import Exploding.Support.RNProofGraph
+public import Exploding.Support.ExtAPProof15
+public import Exploding.Support.ExtBCBernoulli3
+public import Exploding.Support.RNProofGraph
+
+@[expose] public section
 
 open Exploding LatticeProb MeasureTheory ProbabilityTheory Filter
 open scoped Classical Topology ENNReal

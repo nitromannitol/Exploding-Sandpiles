@@ -1,3 +1,5 @@
+module
+
 /-
 Proposition 5.1 (generalized last wave), closeness of the arrival times, part G:
 a lit site far from the origin lights its penultimate cluster polylogarithmically later.
@@ -8,7 +10,9 @@ is a long lit path; it lights a tile of `C_∞` within a polylogarithmic distanc
 `x`, which contain the penultimate cluster of `x`, within a further polylogarithmic time
 (`glws_light_near`).
 -/
-import Exploding.Support.S3CloseF
+public import Exploding.Support.S3CloseF
+
+@[expose] public section
 
 open Exploding LatticeProb MeasureTheory Filter
 

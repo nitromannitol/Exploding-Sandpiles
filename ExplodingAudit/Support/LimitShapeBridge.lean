@@ -1,6 +1,10 @@
-import Mathlib
-import Exploding.Frozen.LimitShape
-import ExplodingAudit.LimitShape.SolutionBasic
+module
+
+public import Mathlib
+public import Exploding.Frozen.LimitShape
+public import ExplodingAudit.LimitShape.SolutionBasic
+
+@[expose] public section
 
 /-!
 # Comparator bridge: `ExplodingAudit.LimitShape` vocabulary → repository

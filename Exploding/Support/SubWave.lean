@@ -1,3 +1,5 @@
+module
+
 /-
 The comparison of Section 4 of `paper/corrected-arxiv/exploding-corrected-arxiv.tex`: off the frozen set, the
 frozen parallel toppling odometer dominates the last wave.
@@ -7,11 +9,13 @@ starts at `1` on the frozen set and at `0` off it, the background is at most the
 frozen sandpile, and the wave is at most `1` on the inner boundary of the frozen
 set.
 -/
-import Exploding.Support.SubNbr
-import Exploding.Support.SubArithPos
-import Exploding.Support.SubArithNeg
-import Exploding.Support.SubFodo
-import Exploding.Support.SubFConf
+public import Exploding.Support.SubNbr
+public import Exploding.Support.SubArithPos
+public import Exploding.Support.SubArithNeg
+public import Exploding.Support.SubFodo
+public import Exploding.Support.SubFConf
+
+@[expose] public section
 
 set_option linter.unusedVariables false
 

@@ -1,3 +1,5 @@
+module
+
 /-
 The infinite-cluster half of the chemical-distance estimate.
 
@@ -21,7 +23,9 @@ The file also proves that the full high-density bound is equivalent to the
 conjunction of the two corrected halves (`xmi_highDensity_iff_bounds`), so the
 infinite half is precisely the missing complement and cannot be dropped.
 -/
-import Exploding.Support.ExtAPProof18
+public import Exploding.Support.ExtAPProof18
+
+@[expose] public section
 
 open Exploding LatticeProb MeasureTheory
 open scoped Classical

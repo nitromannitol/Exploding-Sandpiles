@@ -1,3 +1,5 @@
+module
+
 /-
 The box boundary-star theorem for the augmented graph: the box `cent d n` together with a
 super-source adjacent to the negative face.  A minimal vertex cut of the two opposite faces
@@ -5,10 +7,12 @@ meets the negative face only in whole blocks, so its negative side can be discon
 super-source restores connectedness, and the mod-two coboundary argument then shows that the
 cut is `*`-connected, which yields the box-crossing star duality in dimension at least two.
 -/
-import Exploding.Support.ExtAPBoxPoincare
-import Exploding.Support.ExtAPMinCut
-import Exploding.Support.ExtAPMinCutDuality
-import Exploding.Support.ExtMHProof5
+public import Exploding.Support.ExtAPBoxPoincare
+public import Exploding.Support.ExtAPMinCut
+public import Exploding.Support.ExtAPMinCutDuality
+public import Exploding.Support.ExtMHProof5
+
+@[expose] public section
 
 namespace Exploding
 

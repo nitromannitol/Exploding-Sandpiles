@@ -1,18 +1,22 @@
+module
+
 /-
 Proposition 4.1 of the paper: the last-wave is a bounded approximation
 of the exploding sandpile.
 -/
-import Exploding.Support.Vocab
-import Exploding.Support.ASProof2
-import Exploding.Support.ASProof3
-import Exploding.Support.ASProof4
-import Exploding.Support.ASProof7
-import Exploding.Support.ASSpecial
-import Exploding.Support.ASDouble
-import Exploding.Support.ApproximateSubadditiveP1
-import Exploding.External.LiggettSchonmannStaceyBoundedDegree
-import Exploding.External.MathieuHoles
-import Exploding.External.AntalPisztora
+public import Exploding.Support.Vocab
+public import Exploding.Support.ASProof2
+public import Exploding.Support.ASProof3
+public import Exploding.Support.ASProof4
+public import Exploding.Support.ASProof7
+public import Exploding.Support.ASSpecial
+public import Exploding.Support.ASDouble
+public import Exploding.Support.ApproximateSubadditiveP1
+public import Exploding.External.LiggettSchonmannStaceyBoundedDegree
+public import Exploding.External.MathieuHoles
+public import Exploding.External.AntalPisztora
+
+@[expose] public section
 
 open Exploding LatticeProb MeasureTheory
 

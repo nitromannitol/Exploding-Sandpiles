@@ -1,16 +1,20 @@
+module
+
 /-
 Theorem 1.4 of the paper: for `d ≥ 2` and a probability law `ν` on `ℤ` with
 `ν {m ≥ d} = 1` and `ν {2d - 1} > 0`, the product background with that one-site law is
 explosive almost surely.
 -/
-import Exploding.Support.Vocab
-import Exploding.External.Schonmann
-import Exploding.Support.TEProofRec
-import Exploding.Support.TEProofLaw
-import Exploding.Support.TEProofBlock
-import Exploding.Frozen.Recurrence
-import Exploding.Frozen.BoxCrossing
-import Exploding.Frozen.ExplosionCriteria
+public import Exploding.Support.Vocab
+public import Exploding.External.Schonmann
+public import Exploding.Support.TEProofRec
+public import Exploding.Support.TEProofLaw
+public import Exploding.Support.TEProofBlock
+public import Exploding.Frozen.Recurrence
+public import Exploding.Frozen.BoxCrossing
+public import Exploding.Frozen.ExplosionCriteria
+
+@[expose] public section
 
 open Exploding LatticeProb MeasureTheory
 

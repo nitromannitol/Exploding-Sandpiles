@@ -1,9 +1,13 @@
+module
+
 /-
 The slow front of the counterexample background in dimension two: lifting the
 cylinder supersolution of `CESlow2` to `ℤ²` by reflection and periodicity, and the
 resulting lower bound `T((3 + 8n) e₁) ≥ 12 n` of `theorem:counterexample`, Step 4.
 -/
-import Exploding.Support.CESlow2
+public import Exploding.Support.CESlow2
+
+@[expose] public section
 
 namespace Exploding
 

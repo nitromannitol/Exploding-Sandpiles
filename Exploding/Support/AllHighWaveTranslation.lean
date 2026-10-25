@@ -1,5 +1,9 @@
-import Exploding.Support.ArxivAllHighWave
-import Exploding.Support.SubStep
+module
+
+public import Exploding.Support.ArxivAllHighWave
+public import Exploding.Support.SubStep
+
+@[expose] public section
 
 /-!
 # Translation of the all-high one-wave front

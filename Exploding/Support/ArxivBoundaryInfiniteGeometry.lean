@@ -1,4 +1,8 @@
-import Exploding.Support.ExtMHProof13
+module
+
+public import Exploding.Support.ExtMHProof13
+
+@[expose] public section
 
 /-!
 # Infinite inner boundaries from two infinite sides

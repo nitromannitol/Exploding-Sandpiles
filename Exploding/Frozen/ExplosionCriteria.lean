@@ -1,9 +1,13 @@
+module
+
 /-
 Proposition 7.1 of the paper: a criterion for a background law to be explosive.
 -/
-import Exploding.Support.Hypotheses
-import Exploding.Support.ECProofMain
-import Exploding.Support.RecurrenceNonneg
+public import Exploding.Support.Hypotheses
+public import Exploding.Support.ECProofMain
+public import Exploding.Support.RecurrenceNonneg
+
+@[expose] public section
 
 open Exploding LatticeProb MeasureTheory
 

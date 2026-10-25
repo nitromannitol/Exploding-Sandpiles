@@ -1,3 +1,5 @@
+module
+
 /-
 Continuation of `Exploding/Support/LWCProof.lean`.
 
@@ -14,7 +16,9 @@ bounds it supplies the ingredients of the finite-subcover upgrade, whose last st
 of the single open conjunction in `Exploding/Frozen/LastWaveConvergence.lean`.  All
 declarations are `lwc2_`-prefixed.
 -/
-import Exploding.Support.LWCProof
+public import Exploding.Support.LWCProof
+
+@[expose] public section
 
 open Exploding LatticeProb MeasureTheory Filter
 

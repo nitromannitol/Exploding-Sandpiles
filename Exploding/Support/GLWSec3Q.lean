@@ -1,3 +1,5 @@
+module
+
 /-
 Proposition 5.1 of the paper (generalized last wave): the scales of the lighting from a lit tile.
 
@@ -5,7 +7,9 @@ For `n` large the macroscopic radius `Z = ⌈(log n)^{γ_p + 5}⌉`, the row len
 and the offset `Λ = Z + 1 + r` are polylogarithmic, so all the walks of the lighting stay in the box
 of radius `2n`, and the chemical-distance and path-filling thresholds are met.
 -/
-import Exploding.Support.GLWSec3P
+public import Exploding.Support.GLWSec3P
+
+@[expose] public section
 
 open Exploding LatticeProb MeasureTheory Filter
 

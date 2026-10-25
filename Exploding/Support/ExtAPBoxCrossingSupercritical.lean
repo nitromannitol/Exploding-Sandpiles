@@ -1,3 +1,5 @@
+module
+
 /-
 The bond box-crossing input at the critical density, from the confined high-density
 crossing.
@@ -16,9 +18,11 @@ least two, and the supercritical reduction `xap12_SupercriticalReduction` is
 assembled from it together with the coarse-graining input
 `xmj_BoxCrossingCoarseGraining`.  No star-duality or confinement input remains.
 -/
-import Exploding.Support.ExtAPBoxCrossingBond
-import Exploding.Support.ExtAPBoxCrossingFinal
-import Exploding.Support.ExtAPSupercritical
+public import Exploding.Support.ExtAPBoxCrossingBond
+public import Exploding.Support.ExtAPBoxCrossingFinal
+public import Exploding.Support.ExtAPSupercritical
+
+@[expose] public section
 
 open Exploding LatticeProb MeasureTheory Filter
 open scoped Classical Topology ENNReal

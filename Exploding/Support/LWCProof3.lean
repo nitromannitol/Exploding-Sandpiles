@@ -1,3 +1,5 @@
+module
+
 /-
 Continuation of `Exploding/Support/LWCProof2.lean`.
 
@@ -8,8 +10,10 @@ file covers the compact set by finitely many balls on which `N` barely moves, re
 centre by its rational direction and uses the Lipschitz bound for the rest.  All declarations are
 `lwc3_`-prefixed.
 -/
-import Exploding.Support.LWCProof2
-import Exploding.Support.Gen
+public import Exploding.Support.LWCProof2
+public import Exploding.Support.Gen
+
+@[expose] public section
 
 open Exploding LatticeProb MeasureTheory Filter
 

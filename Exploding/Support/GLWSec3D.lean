@@ -1,9 +1,13 @@
+module
+
 /-
 Proposition 5.1 of the paper (generalized last wave), the Section-3 assembly, part D:
 every integer direction has an almost sure limit `N₀ v`, and `N₀` is nonnegative,
 Lipschitz and homogeneous under natural scaling.
 -/
-import Exploding.Support.GLWSec3C
+public import Exploding.Support.GLWSec3C
+
+@[expose] public section
 
 open Exploding LatticeProb MeasureTheory Filter
 open scoped Classical

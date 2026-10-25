@@ -1,3 +1,5 @@
+module
+
 /-
 The general block-size layer of the Schonmann argument.
 
@@ -9,7 +11,9 @@ per-block probability and independence inputs of the block-cover estimate; the
 deterministic conversion from a good-block cover to spanning is
 `xsch3_sp_of_block_family`, and the general block-size seed is `xsch2_sp_of_box`.
 -/
-import Exploding.Support.ExtSchProof5
+public import Exploding.Support.ExtSchProof5
+
+@[expose] public section
 
 namespace Exploding
 

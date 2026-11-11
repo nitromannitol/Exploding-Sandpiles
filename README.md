@@ -121,12 +121,11 @@ same order and with the same numbers.
 
 ## Standing assumptions and scope
 
-1. **Cited results assumed.** Three results of the literature enter as explicit hypotheses of the
-   statements that use them; none is an `axiom`:
-   - Antal and Pisztora, Theorem 1.1 (chemical distance in supercritical bond percolation), `hChem`:
-     Theorems 1.2, 1.3 and 5.1, Propositions 2.2, 3.1, 4.1 and 5.1, and Lemmas 3.2 and 3.5 to 3.7;
-   - Fey, den Boer and Redig, Theorem 4.1, and Fey, Levine and Peres, Theorem 1.1 (radius of the
-     toppled cluster): Lemma 3.1 and Remark 1 only.
+1. **Axioms and incomplete proofs.** The library contains no `sorry`, `admit`, `native_decide` or
+   new `axiom`. Each main theorem depends on exactly `propext`, `Classical.choice` and
+   `Quot.sound`. Three results of the literature enter as explicit hypotheses of the statements
+   that use them, listed under [Assumed literature inputs](#assumed-literature-inputs); none is an
+   `axiom`.
 2. **Cited results proved here.** Six other cited results are proved in this repository:
    Liggett, Schonmann and Stacey, Theorem 0.0 and Corollary 1.4; Mathieu, Lemma 5.2; Schonmann's
    bound (Proposition 7.4); Fey, Levine and Peres, Proposition 1.4; and Fey, Meester and Redig,
@@ -138,13 +137,26 @@ same order and with the same numbers.
    paper prints pairwise independence. Whether Propositions 5.1 and 7.1 and Theorem 5.1 hold under
    the printed form is open. Proposition 7.1 is proved for `d ≥ 2`; the case `d = 1` is argued in a
    paragraph after its proof and is not formalized.
-4. **Axioms.** The library contains no `sorry`, `admit`, `native_decide` or new `axiom`. Each main
-   theorem depends on exactly `propext`, `Classical.choice` and `Quot.sound`.
-5. **Conventions.** Arrival times are valued in `ℕ∞`; `[x]` is the nearest lattice point, with ties
+4. **Conventions.** Arrival times are valued in `ℕ∞`; `[x]` is the nearest lattice point, with ties
    broken by the coordinatewise minimum; locally uniform convergence is stated in its `ε`-form; the
    floor in the toppling rules is integer division on `ℤ`.
-6. **Not formalized.** The proof outline of Section 1, the examples of Section 5.2, the qualitative
+5. **Not formalized.** The proof outline of Section 1, the examples of Section 5.2, the qualitative
    claims of Remarks 3, 4 and 5, the case `d = 1` of Proposition 7.1, and the figures.
+
+## Assumed literature inputs
+
+The three inputs are propositions, stated in [`Exploding/External/`](Exploding/External/) with
+their sources in the docstrings. They enter as explicit hypotheses of the statements that use
+them, not as axioms.
+
+| Hypothesis | Content | Source | Used by |
+| --- | --- | --- | --- |
+| `Exploding.External.AntalPisztoraChemicalDistance` (`hChem`) | for Bernoulli bond percolation on `ℤᵈ`, `d ≥ 2`, with density `q > p_c`, there are `ρ ≥ 1` and `c > 0` such that, for `\|y\|` large, the probability that the chemical distance from `0` to `y` is finite and exceeds `ρ\|y\|` is at most `exp(−c\|y\|)` | P. Antal and A. Pisztora, *On the chemical distance for supercritical Bernoulli percolation*, Ann. Probab. 24 (1996), Theorem 1.1 | Theorems 1.2, 1.3 and 5.1, Propositions 2.2, 3.1, 4.1 and 5.1, and Lemmas 3.2 and 3.5 to 3.7 |
+| `Exploding.External.FeyDenBoerRedigCubicalCluster` (`hFdBR`) | the toppled support and the lower radius of the cubical cluster, with total origin height `N + 2d − 2` | A. Fey-den Boer and F. Redig, *Limiting shapes for deterministic centrally seeded growth models*, [arXiv:math/0702450v2](https://arxiv.org/abs/math/0702450v2), Theorem 4.1 | Lemma 3.1 and the remark after it (Remark 1) |
+| `Exploding.External.FeyLevinePeresRadius` (`hFLP`) | an eventual bound, for every `ε > 0`, on the outer radius of the toppled sites for a background height `h` with `d ≤ h ≤ 2d − 2`, with `n` the number of extra chips | A. Fey, L. Levine and Y. Peres, *Growth rates and explosions in sandpiles*, [arXiv:0901.3805v2](https://arxiv.org/abs/0901.3805v2), Theorem 1.1 | Lemma 3.1 and the remark after it (Remark 1) |
+
+[`ASSUMPTIONS.md`](ASSUMPTIONS.md) gives the Lean text of every cited result, the three above and
+the six that are also proved here.
 
 ## Guarantees
 
@@ -171,19 +183,28 @@ A cited result is a hypothesis of the theorems that use it, not an axiom (see AS
   prints the axioms of 95 theorems, and [`scripts/check_axioms.py`](scripts/check_axioms.py)
   requires exactly `propext`, `Classical.choice` and `Quot.sound` for each theorem of its explicit
   list.
-- **Comparator.** The Mathlib-only pair [`ExplodingAudit/LimitShape/`](ExplodingAudit/LimitShape/)
+- **Independent check of the statements.** The Mathlib-only pair [`ExplodingAudit/LimitShape/`](ExplodingAudit/LimitShape/)
   restates Theorem 1.2 for `0 < p ≤ 1` over Mathlib alone, with the four cited results its
   statement takes as hypotheses. It is the only pair.
-- **Statements.** The SHA-256 of each statement is recorded in
+- **Pinned toolchain and dependencies.** Lean `v4.32.0`, Mathlib `81a5d257c8e410db227a6665ed08f64fea08e997` and
+  Lattice-Probability `78f4b2cec065fa2fb5116b06c41966855f62cf50`, as recorded in
+  [`lean-toolchain`](lean-toolchain) and [`lake-manifest.json`](lake-manifest.json) (see
+  [Building](#building)).
+- **The paper is part of the repository.** The statement map refers to the corrected edition in
+  [`paper/corrected-arxiv/`](paper/corrected-arxiv/), whose source
+  `exploding-corrected-arxiv.tex` has SHA-256
+  `ee4b05b340bff74811db1c3ed88ac7b0ad3fd324f0dad5a52393bc4971c0c8b0`. The unmodified arXiv v2
+  source [`paper/exploding-arxiv.tex`](paper/exploding-arxiv.tex) has SHA-256
+  `f12deba6e481a3d81c6967bc48ecbbdae1df4fa1c5f6248a38990030b308072d`.
+- **Statement hashes.** The SHA-256 of each statement is recorded in
   [`ledger/manifest.yaml`](ledger/manifest.yaml). `python3 tools/verify.py` checks the hashes, the
   correspondence with the paper and the axiom closures.
-- **Toolchain and dependencies.** Lean `v4.32.0`, Mathlib `81a5d257c8e410db227a6665ed08f64fea08e997` and
-  Lattice-Probability `78f4b2cec065fa2fb5116b06c41966855f62cf50`, as recorded in
-  [`lean-toolchain`](lean-toolchain) and [`lake-manifest.json`](lake-manifest.json).
 
 ## Size
 
-`Exploding/` and `Exploding.lean`: 420 Lean files with 75,789 lines. `ExplodingAudit/`: 4 Lean
+The library contains 420 Lean files with 75,790 lines (`Exploding.lean` and `Exploding/`), of which
+60,306 lines remain once comments and blank lines are removed, on top of mathlib and
+Lattice-Probability. The comparator sources under `ExplodingAudit/` are counted separately: 4 Lean
 files with 697 lines.
 
 ## Building
@@ -203,6 +224,14 @@ python3 tools/verify.py                            # every check; needs PyYAML
 PyYAML is installed by `python3 -m pip install -r tools/requirements.txt`.
 [`CONTRIBUTING.md`](CONTRIBUTING.md) describes each check.
 
+Lattice-Probability has no prebuilt cache, so the first build compiles it as well as the library.
+It is a public repository, pinned in [`lake-manifest.json`](lake-manifest.json):
+
+- Lattice-Probability: `https://github.com/nitromannitol/Lattice-Probability` at
+  `78f4b2cec065fa2fb5116b06c41966855f62cf50`.
+
+`import Exploding` loads the numbered results and what they use.
+
 ## Running the comparators
 
 The comparator pair is [`ExplodingAudit/LimitShape/`](ExplodingAudit/LimitShape/). Its
@@ -220,6 +249,14 @@ COMPARATOR_LANDRUN=<landrun> COMPARATOR_LEAN4EXPORT=<lean4export> COMPARATOR_NAN
 which prints `Your solution is okay!`. The [comparator workflow](.github/workflows/comparator.yml)
 runs the pair on manual dispatch, and [`ExplodingAudit/README.md`](ExplodingAudit/README.md)
 describes it.
+
+There are two continuous-integration workflows: **CI** builds the library with the zero-warning
+check, runs the axiom audit and `tools/verify.py` and builds the comparator surface; **Comparator
+audit** checks the pair. CI runs on pushes to `main` that change more than documentation, the paper,
+`formalization.yaml` or `CITATION.cff`; the comparator audit runs when it is started manually. Both
+workflows can be started manually from the
+[Actions page](https://github.com/nitromannitol/Exploding-Sandpiles/actions). See
+[`CONTRIBUTING.md`](CONTRIBUTING.md) for build conventions.
 
 ## Repository layout
 
@@ -239,6 +276,7 @@ ledger/manifest.yaml        the statements, with their SHA-256 and sources
 ASSUMPTIONS.md              the cited results and where each is proved
 CORRESPONDENCE.md           paper ↔ Lean: conventions, cited inputs, statement table
 CONTRIBUTING.md             building notes and checks
+LICENSE                     the Apache License 2.0
 CITATION.cff                citation metadata
 formalization.yaml          source, statement, automation and review metadata
 scripts/                    check_axioms.py, the explicit-list axiom check

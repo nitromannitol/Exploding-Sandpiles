@@ -35,21 +35,24 @@ independent values, `2d − 1` with probability `p` and `2d − 2` otherwise, wi
 | Theorem 5.1 | `Exploding.generalized_convergence` | Convergence under the hypotheses of Section 5. |
 | Theorem 6.1 | `Exploding.counterexample` | An explosive background with no limit shape. |
 
-**Theorem 1.2.** There is a nonempty open convex set `B ⊂ ℝᵈ` such that almost surely
-`|{y : v_t([t y]) > 0} △ B| → 0` as `t → ∞`.
+**Theorem 1.2.** Assume the chemical-distance bound of Antal and Pisztora (`hChem`). There is a
+nonempty open convex set `B ⊂ ℝᵈ` such that almost surely `|{y : v_t([t y]) > 0} △ B| → 0` as
+`t → ∞`.
 
-**Theorem 1.3.** There is a continuous, convex, positively one-homogeneous `N` such that almost
-surely `η` is explosive, every arrival time `T(x) = min{t ≥ 1 : v_t(x) > 0}` is finite, and
-`n⁻¹ T([n y]) → N(y)` uniformly on compact sets.
+**Theorem 1.3.** Assume the chemical-distance bound of Antal and Pisztora (`hChem`). There is a
+continuous, convex, positively one-homogeneous `N` such that almost surely `η` is explosive, every
+arrival time `T(x) = min{t ≥ 1 : v_t(x) > 0}` is finite, and `n⁻¹ T([n y]) → N(y)` uniformly on
+compact sets.
 
 **Theorem 1.4.** Let `d ≥ 2` and let `ν` be a probability law on `ℤ` with `ν{m ≥ d} = 1` and
 `ν{2d − 1} > 0`. A background whose values are independent, each of law `ν`, is explosive almost
 surely.
 
-**Theorem 5.1.** Let `d ≥ 2` and let `P` be a law on backgrounds `η_min ≤ η ≤ 2d − 1` that is
-stationary and ergodic for a sublattice of finite index and satisfies Hypotheses 1 and 3 to 5 of
-Section 5. Then almost surely `η` is explosive, and `n⁻¹ T([n y])` converges locally uniformly to a
-deterministic, continuous, convex, one-homogeneous function.
+**Theorem 5.1.** Assume the chemical-distance bound of Antal and Pisztora (`hChem`). Let `d ≥ 2` and
+let `P` be a law on backgrounds `η_min ≤ η ≤ 2d − 1` that is stationary and ergodic for a sublattice
+of finite index and satisfies Hypotheses 1 and 3 to 5 of Section 5. Then almost surely `η` is
+explosive, and `n⁻¹ T([n y])` converges locally uniformly to a deterministic, continuous, convex,
+one-homogeneous function.
 
 **Theorem 6.1.** For every `d ≥ 2` there is an explosive background `η`, not bounded below by
 `2d − 2`, whose arrival times along `e₁` are finite, satisfy `limsup T(n e₁)/n ≥ 3/2` and
@@ -237,7 +240,7 @@ It is a public repository, pinned in [`lake-manifest.json`](lake-manifest.json):
 The comparator pair is [`ExplodingAudit/LimitShape/`](ExplodingAudit/LimitShape/). Its
 [`comparator.json`](ExplodingAudit/LimitShape/comparator.json) permits exactly `propext`,
 `Classical.choice` and `Quot.sound`, and enables the nanoda kernel. Build `leanprover/comparator`,
-`lean4export` and `landrun` at the revisions listed in
+`lean4export`, `nanoda` and `landrun` at the revisions listed in
 [`.github/workflows/comparator.yml`](.github/workflows/comparator.yml), then run from the
 repository root
 
@@ -252,9 +255,9 @@ describes it.
 
 There are two continuous-integration workflows: **CI** builds the library with the zero-warning
 check, runs the axiom audit and `tools/verify.py` and builds the comparator surface; **Comparator
-audit** checks the pair. CI runs on pushes to `main` that change more than documentation, the paper,
-`formalization.yaml` or `CITATION.cff`; the comparator audit runs when it is started manually. Both
-workflows can be started manually from the
+audit** checks the pair. CI runs on pushes to `main` that change more than documentation (`*.md`),
+the compiled paper PDFs, `formalization.yaml` or `CITATION.cff`; the comparator audit runs when it
+is started manually. Both workflows can be started manually from the
 [Actions page](https://github.com/nitromannitol/Exploding-Sandpiles/actions). See
 [`CONTRIBUTING.md`](CONTRIBUTING.md) for build conventions.
 

@@ -1,11 +1,10 @@
 /-
-Proposition 3.1's moment-free Kingman conjunct (declarations `lwc6_*`).
+Proposition 3.1's Kingman conjunct (declarations `lwc6_*`): the analytic step.
 
-This file isolates the purely analytic step and the Kingman step.  The analytic step
-extends a subadditive, naturally homogeneous, linearly bounded function on the
-lattice `ℤ^d` to a continuous, convex, one-homogeneous function on `ℝ^d`; the Kingman
-step produces the lattice function from `mk_kingman_linear` and the `lwc_*` shift
-machinery.
+The analytic step extends a subadditive, naturally homogeneous, linearly bounded
+function on the lattice `ℤ^d` to a continuous, convex, one-homogeneous function on
+`ℝ^d`.  This file defines the extension `lwc6_infN` and proves that it is
+nonnegative, subadditive, positively homogeneous and convex.
 -/
 import Exploding.Support.LWCProof4
 import Mathlib.Analysis.Convex.Continuous

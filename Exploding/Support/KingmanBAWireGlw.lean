@@ -1,16 +1,13 @@
 /-
-Proposition 5.1: the Kingman input of the Section 5 assembly, corrected.
+Proposition 5.1: the Kingman input of the Section 5 assembly.
 
-`glw2_Section3Convergence` consumes `glw2_KingmanCore`, which is false
-(`king_not_glw2_KingmanCore`), so the implication is vacuously true and says nothing.  The
-corrected assembly consumes `king_LipKingman` (proved: `king_LipKingman_true`) together with the
+The assembly consumes `king_LipKingman` (proved: `king_LipKingman_true`) together with the
 local Lipschitz bound `glw2_LipschitzLocal`, which is what the paper's proof of Proposition 5.1
-uses.  The hypotheses of the reduction of Proposition 5.1 are then the two true statements
+uses.  The hypotheses of the reduction of Proposition 5.1 are then
 `glw2_LipschitzLocal d ηmin P` and `king_Section3Convergence d hd ηmin hηmin L hL P`.
 -/
 import Exploding.Support.GLWProof2
 import Exploding.Support.KingmanBALip
-import Exploding.Support.KingmanBARefute
 
 open Exploding LatticeProb MeasureTheory Filter ProbabilityTheory
 open scoped Classical
@@ -59,14 +56,6 @@ theorem king_glw_assemble (d : ℕ) (hd : 2 ≤ d) (ηmin : ℤ) (hηmin : 0 ≤
     (fun y hy hy0 s S hS => glw2_shift_mixing d P h1 y
       (glw_shift_ergodic_meas_pres d L P hstat y hy) hy0 s S hS)
     king_LipKingman_true hlips
-
-/-- The old assembly was vacuous: its Kingman hypothesis is false, so
-`glw2_Section3Convergence` holds for every `P`, with no content.  (Recorded so that nobody
-discharges the open conjunct through it.) -/
-theorem king_glw2_Section3Convergence_vacuous (d : ℕ) (hd : 2 ≤ d) (ηmin : ℤ) (hηmin : 0 ≤ ηmin)
-    (L : AddSubgroup (Site d)) (hL : L.index ≠ 0) (P : Measure (Site d → ℤ)) :
-    glw2_Section3Convergence d hd ηmin hηmin L hL P :=
-  fun _ _ _ _ _ _ _ _ _ _ _ _ _ hcore _ => (king_not_glw2_KingmanCore hcore).elim
 
 end Exploding
 

@@ -1,15 +1,13 @@
 /-
 Proposition 3.1's Kingman conjunct, from the Lipschitz-transfer Kingman theorem.
 
-`LWCProof8.lean` derives the lattice limit shape from `mk_kingman_linear`, which is false
-(`KingmanBARefute.lean`).  The per-direction cocycle `lwc8_gv` is subadditive along the shift,
+The per-direction cocycle `lwc8_gv` of `LWCProof8.lean` is subadditive along the shift,
 nonnegative and measurable, and the far Lipschitz bound `lwcl_far_lipschitz` of the paper
 (`eq:lastwave_lipschitz`) is exactly the upward Lipschitz hypothesis of `king_lipKingman`.  So
 the per-direction limit exists, and the rest of `LWCProof8` (the lattice data, subadditivity of
 the limit by convergence in probability, the extension to a continuous convex one-homogeneous
-function) goes through unchanged.  This file reruns the two `LWCProof8` declarations that
-consumed `mk_kingman_linear`, with the corrected input, and states the Proposition 3.1 Kingman
-conjunct with only the frozen hypotheses.
+function) applies.  This file states the Proposition 3.1 Kingman conjunct with only the frozen
+hypotheses.
 -/
 import Exploding.Support.LWCProof8
 import Exploding.Support.LWCLipE
@@ -274,8 +272,8 @@ variable {d : ℕ}
 
 /-- **Proposition 3.1's Kingman conjunct.**  There is a continuous, convex, one-homogeneous `N`
 with almost-sure finiteness of `clusterArrival` and lattice-direction convergence of the rescaled
-penultimate-cluster arrival times to `N`.  It uses only the frozen hypotheses of Proposition 3.1,
-and (through `king_lipKingman`) not the false `mk_kingman_linear`. -/
+penultimate-cluster arrival times to `N`.  It uses only the frozen hypotheses of Proposition 3.1;
+the per-direction limits come from `king_lipKingman`. -/
 theorem king_hking (d : ℕ) (hd : 2 ≤ d) (p : ℝ) (hp : 0 < p)
     (hp1 : p < 1)
     (hLSSB : Exploding.External.LiggettSchonmannStaceyBoundedDegree)

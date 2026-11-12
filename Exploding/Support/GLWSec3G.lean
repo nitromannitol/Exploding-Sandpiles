@@ -1,7 +1,7 @@
 /-
 Proposition 5.1 of the paper (generalized last wave), the Section-3 assembly, part G:
 explosion from the last wave, the transfer from the penultimate-cluster arrival times to the
-last-wave arrival times, and the assembly of `glw2_Section3Convergence`.
+last-wave arrival times, and the pieces of the Section-3 assembly `glws_Section3`.
 -/
 import Exploding.Support.GLWSec3F
 import Exploding.Support.ASProof4

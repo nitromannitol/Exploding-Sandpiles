@@ -5,12 +5,10 @@ moment-free form of Kingman's theorem in the proofs of Propositions 3.1 and
 (`MeasureTheory.Conservative`) but no induced transformation or Kac lemma, so
 this file builds the parts of the induced system that are needed.
 
-The general statement `mk_kingman_linear` of `MKingman.lean` is too strong as
-written: the a.s. linear bound `g n ≤ C n + K(ω)` bounds `g` at a point, but the
-paper's transfer from convergence along the return times `r_j` to convergence
-along every `n` additionally uses the second bound of `eq:generalized_lipschitz`
-(a Lipschitz transfer).  This file supplies the induced-map
-infrastructure on which that route rests, including the induced cocycle.
+The paper's transfer from convergence along the return times `r_j` to
+convergence along every `n` uses the second bound of `eq:generalized_lipschitz`
+(a Lipschitz transfer).  This file supplies the induced-map infrastructure on
+which that route rests, including the induced cocycle.
 -/
 import Exploding.Support.MKingman
 import Mathlib.Dynamics.Ergodic.Conservative

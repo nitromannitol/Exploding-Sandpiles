@@ -12,7 +12,7 @@ namespace Exploding
 
 variable {d : ℕ}
 
-/-- The mixing hypothesis `(B)` of `glw2_Section3Convergence`, for the given sublattice. -/
+/-- The mixing hypothesis `(B)` of `glws_Section3`, for the given sublattice. -/
 def glws_Mix (d : ℕ) (L : AddSubgroup (Site d)) (P : Measure (Site d → ℤ)) : Prop :=
   ∀ (y : Site d), y ∈ L → y ≠ 0 →
     ∀ (s : Finset (Site d)) (S : Set (s → ℤ)), MeasurableSet S →

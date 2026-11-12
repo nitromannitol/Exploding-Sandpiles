@@ -1,8 +1,7 @@
 /-
 Kingman's subadditive ergodic theorem with a Lipschitz transfer, and no integrability.
 
-The Lipschitz-free statement `mk4_boundedAboveKingman` is false (`KingmanBARefute.lean`).  The
-true statement uses the second Lipschitz bound of the paper: a nonnegative measurable
+The statement uses the second Lipschitz bound of the paper: a nonnegative measurable
 subadditive cocycle `g` over an ergodic measure-preserving map, which is Lipschitz upward up
 to a sublinear error,
 `g n' x ≤ g n x + C (n' - n) + ε n` for `n ≤ n' ≤ 2 n` and `n` large, converges:
@@ -460,9 +459,7 @@ theorem king_lipKingman (μ : Measure Ω) [IsProbabilityMeasure μ] (T : Ω → 
     · simp
     · exact div_nonneg (hg n x) (Nat.cast_nonneg n)
 
-/-- The statement `king_lipKingman` as a proposition, to be used in place of the false
-Lipschitz-free statements `mk4_boundedAboveKingman`, `mk_kingman_linear` and
-`glw2_KingmanCore`. -/
+/-- The statement `king_lipKingman` as a proposition. -/
 def king_LipKingman : Prop :=
   ∀ {Ω : Type} [MeasurableSpace Ω] (μ : Measure Ω) [IsProbabilityMeasure μ]
     (T : Ω → Ω), MeasurePreserving T μ μ → Ergodic T μ →
@@ -475,8 +472,8 @@ def king_LipKingman : Prop :=
 theorem king_LipKingman_true : king_LipKingman :=
   fun μ _ T hT herg g hsub hg hgm hlip => king_lipKingman μ T hT herg g hsub hg hgm hlip
 
-/-- The form closest to `mk4_boundedAboveKingman`: a subadditive cocycle bounded below by a
-linear function, with the upward Lipschitz bound, converges. -/
+/-- A subadditive cocycle bounded below by a linear function, with the upward Lipschitz bound,
+converges. -/
 theorem king_lipKingman_linear (μ : Measure Ω) [IsProbabilityMeasure μ] (T : Ω → Ω)
     (hT : MeasurePreserving T μ μ) (herg : Ergodic T μ) (h : ℕ → Ω → ℝ)
     (hsub : ∀ m n x, h (m + n) x ≤ h m x + h n (T^[m] x))

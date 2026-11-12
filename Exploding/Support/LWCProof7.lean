@@ -1,13 +1,10 @@
 /-
-The Kingman conjunct of Proposition 3.1 (declarations `lwc7_*`), taking
-`mk_kingman_linear` as a hypothesis.
+The Kingman conjunct of Proposition 3.1 (declarations `lwc7_*`): the analytic links.
 
 `LWCProof6.lean` built the extension `lwc6_infN` of a lattice bound `L` and proved
 that it is nonnegative, subadditive, positively homogeneous and convex.  This file
-supplies the missing analytic links -- the floor comparison identifying `lwc6_infN`
-with `L` on lattice points, the linear bound and continuity -- and then applies
-`mk_kingman_linear` to the penultimate-cluster arrival cocycle along a fixed
-lattice direction to produce the limit shape `N` of Proposition 3.1.
+supplies the floor comparison identifying `lwc6_infN` with `L` on lattice points,
+the linear bound and continuity, and assembles the extension (`lwc7_extend_exists`).
 -/
 import Exploding.Support.LWCProof6
 import Exploding.Support.MKingman

@@ -258,17 +258,6 @@ theorem glw2_kdep (d : ℕ) (P : Measure (Site d → ℤ))
   rw [hRI, hRJ]
   exact hcomp
 
-/-- The subadditive ergodic core of Lemma 3.4/Kingman (open Section-3 piece). -/
-def glw2_KingmanCore : Prop :=
-  ∀ {Ω : Type} [MeasurableSpace Ω] (μ : Measure Ω) [IsProbabilityMeasure μ]
-    (T : Ω → Ω), MeasurePreserving T μ μ → Ergodic T μ →
-    ∀ (g : ℕ → Ω → ℝ), (∀ m n x, g (m + n) x ≤ g m x + g n (T^[m] x)) →
-    (∀ n x, 0 ≤ g n x) → (∀ n, Measurable (g n)) →
-    ∀ (C : ℝ), (∀ᵐ x ∂μ, ∃ K : ℝ, ∀ n : ℕ, g n x ≤ C * n + K) →
-      ∀ (K : ℝ), MeasurableSet {x | ∀ n : ℕ, g n x ≤ C * n + K} →
-      0 < μ {x | ∀ n : ℕ, g n x ≤ C * n + K} →
-      ∃ L : ℝ, ∀ᵐ x ∂μ, Tendsto (fun n : ℕ => g n x / (n : ℝ)) atTop (nhds L)
-
 /-- The local Lipschitz bound for the penultimate-cluster arrival times
 (open Section-3 piece, the general-hypothesis analogue of Lemma 3.7).  It is
 stated as an implication from the Section 5 setting, so it is not vacuous for
@@ -286,26 +275,5 @@ def glw2_LipschitzLocal (d : ℕ) (ηmin : ℤ) (P : Measure (Site d → ℤ)) :
       clusterArrival η (0 : Site d) x = (a : ℕ∞) ∧
       ∀ x' ∈ cent d n, ∃ c : ℕ, clusterArrival η x x' = (c : ℕ∞) ∧
         (c : ℝ) ≤ C * (mnorm (x - x') : ℝ) + Real.log n ^ γ
-
-/-- The Section-3 convergence assembly (open).  It consumes the two finite-range
-facts (A) and (B), the subadditive ergodic core and the local Lipschitz bound,
-and returns the Proposition 5.1 conclusion. -/
-def glw2_Section3Convergence (d : ℕ) (_hd : 2 ≤ d) (ηmin : ℤ) (_hηmin : 0 ≤ ηmin)
-    (L : AddSubgroup (Site d)) (_hL : L.index ≠ 0) (P : Measure (Site d → ℤ)) : Prop :=
-  IsProbabilityMeasure P → (∀ᵐ η ∂P, InOmega d ηmin η) → StationaryOn d L P → ErgodicOn d L P →
-  FiniteRangeOfDependence d P → PathFillingHyp d P → StronglyBoxCrossingHyp d P →
-  Exploding.External.LiggettSchonmannStacey →
-  Exploding.External.LiggettSchonmannStaceyBoundedDegree →
-  Exploding.External.MathieuHoleVolume →
-  Exploding.External.AntalPisztoraChemicalDistance →
-  (∀ (k : Fin d → ℕ), (∀ i, 0 < k i) →
-    ∃ m : ℕ, KDependent m (P.map fun η (j : Site d) => decide (StronglyBoxCrossed η k j))) →
-  (∀ (y : Site d), y ∈ L → y ≠ 0 →
-    ∀ (s : Finset (Site d)) (S : Set (s → ℤ)), MeasurableSet S →
-      ∃ n : ℕ, P (cylinder s S ∩
-        (fun η : Site d → ℤ => fun z => η (y + z))^[n] ⁻¹' cylinder s S) =
-        P (cylinder s S) * P (cylinder s S)) →
-  glw2_KingmanCore → glw2_LipschitzLocal d ηmin P → glw_Conclusion d P
-
 
 end Exploding

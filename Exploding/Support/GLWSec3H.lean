@@ -1,8 +1,8 @@
 /-
 Proposition 5.1 of the paper (generalized last wave), the Section-3 assembly, part H:
 `glw_Conclusion` from the paper's local bound `eq:generalized_lipschitz`, the moment-free Kingman
-theorem and the closeness of the two arrival times (`glws_Close`); and `glw2_Section3Convergence`
-from the stronger local bound of `glw2_LipschitzLocal`.
+theorem and the closeness of the two arrival times (`glws_Close`); and the Section-3 statement
+`glws_Section3` from the stronger local bound of `glw2_LipschitzLocal`.
 -/
 import Exploding.Support.GLWSec3G
 
@@ -117,8 +117,7 @@ theorem glws_conclusion (d : ℕ) (hd : 2 ≤ d) (ηmin : ℤ) (hηmin : 0 ≤ �
   exact glws_core d hd ηmin hηmin L hL P hP hsupp hstat hmix hγ hC hloc hcl
 
 /-- The Section-3 assembly, as an implication from the standing hypotheses of Proposition 5.1, the
-finite-range facts (A) and (B) and the local Lipschitz bound `glw2_LipschitzLocal`.  This is
-`glw2_Section3Convergence` without its premise `glw2_KingmanCore`, which is false. -/
+finite-range facts (A) and (B) and the local Lipschitz bound `glw2_LipschitzLocal`. -/
 def glws_Section3 (d : ℕ) (_hd : 2 ≤ d) (ηmin : ℤ) (_hηmin : 0 ≤ ηmin)
     (L : AddSubgroup (Site d)) (_hL : L.index ≠ 0) (P : Measure (Site d → ℤ)) : Prop :=
   IsProbabilityMeasure P → (∀ᵐ η ∂P, InOmega d ηmin η) → StationaryOn d L P → ErgodicOn d L P →

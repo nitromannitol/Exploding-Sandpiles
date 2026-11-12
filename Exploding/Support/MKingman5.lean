@@ -1,21 +1,10 @@
 /-
 Continuation of `MKingman4.lean`.
 
-The frozen body of `GeneralizedLastWave.lean` names the exact missing theorem as
-`mk4_boundedAboveKingman` (a subadditive process bounded above by an a.s. finite
-random variable and below by a linear function has `h n / n` convergent).  Its
-general form is the moment-free subadditive ergodic theorem of Kingman /
-Derriennic / Akcoglu-Krengel; `LatticeProb.ae_tendsto_div` does not prove it,
-because that theorem needs `Integrable (h 1)`, which the a.s. upper bound does
-not supply.
-
-This file records the part of `mk4_boundedAboveKingman` that is proved by the
-library's machinery: the case of a *uniform* upper bound `h n ≤ M` (with `M` a
-constant, not a random variable).  There the shifted process
-`g n = h n + c n` is nonnegative, bounded above by `c n + M`, and `g 1` is
-bounded hence integrable, so `mk_kingman_linear_uniform` applies.  The general
-case needs the Akcoglu-Krengel filling scheme, which the library does not
-contain.
+Kingman's theorem for a subadditive process `h` that is bounded below by a linear
+function `-c n` and bounded above by a constant `M`.  The shifted process
+`g n = h n + c n` is nonnegative, bounded above by `c n + M`, and `g 1` is bounded
+hence integrable, so `mk_kingman_linear_uniform` applies.
 -/
 import Exploding.Support.MKingman4
 import Mathlib.Dynamics.Ergodic.Function
@@ -26,7 +15,7 @@ namespace Exploding
 
 variable {Ω : Type}
 
-/-- **The uniformly bounded case of `mk4_boundedAboveKingman`.**  If `h` is
+/-- **Kingman's theorem for a uniformly bounded subadditive process.**  If `h` is
 subadditive, bounded below by `-c n` and bounded above by the *constant* `M`,
 then `h n / n` converges a.s.: shift to the nonnegative process
 `g n = h n + c n`, whose first term is bounded (hence integrable) and which is

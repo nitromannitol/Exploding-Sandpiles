@@ -1,12 +1,13 @@
 /-
-The Kingman conjunct of Proposition 3.1 (declarations `lwc8_*`), taking
-`mk_kingman_linear` as a hypothesis.
+The Kingman conjunct of Proposition 3.1 (declarations `lwc8_*`): the cocycle side.
 
 `LWCProof6/7` built the extension `lwc6_infN L` of a subadditive, homogeneous,
 linearly bounded lattice bound `L`, and identified it with `L` on lattice points.
-This file applies `mk_kingman_linear` to the per-direction penultimate-cluster
-arrival cocycle over the shift by a lattice vector, produces the limit `L`, proves
-its subadditivity/nonnegativity/bound, and assembles the conclusion.
+This file sets up the per-direction penultimate-cluster arrival cocycle `lwc8_gv`
+over the shift by a lattice vector, proves that it is linearly bounded and
+subadditive along the shift, proves the subadditivity of the limit `L`, and
+assembles the deterministic limit shape from `L` and the extension.  The
+per-direction limit itself comes from `king_lipKingman` in `KingmanBAWire.lean`.
 -/
 import Exploding.Support.LWCProof7
 import Exploding.Support.MKingman

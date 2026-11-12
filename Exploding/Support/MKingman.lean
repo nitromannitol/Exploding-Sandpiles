@@ -1,15 +1,7 @@
 /-
-A moment-free Kingman subadditive ergodic theorem, shared by the generalized
-last-wave statement (`glw2_KingmanCore`) and the toy-law last-wave statement (the first
-conjunct of `Exploding.Frozen.convergence_of_the_last_wave`).
-
-`LatticeProb.ae_tendsto_div` requires `Integrable (g 1)`, which neither use case
-supplies.  The statement below keeps only a pointwise eventual linear upper
-bound `g n ≤ C n + K(ω)`; the argument for the general case is to induce on the
-positive-measure set `{∀ n, g n ≤ C n + K}` and use Kac's lemma.  The
-uniform-bound case is proved in this file, and the general case is isolated as the
-single proposition `mk_kingman_linear`, and `glw2_KingmanCore` is derived from
-it.
+Kingman's subadditive ergodic theorem for a nonnegative cocycle with a uniform linear
+upper bound `g n ≤ C n + K`.  The bound supplies the integrability of `g 1` that
+`LatticeProb.ae_tendsto_div` needs; ergodicity makes the limit constant.
 -/
 import Exploding.Support.GLWProof2
 import LatticeProb.Prob.Kingman
@@ -19,21 +11,12 @@ open Exploding LatticeProb MeasureTheory Filter ProbabilityTheory
 
 namespace Exploding
 
-/-- **Moment-free Kingman theorem** (the form needed by both last-wave statements).  A
-nonnegative subadditive cocycle over a measure-preserving ergodic map, with an
-almost-sure eventual linear upper bound `g n ≤ C n + K(ω)`, has an almost-sure
-limit `g n / n → L`. -/
-def mk_kingman_linear : Prop :=
-  ∀ {Ω : Type} [MeasurableSpace Ω] (μ : Measure Ω) [IsProbabilityMeasure μ]
-    (T : Ω → Ω), MeasurePreserving T μ μ → Ergodic T μ →
-    ∀ (g : ℕ → Ω → ℝ), (∀ m n x, g (m + n) x ≤ g m x + g n (T^[m] x)) →
-    (∀ n x, 0 ≤ g n x) → (∀ n, Measurable (g n)) →
-    (∃ C : ℝ, ∀ᵐ x ∂μ, ∃ K : ℝ, ∀ n : ℕ, g n x ≤ C * n + K) →
-    ∃ L : ℝ, ∀ᵐ x ∂μ, Tendsto (fun n : ℕ => g n x / (n : ℝ)) atTop (nhds L)
-
-/-- The uniform-bound case of `mk_kingman_linear`, proved from
-`LatticeProb.ae_tendsto_gLow` and the ergodicity of `T` (which makes the
-a.e.-invariant limit `gLow` almost surely constant). -/
+/-- **Kingman's theorem under a uniform linear bound.**  A nonnegative subadditive
+cocycle over a measure-preserving ergodic map with `g n ≤ C n + K` almost surely,
+for constants `C` and `K`, has an almost-sure limit `g n / n → L`.  The bound makes
+`g 1` integrable; the limit comes from `LatticeProb.ae_tendsto_gLow` and the
+ergodicity of `T`, which makes the a.e.-invariant limit `gLow` almost surely
+constant. -/
 theorem mk_kingman_linear_uniform {Ω : Type} [MeasurableSpace Ω] (μ : Measure Ω)
     [IsProbabilityMeasure μ] (T : Ω → Ω) (hT : MeasurePreserving T μ μ) (herg : Ergodic T μ)
     (g : ℕ → Ω → ℝ) (hsub : ∀ m n x, g (m + n) x ≤ g m x + g n (T^[m] x))

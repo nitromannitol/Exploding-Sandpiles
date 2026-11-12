@@ -55,7 +55,6 @@ import Exploding.Support.ExtLSSCountable
 import Exploding.Support.ExtBCBernoulli
 import Exploding.Support.ExtBCBernoulli2
 import Exploding.Support.ExtAPBarrier
-import Exploding.Support.ExtAPBarrierStar
 import Exploding.Support.ExtAPBridge
 import Exploding.Support.ExtAPStarDuality
 import Exploding.Support.ExtAPMinCut
@@ -112,8 +111,6 @@ import Exploding.Support.ExtAPProof5
 import Exploding.Support.ExtAPProof6
 import Exploding.Support.ExtAPProof7
 import Exploding.Support.ExtAPProof8
-import Exploding.Support.ExtAPProof9
-import Exploding.Support.ExtAPProof10
 import Exploding.Support.ExtAPProof11
 import Exploding.Support.ExtAPProof12
 import Exploding.Support.ExtAPProof13

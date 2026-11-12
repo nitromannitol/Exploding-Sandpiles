@@ -12,9 +12,7 @@ critical case `r = d`, checks that seeds percolate for every `p > 0` once `K` is
 large, and transfers a percolating seed cluster to a spanning event for `Q_n`.
 Constructing the seed and proving its growth in the critical case `r = d` is
 Schonmann's argument; it is not available here, and we do not claim it.  The base
-scale `xsch8_Base` is exactly the missing one-scale "seed" input, and the earlier
-attempt to obtain it from the one-dimensional base and the recursion alone was
-refuted in `ExtSchProof14`.
+scale `xsch8_Base` is exactly the missing one-scale "seed" input.
 
 We record the parts that are provable without the critical seed:
 

@@ -1,7 +1,7 @@
 /-
 The finite-cluster half of the chemical-distance estimate.
 
-The corrected finite-cluster bound `Exploding.xap13_FiniteClusterBound` bounds the
+The finite-cluster bound `Exploding.xap13_FiniteClusterBound` bounds the
 probability of `xap5_SmallCluster ∧ xap12_BigDistance` by `exp (-c |y|)`.  This file
 records the exact obstacle to proving it from the good-site Peierls count.
 
@@ -10,15 +10,14 @@ series `∑_s (2s+1)^d (3^d)^{2s} (1-δ)^{s/3^d}`, a constant independent of `y`
 therefore cannot produce the factor `exp (-c |y|)`.  The extra input needed is the
 `y`-dependent statement that a large chemical distance is rare: the
 high-density chemical-distance large deviation of Antal--Pisztora.  That statement
-is isolated below as `xmf_OpenDistanceLargeDeviation`; the corrected bound is a
+is isolated below as `xmf_OpenDistanceLargeDeviation`; the bound is a
 consequence of it because `SmallCluster ∧ BigDistance ⊆ BigDistance`.
 
 Two elementary facts about the distance are also proved.  First, a nearest-neighbour
 open path of `m` steps changes the Manhattan norm by at most one per step, so the
 chemical distance dominates `mnorm` (`xmf_mnorm_le_edist`).  Second, for a detour
 ratio `ρ < 1` a finite chemical distance is exactly `BigDistance`; the constraint
-`1 ≤ ρ` in the corrected bound is therefore essential, and the origin-bad event
-alone is not enough to refute it.
+`1 ≤ ρ` in the bound is therefore essential.
 -/
 import Exploding.Support.ExtAPProof13
 import Exploding.Support.PUBProofB
@@ -94,7 +93,7 @@ def xmf_OpenDistanceLargeDeviation : Prop :=
       bondPercolation d q {ω | xap12_BigDistance d ρ ω y} ≤
         ENNReal.ofReal (Real.exp (-(c * (mnorm y : ℝ))))
 
-/-- The corrected finite-cluster bound follows from the large deviation of the
+/-- The finite-cluster bound follows from the large deviation of the
 open distance, since `SmallCluster ∧ BigDistance` is contained in `BigDistance`. -/
 theorem xmf_finiteClusterBound_of_openDistance (h : xmf_OpenDistanceLargeDeviation) :
     xap13_FiniteClusterBound := by
@@ -106,14 +105,14 @@ theorem xmf_finiteClusterBound_of_openDistance (h : xmf_OpenDistanceLargeDeviati
     fun y hy => (measure_mono fun _ hω => hω.2).trans (hR y hy)⟩
 
 /-- The frozen Antal--Pisztora node supplies the missing input, because the density
-range of the corrected bound lies above `bondCritical d`. -/
+range of the bound lies above `bondCritical d`. -/
 theorem xmf_openDistanceLargeDeviation_of_antalPisztora
     (h : Exploding.External.AntalPisztoraChemicalDistance) :
     xmf_OpenDistanceLargeDeviation := by
   intro d hd
   exact ⟨bondCritical d, xap13_bondCritical_lt_one hd, fun q hq hq1 => h d hd q hq hq1⟩
 
-/-- The corrected finite-cluster bound, conditional on the frozen Antal--Pisztora
+/-- The finite-cluster bound, conditional on the frozen Antal--Pisztora
 node. -/
 theorem xmf_finiteClusterBound_of_antalPisztora
     (h : Exploding.External.AntalPisztoraChemicalDistance) : xap13_FiniteClusterBound :=

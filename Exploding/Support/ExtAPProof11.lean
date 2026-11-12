@@ -1,8 +1,7 @@
 /-
-The finite-cluster geometric-series estimate, reworked so that the all-bad
-`*`-connected set does **not** have to contain the origin (the origin can be good
-while its cluster is finite, which is exactly why `xap9_FiniteClusterReduction`
-is false, `xap10_not_finiteClusterReduction`).  The counting object is
+The finite-cluster geometric-series estimate.  The all-bad `*`-connected set does
+**not** have to contain the origin (the origin can be good while its cluster is
+finite).  The counting object is
 `xap11_starSets X s`, the `*`-connected `s`-subsets of a finite region `X`:
 there are at most `X.card * (3^d)^{2s}` of them (`xap11_starSets_card_le`), so
 the packed bad-set bound gives `xap11_starSets_bad_prob_le`.  The finite-cluster
@@ -11,7 +10,7 @@ event is then bounded by the geometric series
 geometric input `xap11_FiniteClusterReduction` that a finite cluster has an
 all-bad `*`-connected boundary of `s` sites inside the ball of radius `s`.
 -/
-import Exploding.Support.ExtAPProof10
+import Exploding.Support.ExtAPProof8
 import Mathlib.Data.Fintype.EquivFin
 
 open Exploding LatticeProb MeasureTheory

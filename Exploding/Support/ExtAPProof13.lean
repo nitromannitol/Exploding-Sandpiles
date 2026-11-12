@@ -1,14 +1,12 @@
 /-
 Pushing the Antal–Pisztora assembly: the critical density is strictly below one,
-and the finite-cluster half of `ExtAPProof12` is corrected (the old formulation
-is refuted below).
+and the finite- and infinite-cluster halves of the high-density estimate are
+formulated with the event `xap12_BigDistance`.
 
-The old `xap12_FiniteClusterBound` bounded the event `SmallCluster ∧ ShortWalkFails`.
-That event is too large: when the origin itself is bad there is no good star-walk
-at all, so `ShortWalkFails` holds and `SmallCluster` holds (the good cluster is
-empty), and `P(xap_Good ω 0 = false) = 1 - q^N > 0` is a constant independent of
-`y`.  The correct split uses `xap12_BigDistance` itself, for which the origin-bad
-event alone is not enough (the distance must also be finite).
+The finite-cluster half is stated with `xap12_BigDistance`, for which the
+origin-bad event alone is not enough (the distance must also be finite); the
+event `SmallCluster ∧ ShortWalkFails` would be too large, since when the origin
+itself is bad there is no good star-walk at all.
 
 The supercritical-density reduction (the box-crossing renormalisation extending
 the high-density estimate down to `bondCritical`) remains isolated in
@@ -36,7 +34,7 @@ theorem xap13_bondCritical_lt_one (hd : 2 ≤ d) : bondCritical d < 1 := by
   have hle : bondCritical d ≤ 255 / 256 := rn_bondCritical_le (by norm_num) hPE
   linarith
 
-/-! ### The origin being bad puts one in the old finite-cluster event -/
+/-! ### The origin being bad -/
 
 theorem xap13_not_good_zero_smallCluster {ω : Site d × Fin d → Bool}
     (h : ¬ xap_Good ω (0 : Site d)) : xap5_SmallCluster ω := by
@@ -52,80 +50,9 @@ theorem xap13_not_good_zero_shortWalkFails {ρ : ℝ} {ω : Site d × Fin d → 
   rintro ⟨p, hgood, _⟩
   exact h (hgood 0 (SimpleGraph.Walk.start_mem_support p))
 
-theorem xap13_not_finiteClusterBound (d : ℕ) (hd : 2 ≤ d) : ¬ xap12_FiniteClusterBound := by
-  intro h
-  obtain ⟨q0, hq0, hq⟩ := h d hd
-  have hmax1 : max q0 0 < 1 := max_lt hq0 zero_lt_one
-  set q : ℝ := (max q0 0 + 1) / 2 with hqdef
-  have hqq0 : q0 < q := by have := le_max_left q0 0; rw [hqdef]; linarith
-  have hq1 : q ≤ 1 := by rw [hqdef]; linarith [hmax1]
-  have hqpos : 0 < q := by have := le_max_right q0 0; rw [hqdef]; linarith
-  have hqlt : q < 1 := by rw [hqdef]; linarith [hmax1]
-  obtain ⟨ρ, c, hρ, hc, R, hR⟩ := hq q hqq0 hq1
-  haveI : IsProbabilityMeasure (bondPercolation d q) := rn_infinitePi_isProb hqpos.le hq1
-  have i0 : Fin d := ⟨0, by omega⟩
-  set N : ℕ := (xap_cubeBonds (0 : Site d)).card with hN
-  have hNpos : 0 < N := by
-    rw [hN]
-    refine Finset.card_pos.mpr ⟨(0, i0), ?_⟩
-    rw [xap_mem_cubeBonds]
-    refine ⟨xap_mem_cube_self (0 : Site d), ?_⟩
-    rw [zero_add]
-    intro j
-    simp only [unit, Pi.single_apply]
-    split_ifs <;> norm_num
-  have hqN1 : q ^ N < 1 := by
-    calc q ^ N ≤ q ^ 1 := pow_le_pow_of_le_one hqpos.le hq1 hNpos
-      _ = q := pow_one q
-      _ < 1 := hqlt
-  have hgood0 : bondPercolation d q {ω | xap_Good ω (0 : Site d)} = ENNReal.ofReal (q ^ N) := by
-    rw [xap_good_prob hqpos.le hq1, ← hN, ← ENNReal.ofReal_pow hqpos.le]
-  have hcompl : bondPercolation d q {ω | ¬ xap_Good ω (0 : Site d)}
-      = ENNReal.ofReal (1 - q ^ N) := by
-    rw [show {ω : Site d × Fin d → Bool | ¬ xap_Good ω (0 : Site d)}
-        = {ω | xap_Good ω (0 : Site d)}ᶜ from by ext ω; simp]
-    rw [measure_compl (xap_good_measurable (0 : Site d))
-        (by rw [hgood0]; exact ENNReal.ofReal_ne_top), measure_univ, hgood0,
-      ← ENNReal.ofReal_one, ← ENNReal.ofReal_sub (1 : ℝ) (pow_nonneg hqpos.le N)]
-  obtain ⟨M, hM⟩ : ∃ M : ℕ, Real.exp (-(c * (M : ℝ))) < 1 - q ^ N := by
-    have hpos : 0 < 1 - q ^ N := by linarith [hqN1]
-    have hlim : Filter.Tendsto (fun M : ℕ => Real.exp (-(c * (M : ℝ)))) Filter.atTop (𝓝 0) := by
-      have hc' : Filter.Tendsto (fun M : ℕ => -(c * (M : ℝ))) Filter.atTop Filter.atBot :=
-        Filter.tendsto_neg_atTop_atBot.comp
-          (Filter.Tendsto.const_mul_atTop hc tendsto_natCast_atTop_atTop)
-      exact Real.tendsto_exp_atBot.comp hc'
-    obtain ⟨N0, hN0⟩ := Filter.eventually_atTop.mp
-      (hlim.eventually (eventually_lt_nhds hpos))
-    exact ⟨N0, hN0 N0 le_rfl⟩
-  set M' : ℕ := max M R with hM'
-  set y : Site d := Pi.single i0 (M' : ℤ) with hy
-  have hymnorm : mnorm y = (M' : ℤ) := by
-    rw [hy, mnorm]
-    rw [Finset.sum_eq_single i0]
-    · rw [Pi.single_eq_same, abs_of_nonneg (by positivity)]
-    · intro j _ hj; rw [Pi.single_eq_of_ne hj, abs_zero]
-    · intro h0; exact absurd (Finset.mem_univ i0) h0
-  have hyR : (R : ℤ) ≤ mnorm y := by
-    rw [hymnorm]; exact_mod_cast le_max_right M R
-  have hyexp : Real.exp (-(c * (mnorm y : ℝ))) < 1 - q ^ N := by
-    rw [hymnorm]
-    have hle : (M : ℝ) ≤ (M' : ℝ) := by exact_mod_cast le_max_left M R
-    have : -(c * (M' : ℝ)) ≤ -(c * (M : ℝ)) := by nlinarith [hc]
-    exact lt_of_le_of_lt (Real.exp_le_exp.mpr this) hM
-  have hsub : {ω : Site d × Fin d → Bool | ¬ xap_Good ω (0 : Site d)}
-      ⊆ {ω | xap5_SmallCluster ω ∧ xap12_ShortWalkFails d ρ ω y} := fun ω hω =>
-    ⟨xap13_not_good_zero_smallCluster hω, xap13_not_good_zero_shortWalkFails hω⟩
-  have hchain : bondPercolation d q {ω | ¬ xap_Good ω (0 : Site d)}
-      ≤ ENNReal.ofReal (Real.exp (-(c * (mnorm y : ℝ)))) :=
-    le_trans (measure_mono hsub) (hR y hyR)
-  rw [hcompl] at hchain
-  have hreal : (1 : ℝ) - q ^ N ≤ Real.exp (-(c * (mnorm y : ℝ))) :=
-    (ENNReal.ofReal_le_ofReal_iff (Real.exp_nonneg _)).mp hchain
-  linarith [hyexp]
+/-! ### The finite- and infinite-cluster halves -/
 
-/-! ### The corrected finite- and infinite-cluster halves -/
-
-/-- The correct finite-cluster half: a finite good cluster cannot by itself give a
+/-- The finite-cluster half: a finite good cluster cannot by itself give a
 long open path, exponentially in `|y|`. -/
 def xap13_FiniteClusterBound : Prop :=
   ∀ d : ℕ, 2 ≤ d → ∃ q0 : ℝ, q0 < 1 ∧ ∀ q : ℝ, q0 < q → q ≤ 1 →
@@ -133,7 +60,7 @@ def xap13_FiniteClusterBound : Prop :=
       bondPercolation d q {ω | xap5_SmallCluster ω ∧ xap12_BigDistance d ρ ω y} ≤
         ENNReal.ofReal (Real.exp (-(c * (mnorm y : ℝ))))
 
-/-- The corrected infinite-cluster half. -/
+/-- The infinite-cluster half. -/
 def xap13_InfiniteClusterBound : Prop :=
   ∀ d : ℕ, 2 ≤ d → ∃ q0 : ℝ, q0 < 1 ∧ ∀ q : ℝ, q0 < q → q ≤ 1 →
     ∃ ρ c : ℝ, 1 ≤ ρ ∧ 0 < c ∧ ∃ R : ℕ, ∀ y : Site d, (R : ℤ) ≤ mnorm y →
@@ -146,7 +73,7 @@ theorem xap13_bigDistance_mono {ρ ρ' : ℝ} (h : ρ' ≤ ρ) {ω : Site d × F
   rintro ⟨m, hm, hlt⟩
   exact ⟨m, hm, lt_of_le_of_lt (mul_le_mul_of_nonneg_right h (xap12_mnorm_nonneg y)) hlt⟩
 
-/-- The finite and infinite cluster halves of the corrected split give the
+/-- The finite and infinite cluster halves of the split give the
 high-density bound. -/
 theorem xap13_highDensity_of_bounds (hFin : xap13_FiniteClusterBound)
     (hInf : xap13_InfiniteClusterBound) : xap12_HighDensityBound := by
@@ -198,7 +125,7 @@ theorem xap13_highDensity_of_bounds (hFin : xap13_FiniteClusterBound)
     _ ≤ ENNReal.ofReal (Real.exp (-(c * (mnorm y : ℝ)))) :=
         ENNReal.ofReal_le_ofReal (hRc (mnorm y : ℝ) hyRc)
 
-/-- The frozen statement follows from the corrected two-cluster bounds and the
+/-- The frozen statement follows from the two-cluster bounds and the
 supercritical-density reduction. -/
 theorem xap13_AntalPisztora_of_bounds (hSuper : xap12_SupercriticalReduction)
     (hFin : xap13_FiniteClusterBound) (hInf : xap13_InfiniteClusterBound) :

@@ -14,13 +14,10 @@ statement about `xsch8_a 1 p`.  For `d ≥ 2` these two functions are unrelated:
 `xsch_mu 1 p` on the different site sets `Fin d → ℤ` and `Fin 1 → ℤ`, and no
 lemma in the development compares them.  Consequently the recursion gives no
 access to the one-dimensional base, and no dimension-local argument can supply
-the base: any nonnegative sequence obeying the recursion with `1 < C` may be
-identically `1`, for which no scale has `C * a < 1`.
+the base.
 
 We record
 
-* `xsch14_recursion_not_sufficient`, the precise refutation of "recursion alone
-  implies a base scale";
 * `xsch14_base_iff_span`, the reformulation of the base as a spanning-probability
   statement (`xsch13_sp_compl`);
 * `xsch14_base_scale_one`, the unconditional base for `p` close to `1` (scale one,
@@ -40,21 +37,6 @@ namespace Exploding
 open LatticeProb MeasureTheory
 
 variable {d : ℕ}
-
-/-- The recursion alone does not force a base scale.  For any `C > 1` the
-nonnegative sequence `a ≡ 1` satisfies `a (2 * n) ≤ C * a n ^ 2` while
-`C * a n = C > 1` at every scale. -/
-theorem xsch14_recursion_not_sufficient (C : ℝ) (hC : 1 < C) :
-    ¬ (∀ a : ℕ → ℝ, (∀ n, 0 ≤ a n) → (∀ n, a (2 * n) ≤ C * (a n) ^ 2) →
-        ∃ n0, C * a n0 < 1) := by
-  intro h
-  have h2 : ∀ n, (fun _ : ℕ => (1 : ℝ)) (2 * n) ≤ C * ((fun _ : ℕ => (1 : ℝ)) n) ^ 2 := by
-    intro n
-    show (1 : ℝ) ≤ C * (1 : ℝ) ^ 2
-    nlinarith [hC.le]
-  obtain ⟨n0, hn0⟩ := h (fun _ : ℕ => (1 : ℝ)) (fun _ => zero_le_one) h2
-  have hn0' : C * 1 < 1 := hn0
-  linarith
 
 /-- Reformulation: the base scale says exactly that some cube is internally
 spanned with probability exceeding `1 - 2^{-2 d}`. -/

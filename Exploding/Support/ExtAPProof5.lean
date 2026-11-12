@@ -1,6 +1,5 @@
 /-
-Two counting bounds toward the Antal-Pisztora estimate (a linear separator bound is false, so
-these replace it).
+Two counting bounds toward the Antal-Pisztora estimate.
 
 First, the count of `*`-walks: a `*`-walk of length `n` from the origin is a list of
 `n` star steps, each chosen from the `3^d - 1` star-neighbours of a site, so there

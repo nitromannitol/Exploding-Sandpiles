@@ -602,9 +602,7 @@ theorem aux_finite_exploding_propagate_walk_avoid {d : ℕ} (η : Site d → ℤ
 covers a good macroscopic cube `Q_k(i)` lying in the infinite cluster of good
 cubes, the `N`-wave never stabilizes.
 
-The correct contradiction (sharper than "growing support outruns propagation
-speed", which is false: a wave covering distance `r` by macroscopic time
-`~r·k^d` is well inside its own light cone, since `k ≥ 1`) is instead: suppose
+The contradiction is as follows: suppose
 `WaveStabilizable η N 0` held, witnessed by `T`.  `Cinf` is an *infinite*
 subset of `ℤ^d`, so it is not contained in any bounded box
 (`aux_finite_exploding_infinite_meets_box`), hence (choosing the box radius

@@ -1,15 +1,10 @@
 /-
-Two inputs of the high-density Peierls estimate.
+Independence of bad-cube events for the high-density Peierls estimate.
 
-First, events that read disjoint blocks of bond coordinates are independent, so
+Events that read disjoint blocks of bond coordinates are independent, so
 for a `3`-spaced packing of sites the bad-cube events are independent and the
 probability that all cubes of the packing are bad is `(1 - q^N)^{|packing|}`,
 with `N` the number of bonds in a cube.
-
-Second, the geometric lower bound that a `*`-connected bad separator between `0`
-and `y` has size at least a constant times `mnorm y` is **false**: the `*`-neighbours
-of the origin form a `*`-connected separator of the origin from every `y ≠ 0` whose
-size is `3^d - 1`, independent of `y`.
 -/
 import Exploding.Support.ExtAPProof3
 import LatticeProb.Prob.Blocks
@@ -203,79 +198,5 @@ theorem xap4_packing_bad_prob {q : ℝ} (h0 : 0 ≤ q) (h1 : q ≤ 1) (Γ' : Fin
   rw [Finset.prod_congr rfl (fun z _ => hfactor z), Finset.prod_const, Finset.card_univ]
   congr 1
   exact Finset.card_attach
-
-/-! ### The geometric lower bound is false -/
-
-/-- The `*`-neighbours of the origin. -/
-def xap4_starNeighbors (d : ℕ) : Set (Site d) := {z | xap_Star (0 : Site d) z}
-
-theorem xap4_starNeighbors_finite (d : ℕ) : (xap4_starNeighbors d).Finite := by
-  refine (Finset.finite_toSet (xap_cubeFinset (0 : Site d))).subset ?_
-  intro z hz
-  change z ∈ xap_cubeFinset (0 : Site d)
-  rw [xap_mem_cubeFinset, xap_cube, Set.mem_setOf_eq]
-  intro i
-  have := hz.2 i
-  rw [Pi.zero_apply, abs_sub_comm] at this
-  exact this
-
-/-- The neighbours of the origin separate it from every other site. -/
-theorem xap4_starNeighbors_separates {y : Site d} (hy : y ≠ 0) :
-    xap3_Separates (xap4_starNeighbors d) y := by
-  intro p
-  obtain ⟨v, h, p', rfl⟩ :=
-    SimpleGraph.Walk.exists_eq_cons_of_ne (G := xap2_kingGraph d)
-      (fun h0 => hy h0.symm) p
-  refine ⟨v, ?_, h⟩
-  rw [SimpleGraph.Walk.support_cons]
-  exact List.mem_cons_of_mem _ (SimpleGraph.Walk.start_mem_support p')
-
-/-- A `*`-connected set: any two of its sites are joined by a star-walk. -/
-def xap4_StarConnected (Γ : Set (Site d)) : Prop :=
-  ∀ z ∈ Γ, ∀ w ∈ Γ, (xap2_kingGraph d).Reachable z w
-
-theorem xap4_starConnected_singleton (a : Site d) :
-    xap4_StarConnected ({a} : Set (Site d)) := by
-  intro z hz w hw
-  have hz' : z = a := Set.mem_singleton_iff.mp hz
-  have hw' : w = a := Set.mem_singleton_iff.mp hw
-  rw [hz', hw']
-
-/-- **The claimed geometric lower bound is false.**  For every `c > 0` there is a
-`*`-connected separator of the origin from a far site `y` whose cardinality is
-smaller than `c · mnorm y`: the singleton `{0}` (and, without the origin, the
-`*`-neighbours of the origin, of cardinality at most `3^d`).  Hence no
-`*`-connected separator has size at least a constant times `mnorm y`. -/
-theorem xap4_no_linear_separator_lower_bound (d : ℕ) (hd : 2 ≤ d) (c : ℝ) (hc : 0 < c) :
-    ∃ y : Site d, (2 : ℤ) ≤ mnorm y ∧ ∃ Γ : Finset (Site d),
-      xap4_StarConnected (↑Γ : Set (Site d)) ∧ xap3_Separates (↑Γ : Set (Site d)) y ∧
-        (Γ.card : ℝ) < c * (mnorm y : ℝ) := by
-  obtain ⟨N, hN, hN2⟩ : ∃ N : ℕ, (1 : ℝ) < c * (N : ℝ) ∧ 2 ≤ N := by
-    obtain ⟨M, hM⟩ := exists_nat_gt (1 / c)
-    refine ⟨max M 2, ?_, le_max_right M 2⟩
-    rw [div_lt_iff₀ hc] at hM
-    have hle : (M : ℝ) * c ≤ (max M 2 : ℕ) * c :=
-      mul_le_mul_of_nonneg_right (by exact_mod_cast le_max_left M 2) hc.le
-    calc (1 : ℝ) < (M : ℝ) * c := hM
-      _ ≤ (max M 2 : ℕ) * c := hle
-      _ = c * (max M 2 : ℕ) := by rw [mul_comm]
-  set y : Site d := Pi.single (⟨0, by omega⟩ : Fin d) (N : ℤ) with hy
-  have hynorm : mnorm y = (N : ℤ) := by
-    rw [hy]
-    simp only [mnorm, Pi.single_apply]
-    rw [Finset.sum_eq_single (⟨0, by omega⟩ : Fin d)]
-    · rw [if_pos rfl, abs_of_nonneg (Nat.cast_nonneg N)]
-    · intro i _ hi; rw [if_neg hi, abs_zero]
-    · intro h; exact absurd (Finset.mem_univ _) h
-  refine ⟨y, ?_, ({0} : Finset (Site d)), ?_, ?_, ?_⟩
-  · rw [hynorm]; exact_mod_cast hN2
-  · rw [Finset.coe_singleton]
-    exact xap4_starConnected_singleton 0
-  · intro p
-    rw [Finset.coe_singleton]
-    exact ⟨0, SimpleGraph.Walk.start_mem_support p, Set.mem_singleton 0⟩
-  · rw [Finset.card_singleton, hynorm]
-    push_cast
-    exact hN
 
 end Exploding

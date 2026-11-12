@@ -254,11 +254,9 @@ theorem ce_step3b (ζ u : ℤ × Fin 4 → ℤ) (hu : ∀ x, 0 ≤ u x) :
 
 /-! ### Cylinder projection through `Int.emod`
 
-`SubRelay.cylProj` folds `x₂` through `Int.toNat`, so `x₂ = -1` lands in
-column `0` instead of `3`; `cylNbrSum_cylProj` is then false for a
-non-constant 4-periodic `v` (e.g. `a = 1`, `b = 0`).  The copies below fold
-`x₂` through `Int.emod · 4`, and `ce_cylNbrSum_cylProj` states the identity
-for this fold.
+The projections below fold `x₂` through `Int.emod · 4`, so `x₂ = -1` lands in
+column `3`, and `ce_cylNbrSum_cylProj` states the neighbour-sum identity for
+this fold.
 -/
 
 /-- `Int.toNat ((n+1) % 4) = (Int.toNat (n % 4) + 1) % 4`. -/

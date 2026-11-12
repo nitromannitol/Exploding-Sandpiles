@@ -10,7 +10,8 @@ This file fixes the vocabulary and proves the elementary consequences of minimal
 substantive combinatorial input of the star-duality, that a minimal cut is `*`-connected, is
 recorded as `xmc_MinCutStarConnected`.
 -/
-import Exploding.Support.ExtAPStarDuality
+import Exploding.Support.ExtBCBernoulli2
+import Exploding.Support.ExtMHBase
 
 open Exploding LatticeProb Relation
 open scoped Classical

@@ -56,7 +56,6 @@ import Exploding.Support.ExtBCBernoulli
 import Exploding.Support.ExtBCBernoulli2
 import Exploding.Support.ExtAPBarrier
 import Exploding.Support.ExtAPBridge
-import Exploding.Support.ExtAPStarDuality
 import Exploding.Support.ExtAPMinCut
 import Exploding.Support.ExtAPMinCutLine
 import Exploding.Support.ExtAPMinCutDuality

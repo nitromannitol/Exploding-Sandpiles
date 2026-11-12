@@ -1,8 +1,7 @@
 /-
-The corrected localisation of the hole boundary: with the box growing with the hole, the
-inner boundary of a hole meeting `cent d n` lies in `cent d (n + R)` whenever `R` bounds the
-sup-norm diameter from a point of `cent d n`.  The frozen form with `R = 0` is false (a ball
-of radius `R` centred in the box), so the assembly must apply the bad event at the hole's own
+The localisation of the hole boundary: with the box growing with the hole, the inner boundary
+of a hole meeting `cent d n` lies in `cent d (n + R)` whenever `R` bounds the sup-norm
+diameter from a point of `cent d n`.  The assembly applies the bad event at the hole's own
 scale.
 -/
 import Exploding.Support.ExtMHProof16

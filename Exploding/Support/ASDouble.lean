@@ -1,39 +1,8 @@
 /-
 A step of the proof of `Exploding.Frozen.approximate_subadditive` (Proposition 4.1).
 
-## A double-toppling statement that is false for some backgrounds
-
-Consider the statement
-
-  `hdouble : ∃ T, ∀ y, 0 < penultimateWave η 0 y → 2 ≤ podo (explodingPile η) T y`
-
-in the case where no site topples infinitely often.  It fails for the deterministic
-background below, and so does `hpodo` when it is required for *every* background `η`
-rather than almost surely.
-
-Take `d = 2` and the background `η = 3` on
-`{(0,0), (0,1), (-1,-1)} ∪ {(k,0) : k ≥ 2}` and `η = 2` elsewhere, so `2d-2 ≤ η ≤ 2d-1`.
-
-* The `1`-wave is `1` on `{(0,0),(0,1)}` and nowhere else: a site with `η = 2` needs two
-  lit neighbours and a site with `η = 3` one, and no other site has them.  It stabilizes.
-  The `2`-wave is `2` at the origin and `1` on the half strip `{x ≥ -1, |y| ≤ 1}`, so it
-  does not stabilize.  Hence `waveThreshold η 0 = 2`, `penultimateWave η 0` is `1` on
-  `{(0,0),(0,1)}`, and the penultimate cluster is finite.
-* The piles `η + nδ₀`, `n ≤ 3`, have finite avalanches (the origin and `(0,1)` topple
-  once), and `η + 4δ₀` has an avalanche along the strip, so `explosionThreshold η = 4`
-  and `explodingPile η` is not stabilizable.
-* Let `v = 1` on the half strip and `v (0,0) = 2`.  Then `explodingPile η + Δv ≤ 3` at
-  every site (checked by hand: the origin ends with `3`, the strip sites with at most `3`,
-  every site next to the strip sees one toppling neighbour and holds `2 + 1`), so by the
-  least action principle `podo (explodingPile η) t ≤ v` for all `t`.  No site topples
-  infinitely often, but `podo (explodingPile η) t (0,1) ≤ 1 < 2` for all `t` although
-  `penultimateWave η 0 (0,1) = 1`.  Moreover `(0,2)` lies in the penultimate cluster and
-  never topples, so the weaker `∃ t0, ∀ x ∈ penultimateCluster η 0, 1 ≤ podo _ t0 x` fails
-  too.  (An exact simulation of the definitions on an `81 × 81` window agrees:
-  threshold `4`, `1`-wave `{(0,0),(0,1)}`, odometer `v`.)
-
 The frozen theorem is almost sure, and the extra input is Lemma 3.6: almost surely the
-last wave reaches every site.  In the example the last wave stays on the strip.
+last wave reaches every site.
 
 ## What is proved here
 
@@ -47,7 +16,8 @@ is stable and finite, dominates the `N`-wave with `N = V 0`
 finite set), and so `V` is positive wherever the last wave is.
 
 `asd_reach_ae`: almost surely the last wave reaches every site (Lemma 3.6).
-`asd_approximate_subadditive`: the almost sure assembly with the corrected `hpodo`.
+`asd_approximate_subadditive`: the almost sure assembly, with `hpodo` supplied by
+`asd_hpodo_of_reach`.
 -/
 import Exploding.Support.ASProof
 import Exploding.Support.ASProof2
@@ -359,9 +329,8 @@ theorem asd_reach_ae (d : ℕ) (hd : 2 ≤ d) (p : ℝ) (hp : 0 < p) (hp1 : p < 
   rw [htop] at hm
   exact (by simp : (m : ℕ∞) ≠ ⊤) hm.symm
 
-/-- **Proposition 4.1, the almost sure assembly with the corrected `hpodo`.**  The
-unrestricted `hpodo` of `as3_approximate_subadditive_of_gaps` is false for deterministic
-backgrounds (see the header); here it is supplied by `asd_hpodo_of_reach` on the almost
+/-- **Proposition 4.1, the almost sure assembly.**  The hypothesis `hpodo` of
+`as3_approximate_subadditive_of_gaps` is supplied by `asd_hpodo_of_reach` on the almost
 sure event on which the last wave reaches every site. -/
 theorem asd_approximate_subadditive
     (d : ℕ) (hd : 2 ≤ d) (p : ℝ) (hp : 0 < p) (hp1 : p < 1)

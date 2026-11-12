@@ -1,37 +1,11 @@
 /-
 Support for `Exploding.Frozen.approximate_subadditive` (Proposition 4.1): the
-restated `|P̃| < ∞` statement and the almost-everywhere assembly from the remaining
-hypotheses, each proved elsewhere.
+almost-everywhere assembly from `|P̃| < ∞` and the remaining hypotheses, each proved
+elsewhere.
 
-## `|P̃| < ∞` fails without a hypothesis on `η`
-
-Consider the statement
-
-  `htildePfin : ∀ η : Site d → ℤ, (as_tildeP η).Finite`
-
-with no hypothesis on `η`.  It is false, as follows.  Take `d = 2` and let
-`S = {(5n, 0) : n ≥ 1}` be a sparse ray; set `η x = 4` for `x ∈ S` and
-`η x = 0` otherwise.  The sites of `S` are pairwise at distance at least `5`,
-so their unit neighbourhoods are disjoint.  Each `x ∈ S` holds exactly `2d = 4`
-chips, hence topples exactly once; each neighbour of `S` receives the single
-chip from the adjacent site of `S` and holds at most `1 < 4`, so it never
-topples.  Thus `η` stabilizes with terminal odometer `1_S`, supported on the
-infinite set `S`.  Adding any finite mass `n δ_0` at the origin produces a
-finite avalanche (finite mass on a threshold-`2d` lattice always stabilizes)
-which reaches only finitely many sites of `S`; those topple at most once and
-their sparks die out.  Hence `η + n δ_0` stabilizes for every `n ≥ 1`, i.e.
-`η` is `Robust`, and `explosionThreshold η = sInf ∅ = 0`.  Therefore
-
-  `as_tildeV η = as_podoTerminal (η + ((0 : ℤ) - 1) δ_0) = as_podoTerminal (η - δ_0)`,
-
-which is `≥ 1` on the infinite set `S` because removing the chip at the origin
-`0 ∉ S` does not affect the `S`-topplings (and the stabilization time is `≥ 1`
-since `podo (η - δ_0) 0 = 0 ≠ podo (η - δ_0) 1`).  Hence `as_tildeP η`
-contains the infinite neighbourhood set `N(S)`.
-
-The counterexample violates both standing assumptions of the use site: the
-bound `2d - 2 ≤ η ≤ 2d - 1` and non-robustness.  The restatement below keeps
-exactly the hypotheses available where `htildePfin` is consumed.
+The finiteness of `as_tildeP η` is assumed only for the backgrounds `η` that satisfy
+`2d - 2 ≤ η ≤ 2d - 1` and are not robust, which are the hypotheses available where it is
+consumed.
 -/
 import Exploding.Support.ASProof
 
@@ -39,10 +13,10 @@ open Exploding LatticeProb MeasureTheory
 
 set_option linter.unusedVariables false
 
-/-- The final a.e. assembly, with `htildePfin` restated under the bounds that
+/-- The final a.e. assembly, with `htildePfin` required under the bounds that
 hold at the use site: the finiteness of `as_tildeP` is only needed for the
-almost-every `η` satisfying `2d - 2 ≤ η ≤ 2d - 1`.  The other hypotheses
-`hrobust`, `hpodo`, `hlastreach`, `hspecial` are unchanged. -/
+almost-every `η` satisfying `2d - 2 ≤ η ≤ 2d - 1`.  The other hypotheses are
+`hrobust`, `hpodo`, `hlastreach`, `hspecial`. -/
 theorem as2_approximate_subadditive_of_gaps
     (d : ℕ) (hd : 2 ≤ d) (p : ℝ) (hp : 0 < p) (hp1 : p < 1)
     (hLSSB : Exploding.External.LiggettSchonmannStaceyBoundedDegree)

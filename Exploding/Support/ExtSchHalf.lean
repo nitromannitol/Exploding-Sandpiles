@@ -77,9 +77,9 @@ theorem xsh_mem_sub (lo hi x : Site d) (hx : x ∈ xsb_box lo hi) :
   have h := hx j
   simp only [xsh_lo, xsh_hi, decide_eq_true_eq]
   by_cases hj : lo j + xsh_m lo hi j ≤ x j
-  · rw [if_pos hj, if_pos hj]
+  · rw [ite_eq_left hj, ite_eq_left hj]
     exact ⟨hj, h.2⟩
-  · rw [if_neg hj, if_neg hj]
+  · rw [ite_eq_right hj, ite_eq_right hj]
     exact ⟨h.1, by omega⟩
 
 /-- **L-shape lemma for the half-split.**  If all half-boxes but one are internally spanned,

@@ -164,8 +164,8 @@ theorem pclose_first_cube (hd : 2 ≤ d) (η : Site d → ℤ)
     have hzl : (fun l => if l = i then (1 : ℤ) else x l - (k : ℤ) * mac l) ∈ cube d k := by
       intro l
       by_cases hl : l = i
-      · simp only [hl, if_true]; exact ⟨le_rfl, hk1⟩
-      · simp only [hl, if_false]
+      · simp only [hl, ite_true]; exact ⟨le_rfl, hk1⟩
+      · simp only [hl, ite_false]
         have := pclose_macro_bounds k hk x l
         constructor <;> linarith [this.1, this.2]
     refine pclose_cube_of_line hd η hη0 hhigh N k hN 0 Q (hgood Q hQC) i _
@@ -178,7 +178,7 @@ theorem pclose_first_cube (hd : 2 ≤ d) (η : Site d → ℤ)
       by_cases hl : l = i
       · subst hl; simp
       · have hwl := hw.2 l hl
-        simp only [hl, if_false] at hwl
+        simp only [hl, ite_false] at hwl
         simp only [Function.update_of_ne hl, hwl]
         rw [hmac]; ring
     rw [hwQ]

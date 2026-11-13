@@ -76,7 +76,7 @@ theorem measurableSet_omegaSet (d : ℕ) (ηmin : ℤ) : MeasurableSet (omegaSet
   have hset : omegaSet d ηmin = ⋂ x : Site d, (fun η : Site d → ℤ => η x) ⁻¹'
       {n : ℤ | ηmin ≤ n ∧ n ≤ 2 * (d : ℤ) - 1} := by
     ext η
-    simp only [omegaSet, InOmega, Set.mem_setOf_eq, Set.mem_iInter, Set.mem_preimage]
+    simp only [omegaSet, InOmega, Set.mem_ofPred_eq, Set.mem_iInter, Set.mem_preimage]
   rw [hset]
   exact MeasurableSet.iInter fun x => measurable_pi_apply x (hZ _)
 
@@ -161,7 +161,7 @@ theorem measurable_omegaSubShift (d : ℕ) (ηmin : ℤ) (y : Site d) :
   obtain ⟨u, hu, rfl⟩ := hs
   have hshift : Measurable
       (fun η : {η : Site d → ℤ // InOmega d ηmin η} => fun z => η.1 (y + z)) :=
-    measurable_pi_lambda _ fun z => (measurable_pi_apply (y + z)).comp measurable_subtype_coe
+    Measurable.of_eval fun z => (measurable_pi_apply (y + z)).comp measurable_subtype_coe
   exact hshift hu
 
 /-- The image of an event under a translation is the preimage under the inverse translation. -/

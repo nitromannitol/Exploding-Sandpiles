@@ -79,7 +79,7 @@ theorem xss_dir_mem (hJ : P.J.Nonempty) (t : ℕ) : xss_dir P hJ t ∈ P.J := by
   have hk : t % P.J.card < P.J.card := Nat.mod_lt _ (Finset.card_pos.mpr hJ)
   have h : ∃ j ∈ P.J, xss_pos P.J j = t % P.J.card := xss_exists_pos P.J hk
   unfold xss_dir
-  rw [dif_pos h]
+  rw [dite_eq_left h]
   exact h.choose_spec.1
 
 /-- The visited direction has position `t mod |J|`. -/
@@ -88,7 +88,7 @@ theorem xss_pos_dir (hJ : P.J.Nonempty) (t : ℕ) :
   have hk : t % P.J.card < P.J.card := Nat.mod_lt _ (Finset.card_pos.mpr hJ)
   have h : ∃ j ∈ P.J, xss_pos P.J j = t % P.J.card := xss_exists_pos P.J hk
   unfold xss_dir
-  rw [dif_pos h]
+  rw [dite_eq_left h]
   exact h.choose_spec.2
 
 /-- The sides of the box are the sides of the schedule. -/
@@ -102,7 +102,7 @@ theorem xsl_thin (hP : xss_Valid P s) (t : ℕ) {i : Fin d} (hi : i ∉ P.J) :
   have h1 := xsl_len_box P t i
   have h2 := hP.2.2.1.2 i hi
   unfold xss_side xss_len at h1
-  rw [if_neg hi] at h1
+  rw [ite_eq_right hi] at h1
   omega
 
 /-- The sides of the schedule are nonnegative. -/
@@ -111,11 +111,11 @@ theorem xsl_side_nonneg (hP : xss_Valid P s) (t : ℕ) (j : Fin d) : 0 ≤ xss_s
   · have h1 := hP.2.1.1 j hj
     have h2 := hP.2.2.1.1 j hj
     unfold xss_side xss_len at *
-    rw [if_pos hj]
+    rw [ite_eq_left hj]
     split_ifs <;> omega
   · have h2 := hP.2.2.1.2 j hj
     unfold xss_side xss_len
-    rw [if_neg hj]
+    rw [ite_eq_right hj]
     omega
 
 /-- The lower corner is at most one above the upper corner: the box has nonnegative sides. -/
@@ -142,7 +142,7 @@ theorem xsl_side_step (hP : xss_Valid P s) (t : ℕ) :
         exact fun h => hne (xss_pos_injOn P.J hj hj₀ h)
       have hlt := xss_pos_lt P.J hj
       unfold xss_side
-      rw [if_pos hj, if_pos hj]
+      rw [ite_eq_left hj, ite_eq_left hj]
       rcases hdm with ⟨h1, h2⟩ | ⟨h1, h2, h3⟩
       · rw [h1, h2]
         congr 2
@@ -152,16 +152,16 @@ theorem xsl_side_step (hP : xss_Valid P s) (t : ℕ) :
         push_cast
         split_ifs <;> omega
     · unfold xss_side
-      rw [if_neg hj, if_neg hj]
+      rw [ite_eq_right hj, ite_eq_right hj]
   · unfold xss_side
-    rw [if_pos hj₀, if_pos hj₀, hpos₀]
+    rw [ite_eq_left hj₀, ite_eq_left hj₀, hpos₀]
     rcases hdm with ⟨h1, h2⟩ | ⟨h1, h2, h3⟩
     · rw [h1, h2]
       split_ifs <;> push_cast <;> omega
     · rw [h1, h2]
       split_ifs <;> push_cast <;> omega
   · unfold xss_side
-    rw [if_pos hj₀, if_pos hj₀, hpos₀]
+    rw [ite_eq_left hj₀, ite_eq_left hj₀, hpos₀]
     rcases hdm with ⟨h1, h2⟩ | ⟨h1, h2, h3⟩
     · rw [h1, h2]
       split_ifs <;> push_cast <;> omega
@@ -384,7 +384,7 @@ theorem xsl_side_near (hP : xss_Valid P s) {t : ℕ} (ht : t < xss_steps P s) {i
   have h0 := hP.2.2.1.1 i hi
   have hT := hP.2.1.1 i hi
   unfold xss_side
-  rw [if_pos hi]
+  rw [ite_eq_left hi]
   unfold xss_len at *
   generalize t / P.J.card = r at hL ⊢
   push_cast at *

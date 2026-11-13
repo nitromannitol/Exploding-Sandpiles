@@ -24,8 +24,8 @@ theorem te_fodo_mono (S : Set (Site d)) (s0 s0' w0 : Site d → ℤ)
   | succ t ih =>
     rw [fodo_succ, fodo_succ]
     by_cases hx : x ∈ S
-    · rw [if_pos hx, if_pos hx]
-    · rw [if_neg hx, if_neg hx]
+    · rw [ite_eq_left hx, ite_eq_left hx]
+    · rw [ite_eq_right hx, ite_eq_right hx]
       by_cases hlt : fodo S s0 w0 t x < fodo S s0' w0 t x
       · have h1 : (if 2 * (d : ℤ) ≤ fconf S s0 w0 t x then (1 : ℤ) else 0) ≤ 1 := by
           split <;> omega
@@ -43,8 +43,8 @@ theorem te_fodo_mono (S : Set (Site d)) (s0 s0' w0 : Site d → ℤ)
         have h3 : (if 2 * (d : ℤ) ≤ fconf S s0 w0 t x then (1 : ℤ) else 0) ≤
             (if 2 * (d : ℤ) ≤ fconf S s0' w0 t x then (1 : ℤ) else 0) := by
           by_cases h : 2 * (d : ℤ) ≤ fconf S s0 w0 t x
-          · rw [if_pos h, if_pos (le_trans h hconf)]
-          · rw [if_neg h]; split <;> omega
+          · rw [ite_eq_left h, ite_eq_left (le_trans h hconf)]
+          · rw [ite_eq_right h]; split <;> omega
         linarith
 
 /-- A background between a recurrent one and `2d - 1` is recurrent. -/
@@ -68,8 +68,8 @@ theorem te_recurrent_mono {η1 η2 : Site d → ℤ} (hle : ∀ x, η1 x ≤ η2
 theorem te_ae_prod (d : ℕ) (μ : Measure ℤ) (hμ : IsProbabilityMeasure μ) (p : ℤ → Prop)
     (hpmeas : MeasurableSet {m : ℤ | p m}) (hp : μ {m : ℤ | p m} = 1) :
     ∀ᵐ β ∂(Measure.infinitePi fun _ : Site d => μ), ∀ x : Site d, p (β x) := by
-  haveI : IsProbabilityMeasure μ := hμ
-  haveI hinst : ∀ i : Site d, IsProbabilityMeasure ((fun _ : Site d => μ) i) := fun _ => hμ
+  have : IsProbabilityMeasure μ := hμ
+  have hinst : ∀ i : Site d, IsProbabilityMeasure ((fun _ : Site d => μ) i) := fun _ => hμ
   rw [ae_all_iff]
   intro x
   have hmapx := Measure.infinitePi_map_eval (μ := fun _ : Site d => μ) x

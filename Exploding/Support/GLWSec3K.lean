@@ -35,7 +35,7 @@ theorem glws_path_extract (η : Site d → ℤ) (hlow : ∀ y, 0 ≤ η y)
     intro y hy
     have hy0 : y = zc := by
       by_contra hne
-      rw [wave_zero, if_neg hne] at hy
+      rw [wave_zero, ite_eq_right hne] at hy
       exact lt_irrefl _ hy
     subst hy0
     refine ⟨0, fun _ => y, rfl, rfl, fun i hi => absurd hi (Nat.not_lt_zero i), ?_, ?_⟩
@@ -71,20 +71,20 @@ theorem glws_path_extract (η : Site d → ℤ) (hlow : ∀ y, 0 ≤ η y)
           simpa [h1, h2] using hadj i him
         · have him' : i = m := by omega
           subst him'
-          simp only [le_refl, if_true, Nat.lt_irrefl, Nat.succ_le_iff]
-          simp only [if_false]
+          simp only [le_refl, ite_true, Nat.lt_irrefl, Nat.succ_le_iff]
+          simp only [ite_false]
           rw [hm]
           exact hadj'
       · intro i j hi hj hij
         by_cases hi' : i ≤ m <;> by_cases hj' : j ≤ m
-        · simp only [hi', hj', if_true] at hij
+        · simp only [hi', hj', ite_true] at hij
           exact hinj i j hi' hj' hij
-        · simp only [hi', hj', if_true, if_false] at hij
+        · simp only [hi', hj', ite_true, ite_false] at hij
           exfalso
           have := hpos i hi'
           rw [hij] at this
           exact hps this
-        · simp only [hi', hj', if_true, if_false] at hij
+        · simp only [hi', hj', ite_true, ite_false] at hij
           exfalso
           have := hpos j hj'
           rw [← hij] at this
@@ -92,9 +92,9 @@ theorem glws_path_extract (η : Site d → ℤ) (hlow : ∀ y, 0 ≤ η y)
         · omega
       · intro i hi
         by_cases hi' : i ≤ m
-        · simp only [hi', if_true]
+        · simp only [hi', ite_true]
           exact pclose_pos_mono hd0 η hlow N zc (Nat.le_succ s) (hpos i hi')
-        · simp only [hi', if_false]
+        · simp only [hi', ite_false]
           rw [wave_of_ne η N zc y s hy0]
           exact (Int.le_ediv_iff_mul_le hd0).mpr (by linarith [hhigh y] : (1 : ℤ) * (2 * (d : ℤ)) ≤ _)
 
@@ -106,17 +106,17 @@ theorem glws_adj_coord {a b : Site d} (h : (lattice d).Adj a b) (l : Fin d) :
     simp only [Pi.add_apply, glws_unit_apply] at this
     by_cases hl : l = i
     · subst hl
-      simp only [if_true] at this
+      simp only [ite_true] at this
       rw [this]; simp
-    · simp only [hl, if_false, add_zero] at this
+    · simp only [hl, ite_false, add_zero] at this
       rw [this]; simp
   · have := congrFun hi l
     simp only [Pi.add_apply, glws_unit_apply] at this
     by_cases hl : l = i
     · subst hl
-      simp only [if_true] at this
+      simp only [ite_true] at this
       rw [this]; simp
-    · simp only [hl, if_false, add_zero] at this
+    · simp only [hl, ite_false, add_zero] at this
       rw [this]; simp
 
 /-- Along a path of adjacent sites the coordinates move by at most one per step. -/

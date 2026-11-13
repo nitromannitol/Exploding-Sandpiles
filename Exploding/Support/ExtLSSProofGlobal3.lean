@@ -20,7 +20,7 @@ theorem xlss10_order_isClosed {I : Type*} [Fintype I] :
   rw [show {z : (I → Bool) × (I → Bool) | ∀ i, z.1 i = true → z.2 i = true} =
       ⋂ i, ({z : (I → Bool) × (I → Bool) | z.1 i = false} ∪ {z | z.2 i = true}) from by
     ext z
-    simp only [Set.mem_setOf_eq, Set.mem_iInter, Set.mem_union]
+    simp only [Set.mem_ofPred_eq, Set.mem_iInter, Set.mem_union]
     constructor
     · intro h i
       by_cases hz : z.1 i = true
@@ -43,12 +43,12 @@ theorem xlss10_finite_coupling [Countable S] (I : Finset S) (μ : Measure (S →
       π.map Prod.snd = μ.map I.restrict ∧
       π {z | ¬ (∀ i, z.1 i = true → z.2 i = true)} = 0 := by
   classical
-  haveI hbit : IsProbabilityMeasure (bitLaw ρ) := xlss6_bitLaw_isProb hρ0 hρ1
-  haveI hpi : IsProbabilityMeasure (Measure.pi (fun _ : I => bitLaw ρ)) := by
+  have hbit : IsProbabilityMeasure (bitLaw ρ) := xlss6_bitLaw_isProb hρ0 hρ1
+  have hpi : IsProbabilityMeasure (Measure.pi (fun _ : I => bitLaw ρ)) := by
     rw [← Measure.infinitePi_eq_pi]
     infer_instance
-  haveI hmapμ : IsProbabilityMeasure (μ.map I.restrict) :=
-    Measure.isProbabilityMeasure_map (by fun_prop : AEMeasurable I.restrict μ)
+  have hmapμ : IsProbabilityMeasure (μ.map I.restrict) :=
+    inferInstance
   refine rn_strassen (fun x y : I → Bool => ∀ i, x i = true → y i = true)
     (fun _ _ => id) (fun _ _ _ hxy hyz i hi => hyz i (hxy i hi))
     (xlss10_order_isClosed) _ _ ?_

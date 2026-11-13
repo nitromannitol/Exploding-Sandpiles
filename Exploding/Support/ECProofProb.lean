@@ -24,10 +24,10 @@ theorem ec_fodo_congr (S : Set (Site d)) (s0 s0' w0 : Site d → ℤ)
     have hfun : fodo S s0 w0 t = fodo S s0' w0 t := funext ih
     rw [fodo_succ, fodo_succ]
     by_cases hx : x ∈ S
-    · rw [if_pos hx, if_pos hx]
+    · rw [ite_eq_left hx, ite_eq_left hx]
     · have hf : fconf S s0 w0 t x = fconf S s0' w0 t x := by
         simp only [fconf, lap, hfun, h x hx]
-      rw [if_neg hx, if_neg hx, hfun, hf]
+      rw [ite_eq_right hx, ite_eq_right hx, hfun, hf]
 
 /-- Box-crossing of a tile reads the background only on the tile. -/
 theorem ec_boxCrossed_congr (k : Fin d → ℕ) (j : Site d) {η η' : Site d → ℤ}
@@ -68,7 +68,7 @@ theorem ec_measurableSet_of_dep (I : Finset (Site d)) (E : Set (Site d → ℤ))
     MeasurableSet E := by
   rw [ec_dep_eq I E hdep]
   refine MeasurableSet.preimage ((Set.to_countable _).measurableSet) ?_
-  exact measurable_pi_lambda _ (fun i => measurable_pi_apply (i : Site d))
+  exact Measurable.of_eval (fun i => measurable_pi_apply (i : Site d))
 
 /-! ### Independence of far-apart events -/
 
@@ -197,13 +197,13 @@ theorem ec_path_prob (hd : 2 ≤ d) (P : Measure (Site d → ℤ)) [IsProbabilit
     (fun z : ℤ × ℤ => {η : Site d → ℤ | ¬ BoxCrossed η k (ec_emb d z)})
     (fun z => ec_tileFin k (ec_emb d z))
     (fun z η η' h => by
-      rw [Set.mem_setOf_eq, Set.mem_setOf_eq, not_iff_not]
+      rw [Set.mem_ofPred_eq, Set.mem_ofPred_eq, not_iff_not]
       exact ec_boxCrossed_congr k _ (fun x hx => h x ((ec_mem_tileFin _ _ x).2 hx))) T
     (fun s hs t ht hst => ec_tiles_far hd K k hk (hTfar s hs t ht hst))
   have hsub : {η : Site d → ℤ | ∀ z ∈ l, ¬ BoxCrossed η k (ec_emb d z)} ⊆
       ⋂ t ∈ T, {η : Site d → ℤ | ¬ BoxCrossed η k (ec_emb d t)} := by
     intro η hη
-    simp only [Set.mem_iInter, Set.mem_setOf_eq]
+    simp only [Set.mem_iInter, Set.mem_ofPred_eq]
     exact fun t ht => hη t (List.mem_toFinset.1 (hTl ht))
   calc P {η : Site d → ℤ | ∀ z ∈ l, ¬ BoxCrossed η k (ec_emb d z)}
       ≤ P (⋂ t ∈ T, {η : Site d → ℤ | ¬ BoxCrossed η k (ec_emb d t)}) := measure_mono hsub

@@ -95,7 +95,7 @@ theorem ceVolumeFastStep (d : ℕ) (x y : Site d) (i : Fin d)
       change 2 * (d : ℤ) ≤ σ y + (nbrSumZ u y - 2 * (d : ℤ) * u y)
       rw [hy_zero]
       omega
-    rw [podo_succ, if_pos hconf]
+    rw [podo_succ, ite_eq_left hconf]
     change 0 < u y + 1
     omega
 

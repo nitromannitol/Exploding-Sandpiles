@@ -48,7 +48,7 @@ theorem bc_dim_one_fodo_step (S : Set (Site 1)) (η w0 : Site 1 → ℤ) (x : Si
     push_cast
     omega
   show 1 ≤ fodo S η w0 (0 + 1) x
-  rw [fodo_succ, if_neg hS, fodo_zero, hw, if_pos hcond]
+  rw [fodo_succ, ite_eq_right hS, fodo_zero, hw, ite_eq_left hcond]
   norm_num
 
 /-- Every singleton tile of the one-dimensional box of side `1` is crossed in both directions
@@ -60,7 +60,7 @@ theorem bc_dim_one_crossed (η : Site 1 → ℤ) (hη : ∀ x, (1 : ℤ) ≤ η 
   subst hi0
   have ht1 : 1 ≤ t := by simpa using ht
   have hxB := hx
-  simp only [rboxShift, Set.mem_setOf_eq] at hxB
+  simp only [rboxShift, Set.mem_ofPred_eq] at hxB
   have hx0 : x 0 = j 0 + 1 := by
     have h := hxB 0
     simp only [Nat.cast_one, one_mul] at h
@@ -72,26 +72,26 @@ theorem bc_dim_one_crossed (η : Site 1 → ℤ) (hη : ∀ x, (1 : ℤ) ≤ η 
     have hoff : x - unit 0 ∉ rboxShift (fun _ : Fin 1 => 1) j := by
       intro h
       have h' := h
-      simp only [rboxShift, Set.mem_setOf_eq] at h'
+      simp only [rboxShift, Set.mem_ofPred_eq] at h'
       have h2 := h' 0
       simp only [Pi.sub_apply, bc_dim_one_unit_zero_zero, Nat.cast_one, one_mul] at h2
       omega
     have hF : x - unit 0 ∈ faceOut (fun _ : Fin 1 => 1) j 0 false := by
       refine ⟨Or.inr ⟨hoff, x, hx, adj_sub_unit x 0⟩, ?_⟩
-      simp only [Set.mem_setOf_eq, Pi.sub_apply, bc_dim_one_unit_zero_zero,
-        if_neg Bool.false_ne_true]
+      simp only [Set.mem_ofPred_eq, Pi.sub_apply, bc_dim_one_unit_zero_zero,
+        ite_eq_right Bool.false_ne_true]
       simp only [Nat.cast_one, one_mul]
       omega
     have hxnF : x ∉ faceOut (fun _ : Fin 1 => 1) j 0 false := by
       intro h
       have h2 := h.2
-      simp only [Set.mem_setOf_eq, Bool.false_eq_true, if_false, Nat.cast_one, one_mul] at h2
+      simp only [Set.mem_ofPred_eq, Bool.false_eq_true, ite_false, Nat.cast_one, one_mul] at h2
       omega
     have hplusnF : x + unit 0 ∉ faceOut (fun _ : Fin 1 => 1) j 0 false := by
       intro h
       have h2 := h.2
-      simp only [Set.mem_setOf_eq, Pi.add_apply, bc_dim_one_unit_zero_zero, Bool.false_eq_true,
-        if_false, Nat.cast_one, one_mul] at h2
+      simp only [Set.mem_ofPred_eq, Pi.add_apply, bc_dim_one_unit_zero_zero, Bool.false_eq_true,
+        ite_false, Nat.cast_one, one_mul] at h2
       omega
     refine bc_dim_one_fodo_step _ η _ x hS (hη x) ?_ ?_
     · exact Set.indicator_of_notMem hxnF _
@@ -101,24 +101,24 @@ theorem bc_dim_one_crossed (η : Site 1 → ℤ) (hη : ∀ x, (1 : ℤ) ≤ η 
     have hoff : x + unit 0 ∉ rboxShift (fun _ : Fin 1 => 1) j := by
       intro h
       have h' := h
-      simp only [rboxShift, Set.mem_setOf_eq] at h'
+      simp only [rboxShift, Set.mem_ofPred_eq] at h'
       have h2 := h' 0
       simp only [Pi.add_apply, bc_dim_one_unit_zero_zero, Nat.cast_one, one_mul] at h2
       omega
     have hF : x + unit 0 ∈ faceOut (fun _ : Fin 1 => 1) j 0 true := by
       refine ⟨Or.inr ⟨hoff, x, hx, adj_add_unit x 0⟩, ?_⟩
-      simp only [Set.mem_setOf_eq, Pi.add_apply, bc_dim_one_unit_zero_zero, if_true]
+      simp only [Set.mem_ofPred_eq, Pi.add_apply, bc_dim_one_unit_zero_zero, ite_true]
       simp only [Nat.cast_one, one_mul]
       omega
     have hxnF : x ∉ faceOut (fun _ : Fin 1 => 1) j 0 true := by
       intro h
       have h2 := h.2
-      simp only [Set.mem_setOf_eq, if_true, Nat.cast_one, one_mul] at h2
+      simp only [Set.mem_ofPred_eq, ite_true, Nat.cast_one, one_mul] at h2
       omega
     have hminusnF : x - unit 0 ∉ faceOut (fun _ : Fin 1 => 1) j 0 true := by
       intro h
       have h2 := h.2
-      simp only [Set.mem_setOf_eq, Pi.sub_apply, bc_dim_one_unit_zero_zero, if_true, Nat.cast_one,
+      simp only [Set.mem_ofPred_eq, Pi.sub_apply, bc_dim_one_unit_zero_zero, ite_true, Nat.cast_one,
         one_mul] at h2
       omega
     refine bc_dim_one_fodo_step _ η _ x hS (hη x) ?_ ?_

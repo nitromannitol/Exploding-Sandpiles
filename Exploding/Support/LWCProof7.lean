@@ -79,7 +79,7 @@ theorem lwc7_L_le_rep {L : Site d → ℝ}
     have hn_nonneg : ∀ w ∈ s, 0 ≤ n w := by
       intro w hw
       rw [hn]
-      simp only [if_pos hw]
+      simp only [ite_eq_left hw]
       exact (Int.floor_nonneg).mpr (mul_nonneg (hnn w hw) (Nat.cast_nonneg q))
     have hLwq : L wq ≤ ∑ w ∈ s, (n w : ℝ) * L w := lwc6_L_int_sum hsub hhom s n hn_nonneg
     have hwq_eq : lwc2_toReal wq = ∑ w ∈ s, (n w : ℝ) • lwc2_toReal w := by
@@ -97,11 +97,11 @@ theorem lwc7_L_le_rep {L : Site d → ℝ}
       rw [hMs]
       refine Finset.sum_le_sum fun w hw => ?_
       have h1 : (n w : ℝ) ≤ q * lam w := by
-        rw [hn]; simp only [if_pos hw]
+        rw [hn]; simp only [ite_eq_left hw]
         rw [mul_comm (q : ℝ) (lam w)]
         exact Int.floor_le (lam w * q)
       have h2 : q * lam w < (n w : ℝ) + 1 := by
-        rw [hn]; simp only [if_pos hw]
+        rw [hn]; simp only [ite_eq_left hw]
         rw [mul_comm (q : ℝ) (lam w)]
         exact Int.lt_floor_add_one (lam w * q)
       have habs : |(n w : ℝ) - q * lam w| ≤ 1 := by
@@ -115,7 +115,7 @@ theorem lwc7_L_le_rep {L : Site d → ℝ}
       calc ∑ w ∈ s, (n w : ℝ) * L w ≤ ∑ w ∈ s, (q * lam w) * L w :=
             Finset.sum_le_sum fun w hw => by
               have h1 : (n w : ℝ) ≤ q * lam w := by
-                rw [hn]; simp only [if_pos hw]
+                rw [hn]; simp only [ite_eq_left hw]
                 rw [mul_comm (q : ℝ) (lam w)]
                 exact Int.floor_le (lam w * q)
               exact mul_le_mul_of_nonneg_right h1 (hnonneg w)

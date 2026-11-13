@@ -105,6 +105,7 @@ theorem ec_paths_card : ∀ (m : ℕ) (p : ℤ × ℤ), (ec_paths m p).card ≤ 
           decide
       _ = 8 ^ (m + 1) := by ring
 
+set_option maxHeartbeats 400000 in
 theorem ec_mem_paths : ∀ (m : ℕ) (p : ℤ × ℤ) (l : List (ℤ × ℤ)), l.length = m + 1 →
     l.head? = some p → List.IsChain ec_adj8 l → l ∈ ec_paths m p := by
   classical
@@ -135,6 +136,8 @@ theorem ec_mem_paths : ∀ (m : ℕ) (p : ℤ × ℤ) (l : List (ℤ × ℤ)), l
       · rw [Finset.mem_image]
         refine ⟨b :: rest, ih b _ (by simpa using hl) rfl hc', rfl⟩
 
+set_option maxHeartbeats 400000 in
+set_option linter.constructorNameAsVariable false in
 theorem ec_paths_length : ∀ (m : ℕ) (p : ℤ × ℤ) (l : List (ℤ × ℤ)),
     l ∈ ec_paths m p → l.length = m + 1 := by
   classical

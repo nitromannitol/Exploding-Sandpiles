@@ -30,7 +30,7 @@ theorem measurableSet_inOmega (d : ℕ) (ηmin : ℤ) :
       ⋂ x : Site d, (fun η : Site d → ℤ => η x) ⁻¹'
         {n : ℤ | ηmin ≤ n ∧ n ≤ 2 * (d : ℤ) - 1} := by
     ext η
-    simp only [Set.mem_setOf_eq, Set.mem_iInter, Set.mem_preimage, InOmega, iff_self]
+    simp only [Set.mem_ofPred_eq, Set.mem_iInter, Set.mem_preimage, InOmega, iff_self]
   rw [hset]
   exact MeasurableSet.iInter fun x => measurable_pi_apply x (hZ _)
 

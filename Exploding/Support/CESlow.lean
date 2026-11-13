@@ -48,9 +48,9 @@ theorem cels_supsol (s0 : Site d → ℤ) (w : ℕ → Site d → ℤ)
           rw [← heq]
           linarith
         have := hstep t x hc'
-        rw [if_pos hc]
+        rw [ite_eq_left hc]
         linarith
-      · rw [if_neg hc]
+      · rw [ite_eq_right hc]
         linarith
 
 end Exploding

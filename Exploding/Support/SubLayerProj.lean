@@ -17,7 +17,7 @@ def layer (d n : ℕ) (i : ℤ) : Set (Site (d + 1)) := {x ∈ cube (d + 1) n | 
 /-- The projection of the layer `L_i` onto `ℤ^d` is the box `Q_n^{(d)}`. -/
 theorem mem_layer_iff (d n : ℕ) (i : ℤ) (hi : 1 ≤ i) (hin : i ≤ (n : ℤ)) (y : Site d) :
     cons i y ∈ layer d n i ↔ y ∈ cube d n := by
-  simp only [layer, cube, Set.mem_setOf_eq, cons]
+  simp only [layer, cube, Set.mem_ofPred_eq, cons]
   constructor
   · rintro ⟨hcube, -⟩
     intro j

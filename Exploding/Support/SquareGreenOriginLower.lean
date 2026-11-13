@@ -40,7 +40,7 @@ theorem squareOrigin_odometer_ge_green (hd : 2 ≤ d) (N T : ℕ)
       - ∑ y ∈ D, LatticeProb.Graph.killedGreenReal (lattice d) (D : Set (Site d)) 0 y
       ≤ ((podo (squareOrigin_pile (d := d) (2 * (d : ℤ) - 2) N) T 0 : ℤ) : ℝ) := by
   have hd0 : 0 < d := by omega
-  haveI : NeZero d := ⟨hd0.ne'⟩
+  have : NeZero d := ⟨hd0.ne'⟩
   obtain ⟨q, hq⟩ := Infinite.exists_notMem_finset D
   have hG : (lattice d).Connected := LatticeProb.Graph.Zd.latticeConnected d
   have hid := squareOrigin_origin_identity hd0 D hO (squareOrigin_pile (d := d) (2 * (d : ℤ) - 2) N) T hsupp
@@ -72,7 +72,7 @@ theorem squareOrigin_odometer_ge_green (hd : 2 ≤ d) (N T : ℕ)
         (D : Set (Site d)) 0 v)
       = (N : ℝ) * LatticeProb.Graph.killedGreenReal (lattice d) (D : Set (Site d)) 0 0
         - ∑ y ∈ D, LatticeProb.Graph.killedGreenReal (lattice d) (D : Set (Site d)) 0 y := by
-    rw [Finset.sum_sub_distrib, ← Finset.mul_sum, Finset.sum_ite_eq', if_pos hO]
+    rw [Finset.sum_sub_distrib, ← Finset.mul_sum, Finset.sum_ite_eq', ite_eq_left hO]
   linarith [hid, hR, hsum]
 
 end Exploding

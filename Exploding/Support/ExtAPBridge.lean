@@ -43,8 +43,9 @@ theorem xbb_goodField_measurable (d : ℕ) : Measurable (xbb_goodField d) := by
 
 theorem xbb_goodLaw_isProbability {q : ℝ} (h0 : 0 ≤ q) (h1 : q ≤ 1) :
     IsProbabilityMeasure (xbb_goodLaw d q) := by
-  haveI : IsProbabilityMeasure (bondPercolation d q) := rn_infinitePi_isProb h0 h1
-  exact Measure.isProbabilityMeasure_map (xbb_goodField_measurable d).aemeasurable
+  have : IsProbabilityMeasure (bondPercolation d q) := rn_infinitePi_isProb h0 h1
+  unfold xbb_goodLaw
+  exact inferInstance
 
 /-! ### Independence of the good sites -/
 
@@ -67,7 +68,7 @@ theorem xbb_kdependent_of_hasDependenceGraph {k : ℕ} {μ : Measure (Site d →
 theorem xbb_good_law_hasDependenceGraph {q : ℝ} (h0 : 0 ≤ q) (h1 : q ≤ 1) :
     HasDependenceGraph (xlssg_graph d 2) (xbb_goodLaw d q) := by
   classical
-  haveI : IsProbabilityMeasure (bondPercolation d q) := rn_infinitePi_isProb h0 h1
+  have : IsProbabilityMeasure (bondPercolation d q) := rn_infinitePi_isProb h0 h1
   have hX : ∀ a : Site d × Fin d, Measurable (fun ω : Site d × Fin d → Bool => ω a) :=
     fun a => measurable_pi_apply a
   have hind : iIndepFun (fun (a : Site d × Fin d) (ω : Site d × Fin d → Bool) => ω a)
@@ -115,7 +116,7 @@ theorem xbb_good_indep {q : ℝ} (h0 : 0 ≤ q) (h1 : q ≤ 1) :
 
 theorem xbb_good_marginal {q : ℝ} (h0 : 0 ≤ q) (h1 : q ≤ 1) (z : Site d) :
     xbb_goodLaw d q {β | β z = true} = ENNReal.ofReal (q ^ (xap_cubeBonds z).card) := by
-  haveI : IsProbabilityMeasure (bondPercolation d q) := rn_infinitePi_isProb h0 h1
+  have : IsProbabilityMeasure (bondPercolation d q) := rn_infinitePi_isProb h0 h1
   have hm : MeasurableSet {β : Site d → Bool | β z = true} :=
     measurableSet_eq_fun (measurable_pi_apply z) measurable_const
   rw [xbb_goodLaw, Measure.map_apply (xbb_goodField_measurable d) hm]
@@ -170,9 +171,9 @@ theorem xbb_bond_box_crossing (hdual : xbc_StarDuality d) (hd : 1 ≤ d) {ρ : �
   obtain ⟨p₀, hp₀1, hp₀⟩ := xbc_lss_transfer (d := d) (k := 2) hd ρ hρ0 hρ1
   refine ⟨max p₀ 0, le_max_right _ _, max_lt hp₀1 zero_lt_one, ?_⟩
   intro q hq0 hq1 hpq i
-  haveI : IsProbabilityMeasure (bondPercolation d q) := rn_infinitePi_isProb hq0 hq1
-  haveI : IsProbabilityMeasure (xbb_goodLaw d q) := xbb_goodLaw_isProbability hq0 hq1
-  haveI : IsProbabilityMeasure (sitePercolation d ρ) := rn_infinitePi_isProb hρ0 hρ1.le
+  have : IsProbabilityMeasure (bondPercolation d q) := rn_infinitePi_isProb hq0 hq1
+  have : IsProbabilityMeasure (xbb_goodLaw d q) := xbb_goodLaw_isProbability hq0 hq1
+  have : IsProbabilityMeasure (sitePercolation d ρ) := rn_infinitePi_isProb hρ0 hρ1.le
   have hkd : KDependent 2 (xbb_goodLaw d q) := xbb_good_indep hq0 hq1
   have hmarg : ∀ s : Site d,
       ENNReal.ofReal (max p₀ 0) ≤ (xbb_goodLaw d q) {ω | ω s = true} := by
@@ -183,7 +184,7 @@ theorem xbb_bond_box_crossing (hdual : xbc_StarDuality d) (hd : 1 ≤ d) {ρ : �
   have hAmeas : MeasurableSet A := by
     have hset : A = ⋃ N : ℕ, ⋂ n ∈ Set.Ici N, {β : Site d → Bool | xbc_Crosses d n i β} := by
       ext β
-      simp only [hA, Set.mem_setOf_eq, Set.mem_iUnion, Set.mem_iInter, Set.mem_Ici]
+      simp only [hA, Set.mem_ofPred_eq, Set.mem_iUnion, Set.mem_iInter, Set.mem_Ici]
       exact Filter.eventually_atTop
     rw [hset]
     exact MeasurableSet.iUnion fun N =>

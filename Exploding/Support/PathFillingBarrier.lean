@@ -42,6 +42,6 @@ theorem fodo_eq_zero_of_neg (S : Set (Site d)) (η : Site d → ℤ) (x : Site d
       simp only [fconf, lap, ih, mul_zero, sub_zero]
       intro h
       linarith
-    rw [fodo_succ, if_neg hx, ih, if_neg hnot, add_zero]
+    rw [fodo_succ, ite_eq_right hx, ih, ite_eq_right hnot, add_zero]
 
 end Exploding

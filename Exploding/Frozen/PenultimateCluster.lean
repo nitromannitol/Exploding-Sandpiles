@@ -146,7 +146,7 @@ theorem Exploding.Frozen.last_penultimate_cluster (d : ℕ) (hd : 2 ≤ d) (p : 
             by_cases hj : j = i
             · subst hj
               simpa using ⟨hv0, hv1⟩
-            · simp only [if_neg hj]
+            · simp only [ite_eq_right hj]
               have h2 : |x j| ≤ (n : ℤ) := hxcent j
               rw [abs_le] at h2
               have h3 : m0 j ≤ x j ∧ x j ≤ M0 j := by
@@ -253,10 +253,10 @@ theorem Exploding.Frozen.last_penultimate_cluster (d : ℕ) (hd : 2 ≤ d) (p : 
         obtain ⟨hv1', hv2'⟩ := hv
         obtain ⟨hc1, hc2⟩ := hc'
         by_cases hj : j = i
-        · simp only [if_pos hj]
+        · simp only [ite_eq_left hj]
           rw [abs_le]
           exact ⟨hv1', hv2'⟩
-        · simp only [if_neg hj]
+        · simp only [ite_eq_right hj]
           have h1 : |(x j - 1) / (max k0 1 : ℤ)| ≤ |x j - 1| := div_abs_le _ hk1 _
           have h2 : |x j - 1| ≤ |x j| + 1 := by
             rw [abs_sub_le_iff]

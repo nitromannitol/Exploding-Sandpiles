@@ -80,7 +80,7 @@ theorem squareOrigin_origin_identity (hd : 0 < d) (D : Finset (Site d)) (hO : (0
     ((podo s0 T 0 : ℤ) : ℝ)
       = ∑ v ∈ D, LatticeProb.Graph.killedGreenReal (lattice d) (D : Set (Site d)) 0 v
           * (((s0 v : ℤ) : ℝ) - ((pconf s0 T v : ℤ) : ℝ)) := by
-  haveI : NeZero d := ⟨hd.ne'⟩
+  have : NeZero d := ⟨hd.ne'⟩
   obtain ⟨q, hq⟩ := Infinite.exists_notMem_finset D
   have hG : (lattice d).Connected := LatticeProb.Graph.Zd.latticeConnected d
   -- the killed Green function vanishes off `D`, and its Laplacian is `-δ₀` on `D`
@@ -142,7 +142,7 @@ theorem squareOrigin_odometer_le_green (hd : 0 < d) (h : ℤ) (hh : 0 ≤ h) (N 
     ((podo (squareOrigin_pile (d := d) h N) T 0 : ℤ) : ℝ)
       ≤ (N : ℝ) * LatticeProb.Graph.killedGreenReal (lattice d) (D : Set (Site d)) 0 0
         + (h : ℝ) * ∑ y ∈ D, LatticeProb.Graph.killedGreenReal (lattice d) (D : Set (Site d)) 0 y := by
-  haveI : NeZero d := ⟨hd.ne'⟩
+  have : NeZero d := ⟨hd.ne'⟩
   obtain ⟨q, hq⟩ := Infinite.exists_notMem_finset D
   have hG : (lattice d).Connected := LatticeProb.Graph.Zd.latticeConnected d
   have hid := squareOrigin_origin_identity hd D hO (squareOrigin_pile h N) T hsupp
@@ -163,9 +163,9 @@ theorem squareOrigin_odometer_le_green (hd : 0 < d) (h : ℤ) (hh : 0 ≤ h) (N 
       mul_nonneg (hgnn v) (by exact_mod_cast hpc v)
     rw [squareOrigin_pile_real h N v]
     by_cases hv : v = 0
-    · rw [if_pos hv, if_pos hv]
+    · rw [ite_eq_left hv, ite_eq_left hv]
       nlinarith [hp]
-    · rw [if_neg hv, if_neg hv]
+    · rw [ite_eq_right hv, ite_eq_right hv]
       nlinarith [hp]
   have hsum_le := Finset.sum_le_sum hpt
   have hR : ∑ v ∈ D, ((h : ℝ) * LatticeProb.Graph.killedGreenReal (lattice d) (D : Set (Site d)) 0 v
@@ -173,6 +173,6 @@ theorem squareOrigin_odometer_le_green (hd : 0 < d) (h : ℤ) (hh : 0 ≤ h) (N 
             LatticeProb.Graph.killedGreenReal (lattice d) (D : Set (Site d)) 0 v else 0))
       = (h : ℝ) * ∑ y ∈ D, LatticeProb.Graph.killedGreenReal (lattice d) (D : Set (Site d)) 0 y
         + (N : ℝ) * LatticeProb.Graph.killedGreenReal (lattice d) (D : Set (Site d)) 0 0 := by
-    rw [Finset.sum_add_distrib, ← Finset.mul_sum, ← Finset.mul_sum, Finset.sum_ite_eq', if_pos hO]
+    rw [Finset.sum_add_distrib, ← Finset.mul_sum, ← Finset.mul_sum, Finset.sum_ite_eq', ite_eq_left hO]
   rw [hid]
   linarith [hsum_le, hR]

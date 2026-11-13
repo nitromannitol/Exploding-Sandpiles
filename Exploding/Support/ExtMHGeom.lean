@@ -87,18 +87,18 @@ theorem xmg_card_proj_le (B : Finset (Site d)) {i j : Fin d} (hij : i ≠ j) :
     refine ⟨x + (k : ℤ) • unit j, ?_, ?_⟩
     · rw [Set.Finite.mem_toFinset]
       exact xmg_mem_innerBoundary_of_exit B j x k (hseg k le_rfl) hout
-    · rw [xmg_ray_apply, if_neg hij, add_zero]
+    · rw [xmg_ray_apply, ite_eq_right hij, add_zero]
   choose p hpT hpi using key
   let f : ℤ → Site d := fun t =>
     if h : t ∈ B.image (fun x => x i) then p t h else 0
   refine Finset.card_le_card_of_injOn f ?_ ?_
   · intro t ht
     rw [Finset.mem_coe] at ht ⊢
-    simp only [f, dif_pos ht]
+    simp only [f, dite_eq_left ht]
     exact hpT t ht
   · intro t₁ ht₁ t₂ ht₂ heq
     rw [Finset.mem_coe] at ht₁ ht₂
-    simp only [f, dif_pos ht₁, dif_pos ht₂] at heq
+    simp only [f, dite_eq_left ht₁, dite_eq_left ht₂] at heq
     rw [← hpi t₁ ht₁, ← hpi t₂ ht₂, heq]
 
 /-- The lines parallel to `e_i` meeting `B` are at most `|∂B|` in number. -/
@@ -120,7 +120,7 @@ theorem xmg_card_lines_le (B : Finset (Site d)) (i : Fin d) :
       by_cases hj : j = i
       · subst hj
         simp
-      · rw [Function.update_of_ne hj, Function.update_of_ne hj, xmg_ray_apply, if_neg hj,
+      · rw [Function.update_of_ne hj, Function.update_of_ne hj, xmg_ray_apply, ite_eq_right hj,
           add_zero]
   choose p hpT hpl using key
   let f : Site d → Site d := fun l =>
@@ -128,11 +128,11 @@ theorem xmg_card_lines_le (B : Finset (Site d)) (i : Fin d) :
   refine Finset.card_le_card_of_injOn f ?_ ?_
   · intro l hl
     rw [Finset.mem_coe] at hl ⊢
-    simp only [f, dif_pos hl]
+    simp only [f, dite_eq_left hl]
     exact hpT l hl
   · intro l₁ hl₁ l₂ hl₂ heq
     rw [Finset.mem_coe] at hl₁ hl₂
-    simp only [f, dif_pos hl₁, dif_pos hl₂] at heq
+    simp only [f, dite_eq_left hl₁, dite_eq_left hl₂] at heq
     rw [← hpl l₁ hl₁, ← hpl l₂ hl₂, heq]
 
 /-- `B` injects into (its lines parallel to `e_i`) × (its `i`-th coordinate values). -/
@@ -195,7 +195,7 @@ theorem xmg_exists_near (hd : 2 ≤ d) (B : Finset (Site d)) {x : Site d} (hx : 
       rw [Finset.mem_coe, Finset.mem_range] at hj
       rw [Finset.mem_coe, Finset.mem_image]
       refine ⟨x + (j : ℤ) • unit i₀, hseg j (by omega), ?_⟩
-      rw [xmg_ray_apply, if_pos rfl]
+      rw [xmg_ray_apply, ite_eq_left rfl]
     have hinj : Set.InjOn (fun j : ℕ => x i₀ + (j : ℤ)) ↑(Finset.range (k + 1)) := by
       intro a _ b _ hab
       exact_mod_cast (by simpa using hab : (a : ℤ) = b)
@@ -206,9 +206,9 @@ theorem xmg_exists_near (hd : 2 ≤ d) (B : Finset (Site d)) {x : Site d} (hx : 
   intro i
   rw [xmg_ray_apply]
   by_cases hi : i = i₀
-  · rw [if_pos hi, add_sub_cancel_left, abs_of_nonneg (by positivity)]
+  · rw [ite_eq_left hi, add_sub_cancel_left, abs_of_nonneg (by positivity)]
     exact_mod_cast (by omega : k ≤ (innerBoundary (B : Set (Site d))).ncard)
-  · rw [if_neg hi]
+  · rw [ite_eq_right hi]
     simp
 
 end Exploding

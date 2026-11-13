@@ -112,7 +112,7 @@ theorem ec_explosive_ae (hd : 2 ≤ d) (P : Measure (Site d → ℤ)) (hP : IsPr
         obtain ⟨i, hi⟩ : ∃ i, l.length = j + 2 + i + 1 := ⟨l.length - (j + 3), by omega⟩
         refine Set.mem_iUnion.2 ⟨j, Set.mem_iUnion.2 ⟨i, ?_⟩⟩
         unfold ec_badSet
-        simp only [Set.mem_iUnion, Set.mem_setOf_eq]
+        simp only [Set.mem_iUnion, Set.mem_ofPred_eq]
         exact ⟨l, Finset.mem_filter.2 ⟨ec_mem_paths _ _ l hi hhd hch, hnd⟩, hz⟩
       · left; exact hb
     have hρ8 : 8 * ENNReal.ofReal r ≤ 2⁻¹ := by

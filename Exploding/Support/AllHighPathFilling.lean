@@ -71,7 +71,7 @@ theorem allHighPath_covered_of_adj (A : Set (Site 2)) (t : ℕ) {x y : Site 2}
     fodo_nonneg_of_seed A _ _
       (fun z => by by_cases hz : z ∈ A <;> simp [Set.indicator_of_mem, Set.indicator_of_notMem, hz]) t
   have hsum := le_nbrSumZ_of_adj hnn hadj
-  rw [fodo_succ, if_neg hxA]
+  rw [fodo_succ, ite_eq_right hxA]
   by_cases hw : 1 ≤ fodo A (fun _ : Site 2 => (3 : ℤ)) (Set.indicator A 1) t x
   · split_ifs <;> linarith [hnn x]
   · have h0 : fodo A (fun _ : Site 2 => (3 : ℤ)) (Set.indicator A 1) t x = 0 := by
@@ -83,7 +83,7 @@ theorem allHighPath_covered_of_adj (A : Set (Site 2)) (t : ℕ) {x y : Site 2}
       rw [lap, h0]
       push_cast
       linarith
-    rw [if_pos hc]
+    rw [ite_eq_left hc]
     omega
 
 /-- On the all-high background, the frozen odometer started from the indicator of `A` is

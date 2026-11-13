@@ -51,7 +51,7 @@ theorem xsch15_Percolates_of_percolationBound {p : ℝ} [Fact (0 ≤ p ∧ p ≤
 statement. -/
 theorem xsch15_Percolates_of_blockPercolation {p : ℝ} (_hd : 1 ≤ d) (hp : 0 < p)
     (hp1 : p < 1) (h : xsch7_BlockPercolation d p) : xsch13_Percolates d p := by
-  haveI : Fact (0 ≤ p ∧ p ≤ 1) := ⟨⟨hp.le, hp1.le⟩⟩
+  have : Fact (0 ≤ p ∧ p ≤ 1) := ⟨⟨hp.le, hp1.le⟩⟩
   obtain ⟨c, C, hc, hC, hbound⟩ := h
   refine xsch15_Percolates_of_percolationBound ⟨c, C, hc, hC, fun n => ?_⟩
   have hsub : {η : Site d → ℤ | ¬ xsch_Sp (Finset.univ : Finset (Fin d)) (cube d n) η}

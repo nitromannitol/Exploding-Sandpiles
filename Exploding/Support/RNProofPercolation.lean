@@ -104,12 +104,12 @@ theorem rn_measurableSet_finite_ncard_le {Ω V : Type*} [MeasurableSpace Ω] [Co
     MeasurableSet {ω | (A ω).Finite ∧ (A ω).ncard ≤ m} := by
   have : {ω | (A ω).Finite ∧ (A ω).ncard ≤ m} =
       ⋂ F : Finset V, {ω | (↑F : Set V) ⊆ A ω → F.card ≤ m} := by
-    ext ω; simp only [Set.mem_setOf_eq, Set.mem_iInter]
+    ext ω; simp only [Set.mem_ofPred_eq, Set.mem_iInter]
     exact rn_finite_ncard_le_iff (A ω) m
   rw [this]
   refine MeasurableSet.iInter fun F => ?_
   by_cases hF : F.card ≤ m
-  · simp only [hF, implies_true, Set.setOf_true]; exact MeasurableSet.univ
+  · simp only [hF, implies_true, Set.ofPred_true]; exact MeasurableSet.univ
   · simp only [hF, imp_false]
     have : {ω | ¬ (↑F : Set V) ⊆ A ω} = (⋂ v ∈ F, {ω | v ∈ A ω})ᶜ := by
       ext ω; simp [Set.subset_def]
@@ -144,7 +144,7 @@ theorem rn_measurableSet_cluster_infinite {d : ℕ} (i : Site d) :
       (⋃ m : ℕ, {s : Site d → Bool | (componentIn (openSites s) i).Finite ∧
         (componentIn (openSites s) i).ncard ≤ m})ᶜ := by
     ext s
-    simp only [Set.mem_setOf_eq, Set.mem_compl_iff, Set.mem_iUnion, not_exists, not_and]
+    simp only [Set.mem_ofPred_eq, Set.mem_compl_iff, Set.mem_iUnion, not_exists, not_and]
     constructor
     · intro h m hfin
       exact absurd hfin h
@@ -174,7 +174,7 @@ theorem rn_measurableSet_holeProp {d : ℕ} (i : Site d) :
         ⋃ m : ℕ, ({s : Site d → Bool | (componentIn (C s)ᶜ x).Finite ∧
           (componentIn (C s)ᶜ x).ncard ≤ m} ∩ {_s | (m : ℝ) < b}) := by
       ext s
-      simp only [Set.mem_setOf_eq, Set.mem_iUnion, Set.mem_inter_iff]
+      simp only [Set.mem_ofPred_eq, Set.mem_iUnion, Set.mem_inter_iff]
       constructor
       · rintro ⟨hf, hb⟩
         exact ⟨(componentIn (C s)ᶜ x).ncard, ⟨hf, le_rfl⟩, hb⟩
@@ -185,14 +185,14 @@ theorem rn_measurableSet_holeProp {d : ℕ} (i : Site d) :
     refine (rn_measurableSet_finite_ncard_le (fun s => componentIn (C s)ᶜ x)
       (fun v => rn_measurableSet_mem_componentIn (fun s => (C s)ᶜ) hCm x v) m).inter ?_
     by_cases h : (m : ℝ) < b
-    · simp only [h, Set.setOf_true]; exact MeasurableSet.univ
-    · simp only [h, Set.setOf_false]; exact MeasurableSet.empty
+    · simp only [h, Set.ofPred_true]; exact MeasurableSet.univ
+    · simp only [h, Set.ofPred_false]; exact MeasurableSet.empty
   have : {s : Site d → Bool | RnHoleProp d (C s)} = ⋃ n0 : ℕ, ⋂ n : ℕ, ⋂ x : Site d,
       ({s : Site d → Bool | n0 ≤ n → x ∈ (cent d n : Set (Site d)) → x ∉ C s →
         ((componentIn (C s)ᶜ x).Finite ∧
           ((componentIn (C s)ᶜ x).ncard : ℝ) < Real.log n ^ ((5 : ℝ) / 2))}) := by
     ext s
-    simp only [RnHoleProp, Set.mem_setOf_eq, Set.mem_iUnion, Set.mem_iInter]
+    simp only [RnHoleProp, Set.mem_ofPred_eq, Set.mem_iUnion, Set.mem_iInter]
     constructor
     · rintro ⟨n0, h⟩
       exact ⟨n0, fun n x hn hx hxC => h n hn x hx hxC⟩
@@ -208,7 +208,7 @@ theorem rn_measurableSet_holeProp {d : ℕ} (i : Site d) :
           {s : Site d → Bool | x ∈ C s} ∪ {s : Site d → Bool | (componentIn (C s)ᶜ x).Finite ∧
           ((componentIn (C s)ᶜ x).ncard : ℝ) < Real.log n ^ ((5 : ℝ) / 2)} := by
         ext s
-        simp only [Set.mem_setOf_eq, Set.mem_union]
+        simp only [Set.mem_ofPred_eq, Set.mem_union]
         by_cases hx : x ∈ C s <;> simp [hx]
       rw [hh]
       exact (rn_measurableSet_cluster_mem (d := d) i x).union (hfin x _)
@@ -258,7 +258,7 @@ def rn_nonIso {d : ℕ} (ζ : RnBond d → Bool) : Site d → Bool :=
   fun x => decide (∃ b ∈ rn_incident d x, ζ b = true)
 
 theorem rn_nonIso_measurable (d : ℕ) : Measurable (rn_nonIso (d := d)) := by
-  refine measurable_pi_lambda _ fun x => measurable_to_bool ?_
+  refine Measurable.of_eval fun x => measurable_to_bool ?_
   have : (fun ζ : RnBond d → Bool => rn_nonIso ζ x) ⁻¹' {true} =
       ⋃ b ∈ rn_incident d x, {ζ : RnBond d → Bool | ζ b = true} := by
     ext ζ; simp [rn_nonIso]
@@ -320,8 +320,8 @@ theorem rn_theta_le (d : ℕ) (q : ℝ) :
     bondTheta d q ≤ bondPercolation d q (RnBondClusterEvent d) := by
   unfold bondTheta
   refine measure_mono (fun ζ hζ => ?_)
-  simp only [Set.mem_setOf_eq] at hζ
-  simp only [RnBondClusterEvent, RnClusterEvent, Set.mem_preimage, Set.mem_setOf_eq]
+  simp only [Set.mem_ofPred_eq] at hζ
+  simp only [RnBondClusterEvent, RnClusterEvent, Set.mem_preimage, Set.mem_ofPred_eq]
   refine ⟨0, (hζ.sdiff (Set.finite_singleton 0)).mono ?_⟩
   rintro y ⟨hy, hy0⟩
   have hy0' : y ≠ 0 := hy0
@@ -385,9 +385,9 @@ theorem rn_cluster_ae (hLSSB : Exploding.External.LiggettSchonmannStaceyBoundedD
   refine ⟨max q 0, max_lt hq1' zero_lt_one, fun ρ₂ hρ hρ1 => ?_⟩
   have hρ0 : 0 ≤ ρ₂ := (le_max_right _ _).trans hρ
   have hρq : q ≤ ρ₂ := (le_max_left _ _).trans hρ
-  haveI := rn_infinitePi_isProb (ι := Site d) hρ0 hρ1
+  have := rn_infinitePi_isProb (ι := Site d) hρ0 hρ1
   set P : Measure (Site d → Bool) := sitePercolation d ρ₂ with hP
-  haveI : IsProbabilityMeasure P := rn_infinitePi_isProb (ι := Site d) hρ0 hρ1
+  have : IsProbabilityMeasure P := rn_infinitePi_isProb (ι := Site d) hρ0 hρ1
   have hind : iIndepFun (fun (x : Site d) (ω : Site d → Bool) => ω x) P :=
     rn_bernoulli_iIndep hρ0 hρ1
   have hmarg : ∀ x : Site d, ENNReal.ofReal q ≤ P {ω | (fun (x : Site d) (ω : Site d → Bool) => ω x) x ω = true} := by
@@ -401,13 +401,13 @@ theorem rn_cluster_ae (hLSSB : Exploding.External.LiggettSchonmannStaceyBoundedD
   have h2 : bondTheta d qP ≤ P (RnClusterEvent d) := by
     refine (rn_theta_le d qP).trans (h1.trans' le_rfl |>.trans ?_)
     refine measure_mono (fun ω hω => ?_)
-    simp only [Set.mem_setOf_eq, RnBondClusterEvent, Set.mem_preimage] at hω
+    simp only [Set.mem_ofPred_eq, RnBondClusterEvent, Set.mem_preimage] at hω
     exact rn_clusterEvent_increasing d _ _ hω (fun z hz => rn_nonIso_edge_le ω z hz)
   have hpos : P (RnClusterEvent d) ≠ 0 := by
     intro h0
     rw [h0] at h2
     exact hθ (nonpos_iff_eq_zero.mp h2)
-  haveI : IsProbabilityMeasure (bitLaw ρ₂) := rn_bitLaw_isProb hρ0 hρ1
+  have : IsProbabilityMeasure (bitLaw ρ₂) := rn_bitLaw_isProb hρ0 hρ1
   have h01 := LatticeProb.measure_zero_or_one_of_allTranslationInvariant (bitLaw ρ₂)
     (v := unit ⟨0, by omega⟩) (unit_ne_zero _) (rn_measurableSet_clusterEvent d)
     (fun w => rn_clusterEvent_shift_invariant w)
@@ -432,7 +432,7 @@ theorem rn_holeEvent_ae (hLSSB : Exploding.External.LiggettSchonmannStaceyBounde
   rw [MeasureTheory.ae_iff] at h2
   refine measure_mono_null (fun s hs => ?_) (measure_union_null h1 h2)
   by_contra hcon
-  simp only [Set.mem_union, not_or, Set.mem_compl_iff, not_not, Set.mem_setOf_eq] at hcon hs
+  simp only [Set.mem_union, not_or, Set.mem_compl_iff, not_not, Set.mem_ofPred_eq] at hcon hs
   obtain ⟨hclu, hall⟩ := hcon
   obtain ⟨i, hi⟩ := hclu
   apply hs
@@ -448,7 +448,7 @@ def rn_siteField {d : ℕ} (ζ : RnBond d → Bool) : Site d → Bool :=
   fun x => decide (∀ b ∈ rn_incident d x, ζ b = true)
 
 theorem rn_siteField_measurable (d : ℕ) : Measurable (rn_siteField (d := d)) := by
-  refine measurable_pi_lambda _ fun x => measurable_to_bool ?_
+  refine Measurable.of_eval fun x => measurable_to_bool ?_
   have : (fun ζ : RnBond d → Bool => rn_siteField ζ x) ⁻¹' {true} =
       ⋂ b ∈ rn_incident d x, {ζ : RnBond d → Bool | ζ b = true} := by
     ext ζ; simp [rn_siteField]
@@ -493,10 +493,10 @@ theorem rn_siteField_ae (hLSSB : Exploding.External.LiggettSchonmannStaceyBounde
   obtain ⟨r, hr0, hr1, hr⟩ := rn_site_dom hLSSB d (by omega) ρ₂ hρ₂0 hρ₂1
   refine ⟨r, hr1, fun ρ₁ hrρ hρ₁1 => ?_⟩
   have hρ₁0 : 0 ≤ ρ₁ := hr0.trans hrρ
-  haveI : IsProbabilityMeasure (bondPercolation d ρ₁) := rn_infinitePi_isProb hρ₁0 hρ₁1
+  have : IsProbabilityMeasure (bondPercolation d ρ₁) := rn_infinitePi_isProb hρ₁0 hρ₁1
   have h1 := hr ρ₁ hrρ hρ₁1 (RnHoleEvent d) (rn_measurableSet_holeEvent d) (rn_holeEvent_increasing d)
   have h2 : sitePercolation d ρ₂ (RnHoleEvent d) = 1 := by
-    haveI : IsProbabilityMeasure (sitePercolation d ρ₂) := rn_infinitePi_isProb hρ₂0 hρ₂1.le
+    have : IsProbabilityMeasure (sitePercolation d ρ₂) := rn_infinitePi_isProb hρ₂0 hρ₂1.le
     exact (prob_compl_eq_zero_iff (rn_measurableSet_holeEvent d)).mp (hhole ρ₂ hρ₂q hρ₂1.le)
   have h3 : bondPercolation d ρ₁ (rn_siteField ⁻¹' RnHoleEvent d) = 1 := by
     refine le_antisymm prob_le_one ?_
@@ -505,7 +505,7 @@ theorem rn_siteField_ae (hLSSB : Exploding.External.LiggettSchonmannStaceyBounde
     exact h1
   have h4 := (prob_compl_eq_zero_iff ((rn_siteField_measurable d) (rn_measurableSet_holeEvent d))).mpr h3
   refine measure_mono_null (fun ζ hζ => ?_) h4
-  simp only [Set.mem_setOf_eq] at hζ
+  simp only [Set.mem_ofPred_eq] at hζ
   simp only [Set.mem_compl_iff, Set.mem_preimage]
   intro hh
   exact hζ (rn_hole_of_siteField hh)

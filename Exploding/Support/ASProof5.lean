@@ -45,7 +45,7 @@ theorem as5_topple_implies_origin {d : ℕ} (σ : Site d → ℤ)
             (fun y => as_podo_nonneg σ t y) x hnbr
           obtain ⟨s, hs, hspos⟩ := ih y hypos
           exact ⟨s, le_trans hs (Nat.le_succ t), hspos⟩
-        · rw [if_neg hc] at hx
+        · rw [ite_eq_right hc] at hx
           rw [hxzero] at hx
           simp at hx
 

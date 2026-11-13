@@ -34,11 +34,11 @@ theorem xsch_sp_diag_two (n : ℕ) (η : Site 2 → ℤ)
       have hz0 : (x + xsch_dir ((1 : Fin 2), true)) 0 = x 0 := by simp [xsch_dir, unit]
       have hz1 : (x + xsch_dir ((1 : Fin 2), true)) 1 = x 1 + 1 := by simp [xsch_dir, unit]
       have hy : x + xsch_dir ((0 : Fin 2), false) ∈ cube 2 n := by
-        simp only [cube, Set.mem_setOf_eq, Fin.forall_fin_two]
+        simp only [cube, Set.mem_ofPred_eq, Fin.forall_fin_two]
         exact ⟨⟨by rw [hy0]; omega, by rw [hy0]; omega⟩,
           ⟨by rw [hy1]; exact h1, by rw [hy1]; exact h1n⟩⟩
       have hz : x + xsch_dir ((1 : Fin 2), true) ∈ cube 2 n := by
-        simp only [cube, Set.mem_setOf_eq, Fin.forall_fin_two]
+        simp only [cube, Set.mem_ofPred_eq, Fin.forall_fin_two]
         exact ⟨⟨by rw [hz0]; exact h0, by rw [hz0]; exact h0n⟩,
           ⟨by rw [hz1]; omega, by rw [hz1]; omega⟩⟩
       have hdy : (x + xsch_dir ((0 : Fin 2), false)) 0
@@ -76,11 +76,11 @@ theorem xsch_sp_diag_two (n : ℕ) (η : Site 2 → ℤ)
       have hz0 : (x + xsch_dir ((1 : Fin 2), false)) 0 = x 0 := by simp [xsch_dir, unit]
       have hz1 : (x + xsch_dir ((1 : Fin 2), false)) 1 = x 1 - 1 := by simp [xsch_dir, unit, sub_eq_add_neg]
       have hy : x + xsch_dir ((0 : Fin 2), true) ∈ cube 2 n := by
-        simp only [cube, Set.mem_setOf_eq, Fin.forall_fin_two]
+        simp only [cube, Set.mem_ofPred_eq, Fin.forall_fin_two]
         exact ⟨⟨by rw [hy0]; omega, by rw [hy0]; omega⟩,
           ⟨by rw [hy1]; exact h1, by rw [hy1]; exact h1n⟩⟩
       have hz : x + xsch_dir ((1 : Fin 2), false) ∈ cube 2 n := by
-        simp only [cube, Set.mem_setOf_eq, Fin.forall_fin_two]
+        simp only [cube, Set.mem_ofPred_eq, Fin.forall_fin_two]
         exact ⟨⟨by rw [hz0]; exact h0, by rw [hz0]; exact h0n⟩,
           ⟨by rw [hz1]; omega, by rw [hz1]; omega⟩⟩
       have hdy : (x + xsch_dir ((0 : Fin 2), true)) 1

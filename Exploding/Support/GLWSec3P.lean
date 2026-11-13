@@ -34,18 +34,18 @@ theorem glws_concat_walk (L1 L2 : ℕ) (c1 c2 : ℕ → Site d) (h : c1 L1 = c2 
     by_cases h1 : s < L1
     · have h2 : s ≤ L1 := le_of_lt h1
       have h3 : s + 1 ≤ L1 := h1
-      simp only [h2, h3, if_true]
+      simp only [h2, h3, ite_true]
       exact hadj1 s h1
     · by_cases h2 : s = L1
       · subst h2
         have h3 : ¬ (s + 1 ≤ s) := by omega
-        simp only [le_refl, if_true, h3, if_false]
+        simp only [le_refl, ite_true, h3, ite_false]
         have e : s + 1 - s = 0 + 1 := by omega
         rw [e, h]
         exact hadj2 0 (by omega)
       · have h2' : ¬ s ≤ L1 := by omega
         have h3 : ¬ s + 1 ≤ L1 := by omega
-        simp only [h2', h3, if_false]
+        simp only [h2', h3, ite_false]
         have e : s + 1 - L1 = (s - L1) + 1 := by omega
         rw [e]
         exact hadj2 (s - L1) (by omega)

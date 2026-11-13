@@ -37,7 +37,7 @@ theorem all_high_last_arrival_scaling_error_le
   have hk : k = max 1 r := by
     exact_mod_cast hkcoe.symm.trans hformula
   have harrival_nat : τ.toNat = max 1 r := by
-    rw [hkcoe, ENat.toNat_coe, hk]
+    rw [hkcoe, ENat.toNat_natCast, hk]
   have hmnorm_nonneg : 0 ≤ mnorm x := by
     unfold mnorm
     exact Finset.sum_nonneg fun i hi => abs_nonneg _

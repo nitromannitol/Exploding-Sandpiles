@@ -43,8 +43,8 @@ theorem xsk_dist_nonneg {c : Fin d → Bool} {lo hi x : Site d} (hx : x ∈ xsb_
     0 ≤ xsk_dist c lo hi x := by
   refine Finset.sum_nonneg fun i _ => ?_
   by_cases hci : c i = true
-  · rw [if_pos hci]; have := (hx i).1; omega
-  · rw [if_neg hci]; have := (hx i).2; omega
+  · rw [ite_eq_left hci]; have := (hx i).1; omega
+  · rw [ite_eq_right hci]; have := (hx i).2; omega
 
 /-- Off the chosen faces the neighbour one step nearer the corner in direction `i` lies in the
 box. -/
@@ -54,12 +54,12 @@ theorem xsk_nbr_mem {c : Fin d → Bool} {lo hi x : Site d} (hx : x ∈ xsb_box 
   by_cases hji : j = i
   · rw [hji, xsk_coord_self]
     by_cases hci : c i = true
-    · rw [if_pos hci]
+    · rw [ite_eq_left hci]
       have hxi : x i ≠ lo i := fun h1 => hface ⟨i, Or.inl ⟨hci, h1⟩⟩
       have h1 := (hx i).1
       have h2 := (hx i).2
       exact ⟨by omega, by omega⟩
-    · rw [if_neg hci]
+    · rw [ite_eq_right hci]
       have hci' : c i = false := by cases h : c i <;> simp_all
       have hxi : x i ≠ hi i := fun h1 => hface ⟨i, Or.inr ⟨hci', h1⟩⟩
       have h1 := (hx i).1
@@ -73,10 +73,10 @@ theorem xsk_one_le_dist (hd : 1 ≤ d) {c : Fin d → Bool} {lo hi x : Site d}
   have ht : ∀ i, 1 ≤ (if c i = true then x i - lo i else hi i - x i) := by
     intro i
     by_cases hci : c i = true
-    · rw [if_pos hci]
+    · rw [ite_eq_left hci]
       have hxi : x i ≠ lo i := fun h1 => hface ⟨i, Or.inl ⟨hci, h1⟩⟩
       have := (hx i).1; omega
-    · rw [if_neg hci]
+    · rw [ite_eq_right hci]
       have hci' : c i = false := by cases h : c i <;> simp_all
       have hxi : x i ≠ hi i := fun h1 => hface ⟨i, Or.inr ⟨hci', h1⟩⟩
       have := (hx i).2; omega

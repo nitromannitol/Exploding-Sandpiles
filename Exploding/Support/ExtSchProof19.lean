@@ -98,7 +98,7 @@ theorem xsch19_recursion_of_boxBound {p : ℝ} [Fact (0 ≤ p ∧ p ≤ 1)]
     have hatmost : ∀ σ σ', σ ≠ σ' → ¬ (η ∈ Bad σ ∧ η ∈ Bad σ') := by
       intro σ σ' hne hboth
       apply hcon
-      exact Set.mem_iUnion.mpr ⟨σ, Set.mem_iUnion.mpr ⟨σ', by rwa [if_pos hne]⟩⟩
+      exact Set.mem_iUnion.mpr ⟨σ, Set.mem_iUnion.mpr ⟨σ', by rwa [ite_eq_left hne]⟩⟩
     by_cases hex : ∃ σ, η ∈ Bad σ
     · obtain ⟨σ0, hσ0⟩ := hex
       refine hη (xsch18_sp_of_all_but_one hd n hn σ0 η (fun σ hσ => ?_))
@@ -122,14 +122,14 @@ theorem xsch19_recursion_of_boxBound {p : ℝ} [Fact (0 ≤ p ∧ p ≤ 1)]
       _ ≤ ∑ σ : Fin d → Bool, ∑ σ' : Fin d → Bool, (if σ ≠ σ' then K ^ 2 else 0) := by
           refine Finset.sum_le_sum fun σ _ => Finset.sum_le_sum fun σ' _ => ?_
           by_cases h : σ = σ'
-          · rw [if_neg (fun hh => hh h), if_neg (fun hh => hh h), measureReal_empty]
-          · rw [if_pos h, if_pos h]
+          · rw [ite_eq_right (fun hh => hh h), ite_eq_right (fun hh => hh h), measureReal_empty]
+          · rw [ite_eq_left h, ite_eq_left h]
             exact hBadProd σ σ' h
       _ ≤ ∑ _σ : Fin d → Bool, ∑ _σ' : Fin d → Bool, K ^ 2 := by
           refine Finset.sum_le_sum fun σ _ => Finset.sum_le_sum fun σ' _ => ?_
           by_cases h : σ = σ'
-          · rw [if_neg (fun hh => hh h)]; exact sq_nonneg K
-          · rw [if_pos h]
+          · rw [ite_eq_right (fun hh => hh h)]; exact sq_nonneg K
+          · rw [ite_eq_left h]
       _ = (2 : ℝ) ^ (2 * d) * K ^ 2 := by
           have hcard : Fintype.card (Fin d → Bool) = 2 ^ d := by
             rw [Fintype.card_fun]; simp [Fintype.card_fin]

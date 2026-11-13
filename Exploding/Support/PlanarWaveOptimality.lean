@@ -110,7 +110,7 @@ theorem planar_wave_cover_order_lower_eventually
     intro z hz
     unfold LatticeProb.originBox at hz
     have hz' := Fintype.mem_piFinset.mp hz
-    simp only [LatticeProb.box, Set.mem_setOf_eq]
+    simp only [LatticeProb.box, Set.mem_ofPred_eq]
     intro i
     exact abs_le.mpr (Finset.mem_Icc.mp (hz' i))
   have hG := Exploding.squareOrigin_odometer_ge_green (d := 2) le_rfl (k ^ 2) T
@@ -246,7 +246,7 @@ theorem planar_wave_cover_order_upper
   refine ⟨Nat.ceil (C0 * (n : ℝ) ^ 2 * Real.log ((n : ℝ) + 1)) + 1, Nat.le_add_left 1 _, ?_, ?_⟩
   · obtain ⟨T, hT⟩ := hsharp (fun _ : Site 2 => (2 : ℤ)) (fun _ => ⟨by norm_num, by norm_num⟩)
       n hn (Nat.ceil (C0 * (n : ℝ) ^ 2 * Real.log ((n : ℝ) + 1)) + 1) (Nat.le_add_left 1 _)
-      (by rw [if_pos rfl]; exact Nat.le_succ _)
+      (by rw [ite_eq_left rfl]; exact Nat.le_succ _)
     exact fun x hx => ⟨T, hT T le_rfl x hx⟩
   · have hceil := Nat.ceil_lt_add_one hF0
     have h2 : 2 ≤ 2 / Real.log 2 * ((n : ℝ) ^ 2 * Real.log ((n : ℝ) + 1)) := by

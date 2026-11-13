@@ -52,11 +52,11 @@ theorem asd_pconf_nonneg {d : ℕ} (σ : Site d → ℤ) (hσ : ∀ x, 0 ≤ σ 
       nbrSumZ_mono (fun y => podo_mono_step σ t y) x
     have hstep := podo_succ σ t x
     by_cases hc : 2 * (d : ℤ) ≤ pconf σ t x
-    · rw [if_pos hc] at hstep
+    · rw [ite_eq_left hc] at hstep
       simp only [pconf, lap] at hc ⊢
       rw [hstep]
       nlinarith
-    · rw [if_neg hc, add_zero] at hstep
+    · rw [ite_eq_right hc, add_zero] at hstep
       have := ih x
       simp only [pconf, lap] at this ⊢
       rw [hstep]
@@ -100,11 +100,11 @@ theorem asd_podo_le_wave {d : ℕ} (hd : 1 ≤ d) (η : Site d → ℤ) (hnn : �
         ≤ nbrSumZ (wave η N (0 : Site d) t) x + η x))
       rw [Int.le_ediv_iff_mul_le hdz]
       by_cases hc : 2 * (d : ℤ) ≤ pconf (explodingPile η) t x
-      · rw [if_pos hc] at hstep
+      · rw [ite_eq_left hc] at hstep
         rw [hstep]
         simp only [pconf, lap, hσx] at hc
         nlinarith
-      · rw [if_neg hc, add_zero] at hstep
+      · rw [ite_eq_right hc, add_zero] at hstep
         rw [hstep]
         simp only [pconf, lap, hσx] at hpn
         nlinarith
@@ -191,7 +191,7 @@ theorem asd_limit_odometer {d : ℕ} (σ : Site d → ℤ)
   rw [podo_succ] at h1
   have h3 : ¬ (2 * (d : ℤ) ≤ pconf σ τ x) := by
     intro hle
-    rw [if_pos hle] at h1
+    rw [ite_eq_left hle] at h1
     omega
   simp only [pconf, lap] at h3
   have hxτ : podo σ τ x = podo σ (T x) x := hVeq x τ hτx

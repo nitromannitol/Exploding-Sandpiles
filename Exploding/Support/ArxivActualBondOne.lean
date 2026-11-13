@@ -47,7 +47,7 @@ open-bond graph, so each actual open cluster is the whole of `ℤ^d`. -/
 theorem arxiv_actual_bond_reachable_univ_one_ae (d : ℕ) (hd : 2 ≤ d) :
     ∀ᵐ ζ ∂(bondPercolation d (1 : ℝ)), ∀ i : Site d,
       {y : Site d | (openBondGraph ζ).Reachable i y} = Set.univ := by
-  haveI : NeZero d := ⟨by omega⟩
+  have : NeZero d := ⟨by omega⟩
   rw [arxiv_actual_bond_law_one, ae_dirac_eq, Filter.eventually_pure]
   intro i
   exact Set.eq_univ_of_forall fun y => openBondGraph_all_open_reachable d i y

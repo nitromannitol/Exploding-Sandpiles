@@ -42,7 +42,7 @@ theorem xsch3_schonmann_of_percolation
     Exploding.External.SchonmannBootstrap := by
   intro d hd p hp hp1
   obtain ⟨c, C, hc, hC, hbound⟩ := h d hd p hp hp1
-  haveI : Fact (0 ≤ p ∧ p ≤ 1) := ⟨⟨hp.le, hp1⟩⟩
+  have : Fact (0 ≤ p ∧ p ≤ 1) := ⟨⟨hp.le, hp1⟩⟩
   refine ⟨c, C, hc, hC, fun n => ?_⟩
   exact xsch_final (d := d) (p := p) n (c * Real.exp (-(C * (n : ℝ)))) (hbound n)
 

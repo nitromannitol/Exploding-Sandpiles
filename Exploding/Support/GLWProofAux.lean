@@ -77,7 +77,7 @@ theorem glw_liggett_domination (hLSS : Exploding.External.LiggettSchonmannStacey
         sitePercolation d ρ A ≤ P ((fun η j => X j η) ⁻¹' A) := by
   obtain ⟨p, hp, h⟩ := hLSS d k hd ρ hρ0 hρ1
   refine ⟨p, hp, fun P hP X hX hK hmarg A hA hinc => ?_⟩
-  haveI := hP
+  have := hP
   have hmarg' : ∀ s : Site d,
       ENNReal.ofReal p ≤ (P.map fun η j => X j η) {ω | ω s = true} := by
     intro s
@@ -85,7 +85,7 @@ theorem glw_liggett_domination (hLSS : Exploding.External.LiggettSchonmannStacey
       measurableSet_eq_fun (measurable_pi_apply s) measurable_const
     rw [Measure.map_apply hX hms]
     exact hmarg s
-  have := h (P.map fun η j => X j η) (Measure.isProbabilityMeasure_map hX.aemeasurable) hK hmarg' A hA hinc
+  have := h (P.map fun η j => X j η) (inferInstance) hK hmarg' A hA hinc
   rwa [Measure.map_apply hX hA] at this
 
 section
@@ -124,7 +124,7 @@ theorem glw_box_fodo_dep (d : ℕ) (k : Fin d → ℕ) (j : Site d) (S : Set (Si
     · simp [hx]
     · have hfc : fconf S η₁ w0 t x = fconf S η₂ w0 t x := by
         simp only [fconf, heq x (hS hx), ih]
-      rw [if_neg hx, if_neg hx, ih, hfc]
+      rw [ite_eq_right hx, ite_eq_right hx, ih, hfc]
 
 theorem glw_box_finite_dep (d : ℕ) (k : Fin d → ℕ) (j : Site d) (η₁ η₂ : Site d → ℤ)
     (heq : ∀ x ∈ rboxShift k j, η₁ x = η₂ x) :
@@ -155,7 +155,7 @@ theorem glw_box_measurable_of_finite_dep {F : Finset (Site d)} (p : (Site d → 
   let e : (F → ℤ) → (Site d → ℤ) := fun f x => if h : x ∈ F then f ⟨x, h⟩ else 0
   have hee : ∀ η, ∀ x ∈ F, e (r η) x = η x := by
     intro η x hx
-    simp only [e, r, dif_pos hx]
+    simp only [e, r, dite_eq_left hx]
   have hr : Measurable r := by
     refine measurable_pi_iff.mpr ?_
     intro x
@@ -185,7 +185,7 @@ theorem glw_box_measurable_fixed (d : ℕ) (k : Fin d → ℕ) (j : Site d) :
     have h : rboxShift k j = Set.univ.pi
         (fun i : Fin d => Set.Icc (1 + (k i : ℤ) * j i) ((k i : ℤ) * j i + (k i : ℤ))) := by
       ext x
-      simp only [rboxShift, Set.mem_setOf_eq, Set.mem_univ_pi, Set.mem_Icc]
+      simp only [rboxShift, Set.mem_ofPred_eq, Set.mem_univ_pi, Set.mem_Icc]
     rw [h]
     exact Set.Finite.pi (fun i : Fin d =>
       Set.finite_Icc (1 + (k i : ℤ) * j i) ((k i : ℤ) * j i + (k i : ℤ)))
@@ -198,7 +198,7 @@ theorem glw_box_measurable_fixed (d : ℕ) (k : Fin d → ℕ) (j : Site d) :
   let e : (F → ℤ) → (Site d → ℤ) := fun f x => if h : x ∈ F then f ⟨x, h⟩ else 0
   have hee : ∀ η, ∀ x ∈ F, e (r η) x = η x := by
     intro η x hx
-    simp only [e, r, dif_pos hx]
+    simp only [e, r, dite_eq_left hx]
   have hr : Measurable r := by
     refine measurable_pi_iff.mpr ?_
     intro x
@@ -295,7 +295,7 @@ theorem glw_wave_to_explosive_pstable (s0 : Site d → ℤ) (T : ℕ)
   have h1 := congrFun (hT (T + 1) (Nat.le_succ T)) x
   rw [podo_succ] at h1
   have h3 : ¬ (2 * d ≤ pconf s0 T x) := by
-    intro hle; rw [if_pos hle] at h1; omega
+    intro hle; rw [ite_eq_left hle] at h1; omega
   simp only [pconf] at h3
   omega
 
@@ -342,7 +342,7 @@ theorem glw_wave_to_explosive_dom (η : Site d → ℤ) (n : ℕ) (v : Site d �
       intro x
       by_cases h : x = 0
       · subst h; rw [wave_zero]; simpa using hvn
-      · rw [wave_zero]; simp only [if_neg h]; exact hv0nn x
+      · rw [wave_zero]; simp only [ite_eq_right h]; exact hv0nn x
     | succ t ih =>
       intro x
       by_cases h : x = 0
@@ -390,7 +390,7 @@ theorem glw_last_wave_bound (d : ℕ) (hd : 2 ≤ d) (η : Site d → ℤ)
       intro y
       by_cases h : y = z
       · subst h; rw [wave_at_centre]; linarith [huz]
-      · rw [wave_zero]; simp only [if_neg h]; linarith [hu0 y]
+      · rw [wave_zero]; simp only [ite_eq_right h]; linarith [hu0 y]
     | succ s ih =>
       intro y
       by_cases h : y = z
@@ -527,7 +527,7 @@ theorem glw_penultimateWave_eq_zero_of_not_mem (η : Site d → ℤ)
         have hlt : η x < 2 * (d : ℤ) := by linarith [hhigh x]
         have := Int.ediv_eq_zero_of_lt (hlow x) hlt
         simpa using this.symm
-      · simp only [penultimateWave, if_neg h1]
+      · simp only [penultimateWave, ite_eq_right h1]
         exact waveTerminal_fixed η (waveThreshold η z - 1) z
           (glw_penultimate_stabilizable η z hlast h1) hne
     have hSnn : 0 ≤ nbrSumZ (penultimateWave η z) x :=
@@ -548,7 +548,7 @@ theorem glw_penultimateWave_at_centre (η : Site d → ℤ) (z : Site d)
     penultimateWave η z z = (waveThreshold η z : ℤ) - 1 := by
   by_cases h : waveThreshold η z = 1
   · simp [penultimateWave, h]
-  · simp only [penultimateWave, if_neg h, waveTerminal, wave_at_centre]
+  · simp only [penultimateWave, ite_eq_right h, waveTerminal, wave_at_centre]
     push_cast [Nat.cast_sub hM]
     ring
 
@@ -575,7 +575,7 @@ theorem glw_sInf_coe_top {P : ℕ → Prop} (h : ¬ ∃ n : ℕ, P n) :
     sInf {t : ℕ∞ | ∃ m : ℕ, t = (m : ℕ∞) ∧ P m} = ⊤ := by
   have hempty : {t : ℕ∞ | ∃ m : ℕ, t = (m : ℕ∞) ∧ P m} = ∅ := by
     ext t
-    simp only [Set.mem_setOf_eq, Set.mem_empty_iff_false, iff_false, not_exists, not_and]
+    simp only [Set.mem_ofPred_eq, Set.mem_empty_iff_false, iff_false, not_exists, not_and]
     rintro m rfl hm
     exact h ⟨m, hm⟩
   rw [hempty, sInf_empty]
@@ -746,7 +746,7 @@ is exactly `hstat y hy`. -/
 theorem glw_shift_ergodic_meas_pres (d : ℕ) (L : AddSubgroup (Site d))
     (P : Measure (Site d → ℤ)) (hstat : StationaryOn d L P) (y : Site d) (hy : y ∈ L) :
     MeasurePreserving (fun η : Site d → ℤ => fun z => η (y + z)) P P :=
-  ⟨measurable_pi_lambda _ (fun z => measurable_pi_apply (y + z)), hstat y hy⟩
+  ⟨Measurable.of_eval (fun z => measurable_pi_apply (y + z)), hstat y hy⟩
 
 /-- The mixing identity assumed as `hmix` would follow from the finite-range hypothesis by
 the computation below. The computation is not carried out in this file. Given `n`
@@ -767,7 +767,7 @@ theorem glw_shift_ergodic (d : ℕ) (L : AddSubgroup (Site d))
       P (cylinder s S) * P (cylinder s S))
     (y : Site d) (hy : y ∈ L) (hy0 : y ≠ 0) :
     Ergodic (fun η : Site d → ℤ => fun z => η (y + z)) P := by
-  haveI := hP
+  have := hP
   refine ergodic_of_mixing_on_isSetRing (C := measurableCylinders fun _ : Site d => ℤ)
     isSetRing_measurableCylinders ?_ generateFrom_measurableCylinders.symm
     (glw_shift_ergodic_meas_pres d L P hstat y hy) ?_
@@ -803,7 +803,7 @@ theorem glw_kingman_linear_setA {Ω : Type*} [MeasurableSpace Ω] (μ : Measure 
   have hA_meas : ∀ k, MeasurableSet (A k) := by
     intro k
     dsimp [A]
-    simpa [Set.setOf_forall] using MeasurableSet.iInter (fun (n : ℕ) =>
+    simpa [Set.ofPred_forall] using MeasurableSet.iInter (fun (n : ℕ) =>
       measurableSet_le (hgm n) (measurable_const))
   have hA_meas_union : MeasurableSet (⋃ (k : ℕ), A k) :=
     MeasurableSet.iUnion hA_meas
@@ -817,7 +817,7 @@ theorem glw_kingman_linear_setA {Ω : Type*} [MeasurableSpace Ω] (μ : Measure 
   have h_subset : (⋃ (k : ℕ), A k)ᶜ ⊆ {x | ¬ ∃ (K : ℝ), ∀ (n : ℕ), g n x ≤ C * n + K} := by
     intro x hx
     rw [Set.mem_compl_iff] at hx
-    rw [Set.mem_setOf_eq]
+    rw [Set.mem_ofPred_eq]
     intro hEx
     rcases hEx with ⟨K, hK⟩
     let k := ⌈max K 0⌉₊

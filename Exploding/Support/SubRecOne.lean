@@ -20,7 +20,7 @@ theorem recOdo_le_one (d : ℕ) (hd : 1 ≤ d) (V : Finset (Site d)) (t : ℕ) {
     | zero => intro x hx; rw [recOdo_zero_of_mem d V hx]; omega
     | succ t ih =>
       intro x hx
-      rw [recOdo_succ, if_neg (by simpa using hx)]
+      rw [recOdo_succ, ite_eq_right (by simpa using hx)]
       have hnb : nbrSumZ (recOdo d V t) x ≤ 2 * (d : ℤ) := by
         rw [nbrSumZ]
         have h2 : ∀ i : Fin d, recOdo d V t (x + unit i) + recOdo d V t (x - unit i) ≤ 2 := by

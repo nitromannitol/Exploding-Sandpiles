@@ -76,7 +76,7 @@ theorem glws_exists_good (L : AddSubgroup (Site d)) (P : Measure (Site d → ℤ
     ∃ η : Site d → ℤ, η ∈ glws_G d ηmin L ∧ glws_Loc0 d γ C η ∧
       ∀ v : Site d,
         Tendsto (fun n : ℕ => glws_f η ((n : ℤ) • v) / (n : ℝ)) atTop (nhds (N0 v)) := by
-  haveI := hP
+  have := hP
   have hall : ∀ᵐ η ∂P, ∀ v : Site d,
       Tendsto (fun n : ℕ => glws_f η ((n : ℤ) • v) / (n : ℝ)) atTop (nhds (N0 v)) :=
     ae_all_iff.mpr hN0

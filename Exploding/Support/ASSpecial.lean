@@ -249,7 +249,7 @@ theorem assp_podo_inv {s : Site d → ℤ}
           have hs := hs_high x hx0
           have hst : ¬ 2 * (d : ℤ) ≤ pconf s t x := by
             simp only [pconf]; omega
-          rw [if_neg hst]
+          rw [ite_eq_right hst]
           split_ifs <;> omega
     · rw [podo_succ s t x, podo_succ s t y]
       by_cases hle : podo s t x ≤ podo s t y
@@ -260,9 +260,9 @@ theorem assp_podo_inv {s : Site d → ℤ}
         by_cases hux : 2 * (d : ℤ) ≤ pconf s t x
         · have huy : 2 * (d : ℤ) ≤ pconf s t y :=
             assp_unstable_propagate hs_low hs_high hs0 hmax hlip x y hxy heq hux
-          rw [if_pos hux, if_pos huy]
+          rw [ite_eq_left hux, ite_eq_left huy]
           omega
-        · rw [if_neg hux]
+        · rw [ite_eq_right hux]
           split_ifs <;> omega
 
 /-! ### `eq:induction1` -/
@@ -294,7 +294,7 @@ theorem assp_incl {s η w0 : Site d → ℤ} (S : Set (Site d))
         rw [podo_succ s t x, hp0] at hx
         have hun : 2 * (d : ℤ) ≤ pconf s t x := by
           by_contra hc
-          rw [if_neg hc] at hx
+          rw [ite_eq_right hc] at hx
           omega
         have hnb : ∀ y, (lattice d).Adj y x → podo s t y ≤ fodo S η w0 t y := by
           intro y hy
@@ -310,7 +310,7 @@ theorem assp_incl {s η w0 : Site d → ℤ} (S : Set (Site d))
           simp only [pconf, lap, hp0, mul_zero, sub_zero, hmatch x hxS] at hun
           simp only [fconf, lap, hf0, mul_zero, sub_zero]
           omega
-        rw [if_pos hc]
+        rw [ite_eq_left hc]
         omega
 
 /-! ### The statement used by the proof of Proposition 4.1 -/

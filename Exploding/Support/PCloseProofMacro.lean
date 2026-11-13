@@ -81,9 +81,9 @@ theorem pclose_two_ends (hd : 1 ≤ d) (Cinf : Set (Site d)) (Z n1 : ℕ)
     have hr0 : (0 : ℤ) ≤ r := Int.natCast_nonneg r
     have hr1 : (r : ℤ) ≤ Z := by exact_mod_cast hr
     by_cases hl : l = e0
-    · simp only [hl, if_true]
+    · simp only [hl, ite_true]
       constructor <;> linarith
-    · simp only [hl, if_false]
+    · simp only [hl, ite_false]
       constructor <;> linarith
   · have hs : (fun l => mac l - ρ - (if l = e0 then (Z : ℤ) else 0)) ∈
         (cent d n1 : Set (Site d)) := by
@@ -92,10 +92,10 @@ theorem pclose_two_ends (hd : 1 ≤ d) (Cinf : Set (Site d)) (Z n1 : ℕ)
       have h1 : |mac l - ρ - (if l = e0 then (Z : ℤ) else 0)| ≤ |mac l| + ρ + Z := by
         by_cases hl : l = e0
         · subst hl
-          simp only [if_true]
+          simp only [ite_true]
           rw [abs_le]
           constructor <;> cases abs_cases (mac l) <;> linarith [Int.natCast_nonneg Z, Int.natCast_nonneg ρ]
-        · simp only [hl, if_false, sub_zero]
+        · simp only [hl, ite_false, sub_zero]
           rw [abs_le]
           constructor <;> cases abs_cases (mac l) <;> linarith [Int.natCast_nonneg Z, Int.natCast_nonneg ρ]
       linarith
@@ -107,9 +107,9 @@ theorem pclose_two_ends (hd : 1 ≤ d) (Cinf : Set (Site d)) (Z n1 : ℕ)
     have hr0 : (0 : ℤ) ≤ r := Int.natCast_nonneg r
     have hr1 : (r : ℤ) ≤ Z := by exact_mod_cast hr
     by_cases hl : l = e0
-    · simp only [hl, if_true]
+    · simp only [hl, ite_true]
       constructor <;> linarith
-    · simp only [hl, if_false]
+    · simp only [hl, ite_false]
       constructor <;> linarith
 
 /-- Two walks issuing from the same cube concatenate into a walk from the end of the
@@ -132,7 +132,7 @@ theorem pclose_concat_walk (m₁ m₂ : ℕ) (c₁ c₂ : ℕ → Site d)
   · intro s hs
     by_cases h1 : s + 1 < m₁
     · have h2 : s < m₁ := by omega
-      simp only [h1, h2, if_true]
+      simp only [h1, h2, ite_true]
       have := hadj₁ (m₁ - s - 1) (by omega)
       have e : m₁ - s - 1 + 1 = m₁ - s := by omega
       have e' : m₁ - (s + 1) = m₁ - s - 1 := by omega
@@ -141,13 +141,13 @@ theorem pclose_concat_walk (m₁ m₂ : ℕ) (c₁ c₂ : ℕ → Site d)
       exact this.symm
     · by_cases h2 : s + 1 = m₁
       · have h3 : s < m₁ := by omega
-        simp only [h1, h3, if_true, if_false]
+        simp only [h1, h3, ite_true, ite_false]
         have e : m₁ - s = 1 := by omega
         have e' : s + 1 - m₁ = 0 := by omega
         rw [e, e', ← h0]
         exact (hadj₁ 0 (by omega)).symm
       · have h3 : ¬ s < m₁ := by omega
-        simp only [h1, h3, if_false]
+        simp only [h1, h3, ite_false]
         have e : s + 1 - m₁ = (s - m₁) + 1 := by omega
         rw [e]
         exact hadj₂ (s - m₁) (by omega)

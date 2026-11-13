@@ -50,10 +50,10 @@ theorem spanOdo_one_stays (n : ℕ) (η : Site d → ℤ) (t : ℕ) (x : Site d)
     (h : spanOdo n η t x = 1) : spanOdo n η (t + 1) x = 1 := by
   rw [spanOdo_succ_eq]
   by_cases hx : x ∉ cube d n
-  · rw [if_pos hx]
+  · rw [ite_eq_left hx]
     rw [spanOdo_of_notMem n η t hx] at h
     exact h
-  · rw [if_neg hx, if_pos h]
+  · rw [ite_eq_right hx, ite_eq_left h]
 
 /-- The bootstrap odometer is monotone in time. -/
 theorem spanOdo_mono (n : ℕ) (η : Site d → ℤ) :
@@ -98,12 +98,12 @@ theorem redOdoUp_one_stays (n : ℕ) (η : Site (d + 1) → ℤ) (t : ℕ) (x : 
     (h : redOdoUp n η t x = 1) : redOdoUp n η (t + 1) x = 1 := by
   rw [redOdoUp_succ]
   by_cases hx : x ∉ cube (d + 1) n
-  · rw [if_pos hx]; exact h
-  · rw [if_neg hx]
+  · rw [ite_eq_left hx]; exact h
+  · rw [ite_eq_right hx]
     by_cases h1 : 1 < x 0
-    · rw [if_pos h1]; exact h
-    · rw [if_neg h1]
-      rw [if_pos h]
+    · rw [ite_eq_left h1]; exact h
+    · rw [ite_eq_right h1]
+      rw [ite_eq_left h]
       exact h
 
 /-- `redOdoUp` is monotone in time. -/

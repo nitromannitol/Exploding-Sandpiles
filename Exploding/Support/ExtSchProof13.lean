@@ -52,7 +52,7 @@ theorem xsch13_Sp_mono_occ {J : Finset (Fin d)} {R : Set (Site d)} {η η' : Sit
 theorem xsch13_sp_compl {p : ℝ} [Fact (0 ≤ p ∧ p ≤ 1)] (n : ℕ) :
     (xsch_mu d p).real {η | xsch_Sp (Finset.univ : Finset (Fin d)) (cube d n) η}
       = 1 - xsch8_a d p n := by
-  haveI : IsProbabilityMeasure (xsch_mu d p) := inferInstance
+  have : IsProbabilityMeasure (xsch_mu d p) := inferInstance
   have hmeas2 : MeasurableSet {η : Site d → ℤ |
       ¬ xsch_Sp (Finset.univ : Finset (Fin d)) (cube d n) η} :=
     ((xsch_det_Sp (Finset.univ : Finset (Fin d)) (cube d n)).measurableSet
@@ -126,7 +126,7 @@ theorem xsch13_base_of_percolationBound {p : ℝ} [Fact (0 ≤ p ∧ p ≤ 1)]
 `xsch7_BlockPercolation`, since the latter gives `xsch3_PercolationBound`. -/
 theorem xsch13_base_of_blockPercolation {p : ℝ} (hp : 0 < p) (hp1 : p < 1)
     (h : xsch7_BlockPercolation d p) : xsch8_Base d p := by
-  haveI : Fact (0 ≤ p ∧ p ≤ 1) := ⟨⟨hp.le, hp1.le⟩⟩
+  have : Fact (0 ≤ p ∧ p ≤ 1) := ⟨⟨hp.le, hp1.le⟩⟩
   obtain ⟨c, C, hc, hC, hbound⟩ := h
   refine xsch13_base_of_percolationBound ⟨c, C, hc, hC, fun n => ?_⟩
   have hsub : {η : Site d → ℤ | ¬ xsch_Sp (Finset.univ : Finset (Fin d)) (cube d n) η}

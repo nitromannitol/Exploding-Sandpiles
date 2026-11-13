@@ -250,8 +250,8 @@ theorem xmh_negpt_mem (n : ℕ) (i : Fin d) :
   · intro j
     simp only [xmh_negpt]
     by_cases hj : j = i
-    · rw [if_pos hj]; simp
-    · rw [if_neg hj]; simp
+    · rw [ite_eq_left hj]; simp
+    · rw [ite_eq_right hj]; simp
   · simp [xmh_negpt]
 
 /-! ### The positive-face side -/

@@ -40,7 +40,7 @@ theorem lastWave_le_one_add_penultimateWave (d : ℕ) (hd : 2 ≤ d) (η : Site 
       intro y
       by_cases h : y = z
       · subst h; rw [wave_at_centre]; linarith [huz]
-      · rw [wave_zero]; simp only [if_neg h]; linarith [hu0 y]
+      · rw [wave_zero]; simp only [ite_eq_right h]; linarith [hu0 y]
     | succ s ih =>
       intro y
       by_cases h : y = z

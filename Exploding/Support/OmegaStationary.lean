@@ -42,12 +42,12 @@ theorem measurable_carrierShift (ηmin : ℤ) (y : Site d) :
     Measurable (carrierShift ηmin y) := by
   unfold carrierShift
   refine Measurable.subtype_mk ?_
-  refine measurable_pi_lambda _ fun z => ?_
+  refine Measurable.of_eval fun z => ?_
   exact (measurable_pi_apply (y + z)).comp measurable_subtype_coe
 
 theorem measurable_ambientShift (y : Site d) :
     Measurable (fun η : Site d → ℤ => fun z => η (y + z)) :=
-  measurable_pi_lambda _ fun z => measurable_pi_apply (y + z)
+  Measurable.of_eval fun z => measurable_pi_apply (y + z)
 
 /-- Intertwining: the coordinates of `T_y ω` are the ambient translate of the coordinates of `ω`. -/
 theorem val_carrierShift (ηmin : ℤ) (y : Site d) (ω : OmegaCarrier d ηmin) :
@@ -116,7 +116,7 @@ theorem measurableSet_inOmega (ηmin : ℤ) :
   have h : {η : Site d → ℤ | InOmega d ηmin η} =
       ⋂ x : Site d, {η : Site d → ℤ | ηmin ≤ η x ∧ η x ≤ 2 * (d : ℤ) - 1} := by
     ext η
-    simp only [Set.mem_setOf_eq, Set.mem_iInter, InOmega]
+    simp only [Set.mem_ofPred_eq, Set.mem_iInter, InOmega]
   rw [h]
   refine MeasurableSet.iInter fun x => ?_
   exact (measurableSet_le measurable_const (measurable_pi_apply x)).inter
@@ -124,7 +124,7 @@ theorem measurableSet_inOmega (ηmin : ℤ) :
 
 theorem isProbabilityMeasure_map_val (ηmin : ℤ) (Q : Measure (OmegaCarrier d ηmin))
     [IsProbabilityMeasure Q] : IsProbabilityMeasure (Q.map Subtype.val) :=
-  Measure.isProbabilityMeasure_map measurable_subtype_coe.aemeasurable
+  inferInstance
 
 theorem ae_inOmega_map_val (ηmin : ℤ) (Q : Measure (OmegaCarrier d ηmin)) :
     ∀ᵐ η ∂(Q.map Subtype.val), InOmega d ηmin η :=

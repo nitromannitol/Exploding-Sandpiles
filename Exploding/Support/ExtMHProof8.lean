@@ -23,7 +23,7 @@ noncomputable def xmh4_centFinset (d n : ℕ) : Finset (Site d) :=
 
 theorem xmh4_mem_centFinset {n : ℕ} {x : Site d} :
     x ∈ xmh4_centFinset d n ↔ x ∈ cent d n := by
-  simp only [xmh4_centFinset, Fintype.mem_piFinset, Finset.mem_Icc, cent, Set.mem_setOf_eq]
+  simp only [xmh4_centFinset, Fintype.mem_piFinset, Finset.mem_Icc, cent, Set.mem_ofPred_eq]
   constructor
   · intro h i
     rw [abs_le]

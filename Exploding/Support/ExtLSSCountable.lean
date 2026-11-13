@@ -30,7 +30,7 @@ theorem xlse_dom_isClosed [Countable S] [DecidableEq S] (μ : Measure (S → Boo
     (hthin : ∀ T : Finset S, ∃ w, XlssThin μ ρ γ T w)
     {F : Set (S → Bool)} (hF : IsClosed F) (hinc : IsIncreasingSet F) :
     bernoulliProduct S ρ F ≤ μ F := by
-  haveI := xlsd_isProbabilityMeasure (S := S) ρ hρ0 hρ1
+  have := xlsd_isProbabilityMeasure (S := S) ρ hρ0 hρ1
   have hiInf : ∀ ν : Measure (S → Bool), IsProbabilityMeasure ν →
       ν F = ⨅ T : Finset S, ν (xlsb_cylHull T F) := by
     intro ν hν
@@ -87,8 +87,8 @@ theorem xlse_density_bounds [DecidableEq S] (μ : Measure (S → Bool)) [IsProba
 empty or everything, and both laws are probability measures. -/
 theorem xlse_dom_of_isEmpty [IsEmpty S] (μ : Measure (S → Bool)) [IsProbabilityMeasure μ]
     (ρ : ℝ) {A : Set (S → Bool)} : bernoulliProduct S ρ A ≤ μ A := by
-  haveI : ∀ i : S, IsProbabilityMeasure (bitLaw ρ) := fun i => isEmptyElim i
-  haveI : IsProbabilityMeasure (bernoulliProduct S ρ) := by
+  have : ∀ i : S, IsProbabilityMeasure (bitLaw ρ) := fun i => isEmptyElim i
+  have : IsProbabilityMeasure (bernoulliProduct S ρ) := by
     unfold bernoulliProduct
     infer_instance
   rcases Set.eq_empty_or_nonempty A with hAe | hAne

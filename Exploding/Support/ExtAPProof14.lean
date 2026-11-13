@@ -70,7 +70,7 @@ theorem xap14_bigDistance_reachable {ρ : ℝ} {ω : Site d × Fin d → Bool} {
     (h : xap12_BigDistance d ρ ω y) : (openBondGraph ω).Reachable (0 : Site d) y := by
   obtain ⟨m, hm, _⟩ := h
   have hne : (openBondGraph ω).edist (0 : Site d) y ≠ ⊤ := by
-    rw [hm]; exact ENat.coe_ne_top m
+    rw [hm]; exact ENat.natCast_ne_top m
   exact SimpleGraph.edist_ne_top_iff_reachable.mp hne
 
 /-! ### Good connectivity implies open connectivity -/
@@ -86,7 +86,7 @@ theorem xap14_goodConnected_reachable {ω : Site d × Fin d → Bool} {y : Site 
       = ((2 * d * (p.length + 2) : ℕ) : ℕ∞) := by push_cast; ring
   rw [hcast] at hle
   exact SimpleGraph.edist_ne_top_iff_reachable.mp
-    (ne_of_lt (lt_of_le_of_lt hle (ENat.coe_lt_top _)))
+    (ne_of_lt (lt_of_le_of_lt hle (ENat.natCast_lt_top _)))
 
 /-- The good cluster of the origin is contained in its open cluster. -/
 theorem xap14_goodCluster_subset_openCluster {ω : Site d × Fin d → Bool} :

@@ -126,7 +126,7 @@ theorem as2_infTopple_propagate {d : ℕ} {σ : Site d → ℤ} {x y : Site d}
     | succ s ih =>
       have hstep : podo σ (t + (s + 1)) y = podo σ (t + s) y + 1 := by
         have heq : t + (s + 1) = (t + s) + 1 := by omega
-        rw [heq, podo_succ, if_pos (hpc s)]
+        rw [heq, podo_succ, ite_eq_left (hpc s)]
       rw [hstep, ih]
       push_cast
       ring
@@ -192,8 +192,8 @@ theorem as2_finite_toppling_set_stabilizable {d : ℕ} (hd : 1 ≤ d) (σ : Site
       intro z _
       obtain ⟨t, ht⟩ := hall z 0
       exact ⟨t, by omega⟩
-    haveI : Nonempty (Fin d) := ⟨⟨0, by omega⟩⟩
-    haveI : Infinite (Site d) := inferInstance
+    have : Nonempty (Fin d) := ⟨⟨0, by omega⟩⟩
+    have : Infinite (Site d) := inferInstance
     exact Set.infinite_univ (hfin.subset huniv)
   -- each site stabilizes
   have hstab : ∀ x : Site d, ∃ T : ℕ, ∀ t : ℕ, T ≤ t → podo σ t x = podo σ T x := by

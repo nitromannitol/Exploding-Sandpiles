@@ -104,7 +104,7 @@ theorem xba_axis_mem_cent (d n : ℕ) (i : Fin d) {k : ℕ} (hk : k ≤ 2 * n) :
   intro j
   by_cases hj : j = i
   · subst hj
-    simp only [xba_axis, if_true]
+    simp only [xba_axis, ite_true]
     rw [abs_le]
     constructor <;> omega
   · simp [xba_axis, hj]
@@ -114,7 +114,7 @@ theorem xba_axis_succ (d n : ℕ) (i : Fin d) (k : ℕ) :
   funext j
   by_cases hj : j = i
   · subst hj
-    simp only [xba_axis, if_true, Pi.add_apply, unit, Pi.single_eq_same]
+    simp only [xba_axis, ite_true, Pi.add_apply, unit, Pi.single_eq_same]
     push_cast
     ring
   · simp [xba_axis, unit, hj]
@@ -124,7 +124,7 @@ theorem xba_axis_adj (d n : ℕ) (i : Fin d) (k : ℕ) :
   ⟨i, Or.inl (xba_axis_succ d n i k)⟩
 
 theorem xba_axis_end (d n : ℕ) (i : Fin d) : xba_axis d n i (2 * n) i = (n : ℤ) := by
-  simp only [xba_axis, if_true]
+  simp only [xba_axis, ite_true]
   push_cast
   ring
 

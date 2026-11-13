@@ -44,7 +44,7 @@ theorem xlsc_isClosed_le :
       ⋂ s : S, ((fun p : (S → Bool) × (S → Bool) => p.1 s) ⁻¹' {false} ∪
         (fun p : (S → Bool) × (S → Bool) => p.2 s) ⁻¹' {true}) := by
     ext p
-    simp only [mem_setOf_eq, mem_iInter, mem_union, mem_preimage, mem_singleton_iff]
+    simp only [mem_ofPred_eq, mem_iInter, mem_union, mem_preimage, mem_singleton_iff]
     refine forall_congr' fun s => ?_
     cases p.1 s <;> cases p.2 s <;> simp
   rw [hset]

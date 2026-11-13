@@ -67,7 +67,7 @@ theorem exists_pos_podo_iff_sandpile (s0 : Site d → ℤ) (x : Site d) :
 theorem pos_podo_set_eq_sandpile (s0 : Site d → ℤ) (t : ℕ) :
     {x : Site d | 0 < podo s0 t x} = {x : Site d | 0 < LatticeProb.Sandpile.podo s0 t x} := by
   ext x
-  simp only [Set.mem_setOf_eq, podo_apply_eq_sandpile]
+  simp only [Set.mem_ofPred_eq, podo_apply_eq_sandpile]
 
 /-- For a stabilizable initial sandpile, after its stabilization time the positive support of
 the odometer is the library's positive support at that stabilization time. -/

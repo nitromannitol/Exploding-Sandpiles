@@ -32,7 +32,7 @@ theorem xlss6_bernoulli_powerset [DecidableEq S] (ρ : ℝ) (hρ0 : 0 ≤ ρ) (h
       ∑ V ∈ T.powerset, (if (fun s => decide (s ∈ V)) ∈ A then
         ENNReal.ofReal (ρ ^ V.card * (1 - ρ) ^ (T.card - V.card)) else 0) := by
   classical
-  haveI : IsProbabilityMeasure (bitLaw ρ) := xlss6_bitLaw_isProb hρ0 hρ1
+  have : IsProbabilityMeasure (bitLaw ρ) := xlss6_bitLaw_isProb hρ0 hρ1
   set B : Set (T → Bool) := T.restrict '' A with hB
   have hBmeas : MeasurableSet B := by
     have hpre : B = (fun v : T → Bool => fun s : S => decide (s ∈ xlss_Vof T v)) ⁻¹' A := by
@@ -54,7 +54,7 @@ theorem xlss6_bernoulli_powerset [DecidableEq S] (ρ : ℝ) (hρ0 : 0 ≤ ρ) (h
       change (Measure.infinitePi (fun _ : S => bitLaw ρ)).map T.restrict = _
       rw [Measure.infinitePi_map_restrict]
     have hmeas : Measurable (Finset.restrict T : (S → Bool) → (T → Bool)) :=
-      measurable_pi_lambda _ fun t => measurable_pi_apply (t : S)
+      Measurable.of_eval fun t => measurable_pi_apply (t : S)
     rw [← hpre, ← hmap, Measure.map_apply hmeas hBmeas]
   calc bernoulliProduct S ρ A
       = Measure.pi (fun _ : T => bitLaw ρ) B := hν

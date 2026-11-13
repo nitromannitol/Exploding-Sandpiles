@@ -86,7 +86,7 @@ theorem aux_ce_relay_fires (d : ℕ) (hd : 2 ≤ d) :
       push_cast
       ring_nf
       simp
-    rw [if_pos hc]
+    rw [ite_eq_left hc]
     norm_num
   -- the relay row point at `k` fires by time `k + 2`
   induction k with
@@ -112,7 +112,7 @@ theorem aux_ce_relay_fires (d : ℕ) (hd : 2 ≤ d) :
         · subst hi
           norm_num
         · have hi' : ¬ (i : ℕ) = 1 := fun hcon => hi (Fin.ext hcon)
-          simp only [if_neg hi', if_neg hi]
+          simp only [ite_eq_right hi', ite_eq_right hi]
           norm_num
       rw [hoff] at hterm
       have hpos : (1 : ℤ) ≤ podo (fun x => ceEta d x + 3 * dirac (0 : Site d) x) 1 0 := hfire0
@@ -153,7 +153,7 @@ theorem aux_ce_relay_fires (d : ℕ) (hd : 2 ≤ d) :
           aux_podo_nonneg _ 1 _
         simp only [pconf, lap, hrow, hdirac0', mul_zero, add_zero, h0f]
         nlinarith [hsum, hle1, hnn1]
-      rw [if_pos hc]
+      rw [ite_eq_left hc]
       show (0 : ℤ) < podo (fun x => ceEta d x + 3 * dirac (0 : Site d) x) 1 (e2 d) + 1
       omega
   | succ k ih =>
@@ -199,7 +199,7 @@ theorem aux_ce_relay_fires (d : ℕ) (hd : 2 ≤ d) :
                 norm_num
               · have hi0' : ¬ (i : ℕ) = 0 := fun hcon => hi0 (Fin.ext hcon)
                 have hi1' : ¬ (i : ℕ) = 1 := fun hcon => hi1 (Fin.ext hcon)
-                simp only [if_neg hi0', if_neg hi1', if_neg hi0]
+                simp only [ite_eq_right hi0', ite_eq_right hi1', ite_eq_right hi0]
                 ring
           rw [hoff] at hterm
           have hpos' : (1 : ℤ) ≤ podo (fun x => ceEta d x + 3 * dirac (0 : Site d) x)
@@ -214,7 +214,7 @@ theorem aux_ce_relay_fires (d : ℕ) (hd : 2 ≤ d) :
           intro hcon
           have h1' := congrFun hcon ⟨1, h1⟩
           simp only [Pi.add_apply, Pi.smul_apply, smul_eq_mul, e1, e2, Pi.zero_apply] at h1'
-          rw [if_neg (by norm_num : ¬ ((⟨1, h1⟩ : Fin d) : ℕ) = 0)] at h1'
+          rw [ite_eq_right (by norm_num : ¬ ((⟨1, h1⟩ : Fin d) : ℕ) = 0)] at h1'
           norm_num at h1'
         have h0'' : podo (fun x => ceEta d x + 3 * dirac (0 : Site d) x) (k + 2)
             (((k + 1 : ℕ) : ℤ) • e1 d + e2 d) = 0 := by
@@ -230,7 +230,7 @@ theorem aux_ce_relay_fires (d : ℕ) (hd : 2 ≤ d) :
           linarith [hmono, h0f', hnn]
         simp only [pconf, lap, hrow, hdirac0'', mul_zero, add_zero, h0'']
         linarith
-      rw [if_pos hc]
+      rw [ite_eq_left hc]
       show (0 : ℤ) < podo (fun x => ceEta d x + 3 * dirac (0 : Site d) x) (k + 2)
           (((k + 1 : ℕ) : ℤ) • e1 d + e2 d) + 1
       have h0''' : podo (fun x => ceEta d x + 3 * dirac (0 : Site d) x) (k + 2)
@@ -310,9 +310,9 @@ theorem aux_ce_row0_lands (d : ℕ) (hd : 2 ≤ d) (k : ℤ) (hk : k % 4 = 1 ∨
             simp only [e2, LatticeProb.unit, Pi.single_apply]
             by_cases hi : (i : ℕ) = 1
             · have hii : i = ⟨1, h1⟩ := Fin.ext hi
-              rw [hii, if_pos rfl, if_pos rfl]
+              rw [hii, ite_eq_left rfl, ite_eq_left rfl]
             · have hne : i ≠ ⟨1, h1⟩ := fun hcon => hi (by rw [hcon])
-              rw [if_neg hi, if_neg hne]
+              rw [ite_eq_right hi, ite_eq_right hne]
           rw [he]
         rw [hoff] at hterm
         have hnn : (0 : ℤ) ≤ podo (fun x => ceEta d x + 3 * dirac (0 : Site d) x)
@@ -361,7 +361,7 @@ theorem aux_ce_row0_lands (d : ℕ) (hd : 2 ≤ d) (k : ℤ) (hk : k % 4 = 1 ∨
         omega
       simp only [pconf, lap, hrow, hdirac0, mul_zero, add_zero, h0mid]
       linarith
-    rw [if_pos hc]
+    rw [ite_eq_left hc]
     show (0 : ℤ) < podo (fun x => ceEta d x + 3 * dirac (0 : Site d) x) (k.toNat + 2)
         ((k • e1 d : Site d)) + 1
     have h0mid : podo (fun x => ceEta d x + 3 * dirac (0 : Site d) x) (k.toNat + 2)
@@ -412,18 +412,18 @@ theorem aux_mnorm_le_add_unit (d : ℕ) (x : Site d) (i : Fin d) :
     intro j
     by_cases hj : j = i
     · have hxj : (x + unit i) j = x j + 1 := by
-        rw [Pi.add_apply, aux_unit_apply, if_pos hj]
-      rw [hxj, if_pos hj]
+        rw [Pi.add_apply, aux_unit_apply, ite_eq_left hj]
+      rw [hxj, ite_eq_left hj]
       have h1 := abs_add_le (x j + 1) (-1 : ℤ)
       rw [show x j + 1 + (-1) = x j from by ring, abs_neg, abs_one] at h1
       exact h1
     · have hxj : (x + unit i) j = x j := by
-        rw [Pi.add_apply, aux_unit_apply, if_neg hj, add_zero]
-      rw [hxj, if_neg hj]
+        rw [Pi.add_apply, aux_unit_apply, ite_eq_right hj, add_zero]
+      rw [hxj, ite_eq_right hj]
       simp
   have hsum : (∑ j : Fin d, (if j = i then (1 : ℤ) else 0)) = 1 := by
     rw [Finset.sum_eq_single i (fun b _ hb => by simp [hb])
-      (fun hi => absurd (Finset.mem_univ i) hi), if_pos rfl]
+      (fun hi => absurd (Finset.mem_univ i) hi), ite_eq_left rfl]
   calc mnorm x = ∑ j : Fin d, |x j| := rfl
     _ ≤ ∑ j : Fin d, (|(x + unit i) j| + (if j = i then (1 : ℤ) else 0)) :=
         Finset.sum_le_sum (fun j _ => hterm j)
@@ -438,18 +438,18 @@ theorem aux_mnorm_le_sub_unit (d : ℕ) (x : Site d) (i : Fin d) :
     intro j
     by_cases hj : j = i
     · have hxj : (x - unit i) j = x j - 1 := by
-        rw [Pi.sub_apply, aux_unit_apply, if_pos hj]
-      rw [hxj, if_pos hj]
+        rw [Pi.sub_apply, aux_unit_apply, ite_eq_left hj]
+      rw [hxj, ite_eq_left hj]
       have h1 := abs_add_le (x j - 1) (1 : ℤ)
       rw [show x j - 1 + 1 = x j from by ring, abs_one] at h1
       exact h1
     · have hxj : (x - unit i) j = x j := by
-        rw [Pi.sub_apply, aux_unit_apply, if_neg hj, sub_zero]
-      rw [hxj, if_neg hj]
+        rw [Pi.sub_apply, aux_unit_apply, ite_eq_right hj, sub_zero]
+      rw [hxj, ite_eq_right hj]
       simp
   have hsum : (∑ j : Fin d, (if j = i then (1 : ℤ) else 0)) = 1 := by
     rw [Finset.sum_eq_single i (fun b _ hb => by simp [hb])
-      (fun hi => absurd (Finset.mem_univ i) hi), if_pos rfl]
+      (fun hi => absurd (Finset.mem_univ i) hi), ite_eq_left rfl]
   calc mnorm x = ∑ j : Fin d, |x j| := rfl
     _ ≤ ∑ j : Fin d, (|(x - unit i) j| + (if j = i then (1 : ℤ) else 0)) :=
         Finset.sum_le_sum (fun j _ => hterm j)
@@ -486,7 +486,7 @@ theorem aux_podo_zero_of_bound (d : ℕ) (s0 : Site d → ℤ) (h : ∀ x, s0 x 
       have hp : pconf s0 t x = s0 x := by
         rw [pconf, ih]
         simp [lap, nbrSumZ]
-      rw [hp, if_neg (by intro hc; have hx := h x; linarith)]
+      rw [hp, ite_eq_right (by intro hc; have hx := h x; linarith)]
       rw [ih]
       simp
 
@@ -866,22 +866,22 @@ theorem aux_ce_stack_le_2D_step (d : ℕ) (hd : 2 ≤ d) (t : ℕ)
       simp [h_fire, h_fire_2d]
     · have hpos : 0 ≤ (if 4 ≤ pconf s0_2 t (proj x) then (1 : ℤ) else 0) := by
         split <;> norm_num
-      rw [if_neg h_fire]
+      rw [ite_eq_right h_fire]
       have htemp := add_le_add_right hpos (v2 (proj x))
       simpa [add_comm, show (2 : ℤ) * 2 = (4 : ℤ) by norm_num] using htemp
   · have h_lt : v x < v2 (proj x) := lt_of_le_of_ne h_ih h_eq
     have h_bound : v x + 1 ≤ v2 (proj x) := by omega
     have h2c : (2 : ℤ) * 2 = 2 * ((2 : ℕ) : ℤ) := by norm_num
     by_cases h_fire_2d : 2 * ((2 : ℕ) : ℤ) ≤ pconf s0_2 t (proj x)
-    · rw [if_pos h_fire_2d]
+    · rw [ite_eq_left h_fire_2d]
       by_cases h_fire_d : 2 * d ≤ pconf s0_d t x
-      · rw [if_pos h_fire_d]; omega
-      · rw [if_neg h_fire_d]
+      · rw [ite_eq_left h_fire_d]; omega
+      · rw [ite_eq_right h_fire_d]
         omega
-    · rw [if_neg h_fire_2d]
+    · rw [ite_eq_right h_fire_2d]
       by_cases h_fire_d : 2 * d ≤ pconf s0_d t x
-      · rw [if_pos h_fire_d]; omega
-      · rw [if_neg h_fire_d]
+      · rw [ite_eq_left h_fire_d]; omega
+      · rw [ite_eq_right h_fire_d]
         omega
 
 /- Steps 3-4 of the two-dimensional case of the counterexample (`sec:counterexample_2D`)
@@ -935,7 +935,7 @@ theorem aux_ce_arrival_le (d : ℕ) (hd : 2 ≤ d) (n : ℕ) (m : ℕ) (hm1 : 1 
 theorem aux_ce_arrival_finite_of_pos (d : ℕ) (hd : 2 ≤ d) (n : ℕ) (m : ℕ) (hm1 : 1 ≤ m)
     (hpos : 0 < podo (fun x => ceEta d x + 3 * dirac (0 : Site d) x) m ((n : ℤ) • e1 d)) :
     arrival (ceEta d) ((n : ℤ) • e1 d) ≠ ⊤ :=
-  ne_top_of_le_ne_top (ENat.coe_ne_top m) (aux_ce_arrival_le d hd n m hm1 hpos)
+  ne_top_of_le_ne_top (ENat.natCast_ne_top m) (aux_ce_arrival_le d hd n m hm1 hpos)
 
 theorem aux_mnorm_nsmul_e1_ge (d : ℕ) (hd : 1 ≤ d) (n : ℕ) :
     (n : ℤ) ≤ mnorm (((n : ℤ) • e1 d : Site d)) := by
@@ -1004,14 +1004,14 @@ theorem aux_arrival_lower (d : ℕ) (hd : 2 ≤ d) (n : ℕ) :
     aux_podo_mnorm_le d hd k ((n : ℤ) • e1 d) hk
   have hmn : (n : ℤ) ≤ mnorm (((n : ℤ) • e1 d : Site d)) :=
     aux_mnorm_nsmul_e1_ge d (by omega) n
-  refine ENat.coe_le_coe.mpr ?_
+  refine ENat.natCast_le_natCast.mpr ?_
   omega
 
 theorem aux_ce_speed (d : ℕ) (hd : 2 ≤ d) (n m : ℕ)
     (h : arrival (ceEta d) ((n : ℤ) • e1 d) = (m : ℕ∞)) : n ≤ m := by
   have key := aux_arrival_lower d hd n
   rw [h] at key
-  have hm := ENat.coe_le_coe.mp key
+  have hm := ENat.natCast_le_natCast.mp key
   omega
 
 /-- Upper bound of Step 1 of the counterexample: `T((4n+1)e₁) ≤ 4n+4`.
@@ -1032,7 +1032,7 @@ theorem aux_ce_fast (d : ℕ) (hd : 2 ≤ d) (n : ℕ) :
   obtain ⟨m, hm⟩ := WithTop.ne_top_iff_exists.mp hne
   refine ⟨m, hm.symm, ?_⟩
   rw [← hm] at hle
-  exact ENat.coe_le_coe.mp hle
+  exact ENat.natCast_le_natCast.mp hle
 
 
 
@@ -1145,7 +1145,7 @@ theorem cylNbrSum_cylProj (u : ℤ × Fin 4 → ℤ) (v : Site 2 → ℤ)
   have hx0 : ¬ (cylProj x).1 = 0 := by
     simp only [cylProj]
     omega
-  rw [if_neg hx0]
+  rw [ite_eq_right hx0]
   -- the `x₁`-direction: `u (x₁-1, x₂) = v (x - e₁)` and `u (x₁+1, x₂) = v (x + e₁)`
   have h1 : u ((cylProj x).1 - 1, (cylProj x).2) = v (x - unit (⟨0, by norm_num⟩ : Fin 2)) := by
     rw [← hfold (x - unit (⟨0, by norm_num⟩ : Fin 2)) (by

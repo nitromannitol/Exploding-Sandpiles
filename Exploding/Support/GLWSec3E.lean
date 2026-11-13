@@ -35,7 +35,7 @@ theorem glws_N0_subadd_L (hd : 2 ≤ d) (ηmin : ℤ) (hηmin : 0 ≤ ηmin)
     (hN0 : ∀ v : Site d, ∀ᵐ η ∂P,
       Tendsto (fun n : ℕ => glws_f η ((n : ℤ) • v) / (n : ℝ)) atTop (nhds (N0 v)))
     (a b : Site d) (ha : a ∈ L) : N0 (a + b) ≤ N0 a + N0 b := by
-  haveI := hP
+  have := hP
   refine le_of_forall_pos_le_add fun ε hε => ?_
   set e : ℝ := ε / 3 with he
   have he0 : 0 < e := by rw [he]; positivity
@@ -131,7 +131,7 @@ theorem glws_N0_subadd_L (hd : 2 ≤ d) (ηmin : ℤ) (hηmin : 0 ≤ ηmin)
     have := hηS
     simp only [hS, Set.mem_preimage, hF, Set.mem_iInter] at this
     exact this n hnm
-  simp only [Set.mem_setOf_eq] at hA hAB
+  simp only [Set.mem_ofPred_eq] at hA hAB
   rw [glws_g_eq_of_mem hηG] at hA hAB
   rw [glws_g_eq_of_mem hTG] at hB
   have hnpos : (0 : ℝ) < n := by exact_mod_cast Nat.succ_pos m

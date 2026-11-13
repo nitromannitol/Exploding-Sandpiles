@@ -28,7 +28,7 @@ theorem supp_mono (A : Set (Site d)) (t : ℕ) : supp A t ⊆ supp A (t + 1) := 
   intro x hx
   have h1 := fodo_mono_time A (fun _ => 2 * (d : ℤ) - 2) (Set.indicator A 1) t x
   have h2 := fodo_indicator_le_one A (t + 1) x
-  simp only [supp, Set.mem_setOf_eq] at hx ⊢
+  simp only [supp, Set.mem_ofPred_eq] at hx ⊢
   omega
 
 theorem supp_le_of_le (A : Set (Site d)) {s t : ℕ} (h : s ≤ t) : supp A s ⊆ supp A t := by
@@ -52,8 +52,8 @@ theorem fodo_succ_congr (S : Set (Site d)) (s0 w0 : Site d → ℤ) {t t' : ℕ}
     fodo S s0 w0 (t + 1) x = fodo S s0 w0 (t' + 1) x := by
   rw [fodo_succ S s0 w0 t x, fodo_succ S s0 w0 t' x]
   by_cases hx : x ∈ S
-  · rw [if_pos hx, if_pos hx]
-  · rw [if_neg hx, if_neg hx]
+  · rw [ite_eq_left hx, ite_eq_left hx]
+  · rw [ite_eq_right hx, ite_eq_right hx]
     have hc : fconf S s0 w0 t x = fconf S s0 w0 t' x := by
       simp only [fconf, lap]
       rw [nbrSumZ_congr h x, h x]
@@ -81,7 +81,7 @@ theorem supp_eq_of_succ_eq (A : Set (Site d)) (t : ℕ) (h : supp A t = supp A (
       fodo A (fun _ => 2 * (d : ℤ) - 2) (Set.indicator A 1) (t + 1) x := by
     intro x
     have hx : (x ∈ supp A t) ↔ (x ∈ supp A (t + 1)) := by rw [h]
-    simp only [supp, Set.mem_setOf_eq] at hx
+    simp only [supp, Set.mem_ofPred_eq] at hx
     have hle := fodo_indicator_le_one A t x
     have hmono := fodo_mono_time A (fun _ => 2 * (d : ℤ) - 2) (Set.indicator A 1) t x
     have hle' := fodo_indicator_le_one A (t + 1) x
@@ -91,7 +91,7 @@ theorem supp_eq_of_succ_eq (A : Set (Site d)) (t : ℕ) (h : supp A t = supp A (
   intro t' ht'
   obtain ⟨k, rfl⟩ := Nat.exists_eq_add_of_le ht'
   ext x
-  simp only [supp, Set.mem_setOf_eq]
+  simp only [supp, Set.mem_ofPred_eq]
   rw [fodo_eq_of_succ_eq A (fun _ => 2 * (d : ℤ) - 2) (Set.indicator A 1) hfun k x]
 
 /-! ### The filling never leaves the bounding rectangle -/
@@ -214,8 +214,8 @@ theorem exists_two_nbrs_of_nbrSumZ (u : Site d → ℤ) (hu : ∀ y, 0 ≤ u y) 
       have h2 := hu (x + LatticeProb.unit i)
       have h3 := hu1 (x + LatticeProb.unit i)
       by_cases hi : i ∈ A
-      · rw [if_pos hi]; exact (Finset.mem_filter.mp hi).2
-      · rw [if_neg hi]
+      · rw [ite_eq_left hi]; exact (Finset.mem_filter.mp hi).2
+      · rw [ite_eq_right hi]
         have hne : u (x + LatticeProb.unit i) ≠ 1 :=
           fun hc => hi (Finset.mem_filter.mpr ⟨Finset.mem_univ i, hc⟩)
         omega
@@ -224,8 +224,8 @@ theorem exists_two_nbrs_of_nbrSumZ (u : Site d → ℤ) (hu : ∀ y, 0 ≤ u y) 
       have h2 := hu (x - LatticeProb.unit i)
       have h3 := hu1 (x - LatticeProb.unit i)
       by_cases hi : i ∈ B
-      · rw [if_pos hi]; exact (Finset.mem_filter.mp hi).2
-      · rw [if_neg hi]
+      · rw [ite_eq_left hi]; exact (Finset.mem_filter.mp hi).2
+      · rw [ite_eq_right hi]
         have hne : u (x - LatticeProb.unit i) ≠ 1 :=
           fun hc => hi (Finset.mem_filter.mpr ⟨Finset.mem_univ i, hc⟩)
         omega
@@ -285,20 +285,20 @@ theorem supp_subset_br (A : Set (Site d)) (t : ℕ) : supp A t ⊆ br A := by
   induction t with
   | zero =>
     intro x hx
-    simp only [supp, Set.mem_setOf_eq, fodo_zero] at hx
+    simp only [supp, Set.mem_ofPred_eq, fodo_zero] at hx
     exact mem_br_of_mem A (by
       by_contra h
       rw [Set.indicator_of_notMem h] at hx
       exact one_ne_zero hx.symm)
   | succ t ih =>
     intro x hx
-    simp only [supp, Set.mem_setOf_eq] at hx
+    simp only [supp, Set.mem_ofPred_eq] at hx
     rw [fodo_succ] at hx
     by_cases hxA : x ∈ A
     · exact mem_br_of_mem A hxA
-    · rw [if_neg hxA] at hx
+    · rw [ite_eq_right hxA] at hx
       by_cases hc : 2 * (d : ℤ) ≤ fconf A (fun _ => 2 * (d : ℤ) - 2) (Set.indicator A 1) t x
-      · rw [if_pos hc] at hx
+      · rw [ite_eq_left hc] at hx
         have h0 : fodo A (fun _ => 2 * (d : ℤ) - 2) (Set.indicator A 1) t x = 0 := by
           have := fodo_indicator_le_one A t x
           omega
@@ -311,7 +311,7 @@ theorem supp_subset_br (A : Set (Site d)) (t : ℕ) : supp A t ⊆ br A := by
             (fun y => fodo_indicator_nonneg A t y)
             (fun y => fodo_indicator_le_one A t y) x h2
         exact br_of_two_nbrs A (ih hy1) (ih hz1) hyz hxy hxz
-      · rw [if_neg hc] at hx
+      · rw [ite_eq_right hc] at hx
         have hx' : fodo A (fun _ => 2 * (d : ℤ) - 2) (Set.indicator A 1) t x = 1 := by
           simpa using hx
         exact ih hx'

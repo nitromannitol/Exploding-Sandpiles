@@ -26,14 +26,14 @@ theorem bc_fodo_mono_background {d : ℕ} (S : Set (Site d)) (s0 s0' w0 : Site d
   | succ t ih =>
     intro x
     by_cases hx : x ∈ S
-    · rw [Exploding.fodo_succ, Exploding.fodo_succ, if_pos hx, if_pos hx]
-    · rw [Exploding.fodo_succ, Exploding.fodo_succ, if_neg hx, if_neg hx]
+    · rw [Exploding.fodo_succ, Exploding.fodo_succ, ite_eq_left hx, ite_eq_left hx]
+    · rw [Exploding.fodo_succ, Exploding.fodo_succ, ite_eq_right hx, ite_eq_right hx]
       have h_ih := ih x
       by_cases hc : 2 * (d : ℤ) ≤ fconf S s0 w0 t x
       · by_cases hc' : 2 * (d : ℤ) ≤ fconf S s0' w0 t x
-        · rw [if_pos hc, if_pos hc']
+        · rw [ite_eq_left hc, ite_eq_left hc']
           omega
-        · rw [if_pos hc, if_neg hc']
+        · rw [ite_eq_left hc, ite_eq_right hc']
           have hlt : fodo S s0 w0 t x < fodo S s0' w0 t x := by
             by_contra! heq
             have heq' : fodo S s0 w0 t x = fodo S s0' w0 t x := by omega
@@ -49,9 +49,9 @@ theorem bc_fodo_mono_background {d : ℕ} (S : Set (Site d)) (s0 s0' w0 : Site d
             exact hc' this
           omega
       · by_cases hc' : 2 * (d : ℤ) ≤ fconf S s0' w0 t x
-        · rw [if_neg hc, if_pos hc']
+        · rw [ite_eq_right hc, ite_eq_left hc']
           omega
-        · rw [if_neg hc, if_neg hc']
+        · rw [ite_eq_right hc, ite_eq_right hc']
           simpa
 
 /-- `Measure.infinitePi` commutes with a coordinatewise pushforward: applying a
@@ -177,9 +177,9 @@ theorem bc_fodo_measurable {d : ℕ} (S : Set (Site d)) (w0 : Site d → ℤ)
   | succ t ih =>
     simp only [fodo_succ]
     by_cases hx : x ∈ S
-    · simp only [hx, if_true]
+    · simp only [hx, ite_true]
       exact measurable_const
-    · simp only [hx, if_false]
+    · simp only [hx, ite_false]
       apply Measurable.add (ih x)
       apply Measurable.ite
       · apply measurableSet_le measurable_const
@@ -248,7 +248,7 @@ theorem bc_nu_good (d : ℕ) (ν : Measure ℤ) [IsProbabilityMeasure ν]
           rw [measure_compl h_meas (measure_ne_top _ _)]
         _ = 1 - 1 := by rw [measure_univ, h_single_prob x]
         _ = 0 := by simp
-    simpa [Set.compl_setOf, not_le] using h_compl
+    simpa [Set.compl_ofPred, not_le] using h_compl
   have h_all_null : μ {η | ∃ x, η x < (d : ℤ)} = 0 := by
     have h_union : {f : Site d → ℤ | ∃ x, f x < (d : ℤ)} = ⋃ (x : Site d), {f : Site d → ℤ | f x < (d : ℤ)} := by
       ext f; simp
@@ -257,7 +257,7 @@ theorem bc_nu_good (d : ℕ) (ν : Measure ℤ) [IsProbabilityMeasure ν]
   have h_target_compl : ({η | ∀ x, (d : ℤ) ≤ η x}ᶜ : Set (Site d → ℤ)) = {η | ∃ x, η x < (d : ℤ)} := by
     ext η; simp
   have h_meas_target : MeasurableSet {η : Site d → ℤ | ∀ x, (d : ℤ) ≤ η x} := by
-    rw [Set.setOf_forall]
+    rw [Set.ofPred_forall]
     exact MeasurableSet.iInter fun x =>
       measurableSet_le measurable_const (measurable_pi_apply x)
   have h_compl_null : μ ({η | ∀ x, (d : ℤ) ≤ η x}ᶜ) = 0 := by
@@ -295,7 +295,7 @@ theorem bc_two_point_reduction (d : ℕ) (_hd : 1 ≤ d) (ν : Measure ℤ)
   rw [MeasureTheory.Measure.map_apply (by fun_prop) hmeas]
   set Good : Set (Site d → ℤ) := {η | ∀ x, (d : ℤ) ≤ η x} with hGooddef
   have hgood1 := bc_nu_good d ν hlow
-  have hGoodEq : Good = ⋂ x : Site d, {η : Site d → ℤ | (d : ℤ) ≤ η x} := (Set.iInter_setOf _).symm
+  have hGoodEq : Good = ⋂ x : Site d, {η : Site d → ℤ | (d : ℤ) ≤ η x} := (Set.iInter_ofPred _).symm
   have hGoodMeas : MeasurableSet Good := by
     rw [hGoodEq]
     exact MeasurableSet.iInter (fun x => measurableSet_le measurable_const (measurable_pi_apply x))
@@ -320,7 +320,7 @@ theorem bc_two_point_reduction (d : ℕ) (_hd : 1 ≤ d) (ν : Measure ℤ)
     intro z
     by_cases hz : ω z = 2 * (d : ℤ) - 1
     · simp [hTdef, hz]
-    · simp only [hTdef, if_neg hz]
+    · simp only [hTdef, ite_eq_right hz]
       exact hω2 z
   have hdom := bc_fodo_mono_background (d := d) (rboxShift k j)ᶜ
     (fun z => T (ω z)) ω (Set.indicator (faceOut k j i hi) 1) hTle t x

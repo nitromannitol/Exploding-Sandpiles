@@ -158,13 +158,13 @@ theorem pub_cinf_cover {η : Site d → ℤ} {N k : ℕ} {Cinf : Set (Site d)} {
         exact hρ1)
       (fun v hv hv' l => by
         by_cases hl : l = i0
-        · simp only [hl, if_true]
+        · simp only [hl, ite_true]
           have h1 := pub_abs_le_mnorm z0 i0
           have h2 : (0 : ℤ) ≤ (ρ : ℤ) := Nat.cast_nonneg ρ
           have h3 := abs_le.mp (le_refl |z0 i0|)
           rw [abs_le]
           constructor <;> linarith [neg_abs_le (z0 i0), le_abs_self (z0 i0)]
-        · simp only [hl, if_false]
+        · simp only [hl, ite_false]
           exact le_trans (pub_abs_le_mnorm z0 l) hzn)
     set M : Site d := fun j => if j = i0 then v else z0 j with hMdef
     have hMn : mnorm (M - z0) = |v - z0 i0| := pub_mnorm_update_sub z0 i0 v

@@ -39,7 +39,7 @@ theorem pclose_path_extract (η : Site d → ℤ) (hlow : ∀ y, 0 ≤ η y)
     intro y hy
     have hy0 : y = 0 := by
       by_contra hne
-      rw [wave_zero, if_neg hne] at hy
+      rw [wave_zero, ite_eq_right hne] at hy
       exact lt_irrefl _ hy
     subst hy0
     refine ⟨0, fun _ => 0, rfl, rfl, fun i hi => absurd hi (Nat.not_lt_zero i), ?_, ?_⟩
@@ -75,20 +75,20 @@ theorem pclose_path_extract (η : Site d → ℤ) (hlow : ∀ y, 0 ≤ η y)
           simpa [h1, h2] using hadj i him
         · have him' : i = m := by omega
           subst him'
-          simp only [le_refl, if_true, Nat.lt_irrefl, Nat.succ_le_iff]
-          simp only [if_false]
+          simp only [le_refl, ite_true, Nat.lt_irrefl, Nat.succ_le_iff]
+          simp only [ite_false]
           rw [hm]
           exact hadj'
       · intro i j hi hj hij
         by_cases hi' : i ≤ m <;> by_cases hj' : j ≤ m
-        · simp only [hi', hj', if_true] at hij
+        · simp only [hi', hj', ite_true] at hij
           exact hinj i j hi' hj' hij
-        · simp only [hi', hj', if_true, if_false] at hij
+        · simp only [hi', hj', ite_true, ite_false] at hij
           exfalso
           have := hpos i hi'
           rw [hij] at this
           exact hps this
-        · simp only [hi', hj', if_true, if_false] at hij
+        · simp only [hi', hj', ite_true, ite_false] at hij
           exfalso
           have := hpos j hj'
           rw [← hij] at this
@@ -96,9 +96,9 @@ theorem pclose_path_extract (η : Site d → ℤ) (hlow : ∀ y, 0 ≤ η y)
         · omega
       · intro i hi
         by_cases hi' : i ≤ m
-        · simp only [hi', if_true]
+        · simp only [hi', ite_true]
           exact pclose_pos_mono hd0 η hlow N 0 (Nat.le_succ s) (hpos i hi')
-        · simp only [hi', if_false]
+        · simp only [hi', ite_false]
           rw [wave_of_ne η N 0 y s hy0]
           exact (Int.le_ediv_iff_mul_le hd0).mpr (by linarith [hhigh y] : (1 : ℤ) * (2 * (d : ℤ)) ≤ _)
 

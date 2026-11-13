@@ -44,10 +44,10 @@ theorem cel_subsol (s0 : Site d → ℤ) (p : ℕ → Site d → ℤ)
           unfold lap at hc
           rw [← heq]
           linarith
-        rw [if_pos hc']
-        rw [if_pos hc] at hs
+        rw [ite_eq_left hc']
+        rw [ite_eq_left hc] at hs
         linarith
-      · rw [if_neg hc] at hs
+      · rw [ite_eq_right hc] at hs
         linarith
 
 end Exploding

@@ -24,9 +24,9 @@ def xsp_bhi (J : Finset (Fin d)) (LO : Site d) (Lb : ℕ) (q : J → ℕ) (j : F
 theorem xsp_block_near (J : Finset (Fin d)) (LO : Site d) {Lb : ℕ} (_hLb : 1 ≤ Lb) (q : J → ℕ) :
     xsb_Near J Lb (xsp_blo J LO Lb q) (xsp_bhi J LO Lb q) := by
   refine ⟨fun i hi => Or.inl ?_, fun i hi => ?_⟩
-  · simp only [xsp_blo, xsp_bhi, dif_pos hi]
+  · simp only [xsp_blo, xsp_bhi, dite_eq_left hi]
     ring
-  · simp only [xsp_blo, xsp_bhi, dif_neg hi]
+  · simp only [xsp_blo, xsp_bhi, dite_eq_right hi]
 
 /-- The blocks with index below `s / Lb` lie in the box. -/
 theorem xsp_block_subset {J : Finset (Fin d)} {LO HI : Site d} {s Lb : ℕ} (_hLb : 1 ≤ Lb)
@@ -44,12 +44,12 @@ theorem xsp_block_subset {J : Finset (Fin d)} {LO HI : Site d} {s Lb : ℕ} (_hL
       rcases hR.1 j hj with h | h <;> omega
     have hnn : (0 : ℤ) ≤ (Lb : ℤ) * ((q ⟨j, hj⟩ : ℕ) : ℤ) :=
       mul_nonneg (Int.natCast_nonneg _) (Int.natCast_nonneg _)
-    simp only [xsp_blo, xsp_bhi, dif_pos hj] at hx1 hx2
+    simp only [xsp_blo, xsp_bhi, dite_eq_left hj] at hx1 hx2
     constructor
     · linarith
     · nlinarith
   · have hthin := hR.2 j hj
-    simp only [xsp_blo, xsp_bhi, dif_neg hj] at hx1 hx2
+    simp only [xsp_blo, xsp_bhi, dite_eq_right hj] at hx1 hx2
     constructor
     · exact hx1
     · omega
@@ -65,7 +65,7 @@ theorem xsp_block_disjoint {J : Finset (Fin d)} {LO : Site d} {s Lb : ℕ} (_hLb
   intro x hx hx'
   obtain ⟨h1, h2⟩ := hx j₀.1
   obtain ⟨h1', h2'⟩ := hx' j₀.1
-  simp only [xsp_blo, xsp_bhi, dif_pos j₀.2] at h1 h2 h1' h2'
+  simp only [xsp_blo, xsp_bhi, dite_eq_left j₀.2] at h1 h2 h1' h2'
   have hj₀' : (q j₀ : ℕ) ≠ (q' j₀ : ℕ) := fun he => hj₀ (Fin.ext he)
   rcases Nat.lt_or_gt_of_ne hj₀' with hlt | hlt
   · have hmul : Lb * ((q j₀ : ℕ) + 1) ≤ Lb * (q' j₀ : ℕ) := Nat.mul_le_mul_left Lb hlt
@@ -89,13 +89,13 @@ theorem xsp_box_ncard {J : Finset (Fin d)} {lo hi : Site d} {ℓ : ℕ}
   have h : xsb_box lo hi = ↑(Fintype.piFinset (fun i => Finset.Icc (lo i) (hi i))) := by
     ext x
     rw [Finset.mem_coe, Fintype.mem_piFinset]
-    simp only [xsb_box, Set.mem_setOf_eq, Finset.mem_Icc]
+    simp only [xsb_box, Set.mem_ofPred_eq, Finset.mem_Icc]
   have hcard : ∀ i, (hi i + 1 - lo i).toNat = if i ∈ J then ℓ else 1 := fun i => by
     by_cases hi' : i ∈ J
-    · rw [if_pos hi']
+    · rw [ite_eq_left hi']
       have := hside i hi'
       omega
-    · rw [if_neg hi']
+    · rw [ite_eq_right hi']
       have := hthin i hi'
       omega
   rw [h, Set.ncard_coe_finset, Fintype.card_piFinset]
@@ -112,7 +112,7 @@ theorem xsp_seed_prob (hd : 1 ≤ d) {J : Finset (Fin d)} {lo hi : Site d} {ℓ 
   have hset : {η : Site d → ℤ | ∀ x ∈ xsb_box lo hi, η x = 2 * (d : ℤ)}
       = {η | ∀ x ∈ hfin.toFinset, η x = 2 * (d : ℤ)} := by
     ext η
-    simp only [Set.mem_setOf_eq, Set.Finite.mem_toFinset]
+    simp only [Set.mem_ofPred_eq, Set.Finite.mem_toFinset]
   rw [hset, xsch_occ_prob hd, ← Set.ncard_eq_toFinset_card _ hfin, xsp_box_ncard hside hthin]
 
 /-- If events determined on disjoint finite sets are each good with probability at least `π`,
@@ -132,7 +132,7 @@ theorem xsp_none_good_le {ι : Type*} [Fintype ι] (A : ι → Set (Site d))
     linarith [hπ i]
   calc ∏ i ∈ (Finset.univ : Finset ι), (xsch_mu d p).real (F i)ᶜ
       ≤ ∏ _i ∈ (Finset.univ : Finset ι), (1 - π) :=
-        Finset.prod_le_prod (fun i _ => measureReal_nonneg) hle
+        Finset.prod_le_prod₀ (fun i _ => measureReal_nonneg) hle
     _ = (1 - π) ^ Fintype.card ι := by rw [Finset.prod_const, Finset.card_univ]
 
 end Exploding

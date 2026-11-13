@@ -42,9 +42,9 @@ theorem glws_box_reach (S : Set (Site d)) (m M : Site d) (hS : pcloseBox m M ⊆
           have h1 := hu i
           have h2 := hv i
           by_cases hlt : u i < v i
-          · simp only [hs, if_pos hlt]
+          · simp only [hs, ite_eq_left hlt]
             constructor <;> linarith [h1.1, h1.2, h2.1, h2.2]
-          · simp only [hs, if_neg hlt]
+          · simp only [hs, ite_eq_right hlt]
             have : v i < u i := lt_of_le_of_ne (not_lt.mp hlt) (Ne.symm hl)
             constructor <;> linarith [h1.1, h1.2, h2.1, h2.2]
         · rw [hu'i i hi]; exact hu i
@@ -69,20 +69,20 @@ theorem glws_box_reach (S : Set (Site d)) (m M : Site d) (hS : pcloseBox m M ⊆
           · subst hi
             simp only [Pi.sub_apply, hu'l, hs]
             by_cases hlt : u i < v i
-            · simp only [if_pos hlt]
+            · simp only [ite_eq_left hlt]
               rw [abs_of_nonpos (by linarith), abs_of_neg (by linarith)]
               linarith
-            · simp only [if_neg hlt]
+            · simp only [ite_eq_right hlt]
               have : v i < u i := lt_of_le_of_ne (not_lt.mp hlt) (Ne.symm hl)
               rw [abs_of_nonneg (by linarith), abs_of_pos (by linarith)]
               linarith
           · simp [hu'i i hi]
         · simp only [Pi.sub_apply, hu'l, hs]
           by_cases hlt : u l < v l
-          · simp only [if_pos hlt]
+          · simp only [ite_eq_left hlt]
             rw [abs_of_nonpos (by linarith), abs_of_neg (by linarith)]
             linarith
-          · simp only [if_neg hlt]
+          · simp only [ite_eq_right hlt]
             have : v l < u l := lt_of_le_of_ne (not_lt.mp hlt) (Ne.symm hl)
             rw [abs_of_nonneg (by linarith), abs_of_pos (by linarith)]
             linarith
@@ -107,10 +107,10 @@ theorem glws_tile_adj_pts (k : Fin d → ℕ) (hk : ∀ i, 0 < k i) (i j : Site 
     · intro m
       by_cases hm : m = l
       · subst hm
-        simp only [if_true]
+        simp only [ite_true]
         have := hk1 m
         constructor <;> linarith
-      · simp only [hm, if_false]
+      · simp only [hm, ite_false]
         have := hk1 m
         constructor <;> linarith
     · intro m
@@ -119,13 +119,13 @@ theorem glws_tile_adj_pts (k : Fin d → ℕ) (hk : ∀ i, 0 < k i) (i j : Site 
         simpa [glws_unit_apply] using this
       by_cases hm : m = l
       · subst hm
-        simp only [if_true] at hj ⊢
+        simp only [ite_true] at hj ⊢
         rw [hj]
         have := hk1 m
         have e : (k m : ℤ) * (i m + 1) = (k m : ℤ) * i m + k m := by ring
         rw [e]
         constructor <;> linarith
-      · simp only [hm, if_false, add_zero] at hj ⊢
+      · simp only [hm, ite_false, add_zero] at hj ⊢
         rw [hj]
         have := hk1 m
         constructor <;> linarith
@@ -141,10 +141,10 @@ theorem glws_tile_adj_pts (k : Fin d → ℕ) (hk : ∀ i, 0 < k i) (i j : Site 
     · intro m
       by_cases hm : m = l
       · subst hm
-        simp only [if_true]
+        simp only [ite_true]
         have := hk1 m
         constructor <;> linarith
-      · simp only [hm, if_false]
+      · simp only [hm, ite_false]
         have := hk1 m
         constructor <;> linarith
     · intro m
@@ -153,11 +153,11 @@ theorem glws_tile_adj_pts (k : Fin d → ℕ) (hk : ∀ i, 0 < k i) (i j : Site 
         simpa [glws_unit_apply] using this
       by_cases hm : m = l
       · subst hm
-        simp only [if_true] at hi ⊢
+        simp only [ite_true] at hi ⊢
         have := hk1 m
         have e : (k m : ℤ) * i m = (k m : ℤ) * j m + k m := by rw [hi]; ring
         constructor <;> nlinarith
-      · simp only [hm, if_false, add_zero] at hi ⊢
+      · simp only [hm, ite_false, add_zero] at hi ⊢
         rw [hi]
         have := hk1 m
         constructor <;> linarith

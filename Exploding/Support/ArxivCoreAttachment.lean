@@ -150,6 +150,7 @@ private theorem arxiv_lift_walk_to_component {d : ℕ} {S : Set (Site d)}
       refine ⟨SimpleGraph.Walk.cons hadjComp q, ?_⟩
       simp [hqLength]
 
+set_option backward.isDefEq.respectTransparency.types false in
 /-- A finite-hole set inside `G` can be reached from every vertex in its `G`-component.
 The walk is contained in that component and its length is bounded by the starting hole size
 plus one. -/

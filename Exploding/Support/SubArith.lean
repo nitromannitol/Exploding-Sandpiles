@@ -19,9 +19,9 @@ theorem ediv_step_ge (d : ℕ) (hd : 1 ≤ d) (A B w : ℤ) (hBA : B ≤ A)
   have hd1 : (0 : ℤ) < (d : ℤ) := by exact_mod_cast hd
   have hd0 : (0 : ℤ) < 2 * (d : ℤ) := by linarith
   by_cases h : 2 * (d : ℤ) ≤ A - 2 * (d : ℤ) * w
-  · rw [if_pos h, Int.ediv_le_iff_le_mul hd0]
+  · rw [ite_eq_left h, Int.ediv_le_iff_le_mul hd0]
     nlinarith
-  · rw [if_neg h, Int.ediv_le_iff_le_mul hd0]
+  · rw [ite_eq_right h, Int.ediv_le_iff_le_mul hd0]
     nlinarith
 
 end Exploding

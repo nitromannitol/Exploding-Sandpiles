@@ -66,7 +66,7 @@ the goal, with no numeral-elaboration mismatch against a separately-written copy
 theorem lwc_chipLaw_shift_ergodic {d : ℕ} (a b : ℤ) (p : ℝ) (hp : 0 < p) (hp1 : p < 1)
     (v : Site d) (hv : v ≠ 0) :
     Ergodic (fun η : Site d → ℤ => fun z => η (v + z)) (LatticeProb.iidLaw d (chipLaw a b p)) := by
-  haveI : IsProbabilityMeasure (chipLaw a b p) :=
+  have : IsProbabilityMeasure (chipLaw a b p) :=
     lwc_isProbabilityMeasure_chipLaw a b p hp.le hp1.le
   have heq : (fun η : Site d → ℤ => fun z => η (v + z))
       = LatticeProb.coordShift (fun x : Site d => x + v) := by
@@ -187,7 +187,7 @@ theorem lwc_adj_shift {d : ℕ} (v x y : Site d) :
 around `z` iff `v + x` lies in the cluster of `η` around `v + z`. -/
 theorem lwc_penultimateCluster_shift {d : ℕ} (η : Site d → ℤ) (v z x : Site d) :
     x ∈ penultimateCluster (fun w => η (v + w)) z ↔ (v + x) ∈ penultimateCluster η (v + z) := by
-  simp only [penultimateCluster, Set.mem_union, Set.mem_singleton_iff, Set.mem_setOf_eq]
+  simp only [penultimateCluster, Set.mem_union, Set.mem_singleton_iff, Set.mem_ofPred_eq]
   constructor
   · rintro (h | ⟨y, hadj, hpos⟩)
     · left; rw [h]
@@ -228,7 +228,7 @@ theorem lwc_cluster_shift (d : ℕ) (η : Site d → ℤ) (v a b : Site d) :
 supported on `{2d-1, 2d-2}`, and `Site d` is countable (`ae_all_iff`). -/
 theorem lwc_good_event_1 (d : ℕ) (p : ℝ) (hp : 0 < p) (hp1 : p < 1) :
     ∀ᵐ η ∂(toyLaw d p), ∀ x : Site d, 2 * (d : ℤ) - 2 ≤ η x ∧ η x ≤ 2 * (d : ℤ) - 1 := by
-  haveI hprob : IsProbabilityMeasure (chipLaw (2 * (d:ℤ) - 1) (2 * (d:ℤ) - 2) p) :=
+  have hprob : IsProbabilityMeasure (chipLaw (2 * (d:ℤ) - 1) (2 * (d:ℤ) - 2) p) :=
     lwc_isProbabilityMeasure_chipLaw _ _ p hp.le hp1.le
   rw [ae_all_iff]
   intro x
@@ -244,7 +244,7 @@ theorem lwc_good_event_1 (d : ℕ) (p : ℝ) (hp : 0 < p) (hp1 : p < 1) :
         = (fun η : Site d → ℤ => η x) ⁻¹' {v : ℤ | ¬ (2*(d:ℤ)-2 ≤ v ∧ v ≤ 2*(d:ℤ)-1)} from rfl,
     ← Measure.map_apply (measurable_pi_apply x) hSmeas, hmap]
   simp only [chipLaw, Measure.add_apply, Measure.smul_apply, Measure.dirac_apply' _ hSmeas,
-    Set.indicator_apply, Set.mem_setOf_eq]
+    Set.indicator_apply, Set.mem_ofPred_eq]
   norm_num
 
 /-- Every `clusterArrival` from the origin is a.s. finite: read off
@@ -259,7 +259,7 @@ theorem lwc_good_event_2 (d : ℕ) (hd : 2 ≤ d) (p : ℝ) (hp : 0 < p) (hp1 : 
   filter_upwards [hclose] with η hη x
   obtain ⟨n0, hn0⟩ := hη
   obtain ⟨_, b, _, hb, _⟩ := (hn0 (max n0 (mnorm x).toNat) (le_max_left _ _) x (by omega)).2
-  rw [hb]; exact ENat.coe_ne_top b
+  rw [hb]; exact ENat.natCast_ne_top b
 
 /-- Promotes an a.s. property `Q` (possibly not itself known to be a measurable predicate) to
 a measurable, full-measure set on which `Q` holds, via a measurable null superset of
@@ -339,7 +339,7 @@ theorem lwc_good_event (d : ℕ) (hd : 2 ≤ d) (p : ℝ) (hp : 0 < p) (hp1 : p 
     exact ⟨h1, h2, h3⟩
   obtain ⟨E0, hE0meas, hE0full, hE0Q⟩ := lwc_good_event_3 p Q hQae
   have hshiftmeas : ∀ v : Site d, Measurable (fun η : Site d → ℤ => fun z => η (v + z)) :=
-    fun v => measurable_pi_lambda _ (fun z => measurable_pi_apply (v + z))
+    fun v => Measurable.of_eval (fun z => measurable_pi_apply (v + z))
   have hshiftmp : ∀ v : Site d, MeasurePreserving (fun η : Site d → ℤ => fun z => η (v + z))
       (toyLaw d p) (toyLaw d p) := by
     intro v
@@ -488,7 +488,7 @@ theorem lwc_sInf_le_measurableSet {d : ℕ} (Q : ℕ → (Site d → ℤ) → Pr
   have heq : {η : Site d → ℤ | sInf {n : ℕ | Q n η} ≤ m} =
       {η | {n : ℕ | Q n η} = ∅} ∪ ⋃ n ∈ Finset.range (m+1), {η | Q n η} := by
     ext η
-    simp only [Set.mem_setOf_eq, Set.mem_union, Set.mem_iUnion, Finset.mem_range,
+    simp only [Set.mem_ofPred_eq, Set.mem_union, Set.mem_iUnion, Finset.mem_range,
       lwc_sInf_nat_le_iff]
     constructor
     · rintro (h | ⟨n, hn, hm⟩)
@@ -513,7 +513,7 @@ theorem lwc_sInf_eq_measurableSet {d : ℕ} (Q : ℕ → (Site d → ℤ) → Pr
   | succ m =>
     have heq : {η : Site d → ℤ | sInf {n : ℕ | Q n η} = m + 1} =
         {η | sInf {n : ℕ | Q n η} ≤ m+1} \ {η | sInf {n : ℕ | Q n η} ≤ m} := by
-      ext η; simp only [Set.mem_setOf_eq, Set.mem_sdiff]; omega
+      ext η; simp only [Set.mem_ofPred_eq, Set.mem_sdiff]; omega
     rw [heq]
     exact (lwc_sInf_le_measurableSet Q hQ (m+1)).diff (lwc_sInf_le_measurableSet Q hQ m)
 
@@ -539,7 +539,7 @@ theorem lwc_waveThreshold_measurableSet {d : ℕ} (z : Site d) (m : ℕ) :
   | succ m =>
     have heq : {η : Site d → ℤ | waveThreshold η z = m + 1} =
         {η | waveThreshold η z ≤ m+1} \ {η | waveThreshold η z ≤ m} := by
-      ext η; simp only [Set.mem_setOf_eq, Set.mem_sdiff]; omega
+      ext η; simp only [Set.mem_ofPred_eq, Set.mem_sdiff]; omega
     rw [heq]
     exact (lwc_waveThreshold_measurableSet_le z (m+1)).diff
       (lwc_waveThreshold_measurableSet_le z m)
@@ -582,7 +582,7 @@ theorem lwc_Tstar_measurable {d : ℕ} (n : ℕ) (z : Site d) :
   | succ m =>
     have heq : {η : Site d → ℤ | lwc_Tstar η n z = m + 1} =
         {η | lwc_Tstar η n z ≤ m+1} \ {η | lwc_Tstar η n z ≤ m} := by
-      ext η; simp only [Set.mem_setOf_eq, Set.mem_sdiff]; omega
+      ext η; simp only [Set.mem_ofPred_eq, Set.mem_sdiff]; omega
     rw [heq]
     exact (lwc_Tstar_measurableSet_le n z (m+1)).diff (lwc_Tstar_measurableSet_le n z m)
 
@@ -597,7 +597,7 @@ theorem lwc_waveTerminal_measurable {d : ℕ} (n : ℕ) (z : Site d) (x : Site d
   have heq : {η : Site d → ℤ | wave η n z (lwc_Tstar η n z) x = k}
       = ⋃ T : ℕ, {η | lwc_Tstar η n z = T} ∩ {η | wave η n z T x = k} := by
     ext η
-    simp only [Set.mem_setOf_eq, Set.mem_iUnion, Set.mem_inter_iff]
+    simp only [Set.mem_ofPred_eq, Set.mem_iUnion, Set.mem_inter_iff]
     constructor
     · intro h; exact ⟨lwc_Tstar η n z, rfl, h⟩
     · rintro ⟨T, hT, hk⟩; rw [hT]; exact hk
@@ -617,7 +617,7 @@ theorem lwc_penultimateWave_measurable {d : ℕ} (z : Site d) (x : Site d) :
   have heq : {η : Site d → ℤ | waveTerminal η (waveThreshold η z - 1) z x = k}
       = ⋃ n : ℕ, {η | waveThreshold η z = n} ∩ {η | waveTerminal η (n-1) z x = k} := by
     ext η
-    simp only [Set.mem_setOf_eq, Set.mem_iUnion, Set.mem_inter_iff]
+    simp only [Set.mem_ofPred_eq, Set.mem_iUnion, Set.mem_inter_iff]
     constructor
     · intro h; exact ⟨waveThreshold η z, rfl, h⟩
     · rintro ⟨n, hn, hk⟩; rw [hn]; exact hk
@@ -636,7 +636,7 @@ theorem lwc_penultimateCluster_mem_measurableSet {d : ℕ} (z w : Site d) :
         = ⋃ i : Fin d, ({η : Site d → ℤ | 0 < penultimateWave η z (w + unit i)} ∪
             {η : Site d → ℤ | 0 < penultimateWave η z (w - unit i)}) := by
       ext η
-      simp only [penultimateCluster, Set.mem_union, Set.mem_singleton_iff, Set.mem_setOf_eq, hwz,
+      simp only [penultimateCluster, Set.mem_union, Set.mem_singleton_iff, Set.mem_ofPred_eq, hwz,
         false_or, Set.mem_iUnion]
       constructor
       · rintro ⟨y, hadj, hpos⟩
@@ -663,7 +663,7 @@ theorem lwc_lastWave_measurable {d : ℕ} (z : Site d) (t : ℕ) (x : Site d) :
   have heq : {η : Site d → ℤ | wave η (waveThreshold η z) z t x = k}
       = ⋃ n : ℕ, {η | waveThreshold η z = n} ∩ {η | wave η n z t x = k} := by
     ext η
-    simp only [Set.mem_setOf_eq, Set.mem_iUnion, Set.mem_inter_iff]
+    simp only [Set.mem_ofPred_eq, Set.mem_iUnion, Set.mem_inter_iff]
     constructor
     · intro h; exact ⟨waveThreshold η z, rfl, h⟩
     · rintro ⟨n, hn, hk⟩; rw [hn]; exact hk
@@ -725,7 +725,7 @@ theorem lwc_clusterArrival_measurable {d : ℕ} (y x : Site d) :
     unfold clusterArrival
     congr 1
     ext t
-    simp only [Set.mem_setOf_eq, Set.mem_image]
+    simp only [Set.mem_ofPred_eq, Set.mem_image]
     constructor
     · rintro ⟨m, rfl, h1, h2⟩; exact ⟨m, ⟨h1, h2⟩, rfl⟩
     · rintro ⟨m, ⟨h1, h2⟩, rfl⟩; exact ⟨m, rfl, h1, h2⟩
@@ -733,7 +733,7 @@ theorem lwc_clusterArrival_measurable {d : ℕ} (y x : Site d) :
       = {η | {m : ℕ | 1 ≤ m ∧ ∀ w ∈ penultimateCluster η x, 0 < lastWave η y m w}.Nonempty ∧
           sInf {m : ℕ | 1 ≤ m ∧ ∀ w ∈ penultimateCluster η x, 0 < lastWave η y m w} = n} := by
     ext η
-    rw [Set.mem_setOf_eq, hrw η, lwc_sInf_natCast_eq_iff]
+    rw [Set.mem_ofPred_eq, hrw η, lwc_sInf_natCast_eq_iff]
     rfl
   rw [heq]
   refine MeasurableSet.inter ?_ (lwc_sInf_eq_measurableSet _ (lwc_clusterCond_measurableSet y x) n)
@@ -958,7 +958,7 @@ theorem lwc_homog (d : ℕ) (p : ℝ)
         atTop (nhds (N v)))
     (v : Site d) (k : ℕ) (hk : 1 ≤ k) :
     N ((k : ℤ) • v) = (k : ℝ) * N v := by
-  haveI : NeZero (toyLaw d p) := ⟨MeasureTheory.IsProbabilityMeasure.ne_zero _⟩
+  have : NeZero (toyLaw d p) := ⟨MeasureTheory.IsProbabilityMeasure.ne_zero _⟩
   obtain ⟨η, h1, h2⟩ := ((hN v).and (hN ((k : ℤ) • v))).exists
   set g : ℕ → Site d → ℝ := fun n w => ((clusterArrival η (0 : Site d) ((n : ℤ) • w)).toNat : ℝ)
     with hg
@@ -1077,7 +1077,7 @@ theorem lwc_transfer_5 {d : ℕ} (η : Site d → ℤ) (γ : ℝ)
   obtain ⟨n0, hn0⟩ := hη
   obtain ⟨a, b, ha, _⟩ := (hn0 (max n0 (mnorm x).toNat) (le_max_left _ _) x
     (by omega)).2
-  rw [ha]; exact ENat.coe_ne_top a
+  rw [ha]; exact ENat.natCast_ne_top a
 
 /-- The pointwise gap between `lastArrival.toNat` and `clusterArrival.toNat` at a single site,
 read off `Exploding.Frozen.last_penultimate_close`'s conclusion at that site and scale. -/
@@ -1093,7 +1093,7 @@ theorem lwc_transfer_6 {d : ℕ} (η : Site d → ℤ) (γ : ℝ) (n0 : ℕ)
   have hab' : (a : ℝ) ≤ (b : ℝ) := by
     have : (a : ℕ∞) ≤ (b : ℕ∞) := ha ▸ hb ▸ hle
     exact_mod_cast this
-  rw [ha, hb, ENat.toNat_coe, ENat.toNat_coe, abs_of_nonpos (by linarith)]
+  rw [ha, hb, ENat.toNat_natCast, ENat.toNat_natCast, abs_of_nonpos (by linarith)]
   linarith
 
 /-- The locally uniform convergence of the rescaled `clusterArrival` (the hypothesis `hunif`),

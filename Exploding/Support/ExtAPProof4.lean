@@ -22,30 +22,30 @@ variable {d : ℕ}
 reading it along an injective family of indices. -/
 theorem xap4_map_blocks_bool {ι V : Type*} (ν : Measure Bool) [IsProbabilityMeasure ν]
     (A : ι → Set V) (hdisj : Pairwise (Function.onFun Disjoint A)) :
-    (Measure.infinitePi fun _ : V => ν).map (fun ω (i : ι) => (A i).restrict ω)
+    (Measure.infinitePi fun _ : V => ν).map (fun ω (i : ι) => (A i).domRestrict ω)
       = Measure.infinitePi fun i : ι => Measure.infinitePi fun _ : ↥(A i) => ν := by
   have h1 : (Measure.infinitePi fun _ : V => ν).map
       (fun ω p => ω (blockIndex A p))
       = Measure.infinitePi fun _ : (i : ι) × ↥(A i) => ν :=
     infinitePi_map_comp' ν (blockIndex A) (blockIndex_injective A hdisj)
   have h2 := Measure.infinitePi_map_piCurry (fun (i : ι) (_ : ↥(A i)) => (ν : Measure Bool))
-  have hcomp : (fun (ω : V → Bool) (i : ι) => (A i).restrict ω)
+  have hcomp : (fun (ω : V → Bool) (i : ι) => (A i).domRestrict ω)
       = ⇑(MeasurableEquiv.piCurry fun (_ : ι) (_ : ↥(A _)) => Bool)
         ∘ (fun (ω : V → Bool) p => ω (blockIndex A p)) := rfl
   rw [hcomp, ← Measure.map_map (MeasurableEquiv.piCurry _).measurable
-    (measurable_pi_lambda _ fun p => measurable_pi_apply (blockIndex A p)), h1, h2]
+    (Measurable.of_eval fun p => measurable_pi_apply (blockIndex A p)), h1, h2]
 
 /-- The functions restricting to the blocks of a pairwise-disjoint family are
 independent. -/
 theorem xap4_iIndepFun_restrict_of_pairwise_disjoint_bool {ι V : Type*}
     (ν : Measure Bool) [IsProbabilityMeasure ν] (A : ι → Set V)
     (hdisj : Pairwise (Function.onFun Disjoint A)) :
-    ProbabilityTheory.iIndepFun (fun (i : ι) (ω : V → Bool) => (A i).restrict ω)
+    ProbabilityTheory.iIndepFun (fun (i : ι) (ω : V → Bool) => (A i).domRestrict ω)
       (Measure.infinitePi fun _ : V => ν) := by
-  have hm : AEMeasurable (fun (ω : V → Bool) (i : ι) => (A i).restrict ω)
+  have hm : AEMeasurable (fun (ω : V → Bool) (i : ι) => (A i).domRestrict ω)
       (Measure.infinitePi fun _ : V => ν) := by
-    refine (measurable_pi_lambda _ fun i => ?_).aemeasurable
-    exact measurable_pi_lambda _ fun j => measurable_pi_apply (j : V)
+    refine (Measurable.of_eval fun i => ?_).aemeasurable
+    exact Measurable.of_eval fun j => measurable_pi_apply (j : V)
   rw [ProbabilityTheory.iIndepFun_iff_map_fun_eq_infinitePi_map₀ hm,
     xap4_map_blocks_bool ν A hdisj]
   congr 1
@@ -56,7 +56,7 @@ theorem xap4_iIndep_comap_of_pairwise_disjoint_bool {ι V : Type*}
     (ν : Measure Bool) [IsProbabilityMeasure ν] (A : ι → Set V)
     (hdisj : Pairwise (Function.onFun Disjoint A)) :
     ProbabilityTheory.iIndep
-      (fun i : ι => MeasurableSpace.comap (fun ω : V → Bool => (A i).restrict ω) inferInstance)
+      (fun i : ι => MeasurableSpace.comap (fun ω : V → Bool => (A i).domRestrict ω) inferInstance)
       (Measure.infinitePi fun _ : V => ν) :=
   xap4_iIndepFun_restrict_of_pairwise_disjoint_bool ν A hdisj
 
@@ -65,7 +65,7 @@ theorem xap4_iIndepSet_of_pairwise_disjoint_bool {ι V : Type*}
     (ν : Measure Bool) [IsProbabilityMeasure ν] (A : ι → Set V)
     (hdisj : Pairwise (Function.onFun Disjoint A)) (E : ι → Set (V → Bool))
     (hE : ∀ i, MeasurableSet[MeasurableSpace.comap
-      (fun ω : V → Bool => (A i).restrict ω) inferInstance] (E i)) :
+      (fun ω : V → Bool => (A i).domRestrict ω) inferInstance] (E i)) :
     ProbabilityTheory.iIndepSet E (Measure.infinitePi fun _ : V => ν) := by
   rw [ProbabilityTheory.iIndepSet_iff_iIndep]
   refine ProbabilityTheory.iIndep_of_iIndep_of_le
@@ -95,7 +95,7 @@ theorem xap4_cubeBonds_disjoint {z w : Site d} (hfar : ∃ i, 3 ≤ |z i - w i|)
 /-- Translating by `z` is a bijection from the origin's bond block to `z`'s. -/
 theorem xap4_mem_cubeBonds_add (z : Site d) (e : Site d × Fin d) :
     (e.1 + z, e.2) ∈ xap_cubeBonds z ↔ e ∈ xap_cubeBonds (0 : Site d) := by
-  simp only [xap_mem_cubeBonds, xap_cube, Set.mem_setOf_eq, Pi.add_apply, Pi.zero_apply, sub_zero]
+  simp only [xap_mem_cubeBonds, xap_cube, Set.mem_ofPred_eq, Pi.add_apply, Pi.zero_apply, sub_zero]
   constructor
   · rintro ⟨h1, h2⟩
     exact ⟨fun i => by have := h1 i; rwa [add_sub_cancel_right] at this,
@@ -146,7 +146,7 @@ theorem xap4_goodSet_comap (z : Site d) :
       change MeasurableSet ((fun v : ↥(xap_cubeBonds z) → Bool => v e) ⁻¹' {true})
       exact (measurable_pi_apply e) (measurableSet_singleton true))
   · ext ω
-    simp only [Set.mem_preimage, Set.mem_setOf_eq, Finset.restrict]
+    simp only [Set.mem_preimage, Set.mem_ofPred_eq, Finset.restrict]
     rw [xap_good_iff]
     constructor
     · intro h e he; exact h ⟨e, he⟩
@@ -166,8 +166,8 @@ theorem xap4_packing_bad_prob {q : ℝ} (h0 : 0 ≤ q) (h1 : q ≤ 1) (Γ' : Fin
     bondPercolation d q {ω | ∀ z ∈ Γ', ¬ xap_Good ω z} =
       (1 - ENNReal.ofReal q ^ (xap_cubeBonds (0 : Site d)).card) ^ Γ'.card := by
   classical
-  haveI : IsProbabilityMeasure (bitLaw q) := rn_bitLaw_isProb h0 h1
-  haveI : IsProbabilityMeasure (bondPercolation d q) := rn_infinitePi_isProb h0 h1
+  have : IsProbabilityMeasure (bitLaw q) := rn_bitLaw_isProb h0 h1
+  have : IsProbabilityMeasure (bondPercolation d q) := rn_infinitePi_isProb h0 h1
   set ι := {z // z ∈ Γ'} with hι
   have hind : ProbabilityTheory.iIndepSet (fun z : ι => {ω | ¬ xap_Good ω z.1})
       (bondPercolation d q) := by
@@ -181,7 +181,7 @@ theorem xap4_packing_bad_prob {q : ℝ} (h0 : 0 ≤ q) (h1 : q ≤ 1) (Γ' : Fin
   have heq : {ω : Site d × Fin d → Bool | ∀ z ∈ Γ', ¬ xap_Good ω z}
       = ⋂ z : ι, {ω | ¬ xap_Good ω z.1} := by
     ext ω
-    simp only [Set.mem_setOf_eq, Set.mem_iInter]
+    simp only [Set.mem_ofPred_eq, Set.mem_iInter]
     constructor
     · intro h z; exact h z.1 z.2
     · intro h z hz; exact h ⟨z, hz⟩

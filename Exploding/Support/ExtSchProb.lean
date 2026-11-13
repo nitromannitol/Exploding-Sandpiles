@@ -27,7 +27,7 @@ theorem xsch_chip_isProb (a b : ℤ) {p : ℝ} (h0 : 0 ≤ p) (h1 : p ≤ 1) :
 
 instance xsch_instProb (d : ℕ) (p : ℝ) [hp : Fact (0 ≤ p ∧ p ≤ 1)] :
     IsProbabilityMeasure (xsch_mu d p) := by
-  haveI := xsch_chip_isProb (2 * (d : ℤ)) (d : ℤ) hp.out.1 hp.out.2
+  have := xsch_chip_isProb (2 * (d : ℤ)) (d : ℤ) hp.out.1 hp.out.2
   unfold xsch_mu productLaw
   infer_instance
 
@@ -46,11 +46,11 @@ theorem xsch_Det.mono {A B : Set (Site d)} {E : Set (Site d → ℤ)} (h : xsch_
 theorem xsch_Det.measurableSet_comap {A : Set (Site d)} {E : Set (Site d → ℤ)}
     (hA : A.Finite) (h : xsch_Det A E) :
     @MeasurableSet (Site d → ℤ)
-      (MeasurableSpace.comap (fun ω : Site d → ℤ => A.restrict ω) inferInstance) E := by
-  haveI : Fintype ↥A := hA.fintype
-  haveI : Countable (↥A → ℤ) := inferInstance
-  have hE : E = (fun ω : Site d → ℤ => A.restrict ω) ⁻¹'
-      ((fun ω : Site d → ℤ => A.restrict ω) '' E) := by
+      (MeasurableSpace.comap (fun ω : Site d → ℤ => A.domRestrict ω) inferInstance) E := by
+  have : Fintype ↥A := hA.fintype
+  have : Countable (↥A → ℤ) := inferInstance
+  have hE : E = (fun ω : Site d → ℤ => A.domRestrict ω) ⁻¹'
+      ((fun ω : Site d → ℤ => A.domRestrict ω) '' E) := by
     ext η
     constructor
     · intro hη
@@ -63,8 +63,8 @@ theorem xsch_Det.measurableSet_comap {A : Set (Site d)} {E : Set (Site d → ℤ
 
 theorem xsch_Det.measurableSet {A : Set (Site d)} {E : Set (Site d → ℤ)}
     (hA : A.Finite) (h : xsch_Det A E) : MeasurableSet E := by
-  have hf : Measurable (fun ω : Site d → ℤ => A.restrict ω) :=
-    measurable_pi_lambda _ fun j => measurable_pi_apply (j : Site d)
+  have hf : Measurable (fun ω : Site d → ℤ => A.domRestrict ω) :=
+    Measurable.of_eval fun j => measurable_pi_apply (j : Site d)
   exact hf.comap_le _ (h.measurableSet_comap hA)
 
 theorem xsch_det_Sp (J : Finset (Fin d)) (R : Set (Site d)) :
@@ -125,7 +125,7 @@ theorem xsch_occ_prob (hd : 1 ≤ d) (W : Finset (Site d)) :
       = Set.pi (↑W : Set (Site d)) (fun _ => {2 * (d : ℤ)}) := by
     ext η
     simp [Set.pi]
-  haveI := xsch_chip_isProb (2 * (d : ℤ)) (d : ℤ) hp.1 hp.2
+  have := xsch_chip_isProb (2 * (d : ℤ)) (d : ℤ) hp.1 hp.2
   have h1 : chipLaw (2 * (d : ℤ)) (d : ℤ) p {2 * (d : ℤ)} = ENNReal.ofReal p := by
     have hne : (d : ℤ) ≠ 2 * (d : ℤ) := by omega
     simp [chipLaw, hne]
@@ -138,7 +138,7 @@ theorem xsch_occ_prob (hd : 1 ≤ d) (W : Finset (Site d)) :
 /-- Almost surely the background is at least `d` everywhere. -/
 theorem xsch_ae_ge : ∀ᵐ η ∂(xsch_mu d p), ∀ x : Site d, (d : ℤ) ≤ η x := by
   have hp := (Fact.out : 0 ≤ p ∧ p ≤ 1)
-  haveI := xsch_chip_isProb (2 * (d : ℤ)) (d : ℤ) hp.1 hp.2
+  have := xsch_chip_isProb (2 * (d : ℤ)) (d : ℤ) hp.1 hp.2
   rw [ae_all_iff]
   intro x
   rw [ae_iff]

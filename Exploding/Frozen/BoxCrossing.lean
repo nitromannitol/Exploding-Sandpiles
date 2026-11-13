@@ -34,5 +34,5 @@ theorem Exploding.Frozen.box_crossing :
 := by
   refine ⟨fun d hd ν hν hlow hhit hSch => bc_box_crossing d hd ν hν hlow hhit hSch, ?_⟩
   intro P hP hsupp
-  haveI := hP
+  have := hP
   exact bc_dim_one_box_crossing P hsupp

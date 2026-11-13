@@ -56,7 +56,7 @@ theorem xmb_st_of_mem {Fneg A B D1 : Set (Site d)} {z : Site d} (hz : z ∈ A) :
 theorem xmb_st_ne_a {Fneg A B D1 : Set (Site d)} {z : Site d} (hz : z ∉ A) :
     xmb_st Fneg A B D1 z ≠ .a := by
   classical
-  unfold xmb_st; simp only [hz, if_false]; split_ifs <;> simp
+  unfold xmb_st; simp only [hz, ite_false]; split_ifs <;> simp
 
 theorem xmb_st_d1 {Fneg A B D1 : Set (Site d)} {z : Site d}
     (hzA : z ∉ A) (hzD : z ∈ D1) : xmb_st Fneg A B D1 z = .d1 := by
@@ -207,7 +207,7 @@ theorem xmb_Fneg_connected (n : ℕ) (i : Fin d) {u v : Site d}
     induction T using Finset.induction_on with
     | empty =>
       intro _
-      simpa only [Finset.notMem_empty, if_false] using
+      simpa only [Finset.notMem_empty, ite_false] using
         (ReflTransGen.refl : ReflTransGen (fun a b => a ∈ xmc_Fneg d n i ∧
           b ∈ xmc_Fneg d n i ∧ (lattice d).Adj a b) u u)
     | insert j T' hj ih =>
@@ -220,29 +220,29 @@ theorem xmb_Fneg_connected (n : ℕ) (i : Fin d) {u v : Site d}
         · intro k
           show |(if k ∈ T' then v k else u k)| ≤ (n : ℤ)
           by_cases hk : k ∈ T'
-          · rw [if_pos hk]; exact hv.1 k
-          · rw [if_neg hk]; exact hu.1 k
+          · rw [ite_eq_left hk]; exact hv.1 k
+          · rw [ite_eq_right hk]; exact hu.1 k
         · show (if i ∈ T' then v i else u i) = -(n : ℤ)
-          rw [if_neg hiT']
+          rw [ite_eq_right hiT']
           exact hu.2
       have hfinal : (fun k => if k ∈ insert j T' then v k else u k)
           = Function.update (fun k => if k ∈ T' then v k else u k) j (v j) := by
         funext k
         by_cases hk : k = j
-        · subst hk; rw [Function.update_self, if_pos (Finset.mem_insert_self k T')]
+        · subst hk; rw [Function.update_self, ite_eq_left (Finset.mem_insert_self k T')]
         · rw [Function.update_of_ne hk]
           by_cases hkT : k ∈ T'
-          · rw [if_pos (Finset.mem_insert_of_mem hkT), if_pos hkT]
-          · rw [if_neg (fun h => hkT ((Finset.mem_insert.mp h).resolve_left hk)), if_neg hkT]
+          · rw [ite_eq_left (Finset.mem_insert_of_mem hkT), ite_eq_left hkT]
+          · rw [ite_eq_right (fun h => hkT ((Finset.mem_insert.mp h).resolve_left hk)), ite_eq_right hkT]
       rw [hfinal]
       exact hprev.trans (xmb_face_path_up hs'mem hji (b := v j) (hv.1 j))
   have hfinal : (fun j => if j ∈ (Finset.univ.erase i) then v j
       else u j) = v := by
     funext k
     by_cases hk : k = i
-    · rw [hk, if_neg (Finset.notMem_erase i Finset.univ)]
+    · rw [hk, ite_eq_right (Finset.notMem_erase i Finset.univ)]
       exact hu.2.trans hv.2.symm
-    · rw [if_pos (Finset.mem_erase.mpr ⟨hk, Finset.mem_univ k⟩)]
+    · rw [ite_eq_left (Finset.mem_erase.mpr ⟨hk, Finset.mem_univ k⟩)]
   rw [← hfinal]
   exact key (Finset.univ.erase i) (Finset.notMem_erase i Finset.univ)
 
@@ -340,7 +340,7 @@ theorem xmb_coboundary (n : ℕ) {Fneg A B D1 : Set (Site d)}
 theorem xmb_st_ne_d1_of_notMem {Fneg A B D1 : Set (Site d)} {y : Site d}
     (hyD : y ∉ D1) : xmb_st Fneg A B D1 y ≠ .d1 := by
   unfold xmb_st
-  simp only [hyD, if_false]
+  simp only [hyD, ite_false]
   split_ifs <;> simp
 
 theorem xmb_st_d2_spec {Fneg A B D1 : Set (Site d)} {y : Site d}
@@ -348,12 +348,12 @@ theorem xmb_st_d2_spec {Fneg A B D1 : Set (Site d)} {y : Site d}
   unfold xmb_st at hy
   by_cases hyA : y ∈ A
   · simp [hyA] at hy
-  · rw [if_neg hyA] at hy
+  · rw [ite_eq_right hyA] at hy
     by_cases hyD : y ∈ D1
     · simp [hyD] at hy
-    · rw [if_neg hyD] at hy
+    · rw [ite_eq_right hyD] at hy
       by_cases hyB : y ∈ B
-      · rw [if_pos hyB] at hy
+      · rw [ite_eq_left hyB] at hy
         by_cases hbd : xmb_Bdry Fneg A y
         · simp [hbd] at hy; exact ⟨hyB, hbd, hyD⟩
         · simp [hbd] at hy
@@ -646,7 +646,7 @@ theorem xmb_face_connected (n : ℕ) (i : Fin d) {c : ℤ} (_hc : |c| ≤ (n : �
     induction T using Finset.induction_on with
     | empty =>
       intro _
-      simpa only [Finset.notMem_empty, if_false] using
+      simpa only [Finset.notMem_empty, ite_false] using
         (ReflTransGen.refl : ReflTransGen (fun a b => a ∈ xmb_face d n i c ∧
           b ∈ xmb_face d n i c ∧ (lattice d).Adj a b) u u)
     | insert j T' hj ih =>
@@ -659,28 +659,28 @@ theorem xmb_face_connected (n : ℕ) (i : Fin d) {c : ℤ} (_hc : |c| ≤ (n : �
         · intro k
           show |(if k ∈ T' then v k else u k)| ≤ (n : ℤ)
           by_cases hk : k ∈ T'
-          · rw [if_pos hk]; exact hv.1 k
-          · rw [if_neg hk]; exact hu.1 k
+          · rw [ite_eq_left hk]; exact hv.1 k
+          · rw [ite_eq_right hk]; exact hu.1 k
         · show (if i ∈ T' then v i else u i) = c
-          rw [if_neg hiT']; exact hu.2
+          rw [ite_eq_right hiT']; exact hu.2
       have hfinal : (fun k => if k ∈ insert j T' then v k else u k)
           = Function.update (fun k => if k ∈ T' then v k else u k) j (v j) := by
         funext k
         by_cases hk : k = j
-        · subst hk; rw [Function.update_self, if_pos (Finset.mem_insert_self k T')]
+        · subst hk; rw [Function.update_self, ite_eq_left (Finset.mem_insert_self k T')]
         · rw [Function.update_of_ne hk]
           by_cases hkT : k ∈ T'
-          · rw [if_pos (Finset.mem_insert_of_mem hkT), if_pos hkT]
-          · rw [if_neg (fun h => hkT ((Finset.mem_insert.mp h).resolve_left hk)), if_neg hkT]
+          · rw [ite_eq_left (Finset.mem_insert_of_mem hkT), ite_eq_left hkT]
+          · rw [ite_eq_right (fun h => hkT ((Finset.mem_insert.mp h).resolve_left hk)), ite_eq_right hkT]
       rw [hfinal]
       exact hprev.trans (xmb_faceC_path_up hs'mem hji (b := v j) (hv.1 j))
   have hfinal : (fun j => if j ∈ (Finset.univ.erase i) then v j
       else u j) = v := by
     funext k
     by_cases hk : k = i
-    · rw [hk, if_neg (Finset.notMem_erase i Finset.univ)]
+    · rw [hk, ite_eq_right (Finset.notMem_erase i Finset.univ)]
       exact hu.2.trans hv.2.symm
-    · rw [if_pos (Finset.mem_erase.mpr ⟨hk, Finset.mem_univ k⟩)]
+    · rw [ite_eq_left (Finset.mem_erase.mpr ⟨hk, Finset.mem_univ k⟩)]
   rw [← hfinal]
   exact key (Finset.univ.erase i) (Finset.notMem_erase i Finset.univ)
 

@@ -29,7 +29,7 @@ theorem glws_row_injective (μ : Site d) (l : Fin d) :
     Function.Injective (fun t : ℕ => μ + (t : ℤ) • unit l) := by
   intro t t' h
   have := congrFun h l
-  simp only [Pi.add_apply, Pi.smul_apply, smul_eq_mul, glws_unit_apply, if_true, mul_one,
+  simp only [Pi.add_apply, Pi.smul_apply, smul_eq_mul, glws_unit_apply, ite_true, mul_one,
     add_right_inj] at this
   exact_mod_cast this
 
@@ -152,9 +152,9 @@ theorem glws_row_geom (k : Fin d → ℕ) (hk : ∀ i, 0 < k i) (l : Fin d) (lo 
       intro m
       by_cases hm : m = l
       · subst hm
-        simp only [if_true]
+        simp only [ite_true]
         constructor <;> linarith
-      · simp only [hm, if_false]
+      · simp only [hm, ite_false]
         obtain ⟨g1, g2⟩ := glws_floor_div (lo m - 1) (k m) (hk m)
         rw [← hμm m hm] at g1 g2
         rw [hjm m hm]
@@ -165,7 +165,7 @@ theorem glws_row_geom (k : Fin d → ℕ) (hk : ∀ i, 0 < k i) (l : Fin d) (lo 
         have := hw.1
         constructor <;> linarith [this.1, this.2]
       · have := hw.2 m hm
-        simp only [hm, if_false] at this
+        simp only [hm, ite_false] at this
         rw [this]
         exact ⟨le_rfl, hbox m⟩
     · intro y hy

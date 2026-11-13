@@ -23,7 +23,7 @@ theorem glws_local_meas (V : Finset (Site d)) (Φ : (Site d → ℤ) → Bool)
     refine hΦ _ _ (fun t ht => ?_)
     simp [ht]
   rw [h1]
-  exact (measurable_of_countable _).comp (measurable_pi_lambda _ (fun t => measurable_pi_apply _))
+  exact (measurable_of_countable _).comp (Measurable.of_eval (fun t => measurable_pi_apply _))
 
 /-- **The dependence graph of a local field of bits.**  If the law of the background has finite range
 of dependence `K`, and the bits `Φ s` depend only on the coordinates of the finite sets `vs s`, with
@@ -72,10 +72,10 @@ theorem glws_dependence_graph {S : Type} (P : Measure (Site d → ℤ)) [IsProba
     have : t ∈ J.biUnion vs := Finset.mem_biUnion.mpr ⟨i, i.2, ht⟩
     simp [this]
   have hmI : Measurable (fun (ω' : S → Bool) (i : I) => ω' i) :=
-    measurable_pi_lambda _ (fun i => measurable_pi_apply _)
+    Measurable.of_eval (fun i => measurable_pi_apply _)
   have hmJ : Measurable (fun (ω' : S → Bool) (j : J) => ω' j) :=
-    measurable_pi_lambda _ (fun i => measurable_pi_apply _)
-  haveI : IsProbabilityMeasure (P.map F) := Measure.isProbabilityMeasure_map hmeasF.aemeasurable
+    Measurable.of_eval (fun i => measurable_pi_apply _)
+  have : IsProbabilityMeasure (P.map F) := inferInstance
   rw [indepFun_iff_map_prod_eq_prod_map_map hmI.aemeasurable hmJ.aemeasurable]
   have hPI : (fun η (i : I) => F η i) = (fun (ω' : S → Bool) (i : I) => ω' i) ∘ F := rfl
   have hPJ : (fun η (j : J) => F η j) = (fun (ω' : S → Bool) (j : J) => ω' j) ∘ F := rfl

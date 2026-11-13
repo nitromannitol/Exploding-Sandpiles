@@ -59,13 +59,13 @@ theorem xsch17_nbr_card_le_one (K : ℕ) {x : Site d}
     · intro hs2
       have hthis : (x + xsch_dir s) j0 = x j0 + 1 := by
         rw [hval, hs2]
-        simp only [if_true]
+        simp only [ite_true]
       rw [hthis] at h1
       exact h1.2
     · intro hs2
       have hthis : (x + xsch_dir s) j0 = x j0 - 1 := by
         rw [hval, hs2]
-        simp only [Bool.false_eq_true, if_false]
+        simp only [Bool.false_eq_true, ite_false]
         ring
       rw [hthis] at h1
       exact h1.1

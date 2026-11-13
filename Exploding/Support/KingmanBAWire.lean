@@ -91,8 +91,8 @@ theorem king_dir_limit (d : ℕ) (hd : 2 ≤ d) (p : ℝ) (hp : 0 < p)
     ∃ Lv : ℝ, ∀ᵐ η ∂(toyLaw d p),
       Tendsto (fun n : ℕ => lwc8_gv E v η n / (n : ℝ)) atTop (nhds Lv) := by
   classical
-  haveI : IsProbabilityMeasure (toyLaw d p) := by
-    haveI : IsProbabilityMeasure (chipLaw (2 * (d : ℤ) - 1) (2 * (d : ℤ) - 2) p) :=
+  have : IsProbabilityMeasure (toyLaw d p) := by
+    have : IsProbabilityMeasure (chipLaw (2 * (d : ℤ) - 1) (2 * (d : ℤ) - 2) p) :=
       lwc_isProbabilityMeasure_chipLaw _ _ p hp.le hp1.le
     change IsProbabilityMeasure
       (Measure.infinitePi (fun _ : Site d => chipLaw (2 * (d : ℤ) - 1) (2 * (d : ℤ) - 2) p))
@@ -119,7 +119,7 @@ theorem king_dir_limit (d : ℕ) (hd : 2 ≤ d) (p : ℝ) (hp : 0 < p)
       exact Measurable.ite hEmeas (lwc_measurable d 0 ((n : ℤ) • v)) measurable_const
     have hnonneg : ∀ n η, 0 ≤ lwc8_gv E v η n := by
       intro n η
-      by_cases h : η ∈ E <;> simp only [lwc8_gv, h, if_true, if_false]
+      by_cases h : η ∈ E <;> simp only [lwc8_gv, h, ite_true, ite_false]
       · positivity
       · linarith
     have hsub : ∀ m n η, lwc8_gv E v η (m + n)
@@ -152,8 +152,8 @@ theorem king_L_data (d : ℕ) (hd : 2 ≤ d) (p : ℝ) (hp : 0 < p)
       (∃ C : ℝ, 0 ≤ C ∧ ∀ v : Site d, L v ≤ C * (mnorm v : ℝ)) ∧
       (∀ (k : ℕ) (v : Site d), L ((k : ℤ) • v) = (k : ℝ) * L v) := by
   classical
-  haveI : IsProbabilityMeasure (toyLaw d p) := by
-    haveI : IsProbabilityMeasure (chipLaw (2 * (d : ℤ) - 1) (2 * (d : ℤ) - 2) p) :=
+  have : IsProbabilityMeasure (toyLaw d p) := by
+    have : IsProbabilityMeasure (chipLaw (2 * (d : ℤ) - 1) (2 * (d : ℤ) - 2) p) :=
       lwc_isProbabilityMeasure_chipLaw _ _ p hp.le hp1.le
     change IsProbabilityMeasure
       (Measure.infinitePi (fun _ : Site d => chipLaw (2 * (d : ℤ) - 1) (2 * (d : ℤ) - 2) p))
@@ -223,7 +223,7 @@ theorem king_L_data (d : ℕ) (hd : 2 ≤ d) (p : ℝ) (hp : 0 < p)
           exact le_trans hn0' h2
         obtain ⟨a, ha, hb⟩ := hn0 (n * ((mnorm v).toNat + 1)) hNn0 ((n : ℤ) • v) hx
         rw [lwc8_gv_of_mem hηE, ha]
-        simp only [ENat.toNat_coe]
+        simp only [ENat.toNat_natCast]
         have hmnorm : (mnorm ((n : ℤ) • v) : ℝ) = (mnorm v : ℝ) * n := by
           rw [lwc2_mnorm_nat_smul]; push_cast; ring
         rw [hmnorm] at hb

@@ -1,5 +1,3 @@
-import LatticeProb
-
 import Exploding.Support.Toppling
 import Exploding.Support.Vocab
 import Exploding.Support.Hypotheses

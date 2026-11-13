@@ -16,6 +16,6 @@ theorem spanOdo_of_notMem (n : ℕ) (η : Site d → ℤ) (t : ℕ) {y : Site d}
   induction t with
   | zero => rfl
   | succ t ih =>
-    simp only [spanOdo, if_pos hy]
+    simp only [spanOdo, ite_eq_left hy]
 
 end Exploding

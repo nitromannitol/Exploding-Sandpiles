@@ -19,7 +19,7 @@ namespace Exploding
 /-- The whole lattice is one component of `Set.univ`. -/
 private theorem arxiv_proximity_univ_componentIn {d : ℕ} (hd : 0 < d) (i u : Site d) :
     u ∈ componentIn (Set.univ : Set (Site d)) i := by
-  haveI : NeZero d := ⟨hd.ne'⟩
+  have : NeZero d := ⟨hd.ne'⟩
   obtain ⟨w⟩ := (LatticeProb.Graph.Zd.latticeConnected d).preconnected i u
   let f : SimpleGraph.Hom (lattice d) ((lattice d).induce (Set.univ : Set (Site d))) :=
     { toFun := fun v => ⟨v, Set.mem_univ v⟩

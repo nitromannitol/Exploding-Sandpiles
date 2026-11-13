@@ -76,16 +76,16 @@ theorem pub_wave_path (η : Site d → ℤ) (hlow : ∀ x, 0 ≤ η x)
         by_cases him : i = m
         · subst him
           have h3 : i ≠ i + 1 := by omega
-          simp only [hm, if_true, h3, if_false]
+          simp only [hm, ite_true, h3, ite_false]
           exact hyadj
         · have h1 : i ≠ m + 1 := by omega
           have h2 : i + 1 ≠ m + 1 := by omega
-          simp only [h1, h2, if_false]
+          simp only [h1, h2, ite_false]
           exact hadj i (by omega)
       · intro i hi
         by_cases him : i = m + 1
         · simp [him, hx]
-        · simp only [him, if_false]
+        · simp only [him, ite_false]
           exact hmono _ (hpos i (by omega))
 
 /-! ### The crossing odometer of a good cube, dominated by the wave for every mass `N ≥ 1` -/
@@ -120,20 +120,20 @@ theorem pub_crossOdo_le_wave (hd0 : (0 : ℤ) < 2 * (d : ℤ))
   · intro x; split_ifs <;> norm_num
   · intro x
     by_cases hx : x - c ∈ line d k dir' z
-    · simp only [if_pos hx]
+    · simp only [ite_eq_left hx]
       have := hseed (x - c) hx
       rw [sub_add_cancel] at this
       exact this
-    · simp only [if_neg hx]
+    · simp only [ite_eq_right hx]
       exact wave_nonneg η hlow N zc t x
   · intro s' x _
     by_cases hx : x - c ∈ line d k dir' z
-    · simp only [if_pos hx]
+    · simp only [ite_eq_left hx]
       have := hseed (x - c) hx
       rw [sub_add_cancel] at this
       have h1 : 1 ≤ wave η N zc t x := by omega
       exact le_trans h1 (wave_mono_time η hlow hd0 N zc (Nat.le_add_right t s') x)
-    · simp only [if_neg hx]
+    · simp only [ite_eq_right hx]
       exact wave_nonneg η hlow N zc (t + s') x
 
 /-- A lit line of a good cube lights the cube within `k^d` steps. -/

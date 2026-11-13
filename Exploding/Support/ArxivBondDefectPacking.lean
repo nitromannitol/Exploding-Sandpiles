@@ -21,7 +21,7 @@ theorem arxiv_bond_defects_prob_packing_le (F : Finset (Site d)) {q : ℝ}
     bondPercolation d q {ζ | ∀ x ∈ F, rn_siteField ζ x = false} ≤
       (ENNReal.ofReal (2 * (d : ℝ) * (1 - q))) ^ (F.card / 3 ^ d) := by
   classical
-  haveI : IsProbabilityMeasure (bondPercolation d q) := rn_infinitePi_isProb hq0 hq1
+  have : IsProbabilityMeasure (bondPercolation d q) := rn_infinitePi_isProb hq0 hq1
   obtain ⟨F', hsubset, hfar, hcard⟩ := xap3_exists_packing F
   have hsep : ∀ x ∈ F', ∀ y ∈ F', x ≠ y → ¬ (lattice d).Adj x y := by
     intro x hx y hy hxy hadj

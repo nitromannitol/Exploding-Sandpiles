@@ -30,7 +30,7 @@ theorem xmh2_finset_closed_prob (hSC : xmh_StarCount d) {q : ℝ} (h0 : 0 ≤ q)
           ∃ F : Finset (Site d), p ∈ F ∧ F.card = m ∧
             xmh_SConn (F : Set (Site d)) ∧ ∀ x ∈ F, ω x = false} := by
     ext ω
-    simp only [Set.mem_setOf_eq, Set.mem_iUnion, exists_prop, Set.mem_setOf_eq]
+    simp only [Set.mem_ofPred_eq, Set.mem_iUnion, exists_prop, Set.mem_ofPred_eq]
   rw [hsub]
   refine le_trans (measure_biUnion_finset_le S _) ?_
   calc ∑ p ∈ S, sitePercolation d q {ω : Site d → Bool |

@@ -54,7 +54,7 @@ theorem mnorm_le_add_unit_add_one {d : ℕ} (x : Site d) (i : Fin d) :
   have hpoint : ∀ j : Fin d, |x j| ≤ |(x + unit i) j| + (if j = i then (1 : ℤ) else 0) := by
     intro j
     by_cases hji : j = i
-    · rw [hji, if_pos rfl]
+    · rw [hji, ite_eq_left rfl]
       have hu : (unit i : Site d) i = 1 := by simp [unit]
       simp only [Pi.add_apply, hu]
       have h1 := le_abs_self (x i + 1)
@@ -74,7 +74,7 @@ theorem mnorm_le_sub_unit_add_one {d : ℕ} (x : Site d) (i : Fin d) :
   have hpoint : ∀ j : Fin d, |x j| ≤ |(x - unit i) j| + (if j = i then (1 : ℤ) else 0) := by
     intro j
     by_cases hji : j = i
-    · rw [hji, if_pos rfl]
+    · rw [hji, ite_eq_left rfl]
       have hu : (unit i : Site d) i = 1 := by simp [unit]
       simp only [Pi.sub_apply, hu]
       have h1 := le_abs_self (x i - 1)
@@ -104,7 +104,7 @@ theorem exists_mnorm_pred {d : ℕ} {x : Site d} (hx : x ≠ 0) :
     have hpoint : ∀ j : Fin d, |(x - unit i) j| + (if j = i then (1 : ℤ) else 0) ≤ |x j| := by
       intro j
       by_cases hji : j = i
-      · rw [hji, if_pos rfl]
+      · rw [hji, ite_eq_left rfl]
         have hu : (unit i : Site d) i = 1 := by simp [unit]
         simp only [Pi.sub_apply, hu]
         rw [abs_of_nonneg (by omega : (0 : ℤ) ≤ x i - 1), abs_of_pos hpos]
@@ -120,7 +120,7 @@ theorem exists_mnorm_pred {d : ℕ} {x : Site d} (hx : x ≠ 0) :
     have hpoint : ∀ j : Fin d, |(x + unit i) j| + (if j = i then (1 : ℤ) else 0) ≤ |x j| := by
       intro j
       by_cases hji : j = i
-      · rw [hji, if_pos rfl]
+      · rw [hji, ite_eq_left rfl]
         have hu : (unit i : Site d) i = 1 := by simp [unit]
         simp only [Pi.add_apply, hu]
         rw [abs_of_nonpos (by omega : x i + 1 ≤ 0), abs_of_neg hneg]

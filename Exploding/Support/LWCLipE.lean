@@ -69,7 +69,7 @@ theorem lwcl_far_lipschitz (d : ℕ) (hd : 2 ≤ d) (p : ℝ) (hp : 0 < p) (hp1 
   have hlog3 : Real.log ((d : ℝ) * (n : ℝ)) ^ (max γ1 γ2 + 1) ≤
       Real.log n ^ (max γ1 γ2 + 1 + 1) := hlog2
   rw [hcast] at hlog1 hab hab' hbb1 hbb2
-  rw [hb1, hb2, ENat.toNat_coe, ENat.toNat_coe]
+  rw [hb1, hb2, ENat.toNat_natCast, ENat.toNat_natCast]
   rw [abs_sub_le_iff]
   constructor <;> linarith
 

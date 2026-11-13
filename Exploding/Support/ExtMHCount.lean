@@ -28,6 +28,7 @@ def xmh_induceHom {V : Type*} (G : SimpleGraph V) (s : Set V) : G.induce s →g 
 
 /-! ### A connected finite graph is the support of a short closed walk -/
 
+set_option backward.isDefEq.respectTransparency.types false in
 /-- **Short closed walk.**  A connected finite graph on `V` has a closed walk from any vertex
 whose support is all of `V` and whose length is at most `2 * (|V| - 1)`. -/
 theorem xmh_conn_walk_aux : ∀ n : ℕ, ∀ (V : Type*) [Fintype V] [DecidableEq V],
@@ -39,12 +40,12 @@ theorem xmh_conn_walk_aux : ∀ n : ℕ, ∀ (V : Type*) [Fintype V] [DecidableE
     classical
     intro V _ _ hcard G p hconn
     by_cases hle : Fintype.card V ≤ 1
-    · haveI : Subsingleton V := Fintype.card_le_one_iff_subsingleton.mp hle
+    · have : Subsingleton V := Fintype.card_le_one_iff_subsingleton.mp hle
       refine ⟨Walk.nil, fun x => ?_, by simp⟩
       rw [Walk.support_nil]
       exact List.mem_singleton.mpr (Subsingleton.elim x p)
     · have h2 : 1 < Fintype.card V := by omega
-      haveI : Nontrivial V := Fintype.one_lt_card_iff_nontrivial.mp h2
+      have : Nontrivial V := Fintype.one_lt_card_iff_nontrivial.mp h2
       obtain ⟨v, hvconn⟩ := hconn.exists_connected_induce_compl_singleton_of_finite_nontrivial
       by_cases hvp : v = p
       · -- the removed vertex is the root: prepend and append the root to a walk of the rest
@@ -181,13 +182,13 @@ theorem xmh_off_dirOf {a b : Site d} (h : xmh_star a b) :
   simp only [xmh_off, xmh_dirOf, Pi.sub_apply]
   rcases lt_trichotomy (b i) (a i) with hlt | heq | hgt
   · have hb : b i - a i = -1 := by omega
-    rw [if_pos hlt, hb]
+    rw [ite_eq_left hlt, hb]
     norm_num
   · have hb : b i - a i = 0 := by omega
-    rw [if_neg (not_lt.mpr heq.ge), if_pos heq, hb]
+    rw [ite_eq_right (not_lt.mpr heq.ge), ite_eq_left heq, hb]
     norm_num
   · have hb : b i - a i = 1 := by omega
-    rw [if_neg (not_lt.mpr hgt.le), if_neg (ne_of_gt hgt), hb]
+    rw [ite_eq_right (not_lt.mpr hgt.le), ite_eq_right (ne_of_gt hgt), hb]
     norm_num
 
 /-- The list of positions of a king walk given by its list of directions. -/
@@ -326,7 +327,7 @@ theorem xmh_starCount (d : ℕ) : xmh_StarCount d := by
     refine ⟨T, hTcard, fun F hFp hFcard hFconn => ?_⟩
     have hpre : ((xmh_kingGraph d).induce (F : Set (Site d))).Preconnected :=
       (xmh_SConn_iff_preconnected (F : Set (Site d))).mp hFconn
-    haveI : Nonempty ↥(F : Set (Site d)) := ⟨(⟨p, by simpa using hFp⟩ : ↥(F : Set (Site d)))⟩
+    have : Nonempty ↥(F : Set (Site d)) := ⟨(⟨p, by simpa using hFp⟩ : ↥(F : Set (Site d)))⟩
     have hGconn : ((xmh_kingGraph d).induce (F : Set (Site d))).Connected :=
       Connected.mk hpre
     have hcardF : Fintype.card ↥(F : Set (Site d)) = m :=

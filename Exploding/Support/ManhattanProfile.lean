@@ -4,7 +4,7 @@ import Mathlib.Algebra.Order.Group.Unbundled.Abs
 import Mathlib.Algebra.Order.Ring.Abs
 import Mathlib.Analysis.Convex.Basic
 import Mathlib.Analysis.Convex.Function
-import Mathlib.Data.Real.Basic
+import Mathlib.Basic.Real.Basic
 import Mathlib.Topology.Algebra.Monoid
 import Mathlib.Topology.Algebra.Order.Group
 import Mathlib.Topology.Constructions

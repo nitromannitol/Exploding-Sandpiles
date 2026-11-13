@@ -43,7 +43,7 @@ theorem xmh9_line (N : ℕ) {k i : Fin d} (hki : k ≠ i) (p : Site d) {a b : �
   have hci : ∀ t : ℤ, (Function.update p k t) i = p i := by
     intro t
     simp only [Function.update_apply]
-    rw [if_neg]
+    rw [ite_eq_right]
     exact Ne.symm hki
   have hmem : ∀ t : ℤ, Function.update p k t ∈ {x : Site d | x ∉ cent d N} := by
     intro t hx
@@ -100,7 +100,7 @@ theorem xmh9_change_others (N : ℕ) (u : Site d) {i : Fin d} (hu : ¬ |u i| ≤
         have hiS' : i ∉ S := fun h => hiS (Finset.mem_insert_of_mem h)
         have hgi : (g S) i = u i := by
           simp only [g]
-          exact if_neg hiS'
+          exact ite_eq_right hiS'
         have hout : ¬ |(g S) i| ≤ (N : ℤ) := by rw [hgi]; exact hu
         have hstep := xmh9_line_any N (k := j) (i := i) hj (g S) ((g S) j) ((N : ℤ) + 1) hout
         rw [show Function.update (g S) j ((g S) j) = g S from
@@ -139,7 +139,7 @@ theorem xmh9_conn_compl_cent (hd : 2 ≤ d) (N : ℕ) :
     obtain ⟨j, hji⟩ := xmh9_exists_ne hd i
     have h1 := xmh9_change_others N z hi
     have hzj : (Function.update (fun _ => (N : ℤ) + 1) i (z i)) j = (N : ℤ) + 1 := by
-      rw [Function.update_apply, if_neg hji]
+      rw [Function.update_apply, ite_eq_right hji]
     have hout : ¬ |(Function.update (fun _ => (N : ℤ) + 1) i (z i)) j| ≤ (N : ℤ) := by
       rw [hzj, abs_of_nonneg (by positivity)]
       omega

@@ -189,7 +189,7 @@ theorem glw2_kdep (d : ℕ) (P : Measure (Site d → ℤ))
     rw [show rboxShift k j = Set.univ.pi
         (fun i : Fin d => Set.Icc (1 + (k i : ℤ) * j i) ((k i : ℤ) * j i + (k i : ℤ))) from by
       ext x
-      simp only [rboxShift, Set.mem_setOf_eq, Set.mem_univ_pi, Set.mem_Icc]]
+      simp only [rboxShift, Set.mem_ofPred_eq, Set.mem_univ_pi, Set.mem_Icc]]
     exact Set.Finite.pi (fun i => Set.finite_Icc _ _)
   let tileFin : Site d → Finset (Site d) := fun j => (hfin j).toFinset
   have tileFin_mem : ∀ j x, x ∈ tileFin j ↔ x ∈ rboxShift k j := fun j x => (hfin j).mem_toFinset
@@ -236,7 +236,7 @@ theorem glw2_kdep (d : ℕ) (P : Measure (Site d → ℤ))
       · have h2 : ¬ StronglyBoxCrossed (eI (rI η)) k (i : Site d) := fun hc => h (hiff.mp hc)
         simp [h, h2]
     · have hxI : x ∈ bigI := hsubI (i : Site d) i.2 ((tileFin_mem (i : Site d) x).mpr hx)
-      simp only [eI, rI, dif_pos hxI]
+      simp only [eI, rI, dite_eq_left hxI]
   have hRJ : ((fun ω : Site d → Bool => fun j : J => ω j) ∘ F) = ΦJ ∘ rJ := by
     funext η j
     show decide (StronglyBoxCrossed η k (j : Site d))
@@ -248,13 +248,13 @@ theorem glw2_kdep (d : ℕ) (P : Measure (Site d → ℤ))
       · have h2 : ¬ StronglyBoxCrossed (eJ (rJ η)) k (j : Site d) := fun hc => h (hiff.mp hc)
         simp [h, h2]
     · have hxJ : x ∈ bigJ := hsubJ (j : Site d) j.2 ((tileFin_mem (j : Site d) x).mpr hx)
-      simp only [eJ, rJ, dif_pos hxJ]
+      simp only [eJ, rJ, dite_eq_left hxJ]
   have hcomp : IndepFun (ΦI ∘ rI) (ΦJ ∘ rJ) P := hind.comp hΦI hΦJ
   refine (glw2_indepFun_map_iff F hF P
     (fun ω : Site d → Bool => fun i : I => ω i)
     (fun ω : Site d → Bool => fun j : J => ω j)
-    (measurable_pi_lambda _ (fun i => measurable_pi_apply (i : Site d)))
-    (measurable_pi_lambda _ (fun j => measurable_pi_apply (j : Site d)))).mpr ?_
+    (Measurable.of_eval (fun i => measurable_pi_apply (i : Site d)))
+    (Measurable.of_eval (fun j => measurable_pi_apply (j : Site d)))).mpr ?_
   rw [hRI, hRJ]
   exact hcomp
 

@@ -24,7 +24,7 @@ theorem glws_fodo_congr (S T : Set (Site d)) (hS : Tᶜ ⊆ S) (s0 s0' w0 : Site
     · have hxT : x ∈ T := by
         by_contra h
         exact hx (hS h)
-      simp only [hx, if_false]
+      simp only [hx, ite_false]
       unfold fconf
       rw [ih, heq x hxT]
 

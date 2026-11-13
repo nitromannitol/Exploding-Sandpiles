@@ -57,5 +57,5 @@ theorem lwc4_clusterArrival_ge_mnorm (hd : 0 < d) (η : Site d → ℤ)
   have hpos : 0 < lastWave η z n x := hcov x (centre_mem_penultimateCluster η x)
   have hpos' : 0 < wave η (waveThreshold η z) z n x := hpos
   have h := lwc4_wave_pos_mnorm_le hd η hlow hhigh (waveThreshold η z) z n x hpos'
-  rw [heq, ENat.toNat_coe]
+  rw [heq, ENat.toNat_natCast]
   exact h

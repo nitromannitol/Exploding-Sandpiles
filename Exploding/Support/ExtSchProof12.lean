@@ -70,7 +70,7 @@ theorem xsch12_a_zero {p : ℝ} [Fact (0 ≤ p ∧ p ≤ 1)] (hd : 1 ≤ d) : xs
   have : {η : Site d → ℤ | ¬ xsch_Sp (Finset.univ : Finset (Fin d)) (cube d 0) η} = ∅ := by
     rw [hempty]
     ext η
-    simp only [Set.mem_setOf_eq, Set.mem_empty_iff_false, iff_false, not_not]
+    simp only [Set.mem_ofPred_eq, Set.mem_empty_iff_false, iff_false, not_not]
     exact fun x hx => hx.elim
   rw [this, measureReal_empty]
 
@@ -118,7 +118,7 @@ theorem xsch12_recursion {p : ℝ} [Fact (0 ≤ p ∧ p ≤ 1)] (hd : 1 ≤ d) (
     have hatmost : ∀ σ σ', σ ≠ σ' → ¬ (η ∈ Bad σ ∧ η ∈ Bad σ') := by
       intro σ σ' hne hboth
       apply hcon
-      exact Set.mem_iUnion.mpr ⟨σ, Set.mem_iUnion.mpr ⟨σ', by rwa [if_pos hne]⟩⟩
+      exact Set.mem_iUnion.mpr ⟨σ, Set.mem_iUnion.mpr ⟨σ', by rwa [ite_eq_left hne]⟩⟩
     by_cases hex : ∃ σ, η ∈ Bad σ
     · obtain ⟨σ0, hσ0⟩ := hex
       refine hη (xsch12_sp_of_all_but_one hd n hn σ0 η (fun σ hσ => ?_))
@@ -142,13 +142,13 @@ theorem xsch12_recursion {p : ℝ} [Fact (0 ≤ p ∧ p ≤ 1)] (hd : 1 ≤ d) (
       _ = ∑ σ : Fin d → Bool, ∑ σ' : Fin d → Bool, (if σ ≠ σ' then q ^ 2 else 0) := by
           refine Finset.sum_congr rfl fun σ _ => Finset.sum_congr rfl fun σ' _ => ?_
           by_cases h : σ = σ'
-          · rw [if_neg (fun hh => hh h), if_neg (fun hh => hh h), measureReal_empty]
-          · rw [if_pos h, if_pos h, hBadProd σ σ' h]
+          · rw [ite_eq_right (fun hh => hh h), ite_eq_right (fun hh => hh h), measureReal_empty]
+          · rw [ite_eq_left h, ite_eq_left h, hBadProd σ σ' h]
       _ ≤ ∑ _σ : Fin d → Bool, ∑ _σ' : Fin d → Bool, q ^ 2 := by
           refine Finset.sum_le_sum fun σ _ => Finset.sum_le_sum fun σ' _ => ?_
           by_cases h : σ = σ'
-          · rw [if_neg (fun hh => hh h)]; exact sq_nonneg q
-          · rw [if_pos h]
+          · rw [ite_eq_right (fun hh => hh h)]; exact sq_nonneg q
+          · rw [ite_eq_left h]
       _ = (2 : ℝ) ^ (2 * d) * q ^ 2 := by
           have hcard : Fintype.card (Fin d → Bool) = 2 ^ d := by
             rw [Fintype.card_fun]; simp [Fintype.card_fin]

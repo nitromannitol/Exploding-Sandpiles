@@ -111,7 +111,7 @@ theorem xmh3_st_of_mem (hz : z ∈ A) : xmh3_st A B D1 z = .a := by
 
 theorem xmh3_st_ne_a (hz : z ∉ A) : xmh3_st A B D1 z ≠ .a := by
   classical
-  unfold xmh3_st; simp only [hz, if_false]; split_ifs <;> simp
+  unfold xmh3_st; simp only [hz, ite_false]; split_ifs <;> simp
 
 theorem xmh3_st_d1 (hzA : z ∉ A) (hzD : z ∈ D1) : xmh3_st A B D1 z = .d1 := by
   classical

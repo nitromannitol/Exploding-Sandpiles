@@ -66,7 +66,7 @@ private theorem arxivAllHigh_crossOne_of_externalSeed (d : ℕ) (i : Fin d)
           _ = q - unit j := by rw [hq]
       have hterm : w (q - unit j) = 1 := by
         rw [← hz]
-        exact if_pos hzline
+        exact ite_eq_left hzline
       unfold nbrSumZ
       calc
         1 = w (q - unit j) := hterm.symm
@@ -78,7 +78,7 @@ private theorem arxivAllHigh_crossOne_of_externalSeed (d : ℕ) (i : Fin d)
     · have hz : z = q + unit j := hj
       have hterm : w (q + unit j) = 1 := by
         rw [← hz]
-        exact if_pos hzline
+        exact ite_eq_left hzline
       unfold nbrSumZ
       calc
         1 = w (q + unit j) := hterm.symm
@@ -89,14 +89,14 @@ private theorem arxivAllHigh_crossOne_of_externalSeed (d : ℕ) (i : Fin d)
             (fun l _ => add_nonneg (hw_nonneg _) (hw_nonneg _)) (Finset.mem_univ j)
   have hqw : w q = 0 := by
     dsimp [w]
-    exact if_neg hqnotline
+    exact ite_eq_right hqnotline
   have hconf : 2 * (d : ℤ) ≤ fconf S η w 0 q := by
     change 2 * (d : ℤ) ≤ η q + lap w q
     rw [lap, hqw]
     dsimp [η]
     omega
   change fodo S η w 1 q = 1
-  rw [fodo_succ_of_notMem S η w 0 hqnotS, fodo_zero, if_pos hconf, hqw]
+  rw [fodo_succ_of_notMem S η w 0 hqnotS, fodo_zero, ite_eq_left hconf, hqw]
   norm_num
 
 /-- At scale one, the all-high background crosses from every internal or
@@ -244,6 +244,7 @@ private def arxivAllHigh_fromInducedHom (d : ℕ) :
   toFun := fun x => x.val
   map_rel' := fun h => SimpleGraph.induce_adj.mp h
 
+set_option backward.isDefEq.respectTransparency.types false in
 /-- On the whole lattice, chemical distance is exactly the ordinary
 lattice-graph distance. -/
 theorem arxivAllHigh_chemDist_eq_graphEdist (d : ℕ) (x y : Site d) :

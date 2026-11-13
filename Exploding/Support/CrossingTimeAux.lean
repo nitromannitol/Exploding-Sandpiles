@@ -83,7 +83,7 @@ theorem aux_ct_hoeffding_indep (d : ℕ) (p : ℝ) (hp : 0 ≤ p) (hp1 : p ≤ 1
       mul_one]
     rw [← ENNReal.ofReal_add hp (by linarith)]
     norm_num
-  haveI : ∀ _ : Site d, IsProbabilityMeasure (chipLaw (2 * (d : ℤ) - 1) (2 * (d : ℤ) - 2) p) :=
+  have : ∀ _ : Site d, IsProbabilityMeasure (chipLaw (2 * (d : ℤ) - 1) (2 * (d : ℤ) - 2) p) :=
     fun _ => hchip
   have hbase : ProbabilityTheory.iIndepFun (fun (i : Site d) (ω : Site d → ℤ) => ω i)
       (Measure.infinitePi fun _ : Site d => chipLaw (2 * (d : ℤ) - 1) (2 * (d : ℤ) - 2) p) :=
@@ -122,7 +122,7 @@ theorem aux_ct_hoeffding_subgauss (d : ℕ) (p : ℝ) (hp : 0 < p) (hp1 : p < 1)
     hmeas_f.comp hmeas_eval
   have h_range : ∀ (ω : Site d → ℤ), f (ω z) ∈ Set.Icc (p - 1) p := by
     intro ω
-    dsimp [f, Set.Icc, Set.mem_setOf_eq]
+    dsimp [f, Set.Icc, Set.mem_ofPred_eq]
     by_cases h : ω z = 2 * (d : ℤ) - 1
     · simp [h]
     · simp [h]
@@ -137,7 +137,7 @@ theorem aux_ct_hoeffding_subgauss (d : ℕ) (p : ℝ) (hp : 0 < p) (hp1 : p < 1)
         _ = 1 := ENNReal.ofReal_one
     dsimp [chipLaw]
     simp [h_add]
-  haveI : IsProbabilityMeasure (toyLaw d p) := by
+  have : IsProbabilityMeasure (toyLaw d p) := by
     dsimp [toyLaw, productLaw]
     -- Need to provide the hμ instance
     have : IsProbabilityMeasure (Measure.infinitePi (fun _ : Site d => chipLaw (2 * (d : ℤ) - 1) (2 * (d : ℤ) - 2) p)) := by
@@ -219,7 +219,7 @@ theorem aux_ct_hoeffding (d k : ℕ) (hd : 2 ≤ d) (p : ℝ) (hp : 0 < p) (hp1 
       mul_one]
     rw [← ENNReal.ofReal_add hp.le (by linarith)]
     norm_num
-  haveI hIPM' : IsProbabilityMeasure (toyLaw d p) := by
+  have hIPM' : IsProbabilityMeasure (toyLaw d p) := by
     unfold toyLaw productLaw
     infer_instance
   set X : ℤ → (Site d → ℤ) → ℝ := fun j η =>
@@ -238,7 +238,7 @@ theorem aux_ct_hoeffding (d k : ℕ) (hd : 2 ≤ d) (p : ℝ) (hp : 0 < p) (hp1 
     have hscard : (s.card : ℝ) = (k : ℝ) := by
       rw [hsdef, Int.card_Icc, show ((k : ℤ) + 1 - 1).toNat = k by omega]
     ext η
-    simp only [Set.mem_setOf_eq, hXdef]
+    simp only [Set.mem_ofPred_eq, hXdef]
     rw [Finset.sum_sub_distrib, Finset.sum_const, nsmul_eq_mul, hscard]
     constructor <;> intro h <;> nlinarith [h]
   rw [hsetEq] at hHoeff
@@ -389,7 +389,7 @@ theorem aux_ct_ae_bounded (d : ℕ) (hd : 2 ≤ d) (p : ℝ) (hp : 0 < p) (hp1 :
   have h_chip_ab : (chipLaw a b p) ({b, a} : Set ℤ) = 1 := by
     unfold chipLaw
     simp [ha_ne_b, h_ofReal_add]
-  haveI : IsProbabilityMeasure (chipLaw a b p) := by
+  have : IsProbabilityMeasure (chipLaw a b p) := by
     refine { measure_univ := ?_ }
     unfold chipLaw
     simp [h_ofReal_add]
@@ -404,7 +404,7 @@ theorem aux_ct_ae_bounded (d : ℕ) (hd : 2 ≤ d) (p : ℝ) (hp : 0 < p) (hp1 :
     refine MeasurableSet.pi Set.countable_univ ?_
     intro i _
     exact (MeasurableSet.singleton a).insert b
-  haveI : IsProbabilityMeasure (toyLaw d p) := by
+  have : IsProbabilityMeasure (toyLaw d p) := by
     unfold toyLaw productLaw
     infer_instance
   have h_ae : ∀ᵐ η ∂(toyLaw d p), η ∈ Set.pi Set.univ (fun _ : Site d => ({b, a} : Set ℤ)) := by
@@ -559,11 +559,11 @@ theorem aux_ct_off_step4 {d k : ℕ} (i : Fin d) (x y : Site d)
   have hdir : s = 1 → y l < x l := by
     intro h
     by_contra hc
-    rw [hs, if_neg hc] at h; omega
+    rw [hs, ite_eq_right hc] at h; omega
   have hdir' : s = -1 → x l < y l := by
     intro h
     by_cases hc : y l < x l
-    · rw [hs, if_pos hc] at h; omega
+    · rw [hs, ite_eq_left hc] at h; omega
     · omega
   have hxl := hx l
   have hylrange : (1 ≤ y l ∧ y l ≤ (k : ℤ)) ∨ y l = 0 ∨ y l = (k : ℤ) + 1 := by
@@ -681,10 +681,10 @@ theorem aux_ct_bad_peel {d k : ℕ} (i : Fin d) (x y : Site d) (l0 : Fin d)
   set s : ℤ := if y l0 < x l0 then 1 else -1 with hs
   have hsval : s = 1 ∨ s = -1 := by rw [hs]; split_ifs <;> simp
   have hdir : s = 1 → y l0 < x l0 := by
-    intro h; by_contra hc; rw [hs, if_neg hc] at h; omega
+    intro h; by_contra hc; rw [hs, ite_eq_right hc] at h; omega
   have hdir' : s = -1 → x l0 < y l0 := by
     intro h; by_cases hc : y l0 < x l0
-    · rw [hs, if_pos hc] at h; omega
+    · rw [hs, ite_eq_left hc] at h; omega
     · omega
   refine ⟨Function.update y l0 (y l0 + s), ?_, ?_, ?_, ?_⟩
   · rw [Function.update_of_ne (Ne.symm hl0i)]
@@ -755,10 +755,10 @@ theorem aux_ct_off_step5 {d k : ℕ} (i : Fin d) (x y : Site d)
     set s : ℤ := if y l < x l then 1 else -1 with hs
     have hsval : s = 1 ∨ s = -1 := by rw [hs]; split_ifs <;> simp
     have hdir : s = 1 → y l < x l := by
-      intro h; by_contra hc; rw [hs, if_neg hc] at h; omega
+      intro h; by_contra hc; rw [hs, ite_eq_right hc] at h; omega
     have hdir' : s = -1 → x l < y l := by
       intro h; by_cases hc : y l < x l
-      · rw [hs, if_pos hc] at h; omega
+      · rw [hs, ite_eq_left hc] at h; omega
       · omega
     refine ⟨Function.update y l (y l + s), ?_, ?_, ?_, ?_⟩
     · rw [Function.update_of_ne (Ne.symm hli)]
@@ -922,7 +922,7 @@ theorem aux_ct_propagate_line_fill (d k : ℕ) (hd : 2 ≤ d) (η : Site d → �
   have hx0fire : crossOdo η k i z (T + 1) x0 = 1 := by
     by_cases hz0 : x0 ∈ line d k i z
     · rw [crossOdo, fodo_of_mem S η w0 (T + 1) (Or.inr hz0)]
-      simp only [hw0, if_pos hz0]
+      simp only [hw0, ite_eq_left hz0]
     · have hx0notS : x0 ∉ S := by
         intro hmem
         rcases hmem with hmem | hmem
@@ -993,18 +993,18 @@ theorem aux_ct_propagate_line_fill (d k : ℕ) (hd : 2 ≤ d) (η : Site d → �
           refine ⟨⟨?_, ?_⟩, ?_⟩
           · rw [hvi]
             by_cases hlt : w i < x0 i
-            · simp only [if_pos hlt]; omega
-            · simp only [if_neg hlt]; omega
+            · simp only [ite_eq_left hlt]; omega
+            · simp only [ite_eq_right hlt]; omega
           · rw [hvi]
             by_cases hlt : w i < x0 i
-            · simp only [if_pos hlt]; omega
-            · simp only [if_neg hlt]; omega
+            · simp only [ite_eq_left hlt]; omega
+            · simp only [ite_eq_right hlt]; omega
           · intro m hm
             rw [hv]
             by_cases hlt : w i < x0 i
-            · simp only [if_pos hlt, Pi.add_apply, unit, Pi.single_eq_of_ne hm, add_zero]
+            · simp only [ite_eq_left hlt, Pi.add_apply, unit, Pi.single_eq_of_ne hm, add_zero]
               exact hw.2 m hm
-            · simp only [if_neg hlt, Pi.sub_apply, unit, Pi.single_eq_of_ne hm, sub_zero]
+            · simp only [ite_eq_right hlt, Pi.sub_apply, unit, Pi.single_eq_of_ne hm, sub_zero]
               exact hw.2 m hm
         have hnat : ((w i - x0 i).natAbs : ℤ) = (s : ℤ) + 1 := hwi
         have hvdist : (v i - x0 i).natAbs = (s : ℤ) := by
@@ -1034,7 +1034,7 @@ theorem aux_ct_propagate_line_fill (d k : ℕ) (hd : 2 ≤ d) (η : Site d → �
           · have h1 : crossOdo η k i z (T + 1 + s) w = 1 := by
               show fodo S η w0 (T + 1 + s) w = 1
               rw [fodo_of_mem S η w0 (T + 1 + s) (Or.inr hmem)]
-              simp only [hw0, if_pos hmem]
+              simp only [hw0, ite_eq_left hmem]
             omega
         have hconf : 2 * (d : ℤ) ≤ fconf S η w0 (T + 1 + s) w := by
           have h2 : 2 * (d : ℤ) - 2 ≤ η w := (hbdd w).1
@@ -1224,11 +1224,11 @@ theorem aux_ct_bd_gen (d k : ℕ) (i : Fin d) (z x : Site d)
       have h1 : (z l - x l).natAbs ≤ k - 1 :=
         aux_ct_off_coord k hk1 (z l) (x l) (hzc l).1 (hzc l).2 (hx l).1 (hx l).2
       by_cases hl : l = i
-      · rw [if_pos hl]; omega
-      · rw [if_neg hl]; omega)
+      · rw [ite_eq_left hl]; omega
+      · rw [ite_eq_right hl]; omega)
   · have hzb' : ∃ y ∈ cube d k, (lattice d).Adj z y := by
       have h := hzb
-      simp only [outerBoundary, Set.mem_setOf_eq] at h
+      simp only [outerBoundary, Set.mem_ofPred_eq] at h
       exact h.2
     obtain ⟨y, hy, hadj⟩ := hzb'
     have hkey : ∃ j : Fin d,
@@ -1251,13 +1251,13 @@ theorem aux_ct_bd_gen (d k : ℕ) (i : Fin d) (z x : Site d)
     obtain ⟨j, hzeq, hzJ⟩ := hkey
     exact hfinal j (fun l => by
       by_cases hl : l = j
-      · rw [if_pos hl]
+      · rw [ite_eq_left hl]
         have h1 : (z l - x l).natAbs ≤ k := by
           rw [hl]
           exact aux_ct_exc_coord k (z j) (x j) (y j) (hy j).1 (hy j).2 hzJ (hx j).1 (hx j).2
         have h2 : k = (k - 1) + 1 := (Nat.sub_add_cancel hk1).symm
         omega
-      · rw [if_neg hl]
+      · rw [ite_eq_right hl]
         have h1 : (z l - x l).natAbs ≤ k - 1 := by
           rw [hzeq l hl]
           exact aux_ct_off_coord k hk1 (y l) (x l) (hy l).1 (hy l).2 (hx l).1 (hx l).2
@@ -1323,7 +1323,7 @@ theorem aux_ct_propagate_chain (d k : ℕ) (hd : 2 ≤ d) (η : Site d → ℤ)
       · simpa [hl] using hy'range l hl
     have hlineeq : line d k i (fun l => if l = i then (1 : ℤ) else y' l) = line d k i y' := by
       ext w
-      simp only [line, Set.mem_setOf_eq]
+      simp only [line, Set.mem_ofPred_eq]
       refine and_congr_right fun _ => ?_
       constructor
       · intro h l hl; have := h l hl; simpa [hl] using this
@@ -1431,11 +1431,11 @@ theorem aux_ct_assemble_cube_finite (d k : ℕ) : (cube d k).Finite := by
 `aux_ct_assemble_cube_eq_pi`, compute `(Set.Icc (1:ℤ) k).encard = k` (`Finset.
 coe_Icc`/`Set.encard_coe_eq_coe_finsetCard`, `Int.card_Icc`), multiply the `d`
 equal factors with `Set.encard_pi_eq_prod_encard`/`Finset.prod_const`, and
-unfold `Set.ncard = ENat.toNat ∘ Set.encard` (`ENat.toNat_coe`). -/
+unfold `Set.ncard = ENat.toNat ∘ Set.encard` (`ENat.toNat_natCast`). -/
 theorem aux_ct_enat_toNat_pow (k d : ℕ) : ((k : ℕ∞) ^ d).toNat = k ^ d := by
   induction d with
   | zero => simp
-  | succ n ih => rw [pow_succ, ENat.toNat_mul, ih, ENat.toNat_coe, pow_succ]
+  | succ n ih => rw [pow_succ, ENat.toNat_mul, ih, ENat.toNat_natCast, pow_succ]
 
 theorem aux_ct_setIcc_encard (k : ℕ) : (Set.Icc (1 : ℤ) (k : ℤ) : Set ℤ).encard = (k : ℕ∞) := by
   rw [← Finset.coe_Icc, Set.encard_coe_eq_coe_finsetCard, Int.card_Icc]
@@ -1505,7 +1505,7 @@ needed) gives the final `1 - δ` bound in `ℝ≥0∞`-arithmetic. -/
 theorem aux_ct_assemble (d : ℕ) (hd : 2 ≤ d) (p : ℝ) (hp : 0 < p) (hp1 : p < 1)
     (δ : ℝ) (hδ : 0 < δ) :
     ∃ k : ℕ, 1 ≤ k ∧ ENNReal.ofReal (1 - δ) ≤ toyLaw d p {η | GoodCube η k} := by
-  haveI hIPM' : IsProbabilityMeasure (toyLaw d p) := by
+  have hIPM' : IsProbabilityMeasure (toyLaw d p) := by
     unfold toyLaw productLaw
     have hIPM : IsProbabilityMeasure (chipLaw (2 * (d : ℤ) - 1) (2 * (d : ℤ) - 2) p) := by
       refine ⟨?_⟩
@@ -1540,7 +1540,7 @@ theorem aux_ct_assemble (d : ℕ) (hd : 2 ≤ d) (p : ℝ) (hp : 0 < p) (hp1 : p
     by_contra hcon
     rw [Set.mem_union, not_or] at hcon
     apply hη
-    simp only [hBaddef, hUdef, Set.mem_setOf_eq, not_not] at hcon
+    simp only [hBaddef, hUdef, Set.mem_ofPred_eq, not_not] at hcon
     exact aux_ct_propagate d k hd η hcon.2 hcon.1
   have hcompl_le : toyLaw d p {η : Site d → ℤ | GoodCube η k}ᶜ ≤ ENNReal.ofReal δ := by
     calc toyLaw d p {η : Site d → ℤ | GoodCube η k}ᶜ

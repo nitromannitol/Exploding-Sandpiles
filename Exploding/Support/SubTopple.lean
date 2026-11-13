@@ -19,8 +19,8 @@ theorem recOdo_topple (d : ℕ) (hd : 1 ≤ d) (V : Finset (Site d)) (t : ℕ) {
     (hx : x ∈ V) (h0 : recOdo d V t x = 0)
     (hup : ∀ i : Fin d, 1 ≤ recOdo d V t (x + unit i)) :
     recOdo d V (t + 1) x = 1 := by
-  rw [Exploding.recOdo_succ, if_neg (by simpa using hx), h0, zero_add]
-  rw [if_pos]
+  rw [Exploding.recOdo_succ, ite_eq_right (by simpa using hx), h0, zero_add]
+  rw [ite_eq_left]
   rw [Exploding.lap, Exploding.nbrSumZ, h0, mul_zero, sub_zero]
   have hsum : (d : ℤ) ≤ ∑ i : Fin d, (Exploding.recOdo d V t (x + LatticeProb.unit i) + Exploding.recOdo d V t (x - LatticeProb.unit i)) := by
     have hle : (∑ _ : Fin d, (1 : ℤ)) ≤ ∑ i : Fin d, (Exploding.recOdo d V t (x + LatticeProb.unit i) + Exploding.recOdo d V t (x - LatticeProb.unit i)) := by

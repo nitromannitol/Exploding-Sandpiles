@@ -186,19 +186,19 @@ theorem ls_arrival_attained (η : Site d → ℤ) (x : Site d) (m : ℕ)
     by_contra h
     have hset : {t : ℕ∞ | ∃ n : ℕ, t = (n : ℕ∞) ∧ 1 ≤ n ∧ 0 < podo (explodingPile η) n x} = ∅ := by
       ext t
-      simp only [Set.mem_setOf_eq, Set.mem_empty_iff_false, iff_false]
+      simp only [Set.mem_ofPred_eq, Set.mem_empty_iff_false, iff_false]
       rintro ⟨n, -, hn1, hpos⟩
       exact h ⟨n, hn1, hpos⟩
     have htop : arrival η x = ⊤ := by rw [hS, hset, sInf_empty]
     rw [htop] at heq
-    exact ENat.coe_ne_top m heq.symm
+    exact ENat.natCast_ne_top m heq.symm
   have harr : arrival η x = (Nat.find hne : ℕ∞) := by
     rw [hS]
     refine le_antisymm (sInf_le ⟨Nat.find hne, rfl, (Nat.find_spec hne).1, (Nat.find_spec hne).2⟩) ?_
     refine le_sInf ?_
     rintro t ⟨n, rfl, hn1, hnP⟩
     exact_mod_cast Nat.find_min' hne ⟨hn1, hnP⟩
-  have hm : m = Nat.find hne := ENat.coe_inj.mp (heq.symm.trans harr)
+  have hm : m = Nat.find hne := ENat.natCast_inj.mp (heq.symm.trans harr)
   rw [hm]
   exact (Nat.find_spec hne).2
 
@@ -224,7 +224,7 @@ theorem ls_arrival_le (η : Site d → ℤ) (x : Site d) (n : ℕ) (hn : 1 ≤ n
 
 theorem ls_toNat_le_of_podo_pos (η : Site d → ℤ) (x : Site d) (n : ℕ) (hn : 1 ≤ n)
     (h : 0 < podo (explodingPile η) n x) : (arrival η x).toNat ≤ n :=
-  ENat.toNat_le_of_le_coe (ls_arrival_le η x n hn h)
+  ENat.toNat_le_of_le_natCast (ls_arrival_le η x n hn h)
 
 theorem ls_toNat_lt_of_podo_zero (η : Site d → ℤ) (x : Site d) (n : ℕ)
     (hexp : arrival η x ≠ ⊤) (h : podo (explodingPile η) n x = 0) :
@@ -233,7 +233,7 @@ theorem ls_toNat_lt_of_podo_zero (η : Site d → ℤ) (x : Site d) (n : ℕ)
   push Not at hlt
   obtain ⟨m, hm⟩ := ENat.ne_top_iff_exists.mp hexp
   have hpos := ls_arrival_attained η x m hm.symm
-  have hmt : (arrival η x).toNat = m := by rw [← hm]; exact ENat.toNat_coe m
+  have hmt : (arrival η x).toNat = m := by rw [← hm]; exact ENat.toNat_natCast m
   rw [hmt] at hlt
   have hmono := ls_podo_mono (explodingPile η) x hlt
   change podo (explodingPile η) m x ≤ podo (explodingPile η) n x at hmono
@@ -410,7 +410,7 @@ theorem ls_shell_inclusion (η : Site d → ℤ) (N : (Fin d → ℝ) → ℝ)
       hyA.1
     have hnotB : y ∉ {y : Fin d → ℝ | N y < 1} := fun hB => hyB ⟨hB, hyK⟩
     have hNy_ge : 1 ≤ N y := by
-      simp only [Set.mem_setOf_eq] at hnotB
+      simp only [Set.mem_ofPred_eq] at hnotB
       linarith
     have hf := hN0 t htN0 y hyK
     have hle1 := ls_toNat_div_le_one_of_podo_pos η _ t ht1 hyAnb
@@ -425,7 +425,7 @@ theorem ls_shell_inclusion (η : Site d → ℤ) (N : (Fin d → ℝ) → ℝ)
     have hNz : N y < 1 := hBy
     have hpodo0 : podo (explodingPile η) t (nearestSite ((t : ℝ) • y)) = 0 := by
       have hnn := ls_podo_nonneg (explodingPile η) t (nearestSite ((t : ℝ) • y))
-      simp only [Set.mem_setOf_eq] at hnotA
+      simp only [Set.mem_ofPred_eq] at hnotA
       omega
     have hf := hN0 t htN0 y hyK
     have hgt1 := ls_one_lt_toNat_div_of_podo_zero η _ t ht1 (hexp _) hpodo0
@@ -447,7 +447,7 @@ theorem ls_levelset_subset_frontier (N : (Fin d → ℝ) → ℝ)
   intro y hy
   have hyN : N y = 1 := hy
   have h_not_mem : y ∉ {y | N y < 1} := by
-    rw [Set.mem_setOf_eq]
+    rw [Set.mem_ofPred_eq]
     linarith
   have h_mem_closure : y ∈ closure {y | N y < 1} := by
     rw [mem_closure_iff]
@@ -486,7 +486,7 @@ theorem ls_levelset_subset_frontier (N : (Fin d → ℝ) → ℝ)
         _ = c * 1 := by rw [hyN]
         _ = c := by ring
     have hc_smul_mem_B : c • y ∈ {y | N y < 1} := by
-      rw [Set.mem_setOf_eq, hN_c_smul]
+      rw [Set.mem_ofPred_eq, hN_c_smul]
       exact hc_lt_one
     exact ⟨c • y, hc_smul_mem_U, hc_smul_mem_B⟩
   have h_frontier : y ∈ frontier {y | N y < 1} := by
@@ -524,7 +524,7 @@ theorem ls_shell_volume_tendsto (N : (Fin d → ℝ) → ℝ)
       ext y; constructor
       · intro hy
         refine ⟨t⁻¹ • y, ?_, ?_⟩
-        · rw [Set.mem_setOf_eq]
+        · rw [Set.mem_ofPred_eq]
           have h := hhom t⁻¹ (by positivity) y
           -- h : N (t⁻¹ • y) = t⁻¹ * N y
           rw [h]
@@ -552,7 +552,7 @@ theorem ls_shell_volume_tendsto (N : (Fin d → ℝ) → ℝ)
   -- For t ≤ 0, {N < t} is empty (since N ≥ 0)
   have h_empty_lt : ∀ t : ℝ, t ≤ 0 → {y | N y < t} = ∅ := by
     intro t ht
-    ext y; simpa [Set.mem_setOf_eq, Set.mem_empty_iff_false] using not_lt.mpr (le_trans ht (hN_nonneg y))
+    ext y; simpa [Set.mem_ofPred_eq, Set.mem_empty_iff_false] using not_lt.mpr (le_trans ht (hN_nonneg y))
   -- Each shell is NullMeasurableSet: it's the intersection of {N ≤ b} and {a ≤ N}
   -- {a ≤ N} = {N < a}ᶜ (open or empty)
   -- {N ≤ b} = ⋂_k {N < b + 1/(k+1)} (countable intersection of open sets)
@@ -592,7 +592,7 @@ theorem ls_shell_volume_tendsto (N : (Fin d → ℝ) → ℝ)
     -- {N ≤ b} = ⋂_k {N < b + 1/(k+1)}
     have h_right : NullMeasurableSet {y | N y ≤ b} volume := by
       have h_eq : {y | N y ≤ b} = ⋂ i : ℕ, {y | N y < b + (1 / ((i : ℝ) + 1))} := by
-        ext y; simp only [Set.mem_iInter, Set.mem_setOf_eq]
+        ext y; simp only [Set.mem_iInter, Set.mem_ofPred_eq]
         constructor
         · intro hy i
           have hy' : N y ≤ b := hy
@@ -603,7 +603,7 @@ theorem ls_shell_volume_tendsto (N : (Fin d → ℝ) → ℝ)
         · intro hy
           have hy' : ∀ i : ℕ, N y < b + (1 / ((i : ℝ) + 1)) := hy
           by_contra! hgt
-          have hgt' : b < N y := by simpa [Set.mem_setOf_eq] using hgt
+          have hgt' : b < N y := by simpa [Set.mem_ofPred_eq] using hgt
           have hpos_diff : 0 < N y - b := sub_pos.mpr hgt'
           rcases exists_nat_one_div_lt hpos_diff with ⟨i, hi⟩
           have hi' : N y < b + (1 / ((i : ℝ) + 1)) := hy' i
@@ -650,7 +650,7 @@ theorem ls_shell_volume_tendsto (N : (Fin d → ℝ) → ℝ)
       have hyN : N y = 1 := hy
       refine Set.mem_iInter.mpr ?_
       intro n
-      rw [hshell_def, Set.mem_setOf_eq]
+      rw [hshell_def, Set.mem_ofPred_eq]
       have hpos_div : 0 ≤ 1 / ((n : ℝ) + 1) := div_nonneg (by norm_num) (by positivity)
       constructor
       · rw [hyN]; linarith
@@ -661,7 +661,7 @@ theorem ls_shell_volume_tendsto (N : (Fin d → ℝ) → ℝ)
     refine ⟨0, ?_⟩
     have h_sub : shell 0 ⊆ Metric.closedBall (0 : Fin d → ℝ) 2 := by
       intro y hy
-      rw [hshell_def, Set.mem_setOf_eq] at hy
+      rw [hshell_def, Set.mem_ofPred_eq] at hy
       rcases hy with ⟨hlo, hhi⟩
       have hsum : ∑ i, |y i| ≤ N y := hlb y
       have hsum2 : ∑ i, |y i| ≤ 2 := by linarith
@@ -853,7 +853,7 @@ theorem ls_measure_convergence (η : Site d → ℤ) (N : (Fin d → ℝ) → �
     (ls_A_ball_eventually η hη)
   intro y hy
   have hyN := hlb y
-  simp only [Set.mem_setOf_eq] at hy ⊢
+  simp only [Set.mem_ofPred_eq] at hy ⊢
   linarith
 
 
@@ -888,7 +888,7 @@ theorem ls_toyLaw_upper_ae (d : ℕ) (_hd : 2 ≤ d) (p : ℝ) (hp : 0 < p) (hp1
     ∀ᵐ η ∂(toyLaw d p), ∀ x : Site d, η x ≤ 2 * (d : ℤ) - 1 := by
   have hp0 : 0 ≤ p := by linarith
   have hp1' : p ≤ 1 := by linarith
-  haveI : IsProbabilityMeasure (chipLaw (2 * (d : ℤ) - 1) (2 * (d : ℤ) - 2) p) := by
+  have : IsProbabilityMeasure (chipLaw (2 * (d : ℤ) - 1) (2 * (d : ℤ) - 2) p) := by
     refine ⟨?h⟩
     rw [chipLaw, Measure.add_apply, Measure.smul_apply, Measure.smul_apply,
       Measure.dirac_apply, Measure.dirac_apply]
@@ -938,7 +938,7 @@ theorem ls_assemble (d : ℕ) (hd : 2 ≤ d) (p : ℝ) (hp : 0 < p) (hp1 : p ≤
     Exploding.Frozen.convergence_of_time_constant d hd p hp hp1 hFLP hLSSB hHole hChem
   by_cases hμ : toyLaw d p = 0
   · exact ⟨Set.univ, convex_univ, isOpen_univ, Set.univ_nonempty, by simp [hμ]⟩
-  · haveI : NeBot (ae (toyLaw d p)) := ae_neBot.mpr hμ
+  · have : NeBot (ae (toyLaw d p)) := ae_neBot.mpr hμ
     obtain ⟨η₀, hη₀, hη₀ub⟩ := (hae.and (ls_toyLaw_upper_ae d hd p hp hp1)).exists
     have hlb : ∀ y : Fin d → ℝ, ∑ i, |y i| ≤ N y :=
       fun y => ls_N_lower_bound η₀ N hη₀ub hη₀.2.1 hη₀.2.2 y

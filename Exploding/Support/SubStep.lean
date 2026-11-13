@@ -78,8 +78,8 @@ theorem crossOdo_le_wave {d : ℕ} (hd0 : (0 : ℤ) < 2 * (d : ℤ))
       wave η N zc t (y + (k : ℤ) • j) := by
     intro y
     by_cases hy : y ∈ line d k dir' z
-    · rw [if_pos hy]; exact hseed1 y hy
-    · rw [if_neg hy]; exact wave_nonneg η hlow N zc t _
+    · rw [ite_eq_left hy]; exact hseed1 y hy
+    · rw [ite_eq_right hy]; exact wave_nonneg η hlow N zc t _
   have hseed0' : ∀ y, (0 : ℤ) ≤ (if y ∈ line d k dir' z then (1 : ℤ) else 0) := by
     intro y
     by_cases hy : y ∈ line d k dir' z <;> simp [hy]
@@ -101,9 +101,9 @@ theorem crossOdo_le_wave {d : ℕ} (hd0 : (0 : ℤ) < 2 * (d : ℤ))
     intro y
     rw [crossOdo, fodo_succ]
     by_cases hy : y ∈ (cube d k)ᶜ ∪ line d k dir' z
-    · rw [if_pos hy]
+    · rw [ite_eq_left hy]
       exact le_trans (hseed0 y) (hmono (s + 1) y)
-    · rw [if_neg hy]
+    · rw [ite_eq_right hy]
       have hyc : y ∈ cube d k := by
         by_contra h
         exact hy (Or.inl h)
@@ -112,7 +112,7 @@ theorem crossOdo_le_wave {d : ℕ} (hd0 : (0 : ℤ) < 2 * (d : ℤ))
         wave_mono_t η hlow hd0 N zc (t + s) (y + (k : ℤ) • j)
       by_cases hc : 2 * (d : ℤ) ≤ fconf ((cube d k)ᶜ ∪ line d k dir' z)
           (fun x => η (x + (k : ℤ) • j)) (fun x => if x ∈ line d k dir' z then 1 else 0) s y
-      · rw [if_pos hc]
+      · rw [ite_eq_left hc]
         have hsum : nbrSumZ (crossOdo (fun x => η (x + (k : ℤ) • j)) k dir' z s) y ≤
             nbrSumZ (wave η N zc (t + s)) (y + (k : ℤ) • j) := by
           have h1 := nbrSumZ_mono (fun w => ih w) y
@@ -133,7 +133,7 @@ theorem crossOdo_le_wave {d : ℕ} (hd0 : (0 : ℤ) < 2 * (d : ℤ))
           rw [Int.le_ediv_iff_mul_le (by positivity)]
           simp only [crossOdo] at hsum hc' hle1 ⊢
           nlinarith [hsum, hc', hle1]
-      · rw [if_neg hc]
+      · rw [ite_eq_right hc]
         simp only [crossOdo] at ih ⊢
         have h1 := ih y
         rw [show t + (s + 1) = t + s + 1 from by omega]
@@ -159,8 +159,8 @@ theorem crossOdo_le_wave_one {d : ℕ} (hd0 : (0 : ℤ) < 2 * (d : ℤ))
       wave η 1 zc t (y + (k : ℤ) • j) := by
     intro y
     by_cases hy : y ∈ line d k dir' z
-    · rw [if_pos hy]; exact hseed1 y hy
-    · rw [if_neg hy]; exact wave_nonneg η hlow 1 zc t _
+    · rw [ite_eq_left hy]; exact hseed1 y hy
+    · rw [ite_eq_right hy]; exact wave_nonneg η hlow 1 zc t _
   have hseed0' : ∀ y, (0 : ℤ) ≤ (if y ∈ line d k dir' z then (1 : ℤ) else 0) := by
     intro y
     by_cases hy : y ∈ line d k dir' z <;> simp [hy]
@@ -182,9 +182,9 @@ theorem crossOdo_le_wave_one {d : ℕ} (hd0 : (0 : ℤ) < 2 * (d : ℤ))
     intro y
     rw [crossOdo, fodo_succ]
     by_cases hy : y ∈ (cube d k)ᶜ ∪ line d k dir' z
-    · rw [if_pos hy]
+    · rw [ite_eq_left hy]
       exact le_trans (hseed0 y) (hmono (s + 1) y)
-    · rw [if_neg hy]
+    · rw [ite_eq_right hy]
       have hyc : y ∈ cube d k := by
         by_contra h
         exact hy (Or.inl h)
@@ -193,7 +193,7 @@ theorem crossOdo_le_wave_one {d : ℕ} (hd0 : (0 : ℤ) < 2 * (d : ℤ))
         wave_mono_t η hlow hd0 1 zc (t + s) (y + (k : ℤ) • j)
       by_cases hc : 2 * (d : ℤ) ≤ fconf ((cube d k)ᶜ ∪ line d k dir' z)
           (fun x => η (x + (k : ℤ) • j)) (fun x => if x ∈ line d k dir' z then 1 else 0) s y
-      · rw [if_pos hc]
+      · rw [ite_eq_left hc]
         have hsum : nbrSumZ (crossOdo (fun x => η (x + (k : ℤ) • j)) k dir' z s) y ≤
             nbrSumZ (wave η 1 zc (t + s)) (y + (k : ℤ) • j) := by
           have h1 := nbrSumZ_mono (fun w => ih w) y
@@ -209,7 +209,7 @@ theorem crossOdo_le_wave_one {d : ℕ} (hd0 : (0 : ℤ) < 2 * (d : ℤ))
         rw [Int.le_ediv_iff_mul_le (by positivity)]
         simp only [crossOdo] at hsum hc' hle1 ⊢
         nlinarith [hsum, hc', hle1]
-      · rw [if_neg hc]
+      · rw [ite_eq_right hc]
         simp only [crossOdo] at ih ⊢
         have h1 := ih y
         rw [show t + (s + 1) = t + s + 1 from by omega]
@@ -237,8 +237,8 @@ theorem crossOdo_le_wave_one' {d : ℕ} (hd0 : (0 : ℤ) < 2 * (d : ℤ))
       wave η 1 zc t (y + (k : ℤ) • j) := by
     intro y
     by_cases hy : y ∈ line d k dir' z
-    · rw [if_pos hy]; exact hseed1 y hy
-    · rw [if_neg hy]; exact wave_nonneg η hlow 1 zc t _
+    · rw [ite_eq_left hy]; exact hseed1 y hy
+    · rw [ite_eq_right hy]; exact wave_nonneg η hlow 1 zc t _
   have hseed0' : ∀ y, (0 : ℤ) ≤ (if y ∈ line d k dir' z then (1 : ℤ) else 0) := by
     intro y
     by_cases hy : y ∈ line d k dir' z <;> simp [hy]
@@ -260,9 +260,9 @@ theorem crossOdo_le_wave_one' {d : ℕ} (hd0 : (0 : ℤ) < 2 * (d : ℤ))
     intro y
     rw [crossOdo, fodo_succ]
     by_cases hy : y ∈ (cube d k)ᶜ ∪ line d k dir' z
-    · rw [if_pos hy]
+    · rw [ite_eq_left hy]
       exact le_trans (hseed0 y) (hmono (s + 1) y)
-    · rw [if_neg hy]
+    · rw [ite_eq_right hy]
       have hyc : y ∈ cube d k := by
         by_contra h
         exact hy (Or.inl h)
@@ -271,7 +271,7 @@ theorem crossOdo_le_wave_one' {d : ℕ} (hd0 : (0 : ℤ) < 2 * (d : ℤ))
         wave_mono_t η hlow hd0 1 zc (t + s) (y + (k : ℤ) • j)
       by_cases hc : 2 * (d : ℤ) ≤ fconf ((cube d k)ᶜ ∪ line d k dir' z)
           (fun x => η (x + (k : ℤ) • j)) (fun x => if x ∈ line d k dir' z then 1 else 0) s y
-      · rw [if_pos hc]
+      · rw [ite_eq_left hc]
         have hsum : nbrSumZ (crossOdo (fun x => η (x + (k : ℤ) • j)) k dir' z s) y ≤
             nbrSumZ (wave η 1 zc (t + s)) (y + (k : ℤ) • j) := by
           have h1 := nbrSumZ_mono (fun w => ih w) y
@@ -287,7 +287,7 @@ theorem crossOdo_le_wave_one' {d : ℕ} (hd0 : (0 : ℤ) < 2 * (d : ℤ))
         rw [Int.le_ediv_iff_mul_le (by positivity)]
         simp only [crossOdo] at hsum hc' hle1 ⊢
         nlinarith [hsum, hc', hle1]
-      · rw [if_neg hc]
+      · rw [ite_eq_right hc]
         simp only [crossOdo] at ih ⊢
         have h1 := ih y
         rw [show t + (s + 1) = t + s + 1 from by omega]

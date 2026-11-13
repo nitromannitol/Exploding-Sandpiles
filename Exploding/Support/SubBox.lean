@@ -57,7 +57,7 @@ their coordinatewise extrema define. -/
 theorem br_image_eq_box (z : ℕ → Site d) (j : ℕ) :
     br (z '' {i : ℕ | i ≤ j}) = box z j := by
   ext p
-  simp only [br, Set.mem_setOf_eq, Set.mem_image, box]
+  simp only [br, Set.mem_ofPred_eq, Set.mem_image, box]
   constructor
   · intro h i
     obtain ⟨⟨y, hy, hyi⟩, ⟨y', hy', hy'i⟩⟩ := h i
@@ -76,6 +76,7 @@ theorem path_mem_box_succ (z : ℕ → Site d) (j : ℕ) : z (j + 1) ∈ box z (
   exact ⟨bmin_le z (j + 1) i (Nat.le_refl (j + 1)),
     le_bmax z (j + 1) i (Nat.le_refl (j + 1))⟩
 
+set_option backward.isDefEq.respectTransparency.types false in
 /-- The box of the first `j+2` points contains the box of the first `j+1`. -/
 theorem box_mono (z : ℕ → Site d) (j : ℕ) : box z j ⊆ box z (j + 1) := by
   intro p hp i
@@ -242,7 +243,7 @@ theorem br_finite (A : Set (Site d)) (hA : A.Finite) : (br A).Finite := by
   have hset : {z : Site d | ∀ i, (∃ y ∈ A, y i ≤ z i) ∧ (∃ y ∈ A, z i ≤ y i)} =
       {z | ∀ i, z i ∈ ⋃ y ∈ A, ⋃ y' ∈ A, Set.Icc (y i) (y' i)} := by
     ext z
-    simp only [Set.mem_setOf_eq, Set.mem_iUnion, Set.mem_Icc]
+    simp only [Set.mem_ofPred_eq, Set.mem_iUnion, Set.mem_Icc]
     constructor
     · intro h i
       obtain ⟨⟨y1, hy1, h1⟩, ⟨y2, hy2, h2⟩⟩ := h i
@@ -440,7 +441,7 @@ theorem br_two_nbrs (A : Set (Site d)) (hA : A.Finite) (i0 : Fin d) {p : Site d}
     have hboxp : br A = {p} := by
       rw [hbox]
       ext x
-      simp only [Set.mem_setOf_eq, Set.mem_singleton_iff]
+      simp only [Set.mem_ofPred_eq, Set.mem_singleton_iff]
       constructor
       · intro hx
         funext j
@@ -554,7 +555,7 @@ theorem box_succ_up (z : ℕ → Site d) (j : ℕ) (i : Fin d)
     Exploding.box z (j + 1) = Exploding.box z j ∪
       slab (fun k => bmin z j k) (fun k => bmax z j k) i (bmax z j i + 1) := by
   ext p
-  simp only [Exploding.box, Set.mem_setOf_eq, Set.mem_union, slab]
+  simp only [Exploding.box, Set.mem_ofPred_eq, Set.mem_union, slab]
   constructor
   · intro hp
     have hlo : ∀ k, bmin z j k ≤ p k := by
@@ -632,7 +633,7 @@ theorem box_succ_down (z : ℕ → Site d) (j : ℕ) (i : Fin d)
     Exploding.box z (j + 1) = Exploding.box z j ∪
       slab (fun k => bmin z j k) (fun k => bmax z j k) i (bmin z j i - 1) := by
   ext p
-  simp only [Exploding.box, Set.mem_setOf_eq, Set.mem_union, slab]
+  simp only [Exploding.box, Set.mem_ofPred_eq, Set.mem_union, slab]
   constructor
   · intro hp
     have hhi : ∀ k, p k ≤ bmax z j k := by
@@ -805,7 +806,7 @@ theorem fillSet_path (m : ℕ) (z : ℕ → Site d)
       obtain ⟨⟨y1, hy1, h1⟩, ⟨y2, hy2, h2⟩⟩ := hx i
       obtain ⟨k1, hk1, rfl⟩ := hy1
       obtain ⟨k2, hk2, rfl⟩ := hy2
-      simp only [Set.mem_setOf_eq] at hk1 hk2
+      simp only [Set.mem_ofPred_eq] at hk1 hk2
       have hk1' : k1 = 0 := Nat.le_zero.mp hk1
       have hk2' : k2 = 0 := Nat.le_zero.mp hk2
       subst hk1'; subst hk2'
@@ -850,7 +851,7 @@ theorem fillSet_path (m : ℕ) (z : ℕ → Site d)
       · -- `z j i < bmax z j i`: the box does not grow
         have hboxeq : Exploding.box z (j + 1) = Exploding.box z j := by
           ext p
-          simp only [Exploding.box, Set.mem_setOf_eq]
+          simp only [Exploding.box, Set.mem_ofPred_eq]
           constructor
           · intro hp k
             refine ⟨?_, ?_⟩
@@ -927,7 +928,7 @@ theorem fillSet_path (m : ℕ) (z : ℕ → Site d)
       · -- `bmin z j i < z j i`: the box does not grow
         have hboxeq : Exploding.box z (j + 1) = Exploding.box z j := by
           ext p
-          simp only [Exploding.box, Set.mem_setOf_eq]
+          simp only [Exploding.box, Set.mem_ofPred_eq]
           constructor
           · intro hp k
             refine ⟨?_, ?_⟩

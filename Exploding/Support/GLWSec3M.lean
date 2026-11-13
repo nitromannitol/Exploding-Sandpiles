@@ -204,20 +204,20 @@ theorem glws_penultimate_small (hd : 2 ≤ d) (η : Site d → ℤ) (hlow : ∀ 
       intro w hw m'
       by_cases hm : m' = l₁
       · have := hw m'
-        simp only [hlo_def, hhi_def, hm, if_true] at this
+        simp only [hlo_def, hhi_def, hm, ite_true] at this
         rcases le_total (x l₁) (z p l₁) with hle | hle
         · rw [min_eq_left hle, max_eq_right hle] at this
           exact ⟨⟨z 0, h0mem, by rw [hz0, hm]; exact this.1⟩, ⟨z p, hpmem, by rw [hm]; exact this.2⟩⟩
         · rw [min_eq_right hle, max_eq_left hle] at this
           exact ⟨⟨z p, hpmem, by rw [hm]; exact this.1⟩, ⟨z 0, h0mem, by rw [hz0, hm]; exact this.2⟩⟩
       · have := hw m'
-        simp only [hlo_def, hhi_def, hm, if_false] at this
+        simp only [hlo_def, hhi_def, hm, ite_false] at this
         have hwx : w m' = x m' := le_antisymm this.2 this.1
         exact ⟨⟨z 0, h0mem, by rw [hz0, hwx]⟩, ⟨z 0, h0mem, by rw [hz0, hwx]⟩⟩
     have hbox : ∀ m', lo m' ≤ hi m' := by
       intro m'
       by_cases hm : m' = l₁
-      · simp only [hlo_def, hhi_def, hm, if_true]
+      · simp only [hlo_def, hhi_def, hm, ite_true]
         exact le_trans (min_le_left _ _) (le_max_left _ _)
       · simp [hlo_def, hhi_def, hm]
     have hxn : ∀ m', |x m'| ≤ (n' : ℤ) := by
@@ -228,21 +228,21 @@ theorem glws_penultimate_small (hd : 2 ≤ d) (η : Site d → ℤ) (hlow : ∀ 
     have hlo_abs : ∀ m', |lo m'| ≤ (n' : ℤ) := by
       intro m'
       by_cases hm : m' = l₁
-      · simp only [hlo_def, hm, if_true]
+      · simp only [hlo_def, hm, ite_true]
         rcases min_choice (x l₁) (z p l₁) with h | h <;> rw [h]
         · exact hxn l₁
         · exact hzp
-      · simp only [hlo_def, hm, if_false]; exact hxn m'
+      · simp only [hlo_def, hm, ite_false]; exact hxn m'
     have hhi_abs : ∀ m', |hi m'| ≤ (n' : ℤ) := by
       intro m'
       by_cases hm : m' = l₁
-      · simp only [hhi_def, hm, if_true]
+      · simp only [hhi_def, hm, ite_true]
         rcases max_choice (x l₁) (z p l₁) with h | h <;> rw [h]
         · exact hxn l₁
         · exact hzp
-      · simp only [hhi_def, hm, if_false]; exact hxn m'
+      · simp only [hhi_def, hm, ite_false]; exact hxn m'
     have hdiff : hi l₁ - lo l₁ = (D : ℤ) := by
-      simp only [hlo_def, hhi_def, if_true]
+      simp only [hlo_def, hhi_def, ite_true]
       rw [max_sub_min_eq_abs]
       exact hdev1
     -- the row of macroscopic sites

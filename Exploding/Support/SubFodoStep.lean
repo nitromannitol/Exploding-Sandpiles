@@ -15,6 +15,6 @@ theorem fodo_succ_of_notMem (S : Set (Site d)) (s0 w0 : Site d → ℤ) (t : ℕ
     (hx : x ∉ S) :
     fodo S s0 w0 (t + 1) x =
       fodo S s0 w0 t x + (if 2 * d ≤ fconf S s0 w0 t x then 1 else 0) := by
-  rw [Exploding.fodo_succ, if_neg hx]
+  rw [Exploding.fodo_succ, ite_eq_right hx]
 
 end Exploding

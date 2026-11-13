@@ -214,7 +214,7 @@ theorem xbc_crossing_tendsto (hdual : xbc_StarDuality d) {q : ℝ} (h0 : 0 ≤ q
   have hρ0 : 0 ≤ xbc_rho d q := by
     rw [xbc_rho]
     exact mul_nonneg (pow_nonneg (by norm_num) _) (by linarith)
-  haveI : IsProbabilityMeasure (sitePercolation d q) := rn_infinitePi_isProb h0 h1
+  have : IsProbabilityMeasure (sitePercolation d q) := rn_infinitePi_isProb h0 h1
   have hfail : Tendsto (fun n : ℕ => sitePercolation d q {ω | ¬ xbc_Crosses d n i ω})
       atTop (𝓝 0) := by
     have hbound : Tendsto (fun n : ℕ => ENNReal.ofReal

@@ -31,8 +31,8 @@ theorem fodo_le_one (S : Set (Site d)) (s0 w0 : Site d → ℤ)
       obtain ⟨hge, hle⟩ := ih x
       rw [Exploding.fodo_succ]
       by_cases hx : x ∈ S
-      · rw [if_pos hx]; exact ⟨hw0nn x, hw0 x⟩
-      · rw [if_neg hx]
+      · rw [ite_eq_left hx]; exact ⟨hw0nn x, hw0 x⟩
+      · rw [ite_eq_right hx]
         by_cases h1 : fodo S s0 w0 t x = 1
         · by_cases hc : 2 * (d:ℤ) ≤ fconf S s0 w0 t x
           · exfalso
@@ -44,11 +44,11 @@ theorem fodo_le_one (S : Set (Site d)) (s0 w0 : Site d → ℤ)
             rw [h2] at h1'
             have h4 := hs0 x
             nlinarith
-          · rw [if_neg hc]; exact ⟨by linarith, by linarith⟩
+          · rw [ite_eq_right hc]; exact ⟨by linarith, by linarith⟩
         · have h0 : fodo S s0 w0 t x = 0 := by omega
           by_cases hc : 2 * (d:ℤ) ≤ fconf S s0 w0 t x
-          · rw [if_pos hc]; exact ⟨by omega, by omega⟩
-          · rw [if_neg hc]; exact ⟨by omega, by omega⟩
+          · rw [ite_eq_left hc]; exact ⟨by omega, by omega⟩
+          · rw [ite_eq_right hc]; exact ⟨by omega, by omega⟩
   exact (key t x).2
 
 /-- A frozen odometer started from a nonnegative initial condition stays
@@ -61,8 +61,8 @@ theorem fodo_nonneg (S : Set (Site d)) (s0 w0 : Site d → ℤ)
   | succ t ih =>
     rw [Exploding.fodo_succ]
     by_cases hx : x ∈ S
-    · rw [if_pos hx]; exact hw0nn x
-    · rw [if_neg hx]
+    · rw [ite_eq_left hx]; exact hw0nn x
+    · rw [ite_eq_right hx]
       have := ih x
       split_ifs <;> linarith
 

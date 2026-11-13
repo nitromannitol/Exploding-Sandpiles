@@ -81,7 +81,7 @@ theorem cent_finite_ncard (d m : ℕ) :
       exact Finset.finite_toSet _
     have h_eq : (cent d m : Set (Site d)) =
         Set.pi Set.univ (fun (_ : Fin d) => {x : ℤ | |x| ≤ (m : ℤ)}) := by
-      ext f; simp [cent, Set.mem_pi, Set.mem_setOf_eq]
+      ext f; simp [cent, Set.mem_pi, Set.mem_ofPred_eq]
     rw [h_eq]
     exact Set.Finite.pi h_each
   have h_card : (cent d m : Set (Site d)).ncard = (2 * m + 1) ^ d := by
@@ -107,7 +107,7 @@ theorem cube_finite (d k : ℕ) : (cube d k : Set (Site d)).Finite := by
   have h_eq : (cube d k : Set (Site d)) =
       (Fintype.piFinset (fun (_ : Fin d) => Finset.Icc (1 : ℤ) (k : ℤ)) : Set (Site d)) := by
     ext x
-    simp only [cube, Set.mem_setOf_eq, Finset.mem_coe, Fintype.mem_piFinset, Finset.mem_Icc,
+    simp only [cube, Set.mem_ofPred_eq, Finset.mem_coe, Fintype.mem_piFinset, Finset.mem_Icc,
       forall_and]
   rw [h_eq]
   exact Finset.finite_toSet _

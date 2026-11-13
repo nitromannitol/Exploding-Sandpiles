@@ -112,7 +112,7 @@ theorem glws_cluster_lit {η : Site d → ℤ} {k : Fin d → ℕ} {Cinf : Set (
     exact pclose_pos_mono hd0 η S.hlow N 0 (Nat.le_succ T) (hlit w hw)
   have hle := clusterArrival_le η (0 : Site d) x (T + 1) (by omega) hlit'
   obtain ⟨a, ha⟩ := ENat.ne_top_iff_exists.mp
-    (ne_top_of_le_ne_top (ENat.coe_ne_top _) hle)
+    (ne_top_of_le_ne_top (ENat.natCast_ne_top _) hle)
   refine ⟨a, ha.symm, ?_⟩
   have : (a : ℕ∞) ≤ ((T + 1 : ℕ) : ℕ∞) := by rw [ha]; exact hle
   exact_mod_cast this

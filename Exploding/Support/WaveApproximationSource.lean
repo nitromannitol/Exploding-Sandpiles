@@ -42,7 +42,7 @@ theorem waveApproximationHyp_iff_sourceWaveApproximationHyp (d : ℕ)
     obtain ⟨hL, hA, hrate⟩ := hη hExp
     filter_upwards [hrate ε hε] with n hn x hx
     exact ⟨(lastArrival η (0 : Site d) x).toNat, (arrival η x).toNat,
-      (ENat.coe_toNat (hL x)).symm, (ENat.coe_toNat (hA x)).symm, hn x hx⟩
+      (ENat.natCast_toNat (hL x)).symm, (ENat.natCast_toNat (hA x)).symm, hn x hx⟩
   · intro h
     filter_upwards [h] with η hη
     intro hExp
@@ -57,13 +57,13 @@ theorem waveApproximationHyp_iff_sourceWaveApproximationHyp (d : ℕ)
     refine ⟨fun x => ?_, fun x => ?_, fun ε hε => ?_⟩
     · obtain ⟨a, -, ha, -⟩ := hfin x
       rw [ha]
-      exact ENat.coe_ne_top a
+      exact ENat.natCast_ne_top a
     · obtain ⟨-, b, -, hb⟩ := hfin x
       rw [hb]
-      exact ENat.coe_ne_top b
+      exact ENat.natCast_ne_top b
     · filter_upwards [hcomp ε hε] with n hn x hx
       obtain ⟨a, b, ha, hb, hab⟩ := hn x hx
-      rw [ha, hb, ENat.toNat_coe, ENat.toNat_coe]
+      rw [ha, hb, ENat.toNat_natCast, ENat.toNat_natCast]
       exact hab
 
 end Exploding

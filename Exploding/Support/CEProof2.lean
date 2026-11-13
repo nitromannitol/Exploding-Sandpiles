@@ -188,7 +188,7 @@ theorem ce2_cyl_cylProj (s0 : Site 2 → ℤ)
         have h := Int.emod_lt_of_pos (x ⟨1, by norm_num⟩) (by norm_num : (0:ℤ) < 4)
         omega
       simp only [ce2_pt, ce2_mod, ce_cylProj, Fin.val_ofNat,
-        if_neg (by decide : ¬ (1 : ℕ) = 0)]
+        ite_eq_right (by decide : ¬ (1 : ℕ) = 0)]
       rw [Nat.mod_eq_of_lt hlt]
   change s0 (ce2_pt (ce_cylProj x).1 ((ce_cylProj x).2 : ℕ)) = s0 x
   rw [hpt]
@@ -239,7 +239,7 @@ theorem ce2_cylNbrSum_fold (u : ℤ × Fin 4 → ℤ) (v : Site 2 → ℤ)
       congr 1
       exact (ce_cylProj_sub_one x).symm
     unfold cylNbrSum nbrSumZ
-    rw [Fin.sum_univ_two, if_pos hp0]
+    rw [Fin.sum_univ_two, ite_eq_left hp0]
     rw [hadd0, hself, hadd1, hsub1]
     abel
   · exact ce_cylNbrSum_cylProj u v hfold x hge

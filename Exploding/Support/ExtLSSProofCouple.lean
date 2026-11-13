@@ -28,14 +28,14 @@ theorem xlss7_pointwise [DecidableEq S] (μ : Measure (S → Bool)) [IsProbabili
         ≤ ∑ V ∈ T.powerset, ENNReal.ofReal (∏ l ∈ T, w l (x l) V) := by
           refine Finset.sum_le_sum fun V _ => ?_
           by_cases hVA : (fun s => decide (s ∈ V)) ∈ A
-          · rw [if_pos hVA, one_mul]
-          · rw [if_neg hVA, zero_mul]
+          · rw [ite_eq_left hVA, one_mul]
+          · rw [ite_eq_right hVA, zero_mul]
             positivity
       _ = 1 := xlss_thin_norm_ofReal μ ρ γ T w hw x
   · rw [Set.indicator_of_notMem hx]
     refine le_of_eq (Finset.sum_eq_zero fun V hVT => ?_)
     by_cases hVA : (fun s => decide (s ∈ V)) ∈ A
-    · rw [if_pos hVA]
+    · rw [ite_eq_left hVA]
       have hVsub : V ⊆ T := Finset.mem_powerset.mp hVT
       have hex : ∃ l ∈ V, x l = false := by
         by_contra hcon
@@ -46,7 +46,7 @@ theorem xlss7_pointwise [DecidableEq S] (μ : Measure (S → Bool)) [IsProbabili
       obtain ⟨l, hlV, hxl⟩ := hex
       rw [Finset.prod_eq_zero (hVsub hlV)
         (by rw [hxl, (hw.pos l (hVsub hlV) V hVsub hlV).1]), ENNReal.ofReal_zero, mul_zero]
-    · rw [if_neg hVA, zero_mul]
+    · rw [ite_eq_right hVA, zero_mul]
 
 /-- Finite-coordinate domination: the thinning on `T` bounds the product law of a
 `T`-determined increasing set by the given law. -/

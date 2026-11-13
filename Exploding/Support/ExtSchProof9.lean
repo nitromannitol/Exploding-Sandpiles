@@ -50,8 +50,8 @@ theorem xsch9_corner_growth (hd : 1 ≤ d) (n : ℕ) (c : Fin d → Bool) (η : 
     rw [xsch9_dist]
     refine Finset.sum_nonneg fun i _ => ?_
     by_cases hci : c i = true
-    · rw [if_pos hci]; have := (hy i).1; omega
-    · rw [if_neg hci]; have := (hy i).2; omega
+    · rw [ite_eq_left hci]; have := (hy i).1; omega
+    · rw [ite_eq_right hci]; have := (hy i).2; omega
   have key : ∀ s : ℕ, ∀ x : Site d, x ∈ cube d n → (xsch9_dist c n x).toNat = s →
       xsch_Top (Finset.univ : Finset (Fin d)) (cube d n) η x := by
     intro s
@@ -65,12 +65,12 @@ theorem xsch9_corner_growth (hd : 1 ≤ d) (n : ℕ) (c : Fin d → Bool) (η : 
           by_cases hji : j = i
           · rw [hji, xsch9_coord_self]
             by_cases hci : c i = true
-            · rw [if_pos hci]
+            · rw [ite_eq_left hci]
               have hxi : x i ≠ 1 := by intro h1; exact hface ⟨i, Or.inl ⟨hci, h1⟩⟩
               have h2 : 2 ≤ x i := by have := (hx i).1; omega
               have h3 : x i ≤ (n : ℤ) := (hx i).2
               exact ⟨by omega, by omega⟩
-            · rw [if_neg hci]
+            · rw [ite_eq_right hci]
               have hci' : c i = false := by cases h : c i <;> simp_all
               have hxi : x i ≠ (n : ℤ) := by intro h1; exact hface ⟨i, Or.inr ⟨hci', h1⟩⟩
               have h1 : 1 ≤ x i := (hx i).1
@@ -81,10 +81,10 @@ theorem xsch9_corner_growth (hd : 1 ≤ d) (n : ℕ) (c : Fin d → Bool) (η : 
           have ht : ∀ i, 1 ≤ (if c i = true then x i - 1 else (n : ℤ) - x i) := by
             intro i
             by_cases hci : c i = true
-            · rw [if_pos hci]
+            · rw [ite_eq_left hci]
               have hxi : x i ≠ 1 := by intro h1; exact hface ⟨i, Or.inl ⟨hci, h1⟩⟩
               have := (hx i).1; omega
-            · rw [if_neg hci]
+            · rw [ite_eq_right hci]
               have hci' : c i = false := by cases h : c i <;> simp_all
               have hxi : x i ≠ (n : ℤ) := by intro h1; exact hface ⟨i, Or.inr ⟨hci', h1⟩⟩
               have := (hx i).2; omega
@@ -148,8 +148,8 @@ theorem xsch9_corner_growth_ambient (hd : 1 ≤ d) (n : ℕ) (c : Fin d → Bool
     rw [xsch9_dist]
     refine Finset.sum_nonneg fun i _ => ?_
     by_cases hci : c i = true
-    · rw [if_pos hci]; have := (hy i).1; omega
-    · rw [if_neg hci]; have := (hy i).2; omega
+    · rw [ite_eq_left hci]; have := (hy i).1; omega
+    · rw [ite_eq_right hci]; have := (hy i).2; omega
   have key : ∀ s : ℕ, ∀ x : Site d, x ∈ cube d n → (xsch9_dist c n x).toNat = s →
       xsch_Top (Finset.univ : Finset (Fin d)) B η x := by
     intro s
@@ -163,12 +163,12 @@ theorem xsch9_corner_growth_ambient (hd : 1 ≤ d) (n : ℕ) (c : Fin d → Bool
           by_cases hji : j = i
           · rw [hji, xsch9_coord_self]
             by_cases hci : c i = true
-            · rw [if_pos hci]
+            · rw [ite_eq_left hci]
               have hxi : x i ≠ 1 := by intro h1; exact hface ⟨i, Or.inl ⟨hci, h1⟩⟩
               have h2 : 2 ≤ x i := by have := (hx i).1; omega
               have h3 : x i ≤ (n : ℤ) := (hx i).2
               exact ⟨by omega, by omega⟩
-            · rw [if_neg hci]
+            · rw [ite_eq_right hci]
               have hci' : c i = false := by cases h : c i <;> simp_all
               have hxi : x i ≠ (n : ℤ) := by intro h1; exact hface ⟨i, Or.inr ⟨hci', h1⟩⟩
               have h1 : 1 ≤ x i := (hx i).1
@@ -179,10 +179,10 @@ theorem xsch9_corner_growth_ambient (hd : 1 ≤ d) (n : ℕ) (c : Fin d → Bool
           have ht : ∀ i, 1 ≤ (if c i = true then x i - 1 else (n : ℤ) - x i) := by
             intro i
             by_cases hci : c i = true
-            · rw [if_pos hci]
+            · rw [ite_eq_left hci]
               have hxi : x i ≠ 1 := by intro h1; exact hface ⟨i, Or.inl ⟨hci, h1⟩⟩
               have := (hx i).1; omega
-            · rw [if_neg hci]
+            · rw [ite_eq_right hci]
               have hci' : c i = false := by cases h : c i <;> simp_all
               have hxi : x i ≠ (n : ℤ) := by intro h1; exact hface ⟨i, Or.inr ⟨hci', h1⟩⟩
               have := (hx i).2; omega

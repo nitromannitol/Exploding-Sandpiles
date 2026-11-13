@@ -16,7 +16,7 @@ theorem fodo_topple_of_ge (S : Set (Site d)) (s0 w0 : Site d → ℤ) (t : ℕ) 
     (hx : x ∉ S) (h0 : fodo S s0 w0 t x = 0) (hge : 2 * d ≤ fconf S s0 w0 t x) :
     fodo S s0 w0 (t + 1) x = 1 := by
   classical
-  rw [Exploding.fodo_succ, if_neg hx, if_pos hge, h0]
+  rw [Exploding.fodo_succ, ite_eq_right hx, ite_eq_left hge, h0]
   ring
 
 end Exploding

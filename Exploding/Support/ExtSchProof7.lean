@@ -49,7 +49,7 @@ theorem xsch7_percolation_of_blockPercolation
   intro d hd p hp hp1
   obtain ⟨c, C, hc, hC, hbound⟩ := h d hd p hp hp1
   refine ⟨c, C, hc, hC, fun n => ?_⟩
-  haveI : Fact (0 ≤ p ∧ p ≤ 1) := ⟨⟨hp.le, hp1⟩⟩
+  have : Fact (0 ≤ p ∧ p ≤ 1) := ⟨⟨hp.le, hp1⟩⟩
   have hsub : {η : Site d → ℤ | ¬ xsch_Sp (Finset.univ : Finset (Fin d)) (cube d n) η}
       ⊆ {η : Site d → ℤ | η ∉ xsch7_BlockCover d n} := by
     intro η hη hcov

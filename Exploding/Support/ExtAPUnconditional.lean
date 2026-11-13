@@ -60,7 +60,7 @@ theorem xmu_tendsto_of_ae_eventually {Ω : Type*} [MeasurableSpace Ω] {μ : Mea
     exact Set.mem_iInter₂.2 fun n hn => Set.mem_iInter₂.1 hx n (le_trans hNM hn)
   have hUnion : (⋃ N, C N) = {ω | ∀ᶠ n : ℕ in atTop, ω ∈ A n} := by
     ext ω
-    simp only [hCdef, Set.mem_iUnion, Set.mem_iInter, Set.mem_Ici, Set.mem_setOf_eq,
+    simp only [hCdef, Set.mem_iUnion, Set.mem_iInter, Set.mem_Ici, Set.mem_ofPred_eq,
       Filter.eventually_atTop]
   have hBmeas : MeasurableSet (⋃ N, C N) :=
     MeasurableSet.iUnion fun N => MeasurableSet.biInter (Set.to_countable (Set.Ici N))

@@ -154,7 +154,7 @@ theorem xap8_starSets_card_le (X : Finset (Site d)) (s : ℕ) :
       have hh : xap8_padCode (s := s) p1 = xap8_padCode (s := s) p2 := by
         simpa [hp1, hp2] using h
       have hc := congrFun hh ⟨i.val, by omega⟩
-      rw [xap8_padCode, dif_pos i.isLt, xap8_padCode, dif_pos (by rw [← heq_len]; exact i.isLt)] at hc
+      rw [xap8_padCode, dite_eq_left i.isLt, xap8_padCode, dite_eq_left (by rw [← heq_len]; exact i.isLt)] at hc
       exact Option.some.inj hc
     have hsupp := xap8_support_eq_of_code heq_len heq_code
     exact Subtype.ext (by rw [← hs1.1, ← hs2.1]; exact hsupp)

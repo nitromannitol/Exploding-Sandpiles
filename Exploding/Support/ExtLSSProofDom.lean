@@ -207,7 +207,7 @@ theorem xlss_Vof_ind [DecidableEq S] (T : Finset S) (V : Finset S) (hV : V ⊆ T
 /-- The map sending a `T`-configuration to the indicator of its occupied subset is measurable. -/
 theorem xlss_meas_Phi [DecidableEq S] (T : Finset S) :
     Measurable (fun v : T → Bool => fun s : S => decide (s ∈ xlss_Vof T v)) := by
-  refine measurable_pi_lambda _ fun s => ?_
+  refine Measurable.of_eval fun s => ?_
   by_cases hs : s ∈ T
   · have hcoord : (fun v : T → Bool => decide (s ∈ xlss_Vof T v)) =
         fun v => v ⟨s, hs⟩ := by

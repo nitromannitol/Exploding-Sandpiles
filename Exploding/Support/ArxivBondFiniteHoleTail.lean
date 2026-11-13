@@ -83,14 +83,14 @@ private theorem tsum_ite_geometric_half (L : ℕ) (a : ENNReal) :
     rw [Function.mem_support] at hm
     by_cases h : L ≤ m
     · exact ⟨m - L, Nat.sub_add_cancel h⟩
-    · exact absurd (if_neg h) hm
+    · exact absurd (ite_eq_right h) hm
   have hshift : ∑' m : ℕ, (if L ≤ m then (1 / 2 : ENNReal) ^ m else 0) =
       (1 / 2 : ENNReal) ^ L * 2 := by
     rw [← (add_left_injective L).tsum_eq hsupp]
     calc ∑' c : ℕ, (if L ≤ c + L then (1 / 2 : ENNReal) ^ (c + L) else 0)
         = ∑' c : ℕ, (1 / 2 : ENNReal) ^ c * (1 / 2 : ENNReal) ^ L :=
           tsum_congr fun c => by
-            rw [if_pos (Nat.le_add_left L c), pow_add]
+            rw [ite_eq_left (Nat.le_add_left L c), pow_add]
       _ = (∑' c : ℕ, (1 / 2 : ENNReal) ^ c) * (1 / 2 : ENNReal) ^ L :=
           ENNReal.tsum_mul_right
       _ = (1 / 2 : ENNReal) ^ L * 2 := by
@@ -175,10 +175,10 @@ theorem arxiv_bond_finite_hole_tail_exp (d : ℕ) (hd : 2 ≤ d) :
           ((2 * 3 ^ d * K : ℕ) : ENNReal) ^ (3 ^ d - 1) * (1 / 2 : ENNReal) ^ m else 0) := by
       intro m
       by_cases hm : s ≤ m ^ 2
-      · rw [if_pos hm, if_pos (ceil_sqrt_le_of_sq_le s m hm)]
+      · rw [ite_eq_left hm, ite_eq_left (ceil_sqrt_le_of_sq_le s m hm)]
         exact arxiv_bond_hole_term_le_geometric d K hK _
           (density_condition d _ hd hN q hq0') m
-      · rw [if_neg hm]
+      · rw [ite_eq_right hm]
         exact zero_le
     refine (hfin z s hq hq1).trans ((ENNReal.tsum_le_tsum hterm).trans ?_)
     rw [tsum_ite_geometric_half]

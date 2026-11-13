@@ -39,11 +39,11 @@ theorem cent_seg (m : ℕ) (i : Fin d) (x y : Site d)
   rw [hcoord]
   by_cases hji : j = i
   · subst hji
-    rw [if_pos rfl, mul_one]
+    rw [ite_eq_left rfl, mul_one]
     have hti : x j + (t - x j) = t := by ring
     rw [hti, abs_le]
     constructor <;> omega
-  · rw [if_neg hji, mul_zero, add_zero]
+  · rw [ite_eq_right hji, mul_zero, add_zero]
     rw [abs_le]
     rw [hxy j hji] at h3
     exact h2
@@ -137,10 +137,10 @@ theorem cent_connected_in (S : Set (Site d)) (m : ℕ)
     intro s j
     show |(if j ∈ s then y j else x j)| ≤ (m : ℤ)
     by_cases hjs : j ∈ s
-    · rw [if_pos hjs]
-      have h := hy j; rwa [abs_le] at h ⊢
-    · rw [if_neg hjs]
-      have h := hx j; rwa [abs_le] at h ⊢
+    · rw [ite_eq_left hjs]
+      have h := hy j; rw [abs_le] at h ⊢; assumption
+    · rw [ite_eq_right hjs]
+      have h := hx j; rw [abs_le] at h ⊢; assumption
   have key : ∀ (s : Finset (Fin d)), ∃ (hz : (fun j => if j ∈ s then y j else x j) ∈ S),
       ((lattice d).induce S).Reachable ⟨x, hsub hx⟩
         ⟨(fun j => if j ∈ s then y j else x j), hz⟩ := by
@@ -159,8 +159,8 @@ theorem cent_connected_in (S : Set (Site d)) (m : ℕ)
         intro j hji
         show (if j ∈ insert i s then y j else x j) = (if j ∈ s then y j else x j)
         by_cases hjs : j ∈ s
-        · rw [if_pos (Finset.mem_insert_of_mem hjs), if_pos hjs]
-        · rw [if_neg (fun h => hjs ((Finset.mem_insert.mp h).resolve_left hji)), if_neg hjs]
+        · rw [ite_eq_left (Finset.mem_insert_of_mem hjs), ite_eq_left hjs]
+        · rw [ite_eq_right (fun h => hjs ((Finset.mem_insert.mp h).resolve_left hji)), ite_eq_right hjs]
       obtain ⟨hz', hstep⟩ := reachable_induce_seg S m hsub
         (fun j => if j ∈ s then y j else x j)
         (fun j => if j ∈ insert i s then y j else x j) (hmem s) (hmem _) i hdiff
@@ -175,9 +175,9 @@ theorem cent_connected_in (S : Set (Site d)) (m : ℕ)
               (if j = i then 1 else 0) = (if j ∈ insert i s then y j else x j)
         by_cases hji : j = i
         · subst hji
-          rw [if_pos rfl, mul_one, if_pos (Finset.mem_insert_self j s)]
+          rw [ite_eq_left rfl, mul_one, ite_eq_left (Finset.mem_insert_self j s)]
           ring
-        · rw [if_neg hji, mul_zero, add_zero]
+        · rw [ite_eq_right hji, mul_zero, add_zero]
           exact (hdiff j hji).symm
       have heq : (⟨(fun j => if j ∈ s then y j else x j) +
             ((fun j => if j ∈ insert i s then y j else x j) i -
@@ -200,8 +200,8 @@ theorem fodo_nonneg_of_seed (S : Set (Site d)) (s0 w0 : Site d → ℤ) (hw0 : �
   | succ t ih =>
     rw [fodo_succ]
     by_cases hx : x ∈ S
-    · rw [if_pos hx]; exact hw0 x
-    · rw [if_neg hx]; split_ifs <;> linarith [ih x]
+    · rw [ite_eq_left hx]; exact hw0 x
+    · rw [ite_eq_right hx]; split_ifs <;> linarith [ih x]
 
 /-- The wave dominates the frozen odometer started from a seed that the wave
 already dominates, at every later time. -/
@@ -222,10 +222,10 @@ theorem wave_dom_fodo {d : ℕ} (hd0 : (0 : ℤ) < 2 * (d : ℤ))
     intro x
     rw [fodo_succ]
     by_cases hx : x ∈ S
-    · rw [if_pos hx]
+    · rw [ite_eq_left hx]
       have h := hSdom (s + 1) x hx
       rwa [show t0 + (s + 1) = t0 + s + 1 from by omega] at h
-    · rw [if_neg hx]
+    · rw [ite_eq_right hx]
       have hxz : x ≠ z := fun h => hx (h ▸ hz)
       rw [show t0 + (s + 1) = t0 + s + 1 from by omega,
         wave_of_ne η N z x (t0 + s) hxz]
@@ -287,17 +287,17 @@ theorem wave_dom_fodo' {d : ℕ} (hd0 : (0 : ℤ) < 2 * (d : ℤ))
     intro x
     rw [fodo_succ]
     by_cases hx : x ∈ S
-    · rw [if_pos hx]
+    · rw [ite_eq_left hx]
       have h := hSdom (s + 1) x hx
       rwa [show t0 + (s + 1) = t0 + s + 1 from by omega] at h
-    · rw [if_neg hx]
+    · rw [ite_eq_right hx]
       by_cases hxz : x = z
       · subst hxz
         rw [wave_at_centre]
         have hle1 := fodo_le_one S η w0 hηhigh hw0one hw0nn (s + 1) x
         have hN' : (1 : ℤ) ≤ (N : ℤ) := by exact_mod_cast hN
         rw [fodo_succ] at hle1
-        rw [if_neg hx] at hle1
+        rw [ite_eq_right hx] at hle1
         linarith
       · rw [show t0 + (s + 1) = t0 + s + 1 from by omega,
           wave_of_ne η N z x (t0 + s) hxz]
@@ -334,8 +334,8 @@ theorem fodo_shift (S : Set (Site d)) (s0 w0 : Site d → ℤ) (c : Site d) :
     intro x
     rw [fodo_succ, fodo_succ]
     by_cases hx : x + c ∈ S
-    · rw [if_pos hx, if_pos (show x ∈ {y | y + c ∈ S} from hx)]
-    · rw [if_neg hx, if_neg (show ¬ (x ∈ {y | y + c ∈ S}) from hx)]
+    · rw [ite_eq_left hx, ite_eq_left (show x ∈ {y | y + c ∈ S} from hx)]
+    · rw [ite_eq_right hx, ite_eq_right (show ¬ (x ∈ {y | y + c ∈ S}) from hx)]
       have hfun : fodo {y | y + c ∈ S} (fun y => s0 (y + c)) (fun y => w0 (y + c)) t
           = fun y => fodo S s0 w0 t (y + c) := funext fun y => ih y
       have hconf : fconf {y | y + c ∈ S} (fun y => s0 (y + c)) (fun y => w0 (y + c)) t x
@@ -350,8 +350,8 @@ theorem fodo_mono_time (S : Set (Site d)) (η : Site d → ℤ) (w0 : Site d →
     (t : ℕ) (x : Site d) : fodo S η w0 t x ≤ fodo S η w0 (t + 1) x := by
   rw [fodo_succ]
   by_cases hx : x ∈ S
-  · rw [if_pos hx, fodo_of_mem S η w0 t hx]
-  · rw [if_neg hx]
+  · rw [ite_eq_left hx, fodo_of_mem S η w0 t hx]
+  · rw [ite_eq_right hx]
     exact le_add_of_nonneg_right (by positivity)
 
 /-- The frozen odometer is monotone in time, and its value at a site is `1` from
@@ -369,11 +369,11 @@ theorem fodo_two_nbrs_topple (S : Set (Site d)) (w0 : Site d → ℤ)
     (t : ℕ) (x : Site d) (hx : x ∉ S) (h0 : fodo S (fun _ => 2 * (d : ℤ) - 2) w0 t x = 0)
     (h2 : 2 ≤ nbrSumZ (fodo S (fun _ => 2 * (d : ℤ) - 2) w0 t) x) :
     fodo S (fun _ => 2 * (d : ℤ) - 2) w0 (t + 1) x = 1 := by
-  rw [fodo_succ, if_neg hx]
+  rw [fodo_succ, ite_eq_right hx]
   have hc : 2 * (d : ℤ) ≤ fconf S (fun _ => 2 * (d : ℤ) - 2) w0 t x := by
     simp only [fconf, lap, h0, mul_zero, sub_zero]
     linarith
-  rw [if_pos hc]
+  rw [ite_eq_left hc]
   omega
 
 /-- The increment `1{2d ≤ c}` is monotone in `c`. -/
@@ -399,8 +399,8 @@ theorem fodo_mono_background_01 (S : Set (Site d)) (s0 s0' w0 : Site d → ℤ)
   | succ t ih =>
     rw [fodo_succ S s0 w0 t x, fodo_succ S s0' w0 t x]
     by_cases hx : x ∈ S
-    · rw [if_pos hx, if_pos hx]
-    · rw [if_neg hx, if_neg hx]
+    · rw [ite_eq_left hx, ite_eq_left hx]
+    · rw [ite_eq_right hx, ite_eq_right hx]
       have hle := fodo_le_one S s0' w0 hhigh hw0 hw0nn t x
       have hnn := fodo_nonneg_of_seed S s0' w0 hw0nn t x
       have hle0 := fodo_le_one S s0 w0 (fun y => le_trans (h y) (hhigh y)) hw0 hw0nn t x
@@ -675,13 +675,13 @@ theorem slab_move (a b : Site d) (i : Fin d) (c : ℤ) {p : Site d}
   refine ⟨?_, ?_⟩
   · have h1 : (p + d' • unit j) i = p i := by
       rw [coord_add_smul]
-      simp only [if_neg (Ne.symm hj), mul_zero, add_zero]
+      simp only [ite_eq_right (Ne.symm hj), mul_zero, add_zero]
     rw [h1]; exact hp.1
   · intro k hki
     rw [coord_add_smul]
     have h2 := hp.2 k hki
     by_cases hkj : k = j
-    · rw [if_pos hkj]
+    · rw [ite_eq_left hkj]
       constructor
       · have h3 : p k + d' * 1 = p k + d' := by ring
         rw [h3]
@@ -691,7 +691,7 @@ theorem slab_move (a b : Site d) (i : Fin d) (c : ℤ) {p : Site d}
         rw [h3]
         subst hkj
         exact hhi
-    · rw [if_neg hkj, mul_zero, add_zero]
+    · rw [ite_eq_right hkj, mul_zero, add_zero]
       exact h2
 
 /-- **The cap spread** (`exploding-corrected-arxiv.tex:417-425`, the mechanism of the one-turn
@@ -721,7 +721,7 @@ theorem fillSet_slab (A : Set (Site d)) (a b : Site d) (i : Fin d) (hab : a i �
       have h1 := congrFun hcon i
       have h2 : (p + c • unit j - unit i) i = p i - 1 := by
         rw [Pi.sub_apply, coord_add_smul]
-        simp only [if_neg (Ne.symm hj), mul_zero, add_zero, LatticeProb.unit,
+        simp only [ite_eq_right (Ne.symm hj), mul_zero, add_zero, LatticeProb.unit,
           Pi.single_eq_same]
       rw [h2] at h1
       omega
@@ -743,11 +743,11 @@ theorem fillSet_slab (A : Set (Site d)) (a b : Site d) (i : Fin d) (hab : a i �
     have hNle : p j + (N : ℤ) * (if p j ≤ q j then 1 else -1) = q j := by
       rw [hN]
       by_cases hle : p j ≤ q j
-      · rw [if_pos hle, if_pos hle]
+      · rw [ite_eq_left hle, ite_eq_left hle]
         have h0 : (0 : ℤ) ≤ q j - p j := by linarith
         rw [Int.toNat_of_nonneg h0]
         ring
-      · rw [if_neg hle, if_neg hle]
+      · rw [ite_eq_right hle, ite_eq_right hle]
         have h0 : (0 : ℤ) ≤ p j - q j := by linarith
         rw [Int.toNat_of_nonneg h0]
         ring
@@ -757,15 +757,15 @@ theorem fillSet_slab (A : Set (Site d)) (a b : Site d) (i : Fin d) (hab : a i �
       intro n hn
       have hnN : (n : ℤ) ≤ (N : ℤ) := by exact_mod_cast hn
       by_cases hle : p j ≤ q j
-      · rw [if_pos hle]
+      · rw [ite_eq_left hle]
         have hN' : p j + (N : ℤ) = q j := by
-          have h := hNle; rw [if_pos hle] at h; simpa using h
+          have h := hNle; rw [ite_eq_left hle] at h; simpa using h
         constructor
         · rw [min_eq_left hle]; linarith
         · rw [max_eq_right hle]; linarith
-      · rw [if_neg hle]
+      · rw [ite_eq_right hle]
         have hN' : p j - (N : ℤ) = q j := by
-          have h := hNle; rw [if_neg hle] at h; linarith
+          have h := hNle; rw [ite_eq_right hle] at h; linarith
         constructor
         · rw [min_eq_right (le_of_lt (not_le.mp hle))]; linarith
         · rw [max_eq_left (le_of_lt (not_le.mp hle))]; linarith
@@ -774,19 +774,19 @@ theorem fillSet_slab (A : Set (Site d)) (a b : Site d) (i : Fin d) (hab : a i �
           slab a b i (b i + 1) := by
       intro n hn
       refine ⟨?_, ?_⟩
-      · simp only [if_neg (Ne.symm hj)]; exact hp.1
+      · simp only [ite_eq_right (Ne.symm hj)]; exact hp.1
       · intro k hki
         show a k ≤ (if k = j then p j + (n : ℤ) * (if p j ≤ q j then 1 else -1) else p k) ∧
           (if k = j then p j + (n : ℤ) * (if p j ≤ q j then 1 else -1) else p k) ≤ b k
         by_cases hkj : k = j
         · subst hkj
-          rw [if_pos rfl]
+          rw [ite_eq_left rfl]
           have hb := hbetween n hn
           have hpj := hp.2 k hki
           have hqj := hq.2 k hki
           exact ⟨le_trans (le_min hpj.1 hqj.1) hb.1,
             le_trans hb.2 (max_le hpj.2 hqj.2)⟩
-        · rw [if_neg hkj]
+        · rw [ite_eq_right hkj]
           exact hp.2 k hki
     have hwalk : ∀ (n : ℕ), n ≤ N →
         (fun l => if l = j then p j + (n : ℤ) * (if p j ≤ q j then 1 else -1) else p l) ∈
@@ -800,7 +800,7 @@ theorem fillSet_slab (A : Set (Site d)) (a b : Site d) (i : Fin d) (hab : a i �
           funext l
           by_cases hlj : l = j
           · subst hlj; simp
-          · rw [if_neg hlj]
+          · rw [ite_eq_right hlj]
         rw [h0]; exact hpF
       | succ n ih =>
         intro hn
@@ -819,20 +819,20 @@ theorem fillSet_slab (A : Set (Site d)) (a b : Site d) (i : Fin d) (hab : a i �
             push_cast
             ring
           · rw [coord_add_smul]
-            simp only [if_neg hlj, mul_zero, add_zero]
+            simp only [ite_eq_right hlj, mul_zero, add_zero]
         rw [← hsucc]
         refine hstep (hstep' n hn') hprev j hj _ ?_ ?_
         · by_cases hle : p j ≤ q j
-          · exact Or.inl (by rw [if_pos hle])
-          · exact Or.inr (by rw [if_neg hle])
+          · exact Or.inl (by rw [ite_eq_left hle])
+          · exact Or.inr (by rw [ite_eq_right hle])
         · rw [hsucc]; exact hcur
     have hfin := hwalk N le_rfl
     have hqeq : (fun l => if l = j then p j + (N : ℤ) * (if p j ≤ q j then 1 else -1)
         else p l) = q := by
       funext l
       by_cases hlj : l = j
-      · subst hlj; rw [if_pos rfl]; exact hNle
-      · rw [if_neg hlj]; exact hagree l hlj
+      · subst hlj; rw [ite_eq_left rfl]; exact hNle
+      · rw [ite_eq_right hlj]; exact hagree l hlj
     rwa [hqeq] at hfin
   -- walk from `y` to the target, one coordinate at a time
   have key : ∀ (s : Finset (Fin d)), i ∉ s →
@@ -854,23 +854,23 @@ theorem fillSet_slab (A : Set (Site d)) (a b : Site d) (i : Fin d) (hab : a i �
       have hji : j ≠ i := fun h => hi (h ▸ Finset.mem_insert_self j s)
       have hmid : (fun k => if k = j then q j else p k) ∈ slab a b i (b i + 1) := by
         refine ⟨?_, ?_⟩
-        · simp only [if_neg (Ne.symm hji)]; exact hp.1
+        · simp only [ite_eq_right (Ne.symm hji)]; exact hp.1
         · intro k hki
           show a k ≤ (if k = j then q j else p k) ∧ (if k = j then q j else p k) ≤ b k
           by_cases hkj : k = j
           · subst hkj
-            rw [if_pos rfl]
+            rw [ite_eq_left rfl]
             exact hq.2 k hki
-          · rw [if_neg hkj]
+          · rw [ite_eq_right hkj]
             exact hp.2 k hki
       have hmidF : (fun k => if k = j then q j else p k) ∈ fillSet A :=
-        hmove j hji hp hpF (fun k hkj => by rw [if_neg hkj]) hmid
+        hmove j hji hp hpF (fun k hkj => by rw [ite_eq_right hkj]) hmid
       refine ih (fun h => hi (Finset.mem_insert_of_mem h)) hmid hmidF ?_ hq
       intro k hk
       by_cases hkj : k = j
       · subst hkj
         simp
-      · rw [if_neg hkj]
+      · rw [ite_eq_right hkj]
         exact hagree k (by simp [hkj, hk])
   intro q hq
   refine key (Finset.univ.erase i) (Finset.notMem_erase i Finset.univ)
@@ -903,7 +903,7 @@ theorem closed_slab (F : Set (Site d)) (a b : Site d) (i : Fin d) (hab : a i ≤
       have h1 := congrFun hcon i
       have h2 : (p + c • unit j - unit i) i = p i - 1 := by
         rw [Pi.sub_apply, coord_add_smul]
-        simp only [if_neg (Ne.symm hj), mul_zero, add_zero, LatticeProb.unit,
+        simp only [ite_eq_right (Ne.symm hj), mul_zero, add_zero, LatticeProb.unit,
           Pi.single_eq_same]
       rw [h2] at h1
       omega
@@ -924,11 +924,11 @@ theorem closed_slab (F : Set (Site d)) (a b : Site d) (i : Fin d) (hab : a i ≤
     have hNle : p j + (N : ℤ) * (if p j ≤ q j then 1 else -1) = q j := by
       rw [hN]
       by_cases hle : p j ≤ q j
-      · rw [if_pos hle, if_pos hle]
+      · rw [ite_eq_left hle, ite_eq_left hle]
         have h0 : (0 : ℤ) ≤ q j - p j := by linarith
         rw [Int.toNat_of_nonneg h0]
         ring
-      · rw [if_neg hle, if_neg hle]
+      · rw [ite_eq_right hle, ite_eq_right hle]
         have h0 : (0 : ℤ) ≤ p j - q j := by linarith
         rw [Int.toNat_of_nonneg h0]
         ring
@@ -938,15 +938,15 @@ theorem closed_slab (F : Set (Site d)) (a b : Site d) (i : Fin d) (hab : a i ≤
       intro n hn
       have hnN : (n : ℤ) ≤ (N : ℤ) := by exact_mod_cast hn
       by_cases hle : p j ≤ q j
-      · rw [if_pos hle]
+      · rw [ite_eq_left hle]
         have hN' : p j + (N : ℤ) = q j := by
-          have h := hNle; rw [if_pos hle] at h; simpa using h
+          have h := hNle; rw [ite_eq_left hle] at h; simpa using h
         constructor
         · rw [min_eq_left hle]; linarith
         · rw [max_eq_right hle]; linarith
-      · rw [if_neg hle]
+      · rw [ite_eq_right hle]
         have hN' : p j - (N : ℤ) = q j := by
-          have h := hNle; rw [if_neg hle] at h; linarith
+          have h := hNle; rw [ite_eq_right hle] at h; linarith
         constructor
         · rw [min_eq_right (le_of_lt (not_le.mp hle))]; linarith
         · rw [max_eq_left (le_of_lt (not_le.mp hle))]; linarith
@@ -955,19 +955,19 @@ theorem closed_slab (F : Set (Site d)) (a b : Site d) (i : Fin d) (hab : a i ≤
           slab a b i (b i + 1) := by
       intro n hn
       refine ⟨?_, ?_⟩
-      · simp only [if_neg (Ne.symm hj)]; exact hp.1
+      · simp only [ite_eq_right (Ne.symm hj)]; exact hp.1
       · intro k hki
         show a k ≤ (if k = j then p j + (n : ℤ) * (if p j ≤ q j then 1 else -1) else p k) ∧
           (if k = j then p j + (n : ℤ) * (if p j ≤ q j then 1 else -1) else p k) ≤ b k
         by_cases hkj : k = j
         · subst hkj
-          rw [if_pos rfl]
+          rw [ite_eq_left rfl]
           have hb := hbetween n hn
           have hpj := hp.2 k hki
           have hqj := hq.2 k hki
           refine ⟨le_trans (le_min hpj.1 hqj.1) hb.1, ?_⟩
           exact le_trans hb.2 (max_le hpj.2 hqj.2)
-        · rw [if_neg hkj]
+        · rw [ite_eq_right hkj]
           exact hp.2 k hki
     have hwalk : ∀ (n : ℕ), n ≤ N →
         (fun l => if l = j then p j + (n : ℤ) * (if p j ≤ q j then 1 else -1) else p l) ∈
@@ -981,7 +981,7 @@ theorem closed_slab (F : Set (Site d)) (a b : Site d) (i : Fin d) (hab : a i ≤
           funext l
           by_cases hlj : l = j
           · subst hlj; simp
-          · rw [if_neg hlj]
+          · rw [ite_eq_right hlj]
         rw [h0]; exact hpF
       | succ n ih =>
         intro hn
@@ -1000,20 +1000,20 @@ theorem closed_slab (F : Set (Site d)) (a b : Site d) (i : Fin d) (hab : a i ≤
             push_cast
             ring
           · rw [coord_add_smul]
-            simp only [if_neg hlj, mul_zero, add_zero]
+            simp only [ite_eq_right hlj, mul_zero, add_zero]
         rw [← hsucc]
         refine hstep (hstep' n hn') hprev j hj _ ?_ ?_
         · by_cases hle : p j ≤ q j
-          · exact Or.inl (by rw [if_pos hle])
-          · exact Or.inr (by rw [if_neg hle])
+          · exact Or.inl (by rw [ite_eq_left hle])
+          · exact Or.inr (by rw [ite_eq_right hle])
         · rw [hsucc]; exact hcur
     have hfin := hwalk N le_rfl
     have hqeq : (fun l => if l = j then p j + (N : ℤ) * (if p j ≤ q j then 1 else -1)
         else p l) = q := by
       funext l
       by_cases hlj : l = j
-      · subst hlj; rw [if_pos rfl]; exact hNle
-      · rw [if_neg hlj]; exact hagree l hlj
+      · subst hlj; rw [ite_eq_left rfl]; exact hNle
+      · rw [ite_eq_right hlj]; exact hagree l hlj
     rwa [hqeq] at hfin
   have key : ∀ (s : Finset (Fin d)), i ∉ s →
       ∀ {p q : Site d}, p ∈ slab a b i (b i + 1) → p ∈ F →
@@ -1034,23 +1034,23 @@ theorem closed_slab (F : Set (Site d)) (a b : Site d) (i : Fin d) (hab : a i ≤
       have hji : j ≠ i := fun h => hi (h ▸ Finset.mem_insert_self j s)
       have hmid : (fun k => if k = j then q j else p k) ∈ slab a b i (b i + 1) := by
         refine ⟨?_, ?_⟩
-        · simp only [if_neg (Ne.symm hji)]; exact hp.1
+        · simp only [ite_eq_right (Ne.symm hji)]; exact hp.1
         · intro k hki
           show a k ≤ (if k = j then q j else p k) ∧ (if k = j then q j else p k) ≤ b k
           by_cases hkj : k = j
           · subst hkj
-            rw [if_pos rfl]
+            rw [ite_eq_left rfl]
             exact hq.2 k hki
-          · rw [if_neg hkj]
+          · rw [ite_eq_right hkj]
             exact hp.2 k hki
       have hmidF : (fun k => if k = j then q j else p k) ∈ F :=
-        hmove j hji hp hpF (fun k hkj => by rw [if_neg hkj]) hmid
+        hmove j hji hp hpF (fun k hkj => by rw [ite_eq_right hkj]) hmid
       refine ih (fun h => hi (Finset.mem_insert_of_mem h)) hmid hmidF ?_ hq
       intro k hk
       by_cases hkj : k = j
       · subst hkj
-        rw [if_pos rfl]
-      · rw [if_neg hkj]
+        rw [ite_eq_left rfl]
+      · rw [ite_eq_right hkj]
         exact hagree k (by simp [hkj, hk])
   intro q hq
   refine key (Finset.univ.erase i) (Finset.notMem_erase i Finset.univ)
@@ -1079,7 +1079,7 @@ theorem closed_slab_down (F : Set (Site d)) (a b : Site d) (i : Fin d) (hab : a 
       have h1 := congrFun hcon i
       have h2 : (p + c • unit j + unit i) i = p i + 1 := by
         rw [Pi.add_apply, coord_add_smul]
-        simp only [if_neg (Ne.symm hj), mul_zero, add_zero, LatticeProb.unit,
+        simp only [ite_eq_right (Ne.symm hj), mul_zero, add_zero, LatticeProb.unit,
           Pi.single_eq_same]
       rw [h2] at h1
       omega
@@ -1100,11 +1100,11 @@ theorem closed_slab_down (F : Set (Site d)) (a b : Site d) (i : Fin d) (hab : a 
     have hNle : p j + (N : ℤ) * (if p j ≤ q j then 1 else -1) = q j := by
       rw [hN]
       by_cases hle : p j ≤ q j
-      · rw [if_pos hle, if_pos hle]
+      · rw [ite_eq_left hle, ite_eq_left hle]
         have h0 : (0 : ℤ) ≤ q j - p j := by linarith
         rw [Int.toNat_of_nonneg h0]
         ring
-      · rw [if_neg hle, if_neg hle]
+      · rw [ite_eq_right hle, ite_eq_right hle]
         have h0 : (0 : ℤ) ≤ p j - q j := by linarith
         rw [Int.toNat_of_nonneg h0]
         ring
@@ -1114,15 +1114,15 @@ theorem closed_slab_down (F : Set (Site d)) (a b : Site d) (i : Fin d) (hab : a 
       intro n hn
       have hnN : (n : ℤ) ≤ (N : ℤ) := by exact_mod_cast hn
       by_cases hle : p j ≤ q j
-      · rw [if_pos hle]
+      · rw [ite_eq_left hle]
         have hN' : p j + (N : ℤ) = q j := by
-          have h := hNle; rw [if_pos hle] at h; simpa using h
+          have h := hNle; rw [ite_eq_left hle] at h; simpa using h
         constructor
         · rw [min_eq_left hle]; linarith
         · rw [max_eq_right hle]; linarith
-      · rw [if_neg hle]
+      · rw [ite_eq_right hle]
         have hN' : p j - (N : ℤ) = q j := by
-          have h := hNle; rw [if_neg hle] at h; linarith
+          have h := hNle; rw [ite_eq_right hle] at h; linarith
         constructor
         · rw [min_eq_right (le_of_lt (not_le.mp hle))]; linarith
         · rw [max_eq_left (le_of_lt (not_le.mp hle))]; linarith
@@ -1131,19 +1131,19 @@ theorem closed_slab_down (F : Set (Site d)) (a b : Site d) (i : Fin d) (hab : a 
           slab a b i (a i - 1) := by
       intro n hn
       refine ⟨?_, ?_⟩
-      · simp only [if_neg (Ne.symm hj)]; exact hp.1
+      · simp only [ite_eq_right (Ne.symm hj)]; exact hp.1
       · intro k hki
         show a k ≤ (if k = j then p j + (n : ℤ) * (if p j ≤ q j then 1 else -1) else p k) ∧
           (if k = j then p j + (n : ℤ) * (if p j ≤ q j then 1 else -1) else p k) ≤ b k
         by_cases hkj : k = j
         · subst hkj
-          rw [if_pos rfl]
+          rw [ite_eq_left rfl]
           have hb := hbetween n hn
           have hpj := hp.2 k hki
           have hqj := hq.2 k hki
           refine ⟨le_trans (le_min hpj.1 hqj.1) hb.1, ?_⟩
           exact le_trans hb.2 (max_le hpj.2 hqj.2)
-        · rw [if_neg hkj]
+        · rw [ite_eq_right hkj]
           exact hp.2 k hki
     have hwalk : ∀ (n : ℕ), n ≤ N →
         (fun l => if l = j then p j + (n : ℤ) * (if p j ≤ q j then 1 else -1) else p l) ∈
@@ -1157,7 +1157,7 @@ theorem closed_slab_down (F : Set (Site d)) (a b : Site d) (i : Fin d) (hab : a 
           funext l
           by_cases hlj : l = j
           · subst hlj; simp
-          · rw [if_neg hlj]
+          · rw [ite_eq_right hlj]
         rw [h0]; exact hpF
       | succ n ih =>
         intro hn
@@ -1176,20 +1176,20 @@ theorem closed_slab_down (F : Set (Site d)) (a b : Site d) (i : Fin d) (hab : a 
             push_cast
             ring
           · rw [coord_add_smul]
-            simp only [if_neg hlj, mul_zero, add_zero]
+            simp only [ite_eq_right hlj, mul_zero, add_zero]
         rw [← hsucc]
         refine hstep (hstep' n hn') hprev j hj _ ?_ ?_
         · by_cases hle : p j ≤ q j
-          · exact Or.inl (by rw [if_pos hle])
-          · exact Or.inr (by rw [if_neg hle])
+          · exact Or.inl (by rw [ite_eq_left hle])
+          · exact Or.inr (by rw [ite_eq_right hle])
         · rw [hsucc]; exact hcur
     have hfin := hwalk N le_rfl
     have hqeq : (fun l => if l = j then p j + (N : ℤ) * (if p j ≤ q j then 1 else -1)
         else p l) = q := by
       funext l
       by_cases hlj : l = j
-      · subst hlj; rw [if_pos rfl]; exact hNle
-      · rw [if_neg hlj]; exact hagree l hlj
+      · subst hlj; rw [ite_eq_left rfl]; exact hNle
+      · rw [ite_eq_right hlj]; exact hagree l hlj
     rwa [hqeq] at hfin
   have key : ∀ (s : Finset (Fin d)), i ∉ s →
       ∀ {p q : Site d}, p ∈ slab a b i (a i - 1) → p ∈ F →
@@ -1210,23 +1210,23 @@ theorem closed_slab_down (F : Set (Site d)) (a b : Site d) (i : Fin d) (hab : a 
       have hji : j ≠ i := fun h => hi (h ▸ Finset.mem_insert_self j s)
       have hmid : (fun k => if k = j then q j else p k) ∈ slab a b i (a i - 1) := by
         refine ⟨?_, ?_⟩
-        · simp only [if_neg (Ne.symm hji)]; exact hp.1
+        · simp only [ite_eq_right (Ne.symm hji)]; exact hp.1
         · intro k hki
           show a k ≤ (if k = j then q j else p k) ∧ (if k = j then q j else p k) ≤ b k
           by_cases hkj : k = j
           · subst hkj
-            rw [if_pos rfl]
+            rw [ite_eq_left rfl]
             exact hq.2 k hki
-          · rw [if_neg hkj]
+          · rw [ite_eq_right hkj]
             exact hp.2 k hki
       have hmidF : (fun k => if k = j then q j else p k) ∈ F :=
-        hmove j hji hp hpF (fun k hkj => by rw [if_neg hkj]) hmid
+        hmove j hji hp hpF (fun k hkj => by rw [ite_eq_right hkj]) hmid
       refine ih (fun h => hi (Finset.mem_insert_of_mem h)) hmid hmidF ?_ hq
       intro k hk
       by_cases hkj : k = j
       · subst hkj
-        rw [if_pos rfl]
-      · rw [if_neg hkj]
+        rw [ite_eq_left rfl]
+      · rw [ite_eq_right hkj]
         exact hagree k (by simp [hkj, hk])
   intro q hq
   refine key (Finset.univ.erase i) (Finset.notMem_erase i Finset.univ)

@@ -56,7 +56,7 @@ theorem squareRadiusGreen_terminal_bound (d : ℕ) (hd : 2 ≤ d)
       exact ⟨C, hC, fun L D hD => by simpa using h L D hD⟩
     · obtain ⟨C, hC, h⟩ :=
         LatticeProb.GreenTwoSided.killedGreen_diag_le_const_of_three_le (show 3 ≤ d by omega)
-      exact ⟨C, hC, fun L D _ => by rw [if_neg h2, mul_one]; exact h D⟩
+      exact ⟨C, hC, fun L D _ => by rw [ite_eq_right h2, mul_one]; exact h D⟩
   obtain ⟨B, hB, hdiagB⟩ := hdiag
   obtain ⟨E, hE, hrow⟩ := LatticeProb.GreenTwoSided.killedGreen_row_sum_le_sq hd
   refine ⟨A, hA, N0, hN0, B, hB, E, hE, fun N hN => ?_⟩
@@ -81,7 +81,7 @@ theorem squareRadiusGreen_terminal_bound (d : ℕ) (hd : 2 ≤ d)
   have hDbox : ∀ z ∈ D, z ∈ LatticeProb.box d L := by
     intro z hz
     rw [hD, Finset.mem_Icc] at hz
-    simp only [LatticeProb.box, Set.mem_setOf_eq]
+    simp only [LatticeProb.box, Set.mem_ofPred_eq]
     exact fun i => abs_le.mpr ⟨hz.1 i, hz.2 i⟩
   have hO : (0 : Site d) ∈ D := by
     rw [hD, Finset.mem_Icc]

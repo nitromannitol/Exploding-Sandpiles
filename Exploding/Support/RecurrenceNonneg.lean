@@ -52,7 +52,7 @@ theorem nbrSumZ_outerBoundary_singleton (x : Site d) :
       (if x + unit i ∈ outerBoundary ({x} : Set (Site d)) then (1 : ℤ) else 0)
         + (if x - unit i ∈ outerBoundary ({x} : Set (Site d)) then (1 : ℤ) else 0) = 2 :=
     fun i => by
-      rw [if_pos (add_unit_mem_outerBoundary x i), if_pos (sub_unit_mem_outerBoundary x i)]
+      rw [ite_eq_left (add_unit_mem_outerBoundary x i), ite_eq_left (sub_unit_mem_outerBoundary x i)]
       norm_num
   simp only [nbrSumZ]
   rw [Finset.sum_congr rfl fun i _ => h i, Finset.sum_const, Finset.card_univ,
@@ -65,7 +65,7 @@ theorem lap_outerBoundary_singleton (x : Site d) :
     lap (fun y => if y ∈ outerBoundary ({x} : Set (Site d)) then (1 : ℤ) else 0) x
       = 2 * (d : ℤ) := by
   simp only [lap]
-  rw [nbrSumZ_outerBoundary_singleton, if_neg (self_not_mem_outerBoundary x)]
+  rw [nbrSumZ_outerBoundary_singleton, ite_eq_right (self_not_mem_outerBoundary x)]
   ring
 
 /-! ### The frozen odometer at the singleton -/
@@ -87,8 +87,8 @@ theorem fodo_singleton_one (η : Site d → ℤ) (x : Site d) :
         (fun y => if y ∈ outerBoundary ({x} : Set (Site d)) then (1 : ℤ) else 0) 1 x
       = if 2 * (d : ℤ) ≤ η x + 2 * (d : ℤ) then 1 else 0 := by
   have hx : x ∉ ({x} : Set (Site d))ᶜ := fun h => h (Set.mem_singleton x)
-  rw [fodo_succ, if_neg hx, fconf_zero_outerBoundary_singleton]
-  simp only [fodo_zero, if_neg (self_not_mem_outerBoundary x), zero_add]
+  rw [fodo_succ, ite_eq_right hx, fconf_zero_outerBoundary_singleton]
+  simp only [fodo_zero, ite_eq_right (self_not_mem_outerBoundary x), zero_add]
 
 /-- A recurrent background is nonnegative at every site: recurrence of the singleton `{x}`
 at time `1` forces the height `η x + 2d` of `x` to reach `2d`. -/
@@ -98,7 +98,7 @@ theorem recurrent_nonneg (η : Site d → ℤ) (hrec : Recurrent η) (x : Site d
   rw [Finset.coe_singleton, fodo_singleton_one] at h
   by_contra hneg
   have hlt : η x + 2 * (d : ℤ) < 2 * (d : ℤ) := by linarith [not_le.mp hneg]
-  rw [if_neg (not_le.mpr hlt)] at h
+  rw [ite_eq_right (not_le.mpr hlt)] at h
   exact zero_ne_one h
 
 end Exploding

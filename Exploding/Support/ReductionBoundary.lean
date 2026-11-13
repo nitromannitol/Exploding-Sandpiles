@@ -172,27 +172,27 @@ theorem bLowOdo_zero_or_one (t : ℕ) (y : Site d) :
   | succ t ih =>
     rw [bLowOdo_succ]
     by_cases hy : y ∉ cube d n
-    · rw [if_pos hy]; exact ih y
-    · rw [if_neg hy]
+    · rw [ite_eq_left hy]; exact ih y
+    · rw [ite_eq_right hy]
       by_cases h1 : bLowOdo beta n η t y = 1
-      · rw [if_pos h1]; exact Or.inr h1
-      · rw [if_neg h1]
+      · rw [ite_eq_left h1]; exact Or.inr h1
+      · rw [ite_eq_right h1]
         have h0 : bLowOdo beta n η t y = 0 := (ih y).resolve_right h1
         rw [h0]
         by_cases hc : 2 * (d : ℤ) ≤ (η (cons 1 y) - 1) + lap (bLowOdo beta n η t) y
-        · rw [if_pos hc]; right; norm_num
-        · rw [if_neg hc]; left; norm_num
+        · rw [ite_eq_left hc]; right; norm_num
+        · rw [ite_eq_right hc]; left; norm_num
 
 open scoped Classical in
 theorem bUpOdo_succ_of_frozen (t : ℕ) (x : Site (d + 1))
     (h : x ∉ cube (d + 1) n ∨ 1 < x 0) : bUpOdo beta n η (t + 1) x = bUpOdo beta n η t x := by
   rw [bUpOdo_succ]
   rcases h with hx | hx
-  · rw [if_pos hx]
+  · rw [ite_eq_left hx]
   · by_cases hc : x ∈ cube (d + 1) n
     · have hnc : ¬ (x ∉ cube (d + 1) n) := fun h' => h' hc
-      rw [if_neg hnc, if_pos hx]
-    · rw [if_pos hc]
+      rw [ite_eq_right hnc, ite_eq_left hx]
+    · rw [ite_eq_left hc]
 
 theorem bUpOdo_cons_zero (t : ℕ) {w : Site d} (hw : w ∈ cube d n) :
     bUpOdo beta n η t (cons 0 w) = 1 := by
@@ -246,10 +246,10 @@ theorem bUpOdo_cons_one_eq (hd : 1 ≤ d) (t : ℕ) (w : Site d) :
       have e1 : ¬ (cons 1 w ∉ cube (d + 1) n) := fun h' => h' hup
       have e2 : ¬ (w ∉ cube d n) := fun h' => h' hw
       have e3 : ¬ (1 < (cons 1 w) 0) := by simp [cons]
-      rw [bUpOdo_succ, bLowOdo_succ, if_neg e1, if_neg e3, if_neg e2]
+      rw [bUpOdo_succ, bLowOdo_succ, ite_eq_right e1, ite_eq_right e3, ite_eq_right e2]
       by_cases h1 : bLowOdo beta n η t w = 1
       · have h1' : bUpOdo beta n η t (cons 1 w) = 1 := (ih w).trans h1
-        rw [if_pos h1', if_pos h1]
+        rw [ite_eq_left h1', ite_eq_left h1]
         exact ih w
       · have h1' : ¬ bUpOdo beta n η t (cons 1 w) = 1 := fun h => h1 ((ih w).symm.trans h)
         have h0 : bLowOdo beta n η t w = 0 := (bLowOdo_zero_or_one t w).resolve_right h1
@@ -258,15 +258,15 @@ theorem bUpOdo_cons_one_eq (hd : 1 ≤ d) (t : ℕ) (w : Site d) :
               (2 * (d : ℤ) ≤ (η (cons 1 w) - 1) + lap (bLowOdo beta n η t) w) := by
           rw [hlap, h0]
           constructor <;> intro h <;> linarith
-        rw [if_neg h1', if_neg h1, ih w, h0]
+        rw [ite_eq_right h1', ite_eq_right h1, ih w, h0]
         by_cases hc : 2 * (d : ℤ) ≤ (η (cons 1 w) - 1) + lap (bLowOdo beta n η t) w
-        · rw [if_pos (hiff.mpr hc), if_pos hc]
+        · rw [ite_eq_left (hiff.mpr hc), ite_eq_left hc]
         · have hn :
               ¬ (2 * ((d : ℤ) + 1) ≤ η (cons 1 w) + lap (bUpOdo beta n η t) (cons 1 w)) :=
             fun h => hc (hiff.mp h)
-          rw [if_neg hn, if_neg hc]
+          rw [ite_eq_right hn, ite_eq_right hc]
     · have hup : cons 1 w ∉ cube (d + 1) n := fun h => hw ((mem_cube_cons_one hd w).mp h)
-      rw [bUpOdo_succ_of_frozen t (cons 1 w) (Or.inl hup), bLowOdo_succ, if_pos hw]
+      rw [bUpOdo_succ_of_frozen t (cons 1 w) (Or.inl hup), bLowOdo_succ, ite_eq_left hw]
       exact ih w
 
 /-- **Configuration `+2`.** Where the upper odometer on the face vanishes, the upper
@@ -325,7 +325,7 @@ theorem bUpOdo_false_cons_one_eq_redOdoUp (t : ℕ) (y : Site d) :
   | zero =>
     show bUpInit (fun _ => false) n (cons 1 y) = redOdoUp n η 0 (cons 1 y)
     have hne : ¬ ((cons (1 : ℤ) y) 0 = 0) := by simp [cons]
-    rw [redOdoUp_zero, if_neg hne]
+    rw [redOdoUp_zero, ite_eq_right hne]
     by_cases hy : y ∈ outerBoundary (cube d n)
     · exact (bUpInit_cons_one_of_mem (fun _ => false) hy).trans bVal_false
     · rw [bUpInit_cons_one_of_notMem (fun _ => false) hy]
@@ -343,9 +343,9 @@ theorem bUpOdo_false_cons_one_eq_redOdoUp (t : ℕ) (y : Site d) :
           t hy, hlapfun, ih y]
       have hnc : ¬ (cons 1 y ∉ cube (d + 1) n) := fun h => h hx
       have hhead : ¬ ((1 : ℤ) < (cons (1 : ℤ) y) 0) := by simp [cons]
-      rw [redOdoUp_succ, bUpOdo_succ, if_neg hnc, if_neg hnc, if_neg hhead, if_neg hhead,
+      rw [redOdoUp_succ, bUpOdo_succ, ite_eq_right hnc, ite_eq_right hnc, ite_eq_right hhead, ite_eq_right hhead,
         ih y, ← hl]
-    · rw [redOdoUp_succ, bUpOdo_succ, if_pos hx, if_pos hx]
+    · rw [redOdoUp_succ, bUpOdo_succ, ite_eq_left hx, ite_eq_left hx]
       exact ih y
 
 end Bridge

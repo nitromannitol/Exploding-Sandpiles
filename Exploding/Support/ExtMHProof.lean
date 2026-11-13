@@ -26,7 +26,7 @@ theorem xmh_bitLaw_false (q : ℝ) : bitLaw q {false} = ENNReal.ofReal (1 - q) :
 entirely closed is `(1 - q)` to the power of its cardinality. -/
 theorem xmh_site_closed_prob {q : ℝ} (h0 : 0 ≤ q) (h1 : q ≤ 1) (S : Finset (Site d)) :
     sitePercolation d q {ω | ∀ x ∈ S, ω x = false} = ENNReal.ofReal (1 - q) ^ S.card := by
-  haveI : IsProbabilityMeasure (bitLaw q) := ⟨xmh_bitLaw_univ h0 h1⟩
+  have : IsProbabilityMeasure (bitLaw q) := ⟨xmh_bitLaw_univ h0 h1⟩
   have hset : {ω : Site d → Bool | ∀ x ∈ S, ω x = false} =
       Set.pi (↑S : Set (Site d)) (fun _ => ({false} : Set Bool)) := by
     ext ω

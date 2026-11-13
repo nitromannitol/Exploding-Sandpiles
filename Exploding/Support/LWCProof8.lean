@@ -147,7 +147,7 @@ theorem lwc8_gv_linear (d : ℕ) (hd : 2 ≤ d) (p : ℝ) (hp : 0 < p) (hp1 : p 
         linarith
       rw [lwc8_gv_of_mem hηE]
       rw [ha]
-      simp only [ENat.toNat_coe]
+      simp only [ENat.toNat_natCast]
       rw [hmnorm] at hbound
       push_cast at hbound
       nlinarith [hbound, hlog', hKnonneg]
@@ -300,8 +300,8 @@ theorem lwc8_L_subadditive (d : ℕ) (hd : 2 ≤ d) (p : ℝ) (hp : 0 < p) (hp1 
         atTop (nhds (L v)))
     (u v : Site d) : L (u + v) ≤ L u + L v := by
   classical
-  haveI : IsProbabilityMeasure (toyLaw d p) := by
-    haveI : IsProbabilityMeasure (chipLaw (2 * (d : ℤ) - 1) (2 * (d : ℤ) - 2) p) :=
+  have : IsProbabilityMeasure (toyLaw d p) := by
+    have : IsProbabilityMeasure (chipLaw (2 * (d : ℤ) - 1) (2 * (d : ℤ) - 2) p) :=
       lwc_isProbabilityMeasure_chipLaw _ _ p hp.le hp1.le
     change IsProbabilityMeasure
       (Measure.infinitePi (fun _ : Site d => chipLaw (2 * (d : ℤ) - 1) (2 * (d : ℤ) - 2) p))
@@ -338,7 +338,7 @@ theorem lwc8_L_subadditive (d : ℕ) (hd : 2 ≤ d) (p : ℝ) (hp : 0 < p) (hp1 
       have hmp := hT.iterate n
       have hset : {x | ε ≤ ‖X n x - L v‖} = (T^[n]) ⁻¹' {y | ε ≤ ‖Y n y - L v‖} := by
         ext x
-        simp only [Set.mem_setOf_eq, Set.mem_preimage]
+        simp only [Set.mem_ofPred_eq, Set.mem_preimage]
         rw [hXY n x]
       have hmeas : MeasurableSet {y : Site d → ℤ | ε ≤ ‖Y n y - L v‖} :=
         measurableSet_le measurable_const (((hYmeas n).sub measurable_const).norm)

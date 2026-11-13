@@ -31,7 +31,7 @@ theorem king_returnTime_eq_iff (T : Ω → Ω) (A : Set Ω) (x : Ω) {n : ℕ} (
       by_contra hcon
       have hempty : {m : ℕ | 1 ≤ m ∧ T^[m] x ∈ A} = ∅ := by
         ext m
-        simp only [Set.mem_setOf_eq, Set.mem_empty_iff_false, iff_false]
+        simp only [Set.mem_ofPred_eq, Set.mem_empty_iff_false, iff_false]
         exact fun hm => hcon ⟨m, hm⟩
       unfold mk2_returnTime at h
       rw [hempty, Nat.sInf_empty] at h
@@ -64,7 +64,7 @@ theorem king_returnTime_eq_zero_iff (T : Ω → Ω) (A : Set Ω) (x : Ω) :
   · intro h
     have hempty : {m : ℕ | 1 ≤ m ∧ T^[m] x ∈ A} = ∅ := by
       ext m
-      simp only [Set.mem_setOf_eq, Set.mem_empty_iff_false, iff_false]
+      simp only [Set.mem_ofPred_eq, Set.mem_empty_iff_false, iff_false]
       exact fun hm => h m hm.1 hm.2
     unfold mk2_returnTime
     rw [hempty, Nat.sInf_empty]
@@ -79,7 +79,7 @@ theorem king_returnTime_measurable {T : Ω → Ω} (hT : Measurable T) {A : Set 
   · have : mk2_returnTime T A ⁻¹' {0} = ⋂ j ∈ {j : ℕ | 1 ≤ j}, (T^[j]) ⁻¹' Aᶜ := by
       ext x
       simp only [Set.mem_preimage, Set.mem_singleton_iff, king_returnTime_eq_zero_iff,
-        Set.mem_iInter, Set.mem_setOf_eq, Set.mem_compl_iff]
+        Set.mem_iInter, Set.mem_ofPred_eq, Set.mem_compl_iff]
     rw [this]
     exact MeasurableSet.biInter (Set.to_countable _) fun j _ =>
       (hT.iterate j) hA.compl
@@ -87,7 +87,7 @@ theorem king_returnTime_measurable {T : Ω → Ω} (hT : Measurable T) {A : Set 
         (T^[n]) ⁻¹' A ∩ ⋂ j ∈ {j : ℕ | 1 ≤ j ∧ j < n}, (T^[j]) ⁻¹' Aᶜ := by
       ext x
       simp only [Set.mem_preimage, Set.mem_singleton_iff, king_returnTime_eq_iff T A x hn,
-        Set.mem_inter_iff, Set.mem_iInter, Set.mem_setOf_eq, Set.mem_compl_iff]
+        Set.mem_inter_iff, Set.mem_iInter, Set.mem_ofPred_eq, Set.mem_compl_iff]
       constructor
       · rintro ⟨h1, h2⟩
         exact ⟨h1, fun j hj => h2 j hj.1 hj.2⟩
@@ -124,7 +124,7 @@ theorem king_U_measurable {T : Ω → Ω} (hT : Measurable T) {A B : Set Ω} (hA
     (hB : MeasurableSet B) (N : ℕ) : MeasurableSet (king_U T A B N) := by
   have : king_U T A B N = (⋂ j ∈ {j : ℕ | j < N}, (T^[j]) ⁻¹' Aᶜ) ∩ (T^[N]) ⁻¹' B := by
     ext x
-    simp only [king_U, Set.mem_inter_iff, Set.mem_iInter, Set.mem_setOf_eq, Set.mem_preimage,
+    simp only [king_U, Set.mem_inter_iff, Set.mem_iInter, Set.mem_ofPred_eq, Set.mem_preimage,
       Set.mem_compl_iff]
   rw [this]
   exact (MeasurableSet.biInter (Set.to_countable _) fun j _ => (hT.iterate j) hA.compl).inter
@@ -140,7 +140,7 @@ theorem king_preimage_U_inter (T : Ω → Ω) {A B : Set Ω} (hBA : B ⊆ A) (N 
     T ⁻¹' king_U T A B N ∩ A = king_D T A B N := by
   ext x
   have e : ∀ j : ℕ, T^[j] (T x) = T^[j + 1] x := fun j => (Function.iterate_succ_apply T j x).symm
-  simp only [king_U, king_D, Set.mem_inter_iff, Set.mem_preimage, Set.mem_setOf_eq, e]
+  simp only [king_U, king_D, Set.mem_inter_iff, Set.mem_preimage, Set.mem_ofPred_eq, e]
   constructor
   · rintro ⟨⟨h1, h2⟩, hx⟩
     refine ⟨⟨hx, ?_⟩, h2⟩
@@ -157,7 +157,7 @@ theorem king_preimage_U_diff (T : Ω → Ω) (A B : Set Ω) (N : ℕ) :
     T ⁻¹' king_U T A B N \ A = king_U T A B (N + 1) := by
   ext x
   have e : ∀ j : ℕ, T^[j] (T x) = T^[j + 1] x := fun j => (Function.iterate_succ_apply T j x).symm
-  simp only [king_U, Set.mem_sdiff, Set.mem_preimage, Set.mem_setOf_eq, e]
+  simp only [king_U, Set.mem_sdiff, Set.mem_preimage, Set.mem_ofPred_eq, e]
   constructor
   · rintro ⟨⟨h1, h2⟩, hx⟩
     refine ⟨fun j hj => ?_, h2⟩
@@ -251,9 +251,9 @@ theorem king_inducedMap_measurePreserving {μ : Measure Ω} [IsProbabilityMeasur
   -- the preimage of `B` and of `B ∩ A` agree on `A`, up to a null set
   have h1 : μ (mk2_inducedMap T A ⁻¹' B ∩ A) = μ (⋃ N : ℕ, king_D T A (B ∩ A) N) := by
     refine measure_congr ?_
-    rw [Filter.eventuallyEq_set]
+    rw [Filter.eventuallyEqSet_iff]
     filter_upwards [hret] with x hx
-    simp only [Set.mem_inter_iff, Set.mem_preimage, Set.mem_iUnion, king_D, Set.mem_setOf_eq]
+    simp only [Set.mem_inter_iff, Set.mem_preimage, Set.mem_iUnion, king_D, Set.mem_ofPred_eq]
     constructor
     · rintro ⟨hxB, hxA⟩
       have hne := hx hxA
@@ -283,7 +283,7 @@ omit [MeasurableSpace Ω] in
 theorem king_D_self (T : Ω → Ω) (A : Set Ω) (N : ℕ) :
     king_D T A A N = A ∩ {x | mk2_returnTime T A x = N + 1} := by
   ext x
-  simp only [king_D, Set.mem_inter_iff, Set.mem_preimage, Set.mem_setOf_eq]
+  simp only [king_D, Set.mem_inter_iff, Set.mem_preimage, Set.mem_ofPred_eq]
   constructor
   · rintro ⟨h, _⟩; exact h
   · rintro ⟨hxA, hr⟩
@@ -319,14 +319,14 @@ theorem king_lintegral_returnTime_le {μ : Measure Ω} [IsProbabilityMeasure μ]
     exact hnm (hxn.2.symm.trans hxm.2)
   have hUnion : (⋃ n, R n) = A := by
     ext x
-    simp only [hR, Set.mem_iUnion, Set.mem_inter_iff, Set.mem_setOf_eq]
+    simp only [hR, Set.mem_iUnion, Set.mem_inter_iff, Set.mem_ofPred_eq]
     exact ⟨fun ⟨_, h, _⟩ => h, fun h => ⟨_, h, rfl⟩⟩
   have h1 : ∫⁻ x, (mk2_returnTime T A x : ℝ≥0∞) ∂(μ.restrict A)
       = ∑' n : ℕ, (n : ℝ≥0∞) * μ (R n) := by
     rw [show μ.restrict A = μ.restrict (⋃ n, R n) by rw [hUnion], lintegral_iUnion hRm hRd]
     refine tsum_congr fun n => ?_
     rw [setLIntegral_congr_fun (hRm n) (g := fun _ => (n : ℝ≥0∞)) (fun x hx => by
-      simp only [hR, Set.mem_inter_iff, Set.mem_setOf_eq] at hx
+      simp only [hR, Set.mem_inter_iff, Set.mem_ofPred_eq] at hx
       rw [hx.2]), setLIntegral_const]
   rw [h1]
   apply ENNReal.tsum_le_of_sum_range_le
@@ -350,7 +350,7 @@ theorem king_inducedMap_measurePreserving_normalized {μ : Measure Ω} [IsProbab
   have h := king_inducedMap_measurePreserving hT hA
   refine ⟨h.measurable, ?_⟩
   unfold mk3_normalizedRestrict
-  rw [Measure.map_smul, h.map_eq]
+  rw [Measure.map_smul _ h.measurable.aemeasurable, h.map_eq]
 
 /-- The first return time is integrable for the normalised restriction `μ_A` (Kac). -/
 theorem king_returnTime_integrable {μ : Measure Ω} [IsProbabilityMeasure μ] {T : Ω → Ω}

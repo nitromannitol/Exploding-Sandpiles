@@ -23,7 +23,7 @@ noncomputable def xap_cubeFinset (z : Site d) : Finset (Site d) :=
 
 theorem xap_mem_cubeFinset (z w : Site d) : w ∈ xap_cubeFinset z ↔ w ∈ xap_cube z := by
   simp only [xap_cubeFinset, Finset.mem_image, Fintype.mem_piFinset, Finset.mem_Icc, xap_cube,
-    Set.mem_setOf_eq]
+    Set.mem_ofPred_eq]
   constructor
   · rintro ⟨x, hx, rfl⟩ i
     simp only [Pi.add_apply]
@@ -66,7 +66,7 @@ theorem xap_good_measurable (z : Site d) :
   rw [show {ω : Site d × Fin d → Bool | xap_Good ω z}
       = ⋂ e ∈ xap_cubeBonds z, {ω | ω e = true} by
     ext ω
-    simp only [Set.mem_setOf_eq, Set.mem_iInter]
+    simp only [Set.mem_ofPred_eq, Set.mem_iInter]
     exact xap_good_iff ω z]
   exact MeasurableSet.biInter (xap_cubeBonds z).countable_toSet fun e _ => by
     have : {ω : Site d × Fin d → Bool | ω e = true} = (fun ω => ω e) ⁻¹' ({true} : Set Bool) :=
@@ -83,7 +83,7 @@ theorem xap_bitLaw_true (q : ℝ) : bitLaw q {true} = ENNReal.ofReal q := by
 /-- The probability that every bond of a finite set is open is `q` to the number of bonds. -/
 theorem xap_open_prob {q : ℝ} (h0 : 0 ≤ q) (h1 : q ≤ 1) (S : Finset (Site d × Fin d)) :
     bondPercolation d q {ω | ∀ e ∈ S, ω e = true} = ENNReal.ofReal q ^ S.card := by
-  haveI : IsProbabilityMeasure (bitLaw q) := ⟨by
+  have : IsProbabilityMeasure (bitLaw q) := ⟨by
     unfold bitLaw
     simp only [Measure.add_apply, Measure.smul_apply, measure_univ, smul_eq_mul, mul_one]
     rw [← ENNReal.ofReal_add h0 (by linarith)]

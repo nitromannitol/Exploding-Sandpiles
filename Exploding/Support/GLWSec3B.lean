@@ -40,7 +40,7 @@ theorem glws_g_subadd (hd : 2 ≤ d) (ηmin : ℤ) (hηmin : 0 ≤ ηmin) (L : A
   · have hT : ((fun η : Site d → ℤ => fun z => η (y + z))^[m]) η ∈ glws_G d ηmin L :=
       glws_iterate_mem hη hy m
     unfold glws_g
-    rw [if_pos hη, if_pos hη, if_pos hT]
+    rw [ite_eq_left hη, ite_eq_left hη, ite_eq_left hT]
     unfold glws_f
     rw [glw_shift_ergodic_iterate, lwc_cluster_shift]
     have h := glws_f_subadd hd ηmin hηmin hη L.zero_mem (L.zsmul_mem hy m)
@@ -54,7 +54,7 @@ theorem glws_g_subadd (hd : 2 ≤ d) (ηmin : ℤ) (hηmin : 0 ≤ ηmin) (L : A
     have h2 := glws_g_nonneg ηmin L y n (((fun η : Site d → ℤ => fun z => η (y + z))^[m]) η)
     have h0 : glws_g ηmin L y (m + n) η = 0 := by
       unfold glws_g
-      rw [if_neg hη]
+      rw [ite_eq_right hη]
     rw [h0]
     linarith
 
@@ -83,7 +83,7 @@ theorem glws_g_eq_of_mem {ηmin : ℤ} {L : AddSubgroup (Site d)} {η : Site d �
     (hη : η ∈ glws_G d ηmin L) (y : Site d)
     (n : ℕ) : glws_g ηmin L y n η = glws_f η ((n : ℤ) • y) := by
   unfold glws_g
-  rw [if_pos hη]
+  rw [ite_eq_left hη]
 
 /-- **The upward Lipschitz bound of the cocycle.**  On the local good event the paper's second bound
 `T̃(x') ≤ T̃(x) + C |x - x'| + (log N)^γ` along the ray `n ↦ n y` gives the hypothesis of the
@@ -116,9 +116,9 @@ theorem glws_g_lip {γ C : ℝ} (ηmin : ℤ) {L : AddSubgroup (Site d)} {η : S
     rw [abs_sub_comm, abs_of_nonneg this]
   rw [hnorm] at hbb
   have hga : glws_g ηmin L y n₁ η = (a : ℝ) := by
-    rw [glws_g_eq_of_mem hG _ _]; unfold glws_f; rw [ha, ENat.toNat_coe]
+    rw [glws_g_eq_of_mem hG _ _]; unfold glws_f; rw [ha, ENat.toNat_natCast]
   have hgb : glws_g ηmin L y n₂ η = (b : ℝ) := by
-    rw [glws_g_eq_of_mem hG _ _]; unfold glws_f; rw [hb, ENat.toNat_coe]
+    rw [glws_g_eq_of_mem hG _ _]; unfold glws_f; rw [hb, ENat.toNat_natCast]
   show glws_g ηmin L y n₂ η ≤ glws_g ηmin L y n₁ η + C * (mnorm y : ℝ) * ((n₂ : ℝ) - n₁) +
     Real.log N ^ γ
   rw [hga, hgb]
@@ -137,7 +137,7 @@ theorem glws_shift_ergodic (d : ℕ) (L : AddSubgroup (Site d))
         (fun η : Site d → ℤ => fun z => η (y + z))^[n] ⁻¹' cylinder s S) =
       P (cylinder s S) * P (cylinder s S)) :
     Ergodic (fun η : Site d → ℤ => fun z => η (y + z)) P := by
-  haveI := hP
+  have := hP
   refine ergodic_of_mixing_on_isSetRing (C := measurableCylinders fun _ : Site d => ℤ)
     isSetRing_measurableCylinders ?_ generateFrom_measurableCylinders.symm
     (glw_shift_ergodic_meas_pres d L P hstat y hy) ?_
@@ -160,7 +160,7 @@ theorem glws_direction_limit (hd : 2 ≤ d) (ηmin : ℤ) (hηmin : 0 ≤ ηmin)
       P (cylinder s S) * P (cylinder s S)) :
     ∃ ℓ : ℝ, ∀ᵐ η ∂P,
       Tendsto (fun n : ℕ => glws_f η ((n : ℤ) • y) / (n : ℝ)) atTop (nhds ℓ) := by
-  haveI := hP
+  have := hP
   have hmp := glw_shift_ergodic_meas_pres d L P hstat y hy
   have herg := glws_shift_ergodic d L P hP hstat y hy hmix
   obtain ⟨ℓ, hℓ⟩ := king_lipKingman P (fun η z => η (y + z)) hmp herg (glws_g ηmin L y)
@@ -172,6 +172,6 @@ theorem glws_direction_limit (hd : 2 ≤ d) (ηmin : ℤ) (hηmin : 0 ≤ ηmin)
   filter_upwards [hℓ, hG] with η h1 h2
   refine h1.congr (fun n => ?_)
   unfold glws_g
-  rw [if_pos h2]
+  rw [ite_eq_left h2]
 
 end Exploding

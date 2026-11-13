@@ -38,7 +38,7 @@ theorem lwc6_unit_eq_iff {i j : Fin d} : (unit i : Site d) = unit j ↔ i = j :=
     simp only [unit, Pi.single_apply] at hc
     by_cases hij : i = j
     · exact hij
-    · rw [if_neg hij] at hc
+    · rw [ite_eq_right hij] at hc
       norm_num at hc
   · rintro rfl; rfl
 
@@ -48,9 +48,9 @@ theorem lwc6_unit_ne_neg {i j : Fin d} : (unit i : Site d) ≠ -unit j := by
   have hc := congrFun h i
   simp only [unit, Pi.single_apply, Pi.neg_apply] at hc
   by_cases hij : i = j
-  · rw [if_pos hij] at hc
+  · rw [ite_eq_left hij] at hc
     norm_num at hc
-  · rw [if_neg hij] at hc
+  · rw [ite_eq_right hij] at hc
     norm_num at hc
 
 /-- Representing by the positive and negative parts against the unit vectors. -/
@@ -123,32 +123,32 @@ theorem lwc6_rep_add {L : Site d → ℝ} {y₁ y₂ : Fin d → ℝ} {r₁ r₂
     ?_, ?_, ?_⟩
   · intro w hw
     rcases Finset.mem_union.mp hw with hw | hw
-    · have h1 : 0 ≤ (if w ∈ s₁ then lam₁ w else 0) := by rw [if_pos hw]; exact hnn₁ w hw
+    · have h1 : 0 ≤ (if w ∈ s₁ then lam₁ w else 0) := by rw [ite_eq_left hw]; exact hnn₁ w hw
       have h2 : 0 ≤ (if w ∈ s₂ then lam₂ w else 0) := by
         by_cases h : w ∈ s₂
-        · rw [if_pos h]; exact hnn₂ w h
-        · rw [if_neg h]
+        · rw [ite_eq_left h]; exact hnn₂ w h
+        · rw [ite_eq_right h]
       linarith
-    · have h2 : 0 ≤ (if w ∈ s₂ then lam₂ w else 0) := by rw [if_pos hw]; exact hnn₂ w hw
+    · have h2 : 0 ≤ (if w ∈ s₂ then lam₂ w else 0) := by rw [ite_eq_left hw]; exact hnn₂ w hw
       have h1 : 0 ≤ (if w ∈ s₁ then lam₁ w else 0) := by
         by_cases h : w ∈ s₁
-        · rw [if_pos h]; exact hnn₁ w h
-        · rw [if_neg h]
+        · rw [ite_eq_left h]; exact hnn₁ w h
+        · rw [ite_eq_right h]
       linarith
   · have h1 : ∑ w ∈ s₁ ∪ s₂, (if w ∈ s₁ then lam₁ w else 0) • lwc2_toReal w = y₁ := by
       rw [← hv₁]
       calc ∑ w ∈ s₁ ∪ s₂, (if w ∈ s₁ then lam₁ w else 0) • lwc2_toReal w
           = ∑ w ∈ s₁, (if w ∈ s₁ then lam₁ w else 0) • lwc2_toReal w :=
-            (Finset.sum_subset (Finset.subset_union_left) (fun w _ hw => by rw [if_neg hw, zero_smul])).symm
+            (Finset.sum_subset (Finset.subset_union_left) (fun w _ hw => by rw [ite_eq_right hw, zero_smul])).symm
         _ = ∑ w ∈ s₁, lam₁ w • lwc2_toReal w :=
-            Finset.sum_congr rfl fun w hw => by rw [if_pos hw]
+            Finset.sum_congr rfl fun w hw => by rw [ite_eq_left hw]
     have h2 : ∑ w ∈ s₁ ∪ s₂, (if w ∈ s₂ then lam₂ w else 0) • lwc2_toReal w = y₂ := by
       rw [← hv₂]
       calc ∑ w ∈ s₁ ∪ s₂, (if w ∈ s₂ then lam₂ w else 0) • lwc2_toReal w
           = ∑ w ∈ s₂, (if w ∈ s₂ then lam₂ w else 0) • lwc2_toReal w :=
-            (Finset.sum_subset (Finset.subset_union_right) (fun w _ hw => by rw [if_neg hw, zero_smul])).symm
+            (Finset.sum_subset (Finset.subset_union_right) (fun w _ hw => by rw [ite_eq_right hw, zero_smul])).symm
         _ = ∑ w ∈ s₂, lam₂ w • lwc2_toReal w :=
-            Finset.sum_congr rfl fun w hw => by rw [if_pos hw]
+            Finset.sum_congr rfl fun w hw => by rw [ite_eq_left hw]
     calc ∑ w ∈ s₁ ∪ s₂,
           ((if w ∈ s₁ then lam₁ w else 0) + (if w ∈ s₂ then lam₂ w else 0)) • lwc2_toReal w
         = ∑ w ∈ s₁ ∪ s₂, ((if w ∈ s₁ then lam₁ w else 0) • lwc2_toReal w
@@ -160,16 +160,16 @@ theorem lwc6_rep_add {L : Site d → ℝ} {y₁ y₂ : Fin d → ℝ} {r₁ r₂
         = ∑ w ∈ s₁, lam₁ w * L w := by
       calc ∑ w ∈ s₁ ∪ s₂, (if w ∈ s₁ then lam₁ w else 0) * L w
           = ∑ w ∈ s₁, (if w ∈ s₁ then lam₁ w else 0) * L w :=
-            (Finset.sum_subset (Finset.subset_union_left) (fun w _ hw => by rw [if_neg hw, zero_mul])).symm
+            (Finset.sum_subset (Finset.subset_union_left) (fun w _ hw => by rw [ite_eq_right hw, zero_mul])).symm
         _ = ∑ w ∈ s₁, lam₁ w * L w :=
-            Finset.sum_congr rfl fun w hw => by rw [if_pos hw]
+            Finset.sum_congr rfl fun w hw => by rw [ite_eq_left hw]
     have h2 : ∑ w ∈ s₁ ∪ s₂, (if w ∈ s₂ then lam₂ w else 0) * L w
         = ∑ w ∈ s₂, lam₂ w * L w := by
       calc ∑ w ∈ s₁ ∪ s₂, (if w ∈ s₂ then lam₂ w else 0) * L w
           = ∑ w ∈ s₂, (if w ∈ s₂ then lam₂ w else 0) * L w :=
-            (Finset.sum_subset (Finset.subset_union_right) (fun w _ hw => by rw [if_neg hw, zero_mul])).symm
+            (Finset.sum_subset (Finset.subset_union_right) (fun w _ hw => by rw [ite_eq_right hw, zero_mul])).symm
         _ = ∑ w ∈ s₂, lam₂ w * L w :=
-            Finset.sum_congr rfl fun w hw => by rw [if_pos hw]
+            Finset.sum_congr rfl fun w hw => by rw [ite_eq_left hw]
     rw [hr₁, hr₂, ← h1, ← h2, ← Finset.sum_add_distrib]
     refine Finset.sum_congr rfl fun w _ => ?_
     ring

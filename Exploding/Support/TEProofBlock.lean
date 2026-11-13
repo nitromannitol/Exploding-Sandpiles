@@ -80,7 +80,7 @@ theorem te_podo_block (s0 : Site d → ℤ) (x0 : Site d) (R : ℕ)
     have hp : pconf s0 t z = s0 z := by
       simp only [pconf, lap_eq, hnbr, hzt]
       ring
-    rw [podo_succ, hzt, hp, if_pos hzR]
+    rw [podo_succ, hzt, hp, ite_eq_left hzR]
     push_cast
     ring
 
@@ -117,7 +117,7 @@ theorem measurableSet_teBlockEvent (d R : ℕ) : MeasurableSet (teBlockEvent d R
 theorem teShift_preimage_teBlockEvent (d R : ℕ) (v : Site d) :
     teShift v ⁻¹' teBlockEvent d R = teBlockEvent d R := by
   ext β
-  simp only [Set.mem_preimage, teBlockEvent, Set.mem_setOf_eq, teShift]
+  simp only [Set.mem_preimage, teBlockEvent, Set.mem_ofPred_eq, teShift]
   constructor
   · rintro ⟨x0, hx0⟩
     refine ⟨x0 + v, fun y hy => ?_⟩

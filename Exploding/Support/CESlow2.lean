@@ -106,18 +106,18 @@ theorem cels_W_add {c : ℤ} (hc : 2 ≤ c) (t y : ℤ) :
   have h1 : ¬ (c + 4 = 0 ∧ y = 0) := by omega
   have h2 : ¬ (c = 0 ∧ y = 0) := by omega
   unfold cels_W
-  rw [if_neg h1, if_neg h2, cels_tau_add4 hc]
+  rw [ite_eq_right h1, ite_eq_right h2, cels_tau_add4 hc]
   split_ifs <;> omega
 
 theorem cels_W_stat (c y t : ℤ) (hne : ¬ (c = 0 ∧ y = 0)) (h : cels_tau c y ≤ t + 4) :
     cels_W (t + 4) c y = cels_W t c y + 1 := by
   unfold cels_W
-  rw [if_neg hne, if_neg hne]
+  rw [ite_eq_right hne, ite_eq_right hne]
   split_ifs <;> omega
 
 theorem cels_W_stat0 (t : ℤ) (h : 1 ≤ t) : cels_W (t + 4) 0 0 = cels_W t 0 0 + 1 := by
   unfold cels_W
-  simp only [and_self, if_true]
+  simp only [and_self, ite_true]
   split_ifs <;> omega
 
 theorem cels_u_add4 (c y : ℤ) : cels_u (c + 4) y = cels_u c y := by
@@ -208,7 +208,7 @@ theorem cels_ceta_add4 {c : ℤ} (hc : 1 ≤ c) (y : ℤ) : cels_ceta (c + 4) y 
   have h4 : (c + 4) % 4 = c % 4 := by omega
   have h0 : ¬ (c + 4 = 0 ∧ y = 0) := by omega
   have h0' : ¬ (c = 0 ∧ y = 0) := by omega
-  rw [h4, if_neg h0, if_neg h0']
+  rw [h4, ite_eq_right h0, ite_eq_right h0']
 
 /-- Legality propagates from column `c` to column `c + 4`, `6` steps later. -/
 theorem cels_ok_add_c (c y t : ℤ) (hc : 3 ≤ c) (h : cels_ok c y t) :

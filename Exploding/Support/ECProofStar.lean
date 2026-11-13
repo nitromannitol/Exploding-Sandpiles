@@ -46,6 +46,7 @@ theorem ec_adj4_adj8 {a b : ℤ × ℤ} (h : ec_adj4 a b) : ec_adj8 a b := by
 
 /-! ### The finite parity lemma on a unit square -/
 
+set_option backward.isDefEq.respectTransparency.types false in
 /-- The status of a vertex: in `A`; in the part `D₁` of the boundary; in the rest `D₂`
 of the boundary; inside `B` but off the boundary; or elsewhere. -/
 inductive ECSt
@@ -158,7 +159,7 @@ theorem ec_st_of_mem (hz : z ∈ A) : ec_st A B D1 z = .a := by
 
 theorem ec_st_ne_a (hz : z ∉ A) : ec_st A B D1 z ≠ .a := by
   classical
-  unfold ec_st; simp only [hz, if_false]; split_ifs <;> simp
+  unfold ec_st; simp only [hz, ite_false]; split_ifs <;> simp
 
 theorem ec_st_d1 (hzA : z ∉ A) (hzD : z ∈ D1) : ec_st A B D1 z = .d1 := by
   classical

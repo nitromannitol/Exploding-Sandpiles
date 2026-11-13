@@ -17,7 +17,7 @@ theorem xbc_measurableSet_of_determined {S : Type*} (F : Finset S) (E : Set (S �
     MeasurableSet E := by
   classical
   set π : (S → Bool) → (F → Bool) := fun ω z => ω z with hπ
-  have hπm : Measurable π := measurable_pi_lambda _ fun z => measurable_pi_apply _
+  have hπm : Measurable π := Measurable.of_eval fun z => measurable_pi_apply _
   have hsat : E = π ⁻¹' (π '' E) := by
     ext ω
     refine ⟨fun h => ⟨ω, h, rfl⟩, ?_⟩
@@ -31,7 +31,7 @@ theorem xbc_measurableSet_of_determined {S : Type*} (F : Finset S) (E : Set (S �
 /-- The lattice box `xap11_ball` is the sup-norm box `cent`. -/
 theorem xbc_mem_ball {n : ℕ} {x : Site d} : x ∈ xap11_ball d n ↔ x ∈ cent d n := by
   rw [xap11_ball, Fintype.mem_piFinset, cent]
-  simp only [Finset.mem_Icc, Set.mem_setOf_eq]
+  simp only [Finset.mem_Icc, Set.mem_ofPred_eq]
   constructor
   · intro h i
     rw [abs_le]

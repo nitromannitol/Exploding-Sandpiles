@@ -101,7 +101,7 @@ theorem glws_second_bound {η : Site d → ℤ} {k : Fin d → ℕ} {Cinf : Set 
     have hLA1 : (0 : ℝ) ≤ (glws_LA Cch k : ℝ) + 1 := by linarith
     nlinarith [hbb, h1', h2, mul_le_mul_of_nonneg_left h1' hLA1, mul_le_mul_of_nonneg_left h2 hLA1]
   · rw [not_lt] at hsmall
-    obtain ⟨m, hm, hmw, hae⟩ := clusterArrival_exists η 0 x (by rw [ha]; exact ENat.coe_ne_top a)
+    obtain ⟨m, hm, hmw, hae⟩ := clusterArrival_exists η 0 x (by rw [ha]; exact ENat.natCast_ne_top a)
     have hma : m = a := by
       have := hae.symm.trans ha
       exact_mod_cast this

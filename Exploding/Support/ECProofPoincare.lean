@@ -30,19 +30,19 @@ theorem ec_cum_exists (g : ℤ → ZMod 2) :
   by_cases hx : 0 ≤ x
   · have h1 : 0 ≤ x + 1 := by omega
     have h2 : (x + 1).toNat = x.toNat + 1 := by omega
-    simp only [if_pos hx, if_pos h1, h2, Finset.sum_range_succ]
+    simp only [ite_eq_left hx, ite_eq_left h1, h2, Finset.sum_range_succ]
     congr 2
     omega
   · have h1 : ¬ 0 ≤ x := hx
     by_cases hx1 : x = -1
     · subst hx1
-      simp only [show (0 : ℤ) ≤ -1 + 1 by norm_num, if_true, show ¬ (0 : ℤ) ≤ -1 by norm_num,
-        if_false]
+      simp only [show (0 : ℤ) ≤ -1 + 1 by norm_num, ite_true, show ¬ (0 : ℤ) ≤ -1 by norm_num,
+        ite_false]
       norm_num
       exact (ec_zmod2_add_self _).symm
     · have h2 : ¬ 0 ≤ x + 1 := by omega
       have h3 : (-x).toNat = (-(x + 1)).toNat + 1 := by omega
-      simp only [if_neg h1, if_neg h2, h3, Finset.sum_range_succ]
+      simp only [ite_eq_right h1, ite_eq_right h2, h3, Finset.sum_range_succ]
       have h4 : (-1 - (((-(x + 1)).toNat : ℕ) : ℤ)) = x := by omega
       rw [h4]
       set a := ∑ i ∈ Finset.range (-(x + 1)).toNat, g (-1 - (i : ℤ))

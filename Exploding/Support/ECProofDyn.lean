@@ -30,18 +30,18 @@ theorem ec_mnorm_le_add_unit (x : Site d) (i : Fin d) :
     intro j
     by_cases hj : j = i
     · have hxj : (x + unit i) j = x j + 1 := by
-        rw [Pi.add_apply, ec_unit_apply, if_pos hj]
-      rw [hxj, if_pos hj]
+        rw [Pi.add_apply, ec_unit_apply, ite_eq_left hj]
+      rw [hxj, ite_eq_left hj]
       have h1 := abs_add_le (x j + 1) (-1 : ℤ)
       rw [show x j + 1 + (-1) = x j from by ring, abs_neg, abs_one] at h1
       exact h1
     · have hxj : (x + unit i) j = x j := by
-        rw [Pi.add_apply, ec_unit_apply, if_neg hj, add_zero]
-      rw [hxj, if_neg hj]
+        rw [Pi.add_apply, ec_unit_apply, ite_eq_right hj, add_zero]
+      rw [hxj, ite_eq_right hj]
       simp
   have hsum : (∑ j : Fin d, (if j = i then (1 : ℤ) else 0)) = 1 := by
     rw [Finset.sum_eq_single i (fun b _ hb => by simp [hb])
-      (fun hi => absurd (Finset.mem_univ i) hi), if_pos rfl]
+      (fun hi => absurd (Finset.mem_univ i) hi), ite_eq_left rfl]
   calc mnorm x = ∑ j : Fin d, |x j| := rfl
     _ ≤ ∑ j : Fin d, (|(x + unit i) j| + (if j = i then (1 : ℤ) else 0)) :=
         Finset.sum_le_sum (fun j _ => hterm j)
@@ -56,18 +56,18 @@ theorem ec_mnorm_le_sub_unit (x : Site d) (i : Fin d) :
     intro j
     by_cases hj : j = i
     · have hxj : (x - unit i) j = x j - 1 := by
-        rw [Pi.sub_apply, ec_unit_apply, if_pos hj]
-      rw [hxj, if_pos hj]
+        rw [Pi.sub_apply, ec_unit_apply, ite_eq_left hj]
+      rw [hxj, ite_eq_left hj]
       have h1 := abs_add_le (x j - 1) (1 : ℤ)
       rw [show x j - 1 + 1 = x j from by ring, abs_one] at h1
       exact h1
     · have hxj : (x - unit i) j = x j := by
-        rw [Pi.sub_apply, ec_unit_apply, if_neg hj, sub_zero]
-      rw [hxj, if_neg hj]
+        rw [Pi.sub_apply, ec_unit_apply, ite_eq_right hj, sub_zero]
+      rw [hxj, ite_eq_right hj]
       simp
   have hsum : (∑ j : Fin d, (if j = i then (1 : ℤ) else 0)) = 1 := by
     rw [Finset.sum_eq_single i (fun b _ hb => by simp [hb])
-      (fun hi => absurd (Finset.mem_univ i) hi), if_pos rfl]
+      (fun hi => absurd (Finset.mem_univ i) hi), ite_eq_left rfl]
   calc mnorm x = ∑ j : Fin d, |x j| := rfl
     _ ≤ ∑ j : Fin d, (|(x - unit i) j| + (if j = i then (1 : ℤ) else 0)) :=
         Finset.sum_le_sum (fun j _ => hterm j)
@@ -89,12 +89,12 @@ theorem ec_exists_nbr_closer (x : Site d) (hx : x ≠ 0) :
       intro j
       by_cases hj : j = i
       · subst hj
-        rw [Pi.add_apply, ec_unit_apply, if_pos rfl]
+        rw [Pi.add_apply, ec_unit_apply, ite_eq_left rfl]
         rw [abs_of_neg hneg, abs_of_nonpos (by omega)]; ring
-      · rw [Pi.add_apply, ec_unit_apply, if_neg hj]; simp
+      · rw [Pi.add_apply, ec_unit_apply, ite_eq_right hj]; simp
     have hsum : (∑ j : Fin d, (if j = i then (1 : ℤ) else 0)) = 1 := by
       rw [Finset.sum_eq_single i (fun b _ hb => by simp [hb])
-        (fun hi => absurd (Finset.mem_univ i) hi), if_pos rfl]
+        (fun hi => absurd (Finset.mem_univ i) hi), ite_eq_left rfl]
     calc mnorm (x + unit i) + 1 = ∑ j : Fin d, (|(x + unit i) j| + (if j = i then (1 : ℤ) else 0)) := by
           rw [Finset.sum_add_distrib, hsum]; rfl
       _ = mnorm x := Finset.sum_congr rfl (fun j _ => hterm j)
@@ -103,12 +103,12 @@ theorem ec_exists_nbr_closer (x : Site d) (hx : x ≠ 0) :
       intro j
       by_cases hj : j = i
       · subst hj
-        rw [Pi.sub_apply, ec_unit_apply, if_pos rfl]
+        rw [Pi.sub_apply, ec_unit_apply, ite_eq_left rfl]
         rw [abs_of_pos hpos, abs_of_nonneg (by omega)]; ring
-      · rw [Pi.sub_apply, ec_unit_apply, if_neg hj]; simp
+      · rw [Pi.sub_apply, ec_unit_apply, ite_eq_right hj]; simp
     have hsum : (∑ j : Fin d, (if j = i then (1 : ℤ) else 0)) = 1 := by
       rw [Finset.sum_eq_single i (fun b _ hb => by simp [hb])
-        (fun hi => absurd (Finset.mem_univ i) hi), if_pos rfl]
+        (fun hi => absurd (Finset.mem_univ i) hi), ite_eq_left rfl]
     calc mnorm (x - unit i) + 1 = ∑ j : Fin d, (|(x - unit i) j| + (if j = i then (1 : ℤ) else 0)) := by
           rw [Finset.sum_add_distrib, hsum]; rfl
       _ = mnorm x := Finset.sum_congr rfl (fun j _ => hterm j)
@@ -141,7 +141,7 @@ theorem ec_podo_zero_of_far (s0 : Site d → ℤ) (hs0 : ∀ x, x ≠ 0 → s0 x
       simp only [pconf, hlap]
       have := hs0 x hx0
       omega
-    rw [if_neg hnot, hxt]
+    rw [ite_eq_right hnot, hxt]
     rfl
 
 /-- A stabilizable initial sandpile has a time at which the odometer is stable. -/
@@ -152,7 +152,7 @@ theorem ec_stable_of_stabilizable (s0 : Site d → ℤ) (h : Stabilizable s0) :
   by_contra hcon
   have h1 : 2 * (d : ℤ) ≤ pconf s0 T x := by simp only [pconf]; omega
   have h2 := congrFun (hT (T + 1) (Nat.le_succ T)) x
-  rw [podo_succ, if_pos h1] at h2
+  rw [podo_succ, ite_eq_left h1] at h2
   omega
 
 /-! ### The stable odometer fills a large ball -/
@@ -254,8 +254,8 @@ theorem ec_fodo_le (S : Set (Site d)) (s0 s0' w0 v : Site d → ℤ) (hle : ∀ 
     intro x
     rw [fodo_succ]
     by_cases hx : x ∈ S
-    · rw [if_pos hx]; exact hw x
-    · rw [if_neg hx]
+    · rw [ite_eq_left hx]; exact hw x
+    · rw [ite_eq_right hx]
       by_cases hlt : fodo S s0 w0 t x < v x
       · split_ifs <;> omega
       · have heq : fodo S s0 w0 t x = v x := le_antisymm (ih x) (not_lt.1 hlt)
@@ -269,7 +269,7 @@ theorem ec_fodo_le (S : Set (Site d)) (s0 s0' w0 v : Site d → ℤ) (hle : ∀ 
           have := hle x
           have := hstab x
           omega
-        rw [if_neg hno, heq]
+        rw [ite_eq_right hno, heq]
         omega
 
 /-! ### Tiles -/
@@ -289,7 +289,7 @@ theorem ec_faceOut_subset (k : Fin d → ℕ) (hk : ∀ i, 0 < k i) (j : Site d)
     rcases hxc with hxB | ⟨hxB, y, hyB, m, hm⟩
     · exact absurd rfl (hfaceout x hxB)
     · have hunit : ∀ c : Fin d, c ≠ m → (unit m : Site d) c = 0 := by
-        intro c hc; rw [ec_unit_apply, if_neg hc]
+        intro c hc; rw [ec_unit_apply, ite_eq_right hc]
       have hmi : m = i := by
         by_contra hmi
         apply hfaceout y hyB
@@ -307,19 +307,19 @@ theorem ec_faceOut_subset (k : Fin d → ℕ) (hk : ∀ i, 0 < k i) (j : Site d)
   by_cases hl : l = i
   · subst hl
     cases hi
-    · simp only [Bool.false_eq_true, if_false, Pi.sub_apply, ec_unit_apply, if_true]
-      simp only [Bool.false_eq_true, if_false] at hxi
+    · simp only [Bool.false_eq_true, ite_false, Pi.sub_apply, ec_unit_apply, ite_true]
+      simp only [Bool.false_eq_true, ite_false] at hxi
       rw [hxi]
       constructor <;> nlinarith
-    · simp only [if_true, Pi.add_apply, ec_unit_apply]
-      simp only [if_true] at hxi
+    · simp only [ite_true, Pi.add_apply, ec_unit_apply]
+      simp only [ite_true] at hxi
       rw [hxi]
       constructor <;> nlinarith
   · have := hrange l hl
     cases hi
-    · simp only [Bool.false_eq_true, if_false, Pi.sub_apply, ec_unit_apply, if_neg hl]
+    · simp only [Bool.false_eq_true, ite_false, Pi.sub_apply, ec_unit_apply, ite_eq_right hl]
       simpa using this
-    · simp only [if_true, Pi.add_apply, ec_unit_apply, if_neg hl]
+    · simp only [ite_true, Pi.add_apply, ec_unit_apply, ite_eq_right hl]
       simpa using this
 
 /-- **Tile propagation.**  If a tile is completely toppled in a stable odometer and an

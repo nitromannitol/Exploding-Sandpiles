@@ -19,7 +19,7 @@ private def ceVolumeLocalBox (d : ℕ) : Set (Fin d → ℝ) :=
 private theorem ceVolumeGridOmega_coord_bound (d : ℕ) (hd : 2 ≤ d)
     (y : Fin d → ℝ) (hy : y ∈ ceVolumeGridOmega d hd) (i : Fin d) :
     -1 ≤ y i ∧ y i ≤ 1 := by
-  simp only [ceVolumeGridOmega, Set.mem_setOf_eq] at hy
+  simp only [ceVolumeGridOmega, Set.mem_ofPred_eq] at hy
   by_cases hi : i = ⟨0, by omega⟩
   · subst i
     exact ⟨by linarith [hy.1], by linarith [hy.2.1]⟩
@@ -120,7 +120,7 @@ private theorem measurableSet_ceVolumeAtTime (d t : ℕ) : MeasurableSet (ceVolu
       · intro hy
         rcases Set.mem_iUnion.mp hy with ⟨x, hx⟩
         have hsite : nearestSite ((t : ℝ) • y) = x.1 := by
-          exact Set.mem_setOf_eq.mp hx
+          exact Set.mem_ofPred_eq.mp hx
         change 0 < podo σ t (nearestSite ((t : ℝ) • y))
         rw [hsite]
         exact x.2
@@ -197,9 +197,9 @@ theorem ce_volume_local_translation_tendsto (d : ℕ) (hd : 2 ≤ d)
         y ∈ {z | z + ceVolumeShift d t hd ∈ B} := by
       constructor
       · intro hyPre
-        exact Set.mem_setOf_eq.mpr (hCshift.mp (hpre.mp hyPre))
+        exact Set.mem_ofPred_eq.mpr (hCshift.mp (hpre.mp hyPre))
       · intro hyPre
-        exact hpre.mpr (hCshift.mpr (Set.mem_setOf_eq.mp hyPre))
+        exact hpre.mpr (hCshift.mpr (Set.mem_ofPred_eq.mp hyPre))
     have hmem : y ∈ symmDiff B {z | z + ceVolumeShift d t hd ∈ B} ↔
         y ∈ symmDiff C (f t ⁻¹' C) := by
       rw [Set.mem_symmDiff, Set.mem_symmDiff]

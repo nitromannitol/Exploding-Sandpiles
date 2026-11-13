@@ -35,7 +35,7 @@ theorem measurableSet_recurrentOn (V : Finset (Site d)) :
         fodo ((↑V : Set (Site d))ᶜ) η
           (fun y => if y ∈ outerBoundary (↑V : Set (Site d)) then 1 else 0) t x = 1} := by
     ext η
-    simp only [RecurrentOn, Set.mem_setOf_eq, Set.mem_iInter]
+    simp only [RecurrentOn, Set.mem_ofPred_eq, Set.mem_iInter]
     exact ⟨fun h t x hc => h t hc.1 x hc.2, fun h t hc x hx => h t x ⟨hc, hx⟩⟩
   rw [hset]
   exact MeasurableSet.iInter fun t => MeasurableSet.iInter fun x =>
@@ -47,7 +47,7 @@ theorem measurableSet_recurrent : MeasurableSet {η : Site d → ℤ | Recurrent
   have hset : {η : Site d → ℤ | Recurrent η} =
       ⋂ V : Finset (Site d), {η : Site d → ℤ | RecurrentOn η V} := by
     ext η
-    simp only [Recurrent, Set.mem_setOf_eq, Set.mem_iInter, iff_self]
+    simp only [Recurrent, Set.mem_ofPred_eq, Set.mem_iInter, iff_self]
   rw [hset]
   exact MeasurableSet.iInter fun V => measurableSet_recurrentOn V
 
@@ -71,8 +71,8 @@ recurrent event `{ω | Recurrent ω.val}` probability one. -/
 theorem recurrentLaw_map_val_iff (ηmin : ℤ)
     (Q : Measure {η : Site d → ℤ // InOmega d ηmin η}) [IsProbabilityMeasure Q] :
     RecurrentLaw d (Q.map Subtype.val) ↔ Q {ω | Recurrent ω.val} = 1 := by
-  haveI : IsProbabilityMeasure (Q.map Subtype.val) :=
-    Measure.isProbabilityMeasure_map measurable_subtype_coe.aemeasurable
+  have : IsProbabilityMeasure (Q.map Subtype.val) :=
+    inferInstance
   have hmap : (Q.map Subtype.val) {η | Recurrent η} = Q {ω | Recurrent ω.val} :=
     Measure.map_apply measurable_subtype_coe measurableSet_recurrent
   rw [recurrentLaw_iff_measure_recurrent, hmap]

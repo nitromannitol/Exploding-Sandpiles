@@ -58,7 +58,7 @@ theorem as3_podo_support_le_time {d : ℕ} (s0 : Site d → ℤ)
             linarith
           push_cast
           linarith
-        · rw [if_neg hc] at hx
+        · rw [ite_eq_right hc] at hx
           rw [hxzero] at hx
           simp at hx
 
@@ -174,7 +174,7 @@ theorem as3_hlastreach (d : ℕ) (hd : 2 ≤ d) (p : ℝ) (hp : 0 < p) (hp1 : p 
   have hmOf : ∀ x (hx : x ∈ as_tildeP η),
       1 ≤ mOf x ∧ 0 < lastWave η (0 : Site d) (mOf x) x := by
     intro x hx
-    simp only [mOf, dif_pos hx]
+    simp only [mOf, dite_eq_left hx]
     exact Classical.choose_spec (hex x hx)
   refine ⟨hfin.toFinset.sup mOf, fun x hx => ?_⟩
   have h1 : mOf x ≤ hfin.toFinset.sup mOf :=

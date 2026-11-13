@@ -88,19 +88,19 @@ theorem ce_liminf (d : ℕ) (hd : 2 ≤ d)
       rw [one_le_div (by exact_mod_cast (by omega : (0 : ℕ) < n))]
       obtain ⟨m, hm⟩ := ENat.ne_top_iff_exists.mp (hFin n)
       have hnm : n ≤ m := aux_ce_speed d hd n m hm.symm
-      rw [← hm, ENat.toNat_coe]
+      rw [← hm, ENat.toNat_natCast]
       exact_mod_cast hnm)
   have hup : ∀ k : ℕ,
       ((arrival (ceEta d) (((4 * k + 1 : ℕ) : ℤ) • e1 d)).toNat : ℝ) / (((4 * k + 1 : ℕ)) : ℝ)
         ≤ (((4 * k + 4 : ℕ)) : ℝ) / (((4 * k + 1 : ℕ)) : ℝ) :=
     fun k => (by
       obtain ⟨m, hm, hml⟩ := aux_ce_fast d hd k
-      rw [hm, ENat.toNat_coe]
+      rw [hm, ENat.toNat_natCast]
       exact div_le_div_of_nonneg_right (by exact_mod_cast hml) (by positivity))
   have hSbd : BddAbove {a : ℝ | ∀ᶠ n : ℕ in atTop,
       a ≤ ((arrival (ceEta d) ((n : ℤ) • e1 d)).toNat : ℝ) / (n : ℝ)} := (by
     refine ⟨4, fun a ha => ?_⟩
-    simp only [Set.mem_setOf_eq] at ha
+    simp only [Set.mem_ofPred_eq] at ha
     rw [Filter.eventually_atTop] at ha
     obtain ⟨N, hN⟩ := ha
     have hA := hN (4 * N + 1) (by omega)
@@ -113,12 +113,12 @@ theorem ce_liminf (d : ℕ) (hd : 2 ≤ d)
   have hSne : ({a : ℝ | ∀ᶠ n : ℕ in atTop,
       a ≤ ((arrival (ceEta d) ((n : ℤ) • e1 d)).toNat : ℝ) / (n : ℝ)}).Nonempty :=
     ⟨0, (by
-      simp only [Set.mem_setOf_eq]
+      simp only [Set.mem_ofPred_eq]
       exact Filter.Eventually.of_forall (fun n => by positivity))⟩
   have hub : sSup {a : ℝ | ∀ᶠ n : ℕ in atTop,
       a ≤ ((arrival (ceEta d) ((n : ℤ) • e1 d)).toNat : ℝ) / (n : ℝ)} ≤ 1 := (by
     refine csSup_le hSne fun a ha => ?_
-    simp only [Set.mem_setOf_eq] at ha
+    simp only [Set.mem_ofPred_eq] at ha
     by_contra hcon
     push Not at hcon
     rw [Filter.eventually_atTop] at ha
@@ -141,7 +141,7 @@ theorem ce_liminf (d : ℕ) (hd : 2 ≤ d)
   have hlb : (1:ℝ) ≤ sSup {a : ℝ | ∀ᶠ n : ℕ in atTop,
       a ≤ ((arrival (ceEta d) ((n : ℤ) • e1 d)).toNat : ℝ) / (n : ℝ)} := (by
     refine le_csSup hSbd ?_
-    simp only [Set.mem_setOf_eq]
+    simp only [Set.mem_ofPred_eq]
     filter_upwards [eventually_ge_atTop 1] with n hn
     exact hbase n hn)
   rw [Filter.liminf_eq]
@@ -162,7 +162,7 @@ theorem ce_limsup (d : ℕ) (_hd : 2 ≤ d)
   intro a ha
   by_contra hcon
   push Not at hcon
-  simp only [Set.mem_setOf_eq] at ha
+  simp only [Set.mem_ofPred_eq] at ha
   rw [Filter.eventually_atTop] at ha
   obtain ⟨N, hN⟩ := ha
   obtain ⟨k, hk⟩ : ∃ k : ℕ, max ((3 * a) / (12 - 8 * a)) (N : ℝ) < (k : ℝ) := exists_nat_gt _
@@ -180,7 +180,7 @@ theorem ce_limsup (d : ℕ) (_hd : 2 ≤ d)
     push_cast
     nlinarith [hkey, hmlr]
   have h1' := hN (3 + 8 * k) hNk
-  rw [hm, ENat.toNat_coe] at h1'
+  rw [hm, ENat.toNat_natCast] at h1'
   linarith [hratio]
 
 /-- The background is explosive: `η + 3δ₀` is not stabilizable, so it is not
@@ -244,9 +244,9 @@ theorem ce_step3b (ζ u : ℤ × Fin 4 → ℤ) (hu : ∀ x, 0 ≤ u x) :
             + cylLap (cylOdo (fun y => ζ y + cylLap u y) t) x := by
           show 4 ≤ (ζ x + cylLap u x) + cylLap (cylOdo (fun y => ζ y + cylLap u y) t) x
           linarith
-        rw [if_pos hf, if_pos hf']
+        rw [ite_eq_left hf, ite_eq_left hf']
         omega
-      · rw [if_neg hf]
+      · rw [ite_eq_right hf]
         have hge : 0 ≤ (if 4 ≤ (fun y => ζ y + cylLap u y) x
             + cylLap (cylOdo (fun y => ζ y + cylLap u y) t) x then (1 : ℤ) else 0) := by
           split <;> norm_num
@@ -378,7 +378,7 @@ theorem ce_cylNbrSum_cylProj (u : ℤ × Fin 4 → ℤ) (v : Site 2 → ℤ)
   have hx0 : ¬ (ce_cylProj x).1 = 0 := by
     unfold ce_cylProj
     omega
-  rw [if_neg hx0]
+  rw [ite_eq_right hx0]
   have hs0 : 0 ≤ (x - unit (⟨0, by norm_num⟩ : Fin 2)) ⟨0, by norm_num⟩ := by
     simp only [Pi.sub_apply, LatticeProb.unit, Pi.single_eq_same]
     omega

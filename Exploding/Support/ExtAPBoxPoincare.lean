@@ -52,6 +52,7 @@ theorem xmb_cons_mem_cent {m n : ℕ} {t : ℤ} {w : Site m}
 
 /-! ### The bounded telescoping identity -/
 
+set_option backward.isDefEq.respectTransparency.types false in
 theorem xmb_box_difference (n m : ℕ) (H : (i : Fin (m + 1)) → Site (m + 1) → ZMod 2)
     (hclosed : ∀ i j : Fin (m + 1), i ≠ j → ∀ p : Site (m + 1), p ∈ cent (m + 1) n →
       p + unit i ∈ cent (m + 1) n → p + unit j ∈ cent (m + 1) n →
@@ -83,10 +84,7 @@ theorem xmb_box_difference (n m : ℕ) (H : (i : Fin (m + 1)) → Site (m + 1) �
     have key : g1 t - g0 t
         = H i.succ (Fin.cons (t + 1) w) - H i.succ (Fin.cons t w) := by
       simp only [hg0, hg1] at hc ⊢
-      rw [sub_eq_sub_iff_add_eq_add]
-      rw [add_comm (H 0 (Fin.cons t (w + unit i))),
-        add_comm (H i.succ (Fin.cons (t + 1) w))]
-      exact hc.symm
+      linear_combination -hc
     have hsub : F (t + 1) - F t = 0 := by
       have e : F (t + 1) - F t
           = (g1 t - g0 t)

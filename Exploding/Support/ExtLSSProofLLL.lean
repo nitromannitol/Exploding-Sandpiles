@@ -29,7 +29,7 @@ theorem xlss_integrable_ind_prod (μ : Measure (S → Bool)) [IsProbabilityMeasu
   refine Integrable.of_bound (C := 1) hm.aestronglyMeasurable ?_
   refine Filter.Eventually.of_forall fun x => ?_
   have h0 : 0 ≤ ∏ l ∈ U, w l (x l) := Finset.prod_nonneg fun l hl => (hw l hl _).1
-  have h1 : ∏ l ∈ U, w l (x l) ≤ 1 := Finset.prod_le_one (fun l hl => (hw l hl _).1)
+  have h1 : ∏ l ∈ U, w l (x l) ≤ 1 := Finset.prod_le_one₀ (fun l hl => (hw l hl _).1)
     (fun l hl => (hw l hl _).2)
   have h2 : (0 : ℝ) ≤ (if x j = false then (1 : ℝ) else 0) := by split_ifs <;> norm_num
   have h3 : (if x j = false then (1 : ℝ) else 0) ≤ 1 := by split_ifs <;> norm_num
@@ -50,9 +50,9 @@ theorem xlss_bonferroni (x : S → Bool) (N : Finset S) :
     have hs : 0 ≤ ∑ l ∈ s, (if x l = false then (1 : ℝ) else 0) :=
       Finset.sum_nonneg fun l _ => by split_ifs <;> norm_num
     cases hxa : x a
-    · simp only [Bool.false_eq_true, if_false, if_true, zero_mul]
+    · simp only [Bool.false_eq_true, ite_false, ite_true, zero_mul]
       linarith
-    · simp only [if_true, Bool.true_eq_false, if_false, one_mul]
+    · simp only [ite_true, Bool.true_eq_false, ite_false, one_mul]
       linarith
 
 /-- **The conditional bound of Liggett, Schonmann and Stacey.**  For a field of bits whose
@@ -99,7 +99,7 @@ theorem xlss_lll [DecidableEq S] (G : SimpleGraph S) (μ : Measure (S → Bool))
   have hwN0 : ∀ x : S → Bool, 0 ≤ ∏ l ∈ N, w l (x l) := fun x =>
     Finset.prod_nonneg fun l hl => (hwb l (hNsub hl) _).1
   have hwN1 : ∀ x : S → Bool, ∏ l ∈ N, w l (x l) ≤ 1 := fun x =>
-    Finset.prod_le_one (fun l hl => (hwb l (hNsub hl) _).1) (fun l hl => (hwb l (hNsub hl) _).2)
+    Finset.prod_le_one₀ (fun l hl => (hwb l (hNsub hl) _).1) (fun l hl => (hwb l (hNsub hl) _).2)
   have hind0 : ∀ (y : S → Bool) (i : S), (0 : ℝ) ≤ (if y i = false then (1 : ℝ) else 0) :=
     fun y i => by split_ifs <;> norm_num
   set IA := ∫ x, ∏ l ∈ A, w l (x l) ∂μ with hIA
@@ -140,7 +140,7 @@ theorem xlss_lll [DecidableEq S] (G : SimpleGraph S) (μ : Measure (S → Bool))
       rw [h1, mul_one, hprod x]
       have hgN : g ^ N.card ≤ ∏ l ∈ N, w l (x l) := by
         rw [← Finset.prod_const]
-        refine Finset.prod_le_prod (fun l _ => hg0) fun l hl => ?_
+        refine Finset.prod_le_prod₀ (fun l _ => hg0) fun l hl => ?_
         refine (hbd l (hNsub hl)).2 (x l) ?_
         by_cases hlV : l ∈ V
         · exact Or.inr (hall l (Finset.mem_filter.2 ⟨hl, hlV⟩))
@@ -176,9 +176,9 @@ theorem xlss_lll [DecidableEq S] (G : SimpleGraph S) (μ : Measure (S → Bool))
       have h0 : 0 ≤ ∏ l ∈ N1, (if x l = true then (1 : ℝ) else 0) :=
         Finset.prod_nonneg fun l _ => by split_ifs <;> norm_num
       have h1 : ∏ l ∈ N1, (if x l = true then (1 : ℝ) else 0) ≤ 1 :=
-        Finset.prod_le_one (fun l _ => by split_ifs <;> norm_num) fun l _ => by split_ifs <;> norm_num
+        Finset.prod_le_one₀ (fun l _ => by split_ifs <;> norm_num) fun l _ => by split_ifs <;> norm_num
       have hA1 : ∏ l ∈ A, w l (x l) ≤ 1 :=
-        Finset.prod_le_one (fun l hl => (hwA l hl _).1) fun l hl => (hwA l hl _).2
+        Finset.prod_le_one₀ (fun l hl => (hwA l hl _).1) fun l hl => (hwA l hl _).2
       rw [Real.norm_eq_abs, abs_of_nonneg (mul_nonneg (hwA0 x) h0)]
       calc (∏ l ∈ A, w l (x l)) * ∏ l ∈ N1, (if x l = true then (1 : ℝ) else 0)
           ≤ 1 * 1 := mul_le_mul hA1 h1 h0 zero_le_one

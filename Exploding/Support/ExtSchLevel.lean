@@ -101,23 +101,23 @@ theorem xsr_level_step (hp : 0 < p) {k : ℕ} (hk : 2 ≤ k) (hprev : xsb_Decay 
         refine ⟨hJne, ⟨fun i hi => Or.inl (hside i hi), hthin⟩, ⟨fun i hi => Or.inl ?_,
           fun i hi => ?_⟩, fun j => ?_, hℓLb⟩
         · show hi0 i - lo' i + 1 = (ℓ : ℤ)
-          rw [hhi0, if_pos hi]
+          rw [hhi0, ite_eq_left hi]
           ring
         · show lo' i = hi0 i
-          rw [hhi0, if_neg hi]
+          rw [hhi0, ite_eq_right hi]
         · show lo' j ≤ lo' j ∧ hi0 j ≤ hi' j
           by_cases hj : j ∈ J
           · have h1 := hside j hj
-            rw [hhi0, if_pos hj]
+            rw [hhi0, ite_eq_left hj]
             exact ⟨le_rfl, by omega⟩
-          · rw [hhi0, if_neg hj]
+          · rw [hhi0, ite_eq_right hj]
             exact ⟨le_rfl, (hthin j hj).le⟩
       have hseed : ∀ i ∈ (⟨J, lo', hi', lo', hi0, ℓ⟩ : xss_Plan d).J,
           (⟨J, lo', hi', lo', hi0, ℓ⟩ : xss_Plan d).hi0 i
             - (⟨J, lo', hi', lo', hi0, ℓ⟩ : xss_Plan d).lo0 i + 1 = (ℓ : ℤ) := by
         intro i hi
         show hi0 i - lo' i + 1 = (ℓ : ℤ)
-        rw [hhi0, if_pos hi]
+        rw [hhi0, ite_eq_left hi]
         ring
       have hb := xsr_block_good (p := p) (⟨J, lo', hi', lo', hi0, ℓ⟩ : xss_Plan d) hd hvalid hℓ
         hseed hg0 hgJ

@@ -75,6 +75,7 @@ theorem rn_chemDist_le_walk (S : Set (Site d)) {x y : Site d} (hx : x ∈ S) (hy
   unfold chemDist
   exact sInf_le ⟨w.length, rfl, hx, hy, w, rfl⟩
 
+set_option backward.isDefEq.respectTransparency.types false in
 theorem rn_lift_walk {ζ : RnBond d → Bool} {i : Site d} :
     ∀ {u v : Site d} (p : (openBondGraph ζ).Walk u v)
       (hu : u ∈ {y | (openBondGraph ζ).Reachable i y}) (hv : v ∈ {y | (openBondGraph ζ).Reachable i y}),
@@ -136,7 +137,7 @@ theorem rn_conclude {ζ : RnBond d → Bool} {g : Site d → Bool}
       have := rn_chemDist_le_walk K hx hy w
       rwa [hw, hp] at this
     have hge := rn_chemDist_ge K x y
-    have hne : chemDist K x y ≠ ⊤ := ne_top_of_le_ne_top (ENat.coe_ne_top m) hle
+    have hne : chemDist K x y ≠ ⊤ := ne_top_of_le_ne_top (ENat.natCast_ne_top m) hle
     obtain ⟨m', hm'⟩ := ENat.ne_top_iff_exists.mp hne
     have h1 : m' ≤ m := by
       rw [← hm'] at hle; exact_mod_cast hle
@@ -152,7 +153,7 @@ theorem rn_conclude {ζ : RnBond d → Bool} {g : Site d → Bool}
 theorem rn_edge_measurable {Ω : Type} [MeasurableSpace Ω] (X : Site d → Ω → Bool)
     (hX : ∀ x, Measurable (X x)) :
     Measurable (fun (ω : Ω) (e : RnBond d) => X e.1 ω && X (e.1 + unit e.2) ω) := by
-  refine measurable_pi_lambda _ fun e => ?_
+  refine Measurable.of_eval fun e => ?_
   exact (measurable_of_countable (fun p : Bool × Bool => p.1 && p.2)).comp
     ((hX e.1).prodMk (hX (e.1 + unit e.2)))
 
@@ -196,7 +197,7 @@ theorem rn_core (hLSSB : Exploding.External.LiggettSchonmannStaceyBoundedDegree)
   obtain ⟨q, hq1, hdom⟩ := rn_edge_dom hLSSB d ρ₁ hρ₁0 hρ₁1
   refine ⟨q, hq1, C, hC1, ?_⟩
   intro Ω _ P _ X hX hind hmarg
-  haveI : IsProbabilityMeasure (bondPercolation d ρ₁) := rn_infinitePi_isProb hρ₁0 hρ₁1.le
+  have : IsProbabilityMeasure (bondPercolation d ρ₁) := rn_infinitePi_isProb hρ₁0 hρ₁1.le
   set ν : Measure (RnBond d → Bool) := bondPercolation d ρ₁ with hν
   have hholeρ := hhole ρ₁ hrρ hρ₁1.le
   -- the good set of bond configurations
@@ -205,7 +206,7 @@ theorem rn_core (hLSSB : Exploding.External.LiggettSchonmannStaceyBoundedDegree)
   have hBad0 : ν Bad = 0 := by
     refine measure_mono_null (fun ζ hζ => ?_) (measure_union_null hholeρ (ae_iff.mp hchem))
     by_contra hcon
-    simp only [Set.mem_union, not_or, Set.mem_setOf_eq, not_not] at hcon
+    simp only [Set.mem_union, not_or, Set.mem_ofPred_eq, not_not] at hcon
     exact hζ ⟨hcon.1, hcon.2⟩
   set Z : Set (RnBond d → Bool) := (toMeasurable ν Bad)ᶜ with hZ
   have hZm : MeasurableSet Z := (measurableSet_toMeasurable ν Bad).compl
@@ -219,7 +220,7 @@ theorem rn_core (hLSSB : Exploding.External.LiggettSchonmannStaceyBoundedDegree)
   -- the coupling
   set F : Ω → RnBond d → Bool := fun ω e => X e.1 ω && X (e.1 + unit e.2) ω with hF
   have hFm : Measurable F := rn_edge_measurable X hX
-  haveI : IsProbabilityMeasure (P.map F) := Measure.isProbabilityMeasure_map hFm.aemeasurable
+  have : IsProbabilityMeasure (P.map F) := inferInstance
   have hdomB : ∀ A : Set (RnBond d → Bool), MeasurableSet A → IsIncreasingSet A → ν A ≤ (P.map F) A := by
     intro A hA hinc
     rw [Measure.map_apply hFm hA]

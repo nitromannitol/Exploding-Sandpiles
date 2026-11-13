@@ -24,7 +24,7 @@ theorem xlss_integrable_true_ind_prod (μ : Measure (S → Bool)) [IsProbability
   refine Integrable.of_bound (C := 1) hm.aestronglyMeasurable ?_
   refine Filter.Eventually.of_forall fun x => ?_
   have h0 : 0 ≤ ∏ l ∈ U, w l (x l) := Finset.prod_nonneg fun l hl => (hw l hl _).1
-  have h1 : ∏ l ∈ U, w l (x l) ≤ 1 := Finset.prod_le_one (fun l hl => (hw l hl _).1)
+  have h1 : ∏ l ∈ U, w l (x l) ≤ 1 := Finset.prod_le_one₀ (fun l hl => (hw l hl _).1)
     (fun l hl => (hw l hl _).2)
   have h2 : (0 : ℝ) ≤ (if x j = true then (1 : ℝ) else 0) := by split_ifs <;> norm_num
   have h3 : (if x j = true then (1 : ℝ) else 0) ≤ 1 := by split_ifs <;> norm_num
@@ -207,14 +207,14 @@ theorem xlss_thin_step [DecidableEq S] (G : SimpleGraph S) (μ : Measure (S → 
   have hw'T : ∀ l ∈ T, ∀ b V', w' l b V' = w l b (V'.erase a) := by
     intro l hl b V'
     dsimp only [w']
-    rw [if_neg]
+    rw [ite_eq_right]
     exact fun h => ha (h ▸ hl)
   have hw'a : ∀ b V', w' a b V' =
       (if a ∈ V' then (if b then cadd (V'.erase a) else 0)
        else (if b then 1 - cadd (V'.erase a) else 1)) := by
     intro b V'
     dsimp only [w']
-    rw [if_pos rfl]
+    rw [ite_eq_left rfl]
   refine ⟨w', ?_, ?_, ?_, ?_, ?_⟩
   · -- bd
     intro l hl V' hV' b
@@ -222,17 +222,17 @@ theorem xlss_thin_step [DecidableEq S] (G : SimpleGraph S) (μ : Measure (S → 
     · subst l
       rw [hw'a]
       by_cases hmem : a ∈ V'
-      · rw [if_pos hmem]
+      · rw [ite_eq_left hmem]
         cases b
-        · simp only [Bool.false_eq_true, if_false]
+        · simp only [Bool.false_eq_true, ite_false]
           exact ⟨le_refl 0, zero_le_one⟩
-        · simp only [if_true]
+        · simp only [ite_true]
           exact ⟨hcadd0 _ (hEraseSub V' hV'), hcadd1 _ (hEraseSub V' hV')⟩
-      · rw [if_neg hmem]
+      · rw [ite_eq_right hmem]
         cases b
-        · simp only [Bool.false_eq_true, if_false]
+        · simp only [Bool.false_eq_true, ite_false]
           exact ⟨zero_le_one, le_refl 1⟩
-        · simp only [if_true]
+        · simp only [ite_true]
           exact ⟨sub_nonneg.mpr (hcadd1 _ (hEraseSub V' hV')),
             by linarith [hcadd0 _ (hEraseSub V' hV')]⟩
     · rw [hw'T l h b V']
@@ -241,8 +241,8 @@ theorem xlss_thin_step [DecidableEq S] (G : SimpleGraph S) (μ : Measure (S → 
     intro l hl V' hV' hlV'
     rcases Finset.mem_insert.mp hl with h | h
     · subst l
-      rw [hw'a false V', hw'a true V', if_pos hlV', if_pos hlV']
-      simp only [Bool.false_eq_true, if_false, if_true]
+      rw [hw'a false V', hw'a true V', ite_eq_left hlV', ite_eq_left hlV']
+      simp only [Bool.false_eq_true, ite_false, ite_true]
       exact ⟨trivial, hcadd_ge _ (hEraseSub V' hV')⟩
     · have hl' : l ∈ V'.erase a := Finset.mem_erase.mpr
         ⟨fun hh => ha (hh ▸ h), hlV'⟩
@@ -252,8 +252,8 @@ theorem xlss_thin_step [DecidableEq S] (G : SimpleGraph S) (μ : Measure (S → 
     intro l hl V' hV' hlV'
     rcases Finset.mem_insert.mp hl with h | h
     · subst l
-      rw [hw'a false V', hw'a true V', if_neg hlV', if_neg hlV']
-      simp only [Bool.false_eq_true, if_false, if_true]
+      rw [hw'a false V', hw'a true V', ite_eq_right hlV', ite_eq_right hlV']
+      simp only [Bool.false_eq_true, ite_false, ite_true]
       exact ⟨trivial, by
         have h1 := hcadd_le _ (hEraseSub V' hV')
         linarith⟩
@@ -269,7 +269,7 @@ theorem xlss_thin_step [DecidableEq S] (G : SimpleGraph S) (μ : Measure (S → 
       intro V hV
       have hVT : V ⊆ T := Finset.mem_powerset.mp hV
       have haV : a ∉ V := fun h => ha (hVT h)
-      rw [Finset.prod_insert ha, hw'a, if_neg haV]
+      rw [Finset.prod_insert ha, hw'a, ite_eq_right haV]
       have hTa : ∏ l ∈ T, w' l (x l) V = ∏ l ∈ T, w l (x l) V := by
         refine Finset.prod_congr rfl fun l hl => ?_
         rw [hw'T l hl, Finset.erase_eq_of_notMem haV]
@@ -280,7 +280,7 @@ theorem xlss_thin_step [DecidableEq S] (G : SimpleGraph S) (μ : Measure (S → 
       intro V hV
       have hVT : V ⊆ T := Finset.mem_powerset.mp hV
       have haV : a ∉ V := fun h => ha (hVT h)
-      rw [Finset.prod_insert ha, hw'a, if_pos (Finset.mem_insert_self a V)]
+      rw [Finset.prod_insert ha, hw'a, ite_eq_left (Finset.mem_insert_self a V)]
       have hTa : ∏ l ∈ T, w' l (x l) (insert a V) = ∏ l ∈ T, w l (x l) V := by
         refine Finset.prod_congr rfl fun l hl => ?_
         rw [hw'T l hl, Finset.erase_insert haV]
@@ -299,7 +299,7 @@ theorem xlss_thin_step [DecidableEq S] (G : SimpleGraph S) (μ : Measure (S → 
           (if x a = true then cadd (V'.erase a) else 0) *
             ∏ l ∈ T, w l (x l) (V'.erase a) := by
         intro x
-        rw [Finset.prod_insert ha, hw'a, if_pos hmem]
+        rw [Finset.prod_insert ha, hw'a, ite_eq_left hmem]
         have hTa : ∏ l ∈ T, w' l (x l) V' = ∏ l ∈ T, w l (x l) (V'.erase a) := by
           refine Finset.prod_congr rfl fun l hl => ?_
           rw [hw'T l hl]
@@ -329,7 +329,7 @@ theorem xlss_thin_step [DecidableEq S] (G : SimpleGraph S) (μ : Measure (S → 
       have hfac : ∀ x : S → Bool, ∏ l ∈ insert a T, w' l (x l) V' =
           (if x a = true then 1 - cadd V' else 1) * ∏ l ∈ T, w l (x l) V' := by
         intro x
-        rw [Finset.prod_insert ha, hw'a, if_neg hmem]
+        rw [Finset.prod_insert ha, hw'a, ite_eq_right hmem]
         have hTa : ∏ l ∈ T, w' l (x l) V' = ∏ l ∈ T, w l (x l) V' := by
           refine Finset.prod_congr rfl fun l hl => ?_
           rw [hw'T l hl, Finset.erase_eq_of_notMem hmem]

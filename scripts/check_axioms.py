@@ -110,7 +110,16 @@ expected = {
 }
 standard = {'propext', 'Classical.choice', 'Quot.sound'}
 log = pathlib.Path(sys.argv[1]).read_text(encoding='utf-8', errors='replace')
-if re.search(r'warning:|sorryAx|declaration uses .sorry', log, re.IGNORECASE):
+
+def own_warning(line):
+    """A warning located in this repository; warnings Lean prints for the modules of a dependency
+    are not counted."""
+    m = re.match(r'warning: ([^:\s]+\.lean):[0-9]+:[0-9]+: ', line)
+    return m is None or m.group(1) == 'Exploding.lean' or m.group(1).startswith(('Exploding/', 'ExplodingAudit/'))
+
+
+if re.search(r'sorryAx|declaration uses .sorry', log, re.IGNORECASE) or \
+        any(own_warning(line) for line in log.splitlines() if line.lower().startswith('warning:')):
     raise SystemExit('Axiom audit emitted a warning or reported sorryAx')
 reports = re.findall(r"'([^']+)' depends on axioms: \[([^\]]*)\]", log)
 if log.count('depends on axioms') != len(reports):

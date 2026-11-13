@@ -63,15 +63,15 @@ theorem bc_layer_law (d : ℕ) (p : ℝ) (hp : 0 < p) (hp1 : p ≤ 1) (i : ℤ) 
         (fun ω : Site (d + 1) → ℤ => fun w : Site d => ω (cons i w) - 1)
       = productLaw d (2 * (d : ℤ)) (d : ℤ) p := by
   have hchip := bc_chipLaw_prob (2 * ((d + 1 : ℕ) : ℤ) - 1) ((d + 1 : ℕ) : ℤ) p hp.le hp1
-  haveI := hchip
+  have := hchip
   rw [productLaw, productLaw]
   rw [show (fun ω : Site (d + 1) → ℤ => fun w : Site d => ω (cons i w) - 1)
       = (fun (ζ : Site d → ℤ) => fun w : Site d => (fun m : ℤ => m - 1) (ζ w))
         ∘ (fun ω : Site (d + 1) → ℤ => fun w : Site d => ω (cons i w)) from rfl]
   rw [← MeasureTheory.Measure.map_map
-    (hg := measurable_pi_lambda _ fun w => (measurable_pi_apply w).sub measurable_const)
+    (hg := Measurable.of_eval fun w => (measurable_pi_apply w).sub measurable_const)
     (g := fun (ζ : Site d → ℤ) => fun w : Site d => (fun m : ℤ => m - 1) (ζ w))
-    (hf := measurable_pi_lambda _ fun w => measurable_pi_apply (cons i w))
+    (hf := Measurable.of_eval fun w => measurable_pi_apply (cons i w))
     (f := fun ω : Site (d + 1) → ℤ => fun w : Site d => ω (cons i w))]
   rw [layer_restrict_eq d (chipLaw (2 * ((d + 1 : ℕ) : ℤ) - 1) ((d + 1 : ℕ) : ℤ) p) hchip i]
   rw [MeasureTheory.Measure.infinitePi_map_pi (μ := fun _ : Site d =>
@@ -99,13 +99,13 @@ theorem bc_layer_spanning_prob (d : ℕ) (hd : 1 ≤ d) (p : ℝ) (hp : 0 < p) (
         = ⋂ (x : Site d), ⋂ (_ : x ∈ cube d n),
             ⋃ (t : ℕ), {η : Site d → ℤ | spanOdo n η t x = 1} from by
       ext η
-      simp only [InternallySpanned, Set.mem_setOf_eq, Set.mem_iInter, Set.mem_iUnion]]
+      simp only [InternallySpanned, Set.mem_ofPred_eq, Set.mem_iInter, Set.mem_iUnion]]
     refine MeasurableSet.iInter (fun x => MeasurableSet.iInter (fun _ => ?_))
     refine MeasurableSet.iUnion (fun t => ?_)
     exact measurableSet_eq_fun (spanOdo_measurable n t x) measurable_const
   let f : (Site (d + 1) → ℤ) → (Site d → ℤ) := fun ω w => ω (cons i w) - 1
   have hf : Measurable f :=
-    measurable_pi_lambda _ fun w => (measurable_pi_apply (cons i w)).sub measurable_const
+    Measurable.of_eval fun w => (measurable_pi_apply (cons i w)).sub measurable_const
   have hmap : (productLaw (d + 1) (2 * ((d + 1 : ℕ) : ℤ) - 1) ((d + 1 : ℕ) : ℤ) p).map f
       = productLaw d (2 * (d : ℤ)) (d : ℤ) p := bc_layer_law d p hp hp1.le i
   have hval := congrArg (fun μ : MeasureTheory.Measure (Site d → ℤ) =>
@@ -118,7 +118,7 @@ theorem bc_layer_spanning_prob (d : ℕ) (hd : 1 ≤ d) (p : ℝ) (hp : 0 < p) (
 
 theorem bc_productLaw_prob (d : ℕ) (a b : ℤ) (p : ℝ) (hp : 0 ≤ p) (hp1 : p ≤ 1) :
     IsProbabilityMeasure (productLaw d a b p) := by
-  haveI := bc_chipLaw_prob a b p hp hp1
+  have := bc_chipLaw_prob a b p hp hp1
   rw [productLaw]
   infer_instance
 
@@ -165,7 +165,7 @@ theorem bc_layers_prob_lt (d : ℕ) (hd : 1 ≤ d) (p : ℝ) (hp : 0 < p) (hp1 :
             InternallySpanned (fun w : Site d => η (cons (i : ℤ) w) - 1) n} := by
   intro δ hδ
   obtain ⟨c, C, hc, hC, hbound⟩ := bc_layer_spanning_prob d hd p hp hp1 hSch
-  haveI := bc_productLaw_prob (d + 1) (2 * ((d + 1 : ℕ) : ℤ) - 1) ((d + 1 : ℕ) : ℤ) p hp.le hp1.le
+  have := bc_productLaw_prob (d + 1) (2 * ((d + 1 : ℕ) : ℤ) - 1) ((d + 1 : ℕ) : ℤ) p hp.le hp1.le
   obtain ⟨n, hn1, hn⟩ := bc_exists_large_n c C hc hC (min δ (1 / 2)) (lt_min hδ (by norm_num))
   have hmin1 : min δ (1 / 2) ≤ δ := min_le_left _ _
   have hmin2 : min δ (1 / 2) ≤ 1 / 2 := min_le_right _ _
@@ -189,7 +189,7 @@ theorem bc_layers_prob_lt (d : ℕ) (hd : 1 ≤ d) (p : ℝ) (hp : 0 < p) (hp1 :
     nlinarith
   · congr 1
     ext η
-    simp only [Set.mem_iInter, Set.mem_setOf_eq]
+    simp only [Set.mem_iInter, Set.mem_ofPred_eq]
 
 /-! ### The degenerate case `p = 1` -/
 
@@ -210,14 +210,14 @@ theorem bc_spanned_of_large {d : ℕ} (n : ℕ) (bg : Site d → ℤ) (h : ∀ w
   show (if x ∉ cube d n then 0
       else if spanOdo n bg 0 x = 1 then 1
       else spanOdo n bg 0 x + (if 2 * (d : ℤ) ≤ bg x + lap (spanOdo n bg 0) x then 1 else 0)) = 1
-  rw [if_neg (not_not.mpr hx)]
+  rw [ite_eq_right (not_not.mpr hx)]
   have h0 : spanOdo n bg 0 = fun _ => 0 := rfl
   have hlap : lap (spanOdo n bg 0) x = 0 := by
     rw [h0]
     simp [lap, nbrSumZ]
   rw [hlap, h0]
-  simp only [zero_add, if_neg (show ¬ ((0 : ℤ) = 1) by norm_num)]
-  rw [if_pos (by linarith [h x])]
+  simp only [zero_add, ite_eq_right (show ¬ ((0 : ℤ) = 1) by norm_num)]
+  rw [ite_eq_left (by linarith [h x])]
 
 /-- **All layers are spanned with probability `1`** when `p = 1`: every site carries `2d + 1`
 chips, so every layer background is `2d`. -/
@@ -228,9 +228,9 @@ theorem bc_layers_prob_one (d : ℕ) :
           {η | ∀ i ∈ Finset.Icc 1 n,
             InternallySpanned (fun w : Site d => η (cons (i : ℤ) w) - 1) n} := by
   intro δ hδ
-  haveI := bc_productLaw_prob (d + 1) (2 * ((d + 1 : ℕ) : ℤ) - 1) ((d + 1 : ℕ) : ℤ) 1
+  have := bc_productLaw_prob (d + 1) (2 * ((d + 1 : ℕ) : ℤ) - 1) ((d + 1 : ℕ) : ℤ) 1
     zero_le_one le_rfl
-  haveI := bc_chipLaw_prob (2 * ((d + 1 : ℕ) : ℤ) - 1) ((d + 1 : ℕ) : ℤ) 1 zero_le_one le_rfl
+  have := bc_chipLaw_prob (2 * ((d + 1 : ℕ) : ℤ) - 1) ((d + 1 : ℕ) : ℤ) 1 zero_le_one le_rfl
   refine ⟨1, le_rfl, ?_⟩
   have hae : ∀ᵐ m ∂(chipLaw (2 * ((d + 1 : ℕ) : ℤ) - 1) ((d + 1 : ℕ) : ℤ) 1),
       m ∈ ({2 * ((d + 1 : ℕ) : ℤ) - 1} : Set ℤ) := by
@@ -298,8 +298,8 @@ theorem bc_boxcrossed_prob (d : ℕ) (hd : 1 ≤ d) (p : ℝ) (hp : 0 < p) (hp1 
       rw [hε]
       exact div_le_self hδ₀pos.le (by linarith)
     linarith
-  haveI := bc_productLaw_prob (d + 1) (2 * ((d + 1 : ℕ) : ℤ) - 1) ((d + 1 : ℕ) : ℤ) p hp.le hp1
-  haveI := bc_chipLaw_prob (2 * ((d + 1 : ℕ) : ℤ) - 1) ((d + 1 : ℕ) : ℤ) p hp.le hp1
+  have := bc_productLaw_prob (d + 1) (2 * ((d + 1 : ℕ) : ℤ) - 1) ((d + 1 : ℕ) : ℤ) p hp.le hp1
+  have := bc_chipLaw_prob (2 * ((d + 1 : ℕ) : ℤ) - 1) ((d + 1 : ℕ) : ℤ) p hp.le hp1
   obtain ⟨n, hn1, hn⟩ := bc_layers_prob d hd p hp hp1 hSch ε hε0
   refine ⟨n, hn1, fun j => ?_⟩
   set E : Set (Site (d + 1) → ℤ) := {η | ∀ i ∈ Finset.Icc 1 n,
@@ -310,7 +310,7 @@ theorem bc_boxcrossed_prob (d : ℕ) (hd : 1 ≤ d) (p : ℝ) (hp : 0 < p) (hp1 
   set A : Fin (d + 1) × Bool → Set (Site (d + 1) → ℤ) :=
     fun q => (fun (η : Site (d + 1) → ℤ) (x : Site (d + 1)) => η (hfun q x)) ⁻¹' E with hA
   have hfm : ∀ q, Measurable (fun (η : Site (d + 1) → ℤ) (x : Site (d + 1)) => η (hfun q x)) :=
-    fun q => measurable_pi_lambda _ fun x => measurable_pi_apply _
+    fun q => Measurable.of_eval fun x => measurable_pi_apply _
   have hAm : ∀ q ∈ (Finset.univ : Finset (Fin (d + 1) × Bool)), MeasurableSet (A q) :=
     fun q _ => hEm.preimage (hfm q)
   have hAp : ∀ q ∈ (Finset.univ : Finset (Fin (d + 1) × Bool)),
@@ -348,7 +348,7 @@ theorem bc_box_crossing (d : ℕ) (hd : 2 ≤ d) (ν : Measure ℤ) (hν : IsPro
     (hlow : ν {m : ℤ | (d : ℤ) ≤ m} = 1) (hhit : 0 < ν {(2 * (d : ℤ) - 1)})
     (hSch : Exploding.External.SchonmannBootstrap) :
     BoxCrossingHyp d (Measure.infinitePi fun _ : Site d => ν) := by
-  haveI := hν
+  have := hν
   obtain ⟨d', rfl⟩ : ∃ d', d = d' + 1 := ⟨d - 1, by omega⟩
   have hd' : 1 ≤ d' := by omega
   have hne : ν {(2 * ((d' + 1 : ℕ) : ℤ) - 1)} ≠ ⊤ := measure_ne_top _ _

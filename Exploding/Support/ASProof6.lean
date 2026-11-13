@@ -77,5 +77,5 @@ theorem as6_cluster_lit_of_double_support {d : ℕ} (η : Site d → ℤ)
         simp only [pconf, lap, hxT0, mul_zero, sub_zero]
         linarith
       have hstep : podo (explodingPile η) (T + 1) x = podo (explodingPile η) T x + 1 := by
-        rw [podo_succ, if_pos hpconf]
+        rw [podo_succ, ite_eq_left hpconf]
       omega

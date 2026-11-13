@@ -27,7 +27,7 @@ theorem xlss_integrable_prod (μ : Measure (S → Bool)) [IsProbabilityMeasure �
   refine Integrable.of_bound (C := 1) (xlss_meas_prod U w).aestronglyMeasurable ?_
   refine Filter.Eventually.of_forall fun x => ?_
   have h0 : 0 ≤ ∏ l ∈ U, w l (x l) := Finset.prod_nonneg fun l hl => (hw l hl _).1
-  have h1 : ∏ l ∈ U, w l (x l) ≤ 1 := Finset.prod_le_one (fun l hl => (hw l hl _).1)
+  have h1 : ∏ l ∈ U, w l (x l) ≤ 1 := Finset.prod_le_one₀ (fun l hl => (hw l hl _).1)
     (fun l hl => (hw l hl _).2)
   rw [Real.norm_eq_abs, abs_of_nonneg h0]
   exact h1
@@ -45,8 +45,8 @@ theorem xlss_indep_integral [DecidableEq S] (G : SimpleGraph S) (μ : Measure (S
   have hφ' : Measurable φ' := measurable_of_finite _
   have hψ' : Measurable ψ' := measurable_of_finite _
   have h2 := (hind.comp hφ' hψ').integral_fun_mul_eq_mul_integral
-    ((hφ'.comp (measurable_pi_lambda _ fun i => measurable_pi_apply _)).aestronglyMeasurable)
-    ((hψ'.comp (measurable_pi_lambda _ fun i => measurable_pi_apply _)).aestronglyMeasurable)
+    ((hφ'.comp (Measurable.of_eval fun i => measurable_pi_apply _)).aestronglyMeasurable)
+    ((hψ'.comp (Measurable.of_eval fun i => measurable_pi_apply _)).aestronglyMeasurable)
   have e1 : ∀ x : S → Bool, φ' (fun i : ({j} : Finset S) => x (i : S)) = φ (x j) :=
     fun x => rfl
   have e2 : ∀ x : S → Bool, ψ' (fun k : U => x (k : S)) = ∏ l ∈ U, ψ l (x l) := by

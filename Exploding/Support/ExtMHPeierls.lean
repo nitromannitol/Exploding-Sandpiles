@@ -31,7 +31,7 @@ theorem xmp_bad_prob {q : ℝ} (h0 : 0 ≤ q) (h1 : q ≤ 1) (n : ℕ) :
         p ∈ F ∧ F.card = xmh4_m n + j ∧ xmh_SConn (F : Set (Site d)) ∧
           ∀ z ∈ F, ω z = false} := by
     ext ω
-    simp only [Set.mem_setOf_eq, Set.mem_iUnion, xmp_bad]
+    simp only [Set.mem_ofPred_eq, Set.mem_iUnion, xmp_bad]
   rw [hset]
   refine (measure_iUnion_le _).trans (ENNReal.tsum_le_tsum fun j => ?_)
   exact xmh5_finset_closed_prob (xmh6_K d) (xmh6_K_spec d) h0 h1 _ _

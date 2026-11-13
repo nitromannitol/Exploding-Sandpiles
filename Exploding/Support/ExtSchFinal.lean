@@ -50,7 +50,7 @@ theorem xsr_percolation (hd : 1 ≤ d) (hp : 0 < p) : xsch3_PercolationBound d p
   rcases Nat.eq_zero_or_pos n with rfl | hn
   · have hemp : {η : Site d → ℤ | ¬ xsch_Sp (Finset.univ : Finset (Fin d)) (cube d 0) η} = ∅ := by
       ext η
-      simp only [Set.mem_setOf_eq, Set.mem_empty_iff_false, iff_false, not_not]
+      simp only [Set.mem_ofPred_eq, Set.mem_empty_iff_false, iff_false, not_not]
       intro x hx
       have h := hx ⟨0, hd⟩
       omega
@@ -73,5 +73,5 @@ theorem Exploding.xsr_schonmann : Exploding.External.SchonmannBootstrap
 -- FROZEN-STATEMENT-END
   :=
   xsch3_schonmann_of_percolation fun _ hd p hp hp1 => by
-    haveI : Fact (0 ≤ p ∧ p ≤ 1) := ⟨⟨hp.le, hp1⟩⟩
+    have : Fact (0 ≤ p ∧ p ≤ 1) := ⟨⟨hp.le, hp1⟩⟩
     exact xsr_percolation hd hp

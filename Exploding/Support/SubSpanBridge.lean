@@ -29,10 +29,10 @@ theorem redOdoDown_eq_spanOdo (n : ℕ) (η : Site (d + 1) → ℤ) (t : ℕ) (y
     rw [hlap, ih y]
     simp only [spanOdo]
     by_cases hy : y ∉ cube d n
-    · rw [if_pos hy, if_pos hy]; exact spanOdo_of_notMem n _ t hy
-    · rw [if_neg hy, if_neg hy]
+    · rw [ite_eq_left hy, ite_eq_left hy]; exact spanOdo_of_notMem n _ t hy
+    · rw [ite_eq_right hy, ite_eq_right hy]
       by_cases h1 : spanOdo n (fun w => η (cons 1 w) - 1) t y = 1
-      · simp only [if_pos h1]; exact h1
-      · rw [if_neg h1, if_neg h1]
+      · simp only [ite_eq_left h1]; exact h1
+      · rw [ite_eq_right h1, ite_eq_right h1]
 
 end Exploding

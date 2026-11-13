@@ -29,7 +29,7 @@ theorem rn_dependence_graph {Ω A : Type*} {S : Type} [MeasurableSpace Ω] (P : 
       refine hΦ s _ _ (fun t ht => ?_)
       simp [ht]
     rw [h1]
-    exact (measurable_of_countable _).comp (measurable_pi_lambda _ (fun t => hX t))
+    exact (measurable_of_countable _).comp (Measurable.of_eval (fun t => hX t))
   refine ⟨hmeasF, ?_⟩
   intro I J hIJ hadj
   have hdisj : Disjoint (I.biUnion vs) (J.biUnion vs) := by
@@ -62,9 +62,9 @@ theorem rn_dependence_graph {Ω A : Type*} {S : Type} [MeasurableSpace Ω] (P : 
     have : t ∈ J.biUnion vs := Finset.mem_biUnion.mpr ⟨i, i.2, ht⟩
     simp [this]
   -- transfer to the image measure
-  have hmI : Measurable (fun (ω' : S → Bool) (i : I) => ω' i) := measurable_pi_lambda _ (fun i => measurable_pi_apply _)
-  have hmJ : Measurable (fun (ω' : S → Bool) (j : J) => ω' j) := measurable_pi_lambda _ (fun i => measurable_pi_apply _)
-  haveI : IsProbabilityMeasure (P.map F) := Measure.isProbabilityMeasure_map hmeasF.aemeasurable
+  have hmI : Measurable (fun (ω' : S → Bool) (i : I) => ω' i) := Measurable.of_eval (fun i => measurable_pi_apply _)
+  have hmJ : Measurable (fun (ω' : S → Bool) (j : J) => ω' j) := Measurable.of_eval (fun i => measurable_pi_apply _)
+  have : IsProbabilityMeasure (P.map F) := inferInstance
   rw [indepFun_iff_map_prod_eq_prod_map_map hmI.aemeasurable hmJ.aemeasurable]
   have hPI : (fun ω (i : I) => F ω i) = (fun (ω' : S → Bool) (i : I) => ω' i) ∘ F := rfl
   have hPJ : (fun ω (j : J) => F ω j) = (fun (ω' : S → Bool) (j : J) => ω' j) ∘ F := rfl
@@ -190,18 +190,18 @@ theorem rn_bitLaw_true (q : ℝ) : bitLaw q {true} = ENNReal.ofReal q := by
 
 theorem rn_infinitePi_isProb {ι : Type*} {q : ℝ} (h0 : 0 ≤ q) (h1 : q ≤ 1) :
     IsProbabilityMeasure (Measure.infinitePi fun _ : ι => bitLaw q) := by
-  haveI := rn_bitLaw_isProb h0 h1
+  have := rn_bitLaw_isProb h0 h1
   infer_instance
 
 /-- The coordinates of Bernoulli product measure are independent. -/
 theorem rn_bernoulli_iIndep {ι : Type*} {q : ℝ} (h0 : 0 ≤ q) (h1 : q ≤ 1) :
     iIndepFun (fun (i : ι) (ω : ι → Bool) => ω i) (Measure.infinitePi fun _ : ι => bitLaw q) := by
-  haveI := rn_bitLaw_isProb h0 h1
+  have := rn_bitLaw_isProb h0 h1
   exact iIndepFun_infinitePi (P := fun _ : ι => bitLaw q) (X := fun _ => id) (fun _ => measurable_id)
 
 theorem rn_bernoulli_marg {ι : Type*} {q : ℝ} (h0 : 0 ≤ q) (h1 : q ≤ 1) (i : ι) :
     (Measure.infinitePi fun _ : ι => bitLaw q) {ω | ω i = true} = ENNReal.ofReal q := by
-  haveI := rn_bitLaw_isProb h0 h1
+  have := rn_bitLaw_isProb h0 h1
   have : {ω : ι → Bool | ω i = true} = (fun ω : ι → Bool => ω i) ⁻¹' {true} := rfl
   rw [this, ← Measure.map_apply (measurable_pi_apply i) (measurableSet_singleton true),
     Measure.infinitePi_map_eval, rn_bitLaw_true]
@@ -251,7 +251,7 @@ theorem rn_edge_dom (hLSSB : Exploding.External.LiggettSchonmannStaceyBoundedDeg
       simp [h1, h2])
     rn_lineGraph_loc
   set F := (fun (ω : Ω) (e : RnBond d) => X e.1 ω && X (e.1 + unit e.2) ω) with hF
-  haveI : IsProbabilityMeasure (P.map F) := Measure.isProbabilityMeasure_map hFm.aemeasurable
+  have : IsProbabilityMeasure (P.map F) := inferInstance
   have hmarg' : ∀ e : RnBond d, ENNReal.ofReal p ≤ (P.map F) {ω' | ω' e = true} := by
     intro e
     have hm : MeasurableSet {ω' : RnBond d → Bool | ω' e = true} := by
@@ -302,7 +302,7 @@ theorem rn_site_dom (hLSSB : Exploding.External.LiggettSchonmannStaceyBoundedDeg
           rw [this, Real.rpow_one]
       _ ≤ ρ₁ ^ (2 * d) := pow_le_pow_left₀ hr0 hr _
   set P : Measure (RnBond d → Bool) := bondPercolation d ρ₁ with hP
-  haveI : IsProbabilityMeasure P := rn_infinitePi_isProb (ι := RnBond d) hρ₁0 h1
+  have : IsProbabilityMeasure P := rn_infinitePi_isProb (ι := RnBond d) hρ₁0 h1
   have hind : iIndepFun (fun (b : RnBond d) (ω : RnBond d → Bool) => ω b) P :=
     rn_bernoulli_iIndep hρ₁0 h1
   obtain ⟨hFm, hdep⟩ := rn_dependence_graph P (fun (b : RnBond d) (ω : RnBond d → Bool) => ω b)
@@ -315,7 +315,7 @@ theorem rn_site_dom (hLSSB : Exploding.External.LiggettSchonmannStaceyBoundedDeg
     (fun x y hne hadj => rn_incident_disjoint hne hadj)
   set F := (fun (ω : RnBond d → Bool) (x : Site d) =>
     decide (∀ b ∈ rn_incident d x, ω b = true)) with hF
-  haveI : IsProbabilityMeasure (P.map F) := Measure.isProbabilityMeasure_map hFm.aemeasurable
+  have : IsProbabilityMeasure (P.map F) := inferInstance
   have hmarg' : ∀ x : Site d, ENNReal.ofReal p ≤ (P.map F) {ω' | ω' x = true} := by
     intro x
     have hm : MeasurableSet {ω' : Site d → Bool | ω' x = true} := by

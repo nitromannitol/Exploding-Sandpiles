@@ -44,7 +44,7 @@ takes only the two values `2d-2` and `2d-1`, almost surely. -/
 lemma as_eta_bounds (d : ℕ) (hd : 2 ≤ d) (p : ℝ)
     (hp : 0 < p) (hp1 : p < 1) :
     ∀ᵐ η ∂(toyLaw d p), ∀ x : Site d, 2 * (d : ℤ) - 2 ≤ η x ∧ η x ≤ 2 * (d : ℤ) - 1 := by
-  haveI hIPM : IsProbabilityMeasure (chipLaw (2 * (d : ℤ) - 1) (2 * (d : ℤ) - 2) p) := by
+  have hIPM : IsProbabilityMeasure (chipLaw (2 * (d : ℤ) - 1) (2 * (d : ℤ) - 2) p) := by
     refine ⟨?_⟩
     unfold chipLaw
     simp only [Measure.add_apply, Measure.smul_apply, MeasureTheory.measure_univ, smul_eq_mul,
@@ -143,8 +143,8 @@ theorem as_podo_dominates_fodo
               rw [hmatch x hx, heq]; ring
             linarith
           have heqn : t + 1 + t0 = (t + t0) + 1 := by omega
-          rw [if_pos hc, heq, heqn, podo_succ, if_pos hpc]
-        · rw [if_neg hc, add_zero, heq]
+          rw [ite_eq_left hc, heq, heqn, podo_succ, ite_eq_left hpc]
+        · rw [ite_eq_right hc, add_zero, heq]
           exact hmono
 
 /-- Near-trivial. Off its own penultimate
@@ -219,7 +219,7 @@ theorem as_wave_le_fodo_general
     simp [wave_zero, hxz, hS x hx]
   | succ t ih =>
     have hxz : x ≠ z := fun h => hx (h ▸ hz)
-    rw [wave_of_ne η n z x t hxz, fodo_succ, if_neg hx]
+    rw [wave_of_ne η n z x t hxz, fodo_succ, ite_eq_right hx]
     have hBA : nbrSumZ (wave η n z t) x + η x ≤ nbrSumZ (fodo S s0 w0 t) x + s0 x := by
       have h1 : nbrSumZ (wave η n z t) x ≤ nbrSumZ (fodo S s0 w0 t) x := by
         refine nbrSumZ_le_of_adj _ _ x ?_
@@ -234,11 +234,11 @@ theorem as_wave_le_fodo_general
     have hw0' := fodo_nonneg S s0 w0 hw0nn t x
     have hw1' := fodo_le_one S s0 w0 hs0 hw0 hw0nn t x
     by_cases hc : 2 * (d : ℤ) ≤ fconf S s0 w0 t x
-    · rw [if_pos hc]
+    · rw [ite_eq_left hc]
       exact Exploding.ediv_step_ge_pos d hd (nbrSumZ (fodo S s0 w0 t) x + s0 x)
         (nbrSumZ (wave η n z t) x + η x) (fodo S s0 w0 t x) hBA hw0' hw1' hA
         (by have hh := hc; simp only [fconf, lap] at hh; linarith)
-    · rw [if_neg hc, add_zero]
+    · rw [ite_eq_right hc, add_zero]
       exact Exploding.ediv_step_ge_neg d hd (nbrSumZ (fodo S s0 w0 t) x + s0 x)
         (nbrSumZ (wave η n z t) x + η x) (fodo S s0 w0 t x) hBA hw0' hw1' hA
         (by have hh := hc; simp only [fconf, lap] at hh; linarith)
@@ -374,8 +374,8 @@ theorem as_ineq1
   have ht0' : ∀ x, w0 x ≤ podo σ t0 x := by
     intro x
     by_cases hx : x ∈ S
-    · simp only [hw0def, if_pos hx]; exact ht0 x hx
-    · simp only [hw0def, if_neg hx]; exact as_podo_nonneg σ t0 x
+    · simp only [hw0def, ite_eq_left hx]; exact ht0 x hx
+    · simp only [hw0def, ite_eq_right hx]; exact as_podo_nonneg σ t0 x
   have hdom := as_podo_dominates_fodo (d := d) S σ η w0
     hmatch t0 ht0'
   have hbd := as_lastWave_le_one_on_inner_boundary hd η hlow hhigh hlast
@@ -390,7 +390,7 @@ theorem as_ineq1
   by_cases hxS : x ∈ S
   · have hpos : 0 < podo σ t0 x := by
       have := ht0' x
-      simp only [hw0def, if_pos hxS] at this
+      simp only [hw0def, ite_eq_left hxS] at this
       omega
     have harr : arrival η x ≤ (t0 : ℕ∞) := sInf_le ⟨t0, rfl, ht0_1, hpos⟩
     calc arrival η x ≤ (t0 : ℕ∞) := harr
@@ -483,8 +483,8 @@ theorem as_step2_approx1
   have hc' : ∀ x, (fun y => if y ∈ as_tildeP η then (1 : ℤ) else 0) x ≤ lastWave η (0 : Site d) c x := by
     intro x
     by_cases hx : x ∈ as_tildeP η
-    · simpa [if_pos hx] using hc x hx
-    · simp only [if_neg hx]
+    · simpa [ite_eq_left hx] using hc x hx
+    · simp only [ite_eq_right hx]
       simpa [lastWave] using wave_nonneg η hηnn (waveThreshold η (0 : Site d)) (0 : Site d) c x
   have hz : (0 : Site d) ∈ as_tildeP η := by
     unfold as_tildeP; exact Or.inl rfl
@@ -492,12 +492,12 @@ theorem as_step2_approx1
       (fun y => if y ∈ as_tildeP η then (1 : ℤ) else 0) x ≤ lastWave η (0 : Site d) (c + s) x := by
     intro s x hx
     have h1 : (1 : ℤ) ≤ lastWave η (0 : Site d) c x := by
-      simpa [if_pos hx] using hc x hx
+      simpa [ite_eq_left hx] using hc x hx
     have h2 : lastWave η (0 : Site d) c x ≤ lastWave η (0 : Site d) (c + s) x := by
       rw [lastWave]
       exact wave_mono_time η hηnn hd0 (waveThreshold η (0 : Site d)) (0 : Site d)
         (Nat.le_add_right c s) x
-    simpa only [if_pos hx] using le_trans h1 h2
+    simpa only [ite_eq_left hx] using le_trans h1 h2
   have hdom := wave_dom_fodo hd0 (as_tildeP η) η hηnn (waveThreshold η (0 : Site d)) (0 : Site d) c
     (fun y => if y ∈ as_tildeP η then (1 : ℤ) else 0) (fun x => by split_ifs <;> norm_num) hz hc' hSdom
   refine ⟨c, fun t x => ?_⟩
@@ -524,12 +524,12 @@ theorem as_podoTerminal_bound
     have hsucc := podo_succ s0 T x
     rw [hsucc] at hxeq
     by_cases hc : 2 * (d : ℤ) ≤ pconf s0 T x
-    · rw [if_pos hc] at hxeq; omega
-    · rw [if_neg hc]
+    · rw [ite_eq_left hc] at hxeq; omega
+    · rw [ite_eq_right hc]
   have hpconf : pconf s0 T x ≤ 2 * (d : ℤ) - 1 := by
     by_contra h
     have hc : 2 * (d : ℤ) ≤ pconf s0 T x := by omega
-    rw [if_pos hc] at hinc
+    rw [ite_eq_left hc] at hinc
     norm_num at hinc
   have hpt : as_podoTerminal s0 = podo s0 T := by
     unfold as_podoTerminal
@@ -609,7 +609,7 @@ theorem as_tildeV_lap_nonpos_off_tildeP
     by_contra hcon
     have hcon' : 0 < as_tildeV η y := not_le.mp hcon
     refine hx ?_
-    simp only [as_tildeP, Set.mem_union, Set.mem_singleton_iff, Set.mem_setOf_eq]
+    simp only [as_tildeP, Set.mem_union, Set.mem_singleton_iff, Set.mem_ofPred_eq]
     exact Or.inr ⟨y, hy, hcon'⟩
   have hzero : ∀ y : Site d, (lattice d).Adj y x → as_tildeV η y = 0 := fun y hy =>
     le_antisymm (hle y hy) (hnn y)
@@ -635,6 +635,7 @@ theorem as_tildeV_nonneg {d : ℕ} (η : Site d → ℤ) (x : Site d) :
   exact as_podo_nonneg _ _ x
 
 
+set_option backward.isDefEq.respectTransparency.types false in
 /-- The inductive step of `eq:approx2`, isolated as one lemma because the surrounding
 floor-arithmetic bookkeeping is delicate. If the three-way domination
 `as_expOdo η t x ≤ as_wOdo η t x + as_tildeV η x` holds at every `x` at time `t`, it
@@ -688,7 +689,7 @@ theorem as_step2_approx2_step
       by_cases hx : x ∈ as_tildeP η
       · have hr := as_tildeV_regular (d := d) η hhigh hexp1 x
         have hs0sval : s0s x = 2 * (d : ℤ) - 1 + dirac (0 : Site d) x := by
-          rw [hs0s]; simp only [as_sBackground, if_pos hx]
+          rw [hs0s]; simp only [as_sBackground, ite_eq_left hx]
         have hs0eval : s0e x = η x + (explosionThreshold η : ℤ) * dirac (0 : Site d) x := by
           rw [hs0e]
         rw [hs0sval, hs0eval]
@@ -700,15 +701,15 @@ theorem as_step2_approx2_step
         have hx0 : x ≠ (0 : Site d) := by
           intro h
           exact hx (h ▸ (by unfold as_tildeP; exact Or.inl rfl))
-        have hs0sval : s0s x = η x := by rw [hs0s]; simp only [as_sBackground, if_neg hx]
+        have hs0sval : s0s x = η x := by rw [hs0s]; simp only [as_sBackground, ite_eq_right hx]
         have hs0eval : s0e x = η x := by rw [hs0e]; simp [dirac_of_ne hx0]
         rw [hs0sval, hs0eval]
         linarith
     by_cases hc : 2 * (d : ℤ) ≤ s0e x + lap (podo s0e t) x
     · have hwuns : 2 * (d : ℤ) ≤ s0s x + lap (podo s0s t) x := by linarith [hc, hlapsum, hkey]
-      rw [if_pos hc, if_pos hwuns, heq]
+      rw [ite_eq_left hc, ite_eq_left hwuns, heq]
       linarith
-    · rw [if_neg hc, add_zero, heq]
+    · rw [ite_eq_right hc, add_zero, heq]
       split_ifs <;> omega
 
 /-- A consequence of the two pieces above (`eq:approx2`). Plain induction on
@@ -809,7 +810,7 @@ theorem as_ineq2_neighbor_witness
     podo_succ s0 t0 x
   have hle : 2 * d ≤ pconf s0 t0 x := (by
     by_contra hc
-    have hz : (if 2 * d ≤ pconf s0 t0 x then (1 : ℤ) else 0) = 0 := if_neg hc
+    have hz : (if 2 * d ≤ pconf s0 t0 x then (1 : ℤ) else 0) = 0 := ite_eq_right hc
     rw [hs, h0, zero_add, hz] at h1
     omega)
   have hp : pconf s0 t0 x = s0 x + nbrSumZ (podo s0 t0) x := (by
@@ -901,7 +902,7 @@ theorem as_ineq2
         have hmem := as_ineq2_mem_tildeP hd η hhigh x hv
         have := fodo_of_mem (as_tildeP η) η (fun z => if z ∈ as_tildeP η then (1 : ℤ) else 0) t hmem
         simp only [as_tildeW]
-        rw [this, if_pos hmem]
+        rw [this, ite_eq_left hmem]
         norm_num
     exact lt_of_lt_of_le hwtildepos (happrox1 t x)
   refine ⟨c, fun x => ?_⟩

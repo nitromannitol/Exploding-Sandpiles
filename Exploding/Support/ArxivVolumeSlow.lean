@@ -53,7 +53,7 @@ theorem ce_podo_zero_signed_slow_site (d : ℕ) (hd : 2 ≤ d) (n : ℕ)
     omega
   have hfold : cels_fold a = a := by
     unfold cels_fold
-    rw [if_pos (by omega : 0 ≤ a)]
+    rw [ite_eq_left (by omega : 0 ≤ a)]
   have hmod_a : a % 4 = 3 := by
     dsimp [a]
     omega
@@ -75,8 +75,8 @@ theorem ce_podo_zero_signed_slow_site (d : ℕ) (hd : 2 ≤ d) (n : ℕ)
     norm_num
   have hW : cels_W (t : ℤ) a 0 = 0 := by
     unfold cels_W
-    rw [if_neg hzero_origin]
-    rw [if_pos (by rw [htau]; exact htime)]
+    rw [ite_eq_right hzero_origin]
+    rw [ite_eq_left (by rw [htau]; exact htime)]
   have hwp : cels_wP t x₂ = 0 := by
     unfold cels_wP cels_w cels_cw
     rw [hx₂0, hx₂1, hfold, hmod_b, hu, hW]

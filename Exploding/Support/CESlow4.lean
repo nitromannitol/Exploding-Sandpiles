@@ -12,11 +12,11 @@ open LatticeProb
 theorem cels_tau_axis (n : ℕ) : cels_tau ((3 + 8 * n : ℕ) : ℤ) 0 = 12 * (n : ℤ) + 8 := by
   have hcol : cels_col ((3 + 8 * n : ℕ) : ℤ) = 3 := by
     unfold cels_col
-    rw [if_neg (by omega)]
+    rw [ite_eq_right (by omega)]
     omega
   have hsh : cels_sh ((3 + 8 * n : ℕ) : ℤ) = 12 * (n : ℤ) := by
     unfold cels_sh
-    rw [if_neg (by omega)]
+    rw [ite_eq_right (by omega)]
     omega
   have hlk : cels_lk 3 0 = 8 := by decide
   unfold cels_tau
@@ -38,7 +38,7 @@ theorem cels_podo_axis (n k : ℕ) (hk : k < 12 * n + 8) :
     rw [hx0, hx1]
     have hf : cels_fold ((3 + 8 * n : ℕ) : ℤ) = ((3 + 8 * n : ℕ) : ℤ) := by
       unfold cels_fold
-      rw [if_pos (by omega)]
+      rw [ite_eq_left (by omega)]
     rw [hf]
     have hu : cels_u ((3 + 8 * n : ℕ) : ℤ) (0 % 4) = 0 := by
       unfold cels_u zeta1
@@ -49,7 +49,7 @@ theorem cels_podo_axis (n k : ℕ) (hk : k < 12 * n + 8) :
       unfold cels_W
       have h0 : (0 : ℤ) % 4 = 0 := by norm_num
       have hne : ¬ (((3 + 8 * n : ℕ) : ℤ) = 0 ∧ (0 : ℤ) % 4 = 0) := by omega
-      rw [if_neg hne, h0, if_pos]
+      rw [ite_eq_right hne, h0, ite_eq_left]
       rw [cels_tau_axis]
       omega
     unfold cels_cw
@@ -69,12 +69,12 @@ theorem cels_slow2D : ∀ n : ℕ, ∃ m : ℕ,
     refine le_sInf ?_
     rintro t ⟨k, rfl, hk1, hk⟩
     rw [aux_ce_explodingPile_eq 2 le_rfl] at hk
-    refine ENat.coe_le_coe.mpr ?_
+    refine ENat.natCast_le_natCast.mpr ?_
     by_contra hcon
     have h0 := cels_podo_axis n k (by omega)
     rw [h0] at hk
     exact absurd hk (lt_irrefl 0)
   rw [hT] at hlow
-  exact ENat.coe_le_coe.mp hlow
+  exact ENat.natCast_le_natCast.mp hlow
 
 end Exploding

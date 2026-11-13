@@ -24,7 +24,7 @@ theorem cel_ceEta (x : Site (n + 2)) :
   unfold ceEta
   have h0 : 0 < n + 2 := by omega
   have h1 : 1 < n + 2 := by omega
-  rw [dif_pos h0, dif_pos h1]
+  rw [dite_eq_left h0, dite_eq_left h1]
   push_cast
   have e0 : (⟨0, h0⟩ : Fin (n + 2)) = 0 := rfl
   have e1 : (⟨1, h1⟩ : Fin (n + 2)) = 1 := rfl
@@ -54,13 +54,13 @@ theorem cel_b_add1 : (x + unit (1 : Fin (n + 2))) 1 = x 1 + 1 := by rw [cel_add_
 theorem cel_a_sub1 : (x - unit (1 : Fin (n + 2))) 0 = x 0 := by rw [cel_sub_unit_apply]; simp
 theorem cel_b_sub1 : (x - unit (1 : Fin (n + 2))) 1 = x 1 - 1 := by rw [cel_sub_unit_apply]; simp
 theorem cel_a_addk (k : Fin n) : (x + unit k.succ.succ) 0 = x 0 := by
-  rw [cel_add_unit_apply, if_neg (fun h => cel_ne0 k h.symm), add_zero]
+  rw [cel_add_unit_apply, ite_eq_right (fun h => cel_ne0 k h.symm), add_zero]
 theorem cel_b_addk (k : Fin n) : (x + unit k.succ.succ) 1 = x 1 := by
-  rw [cel_add_unit_apply, if_neg (fun h => cel_ne1 k h.symm), add_zero]
+  rw [cel_add_unit_apply, ite_eq_right (fun h => cel_ne1 k h.symm), add_zero]
 theorem cel_a_subk (k : Fin n) : (x - unit k.succ.succ) 0 = x 0 := by
-  rw [cel_sub_unit_apply, if_neg (fun h => cel_ne0 k h.symm), sub_zero]
+  rw [cel_sub_unit_apply, ite_eq_right (fun h => cel_ne0 k h.symm), sub_zero]
 theorem cel_b_subk (k : Fin n) : (x - unit k.succ.succ) 1 = x 1 := by
-  rw [cel_sub_unit_apply, if_neg (fun h => cel_ne1 k h.symm), sub_zero]
+  rw [cel_sub_unit_apply, ite_eq_right (fun h => cel_ne1 k h.symm), sub_zero]
 
 end Nbr
 
@@ -79,22 +79,22 @@ theorem cel_rho_eq_zero_iff (x : Site (n + 2)) :
 theorem cel_rho_add0 (x : Site (n + 2)) : cel_rho (x + unit (0 : Fin (n + 2))) = cel_rho x := by
   unfold cel_rho
   refine Finset.sum_congr rfl (fun k _ => ?_)
-  rw [cel_add_unit_apply, if_neg (cel_ne0 k), add_zero]
+  rw [cel_add_unit_apply, ite_eq_right (cel_ne0 k), add_zero]
 
 theorem cel_rho_sub0 (x : Site (n + 2)) : cel_rho (x - unit (0 : Fin (n + 2))) = cel_rho x := by
   unfold cel_rho
   refine Finset.sum_congr rfl (fun k _ => ?_)
-  rw [cel_sub_unit_apply, if_neg (cel_ne0 k), sub_zero]
+  rw [cel_sub_unit_apply, ite_eq_right (cel_ne0 k), sub_zero]
 
 theorem cel_rho_add1 (x : Site (n + 2)) : cel_rho (x + unit (1 : Fin (n + 2))) = cel_rho x := by
   unfold cel_rho
   refine Finset.sum_congr rfl (fun k _ => ?_)
-  rw [cel_add_unit_apply, if_neg (cel_ne1 k), add_zero]
+  rw [cel_add_unit_apply, ite_eq_right (cel_ne1 k), add_zero]
 
 theorem cel_rho_sub1 (x : Site (n + 2)) : cel_rho (x - unit (1 : Fin (n + 2))) = cel_rho x := by
   unfold cel_rho
   refine Finset.sum_congr rfl (fun k _ => ?_)
-  rw [cel_sub_unit_apply, if_neg (cel_ne1 k), sub_zero]
+  rw [cel_sub_unit_apply, ite_eq_right (cel_ne1 k), sub_zero]
 
 theorem cel_rho_addk_of_zero (x : Site (n + 2)) (hr : cel_rho x = 0) (k : Fin n) :
     cel_rho (x + unit k.succ.succ) = 1 := by
@@ -141,7 +141,7 @@ theorem cel_rho_toward (x : Site (n + 2)) (h : 1 ≤ cel_rho x) :
       rw [cel_add_unit_apply]
       by_cases hjk : j = k
       · subst hjk
-        simp only [if_true]
+        simp only [ite_true]
         rw [abs_of_neg hneg, abs_of_nonpos (by omega)]
         ring
       · simp [hjk]
@@ -155,7 +155,7 @@ theorem cel_rho_toward (x : Site (n + 2)) (h : 1 ≤ cel_rho x) :
       rw [cel_sub_unit_apply]
       by_cases hjk : j = k
       · subst hjk
-        simp only [if_true]
+        simp only [ite_true]
         rw [abs_of_pos hpos, abs_of_nonneg (by omega)]
       · simp [hjk]
     rw [Finset.sum_congr rfl (fun j _ => hpt j), Finset.sum_sub_distrib]
@@ -229,17 +229,17 @@ theorem cel_Q_zero (a b : ℤ) : cel_Q 0 a b = 0 := by
 theorem cel_val_zero (a b r : ℤ) (hr : 0 ≤ r) : cel_val 0 a b r = 0 := by
   unfold cel_val
   by_cases h0 : r = 0
-  · rw [if_pos h0]; exact cel_Q_zero a b
-  · rw [if_neg h0]
+  · rw [ite_eq_left h0]; exact cel_Q_zero a b
+  · rw [ite_eq_right h0]
     by_cases hH : cel_H a b
-    · rw [if_pos hH]
+    · rw [ite_eq_left hH]
       have h1 := (((cel_chk_all a b).1) hH.1).1
       have : ¬ cel_t1 a b + r ≤ 0 := by omega
       simp [this]
-    · rw [if_neg hH]
+    · rw [ite_eq_right hH]
       by_cases hC : a = 0 ∧ b = 0 ∧ r = 1
-      · rw [if_pos hC]; norm_num
-      · rw [if_neg hC]
+      · rw [ite_eq_left hC]; norm_num
+      · rw [ite_eq_right hC]
 
 /-- The profile: the schedule `cel_val`, evaluated at the first two coordinates and the
 `ℓ¹`-norm of the others. -/
@@ -274,10 +274,10 @@ theorem cel_s0_plane (x : Site (n + 2)) (hr : cel_rho x = 0) :
   unfold cel_zh dirac
   by_cases h : x 0 = 0 ∧ x 1 = 0
   · have hx : x = 0 := (cel_zero_iff x hr).2 h
-    rw [if_pos hx, if_pos h]
+    rw [ite_eq_left hx, ite_eq_left h]
     ring
   · have hx : x ≠ 0 := fun hx => h ((cel_zero_iff x hr).1 hx)
-    rw [if_neg hx, if_neg h]
+    rw [ite_eq_right hx, ite_eq_right h]
     ring
 
 theorem cel_s0_off (x : Site (n + 2)) (hr : 1 ≤ cel_rho x) :
@@ -299,25 +299,25 @@ theorem cel_p_add0 : cel_p t (x + unit (0 : Fin (n + 2))) = cel_Q (t : ℤ) (x 0
   unfold cel_p
   rw [cel_a_add0, cel_b_add0, cel_rho_add0, hr]
   unfold cel_val
-  rw [if_pos rfl]
+  rw [ite_eq_left rfl]
 
 theorem cel_p_sub0 : cel_p t (x - unit (0 : Fin (n + 2))) = cel_Q (t : ℤ) (x 0 - 1) (x 1) := by
   unfold cel_p
   rw [cel_a_sub0, cel_b_sub0, cel_rho_sub0, hr]
   unfold cel_val
-  rw [if_pos rfl]
+  rw [ite_eq_left rfl]
 
 theorem cel_p_add1 : cel_p t (x + unit (1 : Fin (n + 2))) = cel_Q (t : ℤ) (x 0) (x 1 + 1) := by
   unfold cel_p
   rw [cel_a_add1, cel_b_add1, cel_rho_add1, hr]
   unfold cel_val
-  rw [if_pos rfl]
+  rw [ite_eq_left rfl]
 
 theorem cel_p_sub1 : cel_p t (x - unit (1 : Fin (n + 2))) = cel_Q (t : ℤ) (x 0) (x 1 - 1) := by
   unfold cel_p
   rw [cel_a_sub1, cel_b_sub1, cel_rho_sub1, hr]
   unfold cel_val
-  rw [if_pos rfl]
+  rw [ite_eq_left rfl]
 
 theorem cel_p_addk (k : Fin n) :
     cel_p t (x + unit k.succ.succ) = cel_val (t : ℤ) (x 0) (x 1) 1 := by
@@ -331,7 +331,7 @@ theorem cel_p_subk (k : Fin n) :
 
 theorem cel_p_plane : cel_p t x = cel_Q (t : ℤ) (x 0) (x 1) := by
   unfold cel_p cel_val
-  rw [hr, if_pos rfl]
+  rw [hr, ite_eq_left rfl]
 
 end Plane
 
@@ -355,7 +355,7 @@ theorem cel_hstep_plane (t : ℕ) (x : Site (n + 2)) (hr : cel_rho x = 0) :
         mul_nonneg (Nat.cast_nonneg n) (sub_nonneg.2 hc)
       push_cast
       nlinarith [hprod, h2D]
-    rw [if_pos hcond, cel_p_plane t x hr, cel_p_plane (t + 1) x hr]
+    rw [ite_eq_left hcond, cel_p_plane t x hr, cel_p_plane (t + 1) x hr]
     push_cast at e ⊢
     linarith
   · rw [cel_p_plane t x hr, cel_p_plane (t + 1) x hr]
@@ -372,15 +372,15 @@ theorem cel_val_ge_H (t a b r : ℤ) (hH : cel_H a b)
     (h : cel_t1 a b + r ≤ t) : 1 ≤ cel_val t a b r := by
   unfold cel_val
   by_cases h0 : r = 0
-  · rw [if_pos h0]
+  · rw [ite_eq_left h0]
     unfold cel_Q cel_f1
     have : cel_in1 a b ∧ cel_t1 a b ≤ t := ⟨hH.1, by omega⟩
-    rw [if_pos this]
+    rw [ite_eq_left this]
     have := cel_Q_nonneg t a b
     have h2 : (0 : ℤ) ≤ cel_f2 t a b := by
       unfold cel_f2; split_ifs <;> norm_num
     linarith
-  · rw [if_neg h0, if_pos hH, if_pos h]
+  · rw [ite_eq_right h0, ite_eq_left hH, ite_eq_left h]
 
 /-- A site off the plane whose plane projection is high has a neighbour, closer to the plane,
 which has already toppled. -/
@@ -412,30 +412,30 @@ theorem cel_hstep_H (t : ℕ) (x : Site (n + 2)) (hr : 1 ≤ cel_rho x)
       = if cel_t1 (x 0) (x 1) + cel_rho x ≤ (s : ℤ) then 1 else 0 := by
     intro s
     unfold cel_p cel_val
-    rw [if_neg (by omega), if_pos hH]
+    rw [ite_eq_right (by omega), ite_eq_left hH]
   have hind : (0 : ℤ) ≤ (if 2 * (((n + 2 : ℕ)) : ℤ) ≤
           (ceEta (n + 2) x + 3 * dirac (0 : Site (n + 2)) x) + lap (cel_p t) x
         then 1 else 0) := by
     split <;> norm_num
   have hnn := cel_p_nonneg t x
   by_cases hev : cel_t1 (x 0) (x 1) + cel_rho x ≤ (t : ℤ)
-  · have h1 : cel_p t x = 1 := by rw [hp, if_pos hev]
+  · have h1 : cel_p t x = 1 := by rw [hp, ite_eq_left hev]
     have h2 : cel_p (t + 1) x = 1 := by
-      rw [hp, if_pos (by push_cast; omega)]
+      rw [hp, ite_eq_left (by push_cast; omega)]
     rw [h1, h2]
     linarith
   · by_cases hev1 : cel_t1 (x 0) (x 1) + cel_rho x ≤ ((t + 1 : ℕ) : ℤ)
-    · have h1 : cel_p t x = 0 := by rw [hp, if_neg hev]
-      have h2 : cel_p (t + 1) x = 1 := by rw [hp, if_pos hev1]
+    · have h1 : cel_p t x = 0 := by rw [hp, ite_eq_right hev]
+      have h2 : cel_p (t + 1) x = 1 := by rw [hp, ite_eq_left hev1]
       have hge := cel_toward_ge t x hr hH (by push_cast at hev1; exact hev1)
       have hcond : 2 * (((n + 2 : ℕ)) : ℤ) ≤
           (ceEta (n + 2) x + 3 * dirac (0 : Site (n + 2)) x) + lap (cel_p t) x := by
         rw [cel_s0_off x hr, lap_eq, h1, hH.2]
         push_cast
         linarith
-      rw [if_pos hcond, h1, h2]
+      rw [ite_eq_left hcond, h1, h2]
       norm_num
-    · have h2 : cel_p (t + 1) x = 0 := by rw [hp, if_neg hev1]
+    · have h2 : cel_p (t + 1) x = 0 := by rw [hp, ite_eq_right hev1]
       rw [h2]
       linarith
 
@@ -449,20 +449,20 @@ theorem cel_hstep_C (t : ℕ) (x : Site (n + 2)) (h0 : x 0 = 0) (h1 : x 1 = 0)
   have hp : ∀ s : ℕ, cel_p s x = if 4 ≤ (s : ℤ) then 1 else 0 := by
     intro s
     unfold cel_p cel_val
-    rw [h0, h1, hr, if_neg (by norm_num), if_neg hnH, if_pos ⟨rfl, rfl, rfl⟩]
+    rw [h0, h1, hr, ite_eq_right (by norm_num), ite_eq_right hnH, ite_eq_left ⟨rfl, rfl, rfl⟩]
   have hind : (0 : ℤ) ≤ (if 2 * (((n + 2 : ℕ)) : ℤ) ≤
           (ceEta (n + 2) x + 3 * dirac (0 : Site (n + 2)) x) + lap (cel_p t) x
         then 1 else 0) := by
     split <;> norm_num
   have hnn := cel_p_nonneg t x
   by_cases hev : 4 ≤ (t : ℤ)
-  · have e1 : cel_p t x = 1 := by rw [hp, if_pos hev]
-    have e2 : cel_p (t + 1) x = 1 := by rw [hp, if_pos (by push_cast; omega)]
+  · have e1 : cel_p t x = 1 := by rw [hp, ite_eq_left hev]
+    have e2 : cel_p (t + 1) x = 1 := by rw [hp, ite_eq_left (by push_cast; omega)]
     rw [e1, e2]
     linarith
   · by_cases hev1 : 4 ≤ ((t + 1 : ℕ) : ℤ)
-    · have e1 : cel_p t x = 0 := by rw [hp, if_neg hev]
-      have e2 : cel_p (t + 1) x = 1 := by rw [hp, if_pos hev1]
+    · have e1 : cel_p t x = 0 := by rw [hp, ite_eq_right hev]
+      have e2 : cel_p (t + 1) x = 1 := by rw [hp, ite_eq_left hev1]
       have ht : t = 3 := by push_cast at hev1; omega
       subst ht
       have hy : ∀ y : Site (n + 2), 0 ≤ cel_p 3 y := fun y => cel_p_nonneg 3 y
@@ -496,9 +496,9 @@ theorem cel_hstep_C (t : ℕ) (x : Site (n + 2)) (h0 : x 0 = 0) (h1 : x 1 = 0)
         rw [hz]
         push_cast
         linarith
-      rw [if_pos hcond, e1, e2]
+      rw [ite_eq_left hcond, e1, e2]
       norm_num
-    · have e2 : cel_p (t + 1) x = 0 := by rw [hp, if_neg hev1]
+    · have e2 : cel_p (t + 1) x = 0 := by rw [hp, ite_eq_right hev1]
       rw [e2]
       linarith
 
@@ -511,7 +511,7 @@ theorem cel_hstep_D (t : ℕ) (x : Site (n + 2)) (hr : 1 ≤ cel_rho x)
   have hp : ∀ s : ℕ, cel_p s x = 0 := by
     intro s
     unfold cel_p cel_val
-    rw [if_neg (by omega), if_neg hH, if_neg hC]
+    rw [ite_eq_right (by omega), ite_eq_right hH, ite_eq_right hC]
   have hind : (0 : ℤ) ≤ (if 2 * (((n + 2 : ℕ)) : ℤ) ≤
           (ceEta (n + 2) x + 3 * dirac (0 : Site (n + 2)) x) + lap (cel_p t) x
         then 1 else 0) := by
@@ -545,10 +545,10 @@ theorem cel_t1_axis (m : ℕ) : cel_t1 (m : ℤ) 0 ≤ 2 * (m : ℤ) + 6 := by
   · have h2 : (2 : ℤ) ≤ (m : ℤ) := by omega
     have hcol : cel_col (m : ℤ) = 2 + ((m : ℤ) - 2) % 4 := by
       unfold cel_col
-      rw [if_neg (by omega)]
+      rw [ite_eq_right (by omega)]
     have hsh : cel_sh (m : ℤ) = 6 * (((m : ℤ) - 2) / 4) := by
       unfold cel_sh
-      rw [if_neg (by omega)]
+      rw [ite_eq_right (by omega)]
     unfold cel_t1
     rw [hcol, hsh]
     have hr : ((m : ℤ) - 2) % 4 = 0 ∨ ((m : ℤ) - 2) % 4 = 1 ∨ ((m : ℤ) - 2) % 4 = 2 ∨

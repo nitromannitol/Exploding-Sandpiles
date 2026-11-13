@@ -184,7 +184,7 @@ theorem pe_E_of_boundary (hd : 2 ≤ d) (ω : Site d × Fin d → Bool) (l : Lis
     refine Finset.card_le_card_of_injOn (fun z => pe_bnd hd (a z) z) ?_ ?_
     · intro z hzl
       have hzl' : z ∈ l := List.mem_toFinset.1 hzl
-      simp only [Finset.coe_filter, Set.mem_setOf_eq]
+      simp only [Finset.coe_filter, Set.mem_ofPred_eq]
       refine ⟨?_, pe_closed hd ω (ha z hzl').1 (hz z hzl').1 (ha z hzl').2⟩
       unfold pe_lam
       exact Finset.mem_biUnion.2 ⟨z, hzl, pe_mem_bondsAt hd (ha z hzl').2⟩
@@ -210,7 +210,7 @@ theorem pe_bitLaw_false (q : ℝ) : bitLaw q {false} = ENNReal.ofReal (1 - q) :=
 /-- Distinct bonds are closed independently, each with probability `1 - q`. -/
 theorem pe_closed_prob {q : ℝ} (h0 : 0 ≤ q) (h1 : q ≤ 1) (S : Finset (Site d × Fin d)) :
     bondPercolation d q {ω | ∀ b ∈ S, ω b = false} = ENNReal.ofReal (1 - q) ^ S.card := by
-  haveI : IsProbabilityMeasure (bitLaw q) := ⟨pe_bitLaw_univ h0 h1⟩
+  have : IsProbabilityMeasure (bitLaw q) := ⟨pe_bitLaw_univ h0 h1⟩
   have hset : {ω : Site d × Fin d → Bool | ∀ b ∈ S, ω b = false} =
       Set.pi (↑S : Set (Site d × Fin d)) (fun _ => ({false} : Set Bool)) := by
     ext ω
@@ -228,7 +228,7 @@ theorem pe_E_prob (hd : 2 ≤ d) {q : ℝ} (h0 : 0 ≤ q) (h1 : q ≤ 1) (l : Li
   have hsub : pe_E hd l ⊆ ⋃ S ∈ 𝒮, {ω : Site d × Fin d → Bool | ∀ b ∈ S, ω b = false} := by
     intro ω hω
     obtain ⟨S, hSsub, hScard⟩ := Finset.exists_subset_card_eq hω
-    simp only [Set.mem_iUnion, Set.mem_setOf_eq]
+    simp only [Set.mem_iUnion, Set.mem_ofPred_eq]
     refine ⟨S, Finset.mem_filter.2 ⟨Finset.mem_powerset.2
       (hSsub.trans (Finset.filter_subset _ _)), hScard⟩, fun b hb => ?_⟩
     exact (Finset.mem_filter.1 (hSsub hb)).2
@@ -306,8 +306,8 @@ theorem pe_theta_ne_zero (hd : 2 ≤ d) {q : ℝ} (hq0 : 255 / 256 ≤ q) (hq1 :
     bondTheta d q ≠ 0 := by
   classical
   have h0 : 0 ≤ q := by linarith
-  haveI : IsProbabilityMeasure (bitLaw q) := ⟨pe_bitLaw_univ h0 hq1⟩
-  haveI : IsProbabilityMeasure (bondPercolation d q) := by
+  have : IsProbabilityMeasure (bitLaw q) := ⟨pe_bitLaw_univ h0 hq1⟩
+  have : IsProbabilityMeasure (bondPercolation d q) := by
     unfold bondPercolation; infer_instance
   set B : Set (Site d × Fin d → Bool) := ⋃ j : ℕ, ⋃ i : ℕ, pe_badSet hd j i with hB
   obtain ⟨r, hr⟩ : ∃ r : ℝ, r = 16 * (1 - q) := ⟨_, rfl⟩

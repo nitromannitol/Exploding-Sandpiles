@@ -29,11 +29,11 @@ theorem cel_upper (d : ℕ) (hd : 2 ≤ d) (m : ℕ) :
       unfold cel_p
       rw [cel_e1_0, cel_e1_1, cel_rho_e1]
       unfold cel_val
-      rw [if_pos rfl]
+      rw [ite_eq_left rfl]
       unfold cel_Q cel_f1
       have hc : cel_in1 (m : ℤ) 0 ∧ cel_t1 (m : ℤ) 0 ≤ (((cel_t1 (m : ℤ) 0).toNat : ℕ) : ℤ) :=
         ⟨cel_in1_axis m, by omega⟩
-      rw [if_pos hc]
+      rw [ite_eq_left hc]
       have h3 : (0 : ℤ) ≤ cel_f2 (((cel_t1 (m : ℤ) 0).toNat : ℕ) : ℤ) (m : ℤ) 0 := by
         unfold cel_f2
         split <;> norm_num
@@ -44,7 +44,7 @@ theorem cel_upper (d : ℕ) (hd : 2 ≤ d) (m : ℕ) :
   obtain ⟨T, hT⟩ := WithTop.ne_top_iff_exists.mp hne
   refine ⟨T, hT.symm, ?_⟩
   rw [← hT] at hle
-  have := ENat.coe_le_coe.mp hle
+  have := ENat.natCast_le_natCast.mp hle
   omega
 
 /-- Finiteness of the arrival time at the low-type row-`0` points (`hLow` of the frozen
@@ -54,7 +54,7 @@ theorem cel_low (d : ℕ) (hd : 2 ≤ d) : ∀ n : ℕ, n % 4 = 0 ∨ n % 4 = 3 
   intro n _
   obtain ⟨T, hT, _⟩ := cel_upper d hd n
   rw [hT]
-  exact ENat.coe_ne_top T
+  exact ENat.natCast_ne_top T
 
 /-- The eventual linear bound on `T(n)/n` (`hBdd` of the frozen proof of
 `theorem:counterexample`). -/
@@ -63,7 +63,7 @@ theorem cel_bdd (d : ℕ) (hd : 2 ≤ d) : ∃ C : ℝ, ∀ᶠ n : ℕ in atTop,
   refine ⟨8, ?_⟩
   filter_upwards [eventually_ge_atTop 1] with n hn
   obtain ⟨T, hT, hle⟩ := cel_upper d hd n
-  rw [hT, ENat.toNat_coe]
+  rw [hT, ENat.toNat_natCast]
   have hn' : (0 : ℝ) < n := by exact_mod_cast hn
   rw [div_le_iff₀ hn']
   have h1 : (T : ℝ) ≤ 2 * n + 6 := by exact_mod_cast hle

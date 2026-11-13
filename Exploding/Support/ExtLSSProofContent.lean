@@ -78,7 +78,7 @@ theorem xlss_isProjectiveLimit_projectiveLimit {ι : Type*}
   intro I
   refine Measure.ext fun S hS => ?_
   have hmeas : Measurable (Finset.restrict I : (ι → Bool) → (I → Bool)) :=
-    measurable_pi_lambda _ fun i => measurable_pi_apply (i : ι)
+    Measurable.of_eval fun i => measurable_pi_apply (i : ι)
   rw [Measure.map_apply hmeas hS]
   change xlss_projectiveLimit P hP (cylinder I S) = P I S
   rw [show xlss_projectiveLimit P hP (cylinder I S) =

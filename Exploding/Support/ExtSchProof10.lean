@@ -52,8 +52,8 @@ theorem xsch10_mem_sub_of (n : ℕ) (x : Site d) (hx : x ∈ cube d (2 * n)) :
     simp only [xsch10_shift, decide_eq_true_eq]
   rw [Pi.sub_apply, hsh]
   by_cases h : n < x i
-  · rw [if_pos h]; constructor <;> omega
-  · rw [if_neg h]; constructor <;> omega
+  · rw [ite_eq_left h]; constructor <;> omega
+  · rw [ite_eq_right h]; constructor <;> omega
 
 /-- **L-shape lemma.**  If at most one of the `2^d` corner sub-cubes fails to be
 internally spanned, then `cube d (2n)` is spanned. -/
@@ -125,7 +125,7 @@ theorem xsch10_sub_disjoint (n : ℕ) {σ σ' : Fin d → Bool} (h : σ ≠ σ')
 translations. -/
 theorem xsch10_map_shift {p : ℝ} [Fact (0 ≤ p ∧ p ≤ 1)] (s : Site d) :
     (xsch_mu d p).map (fun η : Site d → ℤ => fun i => η (i + s)) = xsch_mu d p := by
-  haveI := xsch_chip_isProb (2 * (d : ℤ)) (d : ℤ) (Fact.out : 0 ≤ p ∧ p ≤ 1).1
+  have := xsch_chip_isProb (2 * (d : ℤ)) (d : ℤ) (Fact.out : 0 ≤ p ∧ p ≤ 1).1
     (Fact.out : 0 ≤ p ∧ p ≤ 1).2
   have h := Measure.infinitePi_map_piCongrLeft
     (fun _ : Site d => chipLaw (2 * (d : ℤ)) (d : ℤ) p) (Equiv.addRight (-s))
@@ -169,7 +169,7 @@ theorem xsch10_bad_prob {p : ℝ} [Fact (0 ≤ p ∧ p ≤ 1)] (n : ℕ) (σ : F
   set f : (Site d → ℤ) → (Site d → ℤ) := fun η i => η (i + s)
   have hmap : (xsch_mu d p).map f = xsch_mu d p := xsch10_map_shift (d := d) (p := p) s
   have hf_meas : Measurable f := by
-    apply measurable_pi_lambda
+    apply Measurable.of_eval
     intro i
     exact measurable_pi_apply (i + s)
   have hS : MeasurableSet {η : Site d → ℤ |
@@ -179,7 +179,7 @@ theorem xsch10_bad_prob {p : ℝ} [Fact (0 ≤ p ∧ p ≤ 1)] (n : ℕ) (σ : F
   have hT : {η | ¬ xsch_Sp (Finset.univ : Finset (Fin d)) (xsch10_sub σ n) η}
       = f ⁻¹' {η | ¬ xsch_Sp (Finset.univ : Finset (Fin d)) (cube d n) η} := by
     ext η
-    simp only [Set.mem_setOf_eq, Set.mem_preimage]
+    simp only [Set.mem_ofPred_eq, Set.mem_preimage]
     have hb : (fun y : Site d => η (y - (-(xsch10_shift σ n)))) = f η := by
       funext y
       simp [f, hs, sub_eq_add_neg, neg_neg]

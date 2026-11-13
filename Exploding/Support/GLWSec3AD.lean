@@ -47,7 +47,7 @@ theorem glws_core_dom (hLSSB : Exploding.External.LiggettSchonmannStaceyBoundedD
   obtain ⟨C, hC1, hchem⟩ := rn_chem_ae hChem d hd hqρ hρ₁0 hρ₁1.le
   refine ⟨ρ₁, hρ₁0, hρ₁1, C, hC1, ?_⟩
   intro Ω _ P _ X hX hdom
-  haveI : IsProbabilityMeasure (bondPercolation d ρ₁) := rn_infinitePi_isProb hρ₁0 hρ₁1.le
+  have : IsProbabilityMeasure (bondPercolation d ρ₁) := rn_infinitePi_isProb hρ₁0 hρ₁1.le
   set ν : Measure (RnBond d → Bool) := bondPercolation d ρ₁ with hν
   have hholeρ := hhole ρ₁ hrρ hρ₁1.le
   -- the good set of bond configurations
@@ -56,7 +56,7 @@ theorem glws_core_dom (hLSSB : Exploding.External.LiggettSchonmannStaceyBoundedD
   have hBad0 : ν Bad = 0 := by
     refine measure_mono_null (fun ζ hζ => ?_) (measure_union_null hholeρ (ae_iff.mp hchem))
     by_contra hcon
-    simp only [Set.mem_union, not_or, Set.mem_setOf_eq, not_not] at hcon
+    simp only [Set.mem_union, not_or, Set.mem_ofPred_eq, not_not] at hcon
     exact hζ ⟨hcon.1, hcon.2⟩
   set Z : Set (RnBond d → Bool) := (toMeasurable ν Bad)ᶜ with hZ
   have hZm : MeasurableSet Z := (measurableSet_toMeasurable ν Bad).compl
@@ -70,7 +70,7 @@ theorem glws_core_dom (hLSSB : Exploding.External.LiggettSchonmannStaceyBoundedD
   -- the coupling
   set F : Ω → RnBond d → Bool := fun ω e => X e.1 ω && X (e.1 + unit e.2) ω with hF
   have hFm : Measurable F := rn_edge_measurable X hX
-  haveI : IsProbabilityMeasure (P.map F) := Measure.isProbabilityMeasure_map hFm.aemeasurable
+  have : IsProbabilityMeasure (P.map F) := inferInstance
   have hdomB : ∀ A : Set (RnBond d → Bool), MeasurableSet A → IsIncreasingSet A → ν A ≤ (P.map F) A := by
     intro A hA hinc
     rw [Measure.map_apply hFm hA]

@@ -66,7 +66,7 @@ theorem bc_unit_comp_perm (σ : Equiv.Perm (Fin d)) (i : Fin d) :
   funext l
   simp only [unit, Pi.single_apply]
   congr 1
-  exact propext (σ.apply_eq_iff_eq_symm_apply)
+  exact propext (σ.eq_symm_apply).symm
 
 theorem bc_sym_perm (σ : Equiv.Perm (Fin d)) : BCSym (fun (x : Site d) (l : Fin d) => x (σ l)) := by
   have key : ∀ (σ : Equiv.Perm (Fin d)) (x y : Site d), (lattice d).Adj x y →
@@ -151,17 +151,17 @@ theorem bc_sym_refl (i : Fin d) (c : ℤ) : BCSym (bcRefl i c) := by
       rw [bcRefl_add_unit]
       by_cases hmi : m = i
       · subst hmi
-        rw [if_pos rfl]
+        rw [ite_eq_left rfl]
         exact ⟨m, Or.inr (by abel)⟩
-      · rw [if_neg hmi]
+      · rw [ite_eq_right hmi]
         exact ⟨m, Or.inl rfl⟩
     · subst hm
       rw [bcRefl_add_unit]
       by_cases hmi : m = i
       · subst hmi
-        rw [if_pos rfl]
+        rw [ite_eq_left rfl]
         exact ⟨m, Or.inl (by abel)⟩
-      · rw [if_neg hmi]
+      · rw [ite_eq_right hmi]
         exact ⟨m, Or.inr rfl⟩
   refine bc_sym_of_inv _ (bcRefl i c) (bcRefl_invol i c) (bcRefl_invol i c) key key ?_
   intro u x
@@ -169,9 +169,9 @@ theorem bc_sym_refl (i : Fin d) (c : ℤ) : BCSym (bcRefl i c) := by
   refine Finset.sum_congr rfl fun m _ => ?_
   rw [bcRefl_add_unit, bcRefl_sub_unit]
   by_cases hmi : m = i
-  · simp only [hmi, if_true]
+  · simp only [hmi, ite_true]
     ring
-  · simp only [hmi, if_false]
+  · simp only [hmi, ite_false]
 
 /-! ### The frozen odometer commutes with lattice symmetries -/
 
@@ -184,8 +184,8 @@ theorem bc_fodo_comp {h : Site d → Site d} (hs : BCSym h) (S : Set (Site d))
   | succ t ih =>
     rw [fodo_succ, fodo_succ]
     by_cases hx : h x ∈ S
-    · rw [if_pos (show x ∈ h ⁻¹' S from hx), if_pos hx]
-    · rw [if_neg (show x ∉ h ⁻¹' S from hx), if_neg hx, ih x]
+    · rw [ite_eq_left (show x ∈ h ⁻¹' S from hx), ite_eq_left hx]
+    · rw [ite_eq_right (show x ∉ h ⁻¹' S from hx), ite_eq_right hx, ih x]
       congr 2
       simp only [fconf, lap]
       have hfun : fodo (h ⁻¹' S) (fun y => η (h y)) (fun y => w0 (h y)) t
@@ -196,7 +196,7 @@ theorem bc_fodo_comp {h : Site d → Site d} (hs : BCSym h) (S : Set (Site d))
 theorem bc_closureN_preimage {h : Site d → Site d} (hs : BCSym h) (A : Set (Site d)) :
     h ⁻¹' closureN A = closureN (h ⁻¹' A) := by
   ext x
-  simp only [closureN, outerBoundary, Set.mem_preimage, Set.mem_union, Set.mem_setOf_eq]
+  simp only [closureN, outerBoundary, Set.mem_preimage, Set.mem_union, Set.mem_ofPred_eq]
   refine or_congr Iff.rfl (and_congr Iff.rfl ⟨?_, ?_⟩)
   · rintro ⟨y, hy, hadj⟩
     obtain ⟨y', rfl⟩ := hs.bij.2 y
@@ -246,7 +246,7 @@ theorem bc_map_infinitePi {h : Site d → Site d} (hs : BCSym h) (ν : Measure �
 theorem bc_shift_rbox (k : Fin d → ℕ) (j : Site d) :
     (fun x : Site d => x + fun l => (k l : ℤ) * j l) ⁻¹' rboxShift k j = rboxShift k 0 := by
   ext x
-  simp only [Set.mem_preimage, rboxShift, Set.mem_setOf_eq, Pi.add_apply, Pi.zero_apply,
+  simp only [Set.mem_preimage, rboxShift, Set.mem_ofPred_eq, Pi.add_apply, Pi.zero_apply,
     mul_zero, add_zero, zero_add]
   constructor
   · intro H l
@@ -262,7 +262,7 @@ theorem bc_shift_face (k : Fin d → ℕ) (j : Site d) (i : Fin d) (hi : Bool) :
   ext x
   simp only [faceOut, Set.preimage_inter]
   rw [bc_closureN_preimage (bc_sym_add (fun l => (k l : ℤ) * j l)), bc_shift_rbox]
-  simp only [Set.mem_inter_iff, Set.mem_preimage, Set.mem_setOf_eq, Pi.add_apply, Pi.zero_apply,
+  simp only [Set.mem_inter_iff, Set.mem_preimage, Set.mem_ofPred_eq, Pi.add_apply, Pi.zero_apply,
     mul_zero, zero_add]
   refine and_congr Iff.rfl ?_
   cases hi
@@ -280,7 +280,7 @@ theorem bc_swap_rbox (n : ℕ) (a i : Fin d) :
     (fun (x : Site d) (l : Fin d) => x (Equiv.swap a i l)) ⁻¹' rboxShift (fun _ : Fin d => n) 0
       = rboxShift (fun _ : Fin d => n) 0 := by
   ext x
-  simp only [Set.mem_preimage, rboxShift, Set.mem_setOf_eq]
+  simp only [Set.mem_preimage, rboxShift, Set.mem_ofPred_eq]
   constructor
   · intro H l
     simpa [Equiv.swap_apply_self] using H (Equiv.swap a i l)
@@ -298,9 +298,9 @@ theorem bc_refl_rbox (n : ℕ) (i : Fin d) :
     rw [bcRefl_apply]
     by_cases hl : l = i
     · subst hl
-      rw [if_pos rfl]
+      rw [ite_eq_left rfl]
       constructor <;> linarith [this.1, this.2]
-    · rw [if_neg hl]
+    · rw [ite_eq_right hl]
       exact this
   ext y
   simp only [Set.mem_preimage]

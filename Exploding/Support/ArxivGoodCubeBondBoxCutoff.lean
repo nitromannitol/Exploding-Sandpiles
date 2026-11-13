@@ -51,7 +51,7 @@ private theorem rn_actual_bond_chemical_clause {ζ : RnBond d → Bool} {g : Sit
       have := rn_chemDist_le_walk I hx hy w
       rwa [hw, hp] at this
     have hge := rn_chemDist_ge I x y
-    have hne : chemDist I x y ≠ ⊤ := ne_top_of_le_ne_top (ENat.coe_ne_top m) hle
+    have hne : chemDist I x y ≠ ⊤ := ne_top_of_le_ne_top (ENat.natCast_ne_top m) hle
     obtain ⟨m', hm'⟩ := ENat.ne_top_iff_exists.mp hne
     have h1 : m' ≤ m := by
       rw [← hm'] at hle
@@ -117,7 +117,7 @@ private theorem rn_good_field_bond_box_cutoff
   obtain ⟨q, hq, hdom⟩ := rn_edge_dom hLSSB d ρ hρ0 hρ1
   refine ⟨q, hq, C, B, hC, hB, ?_⟩
   intro Ω _ P _ X hX hind hmarg
-  haveI : IsProbabilityMeasure (bondPercolation d ρ) := rn_infinitePi_isProb hρ0 hρ1.le
+  have : IsProbabilityMeasure (bondPercolation d ρ) := rn_infinitePi_isProb hρ0 hρ1.le
   let ν : Measure (RnBond d → Bool) := bondPercolation d ρ
   have hboxAE := hbox ρ hqBoxρ hρ1.le
   let Joint : Set (RnBond d → Bool) := {ζ | ∃ i : Site d,
@@ -148,7 +148,7 @@ private theorem rn_good_field_bond_box_cutoff
   set F : Ω → RnBond d → Bool := fun ω e =>
     X e.1 ω && X (e.1 + unit e.2) ω with hF
   have hFm : Measurable F := rn_edge_measurable X hX
-  haveI : IsProbabilityMeasure (P.map F) := Measure.isProbabilityMeasure_map hFm.aemeasurable
+  have : IsProbabilityMeasure (P.map F) := inferInstance
   have hdomB : ∀ A : Set (RnBond d → Bool), MeasurableSet A → IsIncreasingSet A →
       ν A ≤ (P.map F) A := by
     intro A hA hinc
@@ -201,7 +201,7 @@ theorem arxiv_good_cube_bond_box_cutoff
   obtain ⟨k0, hk01, hk0⟩ := rn_goodCube_tail d hd p hp hp1 (1 - q') (by linarith)
   refine ⟨k0, hk01, fun k hk => ⟨C, B, hC, hB, ?_⟩⟩
   have hk1 : 1 ≤ k := le_trans hk01 hk
-  haveI : IsProbabilityMeasure (toyLaw d p) := rn_toyLaw_prob d hp.le hp1.le
+  have : IsProbabilityMeasure (toyLaw d p) := rn_toyLaw_prob d hp.le hp1.le
   have hmarg : ∀ x : Site d, ENNReal.ofReal q ≤
       toyLaw d p {η | decide (GoodAt η k x) = true} := by
     intro x

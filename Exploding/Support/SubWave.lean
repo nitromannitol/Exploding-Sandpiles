@@ -43,7 +43,7 @@ theorem wave_le_fodo (S : Set (Site d)) (s0 w0 : Site d → ℤ) (η : Site d �
     simp [wave_zero, hxz, hS x hx]
   | succ t ih =>
     have hxz : x ≠ z := fun h => hx (h ▸ hz)
-    rw [wave_of_ne η n z x t hxz, fodo_succ, if_neg hx]
+    rw [wave_of_ne η n z x t hxz, fodo_succ, ite_eq_right hx]
     have hBA : nbrSumZ (wave η n z t) x + η x ≤ nbrSumZ (fodo S s0 w0 t) x + s0 x := by
       have h1 : nbrSumZ (wave η n z t) x ≤ nbrSumZ (fodo S s0 w0 t) x := by
         refine nbrSumZ_le_of_adj _ _ x ?_
@@ -58,9 +58,9 @@ theorem wave_le_fodo (S : Set (Site d)) (s0 w0 : Site d → ℤ) (η : Site d �
     have hw0' := fodo_nonneg S s0 w0 hw0nn t x
     have hw1' := fodo_le_one S s0 w0 hs0 hw0 hw0nn t x
     by_cases hc : 2 * (d : ℤ) ≤ fconf S s0 w0 t x
-    · rw [if_pos hc]
+    · rw [ite_eq_left hc]
       exact Exploding.ediv_step_ge_pos d hd (nbrSumZ (fodo S s0 w0 t) x + s0 x) (nbrSumZ (wave η n z t) x + η x) (fodo S s0 w0 t x) hBA hw0' hw1' hA (by have hh := hc; simp only [fconf, lap] at hh; linarith)
-    · rw [if_neg hc, add_zero]
+    · rw [ite_eq_right hc, add_zero]
       exact Exploding.ediv_step_ge_neg d hd (nbrSumZ (fodo S s0 w0 t) x + s0 x) (nbrSumZ (wave η n z t) x + η x) (fodo S s0 w0 t x) hBA hw0' hw1' hA (by have hh := hc; simp only [fconf, lap] at hh; linarith)
 
 end Exploding

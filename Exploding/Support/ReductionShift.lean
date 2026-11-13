@@ -101,15 +101,15 @@ theorem redOdoUpAt_floor (η : LatticeProb.Site (d + 1) → ℤ) (t : ℕ) (y : 
   induction t with
   | zero =>
     rw [redOdoUpAt_zero]
-    rw [if_pos]
+    rw [ite_eq_left]
     exact ⟨rfl, hy⟩
   | succ t ih =>
     rw [redOdoUpAt_succ]
     by_cases hc : cons i y ∉ cube (d + 1) n
-    · rw [if_pos hc]; exact ih
-    · rw [if_neg hc]
+    · rw [ite_eq_left hc]; exact ih
+    · rw [ite_eq_right hc]
       have hle : (cons i y) 0 ≤ i := le_of_eq (by simp only [cons, Fin.cons_zero])
-      rw [if_pos hle]
+      rw [ite_eq_left hle]
       exact ih
 
 /-- Below its floor the shifted-floor constrained odometer is zero. -/
@@ -117,17 +117,17 @@ theorem redOdoUpAt_below (η : LatticeProb.Site (d + 1) → ℤ) (t : ℕ) (x : 
     (h : x 0 < i) : redOdoUpAt i n η t x = 0 := by
   induction t with
   | zero =>
-    rw [redOdoUpAt_zero, if_neg]
+    rw [redOdoUpAt_zero, ite_eq_right]
     rintro ⟨heq, -⟩
     omega
   | succ t ih =>
     rw [redOdoUpAt_succ]
     by_cases hc : x ∉ cube (d + 1) n
-    · rw [if_pos hc]; exact ih
-    · rw [if_neg hc]
+    · rw [ite_eq_left hc]; exact ih
+    · rw [ite_eq_right hc]
       by_cases hle : x 0 ≤ i
-      · rw [if_pos hle]; exact ih
-      · rw [if_neg hle]
+      · rw [ite_eq_left hle]; exact ih
+      · rw [ite_eq_right hle]
         exfalso; omega
 
 /-- Above the active layer the shifted-floor constrained odometer is frozen. -/
@@ -139,11 +139,11 @@ theorem redOdoUpAt_above (η : LatticeProb.Site (d + 1) → ℤ) (t : ℕ) (x : 
   | succ t ih =>
     rw [redOdoUpAt_succ]
     by_cases hc : x ∉ cube (d + 1) n
-    · rw [if_pos hc]; exact ih
-    · rw [if_neg hc]
+    · rw [ite_eq_left hc]; exact ih
+    · rw [ite_eq_right hc]
       by_cases hle : x 0 ≤ i
-      · rw [if_pos hle]; exact ih
-      · rw [if_neg hle, if_pos h]; exact ih
+      · rw [ite_eq_left hle]; exact ih
+      · rw [ite_eq_right hle, ite_eq_left h]; exact ih
 
 /-- Two layers above the floor the shifted-floor constrained odometer is zero. -/
 theorem redOdoUpAt_cons_high (η : LatticeProb.Site (d + 1) → ℤ) (t : ℕ) (y : LatticeProb.Site d)
@@ -180,16 +180,16 @@ theorem redOdoDownAt_zero_or_one (η : LatticeProb.Site (d + 1) → ℤ) (t : �
   | succ t ih =>
     rw [redOdoDownAt_succ]
     by_cases hy : y ∉ cube d n
-    · rw [if_pos hy]; exact ih y
-    · rw [if_neg hy]
+    · rw [ite_eq_left hy]; exact ih y
+    · rw [ite_eq_right hy]
       by_cases h1 : redOdoDownAt i n η t y = 1
-      · rw [if_pos h1]; right; exact h1
-      · rw [if_neg h1]
+      · rw [ite_eq_left h1]; right; exact h1
+      · rw [ite_eq_right h1]
         have h0 : redOdoDownAt i n η t y = 0 := (ih y).resolve_right h1
         rw [h0]
         by_cases hc : 2 * (d : ℤ) ≤ (η (cons (i + 1) y) - 1) + lap (redOdoDownAt i n η t) y
-        · rw [if_pos hc]; right; ring
-        · rw [if_neg hc]; left; ring
+        · rw [ite_eq_left hc]; right; ring
+        · rw [ite_eq_right hc]; left; ring
 
 /-- The Laplacian at the active layer, in terms of the floor and the shadow. -/
 theorem lap_redOdoUpAt_cons_succ (η : LatticeProb.Site (d + 1) → ℤ) (t : ℕ) (y : LatticeProb.Site d)
@@ -224,7 +224,7 @@ theorem redOdoUpAt_agree (η : LatticeProb.Site (d + 1) → ℤ) (hi0 : 0 ≤ i)
   induction t generalizing y with
   | zero =>
     rw [redOdoUpAt_zero, redOdoDownAt_zero]
-    rw [if_neg]
+    rw [ite_eq_right]
     simp only [cons, Fin.cons_zero]
     omega
   | succ t ih =>
@@ -235,17 +235,17 @@ theorem redOdoUpAt_agree (η : LatticeProb.Site (d + 1) → ℤ) (hi0 : 0 ≤ i)
       simp only [cons, Fin.cons_zero]; omega
     have hle : ¬ ((cons (i + 1) y) 0 ≤ i) := by
       simp only [cons, Fin.cons_zero]; omega
-    rw [if_neg hle, if_neg hnot]
+    rw [ite_eq_right hle, ite_eq_right hnot]
     by_cases hy : y ∉ cube d n
-    · rw [if_pos (hmem.mpr hy), if_pos hy]
+    · rw [ite_eq_left (hmem.mpr hy), ite_eq_left hy]
       exact ih y
-    · rw [if_neg (fun h => hy (hmem.mp h)), if_neg hy]
+    · rw [ite_eq_right (fun h => hy (hmem.mp h)), ite_eq_right hy]
       by_cases h1 : redOdoDownAt i n η t y = 1
-      · rw [if_pos h1]
-        rw [if_pos (by rw [ih y]; exact h1)]
+      · rw [ite_eq_left h1]
+        rw [ite_eq_left (by rw [ih y]; exact h1)]
         exact ih y
-      · rw [if_neg h1]
-        rw [if_neg (by rw [ih y]; exact h1)]
+      · rw [ite_eq_right h1]
+        rw [ite_eq_right (by rw [ih y]; exact h1)]
         have hlap : lap (redOdoUpAt i n η t) (cons (i + 1) y)
             = 1 + lap (redOdoDownAt i n η t) y - 2 * redOdoDownAt i n η t y := by
           rw [lap_redOdoUpAt_cons_succ η t y hi1
@@ -257,8 +257,8 @@ theorem redOdoUpAt_agree (η : LatticeProb.Site (d + 1) → ℤ) (hi0 : 0 ≤ i)
         rw [ih y, h0, hlap]
         congr 1
         by_cases h : 2 * (d : ℤ) ≤ η (cons (i + 1) y) - 1 + lap (redOdoDownAt i n η t) y
-        · rw [if_pos h, if_pos (by linarith)]
-        · rw [if_neg h, if_neg (by linarith)]
+        · rw [ite_eq_left h, ite_eq_left (by linarith)]
+        · rw [ite_eq_right h, ite_eq_right (by linarith)]
 theorem redOdoDownAt_eq_spanOdo (η : LatticeProb.Site (d + 1) → ℤ) (t : ℕ)
     (y : LatticeProb.Site d) :
     redOdoDownAt i n η t y = spanOdo n (fun w => η (cons (i + 1) w) - 1) t y := by
@@ -273,11 +273,11 @@ theorem redOdoDownAt_eq_spanOdo (η : LatticeProb.Site (d + 1) → ℤ) (t : ℕ
     rw [hlap, ih y]
     simp only [spanOdo]
     by_cases hy : y ∉ cube d n
-    · rw [if_pos hy, if_pos hy]; exact spanOdo_of_notMem n _ t hy
-    · rw [if_neg hy, if_neg hy]
+    · rw [ite_eq_left hy, ite_eq_left hy]; exact spanOdo_of_notMem n _ t hy
+    · rw [ite_eq_right hy, ite_eq_right hy]
       by_cases h1 : spanOdo n (fun w => η (cons (i + 1) w) - 1) t y = 1
-      · simp only [if_pos h1]; exact h1
-      · rw [if_neg h1, if_neg h1]
+      · simp only [ite_eq_left h1]; exact h1
+      · rw [ite_eq_right h1, ite_eq_right h1]
 
 /-- **The layer step.**  If the `d`-dimensional shadow of layer `i + 1` is
 internally spanned, then layer `i + 1` of the box topples completely, at a
@@ -325,8 +325,8 @@ theorem fodo_mono_time_forall (S : Set (Site d)) (s0 w0 : Site d → ℤ) :
   intro t x
   rw [fodo_succ]
   by_cases hx : x ∈ S
-  · rw [if_pos hx, fodo_of_mem S s0 w0 t hx]
-  · rw [if_neg hx]
+  · rw [ite_eq_left hx, fodo_of_mem S s0 w0 t hx]
+  · rw [ite_eq_right hx]
     split_ifs <;> omega
 
 
@@ -419,8 +419,8 @@ theorem fodo_fires_of_redOdoUpAt (n : ℕ) (η : Site (d + 1) → ℤ) (i : ℤ)
           have hxi := hc i
           simp only [Pi.zero_apply, mul_zero, zero_add]
           exact hxi)
-      · rw [if_neg hxS]
-        rw [if_pos]
+      · rw [ite_eq_right hxS]
+        rw [ite_eq_left]
         · rw [hf]
           ring
         · simp only [fconf]
@@ -456,7 +456,7 @@ theorem fodo_dominates_redOdoUpAt (n : ℕ) (η : Site (d + 1) → ℤ)
     intro x
     rw [redOdoUpAt_zero]
     by_cases hxi : x 0 = i ∧ x ∈ cube (d + 1) n
-    · rw [if_pos hxi]
+    · rw [ite_eq_left hxi]
       obtain ⟨h0, hmem⟩ := hxi
       have hxeq : x = cons i (fun l => x l.succ) := by
         funext j
@@ -470,26 +470,26 @@ theorem fodo_dominates_redOdoUpAt (n : ℕ) (η : Site (d + 1) → ℤ)
         simpa [cons] using h
       rw [show T + 0 = T from rfl]
       exact hT (fun l => x l.succ) hmem'
-    · rw [if_neg hxi]
+    · rw [ite_eq_right hxi]
       exact fodo_nonneg _ _ _
         (Set.indicator_nonneg (fun _ _ => zero_le_one)) (T + 0) x
   | succ t ih =>
     intro x
     rw [redOdoUpAt_succ]
     by_cases hc : x ∉ cube (d + 1) n
-    · rw [if_pos hc]
+    · rw [ite_eq_left hc]
       exact le_trans (ih x) (fodo_mono_time_le_forall _ _ _ (T + t) (T + (t + 1)) x (by omega))
-    · rw [if_neg hc]
+    · rw [ite_eq_right hc]
       by_cases hle : x 0 ≤ i
-      · rw [if_pos hle]
+      · rw [ite_eq_left hle]
         exact le_trans (ih x) (fodo_mono_time_le_forall _ _ _ (T + t) (T + (t + 1)) x (by omega))
-      · rw [if_neg hle]
+      · rw [ite_eq_right hle]
         by_cases hlt : i + 1 < x 0
-        · rw [if_pos hlt]
+        · rw [ite_eq_left hlt]
           exact le_trans (ih x) (fodo_mono_time_le_forall _ _ _ (T + t) (T + (t + 1)) x (by omega))
-        · rw [if_neg hlt]
+        · rw [ite_eq_right hlt]
           by_cases h1 : redOdoUpAt i n η t x = 1
-          · rw [if_pos h1]
+          · rw [ite_eq_left h1]
             have hle1 : redOdoUpAt i n η t x ≤
                 fodo ((rboxShift (fun _ : Fin (d+1) => n) (0 : Site (d+1)))ᶜ) η
                   (Set.indicator (faceOut (fun _ : Fin (d+1) => n) (0 : Site (d+1))
@@ -500,7 +500,7 @@ theorem fodo_dominates_redOdoUpAt (n : ℕ) (η : Site (d + 1) → ℤ)
               (Set.indicator (faceOut (fun _ : Fin (d+1) => n) (0 : Site (d+1))
                 ⟨0, by omega⟩ false) (fun _ => (1 : ℤ))) (T + t) (T + (t + 1)) x (by omega)
             omega
-          · rw [if_neg h1]
+          · rw [ite_eq_right h1]
             have h0 : redOdoUpAt i n η t x = 0 := by
               rcases redOdoUpAt_zero_or_one n η i t x with h | h
               · exact h
@@ -509,14 +509,14 @@ theorem fodo_dominates_redOdoUpAt (n : ℕ) (η : Site (d + 1) → ℤ)
             · have hstep : redOdoUpAt i n η (t + 1) x
                   = redOdoUpAt i n η t x + 1 := by
                 rw [redOdoUpAt_succ]
-                rw [if_neg hc, if_neg hle, if_neg hlt, if_neg h1, if_pos hthr]
-              rw [if_pos hthr, ← hstep]
+                rw [ite_eq_right hc, ite_eq_right hle, ite_eq_right hlt, ite_eq_right h1, ite_eq_left hthr]
+              rw [ite_eq_left hthr, ← hstep]
               exact fodo_fires_of_redOdoUpAt n η i T t x (fun y => ih y) h0 (not_not.mp hc) hthr
             · have hnext : redOdoUpAt i n η (t + 1) x = redOdoUpAt i n η t x := by
                 rw [redOdoUpAt_succ]
-                rw [if_neg hc, if_neg hle, if_neg hlt, if_neg h1, if_neg hthr]
+                rw [ite_eq_right hc, ite_eq_right hle, ite_eq_right hlt, ite_eq_right h1, ite_eq_right hthr]
                 ring
-              rw [if_neg hthr, h0, zero_add]
+              rw [ite_eq_right hthr, h0, zero_add]
               exact fodo_nonneg _ _ _
                 (Set.indicator_nonneg (fun _ _ => zero_le_one)) (T + (t + 1)) x
 
@@ -544,7 +544,7 @@ theorem exists_uniform_span_time (n : ℕ) (η : Site d → ℤ)
   have hle : (if hy : y ∈ cube d n then t y hy else 0) ≤
       hfin.toFinset.sup (fun y => if hy : y ∈ cube d n then t y hy else 0) :=
     Finset.le_sup (f := fun y => if hy : y ∈ cube d n then t y hy else 0) hmem
-  simp only [dif_pos hy] at hle
+  simp only [dite_eq_left hy] at hle
   have h1 := spanOdo_mono_le n η hle y
   rw [ht y hy] at h1
   have h2 : spanOdo n η (hfin.toFinset.sup fun y => if hy : y ∈ cube d n then t y hy else 0) y ≤ 1 :=
@@ -578,22 +578,22 @@ theorem spanOdo_stabilizes (n : ℕ) (η : Site d → ℤ) (t : ℕ)
   | step hs ih =>
     intro x hx
     rw [spanOdo_succ_eq]
-    rw [if_neg (not_not.mpr hx)]
+    rw [ite_eq_right (not_not.mpr hx)]
     have hlap : lap (spanOdo n η _) x = lap (spanOdo n η t) x :=
       lap_congr_on_cube n _ _ (fun y hy => ih y hy)
         (fun y hy => spanOdo_of_notMem n η _ hy)
         (fun y hy => spanOdo_of_notMem n η t hy) x hx
     rw [hlap, ih x hx]
     by_cases h1 : spanOdo n η t x = 1
-    · rw [if_pos h1, h1]
-    · rw [if_neg h1]
+    · rw [ite_eq_left h1, h1]
+    · rw [ite_eq_right h1]
       by_cases hthr : 2 * (d : ℤ) ≤ η x + lap (spanOdo n η t) x
       · exfalso
         have hstep := h x hx
         rw [spanOdo_succ_eq] at hstep
-        rw [if_neg (not_not.mpr hx), if_neg h1, if_pos hthr] at hstep
+        rw [ite_eq_right (not_not.mpr hx), ite_eq_right h1, ite_eq_left hthr] at hstep
         omega
-      · rw [if_neg hthr]
+      · rw [ite_eq_right hthr]
         ring
 
 /-- **The counting bound.**  If the cube is internally spanned, then every site of the cube
@@ -699,7 +699,7 @@ theorem exists_uniform_span_time_le (n : ℕ) (η : Site d → ℤ)
 theorem rboxShift_zero_eq_cube (n : ℕ) :
     rboxShift (fun _ : Fin (d+1) => n) (0 : Site (d+1)) = cube (d + 1) n := by
   ext x
-  simp only [rboxShift, cube, Set.mem_setOf_eq, Pi.zero_apply, mul_zero, zero_add]
+  simp only [rboxShift, cube, Set.mem_ofPred_eq, Pi.zero_apply, mul_zero, zero_add]
   constructor <;> intro h i <;> exact h i
 
 /-- The low face of the box is exactly the part of the closure at layer `0`. -/
@@ -707,7 +707,7 @@ theorem faceOut_eq_lowface (n : ℕ) :
     faceOut (fun _ : Fin (d+1) => n) (0 : Site (d+1)) ⟨0, by omega⟩ false
       = {x : Site (d + 1) | x 0 = 0 ∧ x ∈ closureN (cube (d + 1) n)} := by
   ext x
-  simp only [faceOut, Set.mem_inter_iff, Set.mem_setOf_eq, rboxShift_zero_eq_cube]
+  simp only [faceOut, Set.mem_inter_iff, Set.mem_ofPred_eq, rboxShift_zero_eq_cube]
   constructor
   · rintro ⟨h1, h2⟩
     exact ⟨h2, h1⟩
@@ -795,7 +795,7 @@ theorem fodo_dominates_redOdoLow (n : ℕ) (η : Site (d + 1) → ℤ) :
     intro x
     rw [redOdoLow_zero]
     by_cases h : x 0 = 0 ∧ x ∈ closureN (cube (d + 1) n)
-    · rw [if_pos h]
+    · rw [ite_eq_left h]
       have hw : fodo ((rboxShift (fun _ : Fin (d+1) => n) (0 : Site (d+1)))ᶜ) η
           (Set.indicator (faceOut (fun _ : Fin (d+1) => n) (0 : Site (d+1))
             ⟨0, by omega⟩ false) (fun _ => (1 : ℤ))) 0 x
@@ -806,22 +806,22 @@ theorem fodo_dominates_redOdoLow (n : ℕ) (η : Site (d + 1) → ℤ) :
         rw [faceOut_eq_lowface]
         exact h
       rw [Set.indicator_of_mem hmem (fun _ => (1 : ℤ))]
-    · rw [if_neg h]
+    · rw [ite_eq_right h]
       exact fodo_nonneg _ _ _
         (Set.indicator_nonneg (fun _ _ => zero_le_one)) 0 x
   | succ t ih =>
     intro x
     rw [redOdoLow_succ]
     by_cases hc : x ∉ cube (d + 1) n
-    · rw [if_pos hc]
+    · rw [ite_eq_left hc]
       exact le_trans (ih x) (fodo_mono_time_le_forall _ _ _ t (t + 1) x (by omega))
-    · rw [if_neg hc]
+    · rw [ite_eq_right hc]
       by_cases hlt : (1 : ℤ) < x 0
-      · rw [if_pos hlt]
+      · rw [ite_eq_left hlt]
         exact le_trans (ih x) (fodo_mono_time_le_forall _ _ _ t (t + 1) x (by omega))
-      · rw [if_neg hlt]
+      · rw [ite_eq_right hlt]
         by_cases h1 : redOdoLow n η t x = 1
-        · rw [if_pos h1]
+        · rw [ite_eq_left h1]
           have hle1 : redOdoLow n η t x ≤
               fodo ((rboxShift (fun _ : Fin (d+1) => n) (0 : Site (d+1)))ᶜ) η
                 (Set.indicator (faceOut (fun _ : Fin (d+1) => n) (0 : Site (d+1))
@@ -832,13 +832,13 @@ theorem fodo_dominates_redOdoLow (n : ℕ) (η : Site (d + 1) → ℤ) :
             (Set.indicator (faceOut (fun _ : Fin (d+1) => n) (0 : Site (d+1))
               ⟨0, by omega⟩ false) (fun _ => (1 : ℤ))) t (t + 1) x (by omega)
           omega
-        · rw [if_neg h1]
+        · rw [ite_eq_right h1]
           have h0 : redOdoLow n η t x = 0 := (redOdoLow_zero_or_one n η t x).resolve_right h1
           by_cases hthr : 2 * ((d : ℤ) + 1) ≤ η x + lap (redOdoLow n η t) x
           · have hstep : redOdoLow n η (t + 1) x = redOdoLow n η t x + 1 := by
               rw [redOdoLow_succ]
-              rw [if_neg hc, if_neg hlt, if_neg h1, if_pos hthr]
-            rw [if_pos hthr, ← hstep]
+              rw [ite_eq_right hc, ite_eq_right hlt, ite_eq_right h1, ite_eq_left hthr]
+            rw [ite_eq_left hthr, ← hstep]
             -- the frozen odometer is at least one at `x` at time `t + 1`
             have hfodo : 1 ≤ fodo ((rboxShift (fun _ : Fin (d+1) => n)
                 (0 : Site (d+1)))ᶜ) η
@@ -867,10 +867,10 @@ theorem fodo_dominates_redOdoLow (n : ℕ) (η : Site (d + 1) → ℤ) :
                         ⟨0, by omega⟩ false) (fun _ => (1 : ℤ))) t) x := by
                   linarith
                 rw [fodo_succ]
-                rw [if_neg (fun hcon => hcon (by
+                rw [ite_eq_right (fun hcon => hcon (by
                   rw [rboxShift_zero_eq_cube]
                   exact not_not.mp hc))]
-                rw [if_pos]
+                rw [ite_eq_left]
                 · omega
                 · simp only [fconf, lap, nbrSumZ] at hgoal ⊢
                   rw [hf0]
@@ -891,9 +891,9 @@ theorem fodo_dominates_redOdoLow (n : ℕ) (η : Site (d + 1) → ℤ) :
             exact le_trans (redOdoLow_le_one n η (t + 1) x) hfodo
           · have hnext : redOdoLow n η (t + 1) x = redOdoLow n η t x := by
               rw [redOdoLow_succ]
-              rw [if_neg hc, if_neg hlt, if_neg h1, if_neg hthr]
+              rw [ite_eq_right hc, ite_eq_right hlt, ite_eq_right h1, ite_eq_right hthr]
               ring
-            rw [if_neg hthr, h0, zero_add]
+            rw [ite_eq_right hthr, h0, zero_add]
             exact fodo_nonneg _ _ _
               (Set.indicator_nonneg (fun _ _ => zero_le_one)) (t + 1) x
 
@@ -905,15 +905,15 @@ theorem redOdoLow_cons_high (n : ℕ) (η : Site (d + 1) → ℤ) (t : ℕ) (y :
   | succ t ih =>
     rw [redOdoLow_succ]
     by_cases hc : cons a y ∉ cube (d + 1) n
-    · rw [if_pos hc]; exact ih
-    · rw [if_neg hc, if_pos (by simpa [cons] using ha)]
+    · rw [ite_eq_left hc]; exact ih
+    · rw [ite_eq_right hc, ite_eq_left (by simpa [cons] using ha)]
       exact ih
 
 /-- Two layers above the floor the low-face odometer is zero. -/
 theorem redOdoLow_cons_high_zero (n : ℕ) (η : Site (d + 1) → ℤ) (t : ℕ) (y : Site d) (a : ℤ)
     (ha : 1 < a) : redOdoLow n η t (cons a y) = 0 := by
   rw [redOdoLow_cons_high n η t y a ha, redOdoLow_zero]
-  rw [if_neg]
+  rw [ite_eq_right]
   rintro ⟨h0, -⟩
   simp only [cons, Fin.cons_zero] at h0
   omega
@@ -923,15 +923,15 @@ theorem redOdoLow_floor (n : ℕ) (η : Site (d + 1) → ℤ) (t : ℕ) (y : Sit
     (hy : cons 0 y ∈ closureN (cube (d + 1) n)) : redOdoLow n η t (cons 0 y) = 1 := by
   induction t with
   | zero =>
-    rw [redOdoLow_zero, if_pos]
+    rw [redOdoLow_zero, ite_eq_left]
     exact ⟨rfl, hy⟩
   | succ t ih =>
     rw [redOdoLow_succ]
     by_cases hc : cons 0 y ∉ cube (d + 1) n
-    · rw [if_pos hc]; exact ih
-    · rw [if_neg hc]
-      rw [if_neg (by simp only [cons, Fin.cons_zero]; omega)]
-      rw [if_pos ih]
+    · rw [ite_eq_left hc]; exact ih
+    · rw [ite_eq_right hc]
+      rw [ite_eq_right (by simp only [cons, Fin.cons_zero]; omega)]
+      rw [ite_eq_left ih]
       exact ih
 
 /-- **The low-face reduction.**  On layer `1`, the low-face constrained odometer equals the
@@ -941,7 +941,7 @@ theorem redOdoLow_agree (n : ℕ) (hn : 1 ≤ n) (η : Site (d + 1) → ℤ) (t 
   induction t generalizing y with
   | zero =>
     rw [redOdoLow_zero, redOdoDownAt_zero]
-    rw [if_neg]
+    rw [ite_eq_right]
     rintro ⟨h0, -⟩
     simp only [cons, Fin.cons_zero] at h0
     omega
@@ -953,17 +953,17 @@ theorem redOdoLow_agree (n : ℕ) (hn : 1 ≤ n) (η : Site (d + 1) → ℤ) (t 
       exact not_congr h
     have hnot : ¬ ((1 : ℤ) < (cons (1 : ℤ) y) 0) := by
       simp only [cons, Fin.cons_zero]; omega
-    rw [if_neg hnot]
+    rw [ite_eq_right hnot]
     by_cases hy : y ∉ cube d n
-    · rw [if_pos (hmem.mpr hy), if_pos hy]
+    · rw [ite_eq_left (hmem.mpr hy), ite_eq_left hy]
       exact ih y
-    · rw [if_neg (fun h => hy (hmem.mp h)), if_neg hy]
+    · rw [ite_eq_right (fun h => hy (hmem.mp h)), ite_eq_right hy]
       by_cases h1 : redOdoDownAt 0 n η t y = 1
-      · rw [if_pos h1]
-        rw [if_pos (by rw [ih y]; exact h1)]
+      · rw [ite_eq_left h1]
+        rw [ite_eq_left (by rw [ih y]; exact h1)]
         exact ih y
-      · rw [if_neg h1]
-        rw [if_neg (by rw [ih y]; exact h1)]
+      · rw [ite_eq_right h1]
+        rw [ite_eq_right (by rw [ih y]; exact h1)]
         have hhigh : redOdoLow n η t (cons (1 + 1) y) = 0 :=
           redOdoLow_cons_high_zero n η t y (1 + 1) (by omega)
         have hfloor : redOdoLow n η t (cons (1 - 1) y) = 1 := by
@@ -1002,8 +1002,8 @@ theorem redOdoLow_agree (n : ℕ) (hn : 1 ≤ n) (η : Site (d + 1) → ℤ) (t 
         rw [show (0 : ℤ) + 1 = 1 from by ring]
         congr 1
         by_cases h : 2 * (d : ℤ) ≤ η (cons 1 y) - 1 + lap (redOdoDownAt 0 n η t) y
-        · rw [if_pos h, if_pos (by linarith)]
-        · rw [if_neg h, if_neg (by linarith)]
+        · rw [ite_eq_left h, ite_eq_left (by linarith)]
+        · rw [ite_eq_right h, ite_eq_right (by linarith)]
 
 /-- The layer chain: if every layer of the box is internally spanned, the frozen odometer
 seeded on the low face topples the whole box by time `n ^ (d + 1)`. -/
@@ -1136,7 +1136,7 @@ theorem layer_restrict_eq (d : ℕ) (ν : MeasureTheory.Measure ℤ)
     funext l
     have := congrFun h l.succ
     simpa [cons] using this
-  haveI := hν
+  have := hν
   have h := MeasureTheory.Measure.map_infinitePi_infinitePi_of_inj
     (P := fun _ : Site (d + 1) => ν) (f := fun w : Site d => cons i w) hinj
   simpa using h
@@ -1318,39 +1318,39 @@ theorem map_blocks_int {ι V : Type*} (ν : MeasureTheory.Measure ℤ)
     (A : ι → Set V) (hdisj : Pairwise (Function.onFun Disjoint A)) :
     (MeasureTheory.Measure.infinitePi fun _ : V => ν).map (fun ω q => ω (blockIndex A q))
       = MeasureTheory.Measure.infinitePi fun _ : (i : ι) × ↥(A i) => ν := by
-  haveI := hν
+  have := hν
   rw [LatticeProb.infinitePi_map_comp' ν (blockIndex A) (blockIndex_injective A hdisj)]
 
 /-- The curried form of `map_blocks_int`. -/
 theorem map_blocks_int_curried {ι V : Type*} (ν : MeasureTheory.Measure ℤ)
     (hν : MeasureTheory.IsProbabilityMeasure ν)
     (A : ι → Set V) (hdisj : Pairwise (Function.onFun Disjoint A)) :
-    (MeasureTheory.Measure.infinitePi fun _ : V => ν).map (fun ω (i : ι) => (A i).restrict ω)
+    (MeasureTheory.Measure.infinitePi fun _ : V => ν).map (fun ω (i : ι) => (A i).domRestrict ω)
       = MeasureTheory.Measure.infinitePi fun i : ι => MeasureTheory.Measure.infinitePi fun _ : ↥(A i) => ν := by
-  have hcomp : (fun (ω : V → ℤ) (i : ι) => (A i).restrict ω)
+  have hcomp : (fun (ω : V → ℤ) (i : ι) => (A i).domRestrict ω)
       = (MeasurableEquiv.piCurry (κ := fun i : ι => ↥(A i)) (fun _ _ => ℤ))
         ∘ (fun (ω : V → ℤ) p => ω (blockIndex A p)) := by
     funext ω i j
     rfl
-  haveI := hν
+  have := hν
   rw [hcomp]
   rw [← MeasureTheory.Measure.map_map]
   · rw [map_blocks_int ν hν A hdisj]
     rw [MeasureTheory.Measure.infinitePi_map_piCurry (μ := fun (_ : ι) (_ : ↥(A _)) => ν)]
   · exact (MeasurableEquiv.piCurry _).measurable
-  · exact measurable_pi_lambda _ fun p => measurable_pi_apply (blockIndex A p)
+  · exact Measurable.of_eval fun p => measurable_pi_apply (blockIndex A p)
 
 /-- The ℤ-valued analogue of `LatticeProb.Prob.Blocks.iIndepFun_restrict_of_pairwise_disjoint`. -/
 theorem iIndepFun_restrict_of_pairwise_disjoint_int {ι V : Type*}
     (ν : MeasureTheory.Measure ℤ) (hν : MeasureTheory.IsProbabilityMeasure ν)
     (A : ι → Set V) (hdisj : Pairwise (Function.onFun Disjoint A)) :
-    ProbabilityTheory.iIndepFun (fun (i : ι) (ω : V → ℤ) => (A i).restrict ω)
+    ProbabilityTheory.iIndepFun (fun (i : ι) (ω : V → ℤ) => (A i).domRestrict ω)
       (MeasureTheory.Measure.infinitePi fun _ : V => ν) := by
-  have hm : AEMeasurable (fun (ω : V → ℤ) (i : ι) => (A i).restrict ω)
+  have hm : AEMeasurable (fun (ω : V → ℤ) (i : ι) => (A i).domRestrict ω)
       (MeasureTheory.Measure.infinitePi fun _ : V => ν) := by
-    refine (measurable_pi_lambda _ fun i => ?_).aemeasurable
-    exact measurable_pi_lambda _ fun j => measurable_pi_apply (j : V)
-  haveI := hν
+    refine (Measurable.of_eval fun i => ?_).aemeasurable
+    exact Measurable.of_eval fun j => measurable_pi_apply (j : V)
+  have := hν
   rw [ProbabilityTheory.iIndepFun_iff_map_fun_eq_infinitePi_map₀ hm,
     map_blocks_int_curried ν hν A hdisj]
   congr 1
@@ -1363,15 +1363,15 @@ theorem iIndepSet_of_pairwise_disjoint_int {ι V : Type*}
     (A : ι → Set V) (hdisj : Pairwise (Function.onFun Disjoint A))
     (E : ι → Set (V → ℤ))
     (hE : ∀ i, @MeasurableSet (V → ℤ)
-      (MeasurableSpace.comap (fun ω : V → ℤ => (A i).restrict ω) inferInstance) (E i)) :
+      (MeasurableSpace.comap (fun ω : V → ℤ => (A i).domRestrict ω) inferInstance) (E i)) :
     ProbabilityTheory.iIndepSet E (MeasureTheory.Measure.infinitePi fun _ : V => ν) := by
   rw [ProbabilityTheory.iIndepSet_iff_iIndep]
   refine ProbabilityTheory.iIndep_of_iIndep_of_le
-    (m₂ := fun i : ι => MeasurableSpace.comap (fun ω : V → ℤ => (A i).restrict ω)
+    (m₂ := fun i : ι => MeasurableSpace.comap (fun ω : V → ℤ => (A i).domRestrict ω)
       (inferInstance : MeasurableSpace (↥(A i) → ℤ)))
     ((ProbabilityTheory.iIndepFun_iff_iIndep
       (fun i : ι => (inferInstance : MeasurableSpace (↥(A i) → ℤ)))
-      (fun (i : ι) (ω : V → ℤ) => (A i).restrict ω)
+      (fun (i : ι) (ω : V → ℤ) => (A i).domRestrict ω)
       (MeasureTheory.Measure.infinitePi fun _ : V => ν)).mp
       (iIndepFun_restrict_of_pairwise_disjoint_int ν hν A hdisj)) ?_
   intro i
@@ -1391,10 +1391,10 @@ theorem fodo_congr_of_eq_off (S : Set (Site d)) (s0 s0' w0 : Site d → ℤ)
     have hfun : fodo S s0 w0 t = fodo S s0' w0 t := funext ih
     rw [fodo_succ, fodo_succ]
     by_cases hx : x ∈ S
-    · rw [if_pos hx, if_pos hx]
+    · rw [ite_eq_left hx, ite_eq_left hx]
     · have hf : fconf S s0 w0 t x = fconf S s0' w0 t x := by
         simp only [fconf, lap, hfun, h x hx]
-      rw [if_neg hx, if_neg hx, hfun, hf]
+      rw [ite_eq_right hx, ite_eq_right hx, hfun, hf]
 
 /-- **The paper's argument, step 1.**  `crossOdo η k i z = fodo ((cube d k)ᶜ ∪ line d k i z) η
 (1{x ∈ line d k i z})` reads `η` only off the frozen set, i.e. on
@@ -1447,7 +1447,7 @@ theorem goodAt_reads_blockC (k : ℕ) (i : Site d) (η : Site d → ℤ) :
       from rfl]
   rw [crossingTime_congr_of_eq_on_cube k j z (fun x hx => by
     show η (x + (k : ℤ) • i) = (if x ∈ closureN (cube d k) then η (x + (k : ℤ) • i) else 0)
-    rw [closureN, Set.mem_union, if_pos (Or.inl hx)])]
+    rw [closureN, Set.mem_union, ite_eq_left (Or.inl hx)])]
 
 /-- The open block of the macroscopic site `i`. -/
 def blockO (k : ℕ) (i : Site d) : Set (Site d) := {x | x - (k : ℤ) • i ∈ cube d k}
@@ -1501,7 +1501,7 @@ theorem goodAt_reads_blockO (k : ℕ) (i : Site d) (η : Site d → ℤ) :
       from rfl]
   rw [crossingTime_congr_of_eq_on_cube k j z (fun x hx => by
     show η (x + (k : ℤ) • i) = (if x ∈ cube d k then η (x + (k : ℤ) • i) else 0)
-    rw [if_pos hx])]
+    rw [ite_eq_left hx])]
 
 
 /-- **The frozen odometer is measurable in the background.** -/
@@ -1514,9 +1514,9 @@ theorem fodo_measurable (S : Set (Site d)) (w0 : Site d → ℤ) (t : ℕ) (x : 
   | succ t ih =>
     simp only [fodo_succ]
     by_cases hx : x ∈ S
-    · simp only [hx, if_true]
+    · simp only [hx, ite_true]
       exact measurable_const
-    · simp only [hx, if_false]
+    · simp only [hx, ite_false]
       apply Measurable.add (ih x)
       apply Measurable.ite
       · apply measurableSet_le measurable_const
@@ -1538,7 +1538,7 @@ theorem blockO_finite (k : ℕ) (i : Site d) : (blockO k i).Finite := by
   have h1 : (cube d k).Finite := by
     have heq : cube d k = Set.univ.pi (fun _ : Fin d => Set.Icc (1 : ℤ) (k : ℤ)) := by
       ext x
-      simp only [cube, Set.mem_setOf_eq, Set.mem_univ_pi, Set.mem_Icc]
+      simp only [cube, Set.mem_ofPred_eq, Set.mem_univ_pi, Set.mem_Icc]
     rw [heq]
     exact Set.Finite.pi fun _ => Set.finite_Icc _ _
   have h2 : (blockO k i) = (fun x : Site d => x + (k : ℤ) • i) '' (cube d k) := by
@@ -1558,12 +1558,12 @@ is measurable; hence `{η | GoodAt η k i}` is measurable in the sigma-algebra g
 block restriction. -/
 theorem goodAt_measurableSet_blockO (k : ℕ) (i : Site d) :
     @MeasurableSet (Site d → ℤ)
-      (MeasurableSpace.comap (fun ω : Site d → ℤ => (blockO k i).restrict ω) inferInstance)
+      (MeasurableSpace.comap (fun ω : Site d → ℤ => (blockO k i).domRestrict ω) inferInstance)
       {η : Site d → ℤ | GoodAt η k i} := by
-  haveI : Fintype ↥(blockO k i) := (blockO_finite k i).fintype
-  haveI : Countable (↥(blockO k i) → ℤ) := inferInstance
+  have : Fintype ↥(blockO k i) := (blockO_finite k i).fintype
+  have : Countable (↥(blockO k i) → ℤ) := inferInstance
   rw [show {η : Site d → ℤ | GoodAt η k i}
-      = (fun ω : Site d → ℤ => (blockO k i).restrict ω) ⁻¹'
+      = (fun ω : Site d → ℤ => (blockO k i).domRestrict ω) ⁻¹'
           {g : ↥(blockO k i) → ℤ | GoodCube (fun x => if h : x ∈ cube d k then
             g ⟨x + (k : ℤ) • i, by
               show x + (k : ℤ) • i - (k : ℤ) • i ∈ cube d k
@@ -1571,20 +1571,20 @@ theorem goodAt_measurableSet_blockO (k : ℕ) (i : Site d) :
               exact h⟩ else 0) k} from ?_]
   · exact (Set.to_countable _).measurableSet.preimage (measurable_iff_comap_le.mpr le_rfl)
   · ext η
-    simp only [Set.mem_preimage, Set.mem_setOf_eq]
+    simp only [Set.mem_preimage, Set.mem_ofPred_eq]
     rw [goodAt_reads_blockO]
     have hfun : blockReadO k i η
         = (fun x : Site d => if h : x ∈ cube d k then
-            (blockO k i).restrict η ⟨x + (k : ℤ) • i, by
+            (blockO k i).domRestrict η ⟨x + (k : ℤ) • i, by
               show x + (k : ℤ) • i - (k : ℤ) • i ∈ cube d k
               rw [add_sub_cancel_right]
               exact h⟩ else 0) := by
       funext x
       rw [blockReadO]
       by_cases h : x ∈ cube d k
-      · rw [if_pos h, dif_pos h]
+      · rw [ite_eq_left h, dite_eq_left h]
         rfl
-      · rw [if_neg h, dif_neg h]
+      · rw [ite_eq_right h, dite_eq_right h]
     rw [hfun]
 
 /-- **The paper's argument, step 6.**  The `GoodAt`-field is i.i.d. across macroscopic sites:
@@ -1672,15 +1672,15 @@ theorem layer_law_is_schonmann (d : ℕ) (p : ℝ) (hp : 0 < p) (hp1 : p < 1) :
       MeasureTheory.measure_univ, smul_eq_mul, mul_one]
     rw [← ENNReal.ofReal_add (le_of_lt hp) (by linarith)]
     norm_num
-  haveI := hchip
+  have := hchip
   rw [productLaw, productLaw]
   rw [show (fun ω : Site (d + 1) → ℤ => fun w : Site d => ω (cons (1 : ℤ) w) - 1)
       = (fun (ζ : Site d → ℤ) => fun w : Site d => (fun m : ℤ => m - 1) (ζ w))
         ∘ (fun ω : Site (d + 1) → ℤ => fun w : Site d => ω (cons (1 : ℤ) w)) from rfl]
   rw [← MeasureTheory.Measure.map_map
-    (hg := measurable_pi_lambda _ fun w => (measurable_pi_apply w).sub measurable_const)
+    (hg := Measurable.of_eval fun w => (measurable_pi_apply w).sub measurable_const)
     (g := fun (ζ : Site d → ℤ) => fun w : Site d => (fun m : ℤ => m - 1) (ζ w))
-    (hf := measurable_pi_lambda _ fun w => measurable_pi_apply (cons (1 : ℤ) w))
+    (hf := Measurable.of_eval fun w => measurable_pi_apply (cons (1 : ℤ) w))
     (f := fun ω : Site (d + 1) → ℤ => fun w : Site d => ω (cons (1 : ℤ) w))]
   · rw [layer_restrict_eq d (chipLaw (2 * ((d + 1 : ℕ) : ℤ) - 1) ((d + 1 : ℕ) : ℤ) p) ?_ 1]
     · rw [MeasureTheory.Measure.infinitePi_map_pi (μ := fun _ : Site d =>
@@ -1714,7 +1714,7 @@ theorem spanOdo_measurable (n : ℕ) (t : ℕ) (x : Site d) :
     by_cases hx : x ∉ cube d n
     · simp only [hx]
       exact measurable_const
-    · simp only [hx, if_false]
+    · simp only [hx, ite_false]
       apply Measurable.ite
       · exact measurableSet_eq_fun (ih x) measurable_const
       · exact measurable_const
@@ -1750,12 +1750,12 @@ theorem layer_spanning_prob (d : ℕ) (hd : 1 ≤ d) (p : ℝ) (hp : 0 < p) (hp1
         = ⋂ (x : Site d), ⋂ (_ : x ∈ cube d n),
             ⋃ (t : ℕ), {η : Site d → ℤ | spanOdo n η t x = 1} from by
       ext η
-      simp only [InternallySpanned, Set.mem_setOf_eq, Set.mem_iInter, Set.mem_iUnion]]
+      simp only [InternallySpanned, Set.mem_ofPred_eq, Set.mem_iInter, Set.mem_iUnion]]
     refine MeasurableSet.iInter (fun x => MeasurableSet.iInter (fun _ => ?_))
     refine MeasurableSet.iUnion (fun t => ?_)
     exact measurableSet_eq_fun (spanOdo_measurable n t x) measurable_const
   let f : (Site (d + 1) → ℤ) → (Site d → ℤ) := fun ω w => ω (cons (1 : ℤ) w) - 1
-  have hf : Measurable f := measurable_pi_lambda _ fun w => (measurable_pi_apply (cons (1 : ℤ) w)).sub measurable_const
+  have hf : Measurable f := Measurable.of_eval fun w => (measurable_pi_apply (cons (1 : ℤ) w)).sub measurable_const
   have hmap : (productLaw (d + 1) (2 * ((d + 1 : ℕ) : ℤ) - 1) ((d + 1 : ℕ) : ℤ) p).map f
       = productLaw d (2 * (d : ℤ)) (d : ℤ) p := layer_law_is_schonmann d p hp hp1
   have hval := congrArg (fun μ : MeasureTheory.Measure (Site d → ℤ) =>
@@ -1779,12 +1779,12 @@ theorem layerSet_disjoint (d : ℕ) {i j : ℤ} (hij : i ≠ j) :
 /-- The layer-`i` spanning event reads only the coordinates of layer `i`. -/
 theorem layer_spanning_reads (d : ℕ) (i : ℤ) (n : ℕ) :
     {η : Site (d + 1) → ℤ | InternallySpanned (fun w : Site d => η (cons i w) - 1) n}
-      = (fun ω : Site (d + 1) → ℤ => (layerSet d i).restrict ω) ⁻¹'
+      = (fun ω : Site (d + 1) → ℤ => (layerSet d i).domRestrict ω) ⁻¹'
           {g : ↥(layerSet d i) → ℤ | InternallySpanned (fun w : Site d => g ⟨cons i w, rfl⟩ - 1) n} := by
   ext η
-  simp only [Set.mem_preimage, Set.mem_setOf_eq]
+  simp only [Set.mem_preimage, Set.mem_ofPred_eq]
   have hfun : (fun w : Site d => η (cons i w) - 1)
-      = (fun w : Site d => (layerSet d i).restrict η ⟨cons i w, rfl⟩ - 1) := by
+      = (fun w : Site d => (layerSet d i).domRestrict η ⟨cons i w, rfl⟩ - 1) := by
     funext w
     rfl
   rw [hfun]
@@ -1817,12 +1817,12 @@ theorem layer_spanning_iIndepSet (d : ℕ) (p : ℝ) (hp : 0 < p) (hp1 : p < 1) 
           ⋃ (t : ℕ), {g : ↥(layerSet d i) → ℤ |
             spanOdo n (fun w : Site d => g ⟨cons i w, rfl⟩ - 1) t x = 1} from by
     ext g
-    simp only [InternallySpanned, Set.mem_setOf_eq, Set.mem_iInter, Set.mem_iUnion]]
+    simp only [InternallySpanned, Set.mem_ofPred_eq, Set.mem_iInter, Set.mem_iUnion]]
   refine MeasurableSet.iInter (fun x => MeasurableSet.iInter (fun _ => ?_))
   refine MeasurableSet.iUnion (fun t => ?_)
   exact measurableSet_eq_fun
     ((spanOdo_measurable n t x).comp
-      (measurable_pi_lambda _ fun w => (measurable_pi_apply (⟨cons i w, rfl⟩ : ↥(layerSet d i))).sub
+      (Measurable.of_eval fun w => (measurable_pi_apply (⟨cons i w, rfl⟩ : ↥(layerSet d i))).sub
         measurable_const))
     measurable_const
 
@@ -1836,12 +1836,12 @@ theorem layer_spanning_measurable (d : ℕ) (i : ℤ) (n : ℕ) :
           ⋃ (t : ℕ), {η : Site (d + 1) → ℤ |
             spanOdo n (fun w : Site d => η (cons i w) - 1) t x = 1} from by
     ext η
-    simp only [InternallySpanned, Set.mem_setOf_eq, Set.mem_iInter, Set.mem_iUnion]]
+    simp only [InternallySpanned, Set.mem_ofPred_eq, Set.mem_iInter, Set.mem_iUnion]]
   refine MeasurableSet.iInter (fun x => MeasurableSet.iInter (fun _ => ?_))
   refine MeasurableSet.iUnion (fun t => ?_)
   exact measurableSet_eq_fun
     ((spanOdo_measurable n t x).comp
-      (measurable_pi_lambda _ fun w => (measurable_pi_apply (cons i w)).sub measurable_const))
+      (Measurable.of_eval fun w => (measurable_pi_apply (cons i w)).sub measurable_const))
     measurable_const
 
 /-- The "all layers spanned" event is measurable. -/
@@ -1853,7 +1853,7 @@ theorem layer_all_spanning_measurable (d : ℕ) (n : ℕ) :
       = ⋂ i ∈ Finset.Icc 1 n, {η : Site (d + 1) → ℤ |
           InternallySpanned (fun w : Site d => η (cons (i : ℤ) w) - 1) n} from by
     ext η
-    simp only [Set.mem_setOf_eq, Set.mem_iInter]]
+    simp only [Set.mem_ofPred_eq, Set.mem_iInter]]
   exact MeasurableSet.biInter (Finset.countable_toSet _)
     (fun i _ => layer_spanning_measurable d (i : ℤ) n)
 

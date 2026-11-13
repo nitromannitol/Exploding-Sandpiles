@@ -77,7 +77,7 @@ theorem all_high_last_arrival_eq
     have hk_le_n : k ≤ n := by
       dsimp [k]
       exact max_le hn hrnat_le_n
-    exact ENat.coe_le_coe.mpr hk_le_n
+    exact ENat.natCast_le_natCast.mpr hk_le_n
   have hresult : lastArrival η z x = (k : ℕ∞) := le_antisymm hupper hlower
   simpa [η, r, k] using hresult
 

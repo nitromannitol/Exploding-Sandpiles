@@ -141,7 +141,7 @@ theorem redOdoUp_head_zero (t : ℕ) (y : Site d) : redOdoUp n η t (cons 0 y) =
   | zero => simp [redOdoUp_zero, cons]
   | succ t ih =>
     rw [redOdoUp_succ]
-    rw [if_pos (cons_notMem_cube_of_head 0 y rfl)]
+    rw [ite_eq_left (cons_notMem_cube_of_head 0 y rfl)]
     exact ih
 
 theorem redOdoUp_head_high (t : ℕ) (x : Site (d + 1)) (h : 1 < x 0) :
@@ -151,8 +151,8 @@ theorem redOdoUp_head_high (t : ℕ) (x : Site (d + 1)) (h : 1 < x 0) :
   | succ t ih =>
     rw [redOdoUp_succ]
     by_cases hc : x ∉ cube (d + 1) n
-    · rw [if_pos hc]; exact ih
-    · rw [if_neg hc, if_pos h]; exact ih
+    · rw [ite_eq_left hc]; exact ih
+    · rw [ite_eq_right hc, ite_eq_left h]; exact ih
 
 theorem redOdoUp_cons_high (t : ℕ) (y : Site d) (a : ℤ) (ha : 1 < a) :
     redOdoUp n η t (cons a y) = 0 := by
@@ -182,16 +182,16 @@ theorem redOdoDown_zero_or_one (t : ℕ) (y : Site d) :
   | succ t ih =>
     rw [redOdoDown_succ]
     by_cases hy : y ∉ cube d n
-    · rw [if_pos hy]; exact ih y
-    · rw [if_neg hy]
+    · rw [ite_eq_left hy]; exact ih y
+    · rw [ite_eq_right hy]
       by_cases h1 : redOdoDown n η t y = 1
-      · rw [if_pos h1]; right; exact h1
-      · rw [if_neg h1]
+      · rw [ite_eq_left h1]; right; exact h1
+      · rw [ite_eq_right h1]
         have h0 : redOdoDown n η t y = 0 := (ih y).resolve_right h1
         rw [h0]
         by_cases hc : 2 * (d : ℤ) ≤ (η (cons 1 y) - 1) + lap (redOdoDown n η t) y
-        · rw [if_pos hc]; right; ring
-        · rw [if_neg hc]; left; ring
+        · rw [ite_eq_left hc]; right; ring
+        · rw [ite_eq_right hc]; left; ring
 
 theorem lap_redOdoUp_cons_one (t : ℕ) (y : Site d) :
     lap (redOdoUp n η t) (cons 1 y) =
@@ -212,13 +212,13 @@ theorem redOdo_agree (hd : 1 ≤ d) (t : ℕ) (y : Site d) :
     have hmem : (cons (1 : ℤ) y ∉ cube (d + 1) n) ↔ (y ∉ cube d n) := by
       simp [mem_cube_cons_one hd y]
     by_cases hy : y ∉ cube d n
-    · rw [if_pos (hmem.mpr hy), if_pos hy]; exact ih y
-    · rw [if_neg (fun hcon => hy (hmem.mp hcon)), if_neg hy]
+    · rw [ite_eq_left (hmem.mpr hy), ite_eq_left hy]; exact ih y
+    · rw [ite_eq_right (fun hcon => hy (hmem.mp hcon)), ite_eq_right hy]
       have hhead : ¬ (1 : ℤ) < (cons (1 : ℤ) y) 0 := by simp [cons]
-      rw [if_neg hhead]
+      rw [ite_eq_right hhead]
       by_cases h1 : redOdoDown n η t y = 1
-      · rw [if_pos (by rw [ih y]; exact h1), if_pos h1]; exact ih y
-      · rw [if_neg (by rw [ih y]; exact h1), if_neg h1]
+      · rw [ite_eq_left (by rw [ih y]; exact h1), ite_eq_left h1]; exact ih y
+      · rw [ite_eq_right (by rw [ih y]; exact h1), ite_eq_right h1]
         have h0 : redOdoDown n η t y = 0 := (redOdoDown_zero_or_one t y).resolve_right h1
         have hup0 : redOdoUp n η t (cons 1 y) = 0 := by rw [ih y]; exact h0
         have hlapv : lap (fun w => redOdoUp n η t (cons 1 w)) y
@@ -232,8 +232,8 @@ theorem redOdo_agree (hd : 1 ≤ d) (t : ℕ) (y : Site d) :
           rw [hlap]; constructor <;> intro h <;> linarith
         rw [ih y]
         by_cases hc : 2 * (d : ℤ) ≤ (η (cons 1 y) - 1) + lap (redOdoDown n η t) y
-        · rw [if_pos (hiff.mpr hc), if_pos hc]
-        · rw [if_neg (fun hcon => hc (hiff.mp hcon)), if_neg hc]
+        · rw [ite_eq_left (hiff.mpr hc), ite_eq_left hc]
+        · rw [ite_eq_right (fun hcon => hc (hiff.mp hcon)), ite_eq_right hc]
 
 end Reduction
 

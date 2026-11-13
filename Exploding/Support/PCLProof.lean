@@ -39,8 +39,8 @@ theorem pcl_crossOdo_le_wave {d : ℕ} (hd0 : (0 : ℤ) < 2 * (d : ℤ))
       wave η N zc t (y + (k : ℤ) • j) := by
     intro y
     by_cases hy : y ∈ line d k dir' z
-    · rw [if_pos hy]; exact hseed1 y hy
-    · rw [if_neg hy]; exact wave_nonneg η hlow N zc t _
+    · rw [ite_eq_left hy]; exact hseed1 y hy
+    · rw [ite_eq_right hy]; exact wave_nonneg η hlow N zc t _
   have hseed0' : ∀ y, (0 : ℤ) ≤ (if y ∈ line d k dir' z then (1 : ℤ) else 0) := by
     intro y
     by_cases hy : y ∈ line d k dir' z <;> simp [hy]
@@ -62,9 +62,9 @@ theorem pcl_crossOdo_le_wave {d : ℕ} (hd0 : (0 : ℤ) < 2 * (d : ℤ))
     intro y
     rw [crossOdo, fodo_succ]
     by_cases hy : y ∈ (cube d k)ᶜ ∪ line d k dir' z
-    · rw [if_pos hy]
+    · rw [ite_eq_left hy]
       exact le_trans (hseed0 y) (hmono (s + 1) y)
-    · rw [if_neg hy]
+    · rw [ite_eq_right hy]
       have hyc : y ∈ cube d k := by
         by_contra h
         exact hy (Or.inl h)
@@ -73,7 +73,7 @@ theorem pcl_crossOdo_le_wave {d : ℕ} (hd0 : (0 : ℤ) < 2 * (d : ℤ))
         wave_mono_t η hlow hd0 N zc (t + s) (y + (k : ℤ) • j)
       by_cases hc : 2 * (d : ℤ) ≤ fconf ((cube d k)ᶜ ∪ line d k dir' z)
           (fun x => η (x + (k : ℤ) • j)) (fun x => if x ∈ line d k dir' z then 1 else 0) s y
-      · rw [if_pos hc]
+      · rw [ite_eq_left hc]
         have hsum : nbrSumZ (crossOdo (fun x => η (x + (k : ℤ) • j)) k dir' z s) y ≤
             nbrSumZ (wave η N zc (t + s)) (y + (k : ℤ) • j) := by
           have h1 := nbrSumZ_mono (fun w => ih w) y
@@ -88,14 +88,14 @@ theorem pcl_crossOdo_le_wave {d : ℕ} (hd0 : (0 : ℤ) < 2 * (d : ℤ))
         · -- at the centre the odometer after the toppling is at most `1 ≤ N`
           have hN1 : (1 : ℤ) ≤ (N : ℤ) := by exact_mod_cast hN
           have hc1 := hcap (s + 1) y
-          rw [crossOdo, fodo_succ, if_neg hy, if_pos hc] at hc1
+          rw [crossOdo, fodo_succ, ite_eq_right hy, ite_eq_left hc] at hc1
           rw [← hz, wave_at_centre]
           linarith
         · rw [wave_of_ne η N zc (y + (k : ℤ) • j) (t + s) hz]
           rw [Int.le_ediv_iff_mul_le (by positivity)]
           simp only [crossOdo] at hsum hc' hle1 ⊢
           nlinarith [hsum, hc', hle1]
-      · rw [if_neg hc]
+      · rw [ite_eq_right hc]
         simp only [crossOdo] at ih ⊢
         have h1 := ih y
         rw [show t + (s + 1) = t + s + 1 from by omega]
@@ -136,8 +136,8 @@ theorem pcl_finite_exploding_step {d : ℕ} (hd : 2 ≤ d) (η : Site d → ℤ)
     have hz : (fun l : Fin d => if l = dir then (1 : ℤ) else 1) ∈ cube d k := fun l => by
       show 1 ≤ (if l = dir then (1 : ℤ) else 1) ∧ (if l = dir then (1 : ℤ) else 1) ≤ (k : ℤ)
       by_cases hl : l = dir
-      · rw [if_pos hl]; exact ⟨le_refl 1, hk1⟩
-      · rw [if_neg hl]; exact ⟨le_refl 1, hk1⟩
+      · rw [ite_eq_left hl]; exact ⟨le_refl 1, hk1⟩
+      · rw [ite_eq_right hl]; exact ⟨le_refl 1, hk1⟩
     have hline : ∀ y ∈ line d k dir' (fun l : Fin d => if l = dir then (1 : ℤ) else 1),
         0 < wave η N zc t (y + (k : ℤ) • i) :=
       line_of_cover η N k zc i t dir' (fun l : Fin d => if l = dir then (1 : ℤ) else 1) hcover hz
@@ -151,8 +151,8 @@ theorem pcl_finite_exploding_step {d : ℕ} (hd : 2 ≤ d) (η : Site d → ℤ)
       · intro l
         show 1 ≤ (if l = dir then (k : ℤ) else 1) ∧ (if l = dir then (k : ℤ) else 1) ≤ (k : ℤ)
         by_cases hl : l = dir
-        · rw [if_pos hl]; exact ⟨hk1, le_refl _⟩
-        · rw [if_neg hl]; exact ⟨le_refl 1, hk1⟩
+        · rw [ite_eq_left hl]; exact ⟨hk1, le_refl _⟩
+        · rw [ite_eq_right hl]; exact ⟨le_refl 1, hk1⟩
       · refine ⟨dir, Or.inr ?_⟩
         funext l
         by_cases hl : l = dir
@@ -162,7 +162,7 @@ theorem pcl_finite_exploding_step {d : ℕ} (hd : 2 ≤ d) (η : Site d → ℤ)
           norm_num
         · show (if l = dir then (k : ℤ) + 1 else 1) = (if l = dir then (k : ℤ) else 1) +
             (LatticeProb.unit dir : Site d) l
-          simp only [if_neg hl, LatticeProb.unit, Pi.single_eq_of_ne hl, add_zero]
+          simp only [ite_eq_right hl, LatticeProb.unit, Pi.single_eq_of_ne hl, add_zero]
     have hline' : ∀ w ∈ line d k dir' (fun l : Fin d => if l = dir then (k : ℤ) + 1 else 1),
         0 < wave η N zc t (w + (k : ℤ) • j) := by
       intro w hw
@@ -190,7 +190,7 @@ theorem pcl_finite_exploding_step {d : ℕ} (hd : 2 ≤ d) (η : Site d → ℤ)
             rw [hwv]
             norm_num
           · simp only [Pi.sub_apply, Pi.smul_apply, smul_eq_mul, LatticeProb.unit,
-              Pi.single_eq_of_ne hld, mul_zero, sub_zero, if_neg hld] at h2 ⊢
+              Pi.single_eq_of_ne hld, mul_zero, sub_zero, ite_eq_right hld] at h2 ⊢
             exact h2
       have h := hline _ hmem
       have he : w - (k : ℤ) • LatticeProb.unit dir + (k : ℤ) • i = w + (k : ℤ) • j := by
@@ -205,8 +205,8 @@ theorem pcl_finite_exploding_step {d : ℕ} (hd : 2 ≤ d) (η : Site d → ℤ)
   have hz : (fun l : Fin d => if l = dir then (k : ℤ) else 1) ∈ cube d k := fun l => by
     show 1 ≤ (if l = dir then (k : ℤ) else 1) ∧ (if l = dir then (k : ℤ) else 1) ≤ (k : ℤ)
     by_cases hl : l = dir
-    · rw [if_pos hl]; exact ⟨hk1, le_refl _⟩
-    · rw [if_neg hl]; exact ⟨le_refl 1, hk1⟩
+    · rw [ite_eq_left hl]; exact ⟨hk1, le_refl _⟩
+    · rw [ite_eq_right hl]; exact ⟨le_refl 1, hk1⟩
   -- the wave on the top face of Q_k(i), shifted by k•i
   have hline : ∀ y ∈ line d k dir' (fun l : Fin d => if l = dir then (k : ℤ) else 1),
       0 < wave η N zc t (y + (k : ℤ) • i) :=
@@ -222,7 +222,7 @@ theorem pcl_finite_exploding_step {d : ℕ} (hd : 2 ≤ d) (η : Site d → ℤ)
       show 1 ≤ (if l = dir then (1 : ℤ) else 1) ∧ (if l = dir then (1 : ℤ) else 1) ≤ (k : ℤ)
       by_cases hl : l = dir
       · simp only [hl]; exact ⟨le_refl 1, hk1⟩
-      · simp only [if_neg hl]; exact ⟨le_refl 1, hk1⟩
+      · simp only [ite_eq_right hl]; exact ⟨le_refl 1, hk1⟩
     · refine ⟨dir, Or.inl ?_⟩
       funext l
       by_cases hl : l = dir
@@ -232,7 +232,7 @@ theorem pcl_finite_exploding_step {d : ℕ} (hd : 2 ≤ d) (η : Site d → ℤ)
         norm_num
       · show (if l = dir then (1 : ℤ) else 1) =
           (if l = dir then (0 : ℤ) else 1) + (LatticeProb.unit dir : Site d) l
-        simp only [if_neg hl, LatticeProb.unit, Pi.single_eq_of_ne hl, add_zero]
+        simp only [ite_eq_right hl, LatticeProb.unit, Pi.single_eq_of_ne hl, add_zero]
   have hline' : ∀ w ∈ line d k dir' (fun l : Fin d => if l = dir then (0 : ℤ) else 1),
       0 < wave η N zc t (w + (k : ℤ) • j) := by
     intro w hw
@@ -260,7 +260,7 @@ theorem pcl_finite_exploding_step {d : ℕ} (hd : 2 ≤ d) (η : Site d → ℤ)
           rw [hw0]
           norm_num
         · simp only [Pi.add_apply, Pi.smul_apply, smul_eq_mul, LatticeProb.unit,
-            Pi.single_eq_of_ne hld, mul_zero, add_zero, if_neg hld] at h2 ⊢
+            Pi.single_eq_of_ne hld, mul_zero, add_zero, ite_eq_right hld] at h2 ⊢
           exact h2
     have h := hline _ hmem
     have he : w + (k : ℤ) • LatticeProb.unit dir + (k : ℤ) • i = w + (k : ℤ) • j := by
@@ -306,7 +306,7 @@ theorem pcl_overlap_propagate_line {d : ℕ} (hd : 2 ≤ d) (η : Site d → ℤ
   have hpen_eq : ∀ x : Site d,
       penultimateWave η zc x = wave η (waveThreshold η zc - 1) zc T x := by
     intro x
-    simp only [penultimateWave, if_neg h1, waveTerminal]
+    simp only [penultimateWave, ite_eq_right h1, waveTerminal]
     exact (congrFun (waveTerminal_spec η (waveThreshold η zc - 1) zc hpenstab' T
       (Nat.sInf_le hT)) x).symm
   have hpenfin : {x : Site d | 0 < penultimateWave η zc x}.Finite := by
@@ -454,8 +454,8 @@ theorem pcl_segment_bound {d : ℕ} (hd : 2 ≤ d) (η : Site d → ℤ)
     have hfun : (fun j => if j = l then (w + (k : ℤ) • i) l else c j) = (w + (k : ℤ) • i) := by
       ext j
       by_cases hj : j = l
-      · subst hj; simp only [if_true]
-      · simp only [if_neg hj]
+      · subst hj; simp only [ite_true]
+      · simp only [ite_eq_right hj]
         exact (hoth j hj).symm
     rw [← hfun]
     exact hpos _ hlo hhi
@@ -465,9 +465,9 @@ theorem pcl_segment_bound {d : ℕ} (hd : 2 ≤ d) (η : Site d → ℤ)
     hline' _ (by
       refine ⟨⟨?_, ?_⟩, fun j hj => rfl⟩
       · show (1 : ℤ) ≤ (if l = l then (1 : ℤ) else 1 + (c l - 1) % (k : ℤ))
-        rw [if_pos rfl]
+        rw [ite_eq_left rfl]
       · show (if l = l then (1 : ℤ) else 1 + (c l - 1) % (k : ℤ)) ≤ (k : ℤ)
-        rw [if_pos rfl]; exact hk1)
+        rw [ite_eq_left rfl]; exact hk1)
   obtain ⟨h2, _⟩ := aux_penultimate_hlast η hlow0 hhigh zc _ hzpos
   exact pcl_overlap_propagate_line hd η hlow hhigh k hk Cinf hCinf zc i hiC
     l (fun j => if j = l then 1 else 1 + (c j - 1) % (k : ℤ)) hz hline' (by omega) hlast

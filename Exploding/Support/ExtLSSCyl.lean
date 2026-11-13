@@ -40,9 +40,9 @@ theorem xlsb_cylHull_increasing (T : Finset S) {F : Set (S → Bool)} (hF : IsIn
   · refine hF y _ hy ?_
     intro s hs
     by_cases h : s ∈ T
-    · rw [if_pos h]
+    · rw [ite_eq_left h]
       exact hxx' s (by rw [← hyx s h]; exact hs)
-    · rw [if_neg h]
+    · rw [ite_eq_right h]
       exact hs
   · intro s hs
     simp [hs]
@@ -72,7 +72,7 @@ theorem xlsb_measurableSet_cylHull (T : Finset S) (F : Set (S → Bool)) :
     MeasurableSet (xlsb_cylHull T F) := by
   rw [xlsb_cylHull_eq_preimage]
   have hmeas : Measurable (fun x : S → Bool => fun t : T => x t) :=
-    measurable_pi_lambda _ fun t => measurable_pi_apply (t : S)
+    Measurable.of_eval fun t => measurable_pi_apply (t : S)
   exact hmeas (Set.toFinite _).measurableSet
 
 /-- The intersection of the cylinder hulls over all subsets of `T` is the hull over `T`. -/

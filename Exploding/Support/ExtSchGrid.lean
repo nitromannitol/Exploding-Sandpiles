@@ -71,7 +71,7 @@ theorem xsr_fail_le_blocks {J : Finset (Fin d)} (hJ : J.Nonempty)
     xsp_none_good_le (fun q => xsb_box (blo q) (bhi q)) (fun q => xsb_box_finite _ _)
       (fun _ _ h => xsp_block_disjoint hLb h) F (fun _ => xsch_det_Sp J _) fun q =>
       hblock (blo q) (bhi q)
-        (fun i hi => by simp only [blo, bhi, xsp_blo, xsp_bhi, dif_pos hi]; ring)
+        (fun i hi => by simp only [blo, bhi, xsp_blo, xsp_bhi, dite_eq_left hi]; ring)
         (hbn q).2
   have hunion : (xsch_mu d p).real (⋃ q, LF q)
       ≤ (((s / Lb) ^ J.card : ℕ) : ℝ) * ((J.card : ℝ) * ∑ a ∈ Finset.Icc Lb s, g a) := by

@@ -54,7 +54,7 @@ theorem all_high_explosionThreshold (d : ℕ) (hd : 2 ≤ d) :
   unfold explosionThreshold
   have hmem : 1 ∈ {n : ℕ | 1 ≤ n ∧
       ¬ Stabilizable (fun x => 2 * (d : ℤ) - 1 + n * dirac (0 : Site d) x)} := by
-    simp only [Set.mem_setOf_eq]
+    simp only [Set.mem_ofPred_eq]
     constructor
     · norm_num
     · simpa using all_high_pile_not_stabilizable d hd
@@ -105,7 +105,7 @@ theorem all_high_arrival (d : ℕ) (hd : 2 ≤ d) (x : Site d) :
     have hk_le_n : k ≤ n := by
       dsimp [k]
       omega
-    exact ENat.coe_le_coe.mpr hk_le_n
+    exact ENat.natCast_le_natCast.mpr hk_le_n
   have hresult : arrival (fun _ : Site d => 2 * (d : ℤ) - 1) x = (k : ℕ∞) :=
     le_antisymm hupper hlower
   simpa [r, k] using hresult
@@ -127,8 +127,8 @@ theorem approximate_subadditive_p1 (d : ℕ) (hd : 2 ≤ d) :
     exact Nat.add_le_add_right (Nat.le_max_right 1 (mnorm x).toNat) 1
   constructor
   · rw [← Nat.cast_add]
-    exact ENat.coe_le_coe.mpr hsucc_le
+    exact ENat.natCast_le_natCast.mpr hsucc_le
   · rw [← Nat.cast_add]
-    exact ENat.coe_le_coe.mpr hmax_le
+    exact ENat.natCast_le_natCast.mpr hmax_le
 
 end Exploding

@@ -61,7 +61,7 @@ theorem glws_loc0_finite {γ C : ℝ} {η : Site d → ℤ} (h : glws_Loc0 d γ 
   obtain ⟨_, _, _, hloc⟩ := hn0 _ hn 0 h0
   obtain ⟨c, hc', _⟩ := hloc b hb
   rw [hc']
-  exact ENat.coe_ne_top c
+  exact ENat.natCast_ne_top c
 
 /-- **Two-sided Lipschitz bound.**  On the local good event, `f = T̃(0, ·)` is Lipschitz up to a
 polylogarithmic error on `cent d n`. -/
@@ -208,7 +208,7 @@ theorem glws_f_subadd (hd : 2 ≤ d) (ηmin : ℤ) (hηmin : 0 ≤ ηmin) {L : A
   rw [← hp, ← hq, ← hr, ← Nat.cast_add] at h
   have h' : p ≤ q + r := by exact_mod_cast h
   rw [← hp, ← hq, ← hr]
-  simp only [ENat.toNat_coe]
+  simp only [ENat.toNat_natCast]
   exact_mod_cast h'
 
 end Exploding

@@ -95,7 +95,7 @@ theorem arxiv_bond_finite_hole_volume_prob_le_tsum (d : ℕ) (hd : 2 ≤ d) :
           (ENNReal.ofReal (2 * (d : ℝ) * (1 - q))) ^ (m / 3 ^ d)
       else 0 := by
     by_cases hm : s ≤ m ^ 2
-    · rw [if_pos hm]
+    · rw [ite_eq_left hm]
       calc
         bondPercolation d q (A m) ≤ bondPercolation d q
             {ζ | ∃ p : Site d,
@@ -110,7 +110,7 @@ theorem arxiv_bond_finite_hole_volume_prob_le_tsum (d : ℕ) (hd : 2 ≤ d) :
               (K : ENNReal) ^ m *
               (ENNReal.ofReal (2 * (d : ℝ) * (1 - q))) ^ (m / 3 ^ d) :=
           hnear z m hq0 hq1
-    · rw [if_neg hm]
+    · rw [ite_eq_right hm]
       have hempty : A m = ∅ := by
         ext ζ
         constructor

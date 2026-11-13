@@ -84,7 +84,7 @@ private theorem arxivAllHigh_mnorm_sub_unit_of_pos {d : ℕ} (x : Site d) (i : F
       have hxnonneg : 0 ≤ x i := by omega
       simp only [Pi.sub_apply]
       rw [show (unit i : Site d) i = 1 by simp [unit]]
-      simp only [if_true]
+      simp only [ite_true]
       rw [abs_of_nonneg hsub, abs_of_nonneg hxnonneg]
       omega
     · simp [Pi.sub_apply, unit, hji]
@@ -93,7 +93,7 @@ private theorem arxivAllHigh_mnorm_sub_unit_of_pos {d : ℕ} (x : Site d) (i : F
         ∑ j : Fin d, |x j| :=
     Finset.sum_congr rfl (fun j _ => hpoint j)
   unfold mnorm
-  simpa only [Finset.sum_add_distrib, Finset.sum_ite_eq', Finset.mem_univ, if_true] using hsum
+  simpa only [Finset.sum_add_distrib, Finset.sum_ite_eq', Finset.mem_univ, ite_true] using hsum
 
 private theorem arxivAllHigh_mnorm_add_unit_of_neg {d : ℕ} (x : Site d) (i : Fin d)
     (hxi : x i < 0) : mnorm (x + unit i) + 1 = mnorm x := by
@@ -106,7 +106,7 @@ private theorem arxivAllHigh_mnorm_add_unit_of_neg {d : ℕ} (x : Site d) (i : F
       have hxnonpos : x i ≤ 0 := by omega
       simp only [Pi.add_apply]
       rw [show (unit i : Site d) i = 1 by simp [unit]]
-      simp only [if_true]
+      simp only [ite_true]
       rw [abs_of_nonpos hnonpos, abs_of_nonpos hxnonpos]
       omega
     · simp [Pi.add_apply, unit, hji]
@@ -115,7 +115,7 @@ private theorem arxivAllHigh_mnorm_add_unit_of_neg {d : ℕ} (x : Site d) (i : F
         ∑ j : Fin d, |x j| :=
     Finset.sum_congr rfl (fun j _ => hpoint j)
   unfold mnorm
-  simpa only [Finset.sum_add_distrib, Finset.sum_ite_eq', Finset.mem_univ, if_true] using hsum
+  simpa only [Finset.sum_add_distrib, Finset.sum_ite_eq', Finset.mem_univ, ite_true] using hsum
 
 private theorem arxivAllHigh_mnorm_predecessor {d : ℕ} {x : Site d} (hx : x ≠ 0) :
     ∃ i : Fin d,
@@ -149,12 +149,12 @@ theorem arxivAllHigh_waveFront (d : ℕ) (hd : 2 ≤ d) (t : ℕ) (x : Site d) :
       rw [wave_succ]
       by_cases hx : x = 0
       · subst x
-        simp only [if_true]
-        rw [arxivAllHigh_mnorm_zero, if_pos (Int.natCast_nonneg (t + 1))]
+        simp only [ite_true]
+        rw [arxivAllHigh_mnorm_zero, ite_eq_left (Int.natCast_nonneg (t + 1))]
         norm_num
-      · rw [if_neg hx]
+      · rw [ite_eq_right hx]
         by_cases hfront : mnorm x ≤ ((t + 1 : ℕ) : ℤ)
-        · rw [if_pos hfront]
+        · rw [ite_eq_left hfront]
           change (nbrSumZ (wave (fun _ : Site d => 2 * (d : ℤ) - 1) 1 0 t) x +
             (2 * (d : ℤ) - 1)) / (2 * (d : ℤ)) = 1
           have hdpos : 0 < 2 * (d : ℤ) := by omega
@@ -256,7 +256,7 @@ theorem arxivAllHigh_waveFront (d : ℕ) (hd : 2 ≤ d) (t : ℕ) (x : Site d) :
               rw [Int.ediv_lt_iff_lt_mul hdpos]
               omega
             exact le_antisymm hdiv_upper hdiv_lower
-        · rw [if_neg hfront]
+        · rw [ite_eq_right hfront]
           change (nbrSumZ (wave (fun _ : Site d => 2 * (d : ℤ) - 1) 1 0 t) x +
             (2 * (d : ℤ) - 1)) / (2 * (d : ℤ)) = 0
           have hdpos : 0 < 2 * (d : ℤ) := by omega

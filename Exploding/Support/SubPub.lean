@@ -28,7 +28,7 @@ theorem aux_chipLaw_ae (a b : ℤ) (p : ℝ) : ∀ᵐ v ∂(chipLaw a b p), v = 
 
 theorem aux_toyLaw_eval_ae (d : ℕ) (p : ℝ) (hp : 0 < p) (hp1 : p < 1) (x : Site d) :
     ∀ᵐ η ∂(toyLaw d p), 2 * (d : ℤ) - 2 ≤ η x ∧ η x ≤ 2 * (d : ℤ) - 1 := by
-  haveI : IsProbabilityMeasure (chipLaw (2 * (d : ℤ) - 1) (2 * (d : ℤ) - 2) p) :=
+  have : IsProbabilityMeasure (chipLaw (2 * (d : ℤ) - 1) (2 * (d : ℤ) - 2) p) :=
     aux_chipLaw_prob _ _ _ (le_of_lt hp) (le_of_lt hp1)
   have hmap : Measure.map (fun η : Site d → ℤ => η x) (toyLaw d p)
       = chipLaw (2 * (d : ℤ) - 1) (2 * (d : ℤ) - 2) p := by
@@ -76,7 +76,7 @@ theorem aux_mem_cube_of_macroIdx {d : ℕ} (k : ℕ) (hk : 1 ≤ k) (x : Site d)
     x - (k : ℤ) • macroIdx k x ∈ cube d k := by
   have hk' : (0 : ℤ) < (k : ℤ) := Nat.cast_pos.mpr hk
   have hne : (k : ℤ) ≠ 0 := ne_of_gt hk'
-  simp only [cube, Set.mem_setOf_eq]
+  simp only [cube, Set.mem_ofPred_eq]
   intro i
   have h1 : 0 ≤ (x i - 1) % (k : ℤ) := Int.emod_nonneg _ hne
   have h2 : (x i - 1) % (k : ℤ) < (k : ℤ) := Int.emod_lt_of_pos _ hk'
@@ -109,14 +109,14 @@ theorem aux_pub_reach_wave_le_n {d : ℕ} (η : Site d → ℤ)
   | zero =>
     rw [wave_zero]
     by_cases h : x = z
-    · rw [if_pos h]
-    · rw [if_neg h]
+    · rw [ite_eq_left h]
+    · rw [ite_eq_right h]
       exact Int.natCast_nonneg n
   | succ t ih =>
     rw [wave_succ]
     by_cases h : x = z
-    · rw [if_pos h]
-    · rw [if_neg h]
+    · rw [ite_eq_left h]
+    · rw [ite_eq_right h]
       by_cases hdpos : (0 : ℤ) < 2 * (d : ℤ)
       · refine aux_ediv_le_of_lt_mul (nbrSumZ (wave η n z t) x + η x) (2 * (d : ℤ)) n hdpos ?_
         have h1 := nbrSumZ_mono (fun y => ih y) x
@@ -273,11 +273,11 @@ theorem aux_pub_nearest_mnorm_ray {d : ℕ} (x : Site d) (i0 : Fin d) (j : ℕ) 
     by_cases hi : i = i0
     · subst hi
       simp only [Pi.neg_apply, Pi.smul_apply, smul_eq_mul, LatticeProb.unit,
-        Pi.single_eq_same, if_true]
+        Pi.single_eq_same, ite_true]
       rw [abs_neg, abs_of_nonneg (by positivity)]
       ring
     · simp only [Pi.neg_apply, Pi.smul_apply, smul_eq_mul, LatticeProb.unit,
-        Pi.single_eq_of_ne hi, mul_zero, neg_zero, if_neg hi, abs_zero]
+        Pi.single_eq_of_ne hi, mul_zero, neg_zero, ite_eq_right hi, abs_zero]
   rw [Finset.sum_congr rfl (fun i _ => hcoord i)]
   rw [Finset.sum_ite_eq' Finset.univ i0 (fun _ => (j : ℤ))]
   simp
@@ -516,7 +516,7 @@ theorem toyLaw_shift (d : ℕ) (p : ℝ) (hp : 0 < p) (hp1 : p < 1) (x : Site d)
     (toyLaw d p).map (fun η : Site d → ℤ => fun z => η (z + x)) = toyLaw d p := by
   have hpos_p : (0 : ℝ) ≤ p := by linarith
   have hle_p : (0 : ℝ) ≤ 1 - p := by linarith
-  haveI hprob : IsProbabilityMeasure (chipLaw (2 * (d : ℤ) - 1) (2 * (d : ℤ) - 2) p) := by
+  have hprob : IsProbabilityMeasure (chipLaw (2 * (d : ℤ) - 1) (2 * (d : ℤ) - 2) p) := by
     constructor
     simp only [chipLaw, Measure.add_apply, Measure.smul_apply, Measure.dirac_apply',
       MeasurableSet.univ, Set.indicator_univ, Pi.one_apply, smul_eq_mul, mul_one]
@@ -567,7 +567,7 @@ theorem wave_shift_eq {d : ℕ} (η : Site d → ℤ) (n : ℕ) (z x : Site d) (
           have h6 := h5 i
           simp only [Pi.sub_apply] at h6
           omega
-      rw [if_neg h, if_neg h2]
+      rw [ite_eq_right h, ite_eq_right h2]
       congr 1
       have h3 : nbrSumZ (fun w => wave (fun w => η (w + x)) n (z - x) t w) (y - x) =
           nbrSumZ (fun w => wave η n z t w) y := by
@@ -611,15 +611,15 @@ theorem measurableSet_not_stabilizable {d : ℕ} (n : ℕ) (z : Site d) :
   have h : {a : Site d → ℤ | ¬ WaveStabilizable a n z} =
       (⋃ T : ℕ, ⋂ t : ℕ, ⋂ (_ : T ≤ t), {a : Site d → ℤ | wave a n z t = wave a n z T})ᶜ := by
     ext a
-    simp only [Set.mem_setOf_eq, Set.mem_compl_iff, Set.mem_iUnion, Set.mem_iInter,
+    simp only [Set.mem_ofPred_eq, Set.mem_compl_iff, Set.mem_iUnion, Set.mem_iInter,
       WaveStabilizable, not_exists, not_forall]
   rw [h]
   refine MeasurableSet.compl ?_
   refine MeasurableSet.iUnion fun T => ?_
   refine MeasurableSet.iInter fun t => ?_
   refine MeasurableSet.iInter fun ht => ?_
-  exact measurableSet_eq_fun (measurable_pi_lambda _ fun y => measurable_wave n z t y)
-    (measurable_pi_lambda _ fun y => measurable_wave n z T y)
+  exact measurableSet_eq_fun (Measurable.of_eval fun y => measurable_wave n z t y)
+    (Measurable.of_eval fun y => measurable_wave n z T y)
 
 
 /-- **The last wave is well defined at every site.**  The theorem
@@ -644,7 +644,7 @@ theorem finite_exploding_at (d : ℕ) (hd : 2 ≤ d) (p : ℝ) (hp : 0 < p) (hp1
       have h3 : {a : Site d → ℤ | ¬ ∃ n : ℕ, 1 ≤ n ∧ ¬ WaveStabilizable (fun z => a (z + x)) n (0 : Site d)} =
           {a : Site d → ℤ | ¬ ∃ n : ℕ, 1 ≤ n ∧ ¬ WaveStabilizable a n x} := by
         ext a
-        simp only [Set.mem_setOf_eq]
+        simp only [Set.mem_ofPred_eq]
         constructor
         · intro hc ⟨n, hn, hns⟩
           refine hc ⟨n, hn, fun hstab => hns ?_⟩
@@ -667,7 +667,7 @@ theorem finite_exploding_at (d : ℕ) (hd : 2 ≤ d) (p : ℝ) (hp : 0 < p) (hp1
           simpa using h4
       rw [h3] at h1
       exact h1
-    · exact (measurable_pi_lambda _ fun z => measurable_pi_apply (z + x)).aemeasurable
+    · exact (Measurable.of_eval fun z => measurable_pi_apply (z + x)).aemeasurable
     · have h : MeasurableSet (⋃ n : ℕ, {a : Site d → ℤ |
           (1 ≤ n ∧ ¬ WaveStabilizable a n (0 : Site d))}) :=
         MeasurableSet.iUnion fun n =>
@@ -676,7 +676,7 @@ theorem finite_exploding_at (d : ℕ) (hd : 2 ≤ d) (p : ℝ) (hp : 0 < p) (hp1
       rw [show {a : Site d → ℤ | ∃ n : ℕ, 1 ≤ n ∧ ¬ WaveStabilizable a n (0 : Site d)} =
           ⋃ n : ℕ, {a : Site d → ℤ | (1 ≤ n ∧ ¬ WaveStabilizable a n (0 : Site d))} from by
         ext a
-        simp only [Set.mem_setOf_eq, Set.mem_iUnion]]
+        simp only [Set.mem_ofPred_eq, Set.mem_iUnion]]
       exact h
   exact (MeasureTheory.ae_all_iff).mpr hshift
 

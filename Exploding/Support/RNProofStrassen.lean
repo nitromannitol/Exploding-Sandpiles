@@ -46,7 +46,7 @@ theorem rn_integral_le_of_superlevel {X : Type*} [MeasurableSpace X] (ν μ : Me
   refine add_le_add_right (ENNReal.toReal_mono (hfin μ) (lintegral_mono fun t => ?_)) a
   have := h (t + a)
   have e : {x | t + a < φ x} = {x | t < φ x - a} := by
-    ext x; simp only [mem_setOf_eq]; constructor <;> intro hh <;> linarith
+    ext x; simp only [mem_ofPred_eq]; constructor <;> intro hh <;> linarith
   rwa [e] at this
 
 
@@ -114,7 +114,7 @@ theorem rn_strassen_ineq (le : Ω → Ω → Prop) (hrefl : ∀ x, le x x)
     refine measurable_of_Ici (fun t => ?_)
     have : gu ⁻¹' Ici t = Prod.fst '' (D ∩ {z | t ≤ g z.2}) := by
       ext x
-      simp only [mem_preimage, mem_Ici, mem_image, mem_inter_iff, mem_setOf_eq, hD, Prod.exists,
+      simp only [mem_preimage, mem_Ici, mem_image, mem_inter_iff, mem_ofPred_eq, hD, Prod.exists,
         exists_and_right, exists_eq_right]
       constructor
       · intro ht
@@ -143,7 +143,7 @@ theorem rn_strassen_ineq (le : Ω → Ω → Prop) (hrefl : ∀ x, le x x)
     simp only [hφ]; linarith [hgu_anti x y hxy]
   have hdom' : ∀ t : ℝ, ν {x | t < φ x} ≤ μ {x | t < φ x} := fun t =>
     hdom _ (measurableSet_lt measurable_const hφm) (fun x y hxy hx => by
-      simp only [mem_setOf_eq] at hx ⊢; exact lt_of_lt_of_le hx (hφ_mono x y hxy))
+      simp only [mem_ofPred_eq] at hx ⊢; exact lt_of_lt_of_le hx (hφ_mono x y hxy))
   have hφint : ∀ (κ : Measure Ω) [IsProbabilityMeasure κ], Integrable φ κ := by
     intro κ _
     refine Integrable.of_bound (C := |s| + C) hφm.aestronglyMeasurable ?_
@@ -216,7 +216,7 @@ theorem rn_strassen_functional (le : Ω → Ω → Prop) (hrefl : ∀ x, le x x)
       (∀ f g : C(Ω, ℝ), Λ (rn_sumLin (f, g)) = ∫ x, f x ∂ν + ∫ x, g x ∂μ) := by
   set D : Set (Ω × Ω) := {z | le z.1 z.2} with hD
   have hDc : IsCompact D := hclosed.isCompact
-  haveI : Nonempty Ω := nonempty_of_isProbabilityMeasure ν
+  have : Nonempty Ω := nonempty_of_isProbabilityMeasure ν
   obtain ⟨x0⟩ := this
   have hDne : D.Nonempty := ⟨(x0, x0), hrefl x0⟩
   set Φ : (C(Ω, ℝ) × C(Ω, ℝ)) →ₗ[ℝ] ℝ := (rn_intLin ν).coprod (rn_intLin μ) with hΦ
@@ -266,7 +266,7 @@ theorem rn_strassen (le : Ω → Ω → Prop) (hrefl : ∀ x, le x x)
   obtain ⟨Λ, hΛle, hΛ⟩ := rn_strassen_functional le hrefl htrans hclosed ν μ hdom
   set D : Set (Ω × Ω) := {z | le z.1 z.2} with hD
   have hDc : IsCompact D := hclosed.isCompact
-  haveI : Nonempty Ω := nonempty_of_isProbabilityMeasure ν
+  have : Nonempty Ω := nonempty_of_isProbabilityMeasure ν
   obtain ⟨x0⟩ := this
   have hDne : D.Nonempty := ⟨(x0, x0), hrefl x0⟩
   -- positivity
@@ -317,11 +317,11 @@ theorem rn_strassen (le : Ω → Ω → Prop) (hrefl : ∀ x, le x x)
     simp only [h2] at h1
     simpa using h1
   refine ⟨π, hπprob, ?_, ?_, ?_⟩
-  · haveI : IsProbabilityMeasure (π.map Prod.fst) := Measure.isProbabilityMeasure_map measurable_fst.aemeasurable
+  · have : IsProbabilityMeasure (π.map Prod.fst) := inferInstance
     refine ext_of_forall_integral_eq_of_IsFiniteMeasure (fun f => ?_)
     rw [integral_map measurable_fst.aemeasurable f.continuous.aestronglyMeasurable]
     exact hmarg f.toContinuousMap
-  · haveI : IsProbabilityMeasure (π.map Prod.snd) := Measure.isProbabilityMeasure_map measurable_snd.aemeasurable
+  · have : IsProbabilityMeasure (π.map Prod.snd) := inferInstance
     refine ext_of_forall_integral_eq_of_IsFiniteMeasure (fun f => ?_)
     rw [integral_map measurable_snd.aemeasurable f.continuous.aestronglyMeasurable]
     exact hmarg2 f.toContinuousMap
@@ -369,7 +369,7 @@ theorem rn_strassen_ae (le : Ω → Ω → Prop) (hrefl : ∀ x, le x x)
   have hMc : π Mᶜ = 0 := by
     have h1 : Mᶜ ⊆ (Prod.fst ⁻¹' Zᶜ) ∪ {z : Ω × Ω | ¬ le z.1 z.2} := by
       intro z hz
-      simp only [hM, mem_compl_iff, mem_inter_iff, mem_setOf_eq, not_and_or] at hz
+      simp only [hM, mem_compl_iff, mem_inter_iff, mem_ofPred_eq, not_and_or] at hz
       rcases hz with hz | hz
       · exact Or.inl hz
       · exact Or.inr hz

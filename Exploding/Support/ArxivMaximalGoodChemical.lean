@@ -324,7 +324,7 @@ private theorem arxiv_maxchem_conclude_walk {K : Set (Site d)} {A : ℝ}
       (1 : ℝ) * (mnorm (x - y) : ℝ) ≤ (m : ℝ) ∧
       (m : ℝ) ≤ A * (mnorm (x - y) : ℝ) := by
   have hle : chemDist K x y ≤ (p.length : ℕ∞) := rn_chemDist_le_walk K hx hy p
-  have hne : chemDist K x y ≠ ⊤ := ne_top_of_le_ne_top (ENat.coe_ne_top p.length) hle
+  have hne : chemDist K x y ≠ ⊤ := ne_top_of_le_ne_top (ENat.natCast_ne_top p.length) hle
   obtain ⟨m, hm⟩ := ENat.ne_top_iff_exists.mp hne
   have hlen : m ≤ p.length := by
     rw [← hm] at hle

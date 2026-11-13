@@ -75,14 +75,14 @@ theorem glws_adj_line (hd : 2 ≤ d) (k : Fin d → ℕ) (hk : ∀ i, 0 < k i) (
         ?_, ?_⟩
       · intro hcon
         have h := (hcon l).2
-        simp only [if_true] at h
+        simp only [ite_true] at h
         linarith
       · intro m
         by_cases hm : m = l
-        · simp only [hm, if_true]
+        · simp only [hm, ite_true]
           have := hk1 l
           constructor <;> linarith
-        · simp only [hm, if_false]
+        · simp only [hm, ite_false]
           have := hk1 m
           constructor <;> linarith
       · refine ⟨l, Or.inr ?_⟩
@@ -98,7 +98,7 @@ theorem glws_adj_line (hd : 2 ≤ d) (k : Fin d → ℕ) (hk : ∀ i, 0 < k i) (
       by_cases hmd : m = dir'
       · subst hmd
         have hml : m ≠ l := hne
-        rw [hi, if_neg hml, add_zero]
+        rw [hi, ite_eq_right hml, add_zero]
         exact hw.1
       · have hwm : w m = if m = l then (k l : ℤ) * j l + k l + 1 else 1 + (k m : ℤ) * j m :=
           hw.2 m hmd
@@ -106,12 +106,12 @@ theorem glws_adj_line (hd : 2 ≤ d) (k : Fin d → ℕ) (hk : ∀ i, 0 < k i) (
         by_cases hm : m = l
         · subst hm
           rw [hwm, hi]
-          simp only [if_true]
+          simp only [ite_true]
           have : (k m : ℤ) * (j m + 1) = (k m : ℤ) * j m + k m := by ring
           rw [this]
           constructor <;> linarith
         · rw [hwm, hi]
-          simp only [hm, if_false, add_zero]
+          simp only [hm, ite_false, add_zero]
           constructor <;> linarith
   · -- `j = i + unit l`: the tile of `i` lies below the tile of `j` in direction `l`
     refine ⟨dir', fun m => if m = l then (k l : ℤ) * j l else 1 + (k m : ℤ) * j m, ?_, ?_⟩
@@ -119,14 +119,14 @@ theorem glws_adj_line (hd : 2 ≤ d) (k : Fin d → ℕ) (hk : ∀ i, 0 < k i) (
         ?_, ?_⟩
       · intro hcon
         have h := (hcon l).1
-        simp only [if_true] at h
+        simp only [ite_true] at h
         linarith
       · intro m
         by_cases hm : m = l
-        · simp only [hm, if_true]
+        · simp only [hm, ite_true]
           have := hk1 l
           constructor <;> linarith
-        · simp only [hm, if_false]
+        · simp only [hm, ite_false]
           have := hk1 m
           constructor <;> linarith
       · refine ⟨l, Or.inl ?_⟩
@@ -142,7 +142,7 @@ theorem glws_adj_line (hd : 2 ≤ d) (k : Fin d → ℕ) (hk : ∀ i, 0 < k i) (
       by_cases hmd : m = dir'
       · subst hmd
         have hml : m ≠ l := hne
-        have hjm : j m = i m := by rw [hj, if_neg hml, add_zero]
+        have hjm : j m = i m := by rw [hj, ite_eq_right hml, add_zero]
         rw [← hjm]
         exact hw.1
       · have hwm : w m = if m = l then (k l : ℤ) * j l else 1 + (k m : ℤ) * j m :=
@@ -151,15 +151,15 @@ theorem glws_adj_line (hd : 2 ≤ d) (k : Fin d → ℕ) (hk : ∀ i, 0 < k i) (
         by_cases hm : m = l
         · subst hm
           rw [hwm]
-          simp only [if_true]
+          simp only [ite_true]
           have hjm : j m = i m + 1 := by rw [hj]; simp
           rw [hjm]
           have : (k m : ℤ) * (i m + 1) = (k m : ℤ) * i m + k m := by ring
           rw [this]
           constructor <;> linarith
         · rw [hwm]
-          simp only [hm, if_false]
-          have hjm : j m = i m := by rw [hj, if_neg hm, add_zero]
+          simp only [hm, ite_false]
+          have hjm : j m = i m := by rw [hj, ite_eq_right hm, add_zero]
           rw [hjm]
           constructor <;> linarith
 
@@ -228,7 +228,7 @@ theorem glws_tile_finite (k : Fin d → ℕ) (j : Site d) : (rboxShift k j).Fini
   rw [show rboxShift k j = Set.univ.pi
       (fun i : Fin d => Set.Icc (1 + (k i : ℤ) * j i) ((k i : ℤ) * j i + (k i : ℤ))) from by
     ext x
-    simp only [rboxShift, Set.mem_setOf_eq, Set.mem_univ_pi, Set.mem_Icc]]
+    simp only [rboxShift, Set.mem_ofPred_eq, Set.mem_univ_pi, Set.mem_Icc]]
   exact Set.Finite.pi (fun i => Set.finite_Icc _ _)
 
 /-- The corner of a tile. -/

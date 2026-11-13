@@ -118,7 +118,7 @@ theorem ec_full_tiles (hd : 2 ≤ d) (η : Site d → ℤ) (hη : ∀ x, 0 ≤ �
     refine (hbox.preimage (ec_corner_inj hd k hk).injOn).subset ?_
     intro z hz
     have := hz _ (ec_corner_mem k hk (ec_emb d z))
-    simp only [Set.mem_preimage, Set.mem_setOf_eq]
+    simp only [Set.mem_preimage, Set.mem_ofPred_eq]
     omega
   · -- the origin tile
     intro x hx

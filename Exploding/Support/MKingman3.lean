@@ -60,7 +60,7 @@ theorem mk3_return_convergence [MeasurableSpace Ω] (μ : Measure Ω) [IsProbabi
     ∃ L : ℝ, ∀ᵐ x ∂(mk3_normalizedRestrict μ A),
       Tendsto (fun k : ℕ => g (mk2_returnSeq T A x k) x / (k : ℝ)) atTop (nhds L) := by
   have hprob := mk3_normalizedRestrict_isProbability μ hkac.1 (ne_of_gt hkac.2.1)
-  haveI := hprob
+  have := hprob
   set G : ℕ → Ω → ℝ := fun k x => g (mk2_returnSeq T A x k) x with hG
   have hGsub : SubadditiveAlong (mk2_inducedMap T A) G := by
     intro m n x

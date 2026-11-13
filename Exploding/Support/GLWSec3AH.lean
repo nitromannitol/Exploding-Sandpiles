@@ -42,7 +42,7 @@ Schonmann and Stacey domination makes it dominate Bernoulli bond percolation of 
 cluster carries Mathieu's hole bound and the Antal and Pisztora chemical-distance bound. -/
 theorem glws_renorm (d : ℕ) (P : Measure (Site d → ℤ)) : glws_Renorm d P := by
   intro hd hP h1 h4 hLSS hLSSB hHole hChem
-  haveI := hP
+  have := hP
   obtain ⟨K, hK⟩ := h1
   have hPE : ∃ qP : ℝ, 0 ≤ qP ∧ qP < 1 ∧ ∀ q : ℝ, qP ≤ q → q ≤ 1 → bondTheta d q ≠ 0 :=
     ⟨255 / 256, by norm_num, by norm_num, fun _ hq0 hq1 => pe_theta_ne_zero hd hq0 hq1⟩
@@ -53,7 +53,7 @@ theorem glws_renorm (d : ℕ) (P : Measure (Site d → ℤ)) : glws_Renorm d P :
   refine ⟨k, hk, 1, C, one_pos, by linarith, ?_⟩
   obtain ⟨hFm, hdep⟩ := glws_edge_dependence P K hK k hk
   set F : (Site d → ℤ) → RnBond d → Bool := fun η e => glws_Phi k e η with hF
-  haveI : IsProbabilityMeasure (P.map F) := Measure.isProbabilityMeasure_map hFm.aemeasurable
+  have : IsProbabilityMeasure (P.map F) := inferInstance
   have hmarg : ∀ e : RnBond d, ENNReal.ofReal p ≤ (P.map F) {ω' | ω' e = true} := by
     intro e
     have hm : MeasurableSet {ω' : RnBond d → Bool | ω' e = true} :=

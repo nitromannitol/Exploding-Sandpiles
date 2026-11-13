@@ -73,7 +73,7 @@ theorem as7_podo_origin_max {d : ℕ} (σ : Site d → ℤ)
           simp only [pconf]
           have := hhigh x hx0
           linarith
-        rw [if_neg hstable, heq]
+        rw [ite_eq_right hstable, heq]
         split_ifs <;> omega
 
 /-- **New.**  If some site of a pile `σ` topples infinitely often, then every

@@ -48,7 +48,7 @@ theorem xmj2_tendsto_measure_one_of_ae_eventually {Ω : Type*} [MeasurableSpace 
   have hEmeas : MeasurableSet E := by
     have hset : E = ⋃ N : ℕ, ⋂ n ∈ Set.Ici N, {ω : Ω | ω ∈ A n} := by
       ext ω
-      simp only [hE, Set.mem_setOf_eq, Set.mem_iUnion, Set.mem_iInter, Set.mem_Ici]
+      simp only [hE, Set.mem_ofPred_eq, Set.mem_iUnion, Set.mem_iInter, Set.mem_Ici]
       exact Filter.eventually_atTop
     rw [hset]
     exact MeasurableSet.iUnion fun N =>

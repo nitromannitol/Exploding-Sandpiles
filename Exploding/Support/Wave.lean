@@ -98,7 +98,7 @@ theorem penultimateWave_at_centre (η : Site d → ℤ) (z : Site d)
     penultimateWave η z z = (waveThreshold η z : ℤ) - 1 := by
   by_cases h : waveThreshold η z = 1
   · simp [penultimateWave, h]
-  · simp only [penultimateWave, if_neg h, waveTerminal, wave_at_centre]
+  · simp only [penultimateWave, ite_eq_right h, waveTerminal, wave_at_centre]
     push_cast [Nat.cast_sub hM]
     ring
 
@@ -134,7 +134,7 @@ theorem penultimateWave_fixed (η : Site d → ℤ)
     have hlt : η x < 2 * (d : ℤ) := by linarith [hhigh x]
     have := Int.ediv_eq_zero_of_lt (hlow x) hlt
     simpa using this.symm
-  · simp only [penultimateWave, if_neg h1]
+  · simp only [penultimateWave, ite_eq_right h1]
     exact waveTerminal_fixed η (waveThreshold η z - 1) z
       (penultimate_stabilizable η z hlast h1) hx
 
@@ -179,7 +179,7 @@ theorem sInf_coe_top {P : ℕ → Prop} (h : ¬ ∃ n : ℕ, P n) :
     sInf {t : ℕ∞ | ∃ m : ℕ, t = (m : ℕ∞) ∧ P m} = ⊤ := by
   have hempty : {t : ℕ∞ | ∃ m : ℕ, t = (m : ℕ∞) ∧ P m} = ∅ := by
     ext t
-    simp only [Set.mem_setOf_eq, Set.mem_empty_iff_false, iff_false, not_exists, not_and]
+    simp only [Set.mem_ofPred_eq, Set.mem_empty_iff_false, iff_false, not_exists, not_and]
     rintro m rfl hm
     exact h ⟨m, hm⟩
   rw [hempty, sInf_empty]

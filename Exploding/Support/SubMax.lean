@@ -37,6 +37,6 @@ theorem exists_max_unfilled (d : ℕ) (V : Finset (Site d)) (t : ℕ)
     omega
   · have hb : x + unit i ∈ outerBoundary (↑V : Set (Site d)) :=
       ⟨hmem, x, hxs.1, adj_add_unit x i⟩
-    rw [recOdo_of_notMem d V t hmem, if_pos hb]
+    rw [recOdo_of_notMem d V t hmem, ite_eq_left hb]
 
 end Exploding

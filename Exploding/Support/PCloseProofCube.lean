@@ -34,8 +34,8 @@ theorem pclose_crossOdo_le_wave {d : ℕ} (hd0 : (0 : ℤ) < 2 * (d : ℤ))
       wave η N zc t (y + (k : ℤ) • j) := by
     intro y
     by_cases hy : y ∈ line d k dir' z
-    · rw [if_pos hy]; exact hseed1 y hy
-    · rw [if_neg hy]; exact wave_nonneg η hlow N zc t _
+    · rw [ite_eq_left hy]; exact hseed1 y hy
+    · rw [ite_eq_right hy]; exact wave_nonneg η hlow N zc t _
   have hseed0' : ∀ y, (0 : ℤ) ≤ (if y ∈ line d k dir' z then (1 : ℤ) else 0) := by
     intro y
     by_cases hy : y ∈ line d k dir' z <;> simp [hy]
@@ -61,15 +61,15 @@ theorem pclose_crossOdo_le_wave {d : ℕ} (hd0 : (0 : ℤ) < 2 * (d : ℤ))
       exact le_trans (hcap (s + 1) y) hN1
     rw [crossOdo, fodo_succ]
     by_cases hy : y ∈ (cube d k)ᶜ ∪ line d k dir' z
-    · rw [if_pos hy]
+    · rw [ite_eq_left hy]
       exact le_trans (hseed0 y) (hmono (s + 1) y)
-    · rw [if_neg hy]
+    · rw [ite_eq_right hy]
       have hmono' : wave η N zc (t + s) (y + (k : ℤ) • j) ≤
           wave η N zc (t + s + 1) (y + (k : ℤ) • j) :=
         wave_mono_t η hlow hd0 N zc (t + s) (y + (k : ℤ) • j)
       by_cases hc : 2 * (d : ℤ) ≤ fconf ((cube d k)ᶜ ∪ line d k dir' z)
           (fun x => η (x + (k : ℤ) • j)) (fun x => if x ∈ line d k dir' z then 1 else 0) s y
-      · rw [if_pos hc]
+      · rw [ite_eq_left hc]
         have hsum : nbrSumZ (crossOdo (fun x => η (x + (k : ℤ) • j)) k dir' z s) y ≤
             nbrSumZ (wave η N zc (t + s)) (y + (k : ℤ) • j) := by
           have h1 := nbrSumZ_mono (fun w => ih w) y
@@ -84,7 +84,7 @@ theorem pclose_crossOdo_le_wave {d : ℕ} (hd0 : (0 : ℤ) < 2 * (d : ℤ))
         rw [Int.le_ediv_iff_mul_le (by positivity)]
         simp only [crossOdo] at hsum hc' hle1 ⊢
         nlinarith [hsum, hc', hle1]
-      · rw [if_neg hc]
+      · rw [ite_eq_right hc]
         simp only [crossOdo] at ih ⊢
         have h1 := ih y
         rw [show t + (s + 1) = t + s + 1 from by omega]
@@ -144,8 +144,8 @@ theorem pclose_adj_line (hd : 2 ≤ d) (k : ℕ) (hk : 1 ≤ k) (i j : Site d)
         simp at h
       · intro l
         by_cases hl : l = dir
-        · simp only [hl, if_true]; exact ⟨hk1, le_rfl⟩
-        · simp only [hl, if_false]; exact ⟨le_rfl, hk1⟩
+        · simp only [hl, ite_true]; exact ⟨hk1, le_rfl⟩
+        · simp only [hl, ite_false]; exact ⟨le_rfl, hk1⟩
       · refine ⟨dir, Or.inr ?_⟩
         funext l
         by_cases hl : l = dir
@@ -155,7 +155,7 @@ theorem pclose_adj_line (hd : 2 ≤ d) (k : ℕ) (hk : 1 ≤ k) (i j : Site d)
       have hwl : w l = if l = dir' then w l else (if l = dir then (k : ℤ) + 1 else 1) := by
         by_cases hl : l = dir'
         · simp [hl]
-        · simp only [if_neg hl]; exact hw.2 l hl
+        · simp only [ite_eq_right hl]; exact hw.2 l hl
       have hcoord : (w + (k : ℤ) • j - (k : ℤ) • i) l = w l + (k : ℤ) * (j l - i l) := by
         simp only [Pi.add_apply, Pi.sub_apply, Pi.smul_apply, smul_eq_mul]; ring
       rw [hcoord]
@@ -167,20 +167,20 @@ theorem pclose_adj_line (hd : 2 ≤ d) (k : ℕ) (hk : 1 ≤ k) (i j : Site d)
       rw [hji]
       by_cases hl : l = dir'
       · have hld : l ≠ dir := by rw [hl]; exact hne
-        simp only [hld, if_false, mul_zero, add_zero]
+        simp only [hld, ite_false, mul_zero, add_zero]
         rw [hl]; exact hw.1
       · by_cases hld : l = dir
         · have hwv : w l = (k : ℤ) + 1 := by
             have := hw.2 l hl
             simpa [hld] using this
-          simp only [hld, if_true]
+          simp only [hld, ite_true]
           rw [hld] at hwv
           rw [hwv]
           constructor <;> nlinarith
         · have hwv : w l = 1 := by
             have := hw.2 l hl
             simpa [hld] using this
-          simp only [hld, if_false, mul_zero, add_zero]
+          simp only [hld, ite_false, mul_zero, add_zero]
           rw [hwv]; exact ⟨le_rfl, hk1⟩
   · -- `j = i + unit dir`: the cube `Q_k(i)` lies below `Q_k(j)`, at coordinate `0`
     refine ⟨dir', fun l => if l = dir then (0 : ℤ) else 1, ?_, ?_⟩
@@ -207,19 +207,19 @@ theorem pclose_adj_line (hd : 2 ≤ d) (k : ℕ) (hk : 1 ≤ k) (i j : Site d)
       rw [hji]
       by_cases hl : l = dir'
       · have hld : l ≠ dir := by rw [hl]; exact hne
-        simp only [hld, if_false, mul_zero, add_zero]
+        simp only [hld, ite_false, mul_zero, add_zero]
         rw [hl]; exact hw.1
       · by_cases hld : l = dir
         · have hwv : w dir = 0 := by
             have := hw.2 dir (by rw [← hld]; exact hl)
             simpa using this
-          simp only [hld, if_true]
+          simp only [hld, ite_true]
           rw [hwv]
           constructor <;> nlinarith
         · have hwv : w l = 1 := by
             have := hw.2 l hl
             simpa [hld] using this
-          simp only [hld, if_false, mul_zero, add_zero]
+          simp only [hld, ite_false, mul_zero, add_zero]
           rw [hwv]; exact ⟨le_rfl, hk1⟩
 
 /-- A good cube adjacent to a fired cube fires within `k^d` further steps. -/

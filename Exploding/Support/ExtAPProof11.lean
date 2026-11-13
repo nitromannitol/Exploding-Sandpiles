@@ -94,7 +94,7 @@ theorem xap11_padCode_apply {s : ℕ} {r : Site d} (p : (xap2_kingGraph d).Walk 
     (i : Fin (2 * s)) (h : i.val < p.length) :
     xap11_padCode (s := s) p i = some (xap11_code p ⟨i.val, h⟩) := by
   rw [xap11_padCode]
-  exact dif_pos h
+  exact dite_eq_left h
 
 /-- The number of `some` entries of the padded code is the walk length. -/
 theorem xap11_padCode_len {s : ℕ} {r : Site d} (p : (xap2_kingGraph d).Walk r r)

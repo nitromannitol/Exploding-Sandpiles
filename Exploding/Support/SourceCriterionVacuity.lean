@@ -46,10 +46,10 @@ theorem source_criterion_vacuity_d2 :
   have h1P' : FiniteRangeOfDependence 2 P := by rw [hPeq]; exact h1P
   have h2P' : BoxCrossingHyp 2 P := by rw [hPeq]; exact h2P
   have hrecP' : RecurrentLaw 2 P := by rw [hPeq]; exact hrecP
-  haveI : IsProbabilityMeasure P := hPprob
+  have : IsProbabilityMeasure P := hPprob
   have hprobQ : IsProbabilityMeasure Q :=
     OmegaStationary.isProbabilityMeasure_sourceLaw (-1) P hsuppP
-  haveI : IsProbabilityMeasure Q := hprobQ
+  have : IsProbabilityMeasure Q := hprobQ
   have hmapQ : Q.map Subtype.val = P := OmegaStationary.map_val_sourceLaw (-1) P hsuppP
   have hstatQ : ∀ E : Set {η : Site 2 → ℤ // InOmega 2 (-1) η},
       MeasurableSet[omegaCoordMeasurableSpace 2 (-1)] E →

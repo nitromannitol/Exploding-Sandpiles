@@ -31,13 +31,13 @@ theorem Exploding.Frozen.explosive (d : ℕ) (hd : 2 ≤ d) (ν : Measure ℤ) (
     ∀ᵐ β ∂(Measure.infinitePi fun _ : Site d => ν), Explosive β
 -- FROZEN-STATEMENT-END
 := by
-  haveI : IsProbabilityMeasure ν := hν
+  have : IsProbabilityMeasure ν := hν
   have hd1 : 1 ≤ d := by omega
   rcases eq_zero_or_pos (ν {m : ℤ | 2 * (d : ℤ) ≤ m}) with hq | hq
   · -- no site holds `2d` chips or more: the law is supported in `[d, 2d - 1]`
     have hupper : ν {m : ℤ | m ≤ 2 * (d : ℤ) - 1} = 1 := by
       have hc : {m : ℤ | m ≤ 2 * (d : ℤ) - 1} = {m : ℤ | 2 * (d : ℤ) ≤ m}ᶜ := by
-        ext m; simp only [Set.mem_setOf_eq, Set.mem_compl_iff]; omega
+        ext m; simp only [Set.mem_ofPred_eq, Set.mem_compl_iff]; omega
       have hm : MeasurableSet {m : ℤ | 2 * (d : ℤ) ≤ m} := measurableSet_Ici
       rw [hc, measure_compl hm (measure_ne_top _ _), hq]
       simp

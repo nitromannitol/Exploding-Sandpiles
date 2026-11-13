@@ -29,7 +29,7 @@ open scoped Classical
 /-- The outer closure commutes with translation of the underlying set. -/
 theorem ahg_closureN_shift {d : ℕ} (B : Set (Site d)) (c x : Site d) :
     x ∈ closureN {y | y + c ∈ B} ↔ x + c ∈ closureN B := by
-  simp only [closureN, outerBoundary, Set.mem_union, Set.mem_setOf_eq]
+  simp only [closureN, outerBoundary, Set.mem_union, Set.mem_ofPred_eq]
   constructor
   · rintro (h | ⟨hx, y, hy, hadj⟩)
     · exact Or.inl h
@@ -62,7 +62,7 @@ theorem ahg_strongly_box_of_good_cube {d : ℕ} (K : ℕ) (a : ℤ)
   set c : Site d := fun l => -((K : ℤ) * j l) with hc
   have hrb : ∀ y : Site d, y ∈ rboxShift (fun _ : Fin d => K) j ↔ y + c ∈ cube d K := by
     intro y
-    simp only [rboxShift, cube, hc, Set.mem_setOf_eq, Pi.add_apply]
+    simp only [rboxShift, cube, hc, Set.mem_ofPred_eq, Pi.add_apply]
     constructor
     · intro h l
       constructor <;> linarith [(h l).1, (h l).2]
@@ -71,7 +71,7 @@ theorem ahg_strongly_box_of_good_cube {d : ℕ} (K : ℕ) (a : ℤ)
   have hline : ∀ y : Site d, y + c ∈ line d K i (z + c) ↔
       y ∈ rline (fun _ : Fin d => K) j i z := by
     intro y
-    simp only [line, rline, hc, Set.mem_setOf_eq, Pi.add_apply]
+    simp only [line, rline, hc, Set.mem_ofPred_eq, Pi.add_apply]
     constructor
     · rintro ⟨⟨h1, h2⟩, h3⟩
       exact ⟨⟨by linarith, by linarith⟩, fun l hl => by linarith [h3 l hl]⟩
@@ -93,7 +93,7 @@ theorem ahg_strongly_box_of_good_cube {d : ℕ} (K : ℕ) (a : ℤ)
     have hS : {w : Site d | w + c ∈ (cube d K)ᶜ ∪ line d K i (z + c)} =
         (rboxShift (fun _ : Fin d => K) j)ᶜ ∪ rline (fun _ : Fin d => K) j i z := by
       ext w
-      simp only [Set.mem_setOf_eq, Set.mem_union, Set.mem_compl_iff]
+      simp only [Set.mem_ofPred_eq, Set.mem_union, Set.mem_compl_iff]
       rw [hrb w, ← hline w]
     have hw : (fun w : Site d => if w + c ∈ line d K i (z + c) then (1 : ℤ) else 0)
         = Set.indicator (rline (fun _ : Fin d => K) j i z) 1 := by
@@ -135,16 +135,16 @@ theorem all_high_wave_approximation (d : ℕ) (hd : 2 ≤ d) :
     WaveApproximationHyp d (Measure.dirac (fun _ : Site d => 2 * (d : ℤ) - 1)) := by
   unfold WaveApproximationHyp
   rw [MeasureTheory.ae_dirac_eq]
-  simp only [Filter.Eventually, Filter.mem_pure, Set.mem_setOf_eq]
+  simp only [Filter.Eventually, Filter.mem_pure, Set.mem_ofPred_eq]
   intro _hexp
   refine ⟨fun x => ?_, fun x => ?_, fun ε hε => ?_⟩
   · rw [all_high_last_arrival_eq d hd 0 x]
-    exact ENat.coe_ne_top _
+    exact ENat.natCast_ne_top _
   · rw [all_high_arrival d hd x]
-    exact ENat.coe_ne_top _
+    exact ENat.natCast_ne_top _
   · refine Filter.eventually_atTop.2 ⟨⌈1 / ε⌉₊, fun n hn x _ => ?_⟩
     rw [all_high_last_arrival_eq d hd 0 x, all_high_arrival d hd x, sub_zero,
-      ENat.toNat_coe, ENat.toNat_coe]
+      ENat.toNat_natCast, ENat.toNat_natCast]
     have hA : |((max 1 (mnorm x).toNat : ℕ) : ℝ) - (((mnorm x).toNat + 1 : ℕ) : ℝ)| ≤ 1 := by
       have h1 : max 1 (mnorm x).toNat ≤ (mnorm x).toNat + 1 :=
         max_le (by omega) (by omega)

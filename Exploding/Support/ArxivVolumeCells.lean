@@ -61,7 +61,7 @@ theorem ceVolumeCell_disjoint (d t : ℕ) (x x' : Site d) (hxx' : x ≠ x') :
     Disjoint (ceVolumeCell d t x) (ceVolumeCell d t x') := by
   rw [Set.disjoint_left]
   intro y hy hy'
-  exact hxx' ((Set.mem_setOf_eq.mp hy).symm.trans (Set.mem_setOf_eq.mp hy'))
+  exact hxx' ((Set.mem_ofPred_eq.mp hy).symm.trans (Set.mem_ofPred_eq.mp hy'))
 
 /-- Every positive-scale nearest-site cell is Lebesgue measurable. -/
 theorem measurableSet_ceVolumeCell (d t : ℕ) (x : Site d) (ht : 1 ≤ t) :

@@ -19,11 +19,11 @@ def rn_shiftBond (x : Site d) (ω : RnBond d → Bool) : RnBond d → Bool :=
   fun b => ω (b.1 + x, b.2)
 
 theorem rn_shiftBond_measurable (x : Site d) : Measurable (rn_shiftBond x) :=
-  measurable_pi_lambda _ fun _ => measurable_pi_apply _
+  Measurable.of_eval fun _ => measurable_pi_apply _
 
 theorem rn_shiftBond_map {q : ℝ} (h0 : 0 ≤ q) (h1 : q ≤ 1) (x : Site d) :
     (bondPercolation d q).map (rn_shiftBond x) = bondPercolation d q := by
-  haveI := rn_bitLaw_isProb h0 h1
+  have := rn_bitLaw_isProb h0 h1
   have hinj : Function.Injective (fun b : RnBond d => (b.1 + x, b.2)) := by
     intro b b' h
     simp only [Prod.mk.injEq] at h
@@ -78,7 +78,7 @@ theorem rn_chemEvent_shift_le {q : ℝ} (h0 : 0 ≤ q) (h1 : q ≤ 1) (ρ : ℝ)
         ρ * (mnorm z : ℝ) < m} ≤
       bondPercolation d q {ω | ∃ m : ℕ, (openBondGraph ω).edist 0 z = m ∧
         ρ * (mnorm z : ℝ) < m} := by
-  haveI := rn_infinitePi_isProb (ι := RnBond d) h0 h1
+  have := rn_infinitePi_isProb (ι := RnBond d) h0 h1
   calc bondPercolation d q {ω | ∃ m : ℕ, (openBondGraph ω).edist x (x + z) = m ∧
         ρ * (mnorm z : ℝ) < m}
       ≤ bondPercolation d q (rn_shiftBond x ⁻¹' {ω | ∃ m : ℕ, (openBondGraph ω).edist 0 z = m ∧
@@ -253,7 +253,7 @@ theorem rn_badEvent_measure_le {q ρ c : ℝ} (hq0 : 0 ≤ q) (hq1 : q ≤ 1) {R
       ENNReal.ofReal ((2 * (r : ℝ) + 1) ^ d * Real.exp (-(c * r))) else 0) := by
     intro x r
     by_cases hr : L ≤ (r : ℝ)
-    · rw [if_pos hr]
+    · rw [ite_eq_left hr]
       have hRr : (R : ℤ) ≤ (r : ℤ) := by
         have : (R : ℝ) ≤ (r : ℝ) := hn.trans hr
         exact_mod_cast this
@@ -283,9 +283,9 @@ theorem rn_badEvent_measure_le {q ρ c : ℝ} (hq0 : 0 ≤ q) (hq1 : q ≤ 1) {R
             rw [← ENNReal.ofReal_natCast]
             push_cast
             rfl
-    · rw [if_neg hr]
+    · rw [ite_eq_right hr]
       have : G x r = ∅ := by
-        ext ω; simp only [hG, Set.mem_setOf_eq, Set.mem_empty_iff_false, iff_false]
+        ext ω; simp only [hG, Set.mem_ofPred_eq, Set.mem_empty_iff_false, iff_false]
         exact fun h => hr h.1
       rw [this]; simp
   calc bondPercolation d q (rn_badEvent d ρ n)
@@ -304,7 +304,7 @@ theorem rn_chem_ae (hChem : Exploding.External.AntalPisztoraChemicalDistance) (d
     ∃ C : ℝ, 1 ≤ C ∧ ∀ᵐ ζ ∂(bondPercolation d q), RnChemProp d C ζ := by
   obtain ⟨ρ, c, hρ, hc, R, hR⟩ := hChem d hd q hq hq1
   refine ⟨ρ, hρ, ?_⟩
-  haveI := rn_infinitePi_isProb (ι := RnBond d) hq0 hq1
+  have := rn_infinitePi_isProb (ι := RnBond d) hq0 hq1
   obtain ⟨N₀, hN₀⟩ := rn_poly_exp_eventually c hc d
   have hev : ∀ᶠ n : ℕ in atTop, ((max R N₀ : ℕ) : ℝ) ≤ Real.log n ^ (2 : ℕ) := by
     have h1 : Tendsto (fun n : ℕ => Real.log (n : ℝ)) atTop atTop :=
@@ -339,7 +339,7 @@ theorem rn_chem_ae (hChem : Exploding.External.AntalPisztoraChemicalDistance) (d
         have hN₀r : N₀ ≤ r := by
           have : (N₀ : ℝ) ≤ r := hLN.trans hr
           exact_mod_cast this
-        rw [if_pos hr, if_pos hr', ha, ← ENNReal.ofReal_pow (Real.exp_nonneg _),
+        rw [ite_eq_left hr, ite_eq_left hr', ha, ← ENNReal.ofReal_pow (Real.exp_nonneg _),
           ← Real.exp_nat_mul]
         refine ENNReal.ofReal_le_ofReal ((hN₀ r hN₀r).trans (le_of_eq ?_))
         congr 1; ring

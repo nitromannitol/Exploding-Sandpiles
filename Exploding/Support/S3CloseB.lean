@@ -43,7 +43,7 @@ theorem s3k_renorm (d : ℕ) (P : Measure (Site d → ℤ)) : glws_Renorm d P :=
     fun η j => decide (StronglyBoxCrossed η k j) with hF
   have hFm : Measurable F := glw_box_measurable d k
   set μ : Measure (Site d → Bool) := P.map F with hμ
-  haveI : IsProbabilityMeasure μ := Measure.isProbabilityMeasure_map hFm.aemeasurable
+  have : IsProbabilityMeasure μ := inferInstance
   have hmarg : ∀ s : Site d, ENNReal.ofReal pL ≤ μ {ω | ω s = true} := by
     intro s
     have hm : MeasurableSet {ω : Site d → Bool | ω s = true} :=
@@ -59,7 +59,7 @@ theorem s3k_renorm (d : ℕ) (P : Measure (Site d → ℤ)) : glws_Renorm d P :=
       sitePercolation d ρ A ≤ μ A :=
     fun A hA hinc => hdom μ inferInstance (hK k hk) hmarg A hA hinc
   -- the cluster of Bernoulli site percolation
-  haveI hνprob : IsProbabilityMeasure (sitePercolation d ρ) := rn_infinitePi_isProb hρ0 hρ1.le
+  have hνprob : IsProbabilityMeasure (sitePercolation d ρ) := rn_infinitePi_isProb hρ0 hρ1.le
   set ν : Measure (Site d → Bool) := sitePercolation d ρ with hν
   have hindep : iIndepFun (fun (x : Site d) (ω : Site d → Bool) => ω x) ν :=
     rn_bernoulli_iIndep hρ0 hρ1.le

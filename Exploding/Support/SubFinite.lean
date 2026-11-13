@@ -38,13 +38,13 @@ theorem aux_finite_exploding_bounds (d : ℕ) (p : ℝ) (hp : 0 < p) (hp1 : p < 
     ∀ᵐ η ∂(toyLaw d p), ∀ x : Site d, 2 * (d : ℤ) - 2 ≤ η x ∧ η x ≤ 2 * (d : ℤ) - 1 := by
   have hpos_p : (0 : ℝ) ≤ p := by linarith
   have hle_p : (0 : ℝ) ≤ 1 - p := by linarith
-  haveI hprob : IsProbabilityMeasure (chipLaw (2 * (d : ℤ) - 1) (2 * (d : ℤ) - 2) p) := by
+  have hprob : IsProbabilityMeasure (chipLaw (2 * (d : ℤ) - 1) (2 * (d : ℤ) - 2) p) := by
     constructor
     simp only [chipLaw, Measure.add_apply, Measure.smul_apply, Measure.dirac_apply',
       MeasurableSet.univ, Set.indicator_univ, Pi.one_apply, smul_eq_mul, mul_one]
     rw [← ENNReal.ofReal_add hpos_p hle_p]
     norm_num
-  haveI hprob' : ∀ _ : Site d, IsProbabilityMeasure (chipLaw (2 * (d : ℤ) - 1) (2 * (d : ℤ) - 2) p) :=
+  have hprob' : ∀ _ : Site d, IsProbabilityMeasure (chipLaw (2 * (d : ℤ) - 1) (2 * (d : ℤ) - 2) p) :=
     fun _ => hprob
   have h_each (x : Site d) : ∀ᵐ η ∂(toyLaw d p), 2 * (d : ℤ) - 2 ≤ η x ∧ η x ≤ 2 * (d : ℤ) - 1 := by
     have h_marginal_eq : (toyLaw d p).map (fun η : Site d → ℤ => η x) =
@@ -136,7 +136,7 @@ theorem aux_finite_exploding_cent_card (d m : ℕ) :
       exact Finset.finite_toSet _
     have h_eq : (cent d m : Set (Site d)) =
         Set.pi Set.univ (fun (_ : Fin d) => {x : ℤ | |x| ≤ (m : ℤ)}) := by
-      ext f; simp [cent, Set.mem_pi, Set.mem_setOf_eq]
+      ext f; simp [cent, Set.mem_pi, Set.mem_ofPred_eq]
     rw [h_eq]
     exact Set.Finite.pi h_each
   have h_card : (cent d m : Set (Site d)).ncard = (2 * m + 1) ^ d := by
@@ -260,7 +260,7 @@ theorem aux_finite_exploding_growth (d : ℕ) (hd : 2 ≤ d) :
 theorem aux_finite_exploding_cube_finite (d k : ℕ) : (cube d k : Set (Site d)).Finite := by
   have h_eq : (cube d k : Set (Site d)) =
       (Fintype.piFinset (fun (_ : Fin d) => Finset.Icc (1 : ℤ) (k : ℤ)) : Set (Site d)) := by
-    ext x; simp only [cube, Set.mem_setOf_eq, Finset.mem_coe, Fintype.mem_piFinset, Finset.mem_Icc, forall_and]
+    ext x; simp only [cube, Set.mem_ofPred_eq, Finset.mem_coe, Fintype.mem_piFinset, Finset.mem_Icc, forall_and]
   rw [h_eq]
   exact Finset.finite_toSet _
 
@@ -288,7 +288,7 @@ theorem aux_finite_exploding_uniform_time {d : ℕ} (w : Site d → ℤ) (hw : �
       if h : x ∈ fs then Classical.choose (h_choice x h) else 0
     have h_t_fn (x : Site d) (hx : x ∈ fs) : 0 < wave w M z (t_fn x) (f x) := by
       dsimp [t_fn]
-      rw [dif_pos hx]
+      rw [dite_eq_left hx]
       exact Classical.choose_spec (h_choice x hx)
     let T := fs.sup' hfs_nonempty t_fn
     have hT_le (x : Site d) (hx : x ∈ fs) : t_fn x ≤ T :=

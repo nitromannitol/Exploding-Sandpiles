@@ -63,7 +63,7 @@ theorem xsch14_base_scale_one {p : ℝ} [Fact (0 ≤ p ∧ p ≤ 1)] (hd : 1 ≤
     (hp : 1 - 1 / (2 : ℝ) ^ (2 * d) < p) : xsch8_Base d p := by
   have hcube : cube d 1 = {fun _ : Fin d => (1 : ℤ)} := by
     ext x
-    simp only [cube, Set.mem_setOf_eq, Set.mem_singleton_iff]
+    simp only [cube, Set.mem_ofPred_eq, Set.mem_singleton_iff]
     constructor
     · intro h
       funext i

@@ -23,7 +23,7 @@ theorem pclose_box_eq_finset (m M : Site d) :
     (pcloseBox m M : Set (Site d)) =
       ↑(Fintype.piFinset fun i => Finset.Icc (m i) (M i)) := by
   ext y
-  simp only [pcloseBox, Set.mem_setOf_eq, Finset.mem_coe, Fintype.mem_piFinset, Finset.mem_Icc]
+  simp only [pcloseBox, Set.mem_ofPred_eq, Finset.mem_coe, Fintype.mem_piFinset, Finset.mem_Icc]
 
 /-- A box with all sides at most `S` has at most `S^d` points. -/
 theorem pclose_box_ncard_le (m M : Site d) (S : ℕ) (h : ∀ i, M i - m i + 1 ≤ (S : ℤ)) :
@@ -32,7 +32,7 @@ theorem pclose_box_ncard_le (m M : Site d) (S : ℕ) (h : ∀ i, M i - m i + 1 �
   refine ⟨Finset.finite_toSet _, ?_⟩
   rw [Set.ncard_coe_finset, Fintype.card_piFinset]
   calc ∏ i, (Finset.Icc (m i) (M i)).card ≤ ∏ _i : Fin d, S := by
-        refine Finset.prod_le_prod' fun i _ => ?_
+        refine Finset.prod_le_prod fun i _ => ?_
         rw [Int.card_Icc]
         have := h i
         omega
@@ -41,7 +41,7 @@ theorem pclose_box_ncard_le (m M : Site d) (S : ℕ) (h : ∀ i, M i - m i + 1 �
 theorem pclose_ball_eq_box (c : Site d) (r : ℕ) :
     pcloseBall c r = pcloseBox (fun l => c l - r) (fun l => c l + r) := by
   ext y
-  simp only [pcloseBall, pcloseBox, Set.mem_setOf_eq, abs_le]
+  simp only [pcloseBall, pcloseBox, Set.mem_ofPred_eq, abs_le]
   constructor
   · intro h i
     have := h i

@@ -33,8 +33,8 @@ theorem cels_eh_eq (a b : ℤ) : cels_eh a b = cels_ceta (cels_fold a) (b % 4) :
     unfold cels_fold
     split_ifs <;> omega
   by_cases hh : (a = 0 ∨ a = -1) ∧ b % 4 = 0
-  · rw [if_pos hh, if_pos (h.2 hh)]
-  · rw [if_neg hh, if_neg (fun h' => hh (h.1 h'))]
+  · rw [ite_eq_left hh, ite_eq_left (h.2 hh)]
+  · rw [ite_eq_right hh, ite_eq_right (fun h' => hh (h.1 h'))]
 
 theorem cels_fold_nbr (a : ℤ) :
     (cels_fold (a + 1) = cels_fold a + 1 ∧ cels_fold (a - 1) = cels_fold (cels_fold a - 1)) ∨
@@ -122,9 +122,9 @@ theorem cels_s0_le (x : Site 2) :
   by_cases hx : x = 0
   · have h0 : x 0 = 0 := by rw [hx]; rfl
     have h1 : x 1 = 0 := by rw [hx]; rfl
-    rw [if_pos hx, if_pos (by rw [h0, h1]; decide)]
+    rw [ite_eq_left hx, ite_eq_left (by rw [h0, h1]; decide)]
     linarith
-  · rw [if_neg hx]
+  · rw [ite_eq_right hx]
     split_ifs <;> omega
 
 theorem cels_hstep (t : ℕ) (x : Site 2)

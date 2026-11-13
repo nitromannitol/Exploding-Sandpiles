@@ -25,7 +25,7 @@ theorem xlsd_measure_eq_iSup_isClosed [Countable S] (ρ : ℝ) (hρ0 : 0 ≤ ρ)
     {A : Set (S → Bool)} (hA : MeasurableSet A) :
     bernoulliProduct S ρ A =
       ⨆ (F : Set (S → Bool)) (_ : F ⊆ A) (_ : IsClosed F), bernoulliProduct S ρ F := by
-  haveI := xlsd_isProbabilityMeasure (S := S) ρ hρ0 hρ1
+  have := xlsd_isProbabilityMeasure (S := S) ρ hρ0 hρ1
   exact hA.measure_eq_iSup_isClosed_of_ne_top (measure_ne_top _ _)
 
 end Exploding

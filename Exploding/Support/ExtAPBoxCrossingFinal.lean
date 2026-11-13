@@ -247,9 +247,9 @@ theorem xmw_highDensity_ae (d : ℕ) (hd : 2 ≤ d) :
   obtain ⟨p₀, hp₀1, hp₀⟩ := xbc_lss_transfer (d := d) (k := 2) (by omega) ρ hρ0 hρ1
   refine ⟨max p₀ 0, le_max_right _ _, max_lt hp₀1 zero_lt_one, ?_⟩
   intro q hq0 hq1 hpq i
-  haveI : IsProbabilityMeasure (bondPercolation d q) := rn_infinitePi_isProb hq0 hq1
-  haveI : IsProbabilityMeasure (xbb_goodLaw d q) := xbb_goodLaw_isProbability hq0 hq1
-  haveI : IsProbabilityMeasure (sitePercolation d ρ) := rn_infinitePi_isProb hρ0 hρ1.le
+  have : IsProbabilityMeasure (bondPercolation d q) := rn_infinitePi_isProb hq0 hq1
+  have : IsProbabilityMeasure (xbb_goodLaw d q) := xbb_goodLaw_isProbability hq0 hq1
+  have : IsProbabilityMeasure (sitePercolation d ρ) := rn_infinitePi_isProb hρ0 hρ1.le
   have hkd : KDependent 2 (xbb_goodLaw d q) := xbb_good_indep hq0 hq1
   have hmarg : ∀ s : Site d,
       ENNReal.ofReal (max p₀ 0) ≤ (xbb_goodLaw d q) {ω | ω s = true} := by
@@ -260,7 +260,7 @@ theorem xmw_highDensity_ae (d : ℕ) (hd : 2 ≤ d) :
   have hAmeas : MeasurableSet A := by
     have hset : A = ⋃ N : ℕ, ⋂ n ∈ Set.Ici N, {β : Site d → Bool | xbc_Crosses d n i β} := by
       ext β
-      simp only [hA, Set.mem_setOf_eq, Set.mem_iUnion, Set.mem_iInter, Set.mem_Ici]
+      simp only [hA, Set.mem_ofPred_eq, Set.mem_iUnion, Set.mem_iInter, Set.mem_Ici]
       exact Filter.eventually_atTop
     rw [hset]
     exact MeasurableSet.iUnion fun N =>

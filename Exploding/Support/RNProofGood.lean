@@ -14,8 +14,8 @@ variable {d : ℕ}
 
 theorem rn_goodAt_measurable (k : ℕ) (i : Site d) :
     MeasurableSet {η : Site d → ℤ | GoodAt η k i} := by
-  have hf : Measurable (fun ω : Site d → ℤ => (blockO k i).restrict ω) :=
-    measurable_pi_lambda _ fun _ => measurable_pi_apply _
+  have hf : Measurable (fun ω : Site d → ℤ => (blockO k i).domRestrict ω) :=
+    Measurable.of_eval fun _ => measurable_pi_apply _
   exact (measurable_iff_comap_le.mp hf) _ (goodAt_measurableSet_blockO k i)
 
 theorem rn_chipLaw_prob (a b : ℤ) {p : ℝ} (hp0 : 0 ≤ p) (hp1 : p ≤ 1) :
@@ -29,13 +29,13 @@ theorem rn_chipLaw_prob (a b : ℤ) {p : ℝ} (hp0 : 0 ≤ p) (hp1 : p ≤ 1) :
 
 theorem rn_toyLaw_prob (d : ℕ) {p : ℝ} (hp0 : 0 ≤ p) (hp1 : p ≤ 1) :
     IsProbabilityMeasure (toyLaw d p) := by
-  haveI := rn_chipLaw_prob (2 * (d : ℤ) - 1) (2 * (d : ℤ) - 2) hp0 hp1
+  have := rn_chipLaw_prob (2 * (d : ℤ) - 1) (2 * (d : ℤ) - 2) hp0 hp1
   unfold toyLaw productLaw
   infer_instance
 
 theorem rn_toyLaw_shift {p : ℝ} (hp0 : 0 ≤ p) (hp1 : p ≤ 1) (k : ℕ) (i : Site d) :
     (toyLaw d p).map (fun η x => η (x + (k : ℤ) • i)) = toyLaw d p := by
-  haveI := rn_chipLaw_prob (2 * (d : ℤ) - 1) (2 * (d : ℤ) - 2) hp0 hp1
+  have := rn_chipLaw_prob (2 * (d : ℤ) - 1) (2 * (d : ℤ) - 2) hp0 hp1
   have hinj : Function.Injective (fun x : Site d => x + (k : ℤ) • i) := fun x y h => by
     simpa using congrArg (fun z => z - (k : ℤ) • i) h
   exact Measure.map_infinitePi_infinitePi_of_inj
@@ -47,7 +47,7 @@ theorem rn_goodAt_marginal {p : ℝ} (hp0 : 0 ≤ p) (hp1 : p ≤ 1) (k : ℕ) (
     have := rn_goodAt_measurable k (0 : Site d)
     simpa [GoodAt] using this
   have hmf : Measurable (fun η : Site d → ℤ => fun x => η (x + (k : ℤ) • i)) :=
-    measurable_pi_lambda _ fun x => measurable_pi_apply _
+    Measurable.of_eval fun x => measurable_pi_apply _
   have hpre : (fun η : Site d → ℤ => fun x => η (x + (k : ℤ) • i)) ⁻¹' {η | GoodCube η k}
       = {η : Site d → ℤ | GoodAt η k i} := rfl
   rw [← hpre, ← Measure.map_apply hmf hmeas, rn_toyLaw_shift hp0 hp1 k i]
@@ -58,7 +58,7 @@ theorem rn_goodCube_prob (d : ℕ) (hd : 2 ≤ d) (p : ℝ) (hp : 0 < p) (hp1 : 
     (δ : ℝ) (hδ : 0 < δ) (k : ℕ)
     (hkbound : (d : ℝ) * (k : ℝ) ^ d * Real.exp (-2 * (p / 2) ^ 2 * (k : ℝ)) < δ) :
     ENNReal.ofReal (1 - δ) ≤ toyLaw d p {η | GoodCube η k} := by
-  haveI hIPM' : IsProbabilityMeasure (toyLaw d p) := rn_toyLaw_prob d hp.le hp1.le
+  have hIPM' : IsProbabilityMeasure (toyLaw d p) := rn_toyLaw_prob d hp.le hp1.le
   set ε : ℝ := p / 2 with hεdef
   have hε0 : 0 < ε := by positivity
   have hεp : ε < p := by rw [hεdef]; linarith
@@ -82,7 +82,7 @@ theorem rn_goodCube_prob (d : ℕ) (hd : 2 ≤ d) (p : ℝ) (hp : 0 < p) (hp1 : 
     by_contra hcon
     rw [Set.mem_union, not_or] at hcon
     apply hη
-    simp only [hBaddef, hUdef, Set.mem_setOf_eq, not_not] at hcon
+    simp only [hBaddef, hUdef, Set.mem_ofPred_eq, not_not] at hcon
     exact aux_ct_propagate d k hd η hcon.2 hcon.1
   have hcompl_le : toyLaw d p {η : Site d → ℤ | GoodCube η k}ᶜ ≤ ENNReal.ofReal δ := by
     calc toyLaw d p {η : Site d → ℤ | GoodCube η k}ᶜ
@@ -167,7 +167,7 @@ theorem rn_renormalization (hLSSB : Exploding.External.LiggettSchonmannStaceyBou
   obtain ⟨k0, hk01, hk0⟩ := rn_goodCube_tail d hd p hp hp1 (1 - q') (by linarith)
   refine ⟨k0, fun k hk => ⟨1, C, one_pos, by linarith, ?_⟩⟩
   have hk1 : 1 ≤ k := le_trans hk01 hk
-  haveI := rn_toyLaw_prob d hp.le hp1.le
+  have := rn_toyLaw_prob d hp.le hp1.le
   have hgood : ∀ x : Site d, ENNReal.ofReal q ≤
       toyLaw d p {η | (fun (x : Site d) (η : Site d → ℤ) => decide (GoodAt η k x)) x η = true} := by
     intro x
@@ -187,6 +187,6 @@ theorem rn_renormalization (hLSSB : Exploding.External.LiggettSchonmannStaceyBou
   obtain ⟨S, hSinf, hSgood, hSconn, hShole, n0, hn0⟩ := hη
   refine ⟨S, ⟨hSinf, fun x hx => ?_, hSconn⟩, hShole, n0, hn0⟩
   have := hSgood x hx
-  simpa [goodSites, Set.mem_setOf_eq] using this
+  simpa [goodSites, Set.mem_ofPred_eq] using this
 
 end Exploding

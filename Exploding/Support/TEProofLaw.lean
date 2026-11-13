@@ -35,7 +35,7 @@ theorem te_stationary (d : ℕ) (ν : Measure ℤ) (hν : IsProbabilityMeasure �
 theorem te_finite_range (d : ℕ) (ν : Measure ℤ) (hν : IsProbabilityMeasure ν) :
     FiniteRangeOfDependence d (Measure.infinitePi fun _ : Site d => ν) := by
   refine ⟨0, fun I J hIJ => ?_⟩
-  haveI : ∀ i : Site d, IsProbabilityMeasure (ν : Measure ℤ) := fun _ => hν
+  have : ∀ i : Site d, IsProbabilityMeasure (ν : Measure ℤ) := fun _ => hν
   have h : ProbabilityTheory.iIndepFun (fun (i : Site d) (ω : Site d → ℤ) => ω i)
       (Measure.infinitePi fun _ : Site d => ν) :=
     ProbabilityTheory.iIndepFun_infinitePi (P := fun _ : Site d => ν)

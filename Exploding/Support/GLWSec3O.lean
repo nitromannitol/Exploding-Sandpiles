@@ -49,7 +49,7 @@ theorem glws_stretch_ncard_le (k : Fin d → ℕ) (c : ℕ → Site d) (L1 L : �
     (fun s => (glws_tile_ncard_le k (c s)).1.toFinset) with hF
   have hEq : ({y | ∃ s, L1 ≤ s ∧ s ≤ L ∧ y ∈ rboxShift k (c s)} : Set (Site d)) = ↑F := by
     ext y
-    simp only [Set.mem_setOf_eq, hF, Finset.coe_biUnion, Finset.coe_Icc, Set.mem_iUnion,
+    simp only [Set.mem_ofPred_eq, hF, Finset.coe_biUnion, Finset.coe_Icc, Set.mem_iUnion,
       Set.mem_Icc, Finset.mem_coe, Set.Finite.mem_toFinset, exists_prop]
     constructor
     · rintro ⟨s, h1, h2, h3⟩

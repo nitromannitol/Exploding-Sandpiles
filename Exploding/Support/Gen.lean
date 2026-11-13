@@ -77,7 +77,7 @@ in the coordinate box of side length `n * (C + 1) + 1`. -/
 theorem Gen.nearestSite_smul_mem_cent (y : Fin d → ℝ) (C n : ℕ)
     (h : ∀ i, |y i| ≤ (C : ℝ)) :
     nearestSite ((n : ℝ) • y) ∈ cent d (n * (C + 1) + 1) := by
-  simp only [cent, Set.mem_setOf_eq]
+  simp only [cent, Set.mem_ofPred_eq]
   intro i
   have hm : ∀ j, |((n : ℝ) • y) j| ≤ (((n : ℤ) * (C + 1) : ℤ) : ℝ) := by
     intro j

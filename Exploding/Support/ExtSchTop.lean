@@ -117,7 +117,7 @@ theorem xsch_spanOdo_off (n : ℕ) (η : Site d → ℤ) (t : ℕ) {x : Site d} 
     spanOdo n η t x = 0 := by
   cases t with
   | zero => rfl
-  | succ t => simp only [spanOdo, if_pos hx]
+  | succ t => simp only [spanOdo, ite_eq_left hx]
 
 theorem xsch_spanOdo_zero_one (n : ℕ) (η : Site d → ℤ) (t : ℕ) (x : Site d) :
     spanOdo n η t x = 0 ∨ spanOdo n η t x = 1 := by
@@ -125,22 +125,22 @@ theorem xsch_spanOdo_zero_one (n : ℕ) (η : Site d → ℤ) (t : ℕ) (x : Sit
   | zero => left; rfl
   | succ t ih =>
     by_cases h1 : x ∈ cube d n
-    · simp only [spanOdo, h1, not_true_eq_false, if_false]
+    · simp only [spanOdo, h1, not_true_eq_false, ite_false]
       by_cases h2 : spanOdo n η t x = 1
-      · rw [if_pos h2]; right; rfl
-      · rw [if_neg h2]
+      · rw [ite_eq_left h2]; right; rfl
+      · rw [ite_eq_right h2]
         rcases ih x with h | h
         · rw [h]
           by_cases h3 : 2 * (d : ℤ) ≤ η x + lap (spanOdo n η t) x
-          · right; rw [if_pos h3]; norm_num
-          · left; rw [if_neg h3]; norm_num
+          · right; rw [ite_eq_left h3]; norm_num
+          · left; rw [ite_eq_right h3]; norm_num
         · exact absurd h h2
     · left; exact xsch_spanOdo_off n η _ h1
 
 theorem xsch_spanOdo_mono_step (n : ℕ) (η : Site d → ℤ) (t : ℕ) (x : Site d)
     (h : spanOdo n η t x = 1) : spanOdo n η (t + 1) x = 1 := by
   by_cases hx : x ∈ cube d n
-  · simp only [spanOdo, hx, not_true_eq_false, if_false, h, if_true]
+  · simp only [spanOdo, hx, not_true_eq_false, ite_false, h, ite_true]
   · exfalso
     rw [xsch_spanOdo_off n η t hx] at h
     exact zero_ne_one h
@@ -169,10 +169,10 @@ theorem xsch_exists_time (n : ℕ) (η : Site d → ℤ) (hη : ∀ x, (d : ℤ)
       xsch_spanOdo_mono n η (Finset.le_sup (f := tt) hs) _ (htt s hs)
     refine ⟨T + 1, ?_⟩
     simp only [spanOdo]
-    rw [if_neg (not_not.mpr hx)]
+    rw [ite_eq_right (not_not.mpr hx)]
     by_cases h1 : spanOdo n η T x = 1
     · simp [h1]
-    · rw [if_neg h1]
+    · rw [ite_eq_right h1]
       have h0 : spanOdo n η T x = 0 := by
         rcases xsch_spanOdo_zero_one n η T x with h | h
         · exact h
@@ -194,7 +194,7 @@ theorem xsch_exists_time (n : ℕ) (η : Site d → ℤ) (hη : ∀ x, (d : ℤ)
         have := hη x
         rw [hlap]
         omega
-      rw [if_pos hge, h0]
+      rw [ite_eq_left hge, h0]
       norm_num
 
 /-- If every site of the cube topples in the closure sense, the cube is internally spanned,

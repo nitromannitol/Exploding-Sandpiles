@@ -114,8 +114,8 @@ theorem finite_exploding_step {d : ℕ} (hd : 2 ≤ d) (η : Site d → ℤ)
     have hz : (fun l : Fin d => if l = dir then (1 : ℤ) else 1) ∈ cube d k := fun l => by
       show 1 ≤ (if l = dir then (1 : ℤ) else 1) ∧ (if l = dir then (1 : ℤ) else 1) ≤ (k : ℤ)
       by_cases hl : l = dir
-      · rw [if_pos hl]; exact ⟨le_refl 1, hk1⟩
-      · rw [if_neg hl]; exact ⟨le_refl 1, hk1⟩
+      · rw [ite_eq_left hl]; exact ⟨le_refl 1, hk1⟩
+      · rw [ite_eq_right hl]; exact ⟨le_refl 1, hk1⟩
     have hline : ∀ y ∈ line d k dir' (fun l : Fin d => if l = dir then (1 : ℤ) else 1),
         0 < wave η N zc t (y + (k : ℤ) • i) :=
       line_of_cover η N k zc i t dir' (fun l : Fin d => if l = dir then (1 : ℤ) else 1) hcover hz
@@ -129,8 +129,8 @@ theorem finite_exploding_step {d : ℕ} (hd : 2 ≤ d) (η : Site d → ℤ)
       · intro l
         show 1 ≤ (if l = dir then (k : ℤ) else 1) ∧ (if l = dir then (k : ℤ) else 1) ≤ (k : ℤ)
         by_cases hl : l = dir
-        · rw [if_pos hl]; exact ⟨hk1, le_refl _⟩
-        · rw [if_neg hl]; exact ⟨le_refl 1, hk1⟩
+        · rw [ite_eq_left hl]; exact ⟨hk1, le_refl _⟩
+        · rw [ite_eq_right hl]; exact ⟨le_refl 1, hk1⟩
       · refine ⟨dir, Or.inr ?_⟩
         funext l
         by_cases hl : l = dir
@@ -140,7 +140,7 @@ theorem finite_exploding_step {d : ℕ} (hd : 2 ≤ d) (η : Site d → ℤ)
           norm_num
         · show (if l = dir then (k : ℤ) + 1 else 1) = (if l = dir then (k : ℤ) else 1) +
             (LatticeProb.unit dir : Site d) l
-          simp only [if_neg hl, LatticeProb.unit, Pi.single_eq_of_ne hl, add_zero]
+          simp only [ite_eq_right hl, LatticeProb.unit, Pi.single_eq_of_ne hl, add_zero]
     have hline' : ∀ w ∈ line d k dir' (fun l : Fin d => if l = dir then (k : ℤ) + 1 else 1),
         0 < wave η N zc t (w + (k : ℤ) • j) := by
       intro w hw
@@ -168,7 +168,7 @@ theorem finite_exploding_step {d : ℕ} (hd : 2 ≤ d) (η : Site d → ℤ)
             rw [hwv]
             norm_num
           · simp only [Pi.sub_apply, Pi.smul_apply, smul_eq_mul, LatticeProb.unit,
-              Pi.single_eq_of_ne hld, mul_zero, sub_zero, if_neg hld] at h2 ⊢
+              Pi.single_eq_of_ne hld, mul_zero, sub_zero, ite_eq_right hld] at h2 ⊢
             exact h2
       have h := hline _ hmem
       have he : w - (k : ℤ) • LatticeProb.unit dir + (k : ℤ) • i = w + (k : ℤ) • j := by
@@ -183,8 +183,8 @@ theorem finite_exploding_step {d : ℕ} (hd : 2 ≤ d) (η : Site d → ℤ)
   have hz : (fun l : Fin d => if l = dir then (k : ℤ) else 1) ∈ cube d k := fun l => by
     show 1 ≤ (if l = dir then (k : ℤ) else 1) ∧ (if l = dir then (k : ℤ) else 1) ≤ (k : ℤ)
     by_cases hl : l = dir
-    · rw [if_pos hl]; exact ⟨hk1, le_refl _⟩
-    · rw [if_neg hl]; exact ⟨le_refl 1, hk1⟩
+    · rw [ite_eq_left hl]; exact ⟨hk1, le_refl _⟩
+    · rw [ite_eq_right hl]; exact ⟨le_refl 1, hk1⟩
   -- the wave on the top face of Q_k(i), shifted by k•i
   have hline : ∀ y ∈ line d k dir' (fun l : Fin d => if l = dir then (k : ℤ) else 1),
       0 < wave η N zc t (y + (k : ℤ) • i) :=
@@ -200,7 +200,7 @@ theorem finite_exploding_step {d : ℕ} (hd : 2 ≤ d) (η : Site d → ℤ)
       show 1 ≤ (if l = dir then (1 : ℤ) else 1) ∧ (if l = dir then (1 : ℤ) else 1) ≤ (k : ℤ)
       by_cases hl : l = dir
       · simp only [hl]; exact ⟨le_refl 1, hk1⟩
-      · simp only [if_neg hl]; exact ⟨le_refl 1, hk1⟩
+      · simp only [ite_eq_right hl]; exact ⟨le_refl 1, hk1⟩
     · refine ⟨dir, Or.inl ?_⟩
       funext l
       by_cases hl : l = dir
@@ -210,7 +210,7 @@ theorem finite_exploding_step {d : ℕ} (hd : 2 ≤ d) (η : Site d → ℤ)
         norm_num
       · show (if l = dir then (1 : ℤ) else 1) =
           (if l = dir then (0 : ℤ) else 1) + (LatticeProb.unit dir : Site d) l
-        simp only [if_neg hl, LatticeProb.unit, Pi.single_eq_of_ne hl, add_zero]
+        simp only [ite_eq_right hl, LatticeProb.unit, Pi.single_eq_of_ne hl, add_zero]
   have hline' : ∀ w ∈ line d k dir' (fun l : Fin d => if l = dir then (0 : ℤ) else 1),
       0 < wave η N zc t (w + (k : ℤ) • j) := by
     intro w hw
@@ -238,7 +238,7 @@ theorem finite_exploding_step {d : ℕ} (hd : 2 ≤ d) (η : Site d → ℤ)
           rw [hw0]
           norm_num
         · simp only [Pi.add_apply, Pi.smul_apply, smul_eq_mul, LatticeProb.unit,
-            Pi.single_eq_of_ne hld, mul_zero, add_zero, if_neg hld] at h2 ⊢
+            Pi.single_eq_of_ne hld, mul_zero, add_zero, ite_eq_right hld] at h2 ⊢
           exact h2
     have h := hline _ hmem
     have he : w + (k : ℤ) • LatticeProb.unit dir + (k : ℤ) • i = w + (k : ℤ) • j := by
@@ -265,8 +265,8 @@ theorem finite_exploding_step_one {d : ℕ} (hd : 2 ≤ d) (η : Site d → ℤ)
     have hz : (fun l : Fin d => if l = dir then (1 : ℤ) else 1) ∈ cube d k := fun l => by
       show 1 ≤ (if l = dir then (1 : ℤ) else 1) ∧ (if l = dir then (1 : ℤ) else 1) ≤ (k : ℤ)
       by_cases hl : l = dir
-      · rw [if_pos hl]; exact ⟨le_refl 1, hk1⟩
-      · rw [if_neg hl]; exact ⟨le_refl 1, hk1⟩
+      · rw [ite_eq_left hl]; exact ⟨le_refl 1, hk1⟩
+      · rw [ite_eq_right hl]; exact ⟨le_refl 1, hk1⟩
     have hline : ∀ y ∈ line d k dir' (fun l : Fin d => if l = dir then (1 : ℤ) else 1),
         0 < wave η 1 zc t (y + (k : ℤ) • i) :=
       line_of_cover η 1 k zc i t dir' (fun l : Fin d => if l = dir then (1 : ℤ) else 1) hcover hz
@@ -280,8 +280,8 @@ theorem finite_exploding_step_one {d : ℕ} (hd : 2 ≤ d) (η : Site d → ℤ)
       · intro l
         show 1 ≤ (if l = dir then (k : ℤ) else 1) ∧ (if l = dir then (k : ℤ) else 1) ≤ (k : ℤ)
         by_cases hl : l = dir
-        · rw [if_pos hl]; exact ⟨hk1, le_refl _⟩
-        · rw [if_neg hl]; exact ⟨le_refl 1, hk1⟩
+        · rw [ite_eq_left hl]; exact ⟨hk1, le_refl _⟩
+        · rw [ite_eq_right hl]; exact ⟨le_refl 1, hk1⟩
       · refine ⟨dir, Or.inr ?_⟩
         funext l
         by_cases hl : l = dir
@@ -291,7 +291,7 @@ theorem finite_exploding_step_one {d : ℕ} (hd : 2 ≤ d) (η : Site d → ℤ)
           norm_num
         · show (if l = dir then (k : ℤ) + 1 else 1) = (if l = dir then (k : ℤ) else 1) +
             (LatticeProb.unit dir : Site d) l
-          simp only [if_neg hl, LatticeProb.unit, Pi.single_eq_of_ne hl, add_zero]
+          simp only [ite_eq_right hl, LatticeProb.unit, Pi.single_eq_of_ne hl, add_zero]
     have hline' : ∀ w ∈ line d k dir' (fun l : Fin d => if l = dir then (k : ℤ) + 1 else 1),
         0 < wave η 1 zc t (w + (k : ℤ) • j) := by
       intro w hw
@@ -319,7 +319,7 @@ theorem finite_exploding_step_one {d : ℕ} (hd : 2 ≤ d) (η : Site d → ℤ)
             rw [hwv]
             norm_num
           · simp only [Pi.sub_apply, Pi.smul_apply, smul_eq_mul, LatticeProb.unit,
-              Pi.single_eq_of_ne hld, mul_zero, sub_zero, if_neg hld] at h2 ⊢
+              Pi.single_eq_of_ne hld, mul_zero, sub_zero, ite_eq_right hld] at h2 ⊢
             exact h2
       have h := hline _ hmem
       have he : w - (k : ℤ) • LatticeProb.unit dir + (k : ℤ) • i = w + (k : ℤ) • j := by
@@ -334,8 +334,8 @@ theorem finite_exploding_step_one {d : ℕ} (hd : 2 ≤ d) (η : Site d → ℤ)
   have hz : (fun l : Fin d => if l = dir then (k : ℤ) else 1) ∈ cube d k := fun l => by
     show 1 ≤ (if l = dir then (k : ℤ) else 1) ∧ (if l = dir then (k : ℤ) else 1) ≤ (k : ℤ)
     by_cases hl : l = dir
-    · rw [if_pos hl]; exact ⟨hk1, le_refl _⟩
-    · rw [if_neg hl]; exact ⟨le_refl 1, hk1⟩
+    · rw [ite_eq_left hl]; exact ⟨hk1, le_refl _⟩
+    · rw [ite_eq_right hl]; exact ⟨le_refl 1, hk1⟩
   -- the wave on the top face of Q_k(i), shifted by k•i
   have hline : ∀ y ∈ line d k dir' (fun l : Fin d => if l = dir then (k : ℤ) else 1),
       0 < wave η 1 zc t (y + (k : ℤ) • i) :=
@@ -351,7 +351,7 @@ theorem finite_exploding_step_one {d : ℕ} (hd : 2 ≤ d) (η : Site d → ℤ)
       show 1 ≤ (if l = dir then (1 : ℤ) else 1) ∧ (if l = dir then (1 : ℤ) else 1) ≤ (k : ℤ)
       by_cases hl : l = dir
       · simp only [hl]; exact ⟨le_refl 1, hk1⟩
-      · simp only [if_neg hl]; exact ⟨le_refl 1, hk1⟩
+      · simp only [ite_eq_right hl]; exact ⟨le_refl 1, hk1⟩
     · refine ⟨dir, Or.inl ?_⟩
       funext l
       by_cases hl : l = dir
@@ -361,7 +361,7 @@ theorem finite_exploding_step_one {d : ℕ} (hd : 2 ≤ d) (η : Site d → ℤ)
         norm_num
       · show (if l = dir then (1 : ℤ) else 1) =
           (if l = dir then (0 : ℤ) else 1) + (LatticeProb.unit dir : Site d) l
-        simp only [if_neg hl, LatticeProb.unit, Pi.single_eq_of_ne hl, add_zero]
+        simp only [ite_eq_right hl, LatticeProb.unit, Pi.single_eq_of_ne hl, add_zero]
   have hline' : ∀ w ∈ line d k dir' (fun l : Fin d => if l = dir then (0 : ℤ) else 1),
       0 < wave η 1 zc t (w + (k : ℤ) • j) := by
     intro w hw
@@ -389,7 +389,7 @@ theorem finite_exploding_step_one {d : ℕ} (hd : 2 ≤ d) (η : Site d → ℤ)
           rw [hw0]
           norm_num
         · simp only [Pi.add_apply, Pi.smul_apply, smul_eq_mul, LatticeProb.unit,
-            Pi.single_eq_of_ne hld, mul_zero, add_zero, if_neg hld] at h2 ⊢
+            Pi.single_eq_of_ne hld, mul_zero, add_zero, ite_eq_right hld] at h2 ⊢
           exact h2
     have h := hline _ hmem
     have he : w + (k : ℤ) • LatticeProb.unit dir + (k : ℤ) • i = w + (k : ℤ) • j := by
@@ -415,8 +415,8 @@ theorem finite_exploding_step_centre {d : ℕ} (hd : 2 ≤ d) (η : Site d → �
     have hz : (fun l : Fin d => if l = dir then (1 : ℤ) else 1) ∈ cube d k := fun l => by
       show 1 ≤ (if l = dir then (1 : ℤ) else 1) ∧ (if l = dir then (1 : ℤ) else 1) ≤ (k : ℤ)
       by_cases hl : l = dir
-      · rw [if_pos hl]; exact ⟨le_refl 1, hk1⟩
-      · rw [if_neg hl]; exact ⟨le_refl 1, hk1⟩
+      · rw [ite_eq_left hl]; exact ⟨le_refl 1, hk1⟩
+      · rw [ite_eq_right hl]; exact ⟨le_refl 1, hk1⟩
     have hline : ∀ y ∈ line d k dir' (fun l : Fin d => if l = dir then (1 : ℤ) else 1),
         0 < wave η N zc t (y + (k : ℤ) • i) :=
       line_of_cover η N k zc i t dir' (fun l : Fin d => if l = dir then (1 : ℤ) else 1) hcover hz
@@ -430,8 +430,8 @@ theorem finite_exploding_step_centre {d : ℕ} (hd : 2 ≤ d) (η : Site d → �
       · intro l
         show 1 ≤ (if l = dir then (k : ℤ) else 1) ∧ (if l = dir then (k : ℤ) else 1) ≤ (k : ℤ)
         by_cases hl : l = dir
-        · rw [if_pos hl]; exact ⟨hk1, le_refl _⟩
-        · rw [if_neg hl]; exact ⟨le_refl 1, hk1⟩
+        · rw [ite_eq_left hl]; exact ⟨hk1, le_refl _⟩
+        · rw [ite_eq_right hl]; exact ⟨le_refl 1, hk1⟩
       · refine ⟨dir, Or.inr ?_⟩
         funext l
         by_cases hl : l = dir
@@ -441,7 +441,7 @@ theorem finite_exploding_step_centre {d : ℕ} (hd : 2 ≤ d) (η : Site d → �
           norm_num
         · show (if l = dir then (k : ℤ) + 1 else 1) = (if l = dir then (k : ℤ) else 1) +
             (LatticeProb.unit dir : Site d) l
-          simp only [if_neg hl, LatticeProb.unit, Pi.single_eq_of_ne hl, add_zero]
+          simp only [ite_eq_right hl, LatticeProb.unit, Pi.single_eq_of_ne hl, add_zero]
     have hline' : ∀ w ∈ line d k dir' (fun l : Fin d => if l = dir then (k : ℤ) + 1 else 1),
         0 < wave η N zc t (w + (k : ℤ) • j) := by
       intro w hw
@@ -469,7 +469,7 @@ theorem finite_exploding_step_centre {d : ℕ} (hd : 2 ≤ d) (η : Site d → �
             rw [hwv]
             norm_num
           · simp only [Pi.sub_apply, Pi.smul_apply, smul_eq_mul, LatticeProb.unit,
-              Pi.single_eq_of_ne hld, mul_zero, sub_zero, if_neg hld] at h2 ⊢
+              Pi.single_eq_of_ne hld, mul_zero, sub_zero, ite_eq_right hld] at h2 ⊢
             exact h2
       have h := hline _ hmem
       have he : w - (k : ℤ) • LatticeProb.unit dir + (k : ℤ) • i = w + (k : ℤ) • j := by
@@ -484,8 +484,8 @@ theorem finite_exploding_step_centre {d : ℕ} (hd : 2 ≤ d) (η : Site d → �
   have hz : (fun l : Fin d => if l = dir then (k : ℤ) else 1) ∈ cube d k := fun l => by
     show 1 ≤ (if l = dir then (k : ℤ) else 1) ∧ (if l = dir then (k : ℤ) else 1) ≤ (k : ℤ)
     by_cases hl : l = dir
-    · rw [if_pos hl]; exact ⟨hk1, le_refl _⟩
-    · rw [if_neg hl]; exact ⟨le_refl 1, hk1⟩
+    · rw [ite_eq_left hl]; exact ⟨hk1, le_refl _⟩
+    · rw [ite_eq_right hl]; exact ⟨le_refl 1, hk1⟩
   -- the wave on the top face of Q_k(i), shifted by k•i
   have hline : ∀ y ∈ line d k dir' (fun l : Fin d => if l = dir then (k : ℤ) else 1),
       0 < wave η N zc t (y + (k : ℤ) • i) :=
@@ -501,7 +501,7 @@ theorem finite_exploding_step_centre {d : ℕ} (hd : 2 ≤ d) (η : Site d → �
       show 1 ≤ (if l = dir then (1 : ℤ) else 1) ∧ (if l = dir then (1 : ℤ) else 1) ≤ (k : ℤ)
       by_cases hl : l = dir
       · simp only [hl]; exact ⟨le_refl 1, hk1⟩
-      · simp only [if_neg hl]; exact ⟨le_refl 1, hk1⟩
+      · simp only [ite_eq_right hl]; exact ⟨le_refl 1, hk1⟩
     · refine ⟨dir, Or.inl ?_⟩
       funext l
       by_cases hl : l = dir
@@ -511,7 +511,7 @@ theorem finite_exploding_step_centre {d : ℕ} (hd : 2 ≤ d) (η : Site d → �
         norm_num
       · show (if l = dir then (1 : ℤ) else 1) =
           (if l = dir then (0 : ℤ) else 1) + (LatticeProb.unit dir : Site d) l
-        simp only [if_neg hl, LatticeProb.unit, Pi.single_eq_of_ne hl, add_zero]
+        simp only [ite_eq_right hl, LatticeProb.unit, Pi.single_eq_of_ne hl, add_zero]
   have hline' : ∀ w ∈ line d k dir' (fun l : Fin d => if l = dir then (0 : ℤ) else 1),
       0 < wave η N zc t (w + (k : ℤ) • j) := by
     intro w hw
@@ -539,7 +539,7 @@ theorem finite_exploding_step_centre {d : ℕ} (hd : 2 ≤ d) (η : Site d → �
           rw [hw0]
           norm_num
         · simp only [Pi.add_apply, Pi.smul_apply, smul_eq_mul, LatticeProb.unit,
-            Pi.single_eq_of_ne hld, mul_zero, add_zero, if_neg hld] at h2 ⊢
+            Pi.single_eq_of_ne hld, mul_zero, add_zero, ite_eq_right hld] at h2 ⊢
           exact h2
     have h := hline _ hmem
     have he : w + (k : ℤ) • LatticeProb.unit dir + (k : ℤ) • i = w + (k : ℤ) • j := by

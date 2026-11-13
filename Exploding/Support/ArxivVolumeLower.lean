@@ -107,7 +107,7 @@ theorem ceVolumeGridCell_subset_translationDiff (d : ℕ) (hd : 2 ≤ d) (t : �
     exact lt_of_lt_of_le hfast hmono
   intro y hy
   have hsite : nearestSite ((t : ℝ) • y) = ceVolumeGridCenter d hd t u :=
-    Set.mem_setOf_eq.mp hy
+    Set.mem_ofPred_eq.mp hy
   have hyAbsent : y ∉ ceVolumeAtTime d t := by
     intro h
     change 0 < podo (fun x => ceEta d x + 3 * dirac (0 : Site d) x) t
@@ -122,7 +122,7 @@ theorem ceVolumeGridCell_subset_translationDiff (d : ℕ) (hd : 2 ≤ d) (t : �
   have hsiteShift :
       nearestSite ((t : ℝ) • (y + ceVolumeShift d t hd)) =
         ceVolumeGridCenter d hd t u + ceVolumeE₂ d hd :=
-    Set.mem_setOf_eq.mp hyShiftCell
+    Set.mem_ofPred_eq.mp hyShiftCell
   have hyShiftPresent : y + ceVolumeShift d t hd ∈ ceVolumeAtTime d t := by
     change 0 < podo (fun x => ceEta d x + 3 * dirac (0 : Site d) x) t
       (nearestSite ((t : ℝ) • (y + ceVolumeShift d t hd)))

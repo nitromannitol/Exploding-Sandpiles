@@ -15,7 +15,7 @@ namespace Exploding
 /-- A one-site defect event is measurable in the sigma-algebra of its incident bonds. -/
 private theorem arxiv_bond_defect_comap {d : ℕ} (x : Site d) :
     MeasurableSet[MeasurableSpace.comap
-      (fun ζ : RnBond d → Bool => (rn_incident d x : Set (RnBond d)).restrict ζ)
+      (fun ζ : RnBond d → Bool => (rn_incident d x : Set (RnBond d)).domRestrict ζ)
       inferInstance]
       {ζ | rn_siteField ζ x = false} := by
   classical
@@ -39,8 +39,8 @@ private theorem arxiv_bond_defect_comap {d : ℕ} (x : Site d) :
       (decide (∀ b ∈ rn_incident d x, ζ' b = true) = false)
     simp only [decide_eq_false_iff_not]
     exact not_congr hlocal
-  have himage : E = (fun ζ : RnBond d → Bool => A.restrict ζ) ⁻¹'
-      ((fun ζ : RnBond d → Bool => A.restrict ζ) '' E) := by
+  have himage : E = (fun ζ : RnBond d → Bool => A.domRestrict ζ) ⁻¹'
+      ((fun ζ : RnBond d → Bool => A.domRestrict ζ) '' E) := by
     ext ζ
     simp only [Set.mem_preimage, Set.mem_image]
     constructor
@@ -49,10 +49,10 @@ private theorem arxiv_bond_defect_comap {d : ℕ} (x : Site d) :
     · rintro ⟨ζ', hζ', heq⟩
       apply (hdet ζ' ζ (fun b hb => congrFun heq ⟨b, hb⟩)).mp
       exact hζ'
-  haveI : Fintype ↥A := hA.fintype
-  haveI : Countable (↥A → Bool) := inferInstance
+  have : Fintype ↥A := hA.fintype
+  have : Countable (↥A → Bool) := inferInstance
   change MeasurableSet[MeasurableSpace.comap
-    (fun ζ : RnBond d → Bool => A.restrict ζ) inferInstance] E
+    (fun ζ : RnBond d → Bool => A.domRestrict ζ) inferInstance] E
   rw [himage]
   exact (Set.to_countable _).measurableSet.preimage
     (measurable_iff_comap_le.mpr le_rfl)
@@ -63,8 +63,8 @@ private theorem arxiv_bond_defect_probability_le {d : ℕ} (x : Site d)
     bondPercolation d q {ζ | rn_siteField ζ x = false} ≤
       ENNReal.ofReal (2 * (d : ℝ) * (1 - q)) := by
   classical
-  haveI : IsProbabilityMeasure (bitLaw q) := rn_bitLaw_isProb hq0 hq1
-  haveI : IsProbabilityMeasure (bondPercolation d q) := rn_infinitePi_isProb hq0 hq1
+  have : IsProbabilityMeasure (bitLaw q) := rn_bitLaw_isProb hq0 hq1
+  have : IsProbabilityMeasure (bondPercolation d q) := rn_infinitePi_isProb hq0 hq1
   have hclosed : ∀ b : RnBond d,
       bondPercolation d q {ζ | ζ b = false} = ENNReal.ofReal (1 - q) := by
     intro b
@@ -108,8 +108,8 @@ theorem arxiv_bond_defects_prob_le {d : ℕ} (F : Finset (Site d))
     bondPercolation d q {ζ | ∀ x ∈ F, rn_siteField ζ x = false} ≤
       (ENNReal.ofReal (2 * (d : ℝ) * (1 - q))) ^ F.card := by
   classical
-  haveI : IsProbabilityMeasure (bitLaw q) := rn_bitLaw_isProb hq0 hq1
-  haveI : IsProbabilityMeasure (bondPercolation d q) := rn_infinitePi_isProb hq0 hq1
+  have : IsProbabilityMeasure (bitLaw q) := rn_bitLaw_isProb hq0 hq1
+  have : IsProbabilityMeasure (bondPercolation d q) := rn_infinitePi_isProb hq0 hq1
   let I := {x // x ∈ F}
   let A : I → Set (RnBond d) := fun x => rn_incident d x.1
   let E : I → Set (RnBond d → Bool) := fun x => {ζ | rn_siteField ζ x.1 = false}
@@ -121,7 +121,7 @@ theorem arxiv_bond_defects_prob_le {d : ℕ} (F : Finset (Site d))
       exact hxy (Subtype.ext h)
     · exact hsep x.1 x.2 y.1 y.2 (fun h => hxy (Subtype.ext h))
   have hE : ∀ x : I, MeasurableSet[MeasurableSpace.comap
-      (fun ζ : RnBond d → Bool => (A x).restrict ζ) inferInstance] (E x) := by
+      (fun ζ : RnBond d → Bool => (A x).domRestrict ζ) inferInstance] (E x) := by
     intro x
     simpa only [A, E] using arxiv_bond_defect_comap x.1
   have hind : ProbabilityTheory.iIndepSet E (bondPercolation d q) := by
@@ -130,7 +130,7 @@ theorem arxiv_bond_defects_prob_le {d : ℕ} (F : Finset (Site d))
   have hevent : {ζ : RnBond d → Bool | ∀ x ∈ F, rn_siteField ζ x = false} =
       ⋂ x : I, E x := by
     ext ζ
-    simp only [Set.mem_setOf_eq, Set.mem_iInter, E, I]
+    simp only [Set.mem_ofPred_eq, Set.mem_iInter, E, I]
     constructor
     · intro h x
       exact h x.1 x.2
@@ -148,7 +148,7 @@ theorem arxiv_bond_defects_prob_le {d : ℕ} (F : Finset (Site d))
         ∏ x ∈ (Finset.univ : Finset I), bondPercolation d q (E x) :=
       hind.meas_biInter Finset.univ
     _ ≤ ∏ x ∈ (Finset.univ : Finset I), ENNReal.ofReal (2 * (d : ℝ) * (1 - q)) := by
-      refine Finset.prod_le_prod' fun x _ => ?_
+      refine Finset.prod_le_prod fun x _ => ?_
       exact hsingle x
     _ = (ENNReal.ofReal (2 * (d : ℝ) * (1 - q))) ^ F.card := by
       rw [Finset.prod_const, Finset.card_univ]

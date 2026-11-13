@@ -36,9 +36,9 @@ theorem xsg_side_le (hP : xss_Valid P s) (t : ℕ) (j : Fin d) :
     xss_side P t j ≤ xss_len P.LO P.HI j := by
   unfold xss_side
   by_cases hj : j ∈ P.J
-  · rw [if_pos hj]
+  · rw [ite_eq_left hj]
     exact min_le_left _ _
-  · rw [if_neg hj]
+  · rw [ite_eq_right hj]
     have h := hP.2.2.2.1 j
     unfold xss_len
     omega
@@ -48,25 +48,25 @@ theorem xsg_len_le_side (hP : xss_Valid P s) (t : ℕ) (j : Fin d) :
     xss_len P.lo0 P.hi0 j ≤ xss_side P t j := by
   unfold xss_side
   by_cases hj : j ∈ P.J
-  · rw [if_pos hj]
+  · rw [ite_eq_left hj]
     have h := hP.2.2.2.1 j
     unfold xss_len
     omega
-  · rw [if_neg hj]
+  · rw [ite_eq_right hj]
 
 /-- The side of the schedule does not decrease with time. -/
 theorem xsg_side_succ (hP : xss_Valid P s) (t : ℕ) (j : Fin d) :
     xss_side P t j ≤ xss_side P (t + 1) j := by
   unfold xss_side
   by_cases hj : j ∈ P.J
-  · rw [if_pos hj, if_pos hj]
+  · rw [ite_eq_left hj, ite_eq_left hj]
     have hk : 0 < P.J.card := Finset.card_pos.mpr hP.1
     rcases xsg_succ_divmod hk t with ⟨h1, h2⟩ | ⟨h1, h2, h3⟩
     · rw [h1, h2]
       split_ifs <;> omega
     · rw [h1, h2]
       split_ifs <;> push_cast <;> omega
-  · rw [if_neg hj, if_neg hj]
+  · rw [ite_eq_right hj, ite_eq_right hj]
 
 /-- The growth in each direction does not decrease with time. -/
 theorem xsg_grown_succ (hP : xss_Valid P s) (t : ℕ) (j : Fin d) :
@@ -79,13 +79,13 @@ theorem xsg_grown_succ (hP : xss_Valid P s) (t : ℕ) (j : Fin d) :
 theorem xsg_grown_zero (hP : xss_Valid P s) (j : Fin d) : xss_grown P 0 j = 0 := by
   unfold xss_grown xss_side
   by_cases hj : j ∈ P.J
-  · rw [if_pos hj]
+  · rw [ite_eq_left hj]
     have h1 := hP.2.2.1.1 j hj
     have h2 := hP.2.2.2.1 j
-    simp only [Nat.zero_div, Nat.zero_mod, Nat.not_lt_zero, if_false, Nat.cast_zero, add_zero]
+    simp only [Nat.zero_div, Nat.zero_mod, Nat.not_lt_zero, ite_false, Nat.cast_zero, add_zero]
     unfold xss_len
     omega
-  · rw [if_neg hj]
+  · rw [ite_eq_right hj]
     omega
 
 /-- The side of the schedule at the last time is the side of the target box. -/
@@ -97,13 +97,13 @@ theorem xsg_side_final (hP : xss_Valid P s) (j : Fin d) :
   have hLs : P.L ≤ s := hP.2.2.2.2
   unfold xss_side
   by_cases hj : j ∈ P.J
-  · rw [if_pos hj, h1, h2]
+  · rw [ite_eq_left hj, h1, h2]
     have h3 := hP.2.1.1 j hj
-    simp only [Nat.not_lt_zero, if_false, add_zero]
+    simp only [Nat.not_lt_zero, ite_false, add_zero]
     unfold xss_len at h3 ⊢
     push_cast [Nat.cast_sub hLs]
     omega
-  · rw [if_neg hj]
+  · rw [ite_eq_right hj]
     have h3 := hP.2.2.1.2 j hj
     have h4 := hP.2.1.2 j hj
     have h5 := hP.2.2.2.1 j

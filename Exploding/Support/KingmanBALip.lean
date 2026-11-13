@@ -220,7 +220,7 @@ theorem king_ae_visit {μ : Measure Ω} [IsProbabilityMeasure μ] {T : Ω → Ω
     have hAB : A ⊆ B := fun x hx => Set.mem_iUnion.2 ⟨0, by simpa using hx⟩
     have hB0 : μ B = 0 := by rw [measure_congr h, measure_empty]
     exact hA0 (measure_mono_null hAB hB0)
-  · filter_upwards [Filter.eventuallyEq_set.1 h] with x hx
+  · filter_upwards [Filter.eventuallyEqSet_iff.1 h] with x hx
     exact Set.mem_iUnion.1 (hx.2 trivial)
 
 
@@ -258,7 +258,7 @@ theorem king_convergence_on_A {μ : Measure Ω} [IsProbabilityMeasure μ] {T : �
       ∃ ℓ : ℝ, Tendsto (fun n : ℕ => g n x / (n : ℝ)) atTop (𝓝 ℓ) := by
   have hA : MeasurableSet (king_A g C' K) := king_A_measurable hgm C' K
   set A := king_A g C' K with hAdef
-  haveI hνprob : IsProbabilityMeasure (mk3_normalizedRestrict μ A) :=
+  have hνprob : IsProbabilityMeasure (mk3_normalizedRestrict μ A) :=
     mk3_normalizedRestrict_isProbability μ hA hA0
   have hmpA : MeasurePreserving (mk2_inducedMap T A) (mk3_normalizedRestrict μ A)
       (mk3_normalizedRestrict μ A) := king_inducedMap_measurePreserving_normalized hT hA

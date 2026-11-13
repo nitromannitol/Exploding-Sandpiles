@@ -25,8 +25,8 @@ theorem xap7_gen_closed_walk : ∀ (n : ℕ) (V : Type u) [Fintype V] [Decidable
   induction n using Nat.strong_induction_on with
   | _ n ih =>
     intro V instF instD G r hcard hconn
-    letI := instF
-    letI := instD
+    let := instF
+    let := instD
     by_cases h1 : n ≤ 1
     · have hc : Fintype.card V = 1 := by
         have := Fintype.card_pos_iff.mpr ⟨r⟩
@@ -39,7 +39,7 @@ theorem xap7_gen_closed_walk : ∀ (n : ℕ) (V : Type u) [Fintype V] [Decidable
       · simp
     · push Not at h1
       have hlt : 1 < Fintype.card V := by omega
-      haveI : Nontrivial V := ⟨Fintype.one_lt_card_iff.mp hlt⟩
+      have : Nontrivial V := ⟨Fintype.one_lt_card_iff.mp hlt⟩
       obtain ⟨v, hv⟩ := hconn.exists_connected_induce_compl_singleton_of_finite_nontrivial
       have hcard' : Fintype.card ↥(({v}ᶜ : Set V)) = n - 1 := by
         rw [Fintype.card_compl_set (s := ({v} : Set V)), hcard]
@@ -48,7 +48,7 @@ theorem xap7_gen_closed_walk : ∀ (n : ℕ) (V : Type u) [Fintype V] [Decidable
             ⟨⟨v, Set.mem_singleton v⟩, fun x => Subtype.ext (Set.mem_singleton_iff.mp x.prop)⟩
         rw [hsing]
       have hlt' : Fintype.card ↥(({v}ᶜ : Set V)) < n := by omega
-      haveI : Nonempty ↥(({v}ᶜ : Set V)) := by
+      have : Nonempty ↥(({v}ᶜ : Set V)) := by
         rw [← Fintype.card_pos_iff]; omega
       let r' : ↥(({v}ᶜ : Set V)) := Classical.arbitrary _
       obtain ⟨q, hqsup, hqlen⟩ :=

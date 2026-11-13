@@ -85,7 +85,7 @@ theorem measurableSet_stabilizable (F : (Site d → ℤ) → (Site d → ℤ))
   have heq : {η : Site d → ℤ | Stabilizable (F η)} =
       ⋃ T : ℕ, ⋂ x : Site d, {η : Site d → ℤ | podo (F η) (T + 1) x = podo (F η) T x} := by
     ext η
-    simp only [Set.mem_setOf_eq, Set.mem_iUnion, Set.mem_iInter, stabilizable_iff_podo_step,
+    simp only [Set.mem_ofPred_eq, Set.mem_iUnion, Set.mem_iInter, stabilizable_iff_podo_step,
       funext_iff]
   rw [heq]
   refine MeasurableSet.iUnion fun T => MeasurableSet.iInter fun x => ?_
@@ -104,7 +104,7 @@ theorem measurableSet_robust : MeasurableSet {η : Site d → ℤ | Robust η} :
       ⋂ n : ℕ, {η : Site d → ℤ | 1 ≤ n →
         Stabilizable (fun x => η x + n * dirac (0 : Site d) x)} := by
     ext η
-    simp only [Set.mem_setOf_eq, Set.mem_iInter, Robust]
+    simp only [Set.mem_ofPred_eq, Set.mem_iInter, Robust]
   rw [heq]
   refine MeasurableSet.iInter fun n => ?_
   by_cases hn : 1 ≤ n

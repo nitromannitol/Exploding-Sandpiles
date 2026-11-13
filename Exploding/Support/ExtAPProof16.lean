@@ -26,6 +26,7 @@ variable {d : ℕ}
 
 /-! ### The good cluster is `*`-connected -/
 
+set_option backward.isDefEq.respectTransparency.types false in
 /-- Appending one star-step of a good site keeps good connectivity. -/
 theorem xap16_goodConnected_star {ω : Site d × Fin d → Bool} {c z : Site d}
     (hc : xap3_GoodConnected ω c) (hz : xap_Good ω z) (hcz : xap_Star c z) :

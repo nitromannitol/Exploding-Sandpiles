@@ -136,7 +136,7 @@ theorem pclose_corner_path (k : ℕ) (hk : 1 ≤ k) (c : ℕ → Site d) :
     refine ⟨L + k, fun q => if q ≤ L then z q else σ (q - L), by nlinarith, ?_, ?_, ?_, ?_⟩
     · simpa using hz0
     · have h1 : ¬ (L + k ≤ L) := by omega
-      simp only [h1, if_false]
+      simp only [h1, ite_false]
       simp only [σ, Nat.add_sub_cancel_left]
       exact hcδ.symm
     · intro q hq
@@ -147,7 +147,7 @@ theorem pclose_corner_path (k : ℕ) (hk : 1 ≤ k) (c : ℕ → Site d) :
       · have hqL' : L ≤ q := not_lt.mp hqL
         by_cases hq0 : q = L
         · subst hq0
-          simp only [le_refl, if_true, show ¬ (q + 1 ≤ q) from by omega, if_false]
+          simp only [le_refl, ite_true, show ¬ (q + 1 ≤ q) from by omega, ite_false]
           simp only [Nat.add_sub_cancel_left]
           have := hσadj 0
           have hσ0 : σ 0 = z q := by
@@ -157,16 +157,16 @@ theorem pclose_corner_path (k : ℕ) (hk : 1 ≤ k) (c : ℕ → Site d) :
           simpa using this
         · have h1 : ¬ q ≤ L := by omega
           have h2 : ¬ q + 1 ≤ L := by omega
-          simp only [h1, h2, if_false]
+          simp only [h1, h2, ite_false]
           have h3 : q + 1 - L = (q - L) + 1 := by omega
           rw [h3]
           exact hσadj (q - L)
     · intro q hq
       by_cases hqL : q ≤ L
-      · simp only [hqL, if_true]
+      · simp only [hqL, ite_true]
         obtain ⟨s, hs, hmem⟩ := hzmem q hqL
         exact ⟨s, by omega, hmem⟩
-      · simp only [hqL, if_false]
+      · simp only [hqL, ite_false]
         set r := q - L with hr
         have hr1 : 1 ≤ r := by omega
         have hrk : r ≤ k := by omega
@@ -181,10 +181,10 @@ theorem pclose_corner_path (k : ℕ) (hk : 1 ≤ k) (c : ℕ → Site d) :
               ring
             rw [hc]
             by_cases hl : l = dir
-            · simp only [hl, if_true]
+            · simp only [hl, ite_true]
               have : (r : ℤ) + 1 ≤ (k : ℤ) := by exact_mod_cast hrk'
               constructor <;> nlinarith
-            · simp only [hl, if_false, mul_zero, add_zero]
+            · simp only [hl, ite_false, mul_zero, add_zero]
               exact ⟨le_rfl, hk1⟩
           · have hrk2 : r = k := by omega
             refine ⟨m + 1, le_rfl, ?_⟩
@@ -216,11 +216,11 @@ theorem pclose_corner_path (k : ℕ) (hk : 1 ≤ k) (c : ℕ → Site d) :
             · simp [hl]
           rw [hc]
           by_cases hl : l = dir
-          · simp only [hl, if_true]
+          · simp only [hl, ite_true]
             have h1 : (r : ℤ) ≤ (k : ℤ) := by exact_mod_cast hrk
             have h2 : (1 : ℤ) ≤ (r : ℤ) := by exact_mod_cast hr1
             constructor <;> nlinarith
-          · simp only [hl, if_false, mul_zero, add_zero]
+          · simp only [hl, ite_false, mul_zero, add_zero]
             exact ⟨le_rfl, hk1⟩
 
 end Exploding

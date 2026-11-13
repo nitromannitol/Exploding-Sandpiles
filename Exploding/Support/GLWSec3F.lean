@@ -47,7 +47,7 @@ theorem glws_Nt_rep {N0 : Site d → ℝ} (hhom : ∀ (k : ℕ) (v : Site d), N0
     refine ⟨(v, q - 1), ?_⟩
     simp [Nat.sub_add_cancel hq]
   unfold glws_Nt
-  rw [dif_pos hex]
+  rw [dite_eq_left hex]
   have hspec := Classical.choose_spec hex
   set v' := (Classical.choose hex).1 with hv'
   set q' := (Classical.choose hex).2 + 1 with hq'

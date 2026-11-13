@@ -146,7 +146,7 @@ theorem cel_zh_add4 {a : ℤ} (ha : 1 ≤ a) (b : ℤ) : cel_zh (a + 4) b = cel_
   have h4 : (a + 4) % 4 = a % 4 := by omega
   have h0 : ¬ (a + 4 = 0) := by omega
   have h0' : ¬ (a = 0) := by omega
-  simp only [h4, h0, h0', false_and, if_false]
+  simp only [h4, h0, h0', false_and, ite_false]
 
 theorem cel_S_add4 {a : ℤ} (ha : 3 ≤ a) (t b : ℤ) :
     cel_S (t + 6) (a + 4) b = cel_S t a b := by
@@ -248,10 +248,10 @@ theorem cel_in2_cases {a b : ℤ} (h : cel_in2 a b) : zeta1 a b = 3 ∨ (a = 0 �
   · exact Or.inl h
   · by_cases ha : a < 2
     · unfold cel_col at h1
-      rw [if_pos ha] at h1
+      rw [ite_eq_left ha] at h1
       exact Or.inr ⟨h1, h2⟩
     · unfold cel_col at h1
-      rw [if_neg ha] at h1
+      rw [ite_eq_right ha] at h1
       omega
 
 theorem cel_t2_origin : cel_t2 0 0 = 7 := by decide
@@ -269,7 +269,7 @@ theorem cel_ev (t a b : ℤ) (h : cel_Q t a b < cel_Q (t + 1) a b) :
   · exfalso
     have hB : ¬ cel_in2 a b := fun hh => hA hh.1
     unfold cel_Q cel_f1 cel_f2 at h
-    simp only [hA, hB, false_and, if_false] at h
+    simp only [hA, hB, false_and, ite_false] at h
     omega
   obtain ⟨hT1, hS1⟩ := c1 hA
   by_cases hB : cel_in2 a b
@@ -281,7 +281,7 @@ theorem cel_ev (t a b : ℤ) (h : cel_Q t a b < cel_Q (t + 1) a b) :
       have e2 : ¬ cel_t2 a b ≤ t := by omega
       have e3 : ¬ cel_t2 a b ≤ t + 1 := by omega
       have e4 : cel_t1 a b ≤ t + 1 := by omega
-      simp only [e1, e2, e3, e4, if_true, if_false]
+      simp only [e1, e2, e3, e4, ite_true, ite_false]
       have hSt : cel_S t a b = cel_S (cel_t1 a b - 1) a b := by
         congr 1; omega
       refine ⟨by norm_num, ?_, ?_⟩
@@ -293,23 +293,23 @@ theorem cel_ev (t a b : ℤ) (h : cel_Q t a b < cel_Q (t + 1) a b) :
         have e2 : ¬ cel_t2 a b ≤ t := by omega
         have e3 : cel_t2 a b ≤ t + 1 := by omega
         have e4 : cel_t1 a b ≤ t + 1 := by omega
-        simp only [e1, e2, e3, e4, if_true, if_false]
+        simp only [e1, e2, e3, e4, ite_true, ite_false]
         have hSt : cel_S t a b = cel_S (cel_t2 a b - 1) a b := by
           congr 1; omega
         refine ⟨by norm_num, ?_, ?_⟩
         · rw [← hSt] at hS2; omega
         · unfold cel_val
-          simp only [one_ne_zero, if_false]
+          simp only [one_ne_zero, ite_false]
           rcases cel_in2_cases hB with hz | ⟨ha0, hb0⟩
           · have hH : cel_H a b := ⟨hA, hz⟩
-            simp only [hH, if_true]
+            simp only [hH, ite_true]
             have : cel_t1 a b + 1 ≤ t := by omega
             simp [this]
           · have hnH : ¬ cel_H a b := by
               rintro ⟨_, hz⟩
               subst ha0; subst hb0
               revert hz; decide
-            simp only [hnH, if_false]
+            simp only [hnH, ite_false]
             subst ha0; subst hb0
             have h7 : t = 6 := by
               have := cel_t2_origin
@@ -321,11 +321,11 @@ theorem cel_ev (t a b : ℤ) (h : cel_Q t a b < cel_Q (t + 1) a b) :
         simp only [e1, e2] at h
         omega
   · unfold cel_Q cel_f1 cel_f2 at h ⊢
-    simp only [hA, hB, true_and, false_and, if_false] at h ⊢
+    simp only [hA, hB, true_and, false_and, ite_false] at h ⊢
     by_cases hj1 : cel_t1 a b = t + 1
     · have e1 : ¬ cel_t1 a b ≤ t := by omega
       have e4 : cel_t1 a b ≤ t + 1 := by omega
-      simp only [e1, e4, if_true, if_false]
+      simp only [e1, e4, ite_true, ite_false]
       have hSt : cel_S t a b = cel_S (cel_t1 a b - 1) a b := by
         congr 1; omega
       refine ⟨by norm_num, ?_, ?_⟩

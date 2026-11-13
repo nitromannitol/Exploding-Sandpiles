@@ -59,12 +59,12 @@ theorem xsch18_mem_sub (n : ℕ) (x : Site d) (hx : x ∈ cube d n) :
   constructor
   · rw [hlo]
     by_cases h : (n / 2 : ℤ) < x j
-    · rw [if_pos h]; omega
-    · rw [if_neg h]; omega
+    · rw [ite_eq_left h]; omega
+    · rw [ite_eq_right h]; omega
   · rw [hhi]
     by_cases h : (n / 2 : ℤ) < x j
-    · rw [if_pos h]; omega
-    · rw [if_neg h]; omega
+    · rw [ite_eq_left h]; omega
+    · rw [ite_eq_right h]; omega
 
 /-- **L-shape lemma at every scale.**  If at most one of the `2^d` boxes of the
 `n/2`-split of `Q_n` fails to be internally spanned, then `Q_n` is spanned. -/

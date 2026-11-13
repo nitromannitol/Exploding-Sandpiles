@@ -40,7 +40,7 @@ theorem xsb_mem_box {lo hi x : Site d} : x ∈ xsb_box lo hi ↔ ∀ i, lo i ≤
 theorem xsb_box_finite (lo hi : Site d) : (xsb_box lo hi).Finite := by
   have h : xsb_box lo hi = Set.pi Set.univ (fun i => Set.Icc (lo i) (hi i)) := by
     ext x
-    simp only [xsb_box, Set.mem_setOf_eq, Set.mem_pi, Set.mem_univ, true_implies, Set.mem_Icc]
+    simp only [xsb_box, Set.mem_ofPred_eq, Set.mem_pi, Set.mem_univ, true_implies, Set.mem_Icc]
   rw [h]
   exact Set.Finite.pi fun i => Set.finite_Icc (lo i) (hi i)
 
@@ -80,7 +80,7 @@ theorem xsb_grow_up {J : Finset (Fin d)} {i : Fin d} (hiJ : i ∈ J) {B : Set (S
         rwa [Function.update_of_ne hj] at this
     refine xsch_Sp_grow hiJ false hLB hT ?_ hL x hxL
     intro y hy
-    simp only [xsch_dir, Bool.false_eq_true, if_false]
+    simp only [xsch_dir, Bool.false_eq_true, ite_false]
     intro j
     by_cases hj : j = i
     · subst hj
@@ -125,7 +125,7 @@ theorem xsb_grow_down {J : Finset (Fin d)} {i : Fin d} (hiJ : i ∈ J) {B : Set 
         rwa [Function.update_of_ne hj] at this
     refine xsch_Sp_grow hiJ true hLB hT ?_ hL x hxL
     intro y hy
-    simp only [xsch_dir, if_true]
+    simp only [xsch_dir, ite_true]
     intro j
     by_cases hj : j = i
     · subst hj

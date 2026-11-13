@@ -41,7 +41,7 @@ theorem xmx_highDensity_openCrosses (d : ℕ) (hd : 2 ≤ d) :
           Filter.atTop (𝓝 1) := by
   obtain ⟨p, hp0, hp1, hp⟩ := xmw_highDensity_ae (d := d) hd
   refine ⟨p, hp0, hp1, fun q hq0 hq1 hpq i => ?_⟩
-  haveI : IsProbabilityMeasure (bondPercolation d q) := rn_infinitePi_isProb hq0 hq1
+  have : IsProbabilityMeasure (bondPercolation d q) := rn_infinitePi_isProb hq0 hq1
   exact xmj2_tendsto_measure_one_of_ae_eventually (bondPercolation d q)
     (fun n => xmw_openCrosses_measurable (n := n) i) (hp q hq0 hq1 hpq i)
 

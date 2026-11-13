@@ -51,7 +51,7 @@ theorem xbc_sitePercolation_allClosed {q : ℝ} (h0 : 0 ≤ q) (h1 : q ≤ 1)
     (Γ : Finset (Site d)) :
     sitePercolation d q (xbc_allClosed Γ) = ENNReal.ofReal ((1 - q) ^ Γ.card) := by
   classical
-  haveI : IsProbabilityMeasure (bitLaw q) := xlss6_bitLaw_isProb h0 h1
+  have : IsProbabilityMeasure (bitLaw q) := xlss6_bitLaw_isProb h0 h1
   have hq : (0 : ℝ) ≤ 1 - q := by linarith
   have hbit : bitLaw q {false} = ENNReal.ofReal (1 - q) := by
     unfold bitLaw

@@ -31,7 +31,7 @@ noncomputable def xap5_dirFinset (d : ℕ) : Finset (Site d) :=
 
 theorem xap5_mem_dirFinset {v : Site d} :
     v ∈ xap5_dirFinset d ↔ xap_Star (0 : Site d) v := by
-  rw [xap5_dirFinset, Finset.mem_erase, xap_mem_cubeFinset, xap_cube, Set.mem_setOf_eq]
+  rw [xap5_dirFinset, Finset.mem_erase, xap_mem_cubeFinset, xap_cube, Set.mem_ofPred_eq]
   constructor
   · rintro ⟨hne, h⟩
     refine ⟨hne.symm, fun i => ?_⟩

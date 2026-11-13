@@ -24,13 +24,13 @@ theorem aux_penultimate_bounds (d : ℕ) (p : ℝ) (hp : 0 < p) (hp1 : p < 1) :
     ∀ᵐ η ∂(toyLaw d p), ∀ x : Site d, 2 * (d : ℤ) - 2 ≤ η x ∧ η x ≤ 2 * (d : ℤ) - 1 := by
   have hpos_p : (0 : ℝ) ≤ p := by linarith
   have hle_p : (0 : ℝ) ≤ 1 - p := by linarith
-  haveI hprob : IsProbabilityMeasure (chipLaw (2 * (d : ℤ) - 1) (2 * (d : ℤ) - 2) p) := by
+  have hprob : IsProbabilityMeasure (chipLaw (2 * (d : ℤ) - 1) (2 * (d : ℤ) - 2) p) := by
     constructor
     simp only [chipLaw, Measure.add_apply, Measure.smul_apply, Measure.dirac_apply',
       MeasurableSet.univ, Set.indicator_univ, Pi.one_apply, smul_eq_mul, mul_one]
     rw [← ENNReal.ofReal_add hpos_p hle_p]
     norm_num
-  haveI hprob' : ∀ _ : Site d, IsProbabilityMeasure (chipLaw (2 * (d : ℤ) - 1) (2 * (d : ℤ) - 2) p) :=
+  have hprob' : ∀ _ : Site d, IsProbabilityMeasure (chipLaw (2 * (d : ℤ) - 1) (2 * (d : ℤ) - 2) p) :=
     fun _ => hprob
   have h_each (x : Site d) : ∀ᵐ η ∂(toyLaw d p), 2 * (d : ℤ) - 2 ≤ η x ∧ η x ≤ 2 * (d : ℤ) - 1 := by
     have h_marginal_eq : (toyLaw d p).map (fun η : Site d → ℤ => η x) =
@@ -195,7 +195,7 @@ theorem aux_penultimate_wave_pos_implies_terminal {d : ℕ} (η : Site d → ℤ
       exact wave_mono_time η hlow hd (waveThreshold η zc - 1) zc hle x
     · rw [← hmem t hle]
       exact ht)
-  simp only [penultimateWave, if_neg h1]
+  simp only [penultimateWave, ite_eq_right h1]
   rw [hwt]
   exact hpos
 
@@ -256,12 +256,12 @@ theorem aux_penultimate_connected_to_centre {d : ℕ} (η : Site d → ℤ)
             · subst hjr'; simp [hpr']; exact hadjy'
             · have h1 : j ≠ r' + 1 := by omega
               have h2 : j + 1 ≠ r' + 1 := by omega
-              simp only [h1, h2, if_false]
+              simp only [h1, h2, ite_false]
               exact hstep' j (by omega)
           · intro j hj
             by_cases hjeq : j = r' + 1
             · simp [hjeq]; exact hxpos
-            · simp only [hjeq, if_false]
+            · simp only [hjeq, ite_false]
               exact hinv' j (by omega)
   have hyt : 0 < wave η (waveThreshold η zc - 1) zc
       (sInf {T : ℕ | ∀ t : ℕ, T ≤ t →
@@ -269,7 +269,7 @@ theorem aux_penultimate_connected_to_centre {d : ℕ} (η : Site d → ℤ)
     have heq : penultimateWave η zc y = wave η (waveThreshold η zc - 1) zc
         (sInf {T : ℕ | ∀ t : ℕ, T ≤ t →
           wave η (waveThreshold η zc - 1) zc t = wave η (waveThreshold η zc - 1) zc T}) y := by
-      simp only [penultimateWave, if_neg h1ne, waveTerminal]
+      simp only [penultimateWave, ite_eq_right h1ne, waveTerminal]
     rwa [heq] at hy
   exact main _ y hyt
 
@@ -339,9 +339,9 @@ theorem aux_penultimate_path_box_closure_dominates {d : ℕ} (hd : 2 ≤ d) (η 
   | succ t ih =>
     intro x
     by_cases hxA : x ∈ A
-    · rw [Exploding.fodo_succ, if_pos hxA]
+    · rw [Exploding.fodo_succ, ite_eq_left hxA]
       simpa [hxA] using hApos x hxA
-    · rw [Exploding.fodo_succ, if_neg hxA]
+    · rw [Exploding.fodo_succ, ite_eq_right hxA]
       by_cases hxzc : x = zc
       · have hxA' : zc ∉ A := by rwa [← hxzc]
         have h_fodo_nonneg : ∀ (t' : ℕ) (x' : Site d), 0 ≤ fodo A η (Set.indicator A 1) t' x' := by
@@ -362,7 +362,7 @@ theorem aux_penultimate_path_box_closure_dominates {d : ℕ} (hd : 2 ≤ d) (η 
             intro x'
             rw [Exploding.fodo_succ]
             by_cases hx' : x' ∈ A
-            · rw [if_pos hx']
+            · rw [ite_eq_left hx']
               exact hw0le x'
             · simp [hx']
               split_ifs with hcap'
@@ -389,7 +389,7 @@ theorem aux_penultimate_path_box_closure_dominates {d : ℕ} (hd : 2 ≤ d) (η 
               · simpa [add_zero] using ih' x'
         have hle1 : fodo A η (Set.indicator A 1) t zc ≤ 1 := h_fodo_le_one t zc
         have hnext : fodo A η (Set.indicator A 1) (t + 1) zc ≤ 1 := by
-          rw [Exploding.fodo_succ, if_neg hxA']
+          rw [Exploding.fodo_succ, ite_eq_right hxA']
           split_ifs with hcap
           · have hfodo0 : fodo A η (Set.indicator A 1) t zc = 0 := by
               by_contra hgt
@@ -412,13 +412,13 @@ theorem aux_penultimate_path_box_closure_dominates {d : ℕ} (hd : 2 ≤ d) (η 
           · simpa [add_zero] using hle1
         have hgoal : fodo A η (Set.indicator A 1) (t + 1) zc ≤ penultimateWave η zc zc :=
           le_trans hnext hzcpos
-        simpa [hxzc, Exploding.fodo_succ, if_neg hxA'] using hgoal
+        simpa [hxzc, Exploding.fodo_succ, ite_eq_right hxA'] using hgoal
       · have hfix := penultimateWave_fixed η hη0 hhigh zc hlast hxzc
         have hN_mono : nbrSumZ (fodo A η (Set.indicator A 1) t) x ≤
             nbrSumZ (penultimateWave η zc) x :=
           nbrSumZ_mono ih x
         by_cases hcap : 2 * (d : ℤ) ≤ fconf A η (Set.indicator A 1) t x
-        · rw [if_pos hcap]
+        · rw [ite_eq_left hcap]
           have hineq : (fodo A η (Set.indicator A 1) t x + 1) * (2 * (d : ℤ)) ≤
               nbrSumZ (penultimateWave η zc) x + η x := by
             have hcap_unfolded : 2 * (d : ℤ) ≤
@@ -437,7 +437,7 @@ theorem aux_penultimate_path_box_closure_dominates {d : ℕ} (hd : 2 ≤ d) (η 
           rw [hfix]
           rw [Int.le_ediv_iff_mul_le hd0]
           nlinarith
-        · rw [if_neg hcap]
+        · rw [ite_eq_right hcap]
           linarith [ih x]
 
 theorem aux_penultimate_path_box_closure {d : ℕ} (hd : 2 ≤ d) (η : Site d → ℤ)
@@ -671,7 +671,7 @@ theorem penultimate_pos_at_time {d : ℕ} (η : Site d → ℤ) (_hlow : ∀ x, 
     ∃ t : ℕ, 0 < wave η (waveThreshold η zc - 1) zc t v0 := by
   obtain ⟨T, hT⟩ := penultimate_stabilizable η zc hlast h1
   refine ⟨T, ?_⟩
-  rw [penultimateWave, if_neg h1] at hv0
+  rw [penultimateWave, ite_eq_right h1] at hv0
   have hle : sInf {T : ℕ | ∀ t : ℕ, T ≤ t →
       wave η (waveThreshold η zc - 1) zc t = wave η (waveThreshold η zc - 1) zc T} ≤ T :=
     Nat.sInf_le hT
@@ -887,7 +887,7 @@ theorem macro_reach {d : ℕ} (η : Site d → ℤ) (hlow : ∀ x, 0 ≤ η x)
     · subst h
       exact ⟨havoid (t + 1) 0 hx, havoid (t + 1) 0 hx, SimpleGraph.Reachable.refl _⟩
     · have hxorig : 0 < wave η n (0 : Site d) (t + 1) x := hx
-      rw [if_neg h] at hx
+      rw [ite_eq_right h] at hx
       by_cases hx' : 0 < wave η n (0 : Site d) t x
       · exact ih x hx'
       · have hsum : 0 < nbrSumZ (wave η n (0 : Site d) t) x :=
@@ -932,7 +932,7 @@ theorem penultimate_le_last {d : ℕ} (η : Site d → ℤ) (_hlow0 : ∀ y, 0 �
       wave η (waveThreshold η z - 1) z T)
     (t : ℕ) (ht : T ≤ t) (x : Site d) :
     penultimateWave η z x ≤ lastWave η z t x := by
-  rw [penultimateWave, if_neg h1, lastWave]
+  rw [penultimateWave, ite_eq_right h1, lastWave]
   have hspec := waveTerminal_spec η (waveThreshold η z - 1) z ⟨T, hT⟩ T
     (Nat.sInf_le (show T ∈ {T : ℕ | ∀ t : ℕ, T ≤ t →
       wave η (waveThreshold η z - 1) z t = wave η (waveThreshold η z - 1) z T} from hT))
@@ -1018,8 +1018,8 @@ theorem aux_penultimate_run_meets_cube {d : ℕ} (η : Site d → ℤ)
     intro l
     simp only
     by_cases hl : l = dir
-    · rw [if_pos hl]; exact ⟨le_refl 1, hk1⟩
-    · rw [if_neg hl]
+    · rw [ite_eq_left hl]; exact ⟨le_refl 1, hk1⟩
+    · rw [ite_eq_right hl]
       have hmod0 : 0 ≤ (zc l - 1) % (k : ℤ) := Int.emod_nonneg _ (by linarith)
       have hmodk : (zc l - 1) % (k : ℤ) < (k : ℤ) := Int.emod_lt_of_pos _ hk0
       constructor <;> linarith
@@ -1030,7 +1030,7 @@ theorem aux_penultimate_run_meets_cube {d : ℕ} (η : Site d → ℤ)
       intro l hl
       have hwl : w l = ((zc l - 1) % (k : ℤ)) + 1 := by
         have := hw.2 l hl
-        simpa only [if_neg hl] using this
+        simpa only [ite_eq_right hl] using this
       have hdiv : (k : ℤ) * ((zc l - 1) / (k : ℤ)) = zc l - 1 - ((zc l - 1) % (k : ℤ)) := by
         have := Int.ediv_mul_add_emod (zc l - 1) (k : ℤ)
         linarith
@@ -1050,8 +1050,8 @@ theorem aux_penultimate_run_meets_cube {d : ℕ} (η : Site d → ℤ)
         = (w + (k : ℤ) • i) := by
       ext l
       by_cases hl : l = dir
-      · subst hl; simp only [if_true, hdir]
-      · simp only [if_neg hl, hother l hl]
+      · subst hl; simp only [ite_true, hdir]
+      · simp only [ite_eq_right hl, hother l hl]
     rw [← hfun]
     exact hline _ hge hle
 
@@ -1108,7 +1108,7 @@ theorem aux_penultimate_overlap_propagate_line {d : ℕ} (hd : 2 ≤ d) (η : Si
   have hpen_eq : ∀ x : Site d,
       penultimateWave η zc x = wave η (waveThreshold η zc - 1) zc T x := by
     intro x
-    simp only [penultimateWave, if_neg h1, waveTerminal]
+    simp only [penultimateWave, ite_eq_right h1, waveTerminal]
     exact (congrFun (waveTerminal_spec η (waveThreshold η zc - 1) zc hpenstab' T
       (Nat.sInf_le hT)) x).symm
   have hpenfin : {x : Site d | 0 < penultimateWave η zc x}.Finite := by
@@ -1261,10 +1261,10 @@ theorem aux_penultimate_side_bound {d : ℕ} (hd : 2 ≤ d) (η : Site d → ℤ
       have hwl : w l = 1 := by
         have := hw.2 l hl
         simpa using this
-      have hil : i l = (zc l - 1) / (k : ℤ) := by simp only [hidef, if_neg hl]
+      have hil : i l = (zc l - 1) / (k : ℤ) := by simp only [hidef, ite_eq_right hl]
       simp only [Pi.add_apply, Pi.smul_apply, smul_eq_mul, hwl, hil]
     have hdir : (w + (k : ℤ) • i) dir = w dir + (k : ℤ) * v := by
-      simp only [Pi.add_apply, Pi.smul_apply, smul_eq_mul, hidef, if_true]
+      simp only [Pi.add_apply, Pi.smul_apply, smul_eq_mul, hidef, ite_true]
     have hge : 1 + (k : ℤ) * a ≤ w dir + (k : ℤ) * v := by
       have h1 : (k : ℤ) * a ≤ (k : ℤ) * v := mul_le_mul_of_nonneg_left hva (by linarith)
       linarith [hw.1.1]
@@ -1275,8 +1275,8 @@ theorem aux_penultimate_side_bound {d : ℕ} (hd : 2 ≤ d) (η : Site d → ℤ
         (w + (k : ℤ) • i) := by
       ext l
       by_cases hl : l = dir
-      · subst hl; simp only [if_true, hdir]
-      · simp only [if_neg hl, hother l hl, hw0 l hl]
+      · subst hl; simp only [ite_true, hdir]
+      · simp only [ite_eq_right hl, hother l hl, hw0 l hl]
     rw [← hfun]
     exact hline _ (hcont w hw v hva hvb).1 (hcont w hw v hva hvb).2
   exact aux_penultimate_overlap_propagate_line hd η hlow hhigh k hk Cinf hCinf zc i hvCinf
@@ -1308,7 +1308,7 @@ theorem aux_pub_reach_support_finite {d : ℕ} (η : Site d → ℤ) (hlow : ∀
       simp only [Pi.sub_apply] at h4 h5
       constructor <;> linarith)
   have h2 := aux_finite_exploding_speed η hlow hhigh n z t x h1
-  simp only [Set.mem_setOf_eq] at hx
+  simp only [Set.mem_ofPred_eq] at hx
   rw [h2] at hx
   exact lt_irrefl 0 hx
 
@@ -1361,7 +1361,7 @@ theorem aux_penultimate_overlap_propagate_line_one {d : ℕ} (hd : 2 ≤ d) (η 
   have hstab0 : WaveStabilizable η 1 zc := hstab' 
   have hpenT : ∀ x : Site d, penultimateWave η zc x = wave η 1 zc T x := by
     intro x
-    simp only [penultimateWave, if_neg h1, waveTerminal]
+    simp only [penultimateWave, ite_eq_right h1, waveTerminal]
     rw [show waveThreshold η zc - 1 = 1 by omega]
     exact (congrFun (waveTerminal_spec η 1 zc hstab' T (Nat.sInf_le hT)) x).symm
   have hline'' : ∀ w ∈ line d k dir z,
@@ -1525,7 +1525,7 @@ theorem aux_penultimate_side_bound_one {d : ℕ} (hd : 2 ≤ d) (η : Site d →
     have h1 : i dir = macroIdx k zc dir := by rw [hcon]
     have h2 : macroIdx k zc dir = v0 := by
       simp only [macroIdx, hv0def]
-    have h3 : i dir = v := by simp only [hidef, if_true]
+    have h3 : i dir = v := by simp only [hidef, ite_true]
     rw [h3, h2] at h1
     rcases hvout with hlt | hgt
     · omega
@@ -1539,10 +1539,10 @@ theorem aux_penultimate_side_bound_one {d : ℕ} (hd : 2 ≤ d) (η : Site d →
       have hwl : w l = 1 := by
         have := hw.2 l hl
         simpa using this
-      have hil : i l = (zc l - 1) / (k : ℤ) := by simp only [hidef, if_neg hl]
+      have hil : i l = (zc l - 1) / (k : ℤ) := by simp only [hidef, ite_eq_right hl]
       simp only [Pi.add_apply, Pi.smul_apply, smul_eq_mul, hwl, hil]
     have hdir : (w + (k : ℤ) • i) dir = w dir + (k : ℤ) * v := by
-      simp only [Pi.add_apply, Pi.smul_apply, smul_eq_mul, hidef, if_true]
+      simp only [Pi.add_apply, Pi.smul_apply, smul_eq_mul, hidef, ite_true]
     have hge : 1 + (k : ℤ) * a ≤ w dir + (k : ℤ) * v := by
       have h1 : (k : ℤ) * a ≤ (k : ℤ) * v := mul_le_mul_of_nonneg_left hva (by linarith)
       linarith [hw.1.1]
@@ -1553,8 +1553,8 @@ theorem aux_penultimate_side_bound_one {d : ℕ} (hd : 2 ≤ d) (η : Site d →
         (w + (k : ℤ) • i) := by
       ext l
       by_cases hl : l = dir
-      · subst hl; simp only [if_true, hdir]
-      · simp only [if_neg hl, hother l hl, hw0 l hl]
+      · subst hl; simp only [ite_true, hdir]
+      · simp only [ite_eq_right hl, hother l hl, hw0 l hl]
     rw [← hfun]
     exact hline _ (hcont w hw v hva hvb).1 (hcont w hw v hva hvb).2
   exact aux_penultimate_overlap_propagate_line_one hd η hlow hhigh k hk Cinf hCinf zc i
@@ -1695,7 +1695,7 @@ theorem aux_segment_meets_cinf_line {d : ℕ} (k : ℕ) (hk : 1 ≤ k)
     hin' j0 j0 hj0lo hj0hi le_rfl hlen'
   refine ⟨fun j => if j = l then v else (c j - 1) / (k : ℤ), hvC, ?_, ?_⟩
   · intro hcon
-    have h1 : (fun j => if j = l then v else (c j - 1) / (k : ℤ)) l = v := if_pos rfl
+    have h1 : (fun j => if j = l then v else (c j - 1) / (k : ℤ)) l = v := ite_eq_left rfl
     rw [h1] at hcon
     rcases hvout with hlt | hgt <;> omega
   · intro w hw
@@ -1704,7 +1704,7 @@ theorem aux_segment_meets_cinf_line {d : ℕ} (k : ℕ) (hk : 1 ≤ k)
     have hwj : ∀ j, j ≠ l → w j = 1 + (c j - 1) % (k : ℤ) := by
       intro j hj
       have := hw.2 j hj
-      simpa only [if_neg hj] using this
+      simpa only [ite_eq_right hj] using this
     have h1 : (k : ℤ) * ((a - 1) / (k : ℤ) + 1) ≥ a := by
       have := Int.ediv_mul_add_emod (a - 1) (k : ℤ)
       have h2 : 0 ≤ (a - 1) % (k : ℤ) := Int.emod_nonneg _ (by linarith)
@@ -1719,12 +1719,12 @@ theorem aux_segment_meets_cinf_line {d : ℕ} (k : ℕ) (hk : 1 ≤ k)
     have h4 : (k : ℤ) * v ≤ (k : ℤ) * ((b - (k : ℤ)) / (k : ℤ)) :=
       mul_le_mul_of_nonneg_left hv1 (by linarith)
     refine ⟨?_, ?_, ?_⟩
-    · simp only [Pi.add_apply, Pi.smul_apply, smul_eq_mul, if_true]
+    · simp only [Pi.add_apply, Pi.smul_apply, smul_eq_mul, ite_true]
       linarith
-    · simp only [Pi.add_apply, Pi.smul_apply, smul_eq_mul, if_true]
+    · simp only [Pi.add_apply, Pi.smul_apply, smul_eq_mul, ite_true]
       linarith
     · intro j hj
-      simp only [Pi.add_apply, Pi.smul_apply, smul_eq_mul, if_neg hj]
+      simp only [Pi.add_apply, Pi.smul_apply, smul_eq_mul, ite_eq_right hj]
       rw [hwj j hj]
       have h6 : (k : ℤ) * ((c j - 1) / (k : ℤ)) = c j - 1 - ((c j - 1) % (k : ℤ)) := by
         have := Int.ediv_mul_add_emod (c j - 1) (k : ℤ); linarith
@@ -1831,7 +1831,7 @@ theorem aux_segment_meets_cinf_line' {d : ℕ} (k : ℕ) (hk : 1 ≤ k)
     have hwj : ∀ j, j ≠ l → w j = 1 + (c j - 1) % (k : ℤ) := by
       intro j hj
       have := hw.2 j hj
-      simpa only [if_neg hj] using this
+      simpa only [ite_eq_right hj] using this
     have h1 : (k : ℤ) * ((a - 1) / (k : ℤ) + 1) ≥ a := by
       have := Int.ediv_mul_add_emod (a - 1) (k : ℤ)
       have h2 : 0 ≤ (a - 1) % (k : ℤ) := Int.emod_nonneg _ (by linarith)
@@ -1846,12 +1846,12 @@ theorem aux_segment_meets_cinf_line' {d : ℕ} (k : ℕ) (hk : 1 ≤ k)
     have h4 : (k : ℤ) * v ≤ (k : ℤ) * ((b - (k : ℤ)) / (k : ℤ)) :=
       mul_le_mul_of_nonneg_left hv1 (by linarith)
     refine ⟨?_, ?_, ?_⟩
-    · simp only [Pi.add_apply, Pi.smul_apply, smul_eq_mul, if_true]
+    · simp only [Pi.add_apply, Pi.smul_apply, smul_eq_mul, ite_true]
       linarith
-    · simp only [Pi.add_apply, Pi.smul_apply, smul_eq_mul, if_true]
+    · simp only [Pi.add_apply, Pi.smul_apply, smul_eq_mul, ite_true]
       linarith
     · intro j hj
-      simp only [Pi.add_apply, Pi.smul_apply, smul_eq_mul, if_neg hj]
+      simp only [Pi.add_apply, Pi.smul_apply, smul_eq_mul, ite_eq_right hj]
       rw [hwj j hj]
       have h6 : (k : ℤ) * ((c j - 1) / (k : ℤ)) = c j - 1 - ((c j - 1) % (k : ℤ)) := by
         have := Int.ediv_mul_add_emod (c j - 1) (k : ℤ); linarith
@@ -1904,8 +1904,8 @@ theorem aux_penultimate_segment_bound {d : ℕ} (hd : 2 ≤ d) (η : Site d → 
     have hfun : (fun j => if j = l then (w + (k : ℤ) • i) l else c j) = (w + (k : ℤ) • i) := by
       ext j
       by_cases hj : j = l
-      · subst hj; simp only [if_true]
-      · simp only [if_neg hj]
+      · subst hj; simp only [ite_true]
+      · simp only [ite_eq_right hj]
         exact (hoth j hj).symm
     rw [← hfun]
     exact hpos _ hlo hhi
@@ -1924,9 +1924,9 @@ theorem aux_penultimate_segment_bound {d : ℕ} (hd : 2 ≤ d) (η : Site d → 
         hline' _ (by
           refine ⟨⟨?_, ?_⟩, fun j hj => rfl⟩
           · show (1 : ℤ) ≤ (if l = l then (1 : ℤ) else 1 + (c l - 1) % (k : ℤ))
-            rw [if_pos rfl]
+            rw [ite_eq_left rfl]
           · show (if l = l then (1 : ℤ) else 1 + (c l - 1) % (k : ℤ)) ≤ (k : ℤ)
-            rw [if_pos rfl]; exact hk1)
+            rw [ite_eq_left rfl]; exact hk1)
       obtain ⟨h2, _⟩ := aux_penultimate_hlast η hlow0 hhigh zc _ hzpos
       omega
     exact aux_penultimate_overlap_propagate_line_one hd η hlow hhigh k hk Cinf hCinf zc i hiC
@@ -1979,8 +1979,8 @@ theorem aux_penultimate_segment_bound' {d : ℕ} (hd : 2 ≤ d) (η : Site d →
     have hfun : (fun j => if j = l then (w + (k : ℤ) • i) l else c j) = (w + (k : ℤ) • i) := by
       ext j
       by_cases hj : j = l
-      · subst hj; simp only [if_true]
-      · simp only [if_neg hj]
+      · subst hj; simp only [ite_true]
+      · simp only [ite_eq_right hj]
         exact (hoth j hj).symm
     rw [← hfun]
     exact hpos _ hlo hhi
@@ -1993,9 +1993,9 @@ theorem aux_penultimate_segment_bound' {d : ℕ} (hd : 2 ≤ d) (η : Site d →
         hline' _ (by
           refine ⟨⟨?_, ?_⟩, fun j hj => rfl⟩
           · show (1 : ℤ) ≤ (if l = l then (1 : ℤ) else 1 + (c l - 1) % (k : ℤ))
-            rw [if_pos rfl]
+            rw [ite_eq_left rfl]
           · show (if l = l then (1 : ℤ) else 1 + (c l - 1) % (k : ℤ)) ≤ (k : ℤ)
-            rw [if_pos rfl]; exact hk1)
+            rw [ite_eq_left rfl]; exact hk1)
       obtain ⟨h2, _⟩ := aux_penultimate_hlast η hlow0 hhigh zc _ hzpos
       omega
     exact aux_penultimate_overlap_propagate_line_one hd η hlow hhigh k hk Cinf hCinf zc i hiC

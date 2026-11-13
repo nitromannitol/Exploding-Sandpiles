@@ -22,7 +22,7 @@ theorem arxiv_innerBoundary_bond_defective {d : ℕ}
   let I : Set (Site d) := {y | (openBondGraph ζ).Reachable i y}
   have hb' : b ∈ innerBoundary (componentIn Iᶜ x) := by
     simpa only [I] using hb
-  simp only [innerBoundary, Set.mem_setOf_eq] at hb'
+  simp only [innerBoundary, Set.mem_ofPred_eq] at hb'
   obtain ⟨hbHole, c, hcHole, hbc⟩ := hb'
   obtain ⟨hxHole, hbInHole, hreach⟩ := hbHole
   have hcInI : c ∈ I := by

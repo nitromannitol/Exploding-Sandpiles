@@ -21,7 +21,7 @@ theorem xsch5_not_occ_prob {p : ℝ} [Fact (0 ≤ p ∧ p ≤ 1)] (hd : 1 ≤ d)
   have hset : {η : Site d → ℤ | ∀ x ∈ W, η x ≠ 2 * (d : ℤ)}
       = Set.pi (↑W : Set (Site d)) (fun _ => {2 * (d : ℤ)}ᶜ) := by
     ext η; simp [Set.pi]
-  haveI := xsch_chip_isProb (2 * (d : ℤ)) (d : ℤ) hp.1 hp.2
+  have := xsch_chip_isProb (2 * (d : ℤ)) (d : ℤ) hp.1 hp.2
   have hne : (d : ℤ) ≠ 2 * (d : ℤ) := by omega
   have h1 : chipLaw (2 * (d : ℤ)) (d : ℤ) p {2 * (d : ℤ)}ᶜ = ENNReal.ofReal (1 - p) := by
     simp only [chipLaw, Measure.add_apply, Measure.smul_apply]

@@ -38,8 +38,8 @@ theorem recOdo_succ (d : ℕ) (V : Finset (Site d)) (t : ℕ) (x : Site d) :
         (if 2 * (d : ℤ) ≤ (d : ℤ) + lap (recOdo d V t) x then 1 else 0) := by
   rw [recOdo, fodo_succ]
   by_cases hx : x ∈ (↑V : Set (Site d))ᶜ
-  · rw [if_pos hx, if_pos hx]
-  · rw [if_neg hx, if_neg hx]
+  · rw [ite_eq_left hx, ite_eq_left hx]
+  · rw [ite_eq_right hx, ite_eq_right hx]
     congr 1
 
 /-- Off `V` the recurrence odometer never moves. -/
@@ -51,7 +51,7 @@ theorem recOdo_of_notMem (d : ℕ) (V : Finset (Site d)) (t : ℕ) {x : Site d}
 /-- On `V` the recurrence odometer starts at `0`. -/
 theorem recOdo_zero_of_mem (d : ℕ) (V : Finset (Site d)) {x : Site d} (hx : x ∈ V) :
     recOdo d V 0 x = 0 := by
-  rw [recOdo_zero, if_neg (fun h => h.1 hx)]
+  rw [recOdo_zero, ite_eq_right (fun h => h.1 hx)]
 
 /-- The recurrence odometer is nonnegative. -/
 theorem recOdo_nonneg (d : ℕ) (V : Finset (Site d)) (t : ℕ) (x : Site d) :
@@ -64,8 +64,8 @@ theorem recOdo_mono (d : ℕ) (V : Finset (Site d)) (t : ℕ) (x : Site d) :
     recOdo d V t x ≤ recOdo d V (t + 1) x := by
   rw [recOdo_succ]
   by_cases hx : x ∈ (↑V : Set (Site d))ᶜ
-  · rw [if_pos hx, recOdo_of_notMem d V t (by simpa using hx)]
-  · rw [if_neg hx]
+  · rw [ite_eq_left hx, recOdo_of_notMem d V t (by simpa using hx)]
+  · rw [ite_eq_right hx]
     split_ifs <;> omega
 
 end Exploding

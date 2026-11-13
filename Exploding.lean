@@ -354,6 +354,7 @@ import Exploding.Frozen.DimensionalReduction
 import Exploding.Frozen.Recurrence
 import Exploding.Frozen.BoxCrossing
 import Exploding.MainTheorems
+import Exploding.MainTheoremsFdBRProved
 
 import Exploding.Support.OmegaErgodic
 import Exploding.Support.OmegaTraceSigma
@@ -381,6 +382,7 @@ import Exploding.Support.SquareWaveComparison
 import Exploding.Support.SquareGreenOrigin
 import Exploding.Support.LatticeSandpileBridge
 import Exploding.External.FeyDenBoerRedigCubicalCluster
+import Exploding.External.FeyDenBoerRedigCubicalClusterProved
 import Exploding.External.FeyLevinePeresRadius
 import Exploding.Support.SquareRadiusGreen
 

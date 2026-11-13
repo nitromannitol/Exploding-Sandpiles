@@ -54,9 +54,15 @@ theorem xfmr_legal_le {d : ℕ} {s0 w : Site d → ℤ} {u : ℕ → Site d → 
 
 end Exploding
 
-/-- The least action principle of Fey, Meester and Redig, with the proof of this file.  The
-statement `Exploding.xfmr_proved` below is proved by the corresponding result of
-Lattice-Probability. -/
+/-- The least action principle of Fey, Meester and Redig. -/
+-- FROZEN-STATEMENT-BEGIN
+theorem Exploding.xfmr_proved : Exploding.External.FeyMeesterRedigLeastAction
+-- FROZEN-STATEMENT-END
+  := by
+  exact LatticeProb.External.feyMeesterRedigLeastAction_holds
+
+/-- The least action principle of Fey, Meester and Redig, with the proof of this file, which does
+not use Lattice-Probability's.  No other declaration uses it. -/
 theorem Exploding.xfmr_own : Exploding.External.FeyMeesterRedigLeastAction := by
   intro d _ s0 _ u v hu hv w hvw hw k x
   have hw0 : ∀ y, 0 ≤ w y := by
@@ -65,10 +71,3 @@ theorem Exploding.xfmr_own : Exploding.External.FeyMeesterRedigLeastAction := by
     rw [← hK K le_rfl]
     exact xfmr_legal_nonneg hv K y
   exact xfmr_legal_le hu hw0 hw k x
-
-/-- The least action principle of Fey, Meester and Redig. -/
--- FROZEN-STATEMENT-BEGIN
-theorem Exploding.xfmr_proved : Exploding.External.FeyMeesterRedigLeastAction
--- FROZEN-STATEMENT-END
-  := by
-  exact LatticeProb.External.feyMeesterRedigLeastAction_holds

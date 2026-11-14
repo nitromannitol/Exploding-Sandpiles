@@ -355,6 +355,7 @@ import Exploding.Frozen.Recurrence
 import Exploding.Frozen.BoxCrossing
 import Exploding.MainTheorems
 import Exploding.MainTheoremsFdBRProved
+import Exploding.MainTheoremsFLPProved
 
 import Exploding.Support.OmegaErgodic
 import Exploding.Support.OmegaTraceSigma
@@ -384,6 +385,7 @@ import Exploding.Support.LatticeSandpileBridge
 import Exploding.External.FeyDenBoerRedigCubicalCluster
 import Exploding.External.FeyDenBoerRedigCubicalClusterProved
 import Exploding.External.FeyLevinePeresRadius
+import Exploding.External.FeyLevinePeresRadiusProved
 import Exploding.Support.SquareRadiusGreen
 
 import Exploding.Support.SquareLowerBoundExponential

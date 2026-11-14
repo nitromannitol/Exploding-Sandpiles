@@ -24,6 +24,8 @@ import Exploding.Support.ExplosiveVacuity
 import Exploding.Support.ExtFMR
 import Exploding.External.FeyDenBoerRedigCubicalClusterProved
 import Exploding.MainTheoremsFdBRProved
+import Exploding.External.FeyLevinePeresRadiusProved
+import Exploding.MainTheoremsFLPProved
 import Exploding.Support.LSProofAux
 import Exploding.Support.ExtLSSCountable
 import Exploding.Support.ExtMHHoleVolume
@@ -145,6 +147,9 @@ The default library build includes this module. It can also be built explicitly 
 #print axioms Exploding.sharp_planar_obstruction_of_radius
 #print axioms Exploding.External.FeyLevinePeresRadius
 #print axioms Exploding.External.FeyLevinePeresRadius_iff
+#print axioms Exploding.External.feyLevinePeresRadius_holds
+#print axioms Exploding.square_lower_bound_unconditional
+#print axioms Exploding.sharp_planar_obstruction_unconditional
 #print axioms Exploding.squareRadiusGreen_terminal_bound
 
 #print axioms Exploding.square_lower_bound_exponential

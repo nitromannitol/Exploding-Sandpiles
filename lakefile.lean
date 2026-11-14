@@ -5,7 +5,7 @@ package «exploding-sandpiles» where
   leanOptions := #[⟨`autoImplicit, false⟩]
 
 require «lattice-probability» from git
-  "https://github.com/nitromannitol/Lattice-Probability.git" @ "d36783565c4de41cce5cf079ddd5ace3efe6a8ff"
+  "https://github.com/nitromannitol/Lattice-Probability.git" @ "7f773dd0aa66dbe1ed1080ae0248906b9cfe5215"
 
 require mathlib from git
   "https://github.com/leanprover-community/mathlib4.git" @ "065356127b1dc0016f66b7283ce0ce2c4055aa55"

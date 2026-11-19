@@ -191,14 +191,14 @@ Cited results appear as explicit hypotheses in registered statements; some can b
   comparator challenge [`ExplodingAudit/LimitShape/Challenge.lean`](ExplodingAudit/LimitShape/Challenge.lean)
   has one intentional statement-level `sorry`.
 - **Standard axioms only.** [`Exploding/Meta/AxiomsAudit.lean`](Exploding/Meta/AxiomsAudit.lean)
-  prints the axioms of 95 theorems, and [`scripts/check_axioms.py`](scripts/check_axioms.py)
+  prints the axioms of 115 theorems, and [`scripts/check_axioms.py`](scripts/check_axioms.py)
   requires exactly `propext`, `Classical.choice` and `Quot.sound` for each theorem of its explicit
   list.
 - **Independent check of the statements.** The Mathlib-only pair [`ExplodingAudit/LimitShape/`](ExplodingAudit/LimitShape/)
   restates Theorem 1.2 for `0 < p ≤ 1` over Mathlib alone, with the four cited results its
   statement takes as hypotheses. It is the only pair.
-- **Pinned toolchain and dependencies.** Lean `v4.32.0`, Mathlib `81a5d257c8e410db227a6665ed08f64fea08e997` and
-  Lattice-Probability `78f4b2cec065fa2fb5116b06c41966855f62cf50`, as recorded in
+- **Pinned toolchain and dependencies.** Lean `v4.35.0-rc2`, Mathlib `065356127b1dc0016f66b7283ce0ce2c4055aa55` and
+  Lattice-Probability `7f773dd0aa66dbe1ed1080ae0248906b9cfe5215`, as recorded in
   [`lean-toolchain`](lean-toolchain) and [`lake-manifest.json`](lake-manifest.json) (see
   [Building](#building)).
 - **The paper is part of the repository.** The statement map refers to the corrected edition in
@@ -213,10 +213,8 @@ Cited results appear as explicit hypotheses in registered statements; some can b
 
 ## Size
 
-The library contains 420 Lean files with 75,790 lines (`Exploding.lean` and `Exploding/`), of which
-60,306 lines remain once comments and blank lines are removed, on top of mathlib and
-Lattice-Probability. The comparator sources under `ExplodingAudit/` are counted separately: 4 Lean
-files with 697 lines.
+The library consists of `Exploding.lean` and the modules under `Exploding/`, on top of Mathlib and
+Lattice-Probability. The comparator sources are under `ExplodingAudit/`.
 
 ## Building
 

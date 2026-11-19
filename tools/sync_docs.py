@@ -96,8 +96,8 @@ DESCRIPTIONS = {
     "ext-mathieu-holes-proved": "In-repo discharge of Mathieu's hole-volume bound",
     "ext-fey-meester-redig-proved": "In-repo discharge of the Fey, Meester and Redig least action principle",
     "prop-box-crossing": "Product-law box crossing and the separate arbitrary-law dimension-one case",
-    "ext-fey-den-boer-redig-cubical-cluster": "Cubical toppled support and lower radius, cited and unproved",
-    "ext-fey-levine-peres-radius": "Upper radius of the ordinary pile, cited and unproved",
+    "ext-fey-den-boer-redig-cubical-cluster": "Cubical toppled support and lower radius, cited",
+    "ext-fey-levine-peres-radius": "Upper radius of the ordinary pile, cited",
 }
 
 # The order in which states are reported, and what each one means.
@@ -302,8 +302,8 @@ def source_status(nodes: list[dict], pins: dict[str, dict]) -> str:
         rows.append(f"| [{filename}]({filename}) | `{digest}` | {len(theorems)} | {proved} | "
                     f"{sum(is_cited_external(n) for n in group)} | "
                     f"{sum(is_local_definition(n) for n in group)} |")
-    rows += ["", "A cited result is a hypothesis of the theorems that use it, not an axiom "
-             "(see ASSUMPTIONS.md). Definitions are not counted as theorems. These counts are "
+    rows += ["", "Cited results appear as explicit hypotheses in registered statements; some can be "
+             "discharged by proofs in the library (see ASSUMPTIONS.md). Definitions are not counted as theorems. These counts are "
              "generated from `ledger/manifest.yaml` by `python3 tools/sync_docs.py`; "
              "`python3 tools/check_axioms.py` checks the axiom closures."]
     return "\n".join(rows)

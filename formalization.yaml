@@ -7,7 +7,8 @@ project:
     (Annals of Applied Probability 34(1A) (2024); arXiv:2102.04422), in the corrected edition of
     its arXiv v2 source. The results are Theorems 1.2, 1.3, 1.4, 5.1 and 6.1, the numbered
     propositions and lemmas of the corrected edition, and its Remark 1. All 22 numbered results and
-    Remark 1 are proved, from three cited results that enter as explicit hypotheses. The
+    Remark 1 are proved, with the Antal–Pisztora chemical-distance bound as the remaining
+    cited hypothesis. The
     comparator pair under ExplodingAudit/LimitShape/ restates Theorem 1.2 over Mathlib alone.
   authors:
   - Ahmed Bou-Rabee
@@ -50,11 +51,11 @@ sources:
 related_formalizations:
 - id: https://github.com/nitromannitol/Lattice-Probability
   relationship: builds-on
-  note: "Lattice-Probability, at commit 78f4b2cec065fa2fb5116b06c41966855f62cf50."
+  note: "Lattice-Probability, at commit 7f773dd0aa66dbe1ed1080ae0248906b9cfe5215."
 
 status:
   scope: >-
-    All 22 numbered results of the corrected edition and its Remark 1 are proved in Lean, with no `sorry` and only the standard axioms, from three cited results that enter as explicit hypotheses; Theorem 6.1 is stated as published, Theorems 1.2 and 1.3 as published with the law (2) read as one common law at every site, and Theorems 1.4 and 5.1 with the corrections listed in the corrected edition; Theorem 5.1 also assumes Hypothesis 1 in a stronger form than printed, and whether it holds under the printed form is open.
+    All 22 numbered results of the corrected edition and its Remark 1 are proved in Lean, with no `sorry` and only the standard axioms, with the Antal–Pisztora chemical-distance bound as the remaining cited hypothesis; Theorem 6.1 is stated as published, Theorems 1.2 and 1.3 as published with the law (2) read as one common law at every site, and Theorems 1.4 and 5.1 with the corrections listed in the corrected edition; Theorem 5.1 also assumes Hypothesis 1 in a stronger form than printed, and whether it holds under the printed form is open.
   sorry_count: 0
   sorry_count_scope: "Exploding/ (the production library)"
   comparator_challenge_sorry_count: 1
@@ -218,11 +219,11 @@ alignment:
   - source: "Lemma 3.1"
     lean: "Exploding.square_lower_bound"
     status: "proved"
-    note: "Corrected (C08); cited inputs hFdBR and hFLP."
+    note: "Corrected (C08); the two cited inputs are proved in Lattice-Probability; Exploding.square_lower_bound_unconditional discharges both."
   - source: "Remark 1"
     lean: "Exploding.sharp_planar_obstruction"
     status: "proved"
-    note: "Added with the corrected sharp rate (C08)."
+    note: "Added with the corrected sharp rate (C08); Exploding.sharp_planar_obstruction_unconditional discharges both cited inputs."
   - source: "Lemma 3.2"
     lean: "Exploding.finite_exploding"
     status: "proved"

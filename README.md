@@ -12,7 +12,7 @@ version" lists every change from arXiv v2, and [the table below](#corrections-to
 repeats that list. The unmodified arXiv v2 source is kept in
 [`paper/exploding-arxiv.tex`](paper/exploding-arxiv.tex).
 
-All 22 numbered results of the corrected edition and its Remark 1 are proved in Lean, with no `sorry` and only the standard axioms, from three cited results that enter as explicit hypotheses; Theorem 6.1 is stated as published, Theorems 1.2 and 1.3 as published with the law (2) read as one common law at every site, and Theorems 1.4 and 5.1 with the corrections listed in the corrected edition; Theorem 5.1 also assumes Hypothesis 1 in a stronger form than printed, and whether it holds under the printed form is open.
+All 22 numbered results of the corrected edition and its Remark 1 are proved in Lean, with no `sorry` and only the standard axioms, with the Antal–Pisztora chemical-distance bound as the remaining cited hypothesis; Theorem 6.1 is stated as published, Theorems 1.2 and 1.3 as published with the law (2) read as one common law at every site, and Theorems 1.4 and 5.1 with the corrections listed in the corrected edition; Theorem 5.1 also assumes Hypothesis 1 in a stronger form than printed, and whether it holds under the printed form is open.
 
 The development is built on [mathlib](https://github.com/leanprover-community/mathlib4) and on the public library [Lattice-Probability](https://github.com/nitromannitol/Lattice-Probability).
 
@@ -126,14 +126,16 @@ same order and with the same numbers.
 
 1. **Axioms and incomplete proofs.** The library contains no `sorry`, `admit`, `native_decide` or
    new `axiom`. Each main theorem depends on exactly `propext`, `Classical.choice` and
-   `Quot.sound`. Three results of the literature enter as explicit hypotheses of the statements
-   that use them, listed under [Assumed literature inputs](#assumed-literature-inputs); none is an
-   `axiom`.
-2. **Cited results proved here.** Six other cited results are proved in this repository:
+   `Quot.sound`. The Antal–Pisztora chemical-distance bound remains an explicit hypothesis
+   of the statements that use it, listed under [Assumed literature inputs](#assumed-literature-inputs).
+   It is not an `axiom`.
+2. **Cited results proved here.** Eight cited results are proved in this repository or in Lattice-Probability:
    Liggett, Schonmann and Stacey, Theorem 0.0 and Corollary 1.4; Mathieu, Lemma 5.2; Schonmann's
    bound (Proposition 7.4); Fey, Levine and Peres, Proposition 1.4; and Fey, Meester and Redig,
-   Theorem 2.8, which no result uses. The statements in `Exploding/MainTheorems.lean` do not take
-   them as hypotheses. The cited results and their precise sources are listed in
+   Theorem 2.8, which no result uses; the Fey–den Boer–Redig cubical cluster result and the
+   Fey–Levine–Peres radius bound. The registered Lemma 3.1 and Remark 1 retain the latter two as
+   hypotheses, while `Exploding.square_lower_bound_unconditional` and
+   `Exploding.sharp_planar_obstruction_unconditional` discharge both. The cited results and their precise sources are listed in
    [`ASSUMPTIONS.md`](ASSUMPTIONS.md).
 3. **Departures.** Hypothesis 1 is used in the form "the values on two finite sets at distance more
    than `K` are independent", meaning that the two families generate independent σ-fields. The
@@ -148,22 +150,18 @@ same order and with the same numbers.
 
 ## Assumed literature inputs
 
-The three inputs are propositions, stated in [`Exploding/External/`](Exploding/External/) with
-their sources in the docstrings. They enter as explicit hypotheses of the statements that use
-them, not as axioms.
+The remaining input is a proposition stated in [`Exploding/External/`](Exploding/External/)
+with its source in the docstring. It enters as an explicit hypothesis, not an axiom.
 
 | Hypothesis | Content | Source | Used by |
 | --- | --- | --- | --- |
 | `Exploding.External.AntalPisztoraChemicalDistance` (`hChem`) | for Bernoulli bond percolation on `ℤᵈ`, `d ≥ 2`, with density `q > p_c`, there are `ρ ≥ 1` and `c > 0` such that, for `\|y\|` large, the probability that the chemical distance from `0` to `y` is finite and exceeds `ρ\|y\|` is at most `exp(−c\|y\|)` | P. Antal and A. Pisztora, *On the chemical distance for supercritical Bernoulli percolation*, Ann. Probab. 24 (1996), Theorem 1.1 | Theorems 1.2, 1.3 and 5.1, Propositions 2.2, 3.1, 4.1 and 5.1, and Lemmas 3.2 and 3.5 to 3.7 |
-| `Exploding.External.FeyDenBoerRedigCubicalCluster` (`hFdBR`) | the toppled support and the lower radius of the cubical cluster, with total origin height `N + 2d − 2` | A. Fey-den Boer and F. Redig, *Limiting shapes for deterministic centrally seeded growth models*, [arXiv:math/0702450v2](https://arxiv.org/abs/math/0702450v2), Theorem 4.1 | Lemma 3.1 and the remark after it (Remark 1) |
-| `Exploding.External.FeyLevinePeresRadius` (`hFLP`) | an eventual bound, for every `ε > 0`, on the outer radius of the toppled sites for a background height `h` with `d ≤ h ≤ 2d − 2`, with `n` the number of extra chips | A. Fey, L. Levine and Y. Peres, *Growth rates and explosions in sandpiles*, [arXiv:0901.3805v2](https://arxiv.org/abs/0901.3805v2), Theorem 1.1 | Lemma 3.1 and the remark after it (Remark 1) |
 
-[`ASSUMPTIONS.md`](ASSUMPTIONS.md) gives the Lean text of every cited result, the three above and
-the six that are also proved here.
+[`ASSUMPTIONS.md`](ASSUMPTIONS.md) gives the Lean text of every cited result and identifies the proofs of the other eight.
 
 ## Guarantees
 
-All 22 numbered results of the corrected edition and its Remark 1 are proved in Lean, with no `sorry` and only the standard axioms, from three cited results that enter as explicit hypotheses; Theorem 6.1 is stated as published, Theorems 1.2 and 1.3 as published with the law (2) read as one common law at every site, and Theorems 1.4 and 5.1 with the corrections listed in the corrected edition; Theorem 5.1 also assumes Hypothesis 1 in a stronger form than printed, and whether it holds under the printed form is open.
+All 22 numbered results of the corrected edition and its Remark 1 are proved in Lean, with no `sorry` and only the standard axioms, with the Antal–Pisztora chemical-distance bound as the remaining cited hypothesis; Theorem 6.1 is stated as published, Theorems 1.2 and 1.3 as published with the law (2) read as one common law at every site, and Theorems 1.4 and 5.1 with the corrections listed in the corrected edition; Theorem 5.1 also assumes Hypothesis 1 in a stronger form than printed, and whether it holds under the printed form is open.
 
 <!-- STATUS-BEGIN (generated by tools/sync_docs.py) -->
 
@@ -175,7 +173,7 @@ Each statement is taken from one source file. For each source the table gives it
 |---|---|---|---|---|---|
 | [paper/corrected-arxiv/exploding-corrected-arxiv.tex](paper/corrected-arxiv/exploding-corrected-arxiv.tex) | `ee4b05b340bff74811db1c3ed88ac7b0ad3fd324f0dad5a52393bc4971c0c8b0` | 29 | 29 | 9 | 4 |
 
-A cited result is a hypothesis of the theorems that use it, not an axiom (see ASSUMPTIONS.md). Definitions are not counted as theorems. These counts are generated from `ledger/manifest.yaml` by `python3 tools/sync_docs.py`; `python3 tools/check_axioms.py` checks the axiom closures.
+Cited results appear as explicit hypotheses in registered statements; some can be discharged by proofs in the library (see ASSUMPTIONS.md). Definitions are not counted as theorems. These counts are generated from `ledger/manifest.yaml` by `python3 tools/sync_docs.py`; `python3 tools/check_axioms.py` checks the axiom closures.
 
 <!-- STATUS-END -->
 

@@ -38,6 +38,20 @@ def companions(nodes):
     return out
 
 
+def sibling_proof(n):
+    """Find an unconditional proof in the adjacent unregistered companion module."""
+    path = ROOT / n["file"]
+    sibling = path.with_name(path.stem + "Proved.lean")
+    if not sibling.exists():
+        return None
+    text = strip_block_comments(sibling.read_text(encoding="utf-8"))
+    for name, binders, typ, _ in _theorem_headers(text):
+        if not binders and typ == n["export"]:
+            return {"id": name, "file": str(sibling.relative_to(ROOT)),
+                    "unconditional": True}
+    return None
+
+
 def bridge_proof(n):
     """A theorem outside `External/` and `Frozen/` whose type is exactly the assumed proposition.
 
@@ -157,6 +171,8 @@ def conditional(c):
 def bridge_condition(c):
     """The statement displayed for a derived proof, conditional or not; None when the proof
     is unconditional (a `*Proved.lean` companion or an outright `bridge_proof`)."""
+    if c.get("unconditional"):
+        return None
     if c.get("conditional_statement"):
         return c["conditional_statement"]
     return conditional(c)
@@ -178,9 +194,9 @@ def render():
         return "\n".join(out)
     out += [
         "The results below are quoted by the paper from the literature; the paper does",
-        "not prove them.  Each is a proposition carried as an explicit hypothesis by",
-        "every theorem whose proof uses it, so a theorem's statement shows which of",
-        "these it takes as hypotheses.",
+        "not prove them. They are stated as propositions and some registered theorems",
+        "carry them as explicit hypotheses. Proofs supplied in this development allow",
+        "those hypotheses to be discharged as indicated below.",
         "",
         f"There are {len(assumed)} of them.  Each entry gives the node id, where the paper",
         "cites the result, and the verbatim Lean proposition that is assumed.",
@@ -203,7 +219,7 @@ def render():
         stem = pathlib.Path(n["file"]).stem
         if stem in comp:
             continue
-        b = bridge_proof(n)
+        b = sibling_proof(n) or bridge_proof(n)
         if b is None:
             b = conditional_bridge_proof(n, externals, frozen_text)
         if b:

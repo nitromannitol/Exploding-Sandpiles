@@ -1,9 +1,9 @@
 # What this development assumes
 
 The results below are quoted by the paper from the literature; the paper does
-not prove them.  Each is a proposition carried as an explicit hypothesis by
-every theorem whose proof uses it, so a theorem's statement shows which of
-these it takes as hypotheses.
+not prove them. They are stated as propositions and some registered theorems
+carry them as explicit hypotheses. Proofs supplied in this development allow
+those hypotheses to be discharged as indicated below.
 
 There are 9 of them.  Each entry gives the node id, where the paper
 cites the result, and the verbatim Lean proposition that is assumed.
@@ -15,7 +15,7 @@ The manifest also records 4 definitions stated separately: `def-counterexample-t
 They are not cited results. Each citation below gives the source file it is
 taken from.
 
-Of these, **6 are also proved in this repository** and so need not be taken on trust; each is marked below with the theorem that proves it. The remaining **3** are assumed outright.
+Of these, **8 are also proved in this repository** and so need not be taken on trust; each is marked below with the theorem that proves it. The remaining **1** is assumed outright.
 
 ## `ext-antal-pisztora`
 
@@ -40,7 +40,7 @@ Source: `paper/corrected-arxiv/exploding-corrected-arxiv.tex`, digest `ee4b05b34
 * **Lean name** `Exploding.External.FeyDenBoerRedigCubicalCluster`
 * **File** `Exploding/External/FeyDenBoerRedigCubicalCluster.lean`
 * **Cited at** Cited at exploding-corrected-arxiv.tex:586-587 for lemma:square_lower_bound
-* **Not proved here**: this one is assumed outright
+* **Also proved here** by `Exploding.External.feyDenBoerRedigCubicalCluster_holds` in `Exploding/External/FeyDenBoerRedigCubicalClusterProved.lean`, so this hypothesis can be discharged rather than assumed
 
 ```lean
 def Exploding.External.FeyDenBoerRedigCubicalCluster : Prop :=
@@ -68,7 +68,7 @@ Source: `paper/corrected-arxiv/exploding-corrected-arxiv.tex`, digest `ee4b05b34
 * **Lean name** `Exploding.External.FeyLevinePeresRadius`
 * **File** `Exploding/External/FeyLevinePeresRadius.lean`
 * **Cited at** Cited at exploding-corrected-arxiv.tex:586-587 for lemma:square_lower_bound
-* **Not proved here**: this one is assumed outright
+* **Also proved here** by `Exploding.External.feyLevinePeresRadius_holds` in `Exploding/External/FeyLevinePeresRadiusProved.lean`, so this hypothesis can be discharged rather than assumed
 
 ```lean
 def Exploding.External.FeyLevinePeresRadius : Prop :=

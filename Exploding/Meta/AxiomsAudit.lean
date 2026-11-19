@@ -1,4 +1,6 @@
 import Exploding.Support.SquareGreenOriginLower
+import Exploding.Support.PenultimateCloseUnconditional
+import Exploding.Support.ApproximateSubadditiveUnconditional
 import Exploding.Support.CorrectedSourceConsumers
 import Exploding.Support.AllHighGeneralizedHypotheses
 import Exploding.Support.AllHighPathFilling
@@ -184,3 +186,11 @@ The default library build includes this module. It can also be built explicitly 
 #print axioms Exploding.planar_wave_order_bounds
 #print axioms Exploding.Frozen.sharp_planar_obstruction
 #print axioms Exploding.sharp_planar_obstruction
+
+#print axioms Exploding.xap12_high_density_bound
+#print axioms Exploding.renormalization_properties_unconditional
+#print axioms Exploding.finite_exploding_unconditional
+#print axioms Exploding.last_penultimate_cluster_unconditional
+#print axioms Exploding.penultimate_upper_bound_unconditional
+#print axioms Exploding.last_penultimate_close_unconditional
+#print axioms Exploding.approximate_subadditive_unconditional

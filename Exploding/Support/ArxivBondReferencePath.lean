@@ -18,6 +18,7 @@ namespace Exploding
 than their Manhattan distance. -/
 theorem exists_short_star_connected_set {d : ℕ} (hd : 1 ≤ d) (x y : Site d) :
     ∃ P : Finset (Site d), x ∈ P ∧ y ∈ P ∧ xmh_SConn (P : Set (Site d)) ∧
+      ((lattice d).induce (P : Set (Site d))).Connected ∧
       P.card ≤ (mnorm (x - y)).toNat + 1 := by
   classical
   let _ : NeZero d := ⟨by omega⟩
@@ -34,7 +35,7 @@ theorem exists_short_star_connected_set {d : ℕ} (hd : 1 ≤ d) (x y : Site d) 
   have hcomponent : ∀ z ∈ P, z ∈ componentIn (P : Set (Site d)) x := by
     intro z hz
     exact ⟨hx, hz, hconn ⟨x, hx⟩ ⟨z, hz⟩⟩
-  refine ⟨P, hx, hy, ?_, ?_⟩
+  refine ⟨P, hx, hy, ?_, hconn, ?_⟩
   · intro u hu v hv
     apply ReflTransGen.mono (fun a b hab => ?_) u v
       (xmh7_componentIn_conn (hcomponent u hu) (hcomponent v hv))

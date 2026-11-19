@@ -1,9 +1,12 @@
-/-
+import Exploding.Support.RNProofChem
+import Exploding.Support.ExtAPProof12
+
+/-!
+# High-density chemical distance
+
 The high-density chemical-distance bound implies the almost-sure all-pairs
 estimate at every density above its threshold.
 -/
-import Exploding.Support.RNProofChem
-import Exploding.Support.ExtAPProof12
 
 open MeasureTheory Exploding LatticeProb
 

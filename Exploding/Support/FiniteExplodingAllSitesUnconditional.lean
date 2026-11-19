@@ -62,5 +62,3 @@ theorem Exploding.finite_exploding_at_unconditional (d : ℕ) (hd : 2 ≤ d) (p 
         simp only [Set.mem_ofPred_eq, Set.mem_iUnion]]
       exact h
   exact (MeasureTheory.ae_all_iff).mpr hshift
-
-

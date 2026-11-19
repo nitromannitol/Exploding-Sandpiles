@@ -74,4 +74,3 @@ theorem Exploding.generalized_convergence_unconditional (d : ℕ) (hd : 2 ≤ d)
       ≤ ε / 2 := by rw [abs_sub_comm]; exact hC'
   have := Gen.abs_sub_le_of_le _ _ _ _ _ hD hA
   linarith
-

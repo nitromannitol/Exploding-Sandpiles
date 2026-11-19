@@ -6,6 +6,7 @@ import Exploding.Support.CorrectedSourceConsumers
 import Exploding.Support.AllHighGeneralizedHypotheses
 import Exploding.Support.AllHighPathFilling
 import Exploding.Support.WaveApproximationSource
+import Exploding.Support.BoxCrossingSource
 import Exploding.Support.SourceCriterionVacuity
 import Exploding.Support.BCDimOne
 import Exploding.Support.OmegaErgodic
@@ -127,6 +128,8 @@ The default library build includes this module. It can also be built explicitly 
 #print axioms Exploding.source_criterion_vacuity_d2
 
 #print axioms Exploding.waveApproximationHyp_iff_sourceWaveApproximationHyp
+#print axioms Exploding.boxCrossingHyp_iff_uniform
+#print axioms Exploding.stronglyBoxCrossingHyp_iff_uniform
 #print axioms Exploding.all_high_path_filling_dim_two
 #print axioms Exploding.all_high_strongly_box_crossing
 #print axioms Exploding.all_high_wave_approximation

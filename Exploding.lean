@@ -378,6 +378,7 @@ import Exploding.Support.BCDimOne
 import Exploding.Support.SourceCriterionVacuity
 
 import Exploding.Support.WaveApproximationSource
+import Exploding.Support.BoxCrossingSource
 import Exploding.Support.AllHighPathFilling
 import Exploding.Support.AllHighGeneralizedHypotheses
 import Exploding.Support.SquareWaveComparison

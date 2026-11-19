@@ -81,6 +81,8 @@ expected = {
     'Exploding.bc_box_crossing_all_dims',
     'Exploding.source_criterion_vacuity_d2',
     'Exploding.waveApproximationHyp_iff_sourceWaveApproximationHyp',
+    'Exploding.boxCrossingHyp_iff_uniform',
+    'Exploding.stronglyBoxCrossingHyp_iff_uniform',
     'Exploding.all_high_path_filling_dim_two',
     'Exploding.all_high_strongly_box_crossing',
     'Exploding.all_high_wave_approximation',

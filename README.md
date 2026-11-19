@@ -157,7 +157,7 @@ not proved here, but its high-density restriction is proved as
 
 | Hypothesis | Content | Source | Used by registered statements |
 | --- | --- | --- | --- |
-| `Exploding.External.AntalPisztoraChemicalDistance` (`hChem`) | For Bernoulli bond percolation on `ℤᵈ`, `d ≥ 2`, at every density above the critical probability, chemical-distance upper deviations have exponential tails. | P. Antal and A. Pisztora, *On the chemical distance for supercritical Bernoulli percolation*, Ann. Probab. 24 (1996), Theorem 1.1 | Theorems 1.2, 1.3 and 5.1, Propositions 2.2, 3.1, 4.1 and 5.1, and Lemmas 3.2 and 3.5 to 3.7 |
+| `Exploding.External.AntalPisztoraChemicalDistance` (`hChem`) | For Bernoulli bond percolation on `ℤᵈ`, `d ≥ 2`, with density `q > p_c`, there are `ρ ≥ 1` and `c > 0` such that, for `\|y\|` large, the probability that the chemical distance from `0` to `y` is finite and exceeds `ρ\|y\|` is at most `exp(−c\|y\|)`. | P. Antal and A. Pisztora, *On the chemical distance for supercritical Bernoulli percolation*, Ann. Probab. 24 (1996), Theorem 1.1 | Theorems 1.2, 1.3 and 5.1, Propositions 2.2, 3.1, 4.1 and 5.1, and Lemmas 3.2 and 3.5 to 3.7 |
 
 The corresponding forms without `hChem` are:
 

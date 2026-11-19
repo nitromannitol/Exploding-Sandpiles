@@ -12,7 +12,7 @@ version" lists every change from arXiv v2, and [the table below](#corrections-to
 repeats that list. The unmodified arXiv v2 source is kept in
 [`paper/exploding-arxiv.tex`](paper/exploding-arxiv.tex).
 
-All 22 numbered results of the corrected edition and its Remark 1 are proved in Lean, with no `sorry` and only the standard axioms, with the Antal–Pisztora chemical-distance bound as the remaining cited hypothesis; Theorem 6.1 is stated as published, Theorems 1.2 and 1.3 as published with the law (2) read as one common law at every site, and Theorems 1.4 and 5.1 with the corrections listed in the corrected edition; Theorem 5.1 also assumes Hypothesis 1 in a stronger form than printed, and whether it holds under the printed form is open.
+All 22 numbered results of the corrected edition and its Remark 1 have Lean proofs without cited literature hypotheses, with no `sorry` and only the standard axioms. The original registered statements retain their explicit cited hypotheses where indicated below; corresponding unconditional forms discharge them. Theorem 6.1 is stated as published, Theorems 1.2 and 1.3 as published with the law (2) read as one common law at every site, and Theorems 1.4 and 5.1 with the corrections listed in the corrected edition. Theorem 5.1 also assumes Hypothesis 1 in a stronger form than printed, and whether it holds under the printed form is open.
 
 The development is built on [mathlib](https://github.com/leanprover-community/mathlib4) and on the public library [Lattice-Probability](https://github.com/nitromannitol/Lattice-Probability).
 
@@ -35,11 +35,11 @@ independent values, `2d − 1` with probability `p` and `2d − 2` otherwise, wi
 | Theorem 5.1 | `Exploding.generalized_convergence` | Convergence under the hypotheses of Section 5. |
 | Theorem 6.1 | `Exploding.counterexample` | An explosive background with no limit shape. |
 
-**Theorem 1.2.** Assume the chemical-distance bound of Antal and Pisztora (`hChem`). There is a
+**Theorem 1.2.** There is a
 nonempty open convex set `B ⊂ ℝᵈ` such that almost surely `|{y : v_t([t y]) > 0} △ B| → 0` as
 `t → ∞`.
 
-**Theorem 1.3.** Assume the chemical-distance bound of Antal and Pisztora (`hChem`). There is a
+**Theorem 1.3.** There is a
 continuous, convex, positively one-homogeneous `N` such that almost surely `η` is explosive, every
 arrival time `T(x) = min{t ≥ 1 : v_t(x) > 0}` is finite, and `n⁻¹ T([n y]) → N(y)` uniformly on
 compact sets.
@@ -48,7 +48,7 @@ compact sets.
 `ν{2d − 1} > 0`. A background whose values are independent, each of law `ν`, is explosive almost
 surely.
 
-**Theorem 5.1.** Assume the chemical-distance bound of Antal and Pisztora (`hChem`). Let `d ≥ 2` and
+**Theorem 5.1.** Let `d ≥ 2` and
 let `P` be a law on backgrounds `η_min ≤ η ≤ 2d − 1` that is stationary and ergodic for a sublattice
 of finite index and satisfies Hypotheses 1 and 3 to 5 of Section 5. Then almost surely `η` is
 explosive, and `n⁻¹ T([n y])` converges locally uniformly to a deterministic, continuous, convex,
@@ -126,9 +126,10 @@ same order and with the same numbers.
 
 1. **Axioms and incomplete proofs.** The library contains no `sorry`, `admit`, `native_decide` or
    new `axiom`. Each main theorem depends on exactly `propext`, `Classical.choice` and
-   `Quot.sound`. The Antal–Pisztora chemical-distance bound remains an explicit hypothesis
-   of the statements that use it, listed under [Assumed literature inputs](#assumed-literature-inputs).
-   It is not an `axiom`.
+   `Quot.sound`. The registered statements retain the full Antal–Pisztora chemical-distance
+   bound as an explicit hypothesis. Its high-density restriction is proved as
+   `Exploding.xap12_high_density_bound` and gives unconditional forms of all 11 statements
+   that use it. The full all-supercritical statement remains unproved.
 2. **Cited results proved here.** Eight cited results are proved in this repository or in Lattice-Probability:
    Liggett, Schonmann and Stacey, Theorem 0.0 and Corollary 1.4; Mathieu, Lemma 5.2; Schonmann's
    bound (Proposition 7.4); Fey, Levine and Peres, Proposition 1.4; and Fey, Meester and Redig,
@@ -150,18 +151,27 @@ same order and with the same numbers.
 
 ## Assumed literature inputs
 
-The remaining input is a proposition stated in [`Exploding/External/`](Exploding/External/)
-with its source in the docstring. It enters as an explicit hypothesis, not an axiom.
+The registered statements retain the following explicit hypothesis. The full statement is
+not proved here, but its high-density restriction is proved as
+`Exploding.xap12_high_density_bound`; this suffices for the unconditional forms listed below.
 
-| Hypothesis | Content | Source | Used by |
+| Hypothesis | Content | Source | Used by registered statements |
 | --- | --- | --- | --- |
-| `Exploding.External.AntalPisztoraChemicalDistance` (`hChem`) | for Bernoulli bond percolation on `ℤᵈ`, `d ≥ 2`, with density `q > p_c`, there are `ρ ≥ 1` and `c > 0` such that, for `\|y\|` large, the probability that the chemical distance from `0` to `y` is finite and exceeds `ρ\|y\|` is at most `exp(−c\|y\|)` | P. Antal and A. Pisztora, *On the chemical distance for supercritical Bernoulli percolation*, Ann. Probab. 24 (1996), Theorem 1.1 | Theorems 1.2, 1.3 and 5.1, Propositions 2.2, 3.1, 4.1 and 5.1, and Lemmas 3.2 and 3.5 to 3.7 |
+| `Exploding.External.AntalPisztoraChemicalDistance` (`hChem`) | For Bernoulli bond percolation on `ℤᵈ`, `d ≥ 2`, at every density above the critical probability, chemical-distance upper deviations have exponential tails. | P. Antal and A. Pisztora, *On the chemical distance for supercritical Bernoulli percolation*, Ann. Probab. 24 (1996), Theorem 1.1 | Theorems 1.2, 1.3 and 5.1, Propositions 2.2, 3.1, 4.1 and 5.1, and Lemmas 3.2 and 3.5 to 3.7 |
+
+The corresponding forms without `hChem` are:
+
+- `Exploding.limit_shape_unconditional` and `Exploding.convergence_of_time_constant_unconditional`;
+- `Exploding.renormalization_properties_unconditional` and `Exploding.finite_exploding_unconditional`;
+- `Exploding.last_penultimate_cluster_unconditional`, `Exploding.penultimate_upper_bound_unconditional`, and `Exploding.last_penultimate_close_unconditional`;
+- `Exploding.convergence_of_the_last_wave_unconditional` and `Exploding.approximate_subadditive_unconditional`;
+- `Exploding.convergence_of_the_generalized_last_wave_unconditional` and `Exploding.generalized_convergence_unconditional`.
 
 [`ASSUMPTIONS.md`](ASSUMPTIONS.md) gives the Lean text of every cited result and identifies the proofs of the other eight.
 
 ## Guarantees
 
-All 22 numbered results of the corrected edition and its Remark 1 are proved in Lean, with no `sorry` and only the standard axioms, with the Antal–Pisztora chemical-distance bound as the remaining cited hypothesis; Theorem 6.1 is stated as published, Theorems 1.2 and 1.3 as published with the law (2) read as one common law at every site, and Theorems 1.4 and 5.1 with the corrections listed in the corrected edition; Theorem 5.1 also assumes Hypothesis 1 in a stronger form than printed, and whether it holds under the printed form is open.
+All 22 numbered results of the corrected edition and its Remark 1 have Lean proofs without cited literature hypotheses, with no `sorry` and only the standard axioms. The original registered statements retain their explicit cited hypotheses where indicated below; corresponding unconditional forms discharge them. Theorem 6.1 is stated as published, Theorems 1.2 and 1.3 as published with the law (2) read as one common law at every site, and Theorems 1.4 and 5.1 with the corrections listed in the corrected edition. Theorem 5.1 also assumes Hypothesis 1 in a stronger form than printed, and whether it holds under the printed form is open.
 
 <!-- STATUS-BEGIN (generated by tools/sync_docs.py) -->
 

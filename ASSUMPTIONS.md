@@ -15,14 +15,14 @@ The manifest also records 4 definitions stated separately: `def-counterexample-t
 They are not cited results. Each citation below gives the source file it is
 taken from.
 
-Of these, **8 are also proved in this repository** and so need not be taken on trust; each is marked below with the theorem that proves it. The remaining **1** is assumed outright.
+Of these, **8 are also proved in this repository** and so need not be taken on trust; each is marked below with the theorem that proves it. The remaining **1** is assumed in registered statements.
 
 ## `ext-antal-pisztora`
 
 * **Lean name** `Exploding.External.AntalPisztoraChemicalDistance`
 * **File** `Exploding/External/AntalPisztora.lean`
 * **Cited at** antal1996chemical Theorem 1.1, cited at exploding-corrected-arxiv.tex:350 for prop:renormalization_properties
-* **Not proved here**: this one is assumed outright
+* **Not proved here**: this one is assumed outright; the high-density restriction is proved as `Exploding.xap12_high_density_bound`, while the full supercritical statement remains open. Every registered result using this hypothesis has a form without it, listed in the README
 
 ```lean
 def Exploding.External.AntalPisztoraChemicalDistance : Prop :=

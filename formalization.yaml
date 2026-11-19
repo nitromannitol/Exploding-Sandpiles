@@ -7,8 +7,8 @@ project:
     (Annals of Applied Probability 34(1A) (2024); arXiv:2102.04422), in the corrected edition of
     its arXiv v2 source. The results are Theorems 1.2, 1.3, 1.4, 5.1 and 6.1, the numbered
     propositions and lemmas of the corrected edition, and its Remark 1. All 22 numbered results and
-    Remark 1 are proved, with the Antal–Pisztora chemical-distance bound as the remaining
-    cited hypothesis. The
+    Remark 1 have forms proved without cited literature hypotheses. The registered statements retain
+    their explicit cited hypotheses, including the all-supercritical Antal–Pisztora bound. The
     comparator pair under ExplodingAudit/LimitShape/ restates Theorem 1.2 over Mathlib alone.
   authors:
   - Ahmed Bou-Rabee
@@ -55,7 +55,18 @@ related_formalizations:
 
 status:
   scope: >-
-    All 22 numbered results of the corrected edition and its Remark 1 are proved in Lean, with no `sorry` and only the standard axioms, with the Antal–Pisztora chemical-distance bound as the remaining cited hypothesis; Theorem 6.1 is stated as published, Theorems 1.2 and 1.3 as published with the law (2) read as one common law at every site, and Theorems 1.4 and 5.1 with the corrections listed in the corrected edition; Theorem 5.1 also assumes Hypothesis 1 in a stronger form than printed, and whether it holds under the printed form is open.
+    All 22 numbered results of the corrected edition and its Remark 1 have Lean proofs without cited literature hypotheses, with no `sorry` and only the standard axioms. The registered statements retain explicit cited hypotheses; corresponding unconditional forms discharge them. Theorem 6.1 is stated as published, Theorems 1.2 and 1.3 as published with the law (2) read as one common law at every site, and Theorems 1.4 and 5.1 with the corrections listed in the corrected edition. Theorem 5.1 also assumes Hypothesis 1 in a stronger form than printed, and whether it holds under the printed form is open.
+  additional_results: >-
+    The high-density chemical-distance bound is proved as Exploding.xap12_high_density_bound.
+    Each of the 11 registered statements using the full Antal–Pisztora hypothesis has a form
+    without it: Exploding.limit_shape_unconditional, Exploding.convergence_of_time_constant_unconditional,
+    Exploding.renormalization_properties_unconditional, Exploding.finite_exploding_unconditional,
+    Exploding.last_penultimate_cluster_unconditional, Exploding.penultimate_upper_bound_unconditional,
+    Exploding.last_penultimate_close_unconditional, Exploding.convergence_of_the_last_wave_unconditional,
+    Exploding.approximate_subadditive_unconditional,
+    Exploding.convergence_of_the_generalized_last_wave_unconditional, and
+    Exploding.generalized_convergence_unconditional. The full all-supercritical Antal–Pisztora
+    statement remains unproved.
   sorry_count: 0
   sorry_count_scope: "Exploding/ (the production library)"
   comparator_challenge_sorry_count: 1
@@ -66,6 +77,8 @@ status:
   - Quot.sound
   main_results:
   - declaration: "Exploding.limit_shape"
+    unconditional_declaration: "Exploding.limit_shape_unconditional"
+    unconditional_file: "Exploding/Support/LimitShapeUnconditional.lean"
     file: "Exploding/MainTheorems.lean"
     statement: "Theorem 1.2"
     sorry_count: 0
@@ -74,6 +87,8 @@ status:
     literature_dependencies:
     - "Antal and Pisztora, Theorem 1.1 (hChem), an explicit hypothesis"
   - declaration: "Exploding.convergence_of_time_constant"
+    unconditional_declaration: "Exploding.convergence_of_time_constant_unconditional"
+    unconditional_file: "Exploding/Support/TimeConstantUnconditional.lean"
     file: "Exploding/MainTheorems.lean"
     statement: "Theorem 1.3"
     sorry_count: 0
@@ -89,6 +104,8 @@ status:
     comparator_config: "none"
     literature_dependencies: []
   - declaration: "Exploding.generalized_convergence"
+    unconditional_declaration: "Exploding.generalized_convergence_unconditional"
+    unconditional_file: "Exploding/Support/GeneralizedConvergenceUnconditional.lean"
     file: "Exploding/MainTheorems.lean"
     statement: "Theorem 5.1"
     sorry_count: 0

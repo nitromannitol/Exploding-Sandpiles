@@ -259,7 +259,7 @@ def render():
         if n["id"] == "ext-antal-pisztora" and not c:
             line += ("; the high-density restriction is proved as "
                      "`Exploding.xap12_high_density_bound`, while the full "
-                     "supercritical statement remains open. Every registered result "
+                     "supercritical statement is not proved here. Every registered result "
                      "using this hypothesis has a form without it, listed in the README")
         out += [f"## `{n['id']}`", "",
                 f"* **Lean name** `{n['export']}`",

@@ -12,6 +12,18 @@ import re
 import sys
 
 expected = {
+    'Exploding.xap12_high_density_bound',
+    'Exploding.limit_shape_unconditional',
+    'Exploding.convergence_of_time_constant_unconditional',
+    'Exploding.renormalization_properties_unconditional',
+    'Exploding.finite_exploding_unconditional',
+    'Exploding.last_penultimate_cluster_unconditional',
+    'Exploding.penultimate_upper_bound_unconditional',
+    'Exploding.last_penultimate_close_unconditional',
+    'Exploding.convergence_of_the_last_wave_unconditional',
+    'Exploding.approximate_subadditive_unconditional',
+    'Exploding.convergence_of_the_generalized_last_wave_unconditional',
+    'Exploding.generalized_convergence_unconditional',
     'Exploding.fey_levine_peres_explosive',
     'Exploding.limit_shape',
     'Exploding.convergence_of_time_constant',

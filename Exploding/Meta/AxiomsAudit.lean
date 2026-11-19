@@ -41,18 +41,16 @@ import Exploding.Support.PlanarWaveBarrier
 # Axioms audit
 
 Building this module prints the axiom dependencies of every result restated in
-`Exploding/MainTheorems.lean` (the numbered results of the paper, Theorem 1.1 and
-Proposition 7.4, which the paper quotes, and the remark after Lemma 3.1), of the proofs of the
-six cited results that this repository proves, and of supporting results used to check that the
-hypotheses of Sections 5 and 7 can be met. Each must report exactly the three standard axioms
+`Exploding/MainTheorems.lean`, the forms without cited hypotheses, the cited results proved in
+this development, and supporting results used to check that the hypotheses of Sections 5 and 7
+can be met. Each must report exactly the three standard axioms
 `propext`, `Classical.choice` and `Quot.sound`; `scripts/check_axioms.py` checks this against an
 explicit list of names.
 
-No `axiom` is declared in this development. The three cited results that are not proved here
-(Antal and Pisztora; Fey, den Boer and Redig; the radius bound of Fey, Levine and Peres) are
-propositions taken as explicit hypotheses by the theorems that use them (see `ASSUMPTIONS.md`),
-so they do not appear in these reports; read each report together with the hypotheses of the
-statement.
+No `axiom` is declared in this development. The full all-supercritical Antal–Pisztora statement
+is not proved here; its high-density restriction is proved and supplies the forms without the
+corresponding hypothesis. The Fey–den Boer–Redig and Fey–Levine–Peres radius inputs are proved.
+Read each report together with the hypotheses of its statement.
 
 The default library build includes this module. It can also be built explicitly with
 `lake build Exploding.Meta.AxiomsAudit`.

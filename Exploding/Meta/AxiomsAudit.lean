@@ -1,6 +1,7 @@
 import Exploding.Support.SquareGreenOriginLower
 import Exploding.Support.PenultimateCloseUnconditional
 import Exploding.Support.ApproximateSubadditiveUnconditional
+import Exploding.Support.GeneralizedConvergenceUnconditional
 import Exploding.Support.CorrectedSourceConsumers
 import Exploding.Support.AllHighGeneralizedHypotheses
 import Exploding.Support.AllHighPathFilling
@@ -194,3 +195,8 @@ The default library build includes this module. It can also be built explicitly 
 #print axioms Exploding.penultimate_upper_bound_unconditional
 #print axioms Exploding.last_penultimate_close_unconditional
 #print axioms Exploding.approximate_subadditive_unconditional
+#print axioms Exploding.convergence_of_the_last_wave_unconditional
+#print axioms Exploding.convergence_of_time_constant_unconditional
+#print axioms Exploding.limit_shape_unconditional
+#print axioms Exploding.convergence_of_the_generalized_last_wave_unconditional
+#print axioms Exploding.generalized_convergence_unconditional

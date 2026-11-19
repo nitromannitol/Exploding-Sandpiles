@@ -299,10 +299,16 @@ theorem rn_badEvent_measure_le {q ρ c : ℝ} (hq0 : 0 ≤ q) (hq1 : q ≤ 1) {R
     _ = _ := by
         rw [Finset.sum_const, nsmul_eq_mul, rn_card_box]
 
-theorem rn_chem_ae (hChem : Exploding.External.AntalPisztoraChemicalDistance) (d : ℕ)
-    (hd : 2 ≤ d) {q : ℝ} (hq : bondCritical d < q) (hq0 : 0 ≤ q) (hq1 : q ≤ 1) :
+/-- A chemical-distance tail bound at one density gives the almost-sure all-pairs estimate. -/
+theorem rn_chem_ae_of_bound (d : ℕ) {q : ℝ} (hq0 : 0 ≤ q) (hq1 : q ≤ 1)
+    (hChem : ∃ ρ c : ℝ, 1 ≤ ρ ∧ 0 < c ∧ ∃ R : ℕ,
+      ∀ y : Site d, (R : ℤ) ≤ mnorm y →
+        bondPercolation d q
+          {ω | ∃ m : ℕ, (openBondGraph ω).edist 0 y = (m : ℕ∞) ∧
+            ρ * (mnorm y : ℝ) < (m : ℝ)} ≤
+          ENNReal.ofReal (Real.exp (-(c * (mnorm y : ℝ))))) :
     ∃ C : ℝ, 1 ≤ C ∧ ∀ᵐ ζ ∂(bondPercolation d q), RnChemProp d C ζ := by
-  obtain ⟨ρ, c, hρ, hc, R, hR⟩ := hChem d hd q hq hq1
+  obtain ⟨ρ, c, hρ, hc, R, hR⟩ := hChem
   refine ⟨ρ, hρ, ?_⟩
   have := rn_infinitePi_isProb (ι := RnBond d) hq0 hq1
   obtain ⟨N₀, hN₀⟩ := rn_poly_exp_eventually c hc d
@@ -381,5 +387,11 @@ theorem rn_chem_ae (hChem : Exploding.External.AntalPisztoraChemicalDistance) (d
   · rw [rn_mnorm_sub_comm]; exact hy
   · rw [add_sub_cancel]; exact hm.symm
   · rw [rn_mnorm_sub_comm]; exact hcon
+
+/-- The supercritical chemical-distance theorem gives the almost-sure all-pairs estimate. -/
+theorem rn_chem_ae (hChem : Exploding.External.AntalPisztoraChemicalDistance) (d : ℕ)
+    (hd : 2 ≤ d) {q : ℝ} (hq : bondCritical d < q) (hq0 : 0 ≤ q) (hq1 : q ≤ 1) :
+    ∃ C : ℝ, 1 ≤ C ∧ ∀ᵐ ζ ∂(bondPercolation d q), RnChemProp d C ζ :=
+  rn_chem_ae_of_bound d hq0 hq1 (hChem d hd q hq hq1)
 
 end Exploding

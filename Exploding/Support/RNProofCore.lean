@@ -169,9 +169,9 @@ theorem rn_bondCritical_le {d : ℕ} {qP : ℝ} (hqP0 : 0 ≤ qP)
 the percolation probability of bond percolation at high density, there are `q < 1` and `C` such that
 for every field of independent bits of density at least `q` on `ℤ^d`, almost surely the open sites
 contain an infinite connected set with small holes and linear chemical distance. -/
-theorem rn_core (hLSSB : Exploding.External.LiggettSchonmannStaceyBoundedDegree)
+theorem rn_core_of_high_density_chem_ae (hLSSB : Exploding.External.LiggettSchonmannStaceyBoundedDegree)
     (hHole : Exploding.External.MathieuHoleVolume)
-    (hChem : Exploding.External.AntalPisztoraChemicalDistance) (d : ℕ) (hd : 2 ≤ d)
+    (d : ℕ) (hChem : rn_high_density_chem_ae d) (hd : 2 ≤ d)
     (hPE : ∃ qP : ℝ, 0 ≤ qP ∧ qP < 1 ∧ ∀ q : ℝ, qP ≤ q → q ≤ 1 → bondTheta d q ≠ 0) :
     ∃ q : ℝ, q < 1 ∧ ∃ C : ℝ, 1 ≤ C ∧
       ∀ {Ω : Type} [MeasurableSpace Ω] (P : Measure Ω) [IsProbabilityMeasure P]
@@ -181,19 +181,19 @@ theorem rn_core (hLSSB : Exploding.External.LiggettSchonmannStaceyBoundedDegree)
           (∀ x ∈ S, ∀ y ∈ S, y ∈ componentIn S x) ∧ RnHoleProp d S ∧ RnChemClause d C S := by
   obtain ⟨qP, hqP0, hqP1, hPE'⟩ := hPE
   have hθ : bondTheta d qP ≠ 0 := hPE' qP le_rfl hqP1.le
-  have hcrit : bondCritical d ≤ qP := rn_bondCritical_le hqP0 hPE'
+  obtain ⟨qChem, hqChem1, hchemAE⟩ := hChem
   obtain ⟨r, hr1, hhole⟩ := rn_siteField_ae hLSSB hHole d hd qP hqP0 hqP1 hθ
-  set m : ℝ := max (max r qP) 0 with hm
-  have hm1 : m < 1 := max_lt (max_lt hr1 hqP1) zero_lt_one
+  set m : ℝ := max (max r qChem) 0 with hm
+  have hm1 : m < 1 := max_lt (max_lt hr1 hqChem1) zero_lt_one
   set ρ₁ : ℝ := (1 + m) / 2 with hρ₁
-  have hρ₁0 : 0 ≤ ρ₁ := by rw [hρ₁]; linarith [le_max_right (max r qP) 0]
+  have hρ₁0 : 0 ≤ ρ₁ := by rw [hρ₁]; linarith [le_max_right (max r qChem) 0]
   have hρ₁1 : ρ₁ < 1 := by rw [hρ₁]; linarith
   have hrρ : r ≤ ρ₁ := by
-    rw [hρ₁]; linarith [le_max_left r qP, le_max_left (max r qP) 0]
-  have hqρ : bondCritical d < ρ₁ := by
-    have : qP ≤ m := (le_max_right r qP).trans (le_max_left _ _)
+    rw [hρ₁]; linarith [le_max_left r qChem, le_max_left (max r qChem) 0]
+  have hqρ : qChem < ρ₁ := by
+    have : qChem ≤ m := (le_max_right r qChem).trans (le_max_left _ _)
     rw [hρ₁]; linarith
-  obtain ⟨C, hC1, hchem⟩ := rn_chem_ae hChem d hd hqρ hρ₁0 hρ₁1.le
+  obtain ⟨C, hC1, hchem⟩ := hchemAE ρ₁ hqρ hρ₁0 hρ₁1.le
   obtain ⟨q, hq1, hdom⟩ := rn_edge_dom hLSSB d ρ₁ hρ₁0 hρ₁1
   refine ⟨q, hq1, C, hC1, ?_⟩
   intro Ω _ P _ X hX hind hmarg
@@ -239,5 +239,21 @@ theorem rn_core (hLSSB : Exploding.External.LiggettSchonmannStaceyBoundedDegree)
   have := hζle b hb
   simp only [hF, Bool.and_eq_true] at this
   exact this
+
+/-- The supercritical chemical-distance theorem supplies the high-density estimate. -/
+theorem rn_core (hLSSB : Exploding.External.LiggettSchonmannStaceyBoundedDegree)
+    (hHole : Exploding.External.MathieuHoleVolume)
+    (hChem : Exploding.External.AntalPisztoraChemicalDistance) (d : ℕ) (hd : 2 ≤ d)
+    (hPE : ∃ qP : ℝ, 0 ≤ qP ∧ qP < 1 ∧ ∀ q : ℝ, qP ≤ q → q ≤ 1 → bondTheta d q ≠ 0) :
+    ∃ q : ℝ, q < 1 ∧ ∃ C : ℝ, 1 ≤ C ∧
+      ∀ {Ω : Type} [MeasurableSpace Ω] (P : Measure Ω) [IsProbabilityMeasure P]
+        (X : Site d → Ω → Bool), (∀ x, Measurable (X x)) → iIndepFun X P →
+        (∀ x, ENNReal.ofReal q ≤ P {ω | X x ω = true}) →
+        ∀ᵐ ω ∂P, ∃ S : Set (Site d), S.Infinite ∧ (∀ x ∈ S, X x ω = true) ∧
+          (∀ x ∈ S, ∀ y ∈ S, y ∈ componentIn S x) ∧ RnHoleProp d S ∧ RnChemClause d C S := by
+  obtain ⟨qP, hqP0, hqP1, hPE'⟩ := hPE
+  have hchemAE := rn_high_density_chem_ae_of_antal_pisztora hChem d hd hqP1
+    (rn_bondCritical_le hqP0 hPE')
+  exact rn_core_of_high_density_chem_ae hLSSB hHole d hchemAE hd ⟨qP, hqP0, hqP1, hPE'⟩
 
 end Exploding

@@ -72,9 +72,7 @@ private theorem rn_actual_bond_chemical_clause {ζ : RnBond d → Bool} {g : Sit
 through the same Strassen witness. -/
 private theorem rn_good_field_bond_box_cutoff
     (hLSSB : Exploding.External.LiggettSchonmannStaceyBoundedDegree)
-    (hChem : Exploding.External.AntalPisztoraChemicalDistance) (d : ℕ) (hd : 2 ≤ d)
-    (hPE : ∃ qP : ℝ, 0 ≤ qP ∧ qP < 1 ∧
-      ∀ q : ℝ, qP ≤ q → q ≤ 1 → bondTheta d q ≠ 0) :
+    (d : ℕ) (hChem : rn_high_density_chem_ae d) (hd : 2 ≤ d) :
     ∃ q : ℝ, q < 1 ∧ ∃ C B : ℝ, 1 ≤ C ∧ 1 ≤ B ∧
       ∀ {Ω : Type} [MeasurableSpace Ω] (P : Measure Ω) [IsProbabilityMeasure P]
         (X : Site d → Ω → Bool), (∀ x, Measurable (X x)) → iIndepFun X P →
@@ -91,12 +89,11 @@ private theorem rn_good_field_bond_box_cutoff
             RnChemClause d C I := by
   obtain ⟨qBox, B, hqBox0, hqBox1, hB, hbox⟩ :=
     arxiv_actual_bond_box_cutoff_ae d hd
-  obtain ⟨qP, hqP0, hqP1, hPE'⟩ := hPE
-  have hcrit : bondCritical d ≤ qP := rn_bondCritical_le hqP0 hPE'
-  let m : ℝ := max (max qBox qP) 0
+  obtain ⟨qChem, hqChem1, hchemAE⟩ := hChem
+  let m : ℝ := max (max qBox qChem) 0
   have hm1 : m < 1 := by
     dsimp [m]
-    exact max_lt (max_lt hqBox1 hqP1) zero_lt_one
+    exact max_lt (max_lt hqBox1 hqChem1) zero_lt_one
   let ρ : ℝ := (1 + m) / 2
   have hm0 : 0 ≤ m := le_max_right _ _
   have hρ0 : 0 ≤ ρ := by dsimp [ρ]; linarith
@@ -105,15 +102,11 @@ private theorem rn_good_field_bond_box_cutoff
   have hqBoxρ : qBox ≤ ρ := by
     dsimp [m] at hmρ
     exact (le_trans (le_max_left _ _) (le_max_left _ _)).trans hmρ.le
-  have hqPρ : qP ≤ ρ := by
-    dsimp [m] at hmρ
-    exact (le_trans (le_max_right _ _) (le_max_left _ _)).trans hmρ.le
-  have hqP_m : qP ≤ m := by
+  have hqChem_m : qChem ≤ m := by
     dsimp [m]
     exact le_trans (le_max_right _ _) (le_max_left _ _)
-  have hcritρ : bondCritical d < ρ :=
-    lt_of_le_of_lt (hcrit.trans hqP_m) hmρ
-  obtain ⟨C, hC, hchem⟩ := rn_chem_ae hChem d hd hcritρ hρ0 hρ1.le
+  have hqChemρ : qChem < ρ := lt_of_le_of_lt hqChem_m hmρ
+  obtain ⟨C, hC, hchem⟩ := hchemAE ρ hqChemρ hρ0 hρ1.le
   obtain ⟨q, hq, hdom⟩ := rn_edge_dom hLSSB d ρ hρ0 hρ1
   refine ⟨q, hq, C, B, hC, hB, ?_⟩
   intro Ω _ P _ X hX hind hmarg
@@ -174,10 +167,9 @@ private theorem rn_good_field_bond_box_cutoff
 
 /-- For strict `p`, sufficiently large good-cube scales contain an infinite connected good set
 that is one actual open-bond cluster and retains that cluster's uniform finite-hole cutoff. -/
-theorem arxiv_good_cube_bond_box_cutoff
+theorem arxiv_good_cube_bond_box_cutoff_of_high_density_chem_ae
     (hLSSB : Exploding.External.LiggettSchonmannStaceyBoundedDegree)
-    (hChem : Exploding.External.AntalPisztoraChemicalDistance)
-    (d : ℕ) (hd : 2 ≤ d) (p : ℝ) (hp : 0 < p) (hp1 : p < 1) :
+    (d : ℕ) (hChem : rn_high_density_chem_ae d) (hd : 2 ≤ d) (p : ℝ) (hp : 0 < p) (hp1 : p < 1) :
     ∃ k0 : ℕ, 1 ≤ k0 ∧ ∀ k : ℕ, k0 ≤ k → ∃ C B : ℝ, 1 ≤ C ∧ 1 ≤ B ∧
       ∀ᵐ η ∂(toyLaw d p), ∃ ζ : RnBond d → Bool, ∃ i : Site d,
         let I : Set (Site d) := {y | (openBondGraph ζ).Reachable i y}
@@ -189,13 +181,8 @@ theorem arxiv_good_cube_bond_box_cutoff
                   B * (Real.log ((n : ℝ) + 2)) ^ (2 : ℕ)) ∧
           RnChemClause d C I := by
   classical
-  have hPE : ∃ qP : ℝ, 0 ≤ qP ∧ qP < 1 ∧
-      ∀ q : ℝ, qP ≤ q → q ≤ 1 → bondTheta d q ≠ 0 := by
-    refine ⟨255 / 256, by norm_num, by norm_num, ?_⟩
-    intro q hq hq1
-    exact pe_theta_ne_zero hd hq hq1
   obtain ⟨q, hq, C, B, hC, hB, hcore⟩ :=
-    rn_good_field_bond_box_cutoff hLSSB hChem d hd hPE
+    rn_good_field_bond_box_cutoff hLSSB d hChem hd
   let q' : ℝ := max q 0
   have hq' : q' < 1 := max_lt hq zero_lt_one
   obtain ⟨k0, hk01, hk0⟩ := rn_goodCube_tail d hd p hp hp1 (1 - q') (by linarith)
@@ -232,5 +219,29 @@ theorem arxiv_good_cube_bond_box_cutoff
     simpa [goodSites] using (of_decide_eq_true hx')
   have hCgood : IsInfiniteConnectedGoodSet η k I := ⟨hIinf, hIgood, hconn⟩
   exact ⟨ζ, i, hCgood, hIholes, hIbox, hIchem⟩
+
+/-- The supercritical chemical-distance theorem supplies the high-density estimate. -/
+theorem arxiv_good_cube_bond_box_cutoff
+    (hLSSB : Exploding.External.LiggettSchonmannStaceyBoundedDegree)
+    (hChem : Exploding.External.AntalPisztoraChemicalDistance)
+    (d : ℕ) (hd : 2 ≤ d) (p : ℝ) (hp : 0 < p) (hp1 : p < 1) :
+    ∃ k0 : ℕ, 1 ≤ k0 ∧ ∀ k : ℕ, k0 ≤ k → ∃ C B : ℝ, 1 ≤ C ∧ 1 ≤ B ∧
+      ∀ᵐ η ∂(toyLaw d p), ∃ ζ : RnBond d → Bool, ∃ i : Site d,
+        let I : Set (Site d) := {y | (openBondGraph ζ).Reachable i y}
+        IsInfiniteConnectedGoodSet η k I ∧ RnHoleProp d I ∧
+          (∃ n0 : ℕ, ∀ n : ℕ, n0 ≤ n → ∀ z : Site d,
+            z ∈ cent d (4 * n) → z ∉ I →
+              (componentIn Iᶜ z).Finite ∧
+                ((componentIn Iᶜ z).ncard : ℝ) ≤
+                  B * (Real.log ((n : ℝ) + 2)) ^ (2 : ℕ)) ∧
+          RnChemClause d C I := by
+  have hPE : ∀ q : ℝ, (255 / 256 : ℝ) ≤ q → q ≤ 1 → bondTheta d q ≠ 0 := by
+    intro q hq hq1
+    exact pe_theta_ne_zero hd hq hq1
+  have hcrit : bondCritical d ≤ (255 / 256 : ℝ) :=
+    rn_bondCritical_le (by norm_num) hPE
+  have hchemAE := rn_high_density_chem_ae_of_antal_pisztora hChem d hd
+    (show (255 / 256 : ℝ) < 1 by norm_num) hcrit
+  exact arxiv_good_cube_bond_box_cutoff_of_high_density_chem_ae hLSSB d hchemAE hd p hp hp1
 
 end Exploding

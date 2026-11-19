@@ -394,4 +394,17 @@ theorem rn_chem_ae (hChem : Exploding.External.AntalPisztoraChemicalDistance) (d
     ∃ C : ℝ, 1 ≤ C ∧ ∀ᵐ ζ ∂(bondPercolation d q), RnChemProp d C ζ :=
   rn_chem_ae_of_bound d hq0 hq1 (hChem d hd q hq hq1)
 
+/-- The all-pairs chemical-distance estimate holds at every sufficiently high density. -/
+def rn_high_density_chem_ae (d : ℕ) : Prop :=
+  ∃ q0 : ℝ, q0 < 1 ∧ ∀ q : ℝ, q0 < q → 0 ≤ q → q ≤ 1 →
+    ∃ C : ℝ, 1 ≤ C ∧ ∀ᵐ ζ ∂(bondPercolation d q), RnChemProp d C ζ
+
+/-- The supercritical chemical-distance theorem gives the high-density estimate. -/
+theorem rn_high_density_chem_ae_of_antal_pisztora
+    (hChem : Exploding.External.AntalPisztoraChemicalDistance) (d : ℕ)
+    (hd : 2 ≤ d) {q0 : ℝ} (hq0 : q0 < 1) (hcrit : bondCritical d ≤ q0) :
+    rn_high_density_chem_ae d := by
+  refine ⟨q0, hq0, fun q hq hqzero hqone => ?_⟩
+  exact rn_chem_ae hChem d hd (lt_of_le_of_lt hcrit hq) hqzero hqone
+
 end Exploding

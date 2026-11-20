@@ -12,8 +12,8 @@ path plus the probability that uniqueness fails in the box `[-N, 2N)^d`.  Both p
 to zero at every density above `bondCritical d` by the coarse-graining estimate of Pisztora
 (*Surface order large deviations for Ising, Potts and percolation models*, Probab. Theory
 Related Fields 104 (1996), Theorem 3.1, for `d ≥ 3`; it rests on the slab theorem of Grimmett
-and Marstrand); `PisztoraBoxEstimate d` is that statement, and under it the Antal–Pisztora bound
-holds in dimension `d` (`chemicalDistance_of_boxEstimate`).
+and Marstrand).  `PisztoraBoxEstimate d` asks only that both be small at some scale, and under
+it the Antal–Pisztora bound holds in dimension `d` (`chemicalDistance_of_boxEstimate`).
 -/
 import Exploding.Support.APBlockReduction
 import Exploding.Support.RNProofChem
@@ -50,14 +50,29 @@ def BoxUniqueness (N : ℕ) (ω : Site d × Fin d → Bool) : Prop :=
     xap_Reach ω (tripleBox d N) x z
 
 /-- **The box estimate of the renormalization** in dimension `d`: at every density above
-`bondCritical d`, the cube `[0, N)^d` contains an open path between two of its sites at
-sup-distance at least `N - 1`, and all such paths inside `[-N, 2N)^d` are joined inside it, with
-probabilities tending to one as `N → ∞`.  For `d ≥ 3` this is a consequence of Pisztora's
-coarse-graining theorem (Pisztora 1996, Theorem 3.1). -/
+`bondCritical d` and for every `ε > 0` there is a scale `N ≥ 1` at which, outside events of
+probability at most `ε`, the cube `[0, N)^d` contains an open path between two of its sites at
+sup-distance at least `N - 1`, and all such paths inside `[-N, 2N)^d` are joined inside it.  For
+`d ≥ 3` this is a consequence of Pisztora's coarse-graining theorem (Pisztora 1996,
+Theorem 3.1), which gives both properties with probabilities tending to one as `N → ∞`
+(`pisztoraBoxEstimate_of_tendsto`). -/
 def PisztoraBoxEstimate (d : ℕ) : Prop :=
-  ∀ q : ℝ, bondCritical d < q → q ≤ 1 →
-    Tendsto (fun N : ℕ => bondPercolation d q {ω | ¬ CubeCrossing N ω}) atTop (𝓝 0) ∧
-      Tendsto (fun N : ℕ => bondPercolation d q {ω | ¬ BoxUniqueness N ω}) atTop (𝓝 0)
+  ∀ q : ℝ, bondCritical d < q → q ≤ 1 → ∀ ε : ℝ≥0∞, 0 < ε →
+    ∃ N : ℕ, 0 < N ∧ bondPercolation d q {ω | ¬ CubeCrossing N ω} ≤ ε ∧
+      bondPercolation d q {ω | ¬ BoxUniqueness N ω} ≤ ε
+
+/-- The box estimate holds when both failure probabilities tend to zero. -/
+theorem pisztoraBoxEstimate_of_tendsto
+    (h : ∀ q : ℝ, bondCritical d < q → q ≤ 1 →
+      Tendsto (fun N : ℕ => bondPercolation d q {ω | ¬ CubeCrossing N ω}) atTop (𝓝 0) ∧
+        Tendsto (fun N : ℕ => bondPercolation d q {ω | ¬ BoxUniqueness N ω}) atTop (𝓝 0)) :
+    PisztoraBoxEstimate d := by
+  intro q hq hq1 ε hε
+  obtain ⟨hcross, huniq⟩ := h q hq hq1
+  obtain ⟨N, hN⟩ := eventually_atTop.mp ((eventually_ge_atTop 1).and
+    ((hcross.eventually (gt_mem_nhds hε)).and (huniq.eventually (gt_mem_nhds hε))))
+  obtain ⟨hN1, hNc, hNu⟩ := hN N le_rfl
+  exact ⟨N, hN1, hNc.le, hNu.le⟩
 
 theorem lowerCube_eq {N : ℕ} (hN : 0 < N) :
     lowerCube d N = coarseRegion N ({0} : Set (Site d)) := by

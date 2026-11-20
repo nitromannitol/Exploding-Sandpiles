@@ -163,9 +163,9 @@ restriction is proved as `Exploding.xap12_high_density_bound`; this suffices for
 unconditional forms listed below. The full statement is proved in dimension two as
 `Exploding.antalPisztora_dim_two`, and `Exploding.antalPisztoraChemicalDistance_of_boxEstimate`
 derives it in every dimension from `Exploding.PisztoraBoxEstimate` for `d ≥ 3`: at every density
-above `p_c`, the cube `[0, N)^d` contains an open path between two sites at sup-distance at least
-`N - 1`, and all such paths inside `[-N, 2N)^d` are joined inside it, with probabilities tending
-to one. This is a consequence of the coarse-graining theorem of Pisztora (1996, Theorem 3.1), which
+above `p_c` and at some scale `N`, outside events of arbitrarily small probability, the cube
+`[0, N)^d` contains an open path between two sites at sup-distance at least `N - 1`, and all such
+paths inside `[-N, 2N)^d` are joined inside it. This is a consequence of the coarse-graining theorem of Pisztora (1996, Theorem 3.1), which
 rests on the slab theorem of Grimmett and Marstrand, and is not proved here.
 
 | Hypothesis | Content | Source | Used by registered statements |

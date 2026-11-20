@@ -4,8 +4,8 @@ The Antal–Pisztora bound from the box estimate, and the reduction of
 
 By translation invariance a box-good block is bad with probability at most `3^d` times the
 probability that `[0, N)^d` has no large open path plus the probability that uniqueness fails in
-`[-N, 2N)^d` (`boxGood_bad_prob_le`).  Under `PisztoraBoxEstimate d` both tend to zero, so the
-renormalization step gives the chemical-distance bound in dimension `d`
+`[-N, 2N)^d` (`boxGood_bad_prob_le`).  Under `PisztoraBoxEstimate d` both are small at some
+scale, so the renormalization step gives the chemical-distance bound in dimension `d`
 (`chemicalDistance_of_boxEstimate`).  Together with the planar case `antalPisztora_dim_two`,
 the full statement follows from the box estimate in dimensions at least three
 (`antalPisztoraChemicalDistance_of_boxEstimate`).
@@ -142,20 +142,19 @@ theorem chemicalDistance_of_boxEstimate (hd : 2 ≤ d) (hB : PisztoraBoxEstimate
         ENNReal.ofReal (Real.exp (-(c * (mnorm y : ℝ)))) := by
   obtain ⟨ε₀, hε₀, hred⟩ := chemicalDistance_of_blockScheme d hd 1
   have hq0 : 0 ≤ q := (xap14_bondCritical_nonneg d).trans hq.le
-  obtain ⟨hcross, huniq⟩ := hB q hq hq1
   have h3 : (3 : ℝ≥0∞) ^ d ≠ 0 := pow_ne_zero _ (by norm_num)
   have h3' : (3 : ℝ≥0∞) ^ d ≠ ⊤ := ENNReal.pow_ne_top (by norm_num)
   have hε₂ : 0 < ε₀ / 2 := ENNReal.div_pos hε₀.ne' (by norm_num)
   have hε₁ : 0 < ε₀ / 2 / 3 ^ d := ENNReal.div_pos hε₂.ne' h3'
-  obtain ⟨N, hN⟩ := eventually_atTop.mp ((eventually_ge_atTop 1).and
-    ((hcross.eventually (gt_mem_nhds hε₁)).and (huniq.eventually (gt_mem_nhds hε₂))))
-  obtain ⟨hN1, hNc, hNu⟩ := hN N le_rfl
+  have hε₁₂ : ε₀ / 2 / 3 ^ d ≤ ε₀ / 2 :=
+    ENNReal.div_le_of_le_mul (le_mul_of_one_le_right zero_le (one_le_pow₀ (by norm_num)))
+  obtain ⟨N, hN1, hNc, hNu⟩ := hB q hq hq1 _ hε₁
   refine hred hq0 hq1 (box_isBlockScheme hN1) fun b =>
     (boxGood_bad_prob_le hN1 hq0 hq1 b).trans ?_
   calc
     3 ^ d * bondPercolation d q {ω | ¬ CubeCrossing N ω} +
         bondPercolation d q {ω | ¬ BoxUniqueness N ω}
-        ≤ 3 ^ d * (ε₀ / 2 / 3 ^ d) + ε₀ / 2 := by gcongr
+        ≤ 3 ^ d * (ε₀ / 2 / 3 ^ d) + ε₀ / 2 := by gcongr; exact hNu.trans hε₁₂
     _ = ε₀ := by rw [ENNReal.mul_div_cancel h3 h3', ENNReal.add_halves]
 
 /-- **Reduction of the Antal–Pisztora theorem to the box estimate.**  The planar case is

@@ -258,9 +258,12 @@ def render():
             line = "* **Not proved here**: this one is assumed by the registered statements"
         if n["id"] == "ext-antal-pisztora" and not c:
             line += ("; the high-density restriction is proved as "
-                     "`Exploding.xap12_high_density_bound`, while the full "
-                     "supercritical statement is not proved here. Every registered result "
-                     "using this hypothesis has a form without it, listed in the README")
+                     "`Exploding.xap12_high_density_bound` and the full statement in dimension "
+                     "two as `Exploding.antalPisztora_dim_two`. In dimensions `d ≥ 3` it follows "
+                     "from the box estimate of the coarse graining, `Exploding.PisztoraBoxEstimate` "
+                     "(`Exploding.antalPisztoraChemicalDistance_of_boxEstimate`), which is not "
+                     "proved here. Every registered result using this hypothesis has a form "
+                     "without it, listed in the README")
         out += [f"## `{n['id']}`", "",
                 f"* **Lean name** `{n['export']}`",
                 f"* **File** `{n['file']}`",

@@ -22,7 +22,7 @@ Of these, **8 are also proved in this repository** and so need not be taken on t
 * **Lean name** `Exploding.External.AntalPisztoraChemicalDistance`
 * **File** `Exploding/External/AntalPisztora.lean`
 * **Cited at** antal1996chemical Theorem 1.1, cited at exploding-corrected-arxiv.tex:350 for prop:renormalization_properties
-* **Not proved here**: this one is assumed by the registered statements; the high-density restriction is proved as `Exploding.xap12_high_density_bound`, while the full supercritical statement is not proved here. Every registered result using this hypothesis has a form without it, listed in the README
+* **Not proved here**: this one is assumed by the registered statements; the high-density restriction is proved as `Exploding.xap12_high_density_bound` and the full statement in dimension two as `Exploding.antalPisztora_dim_two`. In dimensions `d ≥ 3` it follows from the box estimate of the coarse graining, `Exploding.PisztoraBoxEstimate` (`Exploding.antalPisztoraChemicalDistance_of_boxEstimate`), which is not proved here. Every registered result using this hypothesis has a form without it, listed in the README
 
 ```lean
 def Exploding.External.AntalPisztoraChemicalDistance : Prop :=

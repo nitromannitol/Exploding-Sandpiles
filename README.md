@@ -129,7 +129,9 @@ same order and with the same numbers.
    `Quot.sound`. The registered statements retain the full Antal–Pisztora chemical-distance
    bound as an explicit hypothesis. Its high-density restriction is proved as
    `Exploding.xap12_high_density_bound` and gives unconditional forms of all 11 statements
-   that use it. The full all-supercritical statement remains unproved.
+   that use it. The full statement is proved in dimension two as
+   `Exploding.antalPisztora_dim_two`; in dimensions `d ≥ 3` it is reduced to the box estimate of
+   the coarse graining, `Exploding.PisztoraBoxEstimate`, which is not proved here.
 2. **Cited results proved here.** Eight cited results are proved in this repository or in Lattice-Probability:
    Liggett, Schonmann and Stacey, Theorem 0.0 and Corollary 1.4; Mathieu, Lemma 5.2; Schonmann's
    bound (Proposition 7.4); Fey, Levine and Peres, Proposition 1.4; and Fey, Meester and Redig,
@@ -145,7 +147,9 @@ same order and with the same numbers.
    paragraph after its proof and is not formalized. The unconditional route uses only the proved
    high-density case of Antal–Pisztora, whereas the paper cites the full supercritical result;
    the restriction suffices because the paper applies it at density close to one (Section 2,
-   line 350). The full supercritical statement remains unproved.
+   line 350). The full supercritical statement is proved for `d = 2` by a renormalization that
+   departs from the cited proof (see [`CORRESPONDENCE.md`](CORRESPONDENCE.md)) and remains
+   unproved for `d ≥ 3`.
 4. **Conventions.** Arrival times are valued in `ℕ∞`; `[x]` is the nearest lattice point, with ties
    broken by the coordinatewise minimum; locally uniform convergence is stated in its `ε`-form; the
    floor in the toppling rules is integer division on `ℤ`.
@@ -154,9 +158,15 @@ same order and with the same numbers.
 
 ## Assumed literature inputs
 
-The registered statements retain the following explicit hypothesis. The full statement is
-not proved here, but its high-density restriction is proved as
-`Exploding.xap12_high_density_bound`; this suffices for the unconditional forms listed below.
+The registered statements retain the following explicit hypothesis. Its high-density
+restriction is proved as `Exploding.xap12_high_density_bound`; this suffices for the
+unconditional forms listed below. The full statement is proved in dimension two as
+`Exploding.antalPisztora_dim_two`, and `Exploding.antalPisztoraChemicalDistance_of_boxEstimate`
+derives it in every dimension from `Exploding.PisztoraBoxEstimate` for `d ≥ 3`: at every density
+above `p_c`, the cube `[0, N)^d` contains an open path between two sites at sup-distance at least
+`N - 1`, and all such paths inside `[-N, 2N)^d` are joined inside it, with probabilities tending
+to one. This is a consequence of the coarse-graining theorem of Pisztora (1996, Theorem 3.1), which
+rests on the slab theorem of Grimmett and Marstrand, and is not proved here.
 
 | Hypothesis | Content | Source | Used by registered statements |
 | --- | --- | --- | --- |
@@ -194,7 +204,7 @@ Cited results appear as explicit hypotheses in registered statements; some can b
   comparator challenge [`ExplodingAudit/LimitShape/Challenge.lean`](ExplodingAudit/LimitShape/Challenge.lean)
   has one intentional statement-level `sorry`.
 - **Standard axioms only.** [`Exploding/Meta/AxiomsAudit.lean`](Exploding/Meta/AxiomsAudit.lean)
-  prints the axioms of 115 theorems, and [`scripts/check_axioms.py`](scripts/check_axioms.py)
+  prints the axioms of 120 theorems, and [`scripts/check_axioms.py`](scripts/check_axioms.py)
   requires exactly `propext`, `Classical.choice` and `Quot.sound` for each theorem of its explicit
   list.
 - **Independent check of the statements.** The Mathlib-only pair [`ExplodingAudit/LimitShape/`](ExplodingAudit/LimitShape/)

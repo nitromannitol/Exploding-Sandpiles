@@ -127,6 +127,11 @@ expected = {
     'Exploding.planar_wave_order_bounds',
     'Exploding.Frozen.sharp_planar_obstruction',
     'Exploding.sharp_planar_obstruction',
+    'Exploding.map_openEdges_bondPercolation',
+    'Exploding.chemicalDistance_of_blockScheme',
+    'Exploding.antalPisztora_dim_two',
+    'Exploding.chemicalDistance_of_boxEstimate',
+    'Exploding.antalPisztoraChemicalDistance_of_boxEstimate',
 }
 standard = {'propext', 'Classical.choice', 'Quot.sound'}
 log = pathlib.Path(sys.argv[1]).read_text(encoding='utf-8', errors='replace')

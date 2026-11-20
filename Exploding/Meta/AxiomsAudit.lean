@@ -37,6 +37,7 @@ import Exploding.Support.ExtSchFinal
 import Exploding.Support.ExtSchFLP
 import Exploding.Support.PlanarWaveOrder
 import Exploding.Support.PlanarWaveBarrier
+import Exploding.Support.APBoxChemical
 
 /-!
 # Axioms audit
@@ -201,3 +202,9 @@ The default library build includes this module. It can also be built explicitly 
 #print axioms Exploding.limit_shape_unconditional
 #print axioms Exploding.convergence_of_the_generalized_last_wave_unconditional
 #print axioms Exploding.generalized_convergence_unconditional
+
+#print axioms Exploding.map_openEdges_bondPercolation
+#print axioms Exploding.chemicalDistance_of_blockScheme
+#print axioms Exploding.antalPisztora_dim_two
+#print axioms Exploding.chemicalDistance_of_boxEstimate
+#print axioms Exploding.antalPisztoraChemicalDistance_of_boxEstimate

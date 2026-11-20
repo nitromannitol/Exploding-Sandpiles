@@ -402,3 +402,4 @@ import Exploding.Support.SquareGreenOriginLower
 import Exploding.Support.PlanarWaveOrder
 import Exploding.Support.PlanarWaveBarrier
 import Exploding.Support.PlanarWaveOptimality
+import Exploding.Support.APBoxChemical

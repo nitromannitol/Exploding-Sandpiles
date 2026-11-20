@@ -130,8 +130,10 @@ same order and with the same numbers.
    bound as an explicit hypothesis. Its high-density restriction is proved as
    `Exploding.xap12_high_density_bound` and gives unconditional forms of all 11 statements
    that use it. The full statement is proved in dimension two as
-   `Exploding.antalPisztora_dim_two`; in dimensions `d ≥ 3` it is reduced to the box estimate of
-   the coarse graining, `Exploding.PisztoraBoxEstimate`, which is not proved here.
+   `Exploding.antalPisztora_dim_two`; in dimensions `d ≥ 3` it is reduced to uniform two-point
+   connectivity in slabs above the critical probability, the slab form of the theorem of
+   Grimmett and Marstrand (`Exploding.antalPisztoraChemicalDistance_of_slabConnectivity`), which is
+   not proved here.
 2. **Cited results proved here.** Eight cited results are proved in this repository or in Lattice-Probability:
    Liggett, Schonmann and Stacey, Theorem 0.0 and Corollary 1.4; Mathieu, Lemma 5.2; Schonmann's
    bound (Proposition 7.4); Fey, Levine and Peres, Proposition 1.4; and Fey, Meester and Redig,
@@ -165,8 +167,12 @@ unconditional forms listed below. The full statement is proved in dimension two 
 derives it in every dimension from `Exploding.PisztoraBoxEstimate` for `d ≥ 3`: at every density
 above `p_c` and at some scale `N`, outside events of arbitrarily small probability, the cube
 `[0, N)^d` contains an open path between two sites at sup-distance at least `N - 1`, and all such
-paths inside `[-N, 2N)^d` are joined inside it. This is a consequence of the coarse-graining theorem of Pisztora (1996, Theorem 3.1), which
-rests on the slab theorem of Grimmett and Marstrand, and is not proved here.
+paths inside `[-N, 2N)^d` are joined inside it. This is a consequence of the coarse-graining
+theorem of Pisztora (1996, Theorem 3.1). `Exploding.pisztoraBoxEstimate_of_slabConnectivity` proves it from uniform two-point connectivity
+in the slabs of cubes, `Exploding.LatticeBond.UniformCubeSlabConnectivity`, above the critical
+probability, through the slab crossing estimates of Percolation-Rigidity, copied in
+`Exploding/Rigidity/`. That slab connectivity, the slab form of the theorem of Grimmett and
+Marstrand, is not proved here.
 
 | Hypothesis | Content | Source | Used by registered statements |
 | --- | --- | --- | --- |
@@ -204,7 +210,7 @@ Cited results appear as explicit hypotheses in registered statements; some can b
   comparator challenge [`ExplodingAudit/LimitShape/Challenge.lean`](ExplodingAudit/LimitShape/Challenge.lean)
   has one intentional statement-level `sorry`.
 - **Standard axioms only.** [`Exploding/Meta/AxiomsAudit.lean`](Exploding/Meta/AxiomsAudit.lean)
-  prints the axioms of 120 theorems, and [`scripts/check_axioms.py`](scripts/check_axioms.py)
+  prints the axioms of 123 theorems, and [`scripts/check_axioms.py`](scripts/check_axioms.py)
   requires exactly `propext`, `Classical.choice` and `Quot.sound` for each theorem of its explicit
   list.
 - **Independent check of the statements.** The Mathlib-only pair [`ExplodingAudit/LimitShape/`](ExplodingAudit/LimitShape/)
@@ -288,6 +294,7 @@ Exploding/
   Frozen/             one statement per file, each followed by its proof
   External/           the cited results, stated as propositions
   Support/            the model and the lemmas the statements are proved from
+  Rigidity/           slab crossing estimates copied from Percolation-Rigidity, with headers
   Meta/               AxiomsAudit.lean
 Exploding.lean        the root module
 ExplodingAudit/       the Mathlib-only comparator pair, its solution and checks

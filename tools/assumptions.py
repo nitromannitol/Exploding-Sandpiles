@@ -260,9 +260,10 @@ def render():
             line += ("; the high-density restriction is proved as "
                      "`Exploding.xap12_high_density_bound` and the full statement in dimension "
                      "two as `Exploding.antalPisztora_dim_two`. In dimensions `d ≥ 3` it follows "
-                     "from the box estimate of the coarse graining, `Exploding.PisztoraBoxEstimate` "
-                     "(`Exploding.antalPisztoraChemicalDistance_of_boxEstimate`), which is not "
-                     "proved here. Every registered result using this hypothesis has a form "
+                     "from uniform two-point connectivity in slabs above the critical "
+                     "probability, the slab form of the theorem of Grimmett and Marstrand "
+                     "(`Exploding.antalPisztoraChemicalDistance_of_slabConnectivity`), which is "
+                     "not proved here. Every registered result using this hypothesis has a form "
                      "without it, listed in the README")
         out += [f"## `{n['id']}`", "",
                 f"* **Lean name** `{n['export']}`",

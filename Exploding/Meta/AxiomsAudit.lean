@@ -38,6 +38,7 @@ import Exploding.Support.ExtSchFLP
 import Exploding.Support.PlanarWaveOrder
 import Exploding.Support.PlanarWaveBarrier
 import Exploding.Support.APBoxChemical
+import Exploding.Support.APPisztoraFromSlab
 
 /-!
 # Axioms audit
@@ -208,3 +209,6 @@ The default library build includes this module. It can also be built explicitly 
 #print axioms Exploding.antalPisztora_dim_two
 #print axioms Exploding.chemicalDistance_of_boxEstimate
 #print axioms Exploding.antalPisztoraChemicalDistance_of_boxEstimate
+#print axioms Exploding.map_toLatticeConfig_bondPercolation
+#print axioms Exploding.pisztoraBoxEstimate_of_slabConnectivity
+#print axioms Exploding.antalPisztoraChemicalDistance_of_slabConnectivity

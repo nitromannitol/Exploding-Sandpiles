@@ -67,8 +67,9 @@ status:
     Exploding.convergence_of_the_generalized_last_wave_unconditional, and
     Exploding.generalized_convergence_unconditional. The full all-supercritical Antal–Pisztora
     statement is proved in dimension two as Exploding.antalPisztora_dim_two; in dimensions d ≥ 3
-    it follows from the box estimate Exploding.PisztoraBoxEstimate
-    (Exploding.antalPisztoraChemicalDistance_of_boxEstimate), which is not proved here.
+    it follows from uniform two-point connectivity in slabs above the critical probability
+    (Exploding.antalPisztoraChemicalDistance_of_slabConnectivity), the slab form of the theorem of
+    Grimmett and Marstrand, which is not proved here.
   sorry_count: 0
   sorry_count_scope: "Exploding/ (the production library)"
   comparator_challenge_sorry_count: 4

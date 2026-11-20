@@ -132,6 +132,9 @@ expected = {
     'Exploding.antalPisztora_dim_two',
     'Exploding.chemicalDistance_of_boxEstimate',
     'Exploding.antalPisztoraChemicalDistance_of_boxEstimate',
+    'Exploding.map_toLatticeConfig_bondPercolation',
+    'Exploding.pisztoraBoxEstimate_of_slabConnectivity',
+    'Exploding.antalPisztoraChemicalDistance_of_slabConnectivity',
 }
 standard = {'propext', 'Classical.choice', 'Quot.sound'}
 log = pathlib.Path(sys.argv[1]).read_text(encoding='utf-8', errors='replace')

@@ -160,7 +160,7 @@ theorem bad_blocks_prob_le {N r : ℕ} (hN : 0 < N) {q : ℝ} (hq0 : 0 ≤ q) (h
         ≤ bondPercolation d q (⋂ b ∈ (Finset.univ : Finset I), E b) := measure_mono hsub
     _ = ∏ b ∈ (Finset.univ : Finset I), bondPercolation d q (E b) :=
         hind.meas_biInter Finset.univ
-    _ ≤ ∏ _b ∈ (Finset.univ : Finset I), ε := Finset.prod_le_prod' fun b _ => hbad b.1
+    _ ≤ ∏ _b ∈ (Finset.univ : Finset I), ε := Finset.prod_le_prod fun b _ => hbad b.1
     _ = ε ^ Γ.card := by rw [Finset.prod_const, Finset.card_univ, Fintype.card_coe]
     _ ≤ ε ^ (B.card / (2 * r + 1) ^ d) := pow_le_pow_right_of_le_one' hε.le hdiv
 

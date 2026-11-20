@@ -29,10 +29,10 @@ independent values, `2d − 1` with probability `p` and `2d − 2` otherwise, wi
 
 | Paper | Lean declaration | Content |
 | --- | --- | --- |
-| Theorem 1.2 | `Exploding.limit_shape` | The rescaled toppled region converges in volume to a convex domain. |
-| Theorem 1.3 | `Exploding.convergence_of_time_constant` | The rescaled arrival times converge locally uniformly. |
+| Theorem 1.2 | `Exploding.limit_shape`; `Exploding.limit_shape_unconditional` | The rescaled toppled region converges in volume to a convex domain. |
+| Theorem 1.3 | `Exploding.convergence_of_time_constant`; `Exploding.convergence_of_time_constant_unconditional` | The rescaled arrival times converge locally uniformly. |
 | Theorem 1.4 | `Exploding.explosive` | A product background with one-site law `ν` explodes. |
-| Theorem 5.1 | `Exploding.generalized_convergence` | Convergence under the hypotheses of Section 5. |
+| Theorem 5.1 | `Exploding.generalized_convergence`; `Exploding.generalized_convergence_unconditional` | Convergence under the hypotheses of Section 5. |
 | Theorem 6.1 | `Exploding.counterexample` | An explosive background with no limit shape. |
 
 **Theorem 1.2.** There is a
@@ -142,7 +142,10 @@ same order and with the same numbers.
    than `K` are independent", meaning that the two families generate independent σ-fields. The
    paper prints pairwise independence. Whether Propositions 5.1 and 7.1 and Theorem 5.1 hold under
    the printed form is open. Proposition 7.1 is proved for `d ≥ 2`; the case `d = 1` is argued in a
-   paragraph after its proof and is not formalized.
+   paragraph after its proof and is not formalized. The unconditional route uses only the proved
+   high-density case of Antal–Pisztora, whereas the paper cites the full supercritical result;
+   the restriction suffices because the paper applies it at density close to one (Section 2,
+   line 350). The full supercritical statement remains unproved.
 4. **Conventions.** Arrival times are valued in `ℕ∞`; `[x]` is the nearest lattice point, with ties
    broken by the coordinatewise minimum; locally uniform convergence is stated in its `ε`-form; the
    floor in the toppling rules is integer division on `ℤ`.

@@ -8,7 +8,7 @@ statements are in `Exploding/Frozen/`, and `Exploding/MainTheorems.lean` restate
 with their cited inputs discharged where they are proved. The two tables at the end are generated
 by `tools/sync_docs.py`; the rest of the file is written by hand.
 
-All 22 numbered results of the corrected edition and its Remark 1 are proved in Lean, with no `sorry` and only the standard axioms, from three cited results that enter as explicit hypotheses; Theorem 6.1 is stated as published, Theorems 1.2 and 1.3 as published with the law (2) read as one common law at every site, and Theorems 1.4 and 5.1 with the corrections listed in the corrected edition; Theorem 5.1 also assumes Hypothesis 1 in a stronger form than printed, and whether it holds under the printed form is open.
+All 22 numbered results of the corrected edition and its Remark 1 have proofs in Lean without cited literature hypotheses, with no `sorry` and only the standard axioms. The registered statements retain cited hypotheses where indicated below, and corresponding unconditional forms discharge them. Theorem 6.1 is stated as published, Theorems 1.2 and 1.3 as published with the law (2) read as one common law at every site, and Theorems 1.4 and 5.1 with the corrections listed in the corrected edition; Theorem 5.1 also assumes Hypothesis 1 in a stronger form than printed, and whether it holds under the printed form is open.
 
 ## Conventions
 
@@ -18,13 +18,13 @@ All 22 numbered results of the corrected edition and its Remark 1 are proved in 
 
 ## Cited results
 
-Nine results that the paper cites enter the formalization. Six are proved in this repository, and their hypotheses are discharged in `Exploding/MainTheorems.lean`. Three are assumed: Antal–Pisztora, Fey–den Boer–Redig and the Fey–Levine–Peres radius bound. Of these, the main theorems (Theorems 1.2, 1.3 and 5.1) take only Antal–Pisztora; the other two are hypotheses of Lemma 3.1 and Remark 1. Their statements are in [`ASSUMPTIONS.md`](ASSUMPTIONS.md).
+Nine results that the paper cites enter the formalization. Eight are proved in this repository or Lattice-Probability; the registered Lemma 3.1 and Remark 1 retain two of them as hypotheses, which their unconditional forms discharge. The remaining full Antal–Pisztora result is assumed by the registered statements that use it, but all 11 have unconditional forms using the proved high-density restriction instead. This weaker input suffices because the paper applies the bound to bond percolation of density close to one (Section 2, line 350); the full supercritical statement remains unproved. See [`ASSUMPTIONS.md`](ASSUMPTIONS.md) and the list of unconditional forms in [`README.md`](README.md#assumed-literature-inputs).
 
 | Cited result | Where the paper uses it | State here |
 |---|---|---|
-| Antal and Pisztora, *On the chemical distance for supercritical Bernoulli percolation*, Theorem 1.1 (bond percolation) | Propositions 2.2, 3.1, 4.1 and 5.1; Lemmas 3.2 and 3.5–3.7; Theorems 1.2, 1.3 and 5.1 | assumed: `Exploding.External.AntalPisztoraChemicalDistance` |
-| Fey, den Boer and Redig, Theorem 4.1 | Lemma 3.1 and Remark 1 | assumed: `Exploding.External.FeyDenBoerRedigCubicalCluster` |
-| Fey, Levine and Peres, the radius bound | Lemma 3.1 and Remark 1 | assumed: `Exploding.External.FeyLevinePeresRadius` |
+| Antal and Pisztora, *On the chemical distance for supercritical Bernoulli percolation*, Theorem 1.1 (bond percolation) | Propositions 2.2, 3.1, 4.1 and 5.1; Lemmas 3.2 and 3.5–3.7; Theorems 1.2, 1.3 and 5.1 | full statement assumed in registered results: `Exploding.External.AntalPisztoraChemicalDistance`; high-density restriction proved: `Exploding.xap12_high_density_bound`, giving 11 unconditional forms |
+| Fey, den Boer and Redig, Theorem 4.1 | Lemma 3.1 and Remark 1 | proved: `Exploding.External.feyDenBoerRedigCubicalCluster_holds`; retained as a hypothesis in registered results |
+| Fey, Levine and Peres, the radius bound | Lemma 3.1 and Remark 1 | proved: `Exploding.External.feyLevinePeresRadius_holds`; retained as a hypothesis in registered results |
 | Fey, Levine and Peres, *Growth rates and explosions in sandpiles*, Proposition 1.4 | quoted as Theorem 1.1 of the paper | proved: `Exploding.xsr_flp` |
 | Schonmann, the large-deviation bound for bootstrap percolation | quoted as Proposition 7.4 of the paper; used by Theorems 1.2 and 1.4 and the box-crossing statement | proved: `Exploding.xsr_schonmann` |
 | Liggett, Schonmann and Stacey, *Domination by product measures*, Theorem 0.0 | Proposition 5.1 and Theorem 5.1 | proved: `Exploding.xlse_lss_general` |

@@ -255,7 +255,7 @@ def render():
             line = (f"* **Also proved here** by `{c['id']}` in `{c['file']}`, so this hypothesis "
                     "can be discharged rather than assumed")
         else:
-            line = "* **Not proved here**: this one is assumed outright"
+            line = "* **Not proved here**: this one is assumed by the registered statements"
         if n["id"] == "ext-antal-pisztora" and not c:
             line += ("; the high-density restriction is proved as "
                      "`Exploding.xap12_high_density_bound`, while the full "

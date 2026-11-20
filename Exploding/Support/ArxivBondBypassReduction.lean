@@ -12,8 +12,9 @@ open LatticeProb
 
 namespace Exploding
 
-/-- The geometric confined-walk property for a connected reference set and
-its finite bad-cluster enlargement. -/
+/-- An alternative geometric confined-walk condition for a connected reference set and its
+finite bad-cluster enlargement. This condition is not used in the proof of
+`xap12_high_density_bound`. -/
 def bondClusterConfinedWalk : Prop :=
   ∀ (d : ℕ), 2 ≤ d → ∀ (ω : Site d × Fin d → Bool) (x y : Site d)
     (P F : Finset (Site d)), x ∈ P → y ∈ P → xmh_SConn (P : Set (Site d)) →

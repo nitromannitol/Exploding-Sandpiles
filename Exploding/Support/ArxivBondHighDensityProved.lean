@@ -35,7 +35,7 @@ private theorem half_pow_le_exp (n : ℕ) :
       norm_num
     _ = _ := by simpa only [mul_one] using heq
 
-/-- The chemical-distance bound holds uniformly at sufficiently high bond density. -/
+/-- The chemical-distance bound holds at sufficiently high bond density. -/
 theorem xap12_high_density_bound :
     xap12_HighDensityBound := by
   intro d hd

@@ -12,8 +12,9 @@ open LatticeProb MeasureTheory
 
 namespace Exploding
 
-/-- A geometric bypass controls open distance by the size of the bad-cluster
-enlargement of a nearest-neighbor connected reference set. -/
+/-- An alternative geometric bypass condition controls open distance by the size of the
+bad-cluster enlargement of a nearest-neighbor connected reference set. This condition is not
+used in the proof of `xap12_high_density_bound`. -/
 def bondClusterBypassBound : Prop :=
   ∀ (d : ℕ), 2 ≤ d → ∀ (ω : Site d × Fin d → Bool) (x y : Site d)
     (P : Finset (Site d)), x ∈ P → y ∈ P → xmh_SConn (P : Set (Site d)) →

@@ -112,4 +112,54 @@ theorem crossingProb_le_tb {q : ℝ} (hq0 : 0 ≤ q) (hq1 : q ≤ 1) (v : Site 2
   rw [hcross, ofReal_measureReal (measure_ne_top _ _), ← bondPercolation_preimage_openEdges hq0 hq1 hWm]
   exact measure_mono fun ω hω => openEdges_mem_openCrossing hω
 
+/-- The probability that a translate of the rectangle `[0, M] × [0, K]` has no open left-right
+crossing is at most one minus the vendored crossing probability. -/
+theorem bondPercolation_not_lr_le {q : ℝ} (hq0 : 0 ≤ q) (hq1 : q ≤ 1) (v : Site 2) (M K : ℕ) :
+    bondPercolation 2 q {ω | ¬ ∃ a ∈ (· + v) '' (Percolation.Literature.leftSide M K : Set (Site 2)),
+        ∃ e ∈ (· + v) '' (Percolation.Literature.rightSide M K : Set (Site 2)),
+        xap_Reach ω ((· + v) '' (Percolation.Literature.rectangle M K : Set (Site 2))) a e} ≤
+      1 - ENNReal.ofReal (Percolation.Literature.crossingProb ⟨q, hq0, hq1⟩ M K) := by
+  set W := Percolation.Literature.openCrossing
+    ((· + v) '' (Percolation.Literature.rectangle M K : Set (Site 2)))
+    ((· + v) '' (Percolation.Literature.leftSide M K : Set (Site 2)))
+    ((· + v) '' (Percolation.Literature.rightSide M K : Set (Site 2))) with hW
+  have hWm : MeasurableSet W := Percolation.Literature.measurableSet_openCrossing_image _ _ _ _
+  have hcross : Percolation.Literature.crossingProb ⟨q, hq0, hq1⟩ M K =
+      (Percolation.Literature.bondPercolation (Percolation.Literature.LatticeModels.zdGraph 2)
+        ⟨q, hq0, hq1⟩).real W := by
+    rw [hW, Percolation.Literature.real_openCrossing_shift]
+    rfl
+  calc
+    _ ≤ bondPercolation 2 q (openEdges ⁻¹' Wᶜ) := by
+      refine measure_mono fun ω hω hWω => ?_
+      exact absurd (openEdges_mem_openCrossing hWω) hω
+    _ = 1 - ENNReal.ofReal (Percolation.Literature.crossingProb ⟨q, hq0, hq1⟩ M K) := by
+      rw [bondPercolation_preimage_openEdges hq0 hq1 hWm.compl, prob_compl_eq_one_sub hWm, hcross,
+        ofReal_measureReal (measure_ne_top _ _)]
+
+/-- The probability that a translate of the rectangle `[0, K] × [0, M]` has no open bottom-top
+crossing is at most one minus the vendored crossing probability of `[0, M] × [0, K]`. -/
+theorem bondPercolation_not_tb_le {q : ℝ} (hq0 : 0 ≤ q) (hq1 : q ≤ 1) (v : Site 2) (M K : ℕ) :
+    bondPercolation 2 q {ω | ¬ ∃ a ∈ (· + v) '' (Percolation.Literature.bottomSide K M : Set (Site 2)),
+        ∃ e ∈ (· + v) '' (Percolation.Literature.topSide K M : Set (Site 2)),
+        xap_Reach ω ((· + v) '' (Percolation.Literature.rectangle K M : Set (Site 2))) a e} ≤
+      1 - ENNReal.ofReal (Percolation.Literature.crossingProb ⟨q, hq0, hq1⟩ M K) := by
+  set W := Percolation.Literature.openCrossing
+    ((· + v) '' (Percolation.Literature.rectangle K M : Set (Site 2)))
+    ((· + v) '' (Percolation.Literature.bottomSide K M : Set (Site 2)))
+    ((· + v) '' (Percolation.Literature.topSide K M : Set (Site 2))) with hW
+  have hWm : MeasurableSet W := Percolation.Literature.measurableSet_openCrossing_image _ _ _ _
+  have hcross : Percolation.Literature.crossingProb ⟨q, hq0, hq1⟩ M K =
+      (Percolation.Literature.bondPercolation (Percolation.Literature.LatticeModels.zdGraph 2)
+        ⟨q, hq0, hq1⟩).real W := by
+    rw [hW, Percolation.Literature.real_openCrossing_shift, ← Percolation.Literature.real_tbCrossing]
+    rfl
+  calc
+    _ ≤ bondPercolation 2 q (openEdges ⁻¹' Wᶜ) := by
+      refine measure_mono fun ω hω hWω => ?_
+      exact absurd (openEdges_mem_openCrossing hWω) hω
+    _ = 1 - ENNReal.ofReal (Percolation.Literature.crossingProb ⟨q, hq0, hq1⟩ M K) := by
+      rw [bondPercolation_preimage_openEdges hq0 hq1 hWm.compl, prob_compl_eq_one_sub hWm, hcross,
+        ofReal_measureReal (measure_ne_top _ _)]
+
 end Exploding

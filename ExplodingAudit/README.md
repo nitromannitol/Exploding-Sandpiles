@@ -1,12 +1,19 @@
 # ExplodingAudit Comparator Surface
 
-This directory contains a Mathlib-only comparator challenge for the limit shape theorem
-(Theorem 1.2 of *A shape theorem for exploding sandpiles*, Ahmed Bou-Rabee, label
-`theorem:limit_shape` at `paper/corrected-arxiv/exploding-corrected-arxiv.tex:104-112`).
+This directory contains Mathlib-only comparator challenges for main results of
+*A shape theorem for exploding sandpiles*, by Ahmed Bou-Rabee.
 
 | Directory | Checked theorem |
 | --- | --- |
 | `LimitShape/` | `Exploding.StatementAudit.LimitShape.limit_shape` |
+| `LimitShapeUnconditional/` | `Exploding.StatementAudit.LimitShapeUnconditional.limit_shape_unconditional` |
+| `TimeConstantUnconditional/` | `Exploding.StatementAudit.TimeConstantUnconditional.convergence_of_time_constant_unconditional` |
+| `GeneralizedConvergenceUnconditional/` | `Exploding.StatementAudit.GeneralizedConvergenceUnconditional.generalized_convergence_unconditional` |
+
+The latter three challenges state Theorems 1.2, 1.3 and 5.1 without the
+chemical-distance hypothesis. The generalized result retains its hypotheses on
+the background law, including finite-range dependence. Each challenge has one
+intentional proof hole and each solution uses the corresponding library theorem.
 
 `LimitShape/Challenge.lean` imports only `Mathlib`, rebuilds from scratch every definition
 needed to read the theorem, states it, and ends with one `sorry`, the proof being checked.  The

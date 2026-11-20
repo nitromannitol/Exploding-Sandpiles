@@ -9,7 +9,7 @@ project:
     propositions and lemmas of the corrected edition, and its Remark 1. All 22 numbered results and
     Remark 1 have forms proved without cited literature hypotheses. The registered statements retain
     their explicit cited hypotheses, including the all-supercritical Antal–Pisztora bound. The
-    comparator pair under ExplodingAudit/LimitShape/ restates Theorem 1.2 over Mathlib alone.
+    comparator pairs under ExplodingAudit/ restate Theorems 1.2, 1.3 and 5.1 over Mathlib alone.
   authors:
   - Ahmed Bou-Rabee
   responsible_maintainers:
@@ -69,7 +69,7 @@ status:
     statement remains unproved.
   sorry_count: 0
   sorry_count_scope: "Exploding/ (the production library)"
-  comparator_challenge_sorry_count: 1
+  comparator_challenge_sorry_count: 4
   sorry_in_definitions: 0
   axioms:
   - propext
@@ -84,6 +84,7 @@ status:
     sorry_count: 0
     axioms: ["propext", "Classical.choice", "Quot.sound"]
     comparator_config: "ExplodingAudit/LimitShape/comparator.json"
+    unconditional_comparator_config: "ExplodingAudit/LimitShapeUnconditional/comparator.json"
     literature_dependencies:
     - "Antal and Pisztora, Theorem 1.1 (hChem), an explicit hypothesis of the registered declaration; the unconditional declaration uses the proved high-density bound"
   - declaration: "Exploding.convergence_of_time_constant"
@@ -94,6 +95,7 @@ status:
     sorry_count: 0
     axioms: ["propext", "Classical.choice", "Quot.sound"]
     comparator_config: "none"
+    unconditional_comparator_config: "ExplodingAudit/TimeConstantUnconditional/comparator.json"
     literature_dependencies:
     - "Antal and Pisztora, Theorem 1.1 (hChem), an explicit hypothesis of the registered declaration; the unconditional declaration uses the proved high-density bound"
   - declaration: "Exploding.explosive"
@@ -111,6 +113,7 @@ status:
     sorry_count: 0
     axioms: ["propext", "Classical.choice", "Quot.sound"]
     comparator_config: "none"
+    unconditional_comparator_config: "ExplodingAudit/GeneralizedConvergenceUnconditional/comparator.json"
     literature_dependencies:
     - "Antal and Pisztora, Theorem 1.1 (hChem), an explicit hypothesis of the registered declaration; the unconditional declaration uses the proved high-density bound"
   - declaration: "Exploding.counterexample"

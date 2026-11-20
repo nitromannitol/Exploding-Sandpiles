@@ -403,3 +403,4 @@ import Exploding.Support.PlanarWaveOrder
 import Exploding.Support.PlanarWaveBarrier
 import Exploding.Support.PlanarWaveOptimality
 import Exploding.Support.APBoxChemical
+import Exploding.Support.APSlabConnectivity

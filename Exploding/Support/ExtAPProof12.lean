@@ -57,7 +57,8 @@ theorem xap12_shortWalkFails_mono {ρ ρ' : ℝ} (h : ρ' ≤ ρ) {ω : Site d �
 /-! ### The high-density bound and the supercritical-density reduction -/
 
 /-- The high-density chemical-distance bound: for `q` close enough to `1`, the
-distance tail decays exponentially at rate `ρ` per unit `mnorm`. -/
+probability that the distance exceeds `ρ` times `mnorm` decays exponentially
+at rate `c` per unit `mnorm`. -/
 def xap12_HighDensityBound : Prop :=
   ∀ d : ℕ, 2 ≤ d → ∃ q0 : ℝ, q0 < 1 ∧ ∀ q : ℝ, q0 < q → q ≤ 1 →
     ∃ ρ c : ℝ, 1 ≤ ρ ∧ 0 < c ∧ ∃ R : ℕ, ∀ y : Site d, (R : ℤ) ≤ mnorm y →

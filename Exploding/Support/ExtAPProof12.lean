@@ -1,22 +1,14 @@
-/-
-Assembly of the Antal–Pisztora chemical-distance bound, pushing the
-infinite-cluster case and isolating the supercritical-density reduction.
-
-The frozen statement `Exploding.External.AntalPisztoraChemicalDistance` quantifies
-over every `q > bondCritical d`, while the Peierls estimate is available only at
-high density.  The two named claims whose proofs are the hard percolation inputs
-are:
-
-* `xap12_SupercriticalReduction` — the high-density bound implies the frozen
-  statement for every `q > bondCritical d` (the box-crossing / renormalisation
-  step).
-
-`xap12_AntalPisztora_of_highDensity` yields the frozen statement from the
-high-density bound and this reduction.  Everything except the reduction is proved
-here.
--/
 import Exploding.Support.ExtAPProof11
 import Exploding.External.AntalPisztora
+
+/-!
+# Chemical-distance bounds and the supercritical reduction
+
+The frozen Antal–Pisztora statement applies at every density above the critical
+threshold. This file defines a high-density bound and the reduction from that
+bound to the frozen statement; the latter reduction is not proved here. The
+high-density bound is proved in `ArxivBondHighDensityProved`.
+-/
 
 open Exploding LatticeProb MeasureTheory
 open scoped Classical

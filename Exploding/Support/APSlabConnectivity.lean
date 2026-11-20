@@ -34,7 +34,7 @@ def LatticeBond.UniformCubeSlabConnectivity (d : ℕ) (p : unitInterval) : Prop 
     ∀ (c : Site d) (n : ℕ) (a : Fin d) (k : ℕ), (k + 1) * width ≤ n →
       ∀ x ∈ cubeSlab c n a width k, ∀ y ∈ cubeSlab c n a width k,
         ρ ≤ (LatticeBond.latticeBondLaw d p).real
-          {ω | (LatticeBond.openIn ω (cubeSlab c n a width k)).Reachable x y}
+          {ω | (Rigidity.External.openIn ω (cubeSlab c n a width k)).Reachable x y}
 
 /-- Uniform two-point connectivity in the slabs of cubes for bond percolation of density `q`. -/
 def SlabConnectivity (d : ℕ) (q : ℝ) : Prop :=

@@ -9,7 +9,7 @@ percolation probabilities agree, and every density above `bondCritical d` lies a
 `criticalProbability d`.  Connection probabilities inside a set transfer through `openIn`.
 -/
 import Exploding.Support.LatticeBond.Critical
-import Exploding.Support.LatticeBond.OpenIn
+import Exploding.Rigidity.External.WellConnected
 import Exploding.Support.APVendoredBridge
 import Exploding.Support.ExtAPProof14
 
@@ -172,10 +172,10 @@ theorem criticalProbability_lt_of_bondCritical_lt [NeZero d] {q : ℝ} (hq : bon
 def openInWalk (ω : LatticeBond.Configuration d) (S : Set (Site d)) :
     ℕ → Site d → Site d → Prop
   | 0, x, y => x = y
-  | n + 1, x, y => ∃ z, (LatticeBond.openIn ω S).Adj x z ∧ openInWalk ω S n z y
+  | n + 1, x, y => ∃ z, (Rigidity.External.openIn ω S).Adj x z ∧ openInWalk ω S n z y
 
 theorem reachable_openIn_iff (ω : LatticeBond.Configuration d) (S : Set (Site d))
-    (x y : Site d) : (LatticeBond.openIn ω S).Reachable x y ↔ ∃ n, openInWalk ω S n x y := by
+    (x y : Site d) : (Rigidity.External.openIn ω S).Reachable x y ↔ ∃ n, openInWalk ω S n x y := by
   constructor
   · rintro ⟨w⟩
     induction w with
@@ -194,7 +194,7 @@ theorem reachable_openIn_iff (ω : LatticeBond.Configuration d) (S : Set (Site d
       exact h.reachable.trans (ih z hz)
 
 theorem measurableSet_openIn_reachable (S : Set (Site d)) (x y : Site d) :
-    MeasurableSet {ω : LatticeBond.Configuration d | (LatticeBond.openIn ω S).Reachable x y} := by
+    MeasurableSet {ω : LatticeBond.Configuration d | (Rigidity.External.openIn ω S).Reachable x y} := by
   have hwalk : ∀ n x, MeasurableSet {ω : LatticeBond.Configuration d | openInWalk ω S n x y} := by
     intro n
     induction n with
@@ -205,12 +205,12 @@ theorem measurableSet_openIn_reachable (S : Set (Site d)) (x y : Site d) :
           ⋃ z, ({ω | (LatticeBond.openGraph ω).Adj x z} ∩ {_ω | x ∈ S ∧ z ∈ S}) ∩
             {ω | openInWalk ω S n z y} := by
         ext ω
-        simp only [openInWalk, LatticeBond.openIn, Set.mem_ofPred_eq, Set.mem_iUnion,
+        simp only [openInWalk, Rigidity.External.openIn, Set.mem_ofPred_eq, Set.mem_iUnion,
           Set.mem_inter_iff]
       rw [this]
       exact MeasurableSet.iUnion fun z =>
         ((LatticeBond.measurableSet_openGraph_adj x z).inter (MeasurableSet.const _)).inter (ih z)
-  have : {ω : LatticeBond.Configuration d | (LatticeBond.openIn ω S).Reachable x y} =
+  have : {ω : LatticeBond.Configuration d | (Rigidity.External.openIn ω S).Reachable x y} =
       ⋃ n, {ω | openInWalk ω S n x y} := by
     ext ω
     simp only [reachable_openIn_iff, Set.mem_ofPred_eq, Set.mem_iUnion]
@@ -219,7 +219,7 @@ theorem measurableSet_openIn_reachable (S : Set (Site d)) (x y : Site d) :
 
 theorem openIn_toLatticeConfig_reachable {ω : Site d × Fin d → Bool} {S : Set (Site d)}
     {x y : Site d} (hx : x ∈ S)
-    (h : (LatticeBond.openIn (toLatticeConfig ω) S).Reachable x y) : xap_Reach ω S x y := by
+    (h : (Rigidity.External.openIn (toLatticeConfig ω) S).Reachable x y) : xap_Reach ω S x y := by
   rw [SimpleGraph.reachable_iff_reflTransGen] at h
   refine ⟨hx, ReflTransGen.mono (fun a b hab => ?_) _ _ h⟩
   obtain ⟨hab, ha, hb⟩ := hab
@@ -231,7 +231,7 @@ corresponding confined connection probability of this repository. -/
 theorem latticeBondLaw_openIn_le {q : ℝ} (hq0 : 0 ≤ q) (hq1 : q ≤ 1) {S : Set (Site d)}
     {x y : Site d} (hx : x ∈ S) :
     (LatticeBond.latticeBondLaw d ⟨q, hq0, hq1⟩).real
-        {ω | (LatticeBond.openIn ω S).Reachable x y} ≤
+        {ω | (Rigidity.External.openIn ω S).Reachable x y} ≤
       (bondPercolation d q).real {ω | xap_Reach ω S x y} := by
   have : IsProbabilityMeasure (bondPercolation d q) := rn_infinitePi_isProb hq0 hq1
   rw [← map_toLatticeConfig_bondPercolation hq0 hq1]

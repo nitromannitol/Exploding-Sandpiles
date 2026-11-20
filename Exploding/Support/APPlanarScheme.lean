@@ -23,16 +23,6 @@ namespace Exploding
 
 /-! ### Locality -/
 
-theorem xap_reach_congr_of_window {N r : ℕ} {b : Site 2} {ω ω' : Site 2 × Fin 2 → Bool}
-    (h : ∀ e ∈ windowBonds N r b, ω e = ω' e) {S : Set (Site 2)}
-    (hS : S ⊆ coarseWindow N r b) {a z : Site 2} (hω : xap_Reach ω S a z) : xap_Reach ω' S a z := by
-  refine ⟨hω.1, xap_rtg_mono (fun x y hxy => ⟨hxy.1, hxy.2.1, ?_⟩) hω.2⟩
-  obtain ⟨hx, hy, hadj⟩ := hxy
-  rw [openBondGraph, SimpleGraph.fromRel_adj] at hadj ⊢
-  obtain ⟨hne, ⟨i, rfl, hi⟩ | ⟨i, rfl, hi⟩⟩ := hadj
-  · exact ⟨hne, Or.inl ⟨i, rfl, by rw [← h (x, i) ⟨hS hx, hS hy⟩]; exact hi⟩⟩
-  · exact ⟨hne, Or.inr ⟨i, rfl, by rw [← h (y, i) ⟨hS hy, hS hx⟩]; exact hi⟩⟩
-
 theorem frameGood_isLocal (m : ℕ) : IsLocalBlockPredicate (2 * m + 1) 1 (frameGood m) := by
   have key : ∀ b (ω ω' : Site 2 × Fin 2 → Bool), (∀ e ∈ windowBonds (2 * m + 1) 1 b, ω e = ω' e) →
       frameGood m ω b → frameGood m ω' b := by

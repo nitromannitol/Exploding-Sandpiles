@@ -232,4 +232,58 @@ theorem open_bond_edist_lt_of_reach_coarseRegion {N : ℕ} (hN : 0 < N)
     (fun z hz => (mem_coarseRegionFinset hN).mpr (hp z hz))
   exact lt_of_lt_of_le hlt (by exact_mod_cast card_coarseRegionFinset_le N E)
 
+/-- Open paths inside a subset of a window depend only on the bonds of the window. -/
+theorem xap_reach_congr_of_window {N r : ℕ} {b : Site d} {ω ω' : Site d × Fin d → Bool}
+    (h : ∀ e ∈ windowBonds N r b, ω e = ω' e) {S : Set (Site d)}
+    (hS : S ⊆ coarseWindow N r b) {a z : Site d} (hω : xap_Reach ω S a z) : xap_Reach ω' S a z := by
+  refine ⟨hω.1, xap_rtg_mono (fun x y hxy => ⟨hxy.1, hxy.2.1, ?_⟩) hω.2⟩
+  obtain ⟨hx, hy, hadj⟩ := hxy
+  rw [openBondGraph, SimpleGraph.fromRel_adj] at hadj ⊢
+  obtain ⟨hne, ⟨i, rfl, hi⟩ | ⟨i, rfl, hi⟩⟩ := hadj
+  · exact ⟨hne, Or.inl ⟨i, rfl, by rw [← h (x, i) ⟨hS hx, hS hy⟩]; exact hi⟩⟩
+  · exact ⟨hne, Or.inr ⟨i, rfl, by rw [← h (y, i) ⟨hS hy, hS hx⟩]; exact hi⟩⟩
+
+theorem int_ediv_abs_sub_le_iff {N a c r : ℤ} (hN : 0 < N) :
+    |a / N - c| ≤ r ↔ N * (c - r) ≤ a ∧ a < N * (c + r + 1) := by
+  obtain ⟨h1, h2⟩ := int_ediv_bounds hN a
+  rw [abs_le]
+  constructor
+  · rintro ⟨h3, h4⟩
+    constructor <;> nlinarith
+  · rintro ⟨h3, h4⟩
+    constructor
+    · by_contra h
+      have : a / N ≤ c - r - 1 := by linarith
+      nlinarith
+    · by_contra h
+      have : c + r + 1 ≤ a / N := by linarith
+      nlinarith
+
+/-- The window of `b` is a box of `(2r+1)N` sites in each direction. -/
+theorem mem_coarseWindow_iff_bounds {N r : ℕ} (hN : 0 < N) {b u : Site d} :
+    u ∈ coarseWindow N r b ↔
+      ∀ i, (N : ℤ) * (b i - r) ≤ u i ∧ u i < (N : ℤ) * (b i + r + 1) := by
+  have hN' : (0 : ℤ) < N := by exact_mod_cast hN
+  rw [mem_coarseWindow_iff]
+  exact forall_congr' fun i => int_ediv_abs_sub_le_iff hN'
+
+/-- The block of `u` is `b` exactly when `u` lies in the box of side `N` at `N b`. -/
+theorem coarseSite_eq_iff_bounds {N : ℕ} (hN : 0 < N) {b u : Site d} :
+    coarseSite N u = b ↔ ∀ i, (N : ℤ) * b i ≤ u i ∧ u i < (N : ℤ) * b i + N := by
+  have hN' : (0 : ℤ) < N := by exact_mod_cast hN
+  constructor
+  · rintro rfl i
+    exact int_ediv_bounds hN' (u i)
+  · intro h
+    funext i
+    exact int_ediv_eq_of_bounds hN' (h i).1 (h i).2
+
+theorem coarseSite_sub_smul {N : ℕ} (hN : 0 < N) (u b : Site d) :
+    coarseSite N (u - fun i => (N : ℤ) * b i) = coarseSite N u - b := by
+  have hN' : (0 : ℤ) < N := by exact_mod_cast hN
+  funext i
+  obtain ⟨h1, h2⟩ := int_ediv_bounds hN' (u i)
+  simp only [coarseSite, Pi.sub_apply]
+  exact int_ediv_eq_of_bounds hN' (by rw [mul_sub]; linarith) (by rw [mul_sub]; linarith)
+
 end Exploding

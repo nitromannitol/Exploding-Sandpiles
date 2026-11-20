@@ -1,0 +1,14 @@
+{
+  "challenge_module": "ExplodingAudit.TimeConstantUnconditional.Challenge",
+  "solution_module": "ExplodingAudit.TimeConstantUnconditional.Solution",
+  "theorem_names": [
+    "Exploding.StatementAudit.TimeConstantUnconditional.convergence_of_time_constant_unconditional"
+  ],
+  "definition_names": [],
+  "permitted_axioms": [
+    "propext",
+    "Quot.sound",
+    "Classical.choice"
+  ],
+  "enable_nanoda": true
+}

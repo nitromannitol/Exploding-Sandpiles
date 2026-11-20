@@ -1,0 +1,14 @@
+{
+  "challenge_module": "ExplodingAudit.GeneralizedConvergenceUnconditional.Challenge",
+  "solution_module": "ExplodingAudit.GeneralizedConvergenceUnconditional.Solution",
+  "theorem_names": [
+    "Exploding.StatementAudit.GeneralizedConvergenceUnconditional.generalized_convergence_unconditional"
+  ],
+  "definition_names": [],
+  "permitted_axioms": [
+    "propext",
+    "Quot.sound",
+    "Classical.choice"
+  ],
+  "enable_nanoda": true
+}

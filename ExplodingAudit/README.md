@@ -61,9 +61,9 @@ The theorem takes as explicit hypotheses four results that the paper cites; each
 - `SchonmannBootstrap`: Schonmann's large-deviation bound for bootstrap percolation
   (Proposition 7.4 of the paper).
 
-The library proves three of them, as `Exploding.xlse_lss_bounded_degree`,
-`Exploding.xmf_proved` and `Exploding.xsr_schonmann`; only `AntalPisztoraChemicalDistance` is
-assumed.  The challenge keeps all four as hypotheses, as the library statement does.
+The library proves all four, as `Exploding.xlse_lss_bounded_degree`,
+`Exploding.xmf_proved`, `Exploding.xsr_schonmann` and
+`Exploding.External.antalPisztoraChemicalDistance_holds`.  The challenge keeps all four as hypotheses, as the library statement does.
 
 The library statement is `Exploding.Frozen.limit_shape`
 (`Exploding/Frozen/LimitShape.lean`), proved by `Exploding.LSProof.ls_assemble`

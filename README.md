@@ -129,12 +129,13 @@ same order and with the same numbers.
    `Quot.sound`. The registered statements retain the full Antal–Pisztora chemical-distance
    bound as an explicit hypothesis. Its high-density restriction is proved as
    `Exploding.xap12_high_density_bound` and gives unconditional forms of all 11 statements
-   that use it. The full statement is proved in dimension two as
-   `Exploding.antalPisztora_dim_two`; in dimensions `d ≥ 3` it is reduced to uniform two-point
-   connectivity in slabs above the critical probability, the slab form of the theorem of
-   Grimmett and Marstrand (`Exploding.antalPisztoraChemicalDistance_of_slabConnectivity`), which is
-   not proved here.
-2. **Cited results proved here.** Eight cited results are proved in this repository or in Lattice-Probability:
+   that use it. The full statement is proved as
+   `Exploding.External.antalPisztoraChemicalDistance_holds`, in every dimension `d ≥ 2` and at
+   every density above `p_c`.
+2. **Cited results proved here.** All nine cited results are proved in this repository or in
+   Lattice-Probability: the theorem of Antal and Pisztora (in dimensions `d ≥ 3` through the slab
+   form of the theorem of Grimmett and Marstrand proved in Percolation-Rigidity, whose proof is
+   copied here; see [Copied code](#copied-code));
    Liggett, Schonmann and Stacey, Theorem 0.0 and Corollary 1.4; Mathieu, Lemma 5.2; Schonmann's
    bound (Proposition 7.4); Fey, Levine and Peres, Proposition 1.4; and Fey, Meester and Redig,
    Theorem 2.8, which no result uses; the Fey–den Boer–Redig cubical cluster result and the
@@ -149,9 +150,8 @@ same order and with the same numbers.
    paragraph after its proof and is not formalized. The unconditional route uses only the proved
    high-density case of Antal–Pisztora, whereas the paper cites the full supercritical result;
    the restriction suffices because the paper applies it at density close to one (Section 2,
-   line 350). The full supercritical statement is proved for `d = 2` by a renormalization that
-   departs from the cited proof (see [`CORRESPONDENCE.md`](CORRESPONDENCE.md)) and remains
-   unproved for `d ≥ 3`.
+   line 350). The full supercritical statement is proved by a renormalization that departs from
+   the cited proof (see [`CORRESPONDENCE.md`](CORRESPONDENCE.md)).
 4. **Conventions.** Arrival times are valued in `ℕ∞`; `[x]` is the nearest lattice point, with ties
    broken by the coordinatewise minimum; locally uniform convergence is stated in its `ε`-form; the
    floor in the toppling rules is integer division on `ℤ`.
@@ -160,19 +160,24 @@ same order and with the same numbers.
 
 ## Assumed literature inputs
 
-The registered statements retain the following explicit hypothesis. Its high-density
-restriction is proved as `Exploding.xap12_high_density_bound`; this suffices for the
-unconditional forms listed below. The full statement is proved in dimension two as
-`Exploding.antalPisztora_dim_two`, and `Exploding.antalPisztoraChemicalDistance_of_boxEstimate`
-derives it in every dimension from `Exploding.PisztoraBoxEstimate` for `d ≥ 3`: at every density
-above `p_c` and at some scale `N`, outside events of arbitrarily small probability, the cube
-`[0, N)^d` contains an open path between two sites at sup-distance at least `N - 1`, and all such
-paths inside `[-N, 2N)^d` are joined inside it. This is a consequence of the coarse-graining
-theorem of Pisztora (1996, Theorem 3.1). `Exploding.pisztoraBoxEstimate_of_slabConnectivity` proves it from uniform two-point connectivity
+The registered statements retain the following explicit hypothesis, which is proved here as
+`Exploding.External.antalPisztoraChemicalDistance_holds`
+([`Exploding/External/AntalPisztoraProved.lean`](Exploding/External/AntalPisztoraProved.lean)),
+so it can be discharged instead of assumed. Its high-density restriction is proved as
+`Exploding.xap12_high_density_bound`; this suffices for the unconditional forms listed below. The
+full statement is proved in dimension two as `Exploding.antalPisztora_dim_two`, and
+`Exploding.antalPisztoraChemicalDistance_of_boxEstimate` derives it in every dimension from
+`Exploding.PisztoraBoxEstimate` for `d ≥ 3`: at every density above `p_c` and at some scale `N`,
+outside events of arbitrarily small probability, the cube `[0, N)^d` contains an open path between
+two sites at sup-distance at least `N - 1`, and all such paths inside `[-N, 2N)^d` are joined
+inside it. This is a consequence of the coarse-graining theorem of Pisztora (1996, Theorem 3.1).
+`Exploding.pisztoraBoxEstimate_of_slabConnectivity` proves it from uniform two-point connectivity
 in the slabs of cubes, `Exploding.LatticeBond.UniformCubeSlabConnectivity`, above the critical
-probability, through the slab crossing estimates of Percolation-Rigidity, copied in
-`Exploding/Rigidity/`. That slab connectivity, the slab form of the theorem of Grimmett and
-Marstrand, is not proved here.
+probability, through the slab crossing estimates of Percolation-Rigidity. That slab connectivity,
+the slab form of the theorem of Grimmett and Marstrand, is proved in Percolation-Rigidity
+(`Rigidity.Percolation.uniformCubeSlabConnectivity_of_criticalProbability_lt`, transferred here by
+`Exploding.latticeBond_uniformCubeSlabConnectivity_of_criticalProbability_lt`). Both parts of
+Percolation-Rigidity are copied in `Exploding/Rigidity/` (see [Copied code](#copied-code)).
 
 | Hypothesis | Content | Source | Used by registered statements |
 | --- | --- | --- | --- |
@@ -186,7 +191,7 @@ The corresponding forms without `hChem` are:
 - `Exploding.convergence_of_the_last_wave_unconditional` and `Exploding.approximate_subadditive_unconditional`;
 - `Exploding.convergence_of_the_generalized_last_wave_unconditional` and `Exploding.generalized_convergence_unconditional`.
 
-[`ASSUMPTIONS.md`](ASSUMPTIONS.md) gives the Lean text of every cited result and identifies the proofs of the other eight.
+[`ASSUMPTIONS.md`](ASSUMPTIONS.md) gives the Lean text of every cited result and identifies their proofs.
 
 ## Guarantees
 
@@ -210,7 +215,7 @@ Cited results appear as explicit hypotheses in registered statements; some can b
   comparator challenge [`ExplodingAudit/LimitShape/Challenge.lean`](ExplodingAudit/LimitShape/Challenge.lean)
   has one intentional statement-level `sorry`.
 - **Standard axioms only.** [`Exploding/Meta/AxiomsAudit.lean`](Exploding/Meta/AxiomsAudit.lean)
-  prints the axioms of 123 theorems, and [`scripts/check_axioms.py`](scripts/check_axioms.py)
+  prints the axioms of 126 theorems, and [`scripts/check_axioms.py`](scripts/check_axioms.py)
   requires exactly `propext`, `Classical.choice` and `Quot.sound` for each theorem of its explicit
   list.
 - **Independent check of the statements.** The Mathlib-only pair [`ExplodingAudit/LimitShape/`](ExplodingAudit/LimitShape/)
@@ -256,7 +261,7 @@ Lattice-Probability has no prebuilt cache, so the first build compiles it as wel
 It is a public repository, pinned in [`lake-manifest.json`](lake-manifest.json):
 
 - Lattice-Probability: `https://github.com/nitromannitol/Lattice-Probability` at
-  `78f4b2cec065fa2fb5116b06c41966855f62cf50`.
+  `7f773dd0aa66dbe1ed1080ae0248906b9cfe5215`.
 
 `import Exploding` loads the numbered results and what they use.
 
@@ -294,7 +299,8 @@ Exploding/
   Frozen/             one statement per file, each followed by its proof
   External/           the cited results, stated as propositions
   Support/            the model and the lemmas the statements are proved from
-  Rigidity/           slab crossing estimates copied from Percolation-Rigidity, with headers
+  Rigidity/           slab connectivity and slab crossing estimates copied from
+                      Percolation-Rigidity, with headers (see Copied code)
   Meta/               AxiomsAudit.lean
 Exploding.lean        the root module
 ExplodingAudit/       the Mathlib-only comparator pair, its solution and checks
@@ -313,6 +319,24 @@ tools/                      verify.py and the checkers it runs
 .github/workflows/          build.yml and comparator.yml
 lakefile.lean, lake-manifest.json, lean-toolchain   the build
 ```
+
+## Copied code
+
+Some modules are copied from other public repositories, with attribution, and not through a Lake
+dependency. Each copied file starts with a header naming its source repository, commit and file,
+and the changes made.
+
+| Source | Commit | Modules |
+| --- | --- | --- |
+| [Percolation-Rigidity](https://github.com/nitromannitol/Percolation-Rigidity) (Apache License 2.0) | [`d5b6dd0b0019636ea3c88ad0f7da087a6ac194c3`](https://github.com/nitromannitol/Percolation-Rigidity/tree/d5b6dd0b0019636ea3c88ad0f7da087a6ac194c3); 59 modules cite the earlier [`63c0ac991f33e61e9645694319070d9405333e5d`](https://github.com/nitromannitol/Percolation-Rigidity/tree/63c0ac991f33e61e9645694319070d9405333e5d), at which they are the same | the 183 modules under [`Exploding/Rigidity/`](Exploding/Rigidity/) outside `Vendor/`, from the files of the same paths under `Rigidity/`: the proof of uniform slab connectivity above the critical probability (`Rigidity.Percolation.uniformCubeSlabConnectivity_of_criticalProbability_lt`) and the slab crossing estimates |
+| [anthropics/formal-math](https://github.com/anthropics/formal-math/tree/795efb86f191735c5481675763537cfb4ff37e55/percolation), the `percolation/` project (Apache License 2.0; its `LICENSE` and `NOTICE` are kept verbatim in [`Exploding/Rigidity/Vendor/FormalMathPercolation/`](Exploding/Rigidity/Vendor/FormalMathPercolation/)) | `795efb86f191735c5481675763537cfb4ff37e55` | the 12 modules under `Exploding/Rigidity/Vendor/FormalMathPercolation/Literature/`, from the files of the same names under `percolation/Percolation/Literature/`, as copied in Percolation-Rigidity at `d5b6dd0b0019636ea3c88ad0f7da087a6ac194c3` |
+| [Lattice-Probability](https://github.com/nitromannitol/Lattice-Probability/tree/7512f4fbbc3e3d3ecf3e1af8a450ca7f4f082069) (Apache License 2.0) | `7512f4fbbc3e3d3ecf3e1af8a450ca7f4f082069` | the bond model in which Percolation-Rigidity is stated: the nine modules under [`Exploding/Support/LatticeBond/`](Exploding/Support/LatticeBond/), from `LatticeProb/Prob/Percolation/LatticeBond*.lean` and `LatticeProb/Prob/Percolation/LatticeUniqueCluster*.lean`, and `Exploding/Support/StochasticO.lean`, from `LatticeProb/Prob/StochasticO.lean` |
+
+The other formal-math modules that the copied code uses, and the planar site percolation modules
+from Leonardo Bonanno's [lean-formalizations](https://github.com/leobon12/lean-formalizations), are
+not copied here: they are imported from their copies in the pinned Lattice-Probability
+(`LatticeProb.Vendor.FormalMathPercolation` and `LatticeProb.Bonanno.LQGMetric.Perc`), which carry
+their own headers.
 
 ## How this was built
 
@@ -335,5 +359,6 @@ formalizes. If you use this formalization, please cite it using the metadata in
 ## License
 
 The Lean code in this repository is licensed under the **Apache License 2.0** (see
-[`LICENSE`](LICENSE)).  The paper source in `paper/` is included for reference and is not
+[`LICENSE`](LICENSE)); the copied modules listed in [Copied code](#copied-code) keep the terms of
+their sources.  The paper source in `paper/` is included for reference and is not
 covered by the Apache license.

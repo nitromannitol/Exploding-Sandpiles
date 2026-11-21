@@ -231,9 +231,12 @@ def render():
                  if len(withproof) > 1 else
                  "Of these, **one is also proved in this repository** and so need not "
                  "be taken on trust; it is marked below with the theorem that proves it. ") +
-                f"The remaining **{len(assumed) - len(withproof)}** "
-                + ("is" if len(assumed) - len(withproof) == 1 else "are")
-                + " assumed in registered statements.", ""]
+                ((f"The remaining **{len(assumed) - len(withproof)}** "
+                  + ("is" if len(assumed) - len(withproof) == 1 else "are")
+                  + " assumed in registered statements.")
+                 if len(withproof) < len(assumed) else
+                 "The registered statements that carry them as hypotheses have forms without "
+                 "them, listed in the README."), ""]
         ncond = sum(1 for n in withproof if bridge_condition(comp[pathlib.Path(n["file"]).stem]))
         if ncond:
             out[-2] += ((f" Of the {len(withproof)} proofs, **{ncond}** "
@@ -256,15 +259,6 @@ def render():
                     "can be discharged rather than assumed")
         else:
             line = "* **Not proved here**: this one is assumed by the registered statements"
-        if n["id"] == "ext-antal-pisztora" and not c:
-            line += ("; the high-density restriction is proved as "
-                     "`Exploding.xap12_high_density_bound` and the full statement in dimension "
-                     "two as `Exploding.antalPisztora_dim_two`. In dimensions `d ≥ 3` it follows "
-                     "from uniform two-point connectivity in slabs above the critical "
-                     "probability, the slab form of the theorem of Grimmett and Marstrand "
-                     "(`Exploding.antalPisztoraChemicalDistance_of_slabConnectivity`), which is "
-                     "not proved here. Every registered result using this hypothesis has a form "
-                     "without it, listed in the README")
         out += [f"## `{n['id']}`", "",
                 f"* **Lean name** `{n['export']}`",
                 f"* **File** `{n['file']}`",

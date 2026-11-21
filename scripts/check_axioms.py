@@ -135,6 +135,9 @@ expected = {
     'Exploding.map_toLatticeConfig_bondPercolation',
     'Exploding.pisztoraBoxEstimate_of_slabConnectivity',
     'Exploding.antalPisztoraChemicalDistance_of_slabConnectivity',
+    'Rigidity.Percolation.uniformCubeSlabConnectivity_of_criticalProbability_lt',
+    'Exploding.latticeBond_uniformCubeSlabConnectivity_of_criticalProbability_lt',
+    'Exploding.External.antalPisztoraChemicalDistance_holds',
 }
 standard = {'propext', 'Classical.choice', 'Quot.sound'}
 log = pathlib.Path(sys.argv[1]).read_text(encoding='utf-8', errors='replace')

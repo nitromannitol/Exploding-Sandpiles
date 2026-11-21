@@ -39,6 +39,7 @@ import Exploding.Support.PlanarWaveOrder
 import Exploding.Support.PlanarWaveBarrier
 import Exploding.Support.APBoxChemical
 import Exploding.Support.APPisztoraFromSlab
+import Exploding.External.AntalPisztoraProved
 
 /-!
 # Axioms audit
@@ -51,8 +52,9 @@ can be met. Each must report exactly the three standard axioms
 explicit list of names.
 
 No `axiom` is declared in this development. The full all-supercritical Antal–Pisztora statement
-is not proved here; its high-density restriction is proved and supplies the forms without the
-corresponding hypothesis. The Fey–den Boer–Redig and Fey–Levine–Peres radius inputs are proved.
+is proved (`Exploding.External.antalPisztoraChemicalDistance_holds`); its high-density restriction
+supplies the forms without the corresponding hypothesis. The Fey–den Boer–Redig and
+Fey–Levine–Peres radius inputs are proved.
 Read each report together with the hypotheses of its statement.
 
 The default library build includes this module. It can also be built explicitly with
@@ -212,3 +214,6 @@ The default library build includes this module. It can also be built explicitly 
 #print axioms Exploding.map_toLatticeConfig_bondPercolation
 #print axioms Exploding.pisztoraBoxEstimate_of_slabConnectivity
 #print axioms Exploding.antalPisztoraChemicalDistance_of_slabConnectivity
+#print axioms Rigidity.Percolation.uniformCubeSlabConnectivity_of_criticalProbability_lt
+#print axioms Exploding.latticeBond_uniformCubeSlabConnectivity_of_criticalProbability_lt
+#print axioms Exploding.External.antalPisztoraChemicalDistance_holds

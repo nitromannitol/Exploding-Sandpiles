@@ -8,7 +8,8 @@ project:
     its arXiv v2 source. The results are Theorems 1.2, 1.3, 1.4, 5.1 and 6.1, the numbered
     propositions and lemmas of the corrected edition, and its Remark 1. All 22 numbered results and
     Remark 1 have forms proved without cited literature hypotheses. The registered statements retain
-    their explicit cited hypotheses, including the all-supercritical Antal–Pisztora bound. The
+    their explicit cited hypotheses, including the all-supercritical Antal–Pisztora bound, and all
+    nine cited results are proved in this repository or in Lattice-Probability. The
     comparator pairs under ExplodingAudit/ restate Theorems 1.2, 1.3 and 5.1 over Mathlib alone.
   authors:
   - Ahmed Bou-Rabee
@@ -51,7 +52,10 @@ sources:
 related_formalizations:
 - id: https://github.com/nitromannitol/Lattice-Probability
   relationship: builds-on
-  note: "Lattice-Probability, at commit 7f773dd0aa66dbe1ed1080ae0248906b9cfe5215."
+  note: "Lattice-Probability, at commit 7f773dd0aa66dbe1ed1080ae0248906b9cfe5215; its bond model at commit 7512f4fbbc3e3d3ecf3e1af8a450ca7f4f082069 is copied in Exploding/Support/LatticeBond/."
+- id: https://github.com/nitromannitol/Percolation-Rigidity
+  relationship: builds-on
+  note: "Uniform slab connectivity above the critical probability (the slab form of the theorem of Grimmett and Marstrand) and the slab crossing estimates, copied in Exploding/Rigidity/ from commit d5b6dd0b0019636ea3c88ad0f7da087a6ac194c3, with the modules of anthropics/formal-math (commit 795efb86f191735c5481675763537cfb4ff37e55, Apache License 2.0) that it copies; see the section Copied code of README.md."
 
 status:
   scope: >-
@@ -66,10 +70,12 @@ status:
     Exploding.approximate_subadditive_unconditional,
     Exploding.convergence_of_the_generalized_last_wave_unconditional, and
     Exploding.generalized_convergence_unconditional. The full all-supercritical Antal–Pisztora
-    statement is proved in dimension two as Exploding.antalPisztora_dim_two; in dimensions d ≥ 3
-    it follows from uniform two-point connectivity in slabs above the critical probability
+    statement is proved as Exploding.External.antalPisztoraChemicalDistance_holds: in dimension
+    two as Exploding.antalPisztora_dim_two, and in dimensions d ≥ 3 from uniform two-point
+    connectivity in slabs above the critical probability
     (Exploding.antalPisztoraChemicalDistance_of_slabConnectivity), the slab form of the theorem of
-    Grimmett and Marstrand, which is not proved here.
+    Grimmett and Marstrand, proved in Percolation-Rigidity and copied here
+    (Exploding.latticeBond_uniformCubeSlabConnectivity_of_criticalProbability_lt).
   sorry_count: 0
   sorry_count_scope: "Exploding/ (the production library)"
   comparator_challenge_sorry_count: 4
@@ -89,7 +95,7 @@ status:
     comparator_config: "ExplodingAudit/LimitShape/comparator.json"
     unconditional_comparator_config: "ExplodingAudit/LimitShapeUnconditional/comparator.json"
     literature_dependencies:
-    - "Antal and Pisztora, Theorem 1.1 (hChem), an explicit hypothesis of the registered declaration; the unconditional declaration uses the proved high-density bound"
+    - "Antal and Pisztora, Theorem 1.1 (hChem), an explicit hypothesis of the registered declaration, proved as Exploding.External.antalPisztoraChemicalDistance_holds; the unconditional declaration uses the proved high-density bound"
   - declaration: "Exploding.convergence_of_time_constant"
     unconditional_declaration: "Exploding.convergence_of_time_constant_unconditional"
     unconditional_file: "Exploding/Support/TimeConstantUnconditional.lean"
@@ -100,7 +106,7 @@ status:
     comparator_config: "none"
     unconditional_comparator_config: "ExplodingAudit/TimeConstantUnconditional/comparator.json"
     literature_dependencies:
-    - "Antal and Pisztora, Theorem 1.1 (hChem), an explicit hypothesis of the registered declaration; the unconditional declaration uses the proved high-density bound"
+    - "Antal and Pisztora, Theorem 1.1 (hChem), an explicit hypothesis of the registered declaration, proved as Exploding.External.antalPisztoraChemicalDistance_holds; the unconditional declaration uses the proved high-density bound"
   - declaration: "Exploding.explosive"
     file: "Exploding/MainTheorems.lean"
     statement: "Theorem 1.4"
@@ -118,7 +124,7 @@ status:
     comparator_config: "none"
     unconditional_comparator_config: "ExplodingAudit/GeneralizedConvergenceUnconditional/comparator.json"
     literature_dependencies:
-    - "Antal and Pisztora, Theorem 1.1 (hChem), an explicit hypothesis of the registered declaration; the unconditional declaration uses the proved high-density bound"
+    - "Antal and Pisztora, Theorem 1.1 (hChem), an explicit hypothesis of the registered declaration, proved as Exploding.External.antalPisztoraChemicalDistance_holds; the unconditional declaration uses the proved high-density bound"
   - declaration: "Exploding.counterexample"
     file: "Exploding/MainTheorems.lean"
     statement: "Theorem 6.1"

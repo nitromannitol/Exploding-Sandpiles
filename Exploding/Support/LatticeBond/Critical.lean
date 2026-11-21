@@ -2,7 +2,9 @@
 Copied from Lattice-Probability (https://github.com/nitromannitol/Lattice-Probability), commit
 7512f4fbbc3e3d3ecf3e1af8a450ca7f4f082069, file `LatticeProb/Prob/Percolation/LatticeBondCritical.lean`,
 licensed under the Apache License 2.0.
-Changes: the namespace `LatticeProb.Percolation` is renamed `Exploding.LatticeBond`, which opens `LatticeProb`.
+Changes: the namespace `LatticeProb.Percolation` is renamed `Exploding.LatticeBond`, which opens
+`LatticeProb`; the import of `LatticeProb.Prob.Percolation.LatticeBondInfiniteEvent` is its copy
+`Exploding.Support.LatticeBond.InfiniteEvent`.
 -/
 import Exploding.Support.LatticeBond.InfiniteEvent
 

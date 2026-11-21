@@ -405,3 +405,5 @@ import Exploding.Support.PlanarWaveOptimality
 import Exploding.Support.APBoxChemical
 import Exploding.Support.APSlabConnectivity
 import Exploding.Support.APPisztoraFromSlab
+import Exploding.Support.APGrimmettMarstrand
+import Exploding.External.AntalPisztoraProved

@@ -4,7 +4,9 @@ Copied from Lattice-Probability (https://github.com/nitromannitol/Lattice-Probab
 licensed under the Apache License 2.0.
 Changes: the namespace `LatticeProb.Percolation` is renamed `Exploding.LatticeBond`, which opens
 `LatticeProb`; the deprecated lemma names `Set.setOf_exists`, `Set.setOf_and` and `Set.mem_setOf_eq`
-are replaced by `Set.ofPred_exists`, `Set.ofPred_and` and `Set.mem_ofPred_eq`.
+are replaced by `Set.ofPred_exists`, `Set.ofPred_and` and `Set.mem_ofPred_eq`; the import of
+`LatticeProb.Prob.Percolation.LatticeBondProbability` is its copy
+`Exploding.Support.LatticeBond.Probability`.
 -/
 import Exploding.Support.LatticeBond.Probability
 import LatticeProb.Walk.Shells

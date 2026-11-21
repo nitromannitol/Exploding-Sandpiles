@@ -15,14 +15,14 @@ The manifest also records 4 definitions stated separately: `def-counterexample-t
 They are not cited results. Each citation below gives the source file it is
 taken from.
 
-Of these, **8 are also proved in this repository** and so need not be taken on trust; each is marked below with the theorem that proves it. The remaining **1** is assumed in registered statements.
+Of these, **9 are also proved in this repository** and so need not be taken on trust; each is marked below with the theorem that proves it. The registered statements that carry them as hypotheses have forms without them, listed in the README.
 
 ## `ext-antal-pisztora`
 
 * **Lean name** `Exploding.External.AntalPisztoraChemicalDistance`
 * **File** `Exploding/External/AntalPisztora.lean`
 * **Cited at** antal1996chemical Theorem 1.1, cited at exploding-corrected-arxiv.tex:350 for prop:renormalization_properties
-* **Not proved here**: this one is assumed by the registered statements; the high-density restriction is proved as `Exploding.xap12_high_density_bound` and the full statement in dimension two as `Exploding.antalPisztora_dim_two`. In dimensions `d ≥ 3` it follows from uniform two-point connectivity in slabs above the critical probability, the slab form of the theorem of Grimmett and Marstrand (`Exploding.antalPisztoraChemicalDistance_of_slabConnectivity`), which is not proved here. Every registered result using this hypothesis has a form without it, listed in the README
+* **Also proved here** by `Exploding.External.antalPisztoraChemicalDistance_holds` in `Exploding/External/AntalPisztoraProved.lean`, so this hypothesis can be discharged rather than assumed
 
 ```lean
 def Exploding.External.AntalPisztoraChemicalDistance : Prop :=

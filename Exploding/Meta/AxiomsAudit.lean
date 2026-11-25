@@ -40,6 +40,7 @@ import Exploding.Support.PlanarWaveBarrier
 import Exploding.Support.APBoxChemical
 import Exploding.Support.APPisztoraFromSlab
 import Exploding.External.AntalPisztoraProved
+import Exploding.Support.ExplosionCriteriaDimOne
 
 /-!
 # Axioms audit
@@ -89,6 +90,8 @@ The default library build includes this module. It can also be built explicitly 
 #print axioms Exploding.counterexample
 -- Section 7
 #print axioms Exploding.explosion_criteria
+#print axioms Exploding.explosion_criteria_dim_one
+#print axioms Exploding.explosion_criteria_of_one_le
 #print axioms Exploding.dimensional_reduction
 #print axioms Exploding.recurrence
 #print axioms Exploding.schonmann_bootstrap

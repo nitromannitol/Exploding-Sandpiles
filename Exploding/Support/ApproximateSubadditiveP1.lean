@@ -15,9 +15,9 @@ namespace Exploding
 open MeasureTheory
 open LatticeProb
 
-/-- The origin-raised all-high pile does not stabilize, since its ordinary
-odometer front reaches sites of arbitrarily large Manhattan norm. -/
-theorem all_high_pile_not_stabilizable (d : ℕ) (hd : 2 ≤ d) :
+/-- In every positive dimension the origin-raised all-high pile does not stabilize, since its
+ordinary odometer front reaches sites of arbitrarily large Manhattan norm. -/
+theorem all_high_pile_not_stabilizable_of_pos (d : ℕ) (hd : 0 < d) :
     ¬ Stabilizable
       (fun x : Site d => 2 * (d : ℤ) - 1 + (1 : ℤ) * dirac (0 : Site d) x) := by
   rintro ⟨T, hT⟩
@@ -47,6 +47,13 @@ theorem all_high_pile_not_stabilizable (d : ℕ) (hd : 2 ≤ d) :
   have hfront := (all_high_podo_pos_iff d T x0).1 hposT
   rw [hxnorm] at hfront
   omega
+
+/-- The origin-raised all-high pile does not stabilize, since its ordinary
+odometer front reaches sites of arbitrarily large Manhattan norm. -/
+theorem all_high_pile_not_stabilizable (d : ℕ) (hd : 2 ≤ d) :
+    ¬ Stabilizable
+      (fun x : Site d => 2 * (d : ℤ) - 1 + (1 : ℤ) * dirac (0 : Site d) x) :=
+  all_high_pile_not_stabilizable_of_pos d (by omega)
 
 /-- The explosion threshold of the all-high background is one. -/
 theorem all_high_explosionThreshold (d : ℕ) (hd : 2 ≤ d) :

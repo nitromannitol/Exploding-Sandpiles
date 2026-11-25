@@ -300,7 +300,7 @@ alignment:
   - source: "Proposition 7.1"
     lean: "Exploding.explosion_criteria"
     status: "proved"
-    note: "Restricted to d ≥ 2 (C17); proof corrected (C18); Hypothesis 1 in the stronger form of C12, whose published form is open."
+    note: "Restricted to d ≥ 2 (C17); proof corrected (C18); Hypothesis 1 in the stronger form of C12, whose published form is open. The case d = 1, argued after the proof, is Exploding.explosion_criteria_dim_one, and Exploding.explosion_criteria_of_one_le covers every d ≥ 1."
   - source: "Proposition 7.2"
     lean: "Exploding.dimensional_reduction"
     status: "proved"

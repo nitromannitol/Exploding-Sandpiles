@@ -81,7 +81,7 @@ here for `0 < p ≤ 1`. The map from LaTeX labels to Lean names is in
 | Proposition 3.1 | `Exploding.convergence_of_the_last_wave` |
 | Proposition 4.1 | `Exploding.approximate_subadditive` |
 | Proposition 5.1 | `Exploding.convergence_of_the_generalized_last_wave` |
-| Proposition 7.1 | `Exploding.explosion_criteria` |
+| Proposition 7.1 | `Exploding.explosion_criteria` (`d ≥ 2`); `Exploding.explosion_criteria_dim_one` (`d = 1`) |
 | Proposition 7.2 | `Exploding.dimensional_reduction` |
 | Proposition 7.3 | `Exploding.recurrence` |
 | Proposition 7.4 (quoted) | `Exploding.schonmann_bootstrap` |
@@ -146,8 +146,9 @@ same order and with the same numbers.
 3. **Departures.** Hypothesis 1 is used in the form "the values on two finite sets at distance more
    than `K` are independent", meaning that the two families generate independent σ-fields. The
    paper prints pairwise independence. Whether Propositions 5.1 and 7.1 and Theorem 5.1 hold under
-   the printed form is open. Proposition 7.1 is proved for `d ≥ 2`; the case `d = 1` is argued in a
-   paragraph after its proof and is not formalized. The unconditional route uses only the proved
+   the printed form is open. Proposition 7.1 is stated for `d ≥ 2`; the case `d = 1`, argued in the
+   paragraph after its proof, is `Exploding.explosion_criteria_dim_one`, and
+   `Exploding.explosion_criteria_of_one_le` covers every `d ≥ 1`. The unconditional route uses only the proved
    high-density case of Antal–Pisztora, whereas the paper cites the full supercritical result;
    the restriction suffices because the paper applies it at density close to one (Section 2,
    line 350). The full supercritical statement is proved by a renormalization that departs from
@@ -156,7 +157,7 @@ same order and with the same numbers.
    broken by the coordinatewise minimum; locally uniform convergence is stated in its `ε`-form; the
    floor in the toppling rules is integer division on `ℤ`.
 5. **Not formalized.** The proof outline of Section 1, the examples of Section 5.2, the qualitative
-   claims of Remarks 3, 4 and 5, the case `d = 1` of Proposition 7.1, and the figures.
+   claims of Remarks 3, 4 and 5, and the figures.
 
 ## Assumed literature inputs
 

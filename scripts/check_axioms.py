@@ -45,6 +45,8 @@ expected = {
     'Exploding.generalized_convergence',
     'Exploding.counterexample',
     'Exploding.explosion_criteria',
+    'Exploding.explosion_criteria_dim_one',
+    'Exploding.explosion_criteria_of_one_le',
     'Exploding.dimensional_reduction',
     'Exploding.recurrence',
     'Exploding.schonmann_bootstrap',

@@ -350,6 +350,7 @@ import Exploding.Frozen.CounterexampleArrival
 import Exploding.Frozen.CounterexampleSupport
 import Exploding.Frozen.Counterexample
 import Exploding.Frozen.ExplosionCriteria
+import Exploding.Support.ExplosionCriteriaDimOne
 import Exploding.Frozen.DimensionalReduction
 import Exploding.Frozen.Recurrence
 import Exploding.Frozen.BoxCrossing

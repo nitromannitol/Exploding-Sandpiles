@@ -64,7 +64,8 @@ must consist of exactly `propext`, `Classical.choice` and `Quot.sound`. A theore
 
 Each pair under `ExplodingAudit/` has a Mathlib-only `Challenge.lean`, a `Solution.lean` that
 proves the same statement from the library, and a `comparator.json` that permits exactly
-`propext`, `Classical.choice` and `Quot.sound`. The only pair is `ExplodingAudit/LimitShape/`.
+`propext`, `Classical.choice` and `Quot.sound`. The pairs are `LimitShape/`, `LimitShapeUnconditional/`,
+`TimeConstantUnconditional/` and `GeneralizedConvergenceUnconditional/`.
 Do not add to a challenge a declaration that its statement does not need, and do not change a
 challenge without checking it against the paper's statement. After editing a challenge or
 `SolutionBasic.lean`, run `bash ExplodingAudit/check_standalone.sh --vocabulary`; the two vocabulary

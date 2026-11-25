@@ -212,16 +212,21 @@ Cited results appear as explicit hypotheses in registered statements; some can b
 
 <!-- STATUS-END -->
 
-- **No `sorry`.** The build emits no warning and contains no `sorry` in `Exploding/`. The
-  comparator challenge [`ExplodingAudit/LimitShape/Challenge.lean`](ExplodingAudit/LimitShape/Challenge.lean)
-  has one intentional statement-level `sorry`.
+- **No `sorry`.** The build emits no warning and contains no `sorry` in `Exploding/`. Each
+  comparator challenge `ExplodingAudit/*/Challenge.lean` has one intentional statement-level
+  `sorry`.
 - **Standard axioms only.** [`Exploding/Meta/AxiomsAudit.lean`](Exploding/Meta/AxiomsAudit.lean)
   prints the axioms of 126 theorems, and [`scripts/check_axioms.py`](scripts/check_axioms.py)
   requires exactly `propext`, `Classical.choice` and `Quot.sound` for each theorem of its explicit
   list.
-- **Independent check of the statements.** The Mathlib-only pair [`ExplodingAudit/LimitShape/`](ExplodingAudit/LimitShape/)
-  restates Theorem 1.2 for `0 < p ≤ 1` over Mathlib alone, with the four cited results its
-  statement takes as hypotheses. It is the only pair.
+- **Independent check of the statements.** Four Mathlib-only pairs restate main results over
+  Mathlib alone. [`ExplodingAudit/LimitShapeUnconditional/`](ExplodingAudit/LimitShapeUnconditional/)
+  and [`ExplodingAudit/TimeConstantUnconditional/`](ExplodingAudit/TimeConstantUnconditional/)
+  state Theorems 1.2 and 1.3 for `0 < p ≤ 1` with no cited result as a hypothesis, and
+  [`ExplodingAudit/GeneralizedConvergenceUnconditional/`](ExplodingAudit/GeneralizedConvergenceUnconditional/)
+  states Theorem 5.1 with its hypotheses on the background law and no cited result.
+  [`ExplodingAudit/LimitShape/`](ExplodingAudit/LimitShape/) states Theorem 1.2 with the four
+  cited results that its first form took as hypotheses; the library proves all four.
 - **Pinned toolchain and dependencies.** Lean `v4.35.0-rc2`, Mathlib `065356127b1dc0016f66b7283ce0ce2c4055aa55` and
   Lattice-Probability `7f773dd0aa66dbe1ed1080ae0248906b9cfe5215`, as recorded in
   [`lean-toolchain`](lean-toolchain) and [`lake-manifest.json`](lake-manifest.json) (see
@@ -268,25 +273,25 @@ It is a public repository, pinned in [`lake-manifest.json`](lake-manifest.json):
 
 ## Running the comparators
 
-The comparator pair is [`ExplodingAudit/LimitShape/`](ExplodingAudit/LimitShape/). Its
-[`comparator.json`](ExplodingAudit/LimitShape/comparator.json) permits exactly `propext`,
-`Classical.choice` and `Quot.sound`, and enables the nanoda kernel. Build `leanprover/comparator`,
+The comparator pairs are the four directories of [`ExplodingAudit/`](ExplodingAudit/), listed in
+[`ExplodingAudit/README.md`](ExplodingAudit/README.md). Each `comparator.json` permits exactly
+`propext`, `Classical.choice` and `Quot.sound`, and enables the nanoda kernel. Build `leanprover/comparator`,
 `lean4export`, `nanoda` and `landrun` at the revisions listed in
 [`.github/workflows/comparator.yml`](.github/workflows/comparator.yml), then run from the
 repository root
 
 ```bash
 COMPARATOR_LANDRUN=<landrun> COMPARATOR_LEAN4EXPORT=<lean4export> COMPARATOR_NANODA=<nanoda_bin> \
-  lake env <comparator>/.lake/build/bin/comparator ExplodingAudit/LimitShape/comparator.json
+  lake env <comparator>/.lake/build/bin/comparator ExplodingAudit/<Pair>/comparator.json
 ```
 
-which prints `Your solution is okay!`. The [comparator workflow](.github/workflows/comparator.yml)
-runs the pair on manual dispatch, and [`ExplodingAudit/README.md`](ExplodingAudit/README.md)
+which prints `Your solution is okay!` for each pair. The [comparator workflow](.github/workflows/comparator.yml)
+runs the four pairs on manual dispatch, and [`ExplodingAudit/README.md`](ExplodingAudit/README.md)
 describes it.
 
 There are two continuous-integration workflows: **CI** builds the library with the zero-warning
 check, runs the axiom audit and `tools/verify.py` and builds the comparator surface; **Comparator
-audit** checks the pair. CI runs on pushes to `main` that change more than documentation (`*.md`),
+audit** checks the four pairs. CI runs on pushes to `main` that change more than documentation (`*.md`),
 the compiled paper PDFs, `formalization.yaml` or `CITATION.cff`; the comparator audit runs when it
 is started manually. Both workflows can be started manually from the
 [Actions page](https://github.com/nitromannitol/Exploding-Sandpiles/actions). See

@@ -286,14 +286,14 @@ COMPARATOR_LANDRUN=<landrun> COMPARATOR_LEAN4EXPORT=<lean4export> COMPARATOR_NAN
 ```
 
 which prints `Your solution is okay!` for each pair. The [comparator workflow](.github/workflows/comparator.yml)
-runs the four pairs on manual dispatch, and [`ExplodingAudit/README.md`](ExplodingAudit/README.md)
+runs the four pairs after each successful CI run on `main` (on the commit that CI built) and on manual dispatch, and [`ExplodingAudit/README.md`](ExplodingAudit/README.md)
 describes it.
 
 There are two continuous-integration workflows: **CI** builds the library with the zero-warning
 check, runs the axiom audit and `tools/verify.py` and builds the comparator surface; **Comparator
 audit** checks the four pairs. CI runs on pushes to `main` that change more than documentation (`*.md`),
-the compiled paper PDFs, `formalization.yaml` or `CITATION.cff`; the comparator audit runs when it
-is started manually. Both workflows can be started manually from the
+the compiled paper PDFs, `formalization.yaml` or `CITATION.cff`; the comparator audit runs
+after each successful CI run on `main` (on the commit that CI built) and on manual dispatch. Both workflows can be started manually from the
 [Actions page](https://github.com/nitromannitol/Exploding-Sandpiles/actions). See
 [`CONTRIBUTING.md`](CONTRIBUTING.md) for build conventions.
 

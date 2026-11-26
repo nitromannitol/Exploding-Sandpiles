@@ -100,7 +100,7 @@ compares the axiom closure of every statement with the manifest. It needs PyYAML
 builds the library with the zero-warning check, runs the axiom audit with `scripts/check_axioms.py`,
 builds `ExplodingAudit`, and runs `tools/verify.py`.
 
-`.github/workflows/comparator.yml` runs on manual dispatch only. It builds `leanprover/comparator`,
+`.github/workflows/comparator.yml` runs after each successful CI run on `main` (on the commit that CI built) and on manual dispatch. It builds `leanprover/comparator`,
 `lean4export`, `landrun` and `nanoda` at the revisions in its `env` block, checks that the sandbox
 refuses a write outside it, and runs the comparator on each `ExplodingAudit/*/comparator.json`. A
 pair without a `Solution.lean` fails the job. The logs are uploaded as the `comparator-logs` artifact.

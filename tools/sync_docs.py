@@ -280,16 +280,16 @@ def source_status(nodes: list[dict], pins: dict[str, dict]) -> str:
     proved_all = counts["SEALED"] + counts["PROVED"]
     parts = [f"{proved_all} proved"] if proved_all else []
     parts += [f"{counts[s]} {STATE_CELL[s]}" for s in ("CONDITIONAL", "DRAFT_SORRY") if counts[s]]
-    if cited:
-        parts.append(f"{cited} cited results")
-    if local_definitions:
-        parts.append(f"{local_definitions} definitions")
     if counts["FROZEN"] != cited + local_definitions:
         raise LookupError("a FROZEN node is neither a cited input nor a non-External definition")
-    rows = [f"Status: **{len(nodes)} statements: {'; '.join(parts)}.**",
-            "", "Each statement is taken from one source file. For each source the table "
-            "gives its theorem statements, how many of them are proved, the cited results "
-            "stated as hypotheses, and the definitions stated separately.", "",
+    cited_text = f"{cited} results of other works that the paper cites" if cited else ""
+    definitions_text = f"{local_definitions} definitions" if local_definitions else ""
+    summary = "; ".join(p for p in parts + [cited_text, definitions_text] if p)
+    rows = [f"Status: **{len(nodes)} statements: {summary}.**",
+            "", "Each statement is taken from one source file. The table gives, for each source, "
+            "its theorem statements, how many of them are proved, the cited results of other "
+            "works, and the definitions that are stated separately. "
+            "[`ASSUMPTIONS.md`](ASSUMPTIONS.md) gives the source and the proof of each cited result.", "",
             "| Source | SHA-256 | Theorem statements | Proved | Cited results | Definitions |",
             "|---|---|---|---|---|---|"]
     groups: dict[tuple[str, str], list[dict]] = {}
@@ -302,10 +302,9 @@ def source_status(nodes: list[dict], pins: dict[str, dict]) -> str:
         rows.append(f"| [{filename}]({filename}) | `{digest}` | {len(theorems)} | {proved} | "
                     f"{sum(is_cited_external(n) for n in group)} | "
                     f"{sum(is_local_definition(n) for n in group)} |")
-    rows += ["", "Cited results appear as explicit hypotheses in registered statements; some can be "
-             "discharged by proofs in the library (see ASSUMPTIONS.md). Definitions are not counted as theorems. These counts are "
-             "generated from `ledger/manifest.yaml` by `python3 tools/sync_docs.py`; "
-             "`python3 tools/check_axioms.py` checks the axiom closures."]
+    rows += ["", "Definitions are not counted as theorems. The counts are generated from "
+             "`ledger/manifest.yaml` by `python3 tools/sync_docs.py`; "
+             "`python3 tools/check_axioms.py` checks the axioms used."]
     return "\n".join(rows)
 
 

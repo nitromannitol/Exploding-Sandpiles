@@ -5,12 +5,13 @@ project:
   description: >-
     A Lean 4 formalization of the paper "A shape theorem for exploding sandpiles" by Bou-Rabee
     (Annals of Applied Probability 34(1A) (2024); arXiv:2102.04422), in the corrected edition of
-    its arXiv v2 source. The results are Theorems 1.2, 1.3, 1.4, 5.1 and 6.1, the numbered
-    propositions and lemmas of the corrected edition, and its Remark 1. All 22 numbered results and
-    Remark 1 have forms proved without cited literature hypotheses. The registered statements retain
-    their explicit cited hypotheses, including the all-supercritical Antal–Pisztora bound, and all
-    nine cited results are proved in this repository or in Lattice-Probability. The
-    comparator pairs under ExplodingAudit/ restate Theorems 1.2, 1.3 and 5.1 over Mathlib alone.
+    its arXiv v2 source. All 24 numbered results of the corrected edition, and its Remark 1, are
+    proved in Lean: 22 stated by the paper, and Theorem 1.1 and Proposition 7.4, which the paper
+    quotes from other works. Proposition 7.1 is proved in every dimension d >= 1. The nine results
+    of other works that the statements use are proved in this repository or in Lattice-Probability.
+    The one remaining hypothesis is Hypothesis 1 of Section 5, used in a stronger form than printed.
+    The comparator pairs under ExplodingAudit/ restate Theorems 1.2, 1.3 and 5.1 over Mathlib alone,
+    and a fourth restates Theorem 1.2 with four cited results as hypotheses.
   authors:
   - Ahmed Bou-Rabee
   responsible_maintainers:
@@ -59,7 +60,7 @@ related_formalizations:
 
 status:
   scope: >-
-    All 22 numbered results of the corrected edition and its Remark 1 have Lean proofs without cited literature hypotheses, with no `sorry` and only the standard axioms. The registered statements retain explicit cited hypotheses; corresponding unconditional forms discharge them. Theorem 6.1 is stated as published, Theorems 1.2 and 1.3 as published with the law (2) read as one common law at every site, and Theorems 1.4 and 5.1 with the corrections listed in the corrected edition. Theorem 5.1 also assumes Hypothesis 1 in a stronger form than printed, and whether it holds under the printed form is open.
+    All 24 numbered results of the corrected edition and its Remark 1 are proved in Lean, with no `sorry` and only the standard axioms: 22 stated by the paper, and Theorem 1.1 and Proposition 7.4, which the paper quotes from other works. Proposition 7.1 is proved in every dimension d >= 1. No result of another work is assumed. Some declarations in Exploding/MainTheorems.lean are earlier forms that take a result of another work as an explicit hypothesis; the declarations that the README lists have forms without it, and the hypotheses themselves are proved. Theorem 6.1 is stated as published, Theorems 1.2 and 1.3 as published with the law (2) read as one common law at every site, and Theorems 1.4 and 5.1 with the corrections listed in the corrected edition. Theorem 5.1 and Propositions 5.1 and 7.1 also assume Hypothesis 1 in a stronger form than printed, and whether they hold under the printed form is open.
   additional_results: >-
     The high-density chemical-distance bound is proved as Exploding.xap12_high_density_bound.
     Each of the 11 registered statements using the full Antal–Pisztora hypothesis has a form
